@@ -1,0 +1,489 @@
+        @charset "UTF-8";
+        @import url(http://db.onlinewebfonts.com/c/83ce47706219620c6c601fa5eb658c2f?family=Nordica);
+        @font-face {
+            font-family: Poppins-Regular;
+            src: url(fonts/Poppins-Regular.ttf)
+        }
+        
+        * {
+            font-family: Poppins-Regular;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow: none;
+            text-overflow: ellipsis
+        }
+        
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .view--inventory {
+            position: relative
+        }
+        
+        .view--inventory #main {
+            width: 100%;
+            height: 100%
+        }
+        
+        .view--inventory #main .container {
+            float: right;
+            margin-top: 5%;
+            margin-right: 100px;
+            background-color: rgba(0, 0, 0, .7);
+            border: #000 .1px solid;
+            width: 26vw;
+            -webkit-transform: perspective(400px) rotateY(-5deg);
+            transform: perspective(400px) rotateY(-5deg);
+            transition: all .2s
+        }
+        
+        .view--inventory #main .container .menutab {
+            width: 10%;
+            position: fixed;
+            top: 2px;
+            margin-left: -10%
+        }
+        
+        .view--inventory #main .container .menutab .buttonstab {
+            margin-bottom: 2vw
+        }
+        
+        .view--inventory #main .container .menutab .buttonstab .button {
+            font-size: 1.2vw;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            color: #fff;
+            font-weight: 600;
+            width: 2vw;
+            height: 2vw;
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, .5);
+            background-size: cover;
+            margin-bottom: .2vw
+        }
+        
+        .view--inventory #main .container .menutab .buttonstab .button:hover {
+            background-color: rgba(0, 123, 193, .7);
+            box-shadow: 0 0 3px 1px #007bc1
+        }
+        
+        .view--inventory #main .container .menutab .buttonstab .active {
+            background-color: rgba(0, 123, 193, .7);
+            box-shadow: 0 0 3px 1px #007bc1
+        }
+        
+        .view--inventory #main .container .header-text {
+            position: relative;
+            padding: 10px 20px;
+            font-size: 1.3em;
+            color: #fff
+        }
+        
+        .view--inventory #main .container .primary-content {
+            padding-left: 15px;
+            width: 100%;
+            border-bottom: rgba(255, 255, 255, .2) 1px solid;
+            border-top: rgba(255, 255, 255, .2) 1px solid;
+            max-height: 28.8vw;
+            color: #fff;
+            overflow-y: auto;
+            padding-bottom: .5vw
+        }
+        
+        .view--inventory #main .container .secondary-content {
+            padding-left: 7px;
+            margin-top: .5vw;
+            border-bottom: rgba(255, 255, 255, .2) 1px solid;
+            border-right: rgba(255, 255, 255, .2) 1px solid;
+            border-top: rgba(255, 255, 255, .2) 1px solid;
+            width: 24vw;
+            height: 4.2vw
+        }
+        
+        .view--inventory #main .container .secondary-content .items {
+            padding: .3vw;
+            display: flex;
+            position: relative
+        }
+        
+        .view--inventory #main .container .secondary-content .items .secondary-image {
+            background: url(https://cdn.discordapp.com/attachments/571854796831719441/683020504537366541/CK_logo.png);
+            background-repeat: no-repeat;
+            background-size: 90% 90%;
+            background-position: center center;
+            width: 3.5vw;
+            height: 3.5vw;
+            border-right: rgba(255, 255, 255, .2) 1px solid;
+        }
+        
+        .view--inventory #main .container .secondary-content .items .containitem {
+            padding-left: 1vw;
+            padding-top: .5vw
+        }
+        
+        .view--inventory #main .container .secondary-content .items .qtd-item {
+            position: absolute;
+            font-size: .9vw;
+            border-left: rgba(255, 255, 255, .2) 1px solid;
+            right: 1px;
+            width: 3.5vw;
+            height: 3.5vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-break: auto
+        }
+        
+        .view--inventory #main .container .secondary-content .items .qtd-item .imageqtd {
+            line-height: 20px
+        }
+        
+        .view--inventory #main .container .secondary-content .items .qtd-item .numberqtd {
+            line-height: 20px
+        }
+        
+        .view--inventory #main .container .secondary-content .items .secondary-title {
+            font-size: .9vw
+        }
+        
+        .view--inventory #main .container .secondary-content .items .secondary-description {
+            font-size: .6vw;
+            display: block
+        }
+        
+        .view--inventory #main .container .buttons {
+            height: 20%;
+            text-align: center;
+            font-size: .7vw;
+            color: #fff;
+            font-weight: 800;
+            padding: 15px 20px;
+            display: flex
+        }
+        
+        .view--inventory #main .container .buttons .drop-button,
+        .view--inventory #main .container .buttons .send-button,
+        .view--inventory #main .container .buttons .use-button {
+            padding: 8px 15px;
+            border-radius: 2px;
+            height: 2vw;
+            background-color: rgba(0, 0, 0, .4);
+            margin-right: .5vw;
+            transition: all .8s
+        }
+        
+        .view--inventory #main .container .buttons .drop-button:hover,
+        .view--inventory #main .container .buttons .send-button:hover,
+        .view--inventory #main .container .buttons .use-button:hover {
+            background-color: rgba(0, 123, 193, .7);
+            box-shadow: 0 0 3px 1px #007bc1
+        }
+        
+        .view--inventory #main .center-container:hover,
+        .view--inventory #main .container:hover {
+            -webkit-transform: perspective(400px) rotateY(0);
+            transform: perspective(400px) rotateY(0);
+            transition: all .5s
+        }
+        
+        #normal {
+            border-left: #007bc1 8px solid
+        }
+        
+        #divinity {
+            border-left: rgba(255, 0, 0, .4) 8px solid
+        }
+        
+        .hoveringNormal {
+            border-left: #007bc1 8px solid;
+            border-bottom: #007bc1 1px solid;
+            border-right: #007bc1 1px solid;
+            border-top: #007bc1 1px solid;
+            box-shadow: 0 1px 12px -2px #007bc1
+        }
+        
+        .hoveringDivinity {
+            border-left: rgba(255, 0, 0, .4) 8px solid;
+            border-bottom: rgba(255, 0, 0, .4) 1px solid;
+            border-right: rgba(255, 0, 0, .4) 1px solid;
+            border-top: rgba(255, 0, 0, .4) 1px solid;
+            box-shadow: 0 1px 12px -2px #fff
+        }
+        
+         ::-webkit-scrollbar {
+            width: 4px
+        }
+        
+         ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px transparent;
+            border-radius: 2px
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .4);
+            border-radius: 2px
+        }
+        
+        .button .helperName,
+        .drop-button .name,
+        .send-button .name,
+        .use-button .name {
+            display: none
+        }
+        
+        .drop-button:hover .name,
+        .send-button:hover .name,
+        .use-button:hover .name {
+            display: inline;
+            font-size: .8vw;
+            -webkit-animation: fade-in 1s;
+            animation: fade-in 1s
+        }
+        
+        .drop-button:not(:hover) .name.did-fade-in,
+        .send-button:not(:hover) .name.did-fade-in,
+        .use-button:not(:hover) .name.did-fade-in {
+            display: inline;
+            font-size: .8vw;
+            -webkit-animation: fade-out 2s;
+            animation: fade-out 2s
+        }
+        
+        .button:hover .helperName {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            justify-content: center;
+            width: 5vw;
+            height: 2vw;
+            font-size: .8vw;
+            position: absolute;
+            right: 2.6vw;
+            -webkit-animation: fade-in 1s;
+            animation: fade-in 1s;
+            background: linear-gradient(to left, rgba(0, 123, 193, .5), rgba(0, 0, 0, 0))
+        }
+        
+        .button:not(:hover) .helperName.did-fade-in {
+            font-size: .8vw;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            width: 5vw;
+            height: 2vw;
+            right: 2.6vw;
+            -webkit-animation: fade-out 10s;
+            animation: fade-out 10s;
+            background: linear-gradient(to left, rgba(0, 123, 193, .5), rgba(0, 0, 0, 0))
+        }
+        
+        @-webkit-keyframes fade-in {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+        
+        @keyframes fade-in {
+            from {
+                opacity: 0
+            }
+            to {
+                opacity: 1
+            }
+        }
+        
+        @-webkit-keyframes fade-out {
+            from {
+                opacity: 1
+            }
+            to {
+                opacity: 0
+            }
+        }
+        
+        @keyframes fade-out {
+            from {
+                opacity: 1
+            }
+            to {
+                opacity: 0
+            }
+        }
+        
+        .bgPrimary {
+            background-color: #22d667
+        }
+        
+        .bgSecondary {
+            background-color: #c1c1c1
+        }
+        
+        .bgCancel {
+            background-color: #e55f5f
+        }
+        
+        .colorPrimary {
+            color: #22d667!important
+        }
+        
+        .colorSecondary {
+            color: #c1c1c1!important
+        }
+        
+        .borderPrimary {
+            border: 2px solid #22d667;
+            background: 0 0
+        }
+        
+        .mt10 {
+            margin-top: 10px
+        }
+        
+        .mb10 {
+            margin-bottom: 10px
+        }
+        
+        .mt20 {
+            margin-top: 20px
+        }
+        
+        .mb20 {
+            margin-bottom: 20px
+        }
+        
+        .mt30 {
+            margin-top: 30px
+        }
+        
+        .mb30 {
+            margin-bottom: 30px
+        }
+        
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s
+        }
+        
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0
+        }
+        
+        a,
+        div {
+            -webkit-animation: fadeInLeft .86s;
+            animation: fadeInLeft .86s;
+            box-sizing: border-box
+        }
+        
+        a,
+        b,
+        em,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        label,
+        p,
+        span {
+            font-family: Nordica, sans-serif
+        }
+        
+        p,
+        span {
+            font-size: 16px
+        }
+        
+        a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 13px
+        }
+        
+        .btn {
+            padding: 6px 11px;
+            border-radius: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all .3s ease-out
+        }
+        
+        .btn:hover {
+            transition: all .3s ease-out
+        }
+        
+        .form-group {
+            color: #fff;
+            margin-bottom: 10px;
+            margin-left: 5px
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px
+        }
+        
+        .form-group input {
+            border-radius: 8px;
+            border: 0;
+            height: 35px;
+            padding: 5px 10px;
+            background-color: rgba(255, 255, 255, .25);
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box
+        }
+        
+        .card {
+            background-color: rgba(111, 111, 111, .9);
+            border-radius: 5px
+        }
+        
+        .card .card-header {
+            padding: 10px;
+            color: #fff;
+            background-color: #565258;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-style: solid;
+            border-bottom-color: #22d667;
+            display: flex;
+            align-items: center
+        }
+        
+        .card .card-header .title {
+            margin: 0;
+            font-size: 14px;
+            flex: 50
+        }
+        
+        .card .card-header .action {
+            font-size: 11px;
+            flex: 50;
+            text-align: right
+        }
+        
+        .card .card-body {
+            padding: 10px
+        }
+        
+        .card .card-action .btn {
+            width: 100%;
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+            display: block;
+            text-align: center;
+            padding: 10px
+        }

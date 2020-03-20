@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=UTF-8>
+    <link rel=stylesheet type=text/css href=main.css>
+    <!-- <meta name=viewport content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"> -->
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js type=text/javascript></script>
+    <script src=https://kit.fontawesome.com/eb73bbb7e4.js crossorigin=anonymous></script>
+    <script src=main.js></script>
+</head>
+
+<body class="view view--inventory">
+    <div id=sinventory class=wrapper v-cloak="" v-if="showInventory == 1">
+        <div id=main>
+            <div class=container>
+                <div class=header-text>❯ Inventário</div>
+                <div class=menutab>
+                    <div class=buttonstab>
+                        <div class="button item active"><span class=helperName>Comidas</span> <i class="fas fa-infinity"></i></div>
+                        <div class="button item"><span class=helperName>Comidas</span><i class="fas fa-drumstick-bite"></i></div>
+                        <div class="button item"><span class=helperName>Armas</span><i class="fas fa-fist-raised"></i></div>
+                        <div class="button item"><span class=helperName>Camisas</span><i class="fas fa-tshirt"></i></div>
+                        <div class="button item"><span class=helperName>Utilitários</span><i class="fas fa-box-open"></i></div>
+                    </div>
+                    <div class=buttonstab>
+                        <div class="button item"><span class=helperName>Veículos</span><i class="fas fa-key"></i></div>
+                        <div class="button item"><span class=helperName>Identidade</span><i class="fas fa-id-badge"></i></div>
+                    </div>
+                </div>
+                <div class=primary-content>
+                    <a v-for="(data, index) in sortedPrimaryItems" :key=data.id>
+                        <div class=secondary-content id=normal @mouseover="hoveringNormal[index] = true" @mouseout="hoveringNormal[index] = false" :class="{hoveringNormal: hoveringNormal[index]}">
+                            <div class=items>
+                                <div class=secondary-image :style="{'background-image':'url(img/items/' + data.id + '.png)'}"></div>
+                                <div class=containitem>
+                                    <div class=secondary-title>{{ data.name }}</div>
+                                    <div class=secondary-description>{{ data.description }}</div>
+                                </div>
+                                <div class=qtd-item>
+                                    <div class=imgqtd><i class="fas fa-boxes"></i></div>
+                                    <div class=numberqtd>{{ data.amount }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class=buttons>
+                    <div class=use-button><i class="fas fa-check"><span class=name style="padding-left: 0.5vw;">Usar</span></i></div>
+                    <div class=send-button><i class="fas fa-share"><span class=name style="padding-left: 0.5vw;">Enviar</span></i></div>
+                    <div class=drop-button><i class="fas fa-minus-square"><span class=name style="padding-left: 0.5vw;">Dropar</span></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

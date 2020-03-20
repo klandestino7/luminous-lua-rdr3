@@ -1,0 +1,267 @@
+body {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-user-select: none; 
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+* {
+    transition: all 0.4s;
+}
+
+.container {
+    -webkit-animation: fadein 1s; /* Safari and Chrome */    
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+.shop {
+    float:left;   
+    width: 400px;
+    padding: 0px;
+    position: absolute;
+    top:25%;
+    left: 5%;
+    transform: perspective(400px) rotateY(5deg); 
+    background: rgba(0,0,0,0.3);
+    border-bottom:  rgba(255,255,255,0.2) 1px solid; 
+    border-radius: 4px;
+}
+
+.shop:hover{
+    transform: perspective(400px) rotateY(0); 
+    transition: all 0.5s;
+    background: rgba(0,0,0,0.5);
+}
+.title{
+    padding: 20px 30px;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+    background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.02)); 
+    border-bottom:  rgba(255,255,255,0.2) 1px solid; 
+}
+
+
+.shop .items{
+    padding: 10px 8px;
+    justify-content: center;
+    height:100%;
+    border-radius: 0px 0px 10px 10px;
+}
+.items:hover{
+
+}
+
+p {
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.item img {
+    width:100%;
+    display: inline-block;
+}
+
+.imagem{
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;	
+    width: 100%;
+    height: 100%;
+}
+
+.item {
+    background: linear-gradient(to right, rgba(0,123,193,0.5), rgba(0,0,0,0.15)); 	
+	background-size: 200% 200%;
+	background-position: 100% 100%;
+    display: flex;
+    margin-bottom:10px;
+    width: 350px;
+    height: 50px;
+    padding: 10px 10px;
+    border-radius: 2px;
+    border-left: rgba(255,255,255,0.7) 6px solid;
+    margin-left: 1%;
+    overflow: hidden;
+}
+
+.borderl{
+   margin: 0px 10px;
+    height:100%;
+    width: 1px;
+    background: rgba(255,255,255,0.5);
+}
+.borderr{
+    margin: 0px 10px;
+     height:100%;
+     width: 0.5px;
+     background:transparent;
+ }
+ 
+
+.item .label {
+    color:white;
+    padding-left: 10px;
+    height:50px;
+    width: 50%;
+}
+
+.label p {
+    text-align: left;
+}
+
+.item:hover {
+    transform: scale(1.02);
+    background-position: 70% 100%;
+    background-color: rgba(254,138,15,0.9);
+    border-left: rgb(0,123,193) 6px solid;
+    border-bottom: rgb(0,123,193) 1px solid;
+    border-right: rgb(0,123,193) 1px solid;
+    border-top: rgb(0,123,193) 1px solid;
+}
+
+
+.buttonb {
+    width: 20%;
+    height:100%;	
+    display:flex;					
+    flex-direction: column;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;	
+    border-radius: 0px 4px 4px 0px;
+}
+.buy{	    
+    background-color: rgba(0,0,0,0.05);
+    width: 100%;
+    height: 80%;	
+    font-family: "Poppins-Regular", Poppins-Regular, serif;
+    font-size: 1vw;
+    color:white;
+    border: 0px solid red;
+    border-radius: 4px;
+}
+.buy:hover{
+    background-color: rgba(0,123,193,0.8);
+}
+
+
+.menutab{
+    width:10%;
+    position:fixed;
+    top:2px;
+    right:0px;
+    margin-right: -15%;
+}
+.buttonstab{
+    margin-bottom: 2.0vw;}
+.button{
+    font-size: 1.2vw;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color:white;
+    font-weight: 600;                  
+    width: 2.0vw;                        
+    height: 2.0vw;
+    border-radius: 2px;
+    background-color: rgba(0,0,0,0.5);
+    background-size: cover;
+    margin-bottom: 0.2vw;
+}
+.button:hover{
+    background-color: rgba(0,123,193,0.7);
+    -webkit-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+    -moz-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+    box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+}
+
+.helperName  {
+    display: none;
+}
+
+.button:hover .helperName  {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: center;
+    width: 5.0vw;
+    height: 2.0vw;
+    font-size: 0.8vw;
+    position: absolute;
+    left: 2.0vw;
+    animation: fade-in 1s;
+    background: linear-gradient(to right, rgba(0,123,193,0.5), rgba(0,0,0,0.0));
+
+}
+
+.button:not(:hover) .helperName.did-fade-in{
+    font-size: 0.8vw;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    width: 5.0vw;
+    height: 2.0vw;
+    right: 2.6vw;
+    animation: fade-out 10s;
+    background: linear-gradient(to left, rgba(0,123,193,0.5), rgba(0,0,0,0.0));
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.item {
+}
+
+.active{
+    background-color: rgba(0,123,193,0.7);
+    -webkit-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+    -moz-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+    box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+}                   
+
+
+
+
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}

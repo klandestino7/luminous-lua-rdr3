@@ -1,0 +1,273 @@
+* {
+    font-family: 'Poppins-Regular';
+    user-select: none;
+    overflow: none;
+    text-overflow: ellipsis;
+}
+
+body {
+    width:100%;
+    height:100%;
+}
+
+.view--inventory {
+    position: relative;
+    #main {
+        width: 100%;
+        height: 100%;        
+        .container {
+            float: right;
+            margin-top: 5%;
+            margin-right: 100px;
+            background-color: rgba(0,0,0,0.70);
+            border: black 0.1px solid;
+            width: 26vw;
+            
+            transform: perspective(400px) rotateY(-5deg); 
+            transition: all 0.2s;
+            .menutab{
+                width:10%;
+                position:fixed;
+                top:2px;
+                margin-left: -10%;
+                .buttonstab{
+                    margin-bottom: 2.0vw;
+                    .button{
+                        font-size: 1.2vw;
+                        justify-content: center;
+                        align-items: center;
+                        display: flex;
+                        color:white;
+                        font-weight: 600;                  
+                        width: 2.0vw;                        
+                        height: 2.0vw;
+                        border-radius: 2px;
+                        background-color: rgba(0,0,0,0.5);
+                        background-size: cover;
+                        margin-bottom: 0.2vw;
+                    }
+                    .button:hover{
+                        background-color: rgba(0,123,193,0.7);
+                        -webkit-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                        -moz-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                        box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                    }
+
+                    .item {
+                    }
+
+                    .active{
+                        background-color: rgba(0,123,193,0.7);
+                        -webkit-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                        -moz-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                        box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                    }                    
+                }
+            }
+            .header-text{
+                font-family: 'Poppins-Regular';
+                position: relative;
+                padding: 10px 20px;
+                font-size: 1.3em;
+                color: white;            
+            }
+            .primary-content{
+                padding-left: 15px;
+                width: 100%;
+                border-bottom: rgba(255,255,255,0.2) 1px solid;
+                border-top: rgba(255,255,255,0.2) 1px solid;
+                max-height: 28.8vw;
+                color: white;
+                overflow-y: auto;
+                padding-bottom: 0.5vw;
+            }
+            .secondary-content{
+                padding-left: 7px;
+                margin-top: 0.5vw;
+                border-bottom: rgba(255,255,255,0.2) 1px solid;
+                border-right: rgba(255,255,255,0.2) 1px solid;
+                border-top: rgba(255,255,255,0.2) 1px solid;
+                width: 24vw;
+                height: 4.2vw;
+                .items {
+                    padding: 0.3vw;
+                    display: flex;
+                    position: relative;   
+                       
+                    .secondary-image{
+                        background: url("https://cdn.discordapp.com/attachments/571854796831719441/683020504537366541/CK_logo.png");
+                        background-repeat: no-repeat;
+                        background-size: 90% 90%;
+                        background-position: center center;                        
+                        width: 3.5vw;
+                        height: 3.5vw;
+                        border-right:  rgba(255,255,255,0.2) 1px solid;
+                        
+                    }
+                    .containitem{
+                        padding-left: 1.0vw;
+                        padding-top: 0.5vw;
+                    }
+                    .qtd-item{
+                        font-family: 'Poppins-Regular';   
+                        position:absolute;
+                        font-size: 0.9vw;
+                        border-left:  rgba(255,255,255,0.2) 1px solid;                       
+                        right:1px;
+                        width: 3.5vw;
+                        height: 3.5vw;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        line-break: auto;                        
+                        .imageqtd{
+                            line-height: 20px;
+                        }
+                        .numberqtd{
+                            line-height: 20px;
+                        }
+                    }
+                    .secondary-title{
+                        font-size: 0.9vw;
+                        font-family: 'Poppins-Regular';   
+                    }
+                    .secondary-description{
+                        font-family: 'Poppins-Regular';   
+                        font-size: 0.6vw;
+                        display: block;
+                    }
+                }
+            }
+       
+            .buttons {
+                height: 20%;
+                text-align: center;
+                font-size: 0.7vw;
+                color: white;
+                font-weight: 800;
+                padding: 15px 20px;
+                display: flex;
+                .use-button, .send-button, .drop-button{                    
+                    padding: 8px 15px;
+                    border-radius: 2px;
+                    height: 2.0vw;
+                    background-color: rgba(0,0,0,0.4);
+                    margin-right: 0.5vw;           
+                    transition: all 0.8s; 
+                }    
+                
+                .use-button:hover, .send-button:hover, .drop-button:hover{   
+                    background-color: rgba(0,123,193,0.7);
+                    -webkit-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                    -moz-box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                    box-shadow: 0px 0px 3px 1px rgb(0,123,193);
+                }
+            }
+        }
+        .container:hover, .center-container:hover {
+            transform: perspective(400px) rotateY(0); 
+            transition: all 0.5s; 
+        }
+    }
+}
+
+#normal{
+    border-left: rgb(0,123,193) 8px solid;
+}
+
+#divinity{
+    border-left: rgba(255, 0, 0,0.4) 8px solid;
+}
+
+.hoveringNormal{
+    border-left: rgb(0,123,193) 8px solid;
+    border-bottom: rgb(0,123,193) 1px solid;
+    border-right: rgb(0,123,193) 1px solid;
+    border-top: rgb(0,123,193) 1px solid;
+    -webkit-box-shadow: 0px 1px 12px -2px rgb(0,123,193);
+    -moz-box-shadow: 0px 1px 12px -2px rgba(0,255,0,0.1);
+    box-shadow: 0px 1px 12px -2px rgb(0,123,193);
+}
+
+.hoveringDivinity{
+    border-left: rgba(255, 0, 0,0.4) 8px solid;
+    border-bottom: rgba(255, 0, 0,0.4) 1px solid;
+    border-right: rgba(255, 0, 0,0.4) 1px solid;
+    border-top: rgba(255, 0, 0,0.4) 1px solid;
+    -webkit-box-shadow: 0px 1px 12px -2px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 1px 12px -2px rgba(255,255,255,1);
+    box-shadow: 0px 1px 12px -2px rgba(255,255,255,1);
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px transparent;
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 2px;
+}
+
+.use-button .name, .send-button .name, .drop-button .name, .button .helperName  {
+    display: none;
+}
+
+.use-button:hover .name, .send-button:hover .name, .drop-button:hover .name  {
+    display: inline;
+    font-size: 0.8vw;
+    animation: fade-in 1s;
+}
+
+.use-button:not(:hover) .name.did-fade-in,.send-button:not(:hover) .name.did-fade-in, .drop-button:not(:hover) .name.did-fade-in {
+    display: inline;
+    font-size: 0.8vw;
+    animation: fade-out 2s;
+}
+
+.button:hover .helperName  {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: center;
+    width: 5.0vw;
+    height: 2.0vw;
+    font-size: 0.8vw;
+    position: absolute;
+    right: 2.6vw;
+    animation: fade-in 1s;
+    background: linear-gradient(to left, rgba(0,123,193,0.5), rgba(0,0,0,0.0));
+
+}
+.button:not(:hover) .helperName.did-fade-in{
+    font-size: 0.8vw;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    width: 5.0vw;
+    height: 2.0vw;
+    right: 2.6vw;
+    animation: fade-out 10s;
+    background: linear-gradient(to left, rgba(0,123,193,0.5), rgba(0,0,0,0.0));
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
