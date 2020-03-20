@@ -1,0 +1,487 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Signika', sans-serif;
+    text-transform: none;
+    color: white;
+    text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+@font-face {
+    font-family: 'crock';
+    font-style: normal;
+    src: url('fonts/crock.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'robotoslab';
+    font-style: normal;
+    src: url('fonts/robotoslab.ttf') format('truetype')
+}
+
+body {
+    /* background-color: transparent !important; */
+    background-position: auto;
+    background-size: contain;
+    overflow: hidden;
+}
+
+.ui {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    /* display: none; */
+    background-color: rgba(0, 0, 0, 0.50);
+    z-index: 0;
+}
+
+.inventory {
+    width: 100vw;
+    height: 100vh;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.textomenu {
+    bottom: 105px;
+    left: 550px;
+    text-align: left;
+    width: 290px;
+    height: 100px;
+    text-transform: none;
+    position: absolute;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+#playerInventory {
+    width: 605px;
+    height: 500px;
+    float: left;
+    position: relative;
+    border-radius: 5px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-image: url('img/bginventory.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 30px 20px 30px 20px;
+    overflow-x: hidden;
+}
+
+#controls {
+    width: 250px;
+    height: 600px;
+    float: left;
+    position: relative;
+}
+
+.containinv {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 440px;
+    scroll-behavior: smooth;
+    /* <--- */
+    overflow-x: scroll;
+    overflow-y: none;
+}
+
+ ::-webkit-scrollbar {
+    display: none;
+}
+
+#otherInventory {
+    width: 605px;
+    height: 500px;
+    float: left;
+    position: relative;
+    border-radius: 5px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-image: url('img/bginventory.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 30px 20px 30px 20px;
+}
+
+#count {
+    outline: none;
+    font-size: 16px;
+    opacity: 0.5;
+    transition: 0.6s;
+    margin: 0 5px;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+#count:hover {
+    opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(5, 116px);
+    grid-template-rows: repeat(8, 135px);
+    grid-gap: 4px;
+    z-index: 1;
+}
+
+#slottest {
+    background-color: rgba(115, 115, 115, 0.04);
+    border: 1.2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    opacity: 1;
+    transition: 0.6s;
+    z-index: 1;
+}
+
+#slottest:hover {
+    border: 1.2px solid rgba(227, 227, 227, 0.9);
+    z-index: 1;
+}
+
+.items2 {
+    display: grid;
+    grid-template-columns: repeat(5, 116px);
+    grid-template-rows: repeat(8, 135px);
+    grid-gap: 4px;
+    z-index: 1;
+}
+
+#slottest2 {
+    background-color: rgba(115, 115, 115, 0.04);
+    border: 1.2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    opacity: 1;
+    transition: 0.6s;
+    z-index: 1;
+}
+
+#slottest2:hover {
+    border: 1.2px solid rgba(227, 227, 227, 0.9);
+    z-index: 1;
+}
+
+.bg-image {}
+
+.slot {
+    float: left;
+    /* width: 116px; */
+    /* height: 135px; */
+    background-image: url('img/slot.png');
+    background-size: contain;
+    background-color: transparent;
+    margin: 2px;
+    position: relative;
+    opacity: 1;
+    /* transition: 0.8s; */
+    cursor: pointer;
+    /*border: 1px solid rgba(255, 255, 255, 0.08); */
+}
+
+.slot:hover {
+    opacity: 0.8;
+    background-image: url('img/border.png');
+    background-size: contain;
+}
+
+.selected {
+    background-color: rgba(17, 5, 17, 0.0);
+    background-image: url('img/border.png');
+    background-size: contain;
+}
+
+.item,
+.item-other {
+    width: 116px;
+    height: 110px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.item-name {
+    position: absolute;
+    bottom: 4px;
+    text-align: center;
+    padding-top: 0.2px;
+    padding-bottom: 0.2px;
+    width: 116px;
+    min-height: 20px;
+    z-index: 500;
+    font-size: 14px;
+    font-family: 'crock';
+    background-color: rgba(17, 5, 17, 0.0);
+}
+
+.ui-draggable-dragging .item-name,
+.ui-draggable-dragging .item-count {
+    display: inline-block;
+}
+
+.ui-draggable-dragging:hover {
+    opacity: 0.6;
+    z-index: 500;
+}
+
+.item-count {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    text-align: right;
+    width: 114px;
+    height: 20px;
+    z-index: 500;
+    font-size: 10px;
+}
+
+.item-count:active {
+    position: absolute;
+    top: 0;
+    text-align: right;
+    width: 114px;
+    height: 20px;
+    z-index: 500;
+    font-size: 10px;
+}
+
+.ammoIcon {
+    width: 10px;
+    height: 10px;
+}
+
+.baritemname {
+    width: 100%;
+    width: 117px;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+}
+
+.tooltip {
+    padding: 2px;
+    background-color: rgba(161, 161, 161, 0.1);
+    width: 20vw;
+    position: absolute;
+    left: 50%;
+    top: 98%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: 0.6s;
+}
+
+.tooltiptext {
+    position: absolute;
+    top: 90%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: 0.6s;
+    margin: 0 5px;
+    margin-top: 25px;
+    max-height: 100px;
+    margin-left: -55px;
+}
+
+.tooltiptext::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.info-div {
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+}
+
+.controls-div {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+}
+
+.control {
+    width: 140px;
+    height: 50px;
+    margin: 15px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    background-image: url('img/button.png');
+    background-size: contain;
+    background-color: transparent;
+    /*  background-color: rgba(115, 115, 115,  0.09); */
+    border: 0px solid rgba(255, 255, 255, 0.08);
+    opacity: 1;
+    transition: 0.6s;
+}
+
+#use:hover {
+    background-image: url('img/button2.png');
+    background-size: contain;
+}
+
+#drop:hover {
+    background-image: url('img/button2.png');
+    background-size: contain;
+}
+
+#give:hover {
+    background-image: url('img/button2.png');
+    background-size: contain;
+}
+
+.buttonDropHover {
+    background-image: url('img/button2.png');
+    background-size: contain;
+}
+
+.control.disabled {
+    background-color: rgba(107, 0, 0, 0.1);
+}
+
+.hoverControl {
+    background-color: rgb(0, 107, 0, 0.1);
+}
+
+.item-name-bg {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 116px;
+    min-height: 20px;
+    z-index: 400;
+    font-size: 10px;
+    background-image: url('img/namebg.png');
+    background-repeat: no-repeat;
+    background-size: 116px 25px;
+    background-color: transparent;
+}
+
+#playerInventory::-webkit-scrollbar-track,
+#otherInventory::-webkit-scrollbar-track {
+    background-color: none;
+    border: none;
+}
+
+#playerInventory::-webkit-scrollbar,
+#otherInventory::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(17, 5, 17, 0.0);
+}
+
+#playerInventory::-webkit-scrollbar-thumb,
+#otherInventory::-webkit-scrollbar-thumb {
+    background-color: rgba(227, 227, 227, 1);
+}
+
+.nearbyPlayerButton {
+    width: 100%;
+    margin-top: 5px;
+    display: block;
+    text-decoration: none;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(0, 0, 0, 0.8);
+    text-shadow: none;
+    font-size: 14px !important;
+    outline: none;
+    text-transform: none;
+    text-align: center;
+    line-height: 30px;
+    border: none;
+}
+
+.nearbyPlayerButton:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+#noSecondInventoryMessage {
+    width: 605px;
+    height: 500px;
+    line-height: 480px;
+    text-align: center;
+}
+
+.bar {
+    position: relative;
+    left: 1px;
+    top: 108px;
+    width: 112px;
+    height: 25px;
+    border-radius: 0px 0px 2px 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+}
+
+.invtext {
+    z-index: 4;
+}
+
+@media screen and (max-width: 1545px) {
+    #playerInventory {
+        width: 48%;
+    }
+    #otherInventory {
+        width: 48%;
+    }
+    .containinv {
+        height: 25vw;
+    }
+    #controls {
+        width: 12vw;
+    }
+    .controls-div {
+        top: 20vw;
+    }
+    .slot {
+        width: 110px;
+    }
+    .item,
+    .item-other {
+        width: 110px;
+    }
+    .item-name {
+        width: 110px;
+    }
+    .item-name-bg {
+        width: 110px;
+        background-size: 110px 25px;
+    }
+    .item-count {
+        width: 108px;
+    }
+    .item-count:active {
+        width: 108px;
+    }
+    .baritemname {
+        width: 101px;
+    }
+}
