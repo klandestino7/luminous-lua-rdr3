@@ -21,7 +21,13 @@ ItemList = {
     },
     ['weapon_thrown_throwing_knives'] = {
         type = 'weapon',
-        name = 'Faca',
+        name = 'Faca Arremeçavel',
+        weight = 0.3
+    },
+    
+    ['weapon_melee_knife'] = {
+        type = 'weapon',
+        name = 'Faca de caça',
         weight = 0.3
     },
     ['weapon_lasso'] = {

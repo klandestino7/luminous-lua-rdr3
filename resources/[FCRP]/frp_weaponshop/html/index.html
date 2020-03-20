@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/eb73bbb7e4.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="shop">
+            <p class="title">AMMUNATION</p>
+            <!-- <div class="menutab">
+                <div class="buttonstab">
+                    <div class="button categselect active" data-target="all"><span class="helperName"> Todos</span><i class="fas fa-infinity"></i></div>
+                    <div class="button categselect" data-target="weapon"><span class="helperName"> Armas</span><i class="fas fa-drumstick-bite"></i></div>
+                    <div class="button categselect" data-target="ammo"><span class="helperName"> Munições</span><i class="fas fa-fist-raised"></i></div>
+                    <div class="button categselect" data-target="melee"><span class="helperName"> Armas brancas</span><i class="fas fa-screwdriver"></i></div>
+                </div>	         
+            </div> -->
+
+            <div class="items" id="all">
+        
+                <!-- <div class="item">
+                    <div class="imagem"><img src="itens/weapon_pistol_semiauto.png"></div>
+                    <div class="borderl"></div>
+                    <div class="label">
+                        <p style="font-size:14px;font-weight:600;text-transform: uppercase;">Revolver Vaqueiro</p>
+                        <p style="font-size:12px;">Level: 10</p>
+                        <p style="font-size:12px;">D: 20$ | G: 1$</p>
+                    </div>
+                    <div class="borderr"></div>
+                    <div class="buttonb">
+                        <button class="dollar" onclick="buyItem('`+data.items.itemId+`', '`+data.zone+`')">
+                            <i class="fas ">D</i>
+                        </button>
+                        <button class="gold" onclick="buyItem('`+data.items.itemId+`', '`+data.zone+`')">
+                            <i class="fas ">G</i>
+                        </button>
+                    </div>
+                </div> -->
+              
+
+            </div>
+
+            <!-- <div class="items" id="weapon" style="display: none;">
+                          
+            </div>
+            <div class="items" id="ammo" style="display: none;">
+            
+            </div>
+
+            <div class="items" id="melee" style="display: none;">
+            
+            </div> -->
+
+
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <script>
+    $(document).keyup(function (e) {
+        if (e.key === "Escape") {
+            $(".items").empty();
+            $(".container").fadeOut(100);
+            $.post('http://frp_weaponshop/focusOff');
+        }
+    });
+    </script>
+</body>
+</html>

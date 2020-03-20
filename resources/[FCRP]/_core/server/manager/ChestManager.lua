@@ -1,7 +1,7 @@
 local chests = {}
 local chestsSyncData = {}
 
--- TABELA fcrp_CHESTS
+-- TABELA frp_CHESTS
 
 -- id  charid  position       type    capacity
 -- 1     1    {150, 20, 10, 10}   1      20

@@ -174,7 +174,7 @@ Citizen.CreateThread(
 --             if dst < towns[i]["distance"] then
 --                 if not NotifyIn then                      
 --                     insideTown = true
---                     TriggerEvent("fc_notify:start", 'Bem-vindo a '..towns[i]["name"], 5)                
+--                     TriggerEvent("frp_notify:start", 'Bem-vindo a '..towns[i]["name"], 5)                
 --                     NotifyIn = true
 --                     NotifyOut = false
 --                 elseif dst > towns[i]["distance"] then

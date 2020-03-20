@@ -2,7 +2,7 @@ needs = false
 
 function cAPI.startNeeds()
     needs = true
-    TriggerEvent("fc_basicneeds:startUI")
+    TriggerEvent("frp_basicneeds:startUI")
     return needs
 end
 

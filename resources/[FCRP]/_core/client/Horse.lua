@@ -48,12 +48,13 @@ function cAPI.spawnHorse()
     horseEntity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), 1, 0)
     -- SetRandomOutfitVariation(horseEntity, true)
     Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
-    Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
+   -- Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
     Citizen.InvokeNative(0x58A850EAEE20FAA3, horseEntity)
     Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, horseEntity)
     SetVehicleHasBeenOwnedByPlayer(horseEntity, true)
     SetPedNameDebug(horseEntity, horseModel)
     SetPedPromptName(horseEntity, horseName)
+    
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
     -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x16923E26, true, true, true) --mane
@@ -61,6 +62,32 @@ function cAPI.spawnHorse()
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
+
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMaxValue", 10);
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentValue", bVar2)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMinValue", false)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMaxValue", 10)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityValue", bVar3)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMinValue", false)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMaxValue", 10)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccValue", bVar4)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMinValue", false)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMaxValue", 10)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentValue", bVar5)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMinValue", false)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMaxValue", 10)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityValue", bVar6)
+	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMaxValue", 10)
+
+--     Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseHandling", GetHashKey('HORSE_HANDLING_RACE'))
+-- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseType", GetHashKey('HORSE_CLASS_RACE'))
+-- --	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
+-- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
+-- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
+
     SetModelAsNoLongerNeeded(horseEntity)
 end
 
