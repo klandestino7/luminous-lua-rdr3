@@ -112,7 +112,7 @@ AddEventHandler(
         end
 
         local Horse = Character:getHorse()
-        
+        Horse:getId() 
         local selectedHorseId
         if Horse ~= nil then
             selectedHorseId = Horse:getId() 

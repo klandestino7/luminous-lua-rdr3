@@ -18,6 +18,10 @@ function cAPI.clearHorse()
     horsePrompt = nil
 end
 
+function cAPI.getHorseEnt()
+    return horseEntity
+end
+
 function cAPI.spawnHorse()
     local ped = PlayerPedId()
     local pCoords = GetEntityCoords(ped)
@@ -92,19 +96,47 @@ function cAPI.spawnHorse()
 end
 
 
---- /// ARRASTAR CAVALO
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)                
-            if IsControlJustPressed(2, 0xE8342FF2) then -- Hold ALT      
-                print(horseEntity)          
-                TaskArrestPed(PlayerPedId(), horseEntity)
-            end
-        end
+function cAPI.stablecloth(hash)
+    local model2 = GetHashKey(tonumber(hash))
+    if not HasModelLoaded(model2) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
     end
-)    
+    Citizen.InvokeNative(0xD3A7B003ED343FD9 , horseEntity,  tonumber(hash), true, true, true)
+end
+
+function cAPI.setHorseClothes(hash)
+	local Clothe = json.decode(hash)
+	if hash ~= "{}" then
+		--for _, index in pairs(Clothes) do
+			for k, v in pairs(Clothe) do		
+				print(v)
+				--if cAPI.removeClothes(Clothe[_].hash) then					
+					local modelHash = tonumber(v)
+					cAPI.LoadModel(modelHash)
+					Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)
+				--end
+			end
+		--end
+	else
+		for k, v in pairs(DefaultClothes) do
+			if GetEntityModel(horseEntity) == GetHashKey(k) then
+				for _, index in pairs(v) do
+					for value, parameter in pairs(Clothes) do
+						if Clothes[value].name == _ then
+							if cAPI.removeClothes(Clothes[_].hash) then
+								local modelHash = tonumber(v)
+								cAPI.LoadModel(modelHash)
+								Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, index, true, true, true)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return true
+end
 
 
 Citizen.CreateThread(
