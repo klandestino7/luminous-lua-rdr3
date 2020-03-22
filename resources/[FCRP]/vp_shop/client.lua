@@ -212,7 +212,6 @@ AddEventHandler(
 
             SetCurrentPedWeapon(ped, objectHash, true)
 
-            print("gaveWeapon", gaveWeapon)
             if gaveWeapon then
                 while IsEntityPlayingAnim(ped, "mp_cop_armoury", "pistol_on_counter", 3) do
                     Citizen.Wait(0)
@@ -220,7 +219,6 @@ AddEventHandler(
 
                 SetPedAmmo(ped, objectHash, 0)
 
-                print(lastAmmoCount)
                 if lastAmmoCount ~= nil and lastAmmoCount > 0 then
                     GiveWeaponToPed(ped, objectHash, lastAmmoCount, false, true)
                 else
