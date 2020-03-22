@@ -46,7 +46,7 @@ Citizen.CreateThread(function()
             if (Vdist(pos.x, pos.y, pos.z, v.x, v.y, v.z) < 2.0) then
                 DrawTxt('Aperte (ENTER) para processar', 0.87, 0.95, 0.4, 0.4, false, 255, 255, 255, 145, 100, 7)
                 if IsControlJustPressed(0, 0xC7B5340A) and not using2 then    
-                    TriggerServerEvent('minercollect:processcheckitem')     
+                    TriggerServerEvent('minercollect:checkprocess')     
                     using2 = true                          
                 end
             end
@@ -54,25 +54,26 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('fc_minercollet:anim')
-AddEventHandler('fc_minercollet:anim', function()
+RegisterNetEvent('minercollect:anim')
+AddEventHandler('minercollect:anim', function()
     TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_HUMAN_PICKAXE_WALL'), 20000, true, false, false, false)
- --   exports['progressBars']:startUI(2000, Language.translate[Config.lang]['mining'])
-    Wait(20000)
+   -- exports['progressBars']:startUI(2000, 'Minerando')
+    Wait(2000)
     TriggerServerEvent('minercollect:getitem')
     ClearPedTasksImmediately(PlayerPedId())
     using = false
 end)
 
--- RegisterNetEvent('fc_minercollet:processanim')
--- AddEventHandler('fc_minercollet:processanim', function()
---     TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_HUMAN_CLEAN_TABLE'), 20000, true, false, false, false)  -- colocar uma animação para processar 
---     exports['progressBars']:startUI(20000, Language.translate[Config.lang]['process'])
---     Wait(20000)
---     TriggerServerEvent('minercollect:processitem')
---     ClearPedTasksImmediately(PlayerPedId())
---     using2 = false
--- end)
+RegisterNetEvent('minercollect:processanim')
+AddEventHandler('minercollect:processanim', function(num)
+    print('chegou')
+    TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_HUMAN_CLEAN_TABLE'), 20000, true, false, false, false)  -- colocar uma animação para processar 
+    --exports['progressBars']:startUI(20000, Language.translate[Config.lang]['process'])
+    Wait(20000)
+    TriggerServerEvent('minercollect:processitem', num)
+    ClearPedTasksImmediately(PlayerPedId())
+    using2 = false
+end)
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
  local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())

@@ -1,5 +1,4 @@
 Config = {}
-Config.lang = 'pt'
 
 
 -- LOCALIZAÇÃO PARA MINETAR O COBRE
