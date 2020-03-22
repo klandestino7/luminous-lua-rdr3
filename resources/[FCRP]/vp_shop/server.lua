@@ -6,7 +6,7 @@ cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
     ["Ammunation"] = {
-        -- Level, Price, Amount
+        -- Level, Price, Amount(optional)
         ["weapon_combatpistol"] = {1, 100},
         ["weapon_assaultrifle"] = {1, 100},
         ["ammo_combatpistol"] = {0, 0, 20},
@@ -14,14 +14,14 @@ local verificationData = {
     },
     ["Policia"] = {
         group = "admin",
-        -- Level, Price, Amount
+        -- Level, Price, Amount(optional)
         ["weapon_combatpistol"] = {0, 0},
         ["weapon_assaultrifle"] = {0, 0},
         ["ammo_combatpistol"] = {0, 0, 20},
         ["weapon_knife"] = {0, 0}
     },
     ["Mercadinho"] = {
-        -- Level, Price, Amount
+        -- Level, Price, Amount(optional)
         ["consumable_apple"] = {1, 50}
     }
 }
