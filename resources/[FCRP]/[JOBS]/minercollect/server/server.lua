@@ -12,7 +12,6 @@ AddEventHandler('minercollect:checkitem', function()
     local item = Inventory:getItemAmount('generic_picareta')
     local ItemData = API.getItemDataFromId('generic_picareta')  
     if item < 1 then
-        TriggerClientEvent('minercollect:nothaveitem', _source)
         User:notify('Você nao possui uma ' .. ItemData:getName())
     end
     if item >= 1 then        
@@ -87,7 +86,7 @@ AddEventHandler('minercollect:checkprocess', function()
     --     User:notify('Precisa de 3 ouro Bruto para minerar')
     --     return
     end
-    TriggerClientEvent('minercollect:nothaveitem', _source)
+   -- TriggerClientEvent('minercollect:nothaveitem', _source)
     User:notify('Você não possuí item para minerar')  
 end)
 
