@@ -44,22 +44,19 @@ function API.Inventory(id, capacity, items)
     end
 
     self.addItem = function(this, id, amount)
-
         local ItemData = API.getItemDataFromId(id)
         if ItemData == nil then
             return false
         end
-
 
         local _temp = self.items[id] or 0
         _temp = _temp + amount
 
         self.items[id] = _temp
 
-        API_Database.execute(
-            "FCRP/Inventory",
-            {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = _temp, typeInv = "update"}
-        )
+        if self:getId() ~= nil then
+            API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = _temp, typeInv = "update"})
+        end
 
         for viewerSource, asPrimary in pairs(self.viewersSources) do
             -- Update
@@ -69,13 +66,7 @@ function API.Inventory(id, capacity, items)
                 TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                 User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
             else
-                TriggerClientEvent(
-                    "FCRP:INVENTORY:SecondarySyncItemAmount",
-                    viewerSource,
-                    id,
-                    _temp,
-                    ItemData:getName()
-                )
+                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                 User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
             end
         end
@@ -90,16 +81,14 @@ function API.Inventory(id, capacity, items)
 
             if _temp > 0 then
                 self.items[id] = _temp
-                API_Database.execute(
-                    "FCRP/Inventory",
-                    {id = self:getId(), charid = self:getCharId(), capacity = 0,  itemName = id, itemCount = _temp, typeInv = "update"}
-                )
+                if self:getId() ~= nil then
+                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = _temp, typeInv = "update"})
+                end
             else
                 self.items[id] = nil
-                API_Database.execute(
-                    "FCRP/Inventory",
-                    {id = self:getId(), charid = self:getCharId(),capacity = 0,  itemName = id, itemCount = 0, typeInv = "remove"}
-                )
+                if self:getId() ~= nil then
+                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = 0, typeInv = "remove"})
+                end
             end
 
             local ItemData = API.getItemDataFromId(id)
@@ -108,22 +97,10 @@ function API.Inventory(id, capacity, items)
                 local User = API.getUserFromSource(viewerSource)
 
                 if asPrimary then
-                    TriggerClientEvent(
-                        "FCRP:INVENTORY:PrimarySyncItemAmount",
-                        viewerSource,
-                        id,
-                        _temp,
-                        ItemData:getName()
-                    )
+                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                     User:notify("Inventário Principal: - x" .. amount .. " " .. ItemData:getName())
                 else
-                    TriggerClientEvent(
-                        "FCRP:INVENTORY:SecondarySyncItemAmount",
-                        viewerSource,
-                        id,
-                        _temp,
-                        ItemData:getName()
-                    )
+                    TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                     User:notify("Inventário Secundário: - x" .. amount .. " " .. ItemData:getName())
                 end
             end
@@ -205,10 +182,7 @@ function API.Inventory(id, capacity, items)
     end
 
     self.deleteInventory = function(self)
-        API_Database.execute(
-            "FCRP/Inventory",
-            {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = 0, itemCount = 0, typeInv = "deadPlayer"}
-        )
+        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = 0, itemCount = 0, typeInv = "deadPlayer"})
         self.items = nil
     end
 

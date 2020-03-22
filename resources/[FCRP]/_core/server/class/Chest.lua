@@ -1,4 +1,4 @@
-function API.Chest(id, owner_char_id, position, type, capacity, inventories)
+function API.Chest(id, owner_char_id, position, type, capacity, inventories, group)
     local self = {}
 
     self.id = id
@@ -6,8 +6,8 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories)
     self.position = position -- Table {x, y, z, h}
     self.type = 0 -- GLOBAL[0] | PUBLIC[1] | PRIVATE[2]
     self.capacity = capacity
-
     self.inventories = inventories or {}
+    self.group = group
 
     -- for charId, Inventory in pairs(inventories) do
     --     self.inventories[charId] = Inventory
@@ -52,22 +52,27 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories)
         return type == 2
     end
 
-    self.getInventory = function(this, charId)
+    self.getInventory = function(this, User)
+        local Character = User:getCharacter()
+        local charId = Character:getId()
         if self:isGlobal() then
+            if self.group then
+                if Character:hasGroupOrInheritance(self.group) then
+                end
+            end
             -- !!!!!!!!!!!! OPTIMIZATION ?KINDA OF
             -- Update Query on INVENTORY CLASS > ADDITEM to create a new row on UPDATE type of query
-            local Inventory = self.inventories[charId]
+            local Inventory = self.inventories
 
             if Inventory == nil then
-
                 Citizen.CreateThread(
                     function()
-                        API_Database.execute('FCRP/Inventory', {id = 'chest:' .. self.id .. 'char:' .. charId, charid = self:getOwnerCharId(), capacity = self:getCapacity(), itemName = 0, itemCount = 0,  items = json.encode({}), typeInv = 'insert'})
+                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = 0, capacity = self:getCapacity(), itemName = 0, itemCount = 0, items = json.encode({}), typeInv = "insert"})
                     end
                 )
 
-                Inventory = API.Inventory('chest:' .. self.id .. 'char:' .. charId, self.capacity, {})
-                self.inventories[charId] = Inventory
+                Inventory = API.Inventory("chest:" .. self.id .. "char:" .. 0, self.capacity, {})
+                self.inventories = Inventory
             end
 
             return Inventory
@@ -77,11 +82,11 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories)
             if self.inventories[self:getOwnerCharId()] == nil then
                 Citizen.CreateThread(
                     function()
-                        API_Database.execute('FCRP/Inventory', {id = 'chest:' .. self:getId() .. 'char:' .. self:getOwnerCharId(), charid = self:getOwnerCharId(), capacity = self:getCapacity(),  itemName = 0, itemCount = 0, items = json.encode({}), typeInv = 'insert'})
+                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = self:getOwnerCharId(), capacity = self:getCapacity(), itemName = 0, itemCount = 0, items = json.encode({}), typeInv = "insert"})
                     end
                 )
 
-                local Inventory = API.Inventory('chest:' .. self:getId() .. 'char:' .. self:getOwnerCharId(), self.capacity, {})
+                local Inventory = API.Inventory("chest:" .. self:getId() .. "char:" .. self:getOwnerCharId(), self.capacity, {})
                 self.inventories[charId] = Inventory
             end
             return self.inventories[self:getOwnerCharId()]

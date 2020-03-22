@@ -1,7 +1,7 @@
 local chests = {}
 local chestsSyncData = {}
 
--- TABELA frp_CHESTS
+-- TABELA fcrp_CHESTS
 
 -- id  charid  position       type    capacity
 -- 1     1    {150, 20, 10, 10}   1      20
@@ -20,24 +20,31 @@ Citizen.CreateThread(
                 local inventories = {}
                 local inventoriesRows = API_Database.query('FCRP/Inventory', {id = 'chest:' .. id, charid = 0, capacity = 0, itemName = 0, itemCount = 0, typeInv = 'select'})
                 if #inventoriesRows > 0 then
-                    for index2 = 0, #inventoriesRows do
-                        local Inventory = API.Inventory(inventoriesRows[index2].id, capacity, table.decode(inventoriesRows[index2].items))
-                        local charId = inventoriesRows[index2].charid
+                    for _, data in pairs(inventoriesRows) do
+                        local Inventory = API.Inventory(data.id, capacity, json.decode(data.items))
+                        local charId = data.charid
                         inventories[tonumber(charId)] = Inventory
                     end
                 end
                 -- print('loading', id, owner_char_id, x, y, z, h, type, capacity, inventories)
-                chests[id] = API.Chest(id, owner_char_id, position, type, capacity, inventories)
+
+                local group = nil
+
+                if owner_char_id == nil then
+                    group = ConfigStaticChests[index][7]
+                end
+
+                chests[id] = API.Chest(id, owner_char_id, position, type, capacity, inventories, group)
                 chestsSyncData[id] = {capacity, x, y, z, h} -- OUTPUT: [1] = {20, x, y, z ,h}
             end
         else -- Caso não exista nenhum CHEST na table, consequentemente não haverá nenhum CHEST da CONFIG, então cria eles na tablea
             for _, data in pairs(ConfigStaticChests) do
-                local x, y, z, h, type, capacity = table.unpack(data)
+                local x, y, z, h, type, capacity, group = table.unpack(data)
                 -- print('creating chest from config ', _, x, y, z, h, type, capacity)
-                local rowsWithId = API_Database.query('FCRP/CreateStaticChest', {charid = nil, position = json.encode({x, y, z, h}), type = type, capacity = capacity})
+                local rowsWithId = API_Database.query('FCRP/CreateStaticChest', {position = json.encode({x, y, z, h}), type = type, capacity = capacity})
                 if #rowsWithId > 0 then
                     local id = rowsWithId[1].id
-                    chests[id] = API.Chest(id, nil, position, type, capacity, {})
+                    chests[id] = API.Chest(id, nil, position, type, capacity, {}, group)
                 end
             end
         end
