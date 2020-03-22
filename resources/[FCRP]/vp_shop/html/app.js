@@ -10,16 +10,7 @@ window.addEventListener('message', function(event) {
         if (data.firstTimeData) {
 
             data.firstTimeData.forEach(function(shopData, index) {
-                newShopWindow(shopData.name);
-                shopData.weapon.forEach(function(shopItemData, index) {
-                    newShopItem(shopData.name, 'weapon', shopItemData.itemId, shopItemData.name, shopItemData.level, shopItemData.price);
-                });
-                shopData.ammo.forEach(function(shopItemData, index) {
-                    newShopItem(shopData.name, 'ammo', shopItemData.itemId, shopItemData.name, shopItemData.level, shopItemData.price);
-                });
-                shopData.melee.forEach(function(shopItemData, index) {
-                    newShopItem(shopData.name, 'melee', shopItemData.itemId, shopItemData.name, shopItemData.level, shopItemData.price);
-                });
+                newShopWindow(shopData);
             });
         }
 
@@ -33,69 +24,91 @@ window.addEventListener('message', function(event) {
     }
 });
 
-function newShopWindow(name) {
+function newShopWindow(shopData) {
+
+
     $('.container').append(`
-    <div class="shop" id="${name}">
-            <p class="title">❯  ${name}</p>
+        <div class="shop" id="${shopData.name}">
+            <p class="title">❯  ${shopData.name}</p>
             <div class="menutab">
                 <div class="buttonstab">
                     <div class="button active" data-target="all" onclick="tryToChangePage(this)"><span class="helperName"> Todos</span><i class="fas fa-infinity"></i></div>
-                    <div class="button" data-target="weapon" onclick="tryToChangePage(this)"><span class="helperName"> Armas</span><i class="fas fa-drumstick-bite"></i></div>
-                    <div class="button" data-target="ammo" onclick="tryToChangePage(this)"><span class="helperName"> Munições</span><i class="fas fa-fist-raised"></i></div>
-                    <div class="button" data-target="melee" onclick="tryToChangePage(this)"><span class="helperName"> Armas brancas</span><i class="fas fa-screwdriver"></i></div>
                 </div>
             </div>
 
             <div class="items" id="all">
             </div>
-
-            <div class="items" id="weapon" style="display: none;">
-            </div>
-
-            <div class="items" id="ammo" style="display: none;">
-            </div>
-
-            <div class="items" id="melee" style="display: none;">
-            </div>
         </div>
     `);
+
+    for (const [shopSubType, shopItemList] of Object.entries(shopData)) {
+        if (shopSubType != 'name') {
+
+            var validSubType = shopSubType.replace(' ', '_');
+            console.log(validSubType);
+
+            if (isNaN(shopSubType) == true) { // If the index is not a number
+
+                $(`#${shopData.name} .menutab .buttonstab`).append(`
+                    <div class="button" data-target="${validSubType}" onclick="tryToChangePage(this)">
+                        <span class="helperName"> ${shopSubType}</span>
+                    </div>
+                `);
+                $(`#${shopData.name}`).append(`
+                    <div class="items" id="${validSubType}" style="display: none;">
+                    </div>
+                `);
+            }
+
+            for (const [index, shopItemData] of Object.entries(shopItemList)) {
+                newShopItem(shopData.name, isNaN(shopSubType) == true ? validSubType : 'all', shopItemData, isNaN(shopSubType));
+            }
+        }
+    }
 }
 
-function newShopItem(parentId, itemClass, itemId, name, level, price) {
+function newShopItem(shopId, itemClass, shopItemData, appendToAll) {
 
-    $(`#${parentId} #all`).append(`
+    var itemId = shopItemData[0];
+    var itemLevel = shopItemData[1];
+    var itemPrice = shopItemData[2];
+    var itemName = shopItemData[3];
+
+    if (appendToAll == true) {
+        $(`#${shopId} #all`).append(`
         <div class="item">
             <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
             <div class="borderl"></div>
             <div class="label">
-                <p>${name}</p>
-                <p class="small">NÍVEL ${level}</p>
-                <p><i class="fas fa-dollar-sign"></i> ${price},00</p>
+                <p>${itemName}</p>
+                <p class="small">NÍVEL ${itemLevel}</p>
+                <p><i class="fas fa-dollar-sign"></i> ${itemPrice},00</p>
             </div>
             <div class="borderr"></div>
             <div class='button-container'>
                 <div class="button">
-                    <button class="inner" onclick="buyItem('${parentId}', '${itemId}')">
+                    <button class="inner" onclick="buyItem('${shopId}', '${itemId}')">
                         <i class="fas fa-shopping-cart"></i>
                     </button>
                 </div>
             </div>
         </div>
-    `);
+        `);
+    }
 
-    $(`#${parentId} #${itemClass}`).append(`
+    $(`#${shopId} #${itemClass}`).append(`
         <div class="item">
             <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
             <div class="borderl"></div>
             <div class="label">
-                <p>${name}</p>
-                <p class="small">NÍVEL ${level}</p>
-                <p><i class="fas fa-dollar-sign"></i> ${price},00</p>
+                <p>${itemName}</p>
+                <p class="small">NÍVEL ${itemLevel}</p>
+                <p><i class="fas fa-dollar-sign"></i> ${itemPrice},00</p>
             </div>
             <div class="borderr"></div>
             <div class='button-container'>
                 <div class="button">
-                    <button class="inner" onclick="buyItem('${parentId},' '${itemId}')">
+                    <button class="inner" onclick="buyItem('${shopId}', '${itemId}')">
                         <i class="fas fa-shopping-cart"></i>
                     </button>
                 </div>
@@ -109,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function buyItem(shopId, itemId) {
-    $.post('http://nc_weaponshop/buyItem', JSON.stringify({ shopId: shopId, itemId: itemId }));
+    $.post('http://vp_shop/buyItem', JSON.stringify({ shopId: shopId, itemId: itemId }));
 }
 
 // $(".buttonstab").on("click", ".button", function() {
@@ -134,6 +147,6 @@ function tryToChangePage(element) {
 $(document).keyup(function(e) {
     if (e.key === "Escape") {
         $(".container").fadeOut(100);
-        $.post('http://nc_weaponshop/focusOff');
+        $.post('http://vp_shop/focusOff');
     }
 });

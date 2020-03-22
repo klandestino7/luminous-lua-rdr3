@@ -68,7 +68,7 @@ Citizen.CreateThread(
                         local vec = vec3(x, y, z - 0.97)
                         local dist = #(pCoords - vec)
                         if dist <= 50.0 then
-                            DrawMarker(Config.Type, vec, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Size.x, Config.Size.y, Config.Size.z, Config.Color.r, Config.Color.g, Config.Color.b, 100, false, true, 2, false, false, false, false)
+                            DrawMarker(23, vec, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 0.5, 0, 155, 253, 80, false, true, 2, false, false, false, false)
                             if dist <= 1.5 then
                                 -- if h ~= nil then
                                 -- TaskPedSlideToCoord(ped, x, y, z, h, 1000)
@@ -87,22 +87,14 @@ Citizen.CreateThread(
                                         local temp_ConfigShopData = Config.ShopDatas
 
                                         for _, shopData in pairs(temp_ConfigShopData) do
-                                            for _, shopItemData in pairs(shopData.weapon) do
-                                                local itemData = ItemList[shopItemData.itemId]
-                                                if itemData then
-                                                    shopItemData.name = itemData.name
-                                                end
-                                            end
-                                            for _, shopItemData in pairs(shopData.ammo) do
-                                                local itemData = ItemList[shopItemData.itemId]
-                                                if itemData then
-                                                    shopItemData.name = itemData.name
-                                                end
-                                            end
-                                            for _, shopItemData in pairs(shopData.melee) do
-                                                local itemData = ItemList[shopItemData.itemId]
-                                                if itemData then
-                                                    shopItemData.name = itemData.name
+                                            for key, value in pairs(shopData) do
+                                                if key ~= "name" then
+                                                    for _, shopItemData in pairs(value) do
+                                                        local itemData = ItemList[shopItemData[1]]
+                                                        if itemData then
+                                                            shopItemData[4] = itemData.name
+                                                        end
+                                                    end
                                                 end
                                             end
                                         end
@@ -150,92 +142,94 @@ RegisterCommand(
 RegisterNUICallback(
     "buyItem",
     function(data, cb)
-        TriggerServerEvent("CK:WEAPONSHOP:TryToBuy", data.shopId, data.itemId)
+        TriggerServerEvent("CK:SHOP:TryToBuy", data.shopId, data.itemId)
     end
 )
 
-RegisterNetEvent("CK:WEAPONSHOP:BuyingAnimation")
+RegisterNetEvent("CK:SHOP:BoughtItem")
 AddEventHandler(
-    "CK:WEAPONSHOP:BuyingAnimation",
+    "CK:SHOP:BoughtItem",
     function(itemId)
         PlaySoundFrontend(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", false)
 
-        local animDict = "mp_cop_armoury"
-        RequestAnimDict(animDict)
+        if itemId ~= nil then
+            local animDict = "mp_cop_armoury"
+            RequestAnimDict(animDict)
 
-        while not HasAnimDictLoaded(animDict) do
-            Citizen.Wait(10)
-        end
-
-        local ped = PlayerPedId()
-        local objectHash
-        local lastAmmoCount = nil
-        local gaveWeapon = false
-
-        -- print(itemId)
-
-        if itemId:find("weapon_") then
-            objectHash = GetHashKey(itemId)
-        else
-            -- objectHash = GetHashKey("prop_box_ammo01a")
-            objectHash = GetHashKey("WEAPON_BRIEFCASE")
-        end
-
-        if HasPedGotWeapon(ped, objectHash, false) then
-            lastAmmoCount = GetAmmoInPedWeapon(ped, objectHash)
-        end
-
-        -- RequestModel(objectHash)
-        -- while not HasModelLoaded(objectHash) do
-        --     Citizen.Wait(10)
-        -- end
-
-        -- TaskPlayAnim(ammon, "mp_cop_armoury", "pistol_on_counter_cop", 1.0, -1.0, 1.0, 0, 0, 0, 0, 0)
-        -- GiveWeaponToPed(ammon, GetHashKey(weaponHash), 1, false, true)
-        -- SetCurrentPedWeapon(ammon, GetHashKey(weaponHash), true)
-
-        SetCurrentPedWeapon(ped, GetHashKey("weapon_unarmed"), true)
-        -- SetPedCurrentWeaponVisible(ped, false, false, 0, 0)
-        TaskAchieveHeading(ped, desiredHeading, 1000)
-        -- print('desiredHeading', desiredHeading)
-        desiredHeading = nil
-        -- print('desiredHeading is nil')
-
-        -- Citizen.Wait(1100)
-
-        TaskPlayAnim(ped, "mp_cop_armoury", "pistol_on_counter", 1.0, -1.0, 1.0, 0, 0, 0, 0, 0)
-
-        Citizen.Wait(3100)
-
-        -- RemoveWeaponFromPed(ammon, GetHashKey(weaponHash))
-        -- SetPedCurrentWeaponVisible(ped, true, false, 0, 0)
-
-        Citizen.Wait(15)
-
-        if not HasPedGotWeapon(ped, objectHash, false) then
-            GiveWeaponToPed(ped, objectHash, 1, false, true)
-            gaveWeapon = true
-        end
-
-        SetCurrentPedWeapon(ped, objectHash, true)
-
-        print("gaveWeapon", gaveWeapon)
-        if gaveWeapon then
-            while IsEntityPlayingAnim(ped, "mp_cop_armoury", "pistol_on_counter", 3) do
-                Citizen.Wait(0)
+            while not HasAnimDictLoaded(animDict) do
+                Citizen.Wait(10)
             end
 
-            SetPedAmmo(ped, objectHash, 0)
+            local ped = PlayerPedId()
+            local objectHash
+            local lastAmmoCount = nil
+            local gaveWeapon = false
 
-            print(lastAmmoCount)
-            if lastAmmoCount ~= nil and lastAmmoCount > 0 then
-                GiveWeaponToPed(ped, objectHash, lastAmmoCount, false, true)
+            -- print(itemId)
+
+            if itemId:find("weapon_") then
+                objectHash = GetHashKey(itemId)
             else
-                RemoveWeaponFromPed(ped, objectHash)
+                -- objectHash = GetHashKey("prop_box_ammo01a")
+                objectHash = GetHashKey("WEAPON_BRIEFCASE")
             end
-        end
+
+            if HasPedGotWeapon(ped, objectHash, false) then
+                lastAmmoCount = GetAmmoInPedWeapon(ped, objectHash)
+            end
+
+            -- RequestModel(objectHash)
+            -- while not HasModelLoaded(objectHash) do
+            --     Citizen.Wait(10)
+            -- end
+
+            -- TaskPlayAnim(ammon, "mp_cop_armoury", "pistol_on_counter_cop", 1.0, -1.0, 1.0, 0, 0, 0, 0, 0)
+            -- GiveWeaponToPed(ammon, GetHashKey(weaponHash), 1, false, true)
+            -- SetCurrentPedWeapon(ammon, GetHashKey(weaponHash), true)
+
+            SetCurrentPedWeapon(ped, GetHashKey("weapon_unarmed"), true)
+            -- SetPedCurrentWeaponVisible(ped, false, false, 0, 0)
+            TaskAchieveHeading(ped, desiredHeading, 1000)
+            -- print('desiredHeading', desiredHeading)
+            desiredHeading = nil
+            -- print('desiredHeading is nil')
+
+            -- Citizen.Wait(1100)
+
+            TaskPlayAnim(ped, "mp_cop_armoury", "pistol_on_counter", 1.0, -1.0, 1.0, 0, 0, 0, 0, 0)
+
+            Citizen.Wait(3100)
+
+            -- RemoveWeaponFromPed(ammon, GetHashKey(weaponHash))
+            -- SetPedCurrentWeaponVisible(ped, true, false, 0, 0)
+
+            Citizen.Wait(15)
+
+            if not HasPedGotWeapon(ped, objectHash, false) then
+                GiveWeaponToPed(ped, objectHash, 1, false, true)
+                gaveWeapon = true
+            end
+
+            SetCurrentPedWeapon(ped, objectHash, true)
+
+            print("gaveWeapon", gaveWeapon)
+            if gaveWeapon then
+                while IsEntityPlayingAnim(ped, "mp_cop_armoury", "pistol_on_counter", 3) do
+                    Citizen.Wait(0)
+                end
+
+                SetPedAmmo(ped, objectHash, 0)
+
+                print(lastAmmoCount)
+                if lastAmmoCount ~= nil and lastAmmoCount > 0 then
+                    GiveWeaponToPed(ped, objectHash, lastAmmoCount, false, true)
+                else
+                    RemoveWeaponFromPed(ped, objectHash)
+                end
+            end
 
         -- ClearPedTasks(ammon)
+        end
     end
 )
 
@@ -258,12 +252,4 @@ AddEventHandler(
             SetNuiFocus(false, false)
         end
     end
-)
-
-RegisterCommand(
-    "h",
-    function(source, args, rawCommand)
-        print(GetEntityHeading(PlayerPedId()))
-    end,
-    false
 )
