@@ -1,5 +1,5 @@
 ItemList = {
-    ['weapon_melee_electric_lantern'] = {
+    ['weapon_melee_lantern_electric'] = {
         type = 'weapon',
         name = 'Laterna Elétrica',
         weight = 0.5
@@ -24,10 +24,24 @@ ItemList = {
         name = 'Faca Arremeçavel',
         weight = 0.3
     },
-    
+    ['weapon_melee_knife_john'] = {
+        type = 'weapon',
+        name = 'Faca John',
+        weight = 0.3
+    },
+    ['weapon_melee_knife_miner'] = {
+        type = 'weapon',
+        name = 'Faca de Minerador',
+        weight = 0.3
+    },
     ['weapon_melee_knife'] = {
         type = 'weapon',
-        name = 'Faca de caça',
+        name = 'Faca',
+        weight = 0.3
+    },
+    ['weapon_melee_knife_bear'] = {
+        type = 'weapon',
+        name = 'Faca de Galhada',
         weight = 0.3
     },
     ['weapon_lasso'] = {
@@ -222,7 +236,17 @@ ItemList = {
     },
     ['generic_pedra'] = {
         type = 'normal',
-        name = 'Pedra',
+        name = 'Pedra Bruta',
+        weight = 1.0
+    },
+    ['generic_pedralavada'] = {
+        type = 'normal',
+        name = 'Pedra Lavada',
+        weight = 0.3
+    },
+    ['generic_ourobruto'] = {
+        type = 'normal',
+        name = 'Ouro Bruto',
         weight = 1.0
     },
     ['generic_cobrebruto'] = {
@@ -234,6 +258,11 @@ ItemList = {
         type = 'normal',
         name = 'Minério de Carvão',
         weight = 1.0
+    },
+    ['generic_carvaorefi'] = {
+        type = 'normal',
+        name = 'Carvão Refinado',
+        weight = 0.3
     },
     ['generic_provision_coal'] = {
         type = 'normal',
