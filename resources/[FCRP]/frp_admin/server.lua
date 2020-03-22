@@ -211,16 +211,17 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
-            if args[1] == "add" then
-                local UserTarget = API.getUserFromUserId(parseInt(args[2]))
-                if not UserTarget:getCharacter():hasGroup(args[3]) then
-                    UserTarget:getCharacter():addGroup(args[3])
-                end
-            elseif args[1] == "remove" then
-                local UserTarget = API.getUserFromUserId(parseInt(args[2]))
-                if UserTarget:getCharacter():hasGroup(args[3]) then
-                    UserTarget:getCharacter():removeGroup(args[3])
+        if Character:hasGroupOrInheritance("admin") then
+            if args[1] == "add" or args[1] == "remove" then
+                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                if UserTarget ~= nil then
+                    if args[1] == "add" then
+                        UserTarget:getCharacter():addGroup(args[3])
+                    elseif args[1] == "remove" then
+                        UserTarget:getCharacter():removeGroup(args[3])
+                    end
+                else
+                    User:notify("Usuario invalido!")
                 end
             end
         end

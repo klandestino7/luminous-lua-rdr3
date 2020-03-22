@@ -27,6 +27,35 @@ function API.Character(id, charName, level, xp, groups, inventory)
         return self.groups[group] ~= nil
     end
 
+    self.hasGroupOrInheritance = function(this, group)
+        if self.groups[group] then
+            return true
+        else
+            for tempGroup, _ in pairs(self.groups) do
+                if Config_Permissions[tempGroup] then
+                    local foundInheritanceGroup = Config_Permissions[tempGroup].inheritance
+                    if foundInheritanceGroup == group then
+                        return true
+                    else
+                        while true do
+                            Citizen.Wait(0)
+                            foundInheritanceGroup = Config_Permissions[foundInheritanceGroup].inheritance
+                            if foundInheritanceGroup == nil then
+                                return false
+                            else
+                                if foundInheritanceGroup == group then
+                                    return true
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        return false
+    end
+
     self.getId = function()
         return self.id
     end

@@ -133,7 +133,7 @@ function StartMinigame()
             DrawSprite("generic_textures", "hud_menu_4a", 0.2, 0.8, 0.01, t, 0.2,191, 143, 0, 190, 0)
         end
         DrawSprite("generic_textures", "hud_menu_4a", 0.2, 0.8, 0.02, 0.11, 0.8,0, 0, 0, 190, 0)
-        DrawSprite("generic_textures", "hud_menu_4a", 0.25, 0.8, 0.01, m, 0.8,0, 255, 21, 156, 11)
+      -- DrawSprite("generic_textures", "hud_menu_4a", 0.25, 0.8, 0.01, m, 0.8,0, 255, 21, 156, 11)
         DrawSprite("generic_textures", "hud_menu_4a", 0.25, 0.8, 0.02, 0.11, 0.8,0, 0, 0, 190, 0)
         if IsControlPressed(0, 0x07CE1E61) then
             print("działa klawisz")
