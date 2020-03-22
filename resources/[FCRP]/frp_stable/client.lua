@@ -52,9 +52,6 @@ Citizen.CreateThread(function()
     end
 end)
 
-
-
-
 RegisterCommand("horsemodf", function(source, args)
     inCustomization = true
    horsesp = true
@@ -395,8 +392,6 @@ AddEventHandler(
 	end
 )
 
-
-
 RegisterNetEvent('FCRP:HORSESHOP:ReceiveHorsesData')
 AddEventHandler(
 	'FCRP:HORSESHOP:ReceiveHorsesData',
@@ -406,9 +401,7 @@ AddEventHandler(
         print(myHorses)
 	end
 )
-
-
-  
+ 
 
 RegisterNetEvent('FCRP:HORSESHOP:SelectHORSE')
 AddEventHandler(
@@ -507,8 +500,7 @@ function closeAll()
     choosePed = {}
     local ped = cAPI.getHorseEnt()
   --  SetEntityVisible(ped, true)
-  --  NetworkSetEntityInvisibleToNetwork(ped, false)
-  
+  --  NetworkSetEntityInvisibleToNetwork(ped, false)  
 end
 
 
