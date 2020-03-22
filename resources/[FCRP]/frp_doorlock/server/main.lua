@@ -10,8 +10,7 @@ RegisterServerEvent('redemrp_doorlocks:updatedoorsv')
 AddEventHandler('redemrp_doorlocks:updatedoorsv', function(src, doorID, cb)
 	local _source = source
 	local User = API.getUserFromSource(source)
-	local Character = User:getCharacter()
-
+	local Character = User:getCharacter()	
 	
 		local auth = Config.DoorList[doorID].authorizedJobs[1]
 		local jobaut = Character:hasGroup(tostring(auth))

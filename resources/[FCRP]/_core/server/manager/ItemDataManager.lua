@@ -96,7 +96,7 @@ Citizen.CreateThread(
                         User:notify('Giving player weapon')
                         Citizen.CreateThread(
                             function()
-                                User:giveWeapon(id, 0)
+                                User:giveWeapon(id, 1)
                             end
                         )
                         return true
@@ -164,12 +164,16 @@ Citizen.CreateThread(
                 ItemData:onUse(
                     function(this, User, amount)
                         local var = values.var
-                        if id == 'medicine' or id == 'tonic' or id == 'potent_medicine' then
-                            cAPI.varyHealth(User:getSource(), var)
+                        print(id)
+                        if id == 'tonic_medicine' or id == 'tonic' or id == 'tonic_potent_medicine' then     
+                            print(var)              
+                            cAPI.varyHealth(User:getSource(), var)                          
                         end
 
-                        if id == 'special_tonic' or id == 'special_medicine' or id == 'special_horse_stimulant_crafted' then
-                            cAPI.varyStamina(User:getSource(), var)
+                        if id == 'special_tonic' or id == 'tonic_special_medicine' or id == 'tonic_special_horse_stimulant_crafted' then                 
+                            print(var)   
+                            cAPI.varyStamina(User:getSource(), var)    
+                            cAPI.varyEye(User:getSource(), var)             
                         end
 
                         return true

@@ -72,7 +72,7 @@ Citizen.CreateThread(function()
         local pedmao = HASH_PEDS[carriedEntityHash]
         for k,v in pairs(Config.Coords) do
             if Vdist(coords, v) < 3 then
-                DrawTxt(Config.Shoptext, 0.50, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
+                DrawTxt(Config.Shoptext, 500, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
                 if IsControlJustReleased(0, keys['E']) then
                     if type == 4 or type == 2 then 
                         TriggerEvent('chatMessage', "^0[^1AÇOUGUE^0]", {255, 0, 0}, "Você não pode vender isto.")
@@ -128,7 +128,7 @@ while true do
     for _, info in pairs(Config.Acougue) do
 
         -- if (Vdist(coords.x, coords.y, coords.z, info.x, info.y, info.z) < 10.0) then --f6
-        --     Citizen.InvokeNative(0x2A32FAA57B937173, -1795314153, info.x, info.y, info.z-1, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 1.0, 246, 26, 26, 100, false, true, 2, false, false, false, false)
+        --     Citizen.InvokeNative(0x2A32FAA57B937173, -1795314153, info.x, info.y, info.z-100, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 150, 150, 1.0, 246, 26, 26, 100, false, true, 2, false, false, false, false)
         -- end
 
         if (Vdist(coords.x, coords.y, coords.z, info.x, info.y, info.z) < 3.0) then --f6
@@ -171,12 +171,12 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 1   
 
                      
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
                                 --TriggerEvent("redemrp_notification:start", "You earned $" .. price .. " and " .. meatamount .. ' ' .. item .. " meat", 5, "success")
@@ -193,10 +193,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -215,7 +215,7 @@ while true do
                                 local price = 1
                                 local item = "game"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -231,10 +231,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "biggame"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -253,7 +253,7 @@ while true do
                                 local price = 2.0
                                 local item = "venison"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 250, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -269,10 +269,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.5
+                                local price = 250
                                 local item = "venison"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 250, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -288,10 +288,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -307,7 +307,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "stringy"
                                 local meatamount = 1
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -326,7 +326,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "bird"
                                 local meatamount = 1
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -345,10 +345,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.5
+                                local price = 50
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 50, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -367,7 +367,7 @@ while true do
                                 local price = 1
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -383,10 +383,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.5
+                                local price = 250
                                 local item = "venison"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 250, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -402,10 +402,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "herptile"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -421,10 +421,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -440,10 +440,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.50, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 1500, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -459,10 +459,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -478,10 +478,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.5
+                                local price = 250
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 250, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -516,10 +516,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "game"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -538,7 +538,7 @@ while true do
                                 local price = 1.25
                                 local item = "game"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 125, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -557,7 +557,7 @@ while true do
                                 local price = 1
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -576,7 +576,7 @@ while true do
                                 local price = 1
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -592,10 +592,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -611,10 +611,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -630,10 +630,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -649,10 +649,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -668,10 +668,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 150, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -687,10 +687,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "pork"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 25, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -706,10 +706,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "pork"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 25, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -725,10 +725,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "pork"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 25, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -744,10 +744,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "wool"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 25, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -785,7 +785,7 @@ while true do
                                 local price = 1
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -801,10 +801,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -820,10 +820,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.5
+                                local price = 250
                                 local item = "fish"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 250, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -842,7 +842,7 @@ while true do
                                 local price = 1
                                 local item = "biggame"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -858,10 +858,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "herptile"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -877,10 +877,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -896,10 +896,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -915,10 +915,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -934,10 +934,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -991,10 +991,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1010,10 +1010,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1029,10 +1029,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "stringy"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1048,10 +1048,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1070,7 +1070,7 @@ while true do
                                 local price = 1
                                 local item = "game"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 1, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 100, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1086,10 +1086,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.75
+                                local price = 75
                                 local item = "bird"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 75, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1105,10 +1105,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.75
+                                local price = 175
                                 local item = "bird"
                                 local meatamount = 2
-                                TriggerServerEvent("frp_acougue:addmoney", 1.75, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 175, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1125,10 +1125,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.25
+                                local price = 25
                                 local item = "bird"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 25, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1144,10 +1144,10 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.5
+                                local price = 50
                                 local item = "herptile"
                                 local meatamount = 1
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, model)
+                                TriggerServerEvent("frp_acougue:addmoney", 50, model)
                                 --TriggerServerEvent("gunshop:giveitem", item, meatamount)
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold carcass")
@@ -1163,7 +1163,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 0.5
+                                local price = 50
                                 local item = "herptile"
                                 local meatamount = 1
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1182,7 +1182,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.5
+                                local price = 250
                                 local item = "fish"
                                 local meatamount = 2
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1201,7 +1201,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.75
+                                local price = 175
                                 local item = "bird"
                                 local meatamount = 2
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1315,7 +1315,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.75
+                                local price = 175
                                 local item = "game"
                                 local meatamount = 2
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1334,7 +1334,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "game"
                                 local meatamount = 1
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1393,7 +1393,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 2.25
+                                local price = 225
                                 local item = "fish"
                                 local meatamount = 2
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1450,7 +1450,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                local price = 1.5
+                                local price = 150
                                 local item = "stringy"
                                 local meatamount = 1
                                 TriggerServerEvent("frp_acougue:addmoney", price, model)
@@ -1483,7 +1483,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1497,7 +1497,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1511,7 +1511,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1525,7 +1525,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1539,7 +1539,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1553,7 +1553,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1567,7 +1567,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1581,7 +1581,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1595,7 +1595,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1609,7 +1609,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1623,7 +1623,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1637,7 +1637,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1651,7 +1651,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1665,7 +1665,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1679,7 +1679,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1693,7 +1693,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1707,7 +1707,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1721,7 +1721,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1735,7 +1735,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.05, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1749,7 +1749,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 15, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1763,7 +1763,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 25, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1777,7 +1777,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.05, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1791,7 +1791,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 15, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1805,7 +1805,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 25, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1819,7 +1819,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.0, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1833,7 +1833,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1847,7 +1847,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 150, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1861,7 +1861,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1875,7 +1875,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1889,7 +1889,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1903,7 +1903,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1917,7 +1917,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1931,7 +1931,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 4, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 400, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1945,7 +1945,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1959,7 +1959,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 4, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 400, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1973,7 +1973,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 500, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -1987,7 +1987,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2001,7 +2001,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2015,7 +2015,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2029,7 +2029,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 25, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2043,7 +2043,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2057,7 +2057,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2071,7 +2071,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2085,7 +2085,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2099,7 +2099,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 150, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2113,7 +2113,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2127,7 +2127,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2141,7 +2141,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 350, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2155,7 +2155,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 200, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2169,7 +2169,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2183,7 +2183,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2197,7 +2197,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2211,7 +2211,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2225,7 +2225,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2239,7 +2239,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2253,7 +2253,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 300, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2267,7 +2267,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 3.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 350, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2281,7 +2281,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2295,7 +2295,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 150, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2309,7 +2309,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 175, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2323,7 +2323,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2337,7 +2337,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2351,7 +2351,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2365,7 +2365,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.75, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 75, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2379,7 +2379,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2393,7 +2393,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2407,7 +2407,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 15, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2421,7 +2421,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 25, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2435,7 +2435,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 0.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 50, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2449,7 +2449,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 215, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2463,7 +2463,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 225, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2477,7 +2477,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2491,7 +2491,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 100, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2505,7 +2505,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2519,7 +2519,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 150, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2533,7 +2533,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 215, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2547,7 +2547,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 225, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2561,7 +2561,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 2.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 250, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2575,7 +2575,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.15, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 115, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2589,7 +2589,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.25, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 125, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2603,7 +2603,7 @@ while true do
                             local entitycheck = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
                             local holding = GetPedType(entitycheck)
                             if holding == 0 then
-                                TriggerServerEvent("frp_acougue:addmoney", 1.5, HASH_PROVISIONS[carriedEntityHash])
+                                TriggerServerEvent("frp_acougue:addmoney", 150, HASH_PROVISIONS[carriedEntityHash])
                                 TriggerServerEvent('fcxp:systemxp', tonumber(2))
                                 print("sold Hide")
                             end
@@ -2616,7 +2616,7 @@ while true do
                 end
             end
             end
-            --DrawTxt("Pressione ALT para vender suas provições", 0.87, 0.95, 0.4, 0.4, false, 255, 255, 255, 145, 1, 7)
+            --DrawTxt("Pressione ALT para vender suas provições", 0.87, 0.95, 0.4, 0.4, false, 255, 255, 255, 145, 100, 7)
           --  DrawTxt("Pressione ALT para vender suas provições", 0.50, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
         else
             WarMenu.CloseMenu()
@@ -2666,12 +2666,12 @@ Citizen.CreateThread(function()
     end
 end) ]]
 
-function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
+function DrawTxt(str, x, y, w, h, enableShadow, col100, col2, col3, a, centre)
  local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
 	SetTextScale(w, h)
 	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
 	SetTextCentre(centre)
-    if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
+    if enableShadow then SetTextDropshadow(100, 0, 0, 0, 255) end
 	Citizen.InvokeNative(0xADA9255D, 10);
 	DisplayText(str, x, y)
 end

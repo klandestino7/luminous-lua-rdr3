@@ -39,10 +39,10 @@ AddEventHandler(
         ----------------------------- DATA FORMAT
 
         -- if not wasOpenedBefore then
-        for id, values in pairs(CraftableItems) do
+        for id, values in pairs(craftingItems) do
             parsedItemNames[id] = ItemList[id].name
             local canCraft = true
-            for idCPart, amountNeeded in pairs(values.craftingParts) do
+            for idCPart, amountNeeded in pairs(values.craftingParts) do              
                 parsedItemNames[idCPart] = ItemList[idCPart].name
                 if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
                     canCraft = false
@@ -70,7 +70,7 @@ AddEventHandler(
     function(updatedOwnedItems)
         local updatedCraftingStatus = {}
 
-        for id, values in pairs(CraftableItems) do
+        for id, values in pairs(craftingItems) do
             local canCraft = true
             for idCPart, amountNeeded in pairs(values.craftingParts) do
                 if updatedOwnedItems[idCPart] < amountNeeded then
@@ -95,8 +95,9 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if IsControlJustPressed(0, 0x5966D52A) then
+            if IsControlJustPressed(0, 0x8CC9CD42) then
                 TriggerServerEvent('FCRP:CRAFTING:Open')
+              
             end
         end
     end

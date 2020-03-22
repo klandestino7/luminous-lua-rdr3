@@ -129,11 +129,21 @@ Citizen.CreateThread(function()
     end
 end)
 
-
 RegisterCommand("clothe", function(source, args)
     inCustomization = true
    clothes = true
-   SetEntityHeading(PlayerPedId(), 334)
+   hided = false
+   SetEntityHeading(PlayerPedId(), 334) 
+end)
+
+
+
+RegisterNetEvent('clothes:open')
+AddEventHandler('clothes:open', function()
+    inCustomization = true
+    clothes = true
+    hided = false
+    SetEntityHeading(PlayerPedId(), 334) 
 end)
 
 function rotation(dir)
@@ -287,11 +297,11 @@ end
 RegisterNUICallback(
     'CloseCreator',
     function()
-        SendNUIMessage(
-            {
-                action = 'hideCreate'
-            }
-        )
+        -- SendNUIMessage(
+        --     {
+        --         action = 'hideCreate'
+        --     }
+        -- )
         inCustomization = false
         clothes = false
       --  SetEntityVisible(PlayerPedId(), true)
@@ -649,6 +659,9 @@ RegisterNUICallback(
             ['neckwear'] = NeckwearUsing,
             ['gunbelts'] = GunbeltsUsing
         }
+        if dados ~= nil then
+            TriggerServerEvent('clothes:buy')
+        end
         TriggerServerEvent('frp_clothes:saveCloth', dados)
         closeAll()
     end
@@ -658,17 +671,10 @@ function closeAll()
     DestroyAllCams(true)
     SetNuiFocus(false, false)
     DisplayHud(true)
-    SendNUIMessage(
-        {
-            action = 'hideOnly'
-        }
-    )
-    clothes = false
-    inCustomization = false
-
-    choosePed = {}
-    local ped = PlayerPedId()
-  --  SetEntityVisible(ped, true)
-  --  NetworkSetEntityInvisibleToNetwork(ped, false)
+    -- SendNUIMessage(
+    --     {
+    --         action = 'hideOnly'
+    --     }
+    -- )
   
 end

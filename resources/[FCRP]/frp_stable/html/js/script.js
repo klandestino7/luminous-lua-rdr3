@@ -28,9 +28,10 @@ function getOptionsCount() {
     }
 }
 
-
-
-
+function myhorses() {
+    console.log('chamoujs')
+    $.post('http://frp_stable/Myhorses')
+}
 
 $(document).keydown(function(e) {
     switch (e.which) {
@@ -286,7 +287,17 @@ window.addEventListener('message', function(event) {
         if (name) {
             document.getElementById("appr").classList.remove("disabled");
         }
-    }
+    }  else if (event.data.nomeHorse !== undefined) {
+        $(".containhorses").append(`          
+              <div class="group" id="appr" data-link="gest">
+                <a href="#" id="appearence" class="visage textnome" data-link="'` + event.data.modelHorse + `', '` + event.data.idHorse + `'">` + event.data.nomeHorse + `</a>               
+              </div>              
+        `);
+
+
+    } 
+
+
 });
 
 const throttle = (func, limit) => {

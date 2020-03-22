@@ -18,37 +18,39 @@ AddEventHandler( 'frp_acougue:addmoneyskin', function (carried)
 
 	User:notify("Você entregou o animal "..carried.." e recebeu "..amount)
 	Inventory:addItem('generic_money', tonumber(amount))
-	sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..amount, 17411680)
+	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..amount/100, 17411680)
 
 end)
 
 
 RegisterServerEvent('frp_acougue:addmoney')
 AddEventHandler( 'frp_acougue:addmoney', function (amount, carried)
+	local price = amount
 	local _source = source
 	local User = API.getUserFromSource(source)
 	local Character = User:getCharacter()
 	local _amount = amount	
 	local name = Character:getName()
+
 	local Inventory = User:getCharacter():getInventory()
+	print(price)
+	Inventory:addItem('generic_money', price)
 	
-	Inventory:addItem('generic_money', tonumber(amount))
-	
-	User:notify("Você entregou o animal "..carried.." e recebeu "..amount)
-	sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..amount, 17411680)
+	User:notify("Você entregou o animal "..carried.." e recebeu "..price/100)
+	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..price/100, 17411680)
 
 end)
 
-function sendToDiscord(name, message, color)
-    local connect = {
-          {
-              ["color"] = color,
-              ["title"] = "**".. name .."**",
-              ["description"] = message,
-              ["footer"] = {
-                  ["text"] = "Criado por Crazy",
-              },
-          }
-      }
-    PerformHttpRequest(webhookLink, function(err, text, headers) end, 'POST', json.encode({username = 'Mortes', embeds = connect, avatar_url = ''}), { ['Content-Type'] = 'application/json' })
-  end
+-- function sendToDiscord(name, message, color)
+--     local connect = {
+--           {
+--               ["color"] = color,
+--               ["title"] = "**".. name .."**",
+--               ["description"] = message,
+--               ["footer"] = {
+--                   ["text"] = "Criado por Crazy",
+--               },
+--           }
+--       }
+--     PerformHttpRequest(webhookLink, function(err, text, headers) end, 'POST', json.encode({username = 'Mortes', embeds = connect, avatar_url = ''}), { ['Content-Type'] = 'application/json' })
+--   end

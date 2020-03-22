@@ -6,14 +6,16 @@ API = Tunnel.getInterface('API')
 Identity = {}
 
 RegisterNetEvent('FCRP:IDENTITY:charList')
-AddEventHandler('FCRP:IDENTITY:charList', function(characters)
+AddEventHandler('FCRP:IDENTITY:charList', function(characters,gold,money)
     createCamera()
     SendNUIMessage({type = 2}) -- clear UI
     Wait(2500)
     SetNuiFocus(true, true)
     SendNUIMessage({
         type = 1,
-        list = characters
+        list = characters,
+        igold = gold,
+        imoney = money
     })      
 end)
 

@@ -5,7 +5,8 @@ var parsedItemNames;
 window.addEventListener("message", function(event) {
     if (event.data.action == 'open') {
         $('.ui').fadeIn();
-
+        $('#otherInventory .itemselected').html("<div class='imageitem'></div><p class='invtitle'>Selecione um item <br/></p> <p class='invdesc'>Selecione um item da esquerda que deseje craftar e verá abaixo os itens necessários para craftar. </p> ");
+        
 
         ownedParts = event.data.ownedParts;
         craftingItems = event.data.craftingItems;
@@ -33,7 +34,9 @@ window.addEventListener("message", function(event) {
 
     if (event.data.action == 'close') {
         $('.ui').hide();
+        $('#otherInventory .itemselected').html("<div class='imageitem'></div><p class='invtitle'>Selecione um item <br/></p> <p class='invdesc'>Selecione um item da esquerda que deseje craftar e verá abaixo os itens necessários para craftar. </p> ");
         $('#otherInventory .containinv').html('');
+        
     }
 
     if (event.data.action == 'update') {
@@ -41,7 +44,6 @@ window.addEventListener("message", function(event) {
 
         $.each(newOwnedItems, function(id, amount) {
             ownedParts[id] = amount;
-
             if ($(`#part_${id}`).length > 0) {
                 var element = $(`#part_${id}`);
                 var amountTextElement = $(`#part_${id}`).find('.item-count-bg');
@@ -50,9 +52,7 @@ window.addEventListener("message", function(event) {
                 amountTextElement.text(`${amount}/${previusNeededAmount}`);
             }
         });
-
         var newUpdatedCraftingStatus = event.data.updatedCraftingStatus;
-
         $.each(newUpdatedCraftingStatus, function(id, canCraft) {
             if (canCraft) {
                 $(`#craftable_${id}`).removeClass('disabled');
@@ -71,14 +71,23 @@ function select(element) {
 
 function showCraftingParts(id) {
 
+    $('#otherInventory .itemselected').html("<div class='imageitem'></div><p class='invtitle'>Selecione um item <br/></p> <p class='invdesc'>Selecione um item da esquerda que deseje craftar e verá abaixo os itens necessários para craftar. </p> ");
     $('#otherInventory .containinv').html('');
 
     id = id.replace('craftable_', '');
 
     var numberSlots = 6;
     $.each(craftingItems[id].craftingParts, function(i, amount) {
-                $('#otherInventory .containinv').append(`
-            <div class="slot" id="part_${i}">
+            $('#otherInventory .itemselected').html(`
+                <div class="imageitem">
+                    <img class="imgitem" src="img/items/${id}.png">                    
+                </div>  
+                <p class="invtitle">${parsedItemNames[id]}</p>
+                <p class="invdesc">${craftingItems[id].craftingDesc}</p>
+            `);
+
+            $('#otherInventory .containinv').append(`
+                <div class="slot" id="part_${i}">
                 <div class="item" style="background-image: url('img/items/${i}.png')">
                 <div class="item-count">
                     <div class="item-count-bg">
@@ -98,6 +107,8 @@ function showCraftingParts(id) {
 
     while (numberSlots > 0) {
         numberSlots--;
+        $('#otherInventory .itemselected').append(` `);
+        
         $('#otherInventory .containinv').append(`
             <div class="slot disabler">
                 <div">

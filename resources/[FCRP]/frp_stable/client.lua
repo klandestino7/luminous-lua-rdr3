@@ -59,6 +59,7 @@ RegisterCommand("horsemodf", function(source, args)
     inCustomization = true
    horsesp = true
    SetEntityHeading(cAPI.getHorseEnt(), 334)
+   TriggerServerEvent('FCRP:HORSESHOP:AskForMyHorses')
 end)
 
 function rotation(dir)
@@ -85,7 +86,9 @@ Citizen.CreateThread(
                 SetNuiFocus(true, true)
                 local hashm = GetEntityModel(cAPI.getHorseEnt())
                 camera(zoom, offset)
-                SetEntityVisible(PlayerPedId(), false)
+                
+                SetEntityVisible(PlayerPedId(), false)           
+
                 SendNUIMessage(
                     {
                         action = 'showCreate'                      
@@ -365,6 +368,56 @@ RegisterNUICallback(
     end
 )
 
+myHorses = {}
+
+RegisterNUICallback(
+    'Myhorses',
+    function(data)
+        print(data.id)
+		TriggerServerEvent('FCRP:HORSESHOP:SelectHorseWithId', data.id)
+	end
+)
+
+
+RegisterNetEvent('FCRP:HORSESHOP:CHAMOUH')
+AddEventHandler(
+	'FCRP:HORSESHOP:CHAMOUH',
+    function()
+        for _, horseData in pairs(myHorses) do
+            --	print(json.encode(horseData))
+            SendNUIMessage(
+                {
+                    nomeHorse = horseData.name,
+                    modelHorse = horseData.model,
+                    idHorse = horseData.id
+                })  
+        end  
+	end
+)
+
+
+
+RegisterNetEvent('FCRP:HORSESHOP:ReceiveHorsesData')
+AddEventHandler(
+	'FCRP:HORSESHOP:ReceiveHorsesData',
+    function(data)
+        print('dehoe')
+        myHorses = data
+        print(myHorses)
+	end
+)
+
+
+  
+
+RegisterNetEvent('FCRP:HORSESHOP:SelectHORSE')
+AddEventHandler(
+	'FCRP:HORSESHOP:SelectHORSE',
+	function(data)
+		TriggerServerEvent('FCRP:HORSESHOP:SelectHorseWithId', data.id)
+	end
+)
+
 
 RegisterNUICallback(
     'Confirm',
@@ -462,15 +515,16 @@ end
 
 --- /// ARRASTAR CAVALO
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)                
---             if IsControlPressed(2, 0xE8342FF2) then -- Hold ALT      
---                 print('askoasko')
-           
---                 TaskArrestPed(cAPI.getHorseEnt(), PlayerPedId())
---             end
---         end
---     end
--- )    
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)                
+            if IsControlPressed(2, 0xE8342FF2) then -- Hold ALT      
+                print('askoasko')
+                CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt())
+                print(CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt()))
+              --  TaskArrestPed(cAPI.getHorseEnt(), PlayerPedId())
+            end
+        end
+    end
+)    

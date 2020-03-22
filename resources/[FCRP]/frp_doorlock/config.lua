@@ -1,13 +1,29 @@
 Config = {}
 
 Config.DoorList = {
-    {    --    Entrance Left
+    {    --    STRAWBERRY 
+		authorizedJobs = { 'user' },
+        doorCoords  = vector3(-1682.84, -340.62, 172.98),
+        objYaw = 100.0,
+        locked = true,
+        distance = 3.0
+	},
+	    
+	{    --    Entrance Left
         authorizedJobs = { 'user' },
         doorCoords  = vector3(-306.8859, 780.1154, 117.7299),
         objYaw = -170.0138,
         locked = false,
         distance = 3.0
-    },
+	},
+
+	{    --    Entrance Left
+        authorizedJobs = { 'user' },
+        doorCoords  = vector3(-306.8859, 780.1154, 117.7299),
+        objYaw = -170.0138,
+        locked = false,
+        distance = 3.0
+	},
     {    --    Entrance Right
         authorizedJobs = { 'user' },
         doorCoords  = vector3(-309.0522,  779.7303,  117.7299),

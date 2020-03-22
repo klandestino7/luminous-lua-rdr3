@@ -152,6 +152,7 @@ function API.User(source, id, ipAddress)
     end
     self.saveCharacter = function()
         self.Character:savePosition(self:getSource())
+
     end
 
     self.drawCharacter = function()
@@ -160,8 +161,7 @@ function API.User(source, id, ipAddress)
             if cAPI.startNeeds(self:getSource()) then             
                 Wait(100)
                 if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
-                    Wait(100)
-                
+                    Wait(100)                
                     cAPI.setClothes(self:getSource(), self.Character:getClothes())
                     Wait(100)
                     cAPI.teleportSpawn(self:getSource(), self.Character:getLastPos(self:getSource()))
@@ -275,3 +275,5 @@ function API.User(source, id, ipAddress)
 
     return self
 end
+
+

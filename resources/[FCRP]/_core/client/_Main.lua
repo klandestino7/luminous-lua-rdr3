@@ -34,23 +34,25 @@ Citizen.CreateThread(
 	function()
 		SetMinimapHideFow(true)
 		Citizen.InvokeNative(0x63E7279D04160477, true)
+		Citizen.InvokeNative("0x1E5B70E53DB661E5", 1122662550, 347053089, 0, "Faroeste", "Roleplay", "Bem-vindo!")
 	end
 )
 
 
 CreateThread(function()
     while true do
-        Wait(0)
+		Wait(0)
+		ShutdownLoadingScreen()
 		Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
 		NetworkSetFriendlyFireOption(true)
 		SetRelationshipBetweenGroups(5, `PLAYER`, `PLAYER`)
-		DisableControlAction(0, 0x41AC83D1, true) -- loot
-		DisableControlAction(0, 0x399C6619, true) -- loot 2
-		DisableControlAction(0, 0x27D1C284, true) -- loot 3
-		DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
-		DisableControlAction(0, 0xC23D7B9E, true) -- loot ammo
-		DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
-		DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
+		 DisableControlAction(0, 0x41AC83D1, true) -- loot
+		 DisableControlAction(0, 0x399C6619, true) -- loot 2
+		-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
+		-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
+		-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
+		 DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
+		 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
     end
 end)
 
@@ -630,6 +632,25 @@ function cAPI.LoadModel(hash)
 		end
 	end
 	return true
+end
+
+
+function cAPI.varyHealth(variation)
+    local ped = PlayerPedId()
+    local n = math.floor(GetEntityHealth(ped)+variation)
+	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, n)
+end
+
+function cAPI.varyStamina(variation)
+    local ped = PlayerPedId()
+    local n = math.floor(GetEntityHealth(ped)+variation)
+	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, n)
+end
+
+function cAPI.varyEye(variation)
+    local ped = PlayerPedId()
+    local n = math.floor(GetEntityHealth(ped)+variation)
+	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 2, n)
 end
 
 function cAPI.StartFade(timer)

@@ -11,6 +11,7 @@ AddEventHandler(
         if User == nil then
             return
         end
+     
 
         TriggerClientEvent('FCRP:IDENTITY:charList', User:getSource(), User:getCharacters())
     end
@@ -23,7 +24,6 @@ AddEventHandler(
         if User == nil then
             return
         end
-
         TriggerClientEvent('FCRP:IDENTITY:charList', User:getSource(), User:getCharacters())
     end
 )

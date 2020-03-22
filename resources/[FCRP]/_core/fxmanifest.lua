@@ -14,7 +14,7 @@ client_scripts {
 	'client/Horse.lua',
 	'client/BasicNeeds.lua',
 	'client/LoadIPL.lua',
-	'client/DebuggingControls.lua'
+ --	'client/DebuggingControls.lua'
 }
 
 server_scripts {

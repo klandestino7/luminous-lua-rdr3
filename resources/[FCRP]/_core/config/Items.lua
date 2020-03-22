@@ -220,9 +220,19 @@ ItemList = {
         name = 'Minério de Metal',
         weight = 1.0
     },
+    ['generic_pedra'] = {
+        type = 'normal',
+        name = 'Pedra',
+        weight = 1.0
+    },
     ['generic_cobrebruto'] = {
         type = 'normal',
         name = 'Minério de Cobre',
+        weight = 1.0
+    },
+    ['generic_carvaobruto'] = {
+        type = 'normal',
+        name = 'Minério de Carvão',
         weight = 1.0
     },
     ['generic_provision_coal'] = {
@@ -232,9 +242,19 @@ ItemList = {
     },
     ['generic_provision_rf_wood_cobalt'] = {
         type = 'normal',
-        name = 'Madeira Bruta',
+        name = 'Tora de Madeira',
         weight = 1.0
     },
+    ['generic_provision_rf_wood_minor'] = {
+        type = 'normal',
+        name = 'Táboa',
+        weight = 1.0
+    },
+    ['generic_provision_rf_wood_stick'] = {
+        type = 'normal',
+        name = 'Estaca de Madeira',
+        weight = 1.0
+    },    
     ['generic_provision_goldbar_small'] = {
         type = 'normal',
         name = 'Barra de Metal',
