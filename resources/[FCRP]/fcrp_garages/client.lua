@@ -344,16 +344,6 @@ AddEventHandler(
 --     end
 -- )
 
-RegisterCommand(
-    "dv",
-    function(source, args, rawCommand)
-        local v = getNearestVehicle(10)
-        -- DeleteEntity(v)
-        getVehicleData(v)
-    end,
-    false
-)
-
 function getAllVehicles()
     local vehs = {}
     local it, veh = FindFirstVehicle()
@@ -397,152 +387,180 @@ function getNearestVehicle(radius)
     return veh
 end
 
--- local function getVehicleMods(vehicle)
---     local mods = {}
---     for i = 0, 49 do
---         table.insert(mods, GetVehicleMod(vehicle, i))
+local function getVehicleMods(vehicle)
+    local mods = {}
+    for i = 0, 49 do
+        table.insert(mods, GetVehicleMod(vehicle, i))
+    end
+
+    return mods
+end
+
+function getVehicleData(vehicle)
+    local dataTable = {}
+
+    local primaryColor, secondaryColor = GetVehicleColours(vehicle)
+    local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
+    local nR, nG, nB = GetVehicleNeonLightsColour(vehicle)
+    local tR, tG, tB = GetVehicleTyreSmokeColor(vehicle)
+    local pR, pG, pB = GetVehicleCustomPrimaryColour(vehicle)
+    local sR, sG, sB = GetVehicleCustomSecondaryColour(vehicle)
+
+    local dataTable = {
+        primaryColor,
+        secondaryColor,
+        pearlescentColor,
+        wheelColor,
+        nR,
+        nG,
+        nB,
+        tR,
+        tG,
+        tB,
+        pR,
+        pG,
+        pB,
+        sR,
+        sG,
+        sB,
+        -- GetVehicleNumberPlateText(vehicle), -- String
+        GetVehicleNumberPlateTextIndex(vehicle), -- plateIndex
+        IsToggleModOn(vehicle, 18), -- Turbo
+        IsToggleModOn(vehicle, 20), -- Smoke
+        IsToggleModOn(vehicle, 22), -- Beams
+        GetVehicleWindowTint(vehicle), -- Window Tint
+        IsVehicleNeonLightEnabled(veh, 0), -- Left
+        IsVehicleNeonLightEnabled(veh, 1), -- Right
+        IsVehicleNeonLightEnabled(veh, 2), -- Front
+        IsVehicleNeonLightEnabled(veh, 3), -- Back
+        GetVehicleWheelType(vehicle), -- wheelType
+        GetVehicleModVariation(vehicle, 23) -- Tyres Variation
+    }
+
+    local mods = getVehicleMods(vehicle)
+
+    for _, v in pairs(mods) do
+        table.insert(dataTable, v)
+    end
+
+    local encoded = encode(dataTable)
+
+    print(encoded)
+
+    if firstEncoded == nil then
+        firstEncoded = encoded
+    end
+end
+
+function setVehicleData(vehicle, data)
+    local decoded = decode(data)
+
+    SetVehicleColours(vehicle, decoded[1], decoded[2])
+    SetVehicleExtraColours(vehicle, decoded[3], decoded[4])
+    SetVehicleNeonLightsColour(vehicle, decoded[5], decoded[6], decoded[7])
+    SetVehicleTyreSmokeColor(vehicle, decoded[8], decoded[9], decoded[10])
+    SetVehicleCustomPrimaryColour(vehicle, decoded[11], decoded[12], decoded[13])
+    SetVehicleCustomSecondaryColour(vehicle, decoded[14], decoded[15], decoded[16])
+    SetVehicleNumberPlateTextIndex(vehicle, decoded[17])
+    ToggleVehicleMod(vehicle, 18, decoded[18])
+    ToggleVehicleMod(vehicle, 20, decoded[19])
+    ToggleVehicleMod(vehicle, 22, decoded[20])
+    SetVehicleWindowTint(vehicle, decoded[21])
+    SetVehicleNeonLightEnabled(vehicle, 0, decoded[22])
+    SetVehicleNeonLightEnabled(vehicle, 1, decoded[23])
+    SetVehicleNeonLightEnabled(vehicle, 2, decoded[24])
+    SetVehicleNeonLightEnabled(vehicle, 3, decoded[25])
+    SetVehicleWheelType(vehicle, decoded[26])
+    -- decoded[27] GetVehicleModVariation
+
+    for i = 28, #decoded do
+        SetVehicleMod(vehicle, i - 28, decoded[i], decoded[27])
+    end
+end
+
+function encode(t)
+    local _t = {}
+
+    local lastValue = nil
+    local timesLastValue = 0
+
+    for _, value in pairs(t) do
+        if type(value) == "boolean" then
+            value = value == true and "1" or "0"
+        end
+
+        if value == lastValue then
+            timesLastValue = timesLastValue + 1
+
+            if _ == #t then
+                if timesLastValue > 1 then
+                    table.insert(_t, lastValue .. "x" .. timesLastValue)
+                else
+                    table.insert(_t, lastValue)
+                end
+            end
+        else
+            if lastValue ~= nil then
+                if timesLastValue > 1 then
+                    table.insert(_t, lastValue .. "x" .. timesLastValue)
+                else
+                    table.insert(_t, lastValue)
+                end
+            end
+
+            lastValue = value
+            timesLastValue = 1
+        end
+    end
+
+    return json.encode(_t)
+end
+
+function decode(s)
+    local t = json.decode(s)
+    local _t = {}
+
+    for _, v in pairs(t) do
+        if string.find(v, "x") then
+            local c = v:find("x")
+            local d = tonumber(v:sub(0, c - 1))
+            local x = tonumber(v:sub(c + 1))
+
+            for i = 0, x - 1 do
+                table.insert(_t, d)
+            end
+        else
+            table.insert(_t, v)
+        end
+    end
+
+    return _t
+end
+
+-- AddEventHandler(
+--     "entityCreating",
+--     function(a, b)
+--         print(a, b)
 --     end
+-- )
 
---     return mods
--- end
+-- RegisterCommand(
+--     "dv",
+--     function(source, args, rawCommand)
+--         local v = getNearestVehicle(10)
+--         -- DeleteEntity(v)
+--         getVehicleData(v)
+--     end,
+--     false
+-- )
 
--- function getVehicleData(vehicle)
---     local dataTable = {}
-
---     local primaryColor, secondaryColor = GetVehicleColours(vehicle)
---     local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
---     local nR, nG, nB = GetVehicleNeonLightsColour(vehicle)
---     local tR, tG, tB = GetVehicleTyreSmokeColor(vehicle)
---     local pR, pG, pB = GetVehicleCustomPrimaryColour(vehicle)
---     local sR, sG, sB = GetVehicleCustomSecondaryColour(vehicle)
-
--- local dataTable = {
---     primaryColor,
---     secondaryColor,
---     pearlescentColor,
---     wheelColor,
---     -- GetVehicleNumberPlateText(vehicle), -- String
---     GetVehicleNumberPlateTextIndex(vehicle), -- plateIndex
---     {
---         nR,
---         nG,
---         nB
---     },
---     {
---         tR,
---         tG,
---         tB
---     },
---     {
---         pR,
---         pG,
---         pB
---     },
---     {
---         sR,
---         sG,
---         sB
---     },
---     getVehicleMods(vehicle), -- Unpacked list of every vehicle mod
---     IsToggleModOn(vehicle, 18), -- Turbo
---     IsToggleModOn(vehicle, 20), -- Smoke
---     IsToggleModOn(vehicle, 22), -- Beams
---     GetVehicleWindowTint(vehicle), -- Window Tint
---     IsVehicleNeonLightEnabled(veh, 0), -- Left
---     IsVehicleNeonLightEnabled(veh, 1), -- Right
---     IsVehicleNeonLightEnabled(veh, 2), -- Front
---     IsVehicleNeonLightEnabled(veh, 3), -- Back
---     GetVehicleModVariation(vehicle, 23), -- Tyres Variation
---     GetVehicleTyresCanBurst(vehicle), -- isTyreBulletproof
---     GetVehicleWheelType(vehicle) -- wheelType
--- }
-
---     -- for k, v in pairs(dataTable) do
---     --     print(k, v)
---     -- end
-
---     local data = "["
---     for index, value in pairs(dataTable) do
---         local toAppend = value
-
---         if toAppend == false then
---             toAppend = 0
+-- RegisterCommand(
+--     "load",
+--     function(source, args, rawCommand)
+--         if firstEncoded ~= nil then
+--             local v = getNearestVehicle(10)
+--             setVehicleData(v, firstEncoded)
 --         end
-
---         if toAppend == true then
---             toAppend = 1
---         end
-
---         if type(value) == "table" then
---             -- @ref 1 = (index + 1) + #value = 67
---             for _, v in pairs(value) do
---                 data = data .. v .. ","
---             end
---         else
---             data = data .. toAppend .. ","
---         end
---     end
-
---     local len = data:len()
---     if data:sub(len, len) == "," then
---         data = data:sub(1, len - 1)
---     end
-
---     data = data .. "]"
-
---     print(data)
-
---     setVehicleData(vehicle, data)
--- end
-
--- function setVehicleData(vehicle, data)
---     SetVehicleModKit(vehicle, 0)
-
---     local array = json.decode(data)
-
---     local i = 0
---     function n()
---         i = i + 1
---         return tonumber(array[i]) or array[i]
---     end
-
---     SetVehicleColours(vehicle, n(), n())
---     SetVehicleExtraColours(vehicle, n(), n())
---     SetVehicleNumberPlateTextIndex(vehicle, n())
---     SetVehicleNeonLightsColour(vehicle, n(), n(), n())
---     SetVehicleTyreSmokeColor(vehicle, n(), n(), n())
---     SetVehicleCustomPrimaryColour(vehicle, n(), n(), n())
---     SetVehicleCustomSecondaryColour(vehicle, n(), n(), n())
---     -- 67 = @ref 1
---     for index = i + 1, 67 do
---         local modIndex = (index - i) - 1
---         if modIndex ~= 18 and modIndex ~= 20 and modIndex ~= 22 and modIndex ~= 46 then
---             SetVehicleMod(vehicle, modIndex, array[index])
---         end
---     end
---     i = 68
-
---     ToggleVehicleMod(veh, 18, n()) -- Turbo
---     ToggleVehicleMod(veh, 20, n()) -- Smoke
---     ToggleVehicleMod(veh, 22, n()) -- Beams
-
---     SetVehicleWindowTint(vehicle, n())
-
---     SetVehicleNeonLightEnabled(vehicle, 0, n()) -- Left
---     SetVehicleNeonLightEnabled(vehicle, 1, n()) -- Right
---     SetVehicleNeonLightEnabled(vehicle, 2, n()) -- Front
---     SetVehicleNeonLightEnabled(vehicle, 34, n()) -- Back
-
---     local tyres = n()
---     local tyresVariation = n()
-
---     SetVehicleMod(veh, 23, tonumber(custom.tyres), n())
---     SetVehicleMod(veh, 24, tonumber(custom.tyres), n())
--- end
-
--- function unpack(t, i)
---     i = i or 1
---     if t[i] ~= nil then
---         return t[i], unpack(t, i + 1)
---     end
--- end
+--     end,
+--     false
+-- )
