@@ -13,8 +13,6 @@ marksizeX = 1.0
 marksizeY = 1.0
 marksizeZ = 0.5
 
-
-
 Citizen.CreateThread(function()
     while true do
         Wait(0)
@@ -25,17 +23,10 @@ Citizen.CreateThread(function()
                 Citizen.InvokeNative(0x2A32FAA57B937173,-1795314153, v.x,v.y,v.z , 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, marksizeX, marksizeY, marksizeZ, 233, 0, 150, 10, 0, 2, 0, 0, 0, false)   
                 if IsControlJustPressed(0, 0xC7B5340A) and not using then    
                     TriggerServerEvent('minercollect:checkitem')        
-                    using = true                       
                 end
             end
         end
     end
-end)
-
-RegisterNetEvent('minercollect:nothaveitem')
-AddEventHandler('minercollect:nothaveitem', function()
-    using = false
-    using2 = false
 end)
 
 Citizen.CreateThread(function()
@@ -47,7 +38,6 @@ Citizen.CreateThread(function()
                 DrawTxt('Aperte (ENTER) para processar', 0.87, 0.95, 0.4, 0.4, false, 255, 255, 255, 145, 100, 7)
                 if IsControlJustPressed(0, 0xC7B5340A) and not using2 then    
                     TriggerServerEvent('minercollect:checkprocess')     
-                    using2 = true                          
                 end
             end
         end
@@ -61,7 +51,6 @@ AddEventHandler('minercollect:anim', function()
     Wait(2000)
     TriggerServerEvent('minercollect:getitem')
     ClearPedTasksImmediately(PlayerPedId())
-    using = false
 end)
 
 RegisterNetEvent('minercollect:processanim')
@@ -72,7 +61,6 @@ AddEventHandler('minercollect:processanim', function(num)
     Wait(20000)
     TriggerServerEvent('minercollect:processitem', num)
     ClearPedTasksImmediately(PlayerPedId())
-    using2 = false
 end)
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
