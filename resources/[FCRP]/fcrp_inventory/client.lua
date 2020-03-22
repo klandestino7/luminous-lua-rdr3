@@ -33,7 +33,7 @@ AddEventHandler(
         Citizen.CreateThread(function()           
         end)
         SetNuiFocus(true, true)
-        SetNuiFocusKeepInput(true)
+        -- SetNuiFocusKeepInput(true)
         SendNUIMessage(
             {
                 action = 'clearPrimary',
@@ -50,7 +50,7 @@ AddEventHandler(
         Citizen.CreateThread(function()
         end)
         SetNuiFocus(true, true)
-        SetNuiFocusKeepInput(true)
+        -- SetNuiFocusKeepInput(true)
         SendNUIMessage(
             {
                 action = 'clearSecondary',
@@ -141,7 +141,7 @@ function closeInv()
 
 
     SetNuiFocus(false, false)
-    SetNuiFocusKeepInput(false)
+    -- SetNuiFocusKeepInput(false)
     
     SendNUIMessage(
         {

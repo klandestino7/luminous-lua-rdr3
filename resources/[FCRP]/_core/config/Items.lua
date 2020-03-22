@@ -56,6 +56,11 @@ ItemList = {
         name = 'FN Model 1922',
         weight = 2.0
     },
+    ['weapon_knife'] = {
+        type ='weapon',
+        name = 'Faca',
+        weight = 1.0,
+    },
     -------------------------------
     -------------------------------
     -------      AMMO       -------

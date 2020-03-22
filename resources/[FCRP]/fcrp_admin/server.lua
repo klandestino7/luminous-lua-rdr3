@@ -223,7 +223,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
-            API.prompt(source, "Cordenadas:", x .. "," .. y .. "," .. z)
+            API.prompt(source, "Cordenadas:", string.format("%.2f", x) .. "," .. string.format("%.2f", y) .. "," .. string.format("%.2f", z))
         end
     end
 )
@@ -234,15 +234,16 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            if args[1] == "add" then
-                local UserTarget = API.getUserFromUserId(parseInt(args[2]))
-                if not UserTarget:getCharacter():hasGroupOrInheritance(args[3]) then
-                    UserTarget:getCharacter():addGroup(args[3])
-                end
-            elseif args[1] == "remove" then
-                local UserTarget = API.getUserFromUserId(parseInt(args[2]))
-                if UserTarget:getCharacter():hasGroupOrInheritance(args[3]) then
-                    UserTarget:getCharacter():removeGroup(args[3])
+            if args[1] == "add" or args[1] == "remove" then
+                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                if UserTarget ~= nil then
+                    if args[1] == "add" then
+                        UserTarget:getCharacter():addGroup(args[3])
+                    elseif args[1] == "remove" then
+                        UserTarget:getCharacter():removeGroup(args[3])
+                    end
+                else
+                    User:notify("Usuario invalido!")
                 end
             end
         end

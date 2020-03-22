@@ -1,7 +1,7 @@
 Config_Permissions = {
     ["admin"] = {
         type = "staff",
-        inheritance = "admin"
+        inheritance = "moderator"
     },
     ["moderator"] = {
         type = "staff",
