@@ -22,7 +22,7 @@ local verificationData = {
     },
     ["Mercadinho"] = {
         -- Level, Price, Amount(optional)
-        ["consumable_apple"] = {1, 50}
+        ["consumable_vodka"] = {1, 50}
     }
 }
 
@@ -42,7 +42,6 @@ AddEventHandler(
         local Character = User.getCharacter()
 
         if data.group then
-            print(data.group)
             if not Character:hasGroupOrInheritance(data.group) then
                 User:notify("Você não tem permissao")
                 return

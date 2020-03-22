@@ -34,7 +34,7 @@ Config.ShopDatas = {
 		name = "Mercadinho",
 		-- Sem index(key), só aparecer na aba global
 		{
-			{"consumable_apple", 1, 50}
+			{"consumable_vodka", 1, 50}
 		}
 	}
 }

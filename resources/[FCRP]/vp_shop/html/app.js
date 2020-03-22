@@ -45,7 +45,6 @@ function newShopWindow(shopData) {
         if (shopSubType != 'name') {
 
             var validSubType = shopSubType.replace(' ', '_');
-            console.log(validSubType);
 
             if (isNaN(shopSubType) == true) { // If the index is not a number
 

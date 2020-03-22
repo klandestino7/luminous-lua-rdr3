@@ -140,9 +140,9 @@ ItemList = {
         weight = 0.8,
         thirstVar = 1.0
     },
-    ['consumable_moonshine'] = {
+    ['consumable_vodka'] = {
         type = 'beverage',
-        name = 'Moonshine',
+        name = 'Vodka',
         weight = 0.8,
         thirstVar = 1.0
     },
