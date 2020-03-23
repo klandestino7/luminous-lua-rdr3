@@ -1,9 +1,16 @@
 CraftableItems = {
-    ['weapon_specialcarbine'] = {
+    ['weapon_assaultrifle'] = {
         craftingDesc = "LOREM IPSUR",
         craftingParts = {
-            ['consumable_cigar'] = 10,
-            ['consumable_corn'] = 10,
+            ['consumable_vodka'] = 10,
+            ['weapon_combatpistol'] = 10,
+        }
+    },
+    ['weapon_combatpistol'] = {
+        craftingDesc = "LOREM IPSUR",
+        craftingParts = {
+            ['consumable_vodka'] = 100,
+            ['weapon_assaultrifle'] = 10,
         }
     },
 }
