@@ -12,7 +12,7 @@ RegisterCommand('enviar', function()
 --	local num = GetZoneAtCoords(player.x, player.y, player.z)
 --	local ruas = street .. " Nº" .. num .. ", " .. nome[zonehash]
 	TriggerEvent('Distress', 'sucesso', 'Assalto a Joalheria')
-	TriggerEvent('blipALERTRED', player)
+--	TriggerEvent('blipALERTRED', player)
 
 	--PlaySound(-1, "Team_Vehicle_Destroyed", "DLC_LOW2_Sumo_Soundset", 0, 0, 1);
 end)

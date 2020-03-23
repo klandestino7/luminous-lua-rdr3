@@ -139,7 +139,7 @@ ItemList = {
         name = 'Arco',
         weight = 1.0
     },
-    ['weapon_thrown_dynamite0'] = {
+    ['weapon_thrown_dynamite'] = {
         type = 'weapon',
         name = 'Dinamite',
         weight = 0.3

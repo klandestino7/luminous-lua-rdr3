@@ -133,7 +133,7 @@ while true do
 
         if (Vdist(coords.x, coords.y, coords.z, info.x, info.y, info.z) < 3.0) then --f6
             
-            local prompt = PromptRegisterBegin()
+        --    local prompt = PromptRegisterBegin()
             PromptSetControlAction(prompt, 0xE8342FF2)
             PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Vender Provisões"))
             PromptSetEnabled(prompt, 1)
@@ -141,8 +141,8 @@ while true do
             PromptSetStandardMode(prompt, 1)
             PromptSetPosition(prompt, info.x, info.y, info.z)
             N_0x0c718001b77ca468(prompt, 3.0)
+        --  PrompContextSetSize(prompt, 3.0)
 
-            -- PrompContextSetSize(prompt, 3.0)
             PromptRegisterEnd(prompt)
             table.insert(prompts, prompt)
             for _, prompt in pairs(prompts) do

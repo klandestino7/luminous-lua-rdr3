@@ -23,7 +23,7 @@ end)
 RegisterNetEvent("crz_inventory:updateNeeds")
 AddEventHandler(
     "crz_inventory:updateNeeds",
-    function(hunger, thirst)
+    function(hunger, thirst, health)
         if hunger == 0 then
             hunger = hunger
             SendNUIMessage(
@@ -34,13 +34,22 @@ AddEventHandler(
             )
         end
         if thirst == 0 then
-                thirst = thirst   
-                SendNUIMessage(
-                    {
-                        action = "changeThirst",
-                        sede = thirst
-                    }
-                )
+            thirst = thirst   
+            SendNUIMessage(
+                {
+                    action = "changeThirst",
+                    sede = thirst
+                }
+            )
+        end
+        if health == 0 then
+            myHealth = health   
+            SendNUIMessage(
+                {
+                    action = "changeHealth",
+                    health = myHealth
+                }
+            )
         end
         updateValue = true
     end

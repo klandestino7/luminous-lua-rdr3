@@ -85,7 +85,7 @@ AddEventHandler(
         local secondaryInventory = User:getSecondaryInventoryViewing()
 
 
-        local chestInventory = Chest:getInventory(Character:getId())
+        local chestInventory = Chest:getInventory(User)
 
         if chestInventory == nil then
             User:notify('Você não pode abrir este baú')

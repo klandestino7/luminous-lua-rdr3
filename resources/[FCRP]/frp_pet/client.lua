@@ -348,14 +348,10 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 	if dogspawn[idOfThedog] then
 
 		if isInShop then
-
 			local x, y, z, w = table.unpack( Config.Spawndog[CurrentZoneActive] )
-
 			DeleteEntity(dogspawn[idOfThedog].model)
-
 			dogspawn[idOfThedog].model = CreatePed( model, x, y, z, w, 1, 1 )
 			dogspawn[idOfThedog].id = idOfThedog
-
 			SET_PED_RELATIONSHIP_GROUP_HASH( dogspawn[idOfThedog].model, model )
 			SET_PED_DEFAULT_OUTFIT( dogspawn[idOfThedog].model )
 			local blip = SET_BLIP_TYPE( dogspawn[idOfThedog].model )
@@ -367,36 +363,26 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 			local EntityIsDead = IsEntityDead( dogspawn[idOfThedog].model )
 
 			if EntityIsDead then
-
 				ShowNotification( "dog was healed by a doctor" )
-
 				dogspawn[idOfThedog].model = CreatePed( model, x, y, b, heading, 1, 1 )
 				dogspawn[idOfThedog].id = idOfThedog
-
 			end
 
 			local EntityPedCoord = GetEntityCoords( player )
 			local EntitydogCoord = GetEntityCoords( dogspawn[idOfThedog].model )
 
 			if #( EntityPedCoord - EntitydogCoord ) > 100.0 then
-
 				DeleteEntity(dogspawn[idOfThedog].model)
-
 				dogspawn[idOfThedog].model = CreatePed( model, x, y, b, heading, 1, 1 )
 				dogspawn[idOfThedog].id = idOfThedog
-
 				SET_PED_RELATIONSHIP_GROUP_HASH( dogspawn[idOfThedog].model, model )
 				SET_PED_DEFAULT_OUTFIT( dogspawn[idOfThedog].model )
 				local blip = SET_BLIP_TYPE( dogspawn[idOfThedog].model )
 				Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Your pet')
-
 				GiveAllAttitude( dogspawn[idOfThedog].model )
-
 			end
 
-	
 			print(dogspawn[idOfThedog].model)
-
 			-- ClearPedTasks(dogspawn[idOfThedog].model)
 			-- ClearPedSecondaryTask(dogspawn[idOfThedog].model)
 			-- ClearPedTasksImmediately(dogspawn[idOfThedog].model)
@@ -404,7 +390,6 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 			-- TaskWanderStandard(dogspawn[idOfThedog].model, 1, 0)
 			-- TaskSetBlockingOfNonTemporaryEvents(dogspawn[idOfThedog].model, 1)
 			-- SetEntityAsMissionEntity(dogspawn[idOfThedog].model) 
-
 			TaskGoToEntity( dogspawn[idOfThedog].model, player, -1, 7.2, 2.0, 0, 0 )
 			CACHORROENTITY = dogspawn[idOfThedog].model
 		end
