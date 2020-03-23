@@ -19,6 +19,4 @@ ui_page 'HTML/index.html'
 
 files {
 	'HTML/*',
-	'HTML/img/*',
-	'HTML/fonts/*',
 }
