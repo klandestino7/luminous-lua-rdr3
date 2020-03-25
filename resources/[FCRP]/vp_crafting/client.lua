@@ -1,8 +1,8 @@
 -- local wasOpenedBefore = false
 
-RegisterNetEvent('FCRP:CRAFTING:OpenMenu')
+RegisterNetEvent("FCRP:CRAFTING:OpenMenu")
 AddEventHandler(
-    'FCRP:CRAFTING:OpenMenu',
+    "FCRP:CRAFTING:OpenMenu",
     function(ownedParts)
         local craftingItems = CraftableItems
         local parsedItemNames = {}
@@ -40,10 +40,9 @@ AddEventHandler(
 
         -- if not wasOpenedBefore then
         for id, values in pairs(craftingItems) do
-
             parsedItemNames[id] = ItemList[id].name
             local canCraft = true
-            for idCPart, amountNeeded in pairs(values.craftingParts) do              
+            for idCPart, amountNeeded in pairs(values.craftingParts) do
                 parsedItemNames[idCPart] = ItemList[idCPart].name
                 if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
                     canCraft = false
@@ -54,7 +53,7 @@ AddEventHandler(
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
-                action = 'open',
+                action = "open",
                 craftingItems = craftingItems,
                 ownedParts = ownedParts,
                 parsedItemNames = parsedItemNames
@@ -65,9 +64,9 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent('FCRP:CRAFTING:SyncOnCraft')
+RegisterNetEvent("FCRP:CRAFTING:SyncOnCraft")
 AddEventHandler(
-    'FCRP:CRAFTING:SyncOnCraft',
+    "FCRP:CRAFTING:SyncOnCraft",
     function(updatedOwnedItems)
         PlaySoundFrontend(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", false)
         local updatedCraftingStatus = {}
@@ -85,9 +84,37 @@ AddEventHandler(
 
         SendNUIMessage(
             {
-                action = 'update',
+                action = "update",
                 updatedOwnedItems = updatedOwnedItems,
-                updatedCraftingStatus = updatedCraftingStatus
+                updatedCraftingStatus = updatedCraftingStatus,
+            }
+        )
+    end
+)
+
+RegisterNetEvent("FCRP:CRAFTING:UpCraftingCount")
+AddEventHandler(
+    "FCRP:CRAFTING:UpCraftingCount",
+    function(itemIdBeingCrafted, craftingTime)
+        SendNUIMessage(
+            {
+                action = "upCraftingCount",
+                itemIdBeingCrafted = itemIdBeingCrafted,
+                craftingTime = craftingTime,
+            }
+        )
+    end
+)
+
+RegisterNetEvent("FCRP:CRAFTING:StartCraftingNext")
+AddEventHandler(
+    "FCRP:CRAFTING:StartCraftingNext",
+    function(itemIdBeingCrafted, craftingTime)
+        SendNUIMessage(
+            {
+                action = "startCraftingNext",
+                itemIdBeingCrafted = itemIdBeingCrafted,
+                craftingTime = craftingTime,
             }
         )
     end
@@ -98,43 +125,43 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             if IsControlJustPressed(0, 38) then
-                TriggerServerEvent('FCRP:CRAFTING:Open')
+                TriggerServerEvent("FCRP:CRAFTING:Open")
             end
         end
     end
 )
 
 RegisterNUICallback(
-    'craft',
+    "craft",
     function(data)
         PlaySoundFrontend(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", false)
-        TriggerServerEvent('FCRP:CRAFTING:Craft', data.id)
+        TriggerServerEvent("FCRP:CRAFTING:Craft", data.id)
     end
 )
 
 RegisterNUICallback(
-    'close',
+    "close",
     function()
         SetNuiFocus(false, false)
     end
 )
 
 RegisterNUICallback(
-    'selectSound',
+    "selectSound",
     function()
         PlaySoundFrontend(-1, "BACK", "HUD_AMMO_SHOP_SOUNDSET", false)
     end
 )
 
 RegisterNUICallback(
-    'selectErrorSound',
+    "selectErrorSound",
     function()
         PlaySoundFrontend(-1, "ERROR", "HUD_AMMO_SHOP_SOUNDSET", false)
     end
 )
 
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -142,7 +169,7 @@ AddEventHandler(
         SetNuiFocus(false, false)
         SendNUIMessage(
             {
-                action = 'close'
+                action = "close"
             }
         )
     end

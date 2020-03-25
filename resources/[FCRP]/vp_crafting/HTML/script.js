@@ -68,6 +68,7 @@ window.addEventListener("message", function(event) {
     }
 
     if (event.data.action == 'update') {
+
         var newOwnedParts = event.data.updatedOwnedItems;
 
         $.each(newOwnedParts, function(ownedPartId, amount) {
@@ -110,6 +111,91 @@ window.addEventListener("message", function(event) {
                 $(`#${id}`).addClass('disabled');
             }
         });
+    }
+
+    if (event.data.action == 'upCraftingCount') {
+        var itemIdBeingCrafted = event.data.itemIdBeingCrafted;
+        var ms = event.data.craftingTime * 1000;
+
+        if ($(`.queue-container #${itemIdBeingCrafted}`).length > 0) {
+
+            var amountElement = $(`.queue-container #${itemIdBeingCrafted} span`).first();
+            var lastAmount = $(amountElement).text();
+            var amountParsed = parseInt(lastAmount);
+            amountParsed = amountParsed + 1;
+            $(amountElement).text(amountParsed);
+        } else {
+
+            $(`.queue-container`).append(`
+                <div class="item" id="${itemIdBeingCrafted}">
+                    <div class="crafting-bg"></div>
+                    <img src='nui://fcrp_inventory/html/img/items/${itemIdBeingCrafted}.png'>
+                    <span>1</span>
+                </div>
+            `);
+
+            // $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).animate({
+            //     height: "100%"
+            // }, ms, function() {
+            //     var amountElement = $(`.queue-container #${itemIdBeingCrafted} span`).first();
+            //     var lastAmount = $(amountElement).text();
+            //     var amountParsed = parseInt(lastAmount);
+            //     amountParsed = amountParsed - 1;
+            //     if (amountParsed > 0) {
+            //         $(amountElement).text(amountParsed);
+            //         $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).css('width', '0%');
+            //     } else {
+            //         $(`.queue-container #${itemIdBeingCrafted}`).remove();
+            //     }
+            // });
+        }
+    }
+
+    if (event.data.action == 'startCraftingNext') {
+        var itemIdBeingCrafted = event.data.itemIdBeingCrafted;
+        var ms = event.data.craftingTime * 1000;
+
+        if ($(`.queue-container #${itemIdBeingCrafted}`).length > 0) {
+            $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).css('height', '0%');
+            $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).stop();
+            $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).animate({
+                height: "100%"
+            }, ms, function() {
+                var amountElement = $(`.queue-container #${itemIdBeingCrafted} span`).first();
+                var lastAmount = $(amountElement).text();
+                var amountParsed = parseInt(lastAmount);
+                amountParsed = amountParsed - 1;
+                if (amountParsed > 0) {
+                    $(amountElement).text(amountParsed);
+                } else {
+                    $(`.queue-container #${itemIdBeingCrafted}`).remove();
+                }
+            });
+        } else {
+
+            $(`.queue-container`).append(`
+                <div class="item" id="${itemIdBeingCrafted}">
+                    <div class="crafting-bg"></div>
+                    <img src='nui://fcrp_inventory/html/img/items/${itemIdBeingCrafted}.png'>
+                    <span>1</span>
+                </div>
+            `);
+
+            $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).animate({
+                height: "100%"
+            }, ms, function() {
+                var amountElement = $(`.queue-container #${itemIdBeingCrafted} span`).first();
+                var lastAmount = $(amountElement).text();
+                var amountParsed = parseInt(lastAmount);
+                amountParsed = amountParsed - 1;
+                if (amountParsed > 0) {
+                    $(amountElement).text(amountParsed);
+                    $(`.queue-container #${itemIdBeingCrafted} .crafting-bg`).css('width', '0%');
+                } else {
+                    $(`.queue-container #${itemIdBeingCrafted}`).remove();
+                }
+            });
+        }
     }
 });
 
