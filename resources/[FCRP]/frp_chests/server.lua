@@ -91,7 +91,6 @@ AddEventHandler(
             User:notify('Você não pode abrir este baú')
             return
         end
-
         User:viewInventoryAsSecondary(chestInventory)
 
     end

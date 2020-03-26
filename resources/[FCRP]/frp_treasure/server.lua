@@ -18,19 +18,18 @@ local inventory_items = {
 }
 
 local TREASURE = {
-    [1] = {-921.25,-1577.69,66.03}, --val
-    [2] = {-921.25,-1577.69,66.03},  --blackwater
-    [3] = {-921.25,-1577.69,66.03},  --rhodes
-    [4] = {-921.25,-1577.69,66.03},  --strawberry
-    [5] = {-921.25,-1577.69,66.03},  --tumbleweed
-    [6] = {-921.25,-1577.69,66.03},  --saintdenis
+    [1] = {-921.25,-1577.69,66.03}, --blackwater
+    [2] = {-575.34,2033.95,289.66}, -- montain tempest rim
+    [3] = {-4388.91,-2490.98,1.00},  -- CHOLLA SPRINGS
+    [4] = {-5095.73,-3738.19,-1.90},  --   benedict point
+    [5] = {1887.26,279.11,77.11},  -- EMERALD STATION
+    [6] = {-758.89,-380.43,41.96},  -- dakota river
 }
 
 RegisterServerEvent("TREASURE:playerActivated")
 function ActivateTreasure()
-  if (PlayerCount) == 1 then
-    local random = math.random(1, 6)
-    TriggerEvent("TREASURE:create", random)
+  if (PlayerCount) >= 1 then
+    TriggerEvent("TREASURE:timeCall")
   else
     SetTimeout(1000, ActivateTreasure)
   end
@@ -59,11 +58,15 @@ AddEventHandler(
   end
 )
 
+RegisterCommand('callbau', function()
+  local random = math.random(1, 6)
+  print(random)
+  TriggerEvent("TREASURE:create", random)
+end)
 
 RegisterNetEvent('TREASURE:timeCall')
 AddEventHandler('TREASURE:timeCall', function()
-
-    local hora = 60000*60
+    local hora = 6000*60
     local horas = 60000*180
     local timeram = math.random(hora,horas)
 
@@ -93,7 +96,7 @@ AddEventHandler('TREASURE:create', function(id)
     local yram = math.random(2, 50)
     local xram = math.random(2, 20)
 
-    chest_position = {x,y,z,10.0}
+    chest_position = {x+xram,y+yram,z,10.0}
 
     local itensram = math.random(1, 6)
 
@@ -103,13 +106,14 @@ AddEventHandler('TREASURE:create', function(id)
 
     bauId[chest_id] = true
 
-    TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x,y,z)   
-    TriggerClientEvent("TREASURE:create", GetHostId(), x+xram,y+yram,z) 
+    TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x+xram,y+yram,z)   
+    TriggerClientEvent("TREASURE:create", -1, x,y,z) 
     TriggerEvent("TREASURE:timeCall")       
 end)
 
 
 AddEventHandler('FCRP:CHESTS:Open', function()
+  print('test 01')
     if bauId[chest_id] ~= nil then
         TriggerClientEvent("TREASURE:killblip", GetHostId())
     end

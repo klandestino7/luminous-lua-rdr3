@@ -3,6 +3,11 @@ AddEventHandler("Distress",function(css,mensagem)
 	SendNUIMessage({ css = css, mensagem = mensagem })
 end)
 
+RegisterNetEvent("FRP:Notify")
+AddEventHandler("FRP:Notify",function(mensagem)
+	SendNUIMessage({ css = 'sucesso', mensagem = mensagem })
+end)
+
 
 RegisterCommand('enviar', function()
 	local player = (GetEntityCoords(PlayerPedId()))

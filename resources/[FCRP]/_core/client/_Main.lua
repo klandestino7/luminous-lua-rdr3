@@ -280,6 +280,49 @@ local weaponModels = {
 	"weapon_fishingrod"
 }
 
+local ammotypes = {
+	'ammo_arrow',
+	'ammo_arrow_dynamite',
+	'ammo_arrow_fire',
+	'ammo_arrow_improved',
+	'ammo_arrow_poison',
+	'ammo_arrow_small_game',
+	'ammo_dynamite',
+	'ammo_dynamite_volatile',
+	'ammo_molotov',
+	'ammo_molotov_volatile',
+	'ammo_pistol',
+	'ammo_pistol_express',
+	'ammo_pistol_express_explosive',
+	'ammo_pistol_high_velocity',
+	'ammo_pistol_split_point',
+	'ammo_repeater',
+	'ammo_repeater_express',
+	'ammo_repeater_express_explosive',
+	'ammo_repeater_high_velocity',
+	'ammo_revolver',
+	'ammo_revolver_express',
+	'ammo_revolver_express_explosive',
+	'ammo_revolver_high_velocity',
+	'ammo_revolver_split_point',
+	'ammo_rifle',
+	'ammo_rifle_express',
+	'ammo_rifle_express_explosive',
+	'ammo_rifle_high_velocity',
+	'ammo_rifle_split_point',
+	'ammo_rifle_varmint',
+	'ammo_shotgun',
+	'ammo_shotgun_buckshot_incendiary',
+	'ammo_shotgun_express_explosive',
+	'ammo_shotgun_slug',
+	'ammo_throwing_knives',
+	'ammo_throwing_knives_improved',
+	'ammo_throwing_knives_poison',
+	'ammo_tomahawk',
+	'ammo_tomahawk_homing',
+	'ammo_tomahawk_improved',
+}
+
 function cAPI.getWeapons()
 	local ped = PlayerPedId()
 
@@ -308,10 +351,11 @@ function cAPI.replaceWeapons(weapons)
 	return old_weapons
 end
 
-function cAPI.giveWeapon(weapon, ammo, clear_before)
+function cAPI.giveWeapon(weapon, ammotype, amount, clear_before)
 	cAPI.giveWeapons(
 		{
-			weapon = ammo
+			weapon = {ammotype, amount}
+
 		},
 		clear_before
 	)
@@ -323,18 +367,21 @@ function cAPI.giveWeapons(weapons, clear_before)
 	if clear_before then
 		RemoveAllPedWeapons(ped, true, true)
 	end
-
-	for weapon, ammo in pairs(weapons) do
+	print(json.encode(weapons))
+	for weapon, values in pairs(weapons) do
 		local hash = GetHashKey(weapon)
+
+		local ammotype = values[1]
+		local amount = value[2]
 
 		GiveWeaponToPed_2(
 			PlayerPedId(),
 			hash,
-			ammo or 0,
+			amount or 0,
 			false,
 			true,
 			GetWeapontypeGroup(hash),
-			ammo > 0,
+			amount > 0,
 			0.5,
 			1.0,
 			0,
@@ -342,8 +389,9 @@ function cAPI.giveWeapons(weapons, clear_before)
 			0,
 			0
 		)
-		Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true)
-		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo)
+		--Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true) -- GiveWeaponToPed_2
+		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetHaskKey(ammotype), amount) -- SET_PED_AMMO_BY_TYPE
+	
 	end
 end
 
@@ -619,6 +667,32 @@ function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
 	end
 	Citizen.InvokeNative(0xADA9255D, font)
 	DisplayText(str, x, y)
+end
+
+function cAPI.Temperatura()
+	local _source = source
+	local ent = GetPlayerPed(_source)
+	local pp = GetEntityCoords(ent)
+	   local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))     
+	local vida = GetEntityHealth(PlayerPedId())
+	if vida <= 5 then
+	 -- print('chegou')
+	else
+	if temperatura < -5 then
+	  Wait(5000)
+		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+	  Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)     
+	  print('está muito frio')     
+	end
+	if temperatura > 40 then 
+	  Wait(5000)
+		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+	   Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)  
+	  print('está muito calor')   
+	end
+  end
 end
 
 function cAPI.LoadModel(hash)

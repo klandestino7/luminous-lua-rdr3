@@ -1,3 +1,7 @@
+local Tunnel = module('_core', 'libs/Tunnel')
+local Proxy = module('_core', 'libs/Proxy')
+API = Proxy.getInterface('API')
+cAPI = Tunnel.getInterface('API')
 
 RegisterServerEvent('clothes:checkmoney')
 AddEventHandler('clothes:checkmoney', function(price)

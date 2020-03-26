@@ -9,7 +9,7 @@ DBConnect = {
 	host = '127.0.0.1',
 	database = 'redm',
 	user = 'root',
-	password = ''
+	password = '@#$#@%aihsdj'
 }
 
 local db_drivers = {}

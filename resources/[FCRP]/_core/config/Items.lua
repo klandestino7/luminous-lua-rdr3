@@ -349,9 +349,49 @@ ItemList = {
         name = 'Munição de Pistola',
         weight = 0.1
     },
+    ['ammo_pistol_express'] = {
+        type = 'ammo',
+        name = 'Munição de Pistola Expressa',
+        weight = 0.1
+    },
+    ['ammo_pistol_express_explosive'] = {
+        type = 'ammo',
+        name = 'Munição de Pistola Explosiva',
+        weight = 0.1
+    },
+    ['ammo_pistol_high_velocity'] = {
+        type = 'ammo',
+        name = 'Munição de Pistola Rápida',
+        weight = 0.1
+    },
+    ['ammo_pistol_split_point'] = {
+        type = 'ammo',
+        name = 'Munição de Pistola Split',
+        weight = 0.1
+    },
     ['ammo_revolver'] = {
         type = 'ammo',
         name = 'Munição de Revolver',
+        weight = 0.1
+    },
+    ['ammo_revolver_express'] = {
+        type = 'ammo',
+        name = 'Munição de Revolver Expresso',
+        weight = 0.1
+    },
+    ['ammo_revolver_express_explosive'] = {
+        type = 'ammo',
+        name = 'Munição de Revolver Explosivo',
+        weight = 0.1
+    },
+    ['ammo_revolver_high_velocity'] = {
+        type = 'ammo',
+        name = 'Munição de Revolver Rápido',
+        weight = 0.1
+    },
+    ['ammo_revolver_split_point'] = {
+        type = 'ammo',
+        name = 'Munição de Revolver Split',
         weight = 0.1
     },
     ['ammo_repeater'] = {
@@ -359,7 +399,47 @@ ItemList = {
         name = 'Munição de Carabina',
         weight = 0.1
     },
+    ['ammo_repeater_express'] = {
+        type = 'ammo',
+        name = 'Munição de Carabina Expressa',
+        weight = 0.1
+    },
+    ['ammo_repeater_express_explosive'] = {
+        type = 'ammo',
+        name = 'Munição de Carabina Explosiva',
+        weight = 0.1
+    },
+    ['ammo_repeater_high_velocity'] = {
+        type = 'ammo',
+        name = 'Munição de Carabina Rápida',
+        weight = 0.1
+    },
     ['ammo_rifle'] = {
+        type = 'ammo',
+        name = 'Munição de Rifle',
+        weight = 0.1
+    },
+    ['ammo_rifle_express'] = {
+        type = 'ammo',
+        name = 'Munição de Rifle Expresso',
+        weight = 0.1
+    },
+    ['ammo_rifle_express_explosive'] = {
+        type = 'ammo',
+        name = 'Munição de Rifle Explosiva',
+        weight = 0.1
+    },
+    ['ammo_rifle_high_velocity'] = {
+        type = 'ammo',
+        name = 'Munição de Rifle Rápida',
+        weight = 0.1
+    },
+    ['ammo_rifle_split_point'] = {
+        type = 'ammo',
+        name = 'Munição de Rifle Split',
+        weight = 0.1
+    },
+    ['ammo_rifle_varmint'] = {
         type = 'ammo',
         name = 'Munição de Rifle',
         weight = 0.1
@@ -369,11 +449,52 @@ ItemList = {
         name = 'Munição de Shotgun',
         weight = 0.1
     },
+    ['ammo_shotgun_buckshot_incendiary'] = {
+        type = 'ammo',
+        name = 'Munição de Shotgun Incendiária',
+        weight = 0.1
+    },
+    ['ammo_shotgun_express_explosive'] = {
+        type = 'ammo',
+        name = 'Munição de Shotgun Explosiva',
+        weight = 0.1
+    },
+    ['ammo_shotgun_slug'] = {
+        type = 'ammo',
+        name = 'Munição de Shotgun Slug',
+        weight = 0.1
+    },
     ['ammo_arrow'] = {
         type = 'ammo',
         name = 'Flecha',
         weight = 0.2
     },
+    ['AMMO_ARROW_DYNAMITE'] = {
+        type = 'ammo',
+        name = 'Flecha',
+        weight = 0.2
+    },
+    ['ammo_arrow_fire'] = {
+        type = 'ammo',
+        name = 'Flecha Fogo',
+        weight = 0.2
+    },
+    ['ammo_arrow_improved'] = {
+        type = 'ammo',
+        name = 'Flecha Aprimorada',
+        weight = 0.2
+    },    
+    ['ammo_arrow_poison'] = {
+        type = 'ammo',
+        name = 'Flecha',
+        weight = 0.2
+    },
+    ['ammo_arrow_small_game'] = {
+        type = 'ammo',
+        name = 'Flecha',
+        weight = 0.2
+    },
+
     ['provision_fish_bullhead_catfish'] = {
         type = 'provision',
         name = 'Isca de Peixe',

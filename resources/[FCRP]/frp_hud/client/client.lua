@@ -1,7 +1,26 @@
+
+local Tunnel = module('_core', 'libs/Tunnel')
+local Proxy = module('_core', 'libs/Proxy')
+
+API = Proxy.getInterface('API')
+cAPI = Tunnel.getInterface('API')
+
 Citizen.CreateThread(function() -- ESCONDER E MOSTRAR ALGUMAS HUDS
     while true do
-        Citizen.Wait(0)    
-        N_0x8bc7c1f929d07bf3(-1679307491) -- show    
+        Citizen.Wait(0) 
+
+
+     --   N_0x69d65e89ffd72313(true) -- cinematic--
+--N_0xbae08f00021bffb2(horse) -- agitates the horse
+
+        DisableControlAction(0, 0x6E9734E8, true)
+
+        N_0x8bc7c1f929d07bf3(-1679307491) -- show   
+        DisableControlAction(0, 0x295175BF, true)  
+
+
+
+
         N_0x4cc5f2fc1332577f(-66088566) -- hide mpmoney
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
@@ -10,115 +29,43 @@ Citizen.CreateThread(function() -- ESCONDER E MOSTRAR ALGUMAS HUDS
         N_0xd4ee21b7cc7fd350(false)
         Citizen.InvokeNative(0x50C803A4CD5932C5, true)
         Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
-        GetTemperatura()
+        cAPI.Temperatura()
         DisplayRadar(true)
     end
 end)
 
+RegisterCommand('cans', function(source,args)
+
+    Citizen.InvokeNative(0xF6A7C08DF2E28B28, PlayerPedId(), 0, 0.5, true) -- cançaso 
+    Citizen.InvokeNative(0xF0FE8E790BFEB5BB , PlayerPedId(), 0, 0.2, false)
+
+    Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 2, 100)
+    Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 1, 100)
+   print(Citizen.InvokeNative(IsDeadeyeAbilityLocked,PlayerPedId()))
+    Wait(100)
+   -- print(GetAttributeCoreValue(PlayerPedId, 2))
+end)
 Citizen.CreateThread(function()
     while true do 
         Citizen.Wait(0)
         local ped = PlayerPedId()            
-        if IsPedOnMount(ped) then            
+        if IsPedOnMount(ped) or IsPedInAnyVehicle(ped,false) then            
             SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-           -- print"set1"
+          --  print"set1"
         else
             SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
-           -- print"set2"
-        end
-
-        if IsPedInAnyVehicle(ped,false) or IsPedGettingIntoAVehicle(ped) then            
+          --  print"set2"
+        end                 
+        if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1,ped,false) then            
             SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-       -- print"set1"
+          --  print"set1.1"
         else
-            SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
-       -- print"set2"
+            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
+          --  print"set2.1"
         end
     end
 end)
 
-function GetTemperatura()
-	    local _source = source
-        local ent = GetPlayerPed(_source)
-        local pp = GetEntityCoords(ent)
-       	local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))     
-        local vida = GetEntityHealth(PlayerPedId())
-        if vida <= 5 then
-         -- print('chegou')
-        else
-
-        if temperatura < -5 then
-          Wait(5000)
-            local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-            local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-          Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)     
-          print('está muito frio')     
-        end
-        if temperatura > 40 then 
-          Wait(5000)
-            local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-            local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-           Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)  
-          print('está muito calor')   
-        end
-      end
---print(temperatura)
-end
-
-
-
--- local towns = {
---     [1] = { ["distance"] = 160.0, ["x"] = -300.00, ["y"] = 790.00, ["z"] = 117.00, ["name"] = "Valentine"},
---     [2] = { ["distance"] = 60.0, ["x"] = -1790.00, ["y"] = -404.00, ["z"] = 117.00, ["name"] = "Strawberry"},
---     [3] = { ["distance"] = 60.0, ["x"] = -812.00, ["y"] = -1294.00, ["z"] = 61.00, ["name"] = "Blackwater"},
---     [4] = { ["distance"] = 60.0, ["x"] = -3676.00, ["y"] = -2601.00, ["z"] = 00.00, ["name"] = "Armadillo"},
---     [5] = { ["distance"] = 180.0, ["x"] = -5510.00, ["y"] = -2939.00, ["z"] = 10.00, ["name"] = "Tumbleweed"},
---     [6] = { ["distance"] = 200.0, ["x"] = 1353.00, ["y"] = -1268.00, ["z"] = 80.00, ["name"] = "Rhodes"},
---     [7] = { ["distance"] = 500.0, ["x"] = 2604.00, ["y"] = -1177.00, ["z"] = 117.00, ["name"] = "Saint Denis"},
--- }
-
--- local NotifyIn = false
--- local NotifyOut = false
--- local insideTown = false
-
--- Citizen.CreateThread(function()
---     while true do
---         for i = 1, #towns do
---             Wait(500)
---             local player = PlayerPedId()
---             local coords = GetEntityCoords(player)
---             local myV = vector3(coords.x, coords.y, coords.z)
---             local dst = #(vector3(towns[i]["x"], towns[i]["y"], towns[i]["z"]) - myV)
-            
---             if dst < towns[i]["distance"] then
-
---                 if not NotifyIn then                      
---                     insideTown = true
-
-
---                  --   TriggerEvent("fc_notify:start", 'Bem-vindo a '..towns[i]["name"], 5)
-              
---                     NotifyIn = true
---                     NotifyOut = false
-
---                 elseif dst > towns[i]["distance"] then
---                     insideTown = false
---                 end
-
---             else
-
---                 if not NotifyOut then
---                     NotifyIn = false
---                     NotifyOut = true
---                 end
-
---             end
-
-
---         end
---     end
---     return
--- end)
 
 -- local prompt = false
 -- local AnimalPrompt
