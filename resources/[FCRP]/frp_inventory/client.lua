@@ -131,6 +131,13 @@ function closeInv()
     TriggerServerEvent('FCRP:INVENTORY:Close')
 end
 
+RegisterNetEvent('frp_inventory:removeWeapons')
+AddEventHandler('frp_inventory:removeWeapons', function()
+    local var, model = GetCurrentPedWeapon(PlayerPedId())
+    RemoveAllPedWeapons(PlayerPedId(), false, true)
+end)
+
+
 Citizen.CreateThread(
     function()
         local prompt = PromptRegisterBegin()

@@ -578,6 +578,11 @@ ItemList = {
         name = 'Dólar',
         weight = 0.01
     },
+    ['generic_blackmoney'] = {
+        type = 'normal',
+        name = 'Dólar Sujo',
+        weight = 0.01
+    },
     ['generic_gold'] = {
         type = 'normal',
         name = 'Ouro',

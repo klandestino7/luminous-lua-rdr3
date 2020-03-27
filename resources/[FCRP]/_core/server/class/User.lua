@@ -72,6 +72,7 @@ function API.User(source, id, ipAddress)
             Character:createHorse("A_C_Donkey_01", "Burrinho")
             Character:setData(charId, "charTable", "hunger", 0)
             Character:setData(charId, "charTable", "thirst", 0)
+            Character:setData(charId, 'charTable', 'banco', 0)
 
             API_Database.execute(
                 "FCRP/Inventory",

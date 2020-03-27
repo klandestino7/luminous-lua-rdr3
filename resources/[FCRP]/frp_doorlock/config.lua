@@ -1,14 +1,21 @@
 Config = {}
 
 Config.DoorList = {
+	{    --    STRAWBERRY 
+		authorizedJobs = { 'user' },
+		doorName = 160636303,
+        doorCoords  = vector3(-3666.02, -2620.88, -14.57),
+        objYaw = 0.0,
+        locked = false,
+        distance = 3.0
+	},
     {    --    STRAWBERRY 
 		authorizedJobs = { 'user' },
         doorCoords  = vector3(-1682.84, -340.62, 172.98),
         objYaw = 100.0,
         locked = true,
         distance = 3.0
-	},
-	    
+	},	    
 	{    --    Entrance Left
         authorizedJobs = { 'user' },
         doorCoords  = vector3(-306.8859, 780.1154, 117.7299),
@@ -257,21 +264,20 @@ Config.DoorList = {
 		distance = 2.0
 	},
 	-- fort wallace
-	{
-			--direita
-		authorizedJobs = { 'coronell' },
-		doorCoords  = {x = 360.22, y = 1465.99, z = 178.72},
-		objYaw = 215.44,
-		locked = true,
-		distance = 5.0
-	},
-	{
-			-- esquerda
-		authorizedJobs = { 'coronell' },
-		doorCoords  = {x = 356.98, y = 1463.7, z = 178.72},
-		objYaw = 34.55,
-		locked = true,
-		distance = 5.0
-	
-	},
+	-- {
+	-- 		--direita
+	-- 	authorizedJobs = { 'coronell' },
+	-- 	doorCoords  = {x = 360.22, y = 1465.99, z = 178.72},
+	-- 	objYaw = 215.44,
+	-- 	locked = true,
+	-- 	distance = 10.0
+	-- },	
+	-- {
+	-- 		-- esquerda
+	-- 	authorizedJobs = { 'coronell' },
+	-- 	doorCoords  = {x = 356.98, y = 1463.7, z = 178.72},
+	-- 	objYaw = 34.55,
+	-- 	locked = true,
+	-- 	distance = 10.0	
+	-- },
 }

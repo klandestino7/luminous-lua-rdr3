@@ -6,8 +6,8 @@ cAPI = Tunnel.getInterface("API")
 
 local DoorInfo	= {}
 
-RegisterServerEvent('redemrp_doorlocks:updatedoorsv')
-AddEventHandler('redemrp_doorlocks:updatedoorsv', function(src, doorID, cb)
+RegisterServerEvent('FRP:DOORLOCK:updatedoorsv')
+AddEventHandler('FRP:DOORLOCK:updatedoorsv', function(src, doorID, cb)
 	local _source = source
 	local User = API.getUserFromSource(source)
 	local Character = User:getCharacter()	
@@ -21,13 +21,13 @@ AddEventHandler('redemrp_doorlocks:updatedoorsv', function(src, doorID, cb)
 				User:notify('Você não está autorizado')
 			return
 			end
-			TriggerClientEvent('redemrp_doorlocks:changedoor', _source, doorID)
+			TriggerClientEvent('FRP:DOORLOCK:changedoor', _source, doorID)
 		end
         
 end)
 
-RegisterServerEvent('redemrp_doorlocks:updateState')
-AddEventHandler('redemrp_doorlocks:updateState', function(source, doorID, state, cb)
+RegisterServerEvent('FRP:DOORLOCK:updateState')
+AddEventHandler('FRP:DOORLOCK:updateState', function(src, doorID, state, cb)
 	local _source = source
 	local User = API.getUserFromSource(source)
 	local Character = User:getCharacter()	
@@ -50,7 +50,7 @@ AddEventHandler('redemrp_doorlocks:updateState', function(source, doorID, state,
 		DoorInfo[doorID].state = state
 		DoorInfo[doorID].doorID = doorID
 
-		TriggerClientEvent('redemrp_doorlocks:setState', -1, doorID, state)
+		TriggerClientEvent('FRP:DOORLOCK:setState', -1, doorID, state)
    
 end)
 
@@ -63,3 +63,4 @@ function IsAuthorized(jobName, doorID)
 
 	return false
 end
+

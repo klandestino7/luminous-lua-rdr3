@@ -280,49 +280,6 @@ local weaponModels = {
 	"weapon_fishingrod"
 }
 
-local ammotypes = {
-	'ammo_arrow',
-	'ammo_arrow_dynamite',
-	'ammo_arrow_fire',
-	'ammo_arrow_improved',
-	'ammo_arrow_poison',
-	'ammo_arrow_small_game',
-	'ammo_dynamite',
-	'ammo_dynamite_volatile',
-	'ammo_molotov',
-	'ammo_molotov_volatile',
-	'ammo_pistol',
-	'ammo_pistol_express',
-	'ammo_pistol_express_explosive',
-	'ammo_pistol_high_velocity',
-	'ammo_pistol_split_point',
-	'ammo_repeater',
-	'ammo_repeater_express',
-	'ammo_repeater_express_explosive',
-	'ammo_repeater_high_velocity',
-	'ammo_revolver',
-	'ammo_revolver_express',
-	'ammo_revolver_express_explosive',
-	'ammo_revolver_high_velocity',
-	'ammo_revolver_split_point',
-	'ammo_rifle',
-	'ammo_rifle_express',
-	'ammo_rifle_express_explosive',
-	'ammo_rifle_high_velocity',
-	'ammo_rifle_split_point',
-	'ammo_rifle_varmint',
-	'ammo_shotgun',
-	'ammo_shotgun_buckshot_incendiary',
-	'ammo_shotgun_express_explosive',
-	'ammo_shotgun_slug',
-	'ammo_throwing_knives',
-	'ammo_throwing_knives_improved',
-	'ammo_throwing_knives_poison',
-	'ammo_tomahawk',
-	'ammo_tomahawk_homing',
-	'ammo_tomahawk_improved',
-}
-
 function cAPI.getWeapons()
 	local ped = PlayerPedId()
 
@@ -345,17 +302,47 @@ function cAPI.getWeapons()
 	return weapons
 end
 
+
+function cAPI.getAmmo()
+
+	local ped = PlayerPedId()
+	local ammo_types = {}
+
+	local weapons = {}
+	for k, v in pairs(weaponModels) do
+		local hash = GetHashKey(v)
+		if HasPedGotWeapon(ped, hash) then
+			local atype = GetPedAmmoTypeFromWeapon(ped, hash)
+			if ammo_types[atype] == nil then
+				ammo_types[atype] = true
+				weapons[v] = GetAmmoInPedWeapon(ped, hash)
+			else
+				weapons[v] = 0
+			end
+		end
+	end
+	return ammo_types
+end
+
+
+
 function cAPI.replaceWeapons(weapons)
 	local old_weapons = cAPI.getWeapons()
 	cAPI.giveWeapons(weapons, true)
-	return old_weapons
+	return old_weapons	
 end
 
-function cAPI.giveWeapon(weapon, ammotype, amount, clear_before)
+function cAPI.replaceWeapons(weapons)
+	local old_weapons = cAPI.getWeapons()
+	cAPI.giveWeapons(weapons, true)
+	return old_weapons	
+end
+
+
+function cAPI.giveWeapon(weapon, ammo, clear_before)
 	cAPI.giveWeapons(
 		{
-			weapon = {ammotype, amount}
-
+			weapon = ammo
 		},
 		clear_before
 	)
@@ -367,21 +354,20 @@ function cAPI.giveWeapons(weapons, clear_before)
 	if clear_before then
 		RemoveAllPedWeapons(ped, true, true)
 	end
-	print(json.encode(weapons))
-	for weapon, values in pairs(weapons) do
-		local hash = GetHashKey(weapon)
 
-		local ammotype = values[1]
-		local amount = value[2]
+	for weapon, ammo in pairs(weapons) do
+		local hash = GetHashKey(weapon)
+		local ammotype = weapons[1]
+		local amount = weapons[2]
 
 		GiveWeaponToPed_2(
 			PlayerPedId(),
 			hash,
-			amount or 0,
+			ammo or 0,
 			false,
 			true,
 			GetWeapontypeGroup(hash),
-			amount > 0,
+			ammo > 0,
 			0.5,
 			1.0,
 			0,
@@ -390,7 +376,7 @@ function cAPI.giveWeapons(weapons, clear_before)
 			0
 		)
 		--Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true) -- GiveWeaponToPed_2
-		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetHaskKey(ammotype), amount) -- SET_PED_AMMO_BY_TYPE
+		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(),  GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo) -- SET_PED_AMMO_BY_TYPE
 	
 	end
 end

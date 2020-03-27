@@ -2981,7 +2981,7 @@ MaleComp = {
 [2979]={["name"]="MP737",["Hash"]="246622E1",["category"]="hats"},
 [2980]={["name"]="MP742",["Hash"]="2490B32C",["category"]="hats"},
 [2981]={["name"]="MP758",["Hash"]="2542A345",["category"]="hats"},
-[2982]={["name"]="MP768",["Hash"]="25D3CBF6",["category"]="hats"},
+[2982]={["name"]="MP768",["Hash"]="2542A345",["category"]="hats"},
 [2983]={["name"]="MP775",["Hash"]="262CC9D4",["category"]="hats"},
 [2984]={["name"]="MP777",["Hash"]="26342E05",["category"]="hats"},
 [2985]={["name"]="MP782",["Hash"]="267E3453",["category"]="hats"},

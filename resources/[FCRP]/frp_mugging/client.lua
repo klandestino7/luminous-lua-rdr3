@@ -10,7 +10,6 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(100)
-
             local nearestPlayer = cAPI.getNearestPlayer(1.5)
             if nearestPlayer ~= nil then
                 if IsEntityPlayingAnim(GetPlayerPed(player), 'script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs', 'handsup_register_owner', 3) then

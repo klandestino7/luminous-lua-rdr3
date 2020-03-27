@@ -9,7 +9,6 @@ Citizen.CreateThread(function() -- ESCONDER E MOSTRAR ALGUMAS HUDS
     while true do
         Citizen.Wait(0) 
 
-
      --   N_0x69d65e89ffd72313(true) -- cinematic--
 --N_0xbae08f00021bffb2(horse) -- agitates the horse
 

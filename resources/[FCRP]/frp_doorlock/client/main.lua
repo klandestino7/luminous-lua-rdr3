@@ -24,7 +24,7 @@ Citizen.CreateThread(function()
 					DrawText3D(doorID.doorCoords.x, doorID.doorCoords.y, doorID.doorCoords.z, displayText)
 					
 					if IsControlJustPressed(2, 0xE8342FF2) then -- Hold ALT
-						TriggerEvent("redemrp_doorlocks:updatedoor", GetPlayerServerId(), i)
+						TriggerEvent("FRP:DOORLOCK:updatedoor", GetPlayerServerId(), i)
 			
 					end
 				end
@@ -33,21 +33,21 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('redemrp_doorlocks:updatedoor')
-AddEventHandler('redemrp_doorlocks:updatedoor', function(source, door) 
+RegisterNetEvent('FRP:DOORLOCK:updatedoor')
+AddEventHandler('FRP:DOORLOCK:updatedoor', function(source, door) 
 
-    TriggerServerEvent("redemrp_doorlocks:updatedoorsv", source, door, function(cb) end) --Perms check
+    TriggerServerEvent("FRP:DOORLOCK:updatedoorsv", source, door, function(cb) end) --Perms check
 end)
 
-RegisterNetEvent('redemrp_doorlocks:changedoor')
-AddEventHandler('redemrp_doorlocks:changedoor', function(doorID) 
+RegisterNetEvent('FRP:DOORLOCK:changedoor')
+AddEventHandler('FRP:DOORLOCK:changedoor', function(doorID) 
 	local name   = Config.DoorList[doorID]
 	name.locked = not name.locked
-	TriggerServerEvent('redemrp_doorlocks:updateState', source, doorID, name.locked)
+	TriggerServerEvent('FRP:DOORLOCK:updateState', source, doorID, name.locked)
 end)
 
-RegisterNetEvent('redemrp_doorlocks:setState')
-AddEventHandler('redemrp_doorlocks:setState', function(doorID, state)
+RegisterNetEvent('FRP:DOORLOCK:setState')
+AddEventHandler('FRP:DOORLOCK:setState', function(doorID, state)
 	Config.DoorList[doorID].locked = state
 end)
 
@@ -69,6 +69,7 @@ function ApplyDoorState(doorID)
 	local shapeTest = StartShapeTestBox(doorID.doorCoords.x, doorID.doorCoords.y, doorID.doorCoords.z, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, true, 16)
     local rtnVal, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(shapeTest)
 	FreezeEntityPosition(entityHit, doorID.locked)
+
 	DoorSystemSetDoorState(entityHit, doorID.locked)
 	if doorID.locked then
 		SetEntityRotation(entityHit, 0.0, 0.0, doorID.objYaw, 1, true)

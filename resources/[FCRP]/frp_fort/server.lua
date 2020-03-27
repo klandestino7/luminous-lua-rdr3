@@ -7,22 +7,17 @@ cAPI = Tunnel.getInterface("API")
 local data = {
     [1] = {
         staticReward = 10000,
-        staticSecondsToReward = 10,
+        staticSecondsToReward = 700,
         staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
-        -- cooldown
+        staticCooldown = 30 * 60,
+        staticName = 'Mercer'
     },
     [2] = {
         staticReward = 10000,
-        staticSecondsToReward = 30,
+        staticSecondsToReward = 700,
         staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
-    },
-    [3] = {
-        staticReward = 10000,
-        staticSecondsToReward = 30,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
+        staticCooldown = 30 * 60,
+        staticName = 'Wallace'
     }
 }
 
@@ -32,16 +27,43 @@ local indexBeingRobbed_participants = {}
 local indexBeingRobbed_playerSourceWhoStarted = nil
 
 local robberyBeingEnded = false
-
+local index = nil
 RegisterNetEvent("FCRP:ROBBERY:TryToStartRobbery")
 AddEventHandler(
     "FCRP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
+        local User = API.getUserFromSource(_source)
+
+        indexBeingRobbed = index
+        local Posse = API.getPosse(User:getPosseId())        
+        local Character = User:getCharacter()
+        local userRank = Posse:getMemberRank(Character:getId())
+        local fortbando = Posse:getData(indexBeingRobbed,'bando')
+
+
+
+        if not User:isInAPosse() then
+           -- User:notify("Você não está em um bando.")            
+            TriggerClientEvent('FRP:Notify', _source, "Você não está em um bando.")
+            return
+        end
+
+        if userRank >= 2 then
+            --User:notify("Somente um membro de cargo superior pode iniciar dominação.")
+            TriggerClientEvent('FRP:Notify', _source, "Somente um membro de cargo superior pode iniciar dominação.")
+            return
+        end 
+
+        if Posse.id == fortbando then
+            --User:notify("Seu bando já domina este forte.")
+            TriggerClientEvent('FRP:Notify', _source, "Seu bando já domina este forte.")
+            return
+        end
 
         if interiorIndexBeingRobbed ~= nil then
-            print("Interior já está sendo roubado")
-            TriggerClientEvent('FRP:Notify', _source, "Esse local já está sendo roubado")
+            print("Este forte já está em dominação")
+            TriggerClientEvent('FRP:Notify', _source, "Este forte já está em dominação.")
             return
         end
 
@@ -54,10 +76,8 @@ AddEventHandler(
                 data[index].cooldown = nil
             end
         end
-
-        indexBeingRobbed = index
+        
         indexBeingRobbed_playerSourceWhoStarted = _source
-
         local numParticipants = 0
         local maxParticipants = data[index].staticMaxParticipants
         local numParticipantsToCheck = #participants
@@ -74,7 +94,10 @@ AddEventHandler(
                         isParticipant = true
                         if numParticipants < maxParticipants then
                             numParticipants = numParticipants + 1
+                            print(indexBeingRobbed_seconds)
                             TriggerClientEvent("FCRP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
+
+                            TriggerClientEvent('FRP:Notify', -1, "O Forte ".. data[indexBeingRobbed].staticName .." está sendo disputado.")
                             participants[participantSource] = true
                         else
                             TriggerClientEvent("FCRP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
@@ -138,13 +161,11 @@ function endRobberyGiveReward()
     end
 
     if User ~= nil then
-        local Character = User:getCharacter()
-        if Character ~= nil then
-            local reward = data[indexBeingRobbed].staticReward
-            Character:getInventory():addItem("generic_money", reward)
-            --TriggerClientEvent('FRP:Notify', User, "Você recebeu R$ " .. reward .. " pelo assalto")
-            print("Você recebeu R$ " .. reward / 100 .. " pelo assalto")
-            User:notify("Você recebeu R$ " .. reward / 100 .. " pelo assalto")
+        local Character = User:getCharacter()                
+        local Posse = API.getPosse(User:getPosseId())        
+        if Character ~= nil then 
+            Posse:setData(indexBeingRobbed, 'bando', 'bando', Posse.id)
+            TriggerClientEvent('FRP:Notify', User, "Você dominou esse forte!")
         end
     end
 
@@ -186,8 +207,11 @@ AddEventHandler(
             TriggerClientEvent("FCRP:ROBBERY:EndRobbery", -1)
         end
 
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+
         print("Player " .. _source .. " left the robbery")
-        TriggerClientEvent('FRP:Notify', _source, "O " .. _source .. " left the robbery")
+        TriggerClientEvent('FRP:Notify', _source, "O " .. Character:getName() .. " saiu da área da dominação.")
     end
 )
 
