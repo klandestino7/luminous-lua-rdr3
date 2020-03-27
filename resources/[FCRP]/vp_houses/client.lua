@@ -1,5 +1,6 @@
 local interiors = {
-    206849
+    206849,
+    250881
 }
 
 local insideHomeInterior
@@ -17,17 +18,16 @@ RegisterCommand(
     false
 )
 
-
 Citizen.CreateThread(
     function()
-        local interiorsOutsidePortals = getInteriorsOutsidePortals()
+        local interiorsOutsidePortals = {}
         while true do
             Citizen.Wait(1000)
 
             local ped = PlayerPedId()
             local position = GetEntityCoords(ped)
 
-            for interiorId, portals in pairs(outsidePortals) do
+            for _, interiorId in pairs(interiors) do
                 if IsInteriorReady(interiorId) then
                     local interiorPos = vec3(GetInteriorPosition(interiorId))
                     local interiorRotation = vec4(GetInteriorRotation(interiorId))
@@ -35,11 +35,14 @@ Citizen.CreateThread(
                     local outsidePortalDistance
                     local _outsidePortalVector
 
+                    if interiorsOutsidePortals[interiorId] == nil then
+                        interiorsOutsidePortals[interiorId] = getInteriorOutsidePortals(interiorId)
+                    end
+
                     for _, portalIndex in pairs(interiorsOutsidePortals[interiorId]) do
                         local cornerPosition_topRight = interiorPos + QMultiply(interiorRotation, vec3(GetInteriorPortalCornerPosition(interiorId, portalIndex, 0)))
                         local cornerPosition_topLeft = interiorPos + QMultiply(interiorRotation, vec3(GetInteriorPortalCornerPosition(interiorId, portalIndex, 3)))
 
-                        -- print(position, cornerPosition_topRight, #(position - cornerPosition_topRight))
                         local distRight = #(position - cornerPosition_topRight)
                         local distLeft = #(position - cornerPosition_topLeft)
 
@@ -89,15 +92,11 @@ Citizen.CreateThread(
     end
 )
 
-function getInteriorsOutsidePortals()
+function getInteriorOutsidePortals(interiorId)
     outsidePortals = {}
-    for _, interiorId in pairs(interiors) do
-        outsidePortals[interiorId] = {}
-        for i = 0, GetInteriorPortalCount(interiorId) do
-            if GetInteriorPortalRoomTo(interiorId, i) == 0 and GetInteriorPortalFlag(interiorId, i) ~= 8 then
-                table.insert(outsidePortals[interiorId], i)
-                print(i)
-            end
+    for i = 0, GetInteriorPortalCount(interiorId) - 1 do
+        if GetInteriorPortalRoomTo(interiorId, i) == 0 and GetInteriorPortalFlag(interiorId, i) ~= 8 then
+            table.insert(outsidePortals, i)
         end
     end
     return outsidePortals
