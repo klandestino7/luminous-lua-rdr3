@@ -9,7 +9,7 @@ client_scripts {
 	'config/Items.lua',
 	'config/CraftableItems.lua',
 	'config/DefaultClothes.lua',
-	'config/Weapons.lua',
+	--'config/Weapons.lua',
 	---------------------
 	'client/_Main.lua',
 	'client/Horse.lua',

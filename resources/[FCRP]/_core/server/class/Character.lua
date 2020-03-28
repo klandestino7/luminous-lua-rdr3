@@ -213,7 +213,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
 
                 return self.Horse
             else
-                return self:createHorse('A_C_Donkey_01', 'Burrinho')
+                return 
             end
         else      
             return self.Horse

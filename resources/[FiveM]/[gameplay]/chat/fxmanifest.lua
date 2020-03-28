@@ -8,6 +8,7 @@ server_script 'sv_chat.lua'
 files {
     'html/index.html',
     'html/index.css',
+    'html/revolver.png',
     'html/config.default.js',
     'html/config.js',
     'html/App.js',

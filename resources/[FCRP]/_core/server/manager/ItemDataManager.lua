@@ -13,66 +13,130 @@ function API.getItemDataFromName(name)
     end
 end
 
+-- function API.getAmmoTypeFromWeaponType(weapon)
+--     weapon = weapon:upper()
+
+--     local ammo = {}
+
+--     if weapon == 'WEAPON_MOONSHINEJUG' then
+--         ammo = {'AMMO_MOONSHINEJUG'}
+--     end
+
+--     if weapon == 'WEAPON_FISHINGROD' then
+--         ammo = {'AMMO_FISHINGROD'}
+--     end
+
+--     if weapon == 'WEAPON_THROWN_THROWING_KNIVES' then
+--         ammo = {'AMMO_THROWING_KNIVES'}
+--     end
+
+--     if weapon == 'WEAPON_THROWN_TOMAHAWK' then
+--         ammo = {'AMMO_TOMAHAWK'}
+--     end
+
+--     if weapon == 'WEAPON_THROWN_TOMAHAWK_ANCIENT' then
+--         ammo = {'AMMO_TOMAHAWK_ANCIENT'}
+--     end
+
+--     if weapon == 'WEAPON_MOONSHINEJUG' then
+--         ammo = {'AMMO_MOONSHINEJUG'}
+--     end
+
+--     if weapon:find('_PISTOL_') then
+--         ammo = {'AMMO_PISTOL' , 'ammo_pistol_express' , 'ammo_pistol_express_explosive' , 'ammo_pistol_high_velocity' , 'ammo_pistol_split_point'}
+--     end
+
+--     if weapon:find('_REPEATER_') or weapon:find('WEAPON_RIFLE_VARMINT') then
+--         ammo = {'AMMO_REPEATER' , 'ammo_repeater_express' , 'ammo_repeater_express_explosive' , 'ammo_repeater_high_velocity'}
+--     end
+
+--     if weapon:find('_REVOLVER_') then
+--         ammo = {'AMMO_REVOLVER' , 'ammo_revolver_express' , 'ammo_revolver_express_explosive' , 'ammo_revolver_high_velocity' , 'ammo_revolver_split_point'}
+--     end
+
+--     if weapon:find('RIFLE_') then
+--         ammo = {'AMMO_RIFLE' , 'ammo_rifle_express' , 'ammo_rifle_express_explosive' , 'ammo_rifle_high_velocity' , 'ammo_rifle_split_point' , 'ammo_rifle_varmint'}
+--     end
+
+--     if weapon:find('_SHOTGUN_') then
+--         ammo = {'AMMO_SHOTGUN' , 'ammo_shotgun_buckshot_incendiary' , 'ammo_shotgun_express_explosive' , 'ammo_shotgun_slug'}
+--     end
+
+--     if weapon:find('WEAPON_BOW') then
+--         ammo = {'AMMO_ARROW' , 'ammo_arrow_dynamite' , 'ammo_arrow_fire' , 'ammo_arrow_improved' , 'ammo_arrow_poison' , 'ammo_arrow_small_game'}
+--     end
+
+--     if weapon:find('WEAPON_THROWN_DYNAMITE') then
+--         ammo = {'AMMO_DYNAMITE'}
+--     end
+
+--     if weapon:find('WEAPON_THROWN_MOLOTOV') then
+--         ammo = {'AMMO_MOLOTOV'}
+--     end
+--     return ammo
+-- end
+
 function API.getAmmoTypeFromWeaponType(weapon)
     weapon = weapon:upper()
 
-    local ammo = {}
+    local ammo = nil
 
     if weapon == 'WEAPON_MOONSHINEJUG' then
-        ammo = {'AMMO_MOONSHINEJUG'}
+        ammo = 'AMMO_MOONSHINEJUG'
     end
 
     if weapon == 'WEAPON_FISHINGROD' then
-        ammo = {'AMMO_FISHINGROD'}
+        ammo = 'AMMO_FISHINGROD'
     end
 
     if weapon == 'WEAPON_THROWN_THROWING_KNIVES' then
-        ammo = {'AMMO_THROWING_KNIVES'}
+        ammo = 'AMMO_THROWING_KNIVES'
     end
 
     if weapon == 'WEAPON_THROWN_TOMAHAWK' then
-        ammo = {'AMMO_TOMAHAWK'}
+        ammo = 'AMMO_TOMAHAWK'
     end
 
     if weapon == 'WEAPON_THROWN_TOMAHAWK_ANCIENT' then
-        ammo = {'AMMO_TOMAHAWK_ANCIENT'}
+        ammo = 'AMMO_TOMAHAWK_ANCIENT'
     end
 
     if weapon == 'WEAPON_MOONSHINEJUG' then
-        ammo = {'AMMO_MOONSHINEJUG'}
+        ammo = 'AMMO_MOONSHINEJUG'
     end
 
     if weapon:find('_PISTOL_') then
-        ammo = {'AMMO_PISTOL' , 'ammo_pistol_express' , 'ammo_pistol_express_explosive' , 'ammo_pistol_high_velocity' , 'ammo_pistol_split_point'}
+        ammo = 'AMMO_PISTOL'
     end
 
     if weapon:find('_REPEATER_') or weapon:find('WEAPON_RIFLE_VARMINT') then
-        ammo = {'AMMO_REPEATER' , 'ammo_repeater_express' , 'ammo_repeater_express_explosive' , 'ammo_repeater_high_velocity'}
+        ammo = 'AMMO_REPEATER'
     end
 
     if weapon:find('_REVOLVER_') then
-        ammo = {'AMMO_REVOLVER' , 'ammo_revolver_express' , 'ammo_revolver_express_explosive' , 'ammo_revolver_high_velocity' , 'ammo_revolver_split_point'}
+        ammo = 'AMMO_REVOLVER'
     end
 
     if weapon:find('RIFLE_') then
-        ammo = {'AMMO_RIFLE' , 'ammo_rifle_express' , 'ammo_rifle_express_explosive' , 'ammo_rifle_high_velocity' , 'ammo_rifle_split_point' , 'ammo_rifle_varmint'}
+        ammo = 'AMMO_RIFLE'
     end
 
     if weapon:find('_SHOTGUN_') then
-        ammo = {'AMMO_SHOTGUN' , 'ammo_shotgun_buckshot_incendiary' , 'ammo_shotgun_express_explosive' , 'ammo_shotgun_slug'}
+        ammo = 'AMMO_SHOTGUN'
     end
 
     if weapon:find('WEAPON_BOW') then
-        ammo = {'AMMO_ARROW' , 'ammo_arrow_dynamite' , 'ammo_arrow_fire' , 'ammo_arrow_improved' , 'ammo_arrow_poison' , 'ammo_arrow_small_game'}
+        ammo = 'AMMO_ARROW'
     end
 
     if weapon:find('WEAPON_THROWN_DYNAMITE') then
-        ammo = {'AMMO_DYNAMITE'}
+        ammo = 'AMMO_DYNAMITE'
     end
 
     if weapon:find('WEAPON_THROWN_MOLOTOV') then
-        ammo = {'AMMO_MOLOTOV'}
+        ammo = 'AMMO_MOLOTOV'
     end
+
     return ammo
 end
 

@@ -69,7 +69,7 @@ function API.User(source, id, ipAddress)
             local charId = rows[1].id
 
             Character = API.Character(charId, characterName, 1, 0, {}, API.Inventory("char:" .. charId, nil, nil))
-            Character:createHorse("A_C_Donkey_01", "Burrinho")
+        --    Character:createHorse("A_C_Donkey_01", "Burrinho")
             Character:setData(charId, "charTable", "hunger", 0)
             Character:setData(charId, "charTable", "thirst", 0)
             Character:setData(charId, 'charTable', 'banco', 0)
@@ -123,8 +123,15 @@ function API.User(source, id, ipAddress)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
             local Horse = self:getCharacter():getHorse()
-            if Horse then
+            
+            print(Horse)
+
+            if Horse ~= nil then
+                print('tem cavalo')
                 cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName())
+            else
+                print('não tem cavalo')
+                cAPI.setHorse(self:getSource(), "A_C_Donkey_01", "Burrinho")
             end
 
             

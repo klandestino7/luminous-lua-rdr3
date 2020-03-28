@@ -9,6 +9,11 @@ ItemList = {
         name = 'Tocha',
         weight = 0.5
     },
+    ['weapon_melee_broken_sword'] = {
+        type = 'weapon',
+        name = 'Espada Quebrada',
+        weight = 1.0
+    },
     ['weapon_fishingrod'] = {
         type = 'weapon',
         name = 'Vara de Pescar',
@@ -19,6 +24,81 @@ ItemList = {
         name = 'Machado',
         weight = 1.0
     },
+    ['weapon_melee_cleaver'] = {
+        type = 'weapon',
+        name = 'Machado Cleaver',
+        weight = 1.5
+    },
+    ['weapon_melee_ancient_hatchet'] = {
+        type = 'weapon',
+        name = 'Machado Raro',
+        weight = 1.0
+    },
+    ['weapon_melee_hatchet_viking'] = {
+        type = 'weapon',
+        name = 'Machado Viking',
+        weight = 1.2
+    },
+    ['weapon_melee_hatchet_hewing'] = {
+        type = 'weapon',
+        name = 'Machado Hewing',
+        weight = 1.2
+    },
+    ['weapon_melee_hatchet_double_bit'] = {
+        type = 'weapon',
+        name = 'Machado Duplo',
+        weight = 1.9
+    },
+    ['weapon_melee_hatchet_double_bit_rusted'] = {
+        type = 'weapon',
+        name = 'Machado Duplo Velho',
+        weight = 2.0
+    },
+    ['weapon_melee_hatchet_hunter'] = {
+        type = 'weapon',
+        name = 'Machado de Caçador',
+        weight = 1.5
+    },
+    ['weapon_melee_hatchet_hunter_rusted'] = {
+        type = 'weapon',
+        name = 'Machado de Caçador Velho',
+        weight = 1.5
+    },
+    ['weapon_melee_knife_jawbone'] = {
+        type = 'weapon',
+        name = 'Faca Jawbone',
+        weight = 0.5
+    },
+    ['weapon_melee_knife_miner'] = {
+        type = 'weapon',
+        name = 'Faca Minerio',
+        weight = 0.5
+    },
+    ['weapon_melee_knife_civil_war'] = {
+        type = 'weapon',
+        name = 'Faca de Guerra',
+        weight = 0.5
+    },
+    ['weapon_melee_knife_vampire'] = {
+        type = 'weapon',
+        name = 'Faca de Vampiro',
+        weight = 0.5
+    },
+    ['weapon_melee_machete'] = {
+        type = 'weapon',
+        name = 'Pexeira',
+        weight = 0.5
+    },
+    ['weapon_thrown_tomahawk'] = {
+        type = 'weapon',
+        name = 'Machado Craftado',
+        weight = 0.5
+    },
+    ['weapon_thrown_tomahawk_ancient'] = {
+        type = 'weapon',
+        name = 'Machado Craftado Velho',
+        weight = 0.5
+    },    
     ['weapon_thrown_throwing_knives'] = {
         type = 'weapon',
         name = 'Faca Arremeçavel',
@@ -27,11 +107,6 @@ ItemList = {
     ['weapon_melee_knife_john'] = {
         type = 'weapon',
         name = 'Faca John',
-        weight = 0.3
-    },
-    ['weapon_melee_knife_miner'] = {
-        type = 'weapon',
-        name = 'Faca de Minerador',
         weight = 0.3
     },
     ['weapon_melee_knife'] = {
@@ -53,7 +128,17 @@ ItemList = {
         type = 'weapon',
         name = 'Pistola Mauser',
         weight = 1.2
-    },
+    },  
+    ['weapon_pistol_mauser_drunk'] = {
+        type = 'weapon',
+        name = 'Pistola Mauser Midnight',
+        weight = 1.4
+    },          
+    ['weapon_pistol_m1899'] = {
+        type = 'weapon',
+        name = 'Pistola M1899',
+        weight = 1.2
+    },    
     ['weapon_pistol_semiauto'] = {
         type = 'weapon',
         name = 'Pistola Semi-auto',
@@ -74,6 +159,16 @@ ItemList = {
         name = 'Litchfield de Repetição',
         weight = 2.0
     },
+    ['weapon_repeater_evans'] = {
+        type = 'weapon',
+        name = 'Evans de Repetição',
+        weight = 2.0
+    },
+    ['weapon_repeater_winchester'] = {
+        type = 'weapon',
+        name = 'Winchester de Repetição',
+        weight = 2.0
+    },
     ['weapon_rifle_varmint'] = {
         type = 'weapon',
         name = 'Rifle Anti-pragas',
@@ -89,34 +184,94 @@ ItemList = {
         name = 'Revolver de Vaqueiro',
         weight = 1.2
     },
+    ['weapon_revolver_cattleman_john'] = {
+        type = 'weapon',
+        name = 'Revolver John',
+        weight = 1.2
+    },
+    ['weapon_revolver_cattleman_mexican'] = {
+        type = 'weapon',
+        name = 'Revolver Mexicano',
+        weight = 1.2
+    },
+    ['weapon_revolver_cattleman_pig'] = {
+        type = 'weapon',
+        name = 'Revolver Granger',
+        weight = 1.2
+    },    
     ['weapon_revolver_doubleaction'] = {
         type = 'weapon',
         name = 'Revolver Ação dupla',
+        weight = 1.2
+    },
+    ['weapon_revolver_doubleaction_exotic'] = {
+        type = 'weapon',
+        name = 'Revolver Ação Dupla Raro',
+        weight = 1.2
+    },
+    ['weapon_revolver_doubleaction_micah'] = {
+        type = 'weapon',
+        name = 'Revolver Ação Dupla Micah',
+        weight = 1.2
+    },
+    ['weapon_revolver_lemat'] = {
+        type = 'weapon',
+        name = 'Revolver Lemat',
         weight = 1.2
     },
     ['weapon_revolver_schofield'] = {
         type = 'weapon',
         name = 'Revolver Schofield',
         weight = 1.2
+    },    
+    ['weapon_revolver_schofield_golden'] = {
+        type = 'weapon',
+        name = 'Revolver Schofield Gold',
+        weight = 2.0
     },
+    ['weapon_revolver_schofield_calloway'] = {
+        type = 'weapon',
+        name = 'Revolver Schofield Calloway',
+        weight = 2.0
+    },    
     ['weapon_rifle_boltaction'] = {
         type = 'weapon',
         name = 'Rifle de Ferrolho',
         weight = 2.5
-    },
+    },    
     ['weapon_sniperrifle_carcano'] = {
         type = 'weapon',
         name = 'Rifle Carcano',
-        weight = 2.5
+        weight = 4.5
+    },
+    ['weapon_sniperrifle_rollingblock'] = {
+        type = 'weapon',
+        name = 'Rifle Rolling Block',
+        weight = 4.5
+    },
+    ['weapon_sniperrifle_rollingblock_exotic'] = {
+        type = 'weapon',
+        name = 'Rifle Rolling Block Raro',
+        weight = 4.5
     },
     ['weapon_rifle_springfield'] = {
         type = 'weapon',
         name = 'Rifle Springfield',
         weight = 2.5
     },
-    ['weapon_shotgun_double_pump'] = {
+    ['weapon_shotgun_doublebarrel'] = {
         type = 'weapon',
         name = 'Escopeta de Cano duplo',
+        weight = 2.2
+    },
+    ['weapon_shotgun_doublebarrel'] = {
+        type = 'weapon',
+        name = 'Escopeta de Cano duplo Raro',
+        weight = 2.5
+    },
+    ['weapon_shotgun_double_pump'] = {
+        type = 'weapon',
+        name = 'Escopeta de Cano duplo Pump',
         weight = 2.2
     },
     ['weapon_shotgun_pump'] = {
@@ -132,6 +287,11 @@ ItemList = {
     ['weapon_shotgun_sawedoff'] = {
         type = 'weapon',
         name = 'Escopeta Cano serrado',
+        weight = 2.2
+    },
+    ['weapon_shotgun_semiauto'] = {
+        type = 'weapon',
+        name = 'Escopeta Semi Auto',
         weight = 2.2
     },
     ['weapon_bow'] = {

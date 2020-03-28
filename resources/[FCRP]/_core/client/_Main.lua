@@ -249,35 +249,69 @@ function cAPI.getNearestPlayer(radius)
 end
 
 local weaponModels = {
-	"weapon_melee_hatchet",
-	"weapon_thrown_throwing_knives",
-	"weapon_lasso",
-	"weapon_pistol_mauser",
-	"weapon_pistol_semiauto",
-	"weapon_pistol_volcanic",
-	"weapon_repeater_carbine",
-	"weapon_repeater_henry",
-	"weapon_rifle_varmint",
-	"weapon_shotgun_repeating",
-	"weapon_revolver_cattleman",
-	"weapon_revolver_doubleaction",
-	"weapon_revolver_schofield",
-	"weapon_revolver_schofield",
-	"weapon_revolver_schofield",
-	"weapon_rifle_boltaction",
-	"weapon_sniperrifle_carcano",
-	"weapon_sniperrifle_carcano",
-	"weapon_rifle_springfield",
-	"weapon_shotgun_doublebarrel",
-	"weapon_shotgun_pump",
-	"weapon_shotgun_repeating",
-	"weapon_shotgun_sawedoff",
-	"weapon_bow",
-	"weapon_thrown_dynamite0",
-	"weapon_thrown_molotov",
-	"weapon_melee_electric_lantern",
-	"weapon_melee_torch",
-	"weapon_fishingrod"
+	'weapon_kit_camera',
+	'weapon_moonshinejug',
+	'weapon_melee_lantern_electric',
+	'weapon_melee_torch',
+	'weapon_melee_broken_sword',
+	'weapon_fishingrod',
+	'weapon_melee_hatchet',
+	'weapon_melee_cleaver',
+	'weapon_melee_ancient_hatchet',
+	'weapon_melee_hatchet_viking',
+	'weapon_melee_hatchet_hewing',
+	'weapon_melee_hatchet_double_bit',
+	'weapon_melee_hatchet_double_bit_rusted',
+	'weapon_melee_hatchet_hunter',
+	'weapon_melee_hatchet_hunter_rusted',
+	'weapon_melee_knife_john',
+	'weapon_melee_knife',
+	'weapon_melee_knife_jawbone',
+	'weapon_thrown_throwing_knives',
+	'weapon_melee_knife_miner',
+	'weapon_melee_knife_civil_war',
+	'weapon_melee_knife_bear',
+	'weapon_melee_knife_vampire',
+	'weapon_lasso',
+	'weapon_melee_machete',
+	'weapon_thrown_tomahawk',
+	'weapon_thrown_tomahawk_ancient',
+	'weapon_pistol_m1899',
+	'weapon_pistol_mauser',
+	'weapon_pistol_mauser_drunk',
+	'weapon_pistol_semiauto',
+	'weapon_pistol_volcanic',
+	'weapon_repeater_carbine',
+	'weapon_repeater_evans',
+	'weapon_repeater_henry',
+	'weapon_rifle_varmint',
+	'weapon_repeater_winchester',
+	'weapon_revolver_cattleman',
+	'weapon_revolver_cattleman_john',
+	'weapon_revolver_cattleman_mexican',
+	'weapon_revolver_cattleman_pig',
+	'weapon_revolver_doubleaction',
+	'weapon_revolver_doubleaction_exotic',
+	'weapon_revolver_doubleaction_gambler',
+	'weapon_revolver_doubleaction_micah',
+	'weapon_revolver_lemat',
+	'weapon_revolver_schofield',
+	'weapon_revolver_schofield_golden',
+	'weapon_revolver_schofield_calloway',
+	'weapon_rifle_boltaction',
+	'weapon_sniperrifle_carcano',
+	'weapon_sniperrifle_rollingblock',
+	'weapon_sniperrifle_rollingblock_exotic',
+	'weapon_rifle_springfield',
+	'weapon_shotgun_doublebarrel',
+	'weapon_shotgun_doublebarrel_exotic',
+	'weapon_shotgun_pump',
+	'weapon_shotgun_repeating',
+	'weapon_shotgun_sawedoff',
+	'weapon_shotgun_semiauto',
+	'weapon_bow',
+	'weapon_thrown_dynamite',
+	'weapon_thrown_molotov',
 }
 
 function cAPI.getWeapons()
@@ -302,42 +336,11 @@ function cAPI.getWeapons()
 	return weapons
 end
 
-
-function cAPI.getAmmo()
-
-	local ped = PlayerPedId()
-	local ammo_types = {}
-
-	local weapons = {}
-	for k, v in pairs(weaponModels) do
-		local hash = GetHashKey(v)
-		if HasPedGotWeapon(ped, hash) then
-			local atype = GetPedAmmoTypeFromWeapon(ped, hash)
-			if ammo_types[atype] == nil then
-				ammo_types[atype] = true
-				weapons[v] = GetAmmoInPedWeapon(ped, hash)
-			else
-				weapons[v] = 0
-			end
-		end
-	end
-	return ammo_types
-end
-
-
-
 function cAPI.replaceWeapons(weapons)
 	local old_weapons = cAPI.getWeapons()
 	cAPI.giveWeapons(weapons, true)
-	return old_weapons	
+	return old_weapons
 end
-
-function cAPI.replaceWeapons(weapons)
-	local old_weapons = cAPI.getWeapons()
-	cAPI.giveWeapons(weapons, true)
-	return old_weapons	
-end
-
 
 function cAPI.giveWeapon(weapon, ammo, clear_before)
 	cAPI.giveWeapons(
@@ -357,8 +360,6 @@ function cAPI.giveWeapons(weapons, clear_before)
 
 	for weapon, ammo in pairs(weapons) do
 		local hash = GetHashKey(weapon)
-		local ammotype = weapons[1]
-		local amount = weapons[2]
 
 		GiveWeaponToPed_2(
 			PlayerPedId(),
@@ -375,11 +376,12 @@ function cAPI.giveWeapons(weapons, clear_before)
 			0,
 			0
 		)
-		--Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true) -- GiveWeaponToPed_2
-		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(),  GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo) -- SET_PED_AMMO_BY_TYPE
-	
+		Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true)
+		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo)
 	end
 end
+
+
 
 function cAPI.setArmour(amount)
 	SetPedArmour(PlayerPedId(), amount)

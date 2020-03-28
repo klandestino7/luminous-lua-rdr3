@@ -199,10 +199,6 @@ local maleHash = GetHashKey("mp_m_freemode_01")
 
 end)
 
-RegisterNetEvent('playerLoaded')
-AddEventHandler('playerLoaded', function(xPlayer)
-  PlayerData = xPlayer
-end)
 
 -- Locals
 local cuffed = false
@@ -261,21 +257,34 @@ AddEventHandler('sheriff:playercheck', function()
   end
 end)
 
+RegisterCommand('algema', function(source, args, rawCommand)
+
+	local hash = args[1]
+	local model2 = GetHashKey(tonumber(hash))
+	
+    if not HasModelLoaded(model2) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+	end
+	
+	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),  tonumber(hash), true, true, true)	
+end)
 
 -- Sätt på handklovar
 RegisterNetEvent('sheriff:cuff')
 AddEventHandler('sheriff:cuff', function()
     ped = GetPlayerPed(-1)
-    ped2 = PlayerPedId()  
+	ped2 = PlayerPedId()
+	
+	-- 	if GetEntityModel(ped) == femaleHash then
 
-    --[[
-        if GetEntityModel(ped) == femaleHash then
-            prevFemaleVariation = GetPedDrawableVariation(ped, 7)
-            SetPedComponentVariation(ped, 7, 25, 0, 0)
-        elseif GetEntityModel(ped) == maleHash then
-            prevMaleVariation = GetPedDrawableVariation(ped, 7)
-            SetPedComponentVariation(ped, 7, 41, 0, 0)
-        end ]]
+	-- 		Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  tonumber(hash), true, true, true)
+
+    --       --  prevFemaleVariation = GetPedDrawableVariation(ped, 7)
+    --         SetPedComponentVariation(ped, 7, 25, 0, 0)
+    --     elseif GetEntityModel(ped) == maleHash then
+    --   --      prevMaleVariation = GetPedDrawableVariation(ped, 7)
+    --         SetPedComponentVariation(ped, 7, 41, 0, 0)
+    --     end 
 
         SetEnableHandcuffs(ped2, true)
 
@@ -475,10 +484,6 @@ RegisterCommand('undrag', function()
 		end
 end)
 
--- Events
-AddEventHandler('playerSpawned', function()
-	local id = KeyboardInput("Roleplay Name:", "", 20)
-end)
 
 RegisterNetEvent('dragClient')
 AddEventHandler('dragClient', function(closestID)
