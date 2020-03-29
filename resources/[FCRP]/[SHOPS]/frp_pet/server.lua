@@ -4,94 +4,70 @@ local Proxy = module('_core', 'libs/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
+-- RegisterServerEvent('FRP:PET:buydog')
+-- AddEventHandler('FRP:PET:buydog', function(dog)
+--     local _source = source
+--     local User = API.getUserFromSource(_source)
+--     local Inventory = User:getCharacter():getInventory()
+-- 	if Inventory:getItemAmount('generic_money') < 2 then
+--         User:notify('Dinheiro insuficiente!')
+--         return
+--     end    
+--     TriggerClientEvent('FRP:PET:spawndog', _source, dog.Model, false)
+-- end)
 
-RegisterServerEvent('kcrp:buydog')
-AddEventHandler('kcrp:buydog', function(dog)
-    print(dog.Model)
-    local _source = source
-    local User = API.getUserFromSource(_source)
-    local Inventory = User:getCharacter():getInventory()
-
-	if Inventory:getItemAmount('generic_money') < 2 then
-        User:notify('Dinheiro insuficiente!')
-        return
-	end
-	TriggerClientEvent('kcrp:spawndog', _source, dog.Model, false)	
-end)
-
-local function GetAmmoutdogs( Player_ID, Character_ID )
-    local Hasdogs = MySQL.Sync.fetchAll( "SELECT * FROM dogs WHERE identifier = @identifier AND charid = @charid ", {
-        ['identifier'] = Player_ID,
-        ['charid'] = Character_ID
-    } )
-    if #Hasdogs > 0 then return true end
-    return false
-end
-
-RegisterServerEvent('kcrp:buydog')
-AddEventHandler( 'kcrp:buydog', function ( args )
-
+RegisterServerEvent('FRP:PET:buydog')
+AddEventHandler( 'FRP:PET:buydog', function (args)
     local _src   = source
     local _price = args['Price']
     local _level = args['Level']
     local _model = args['Model']
+    local User = API.getUserFromSource(_src)
+    local Character = User:getCharacter()	
+    local Inventory = User:getCharacter():getInventory()
+    local u_level = User:getCharacter():getLevel()
+    local _resul = Character:getData(Character:getId(), 'charTable', 'dog')
 
 
-	TriggerEvent('redemrp:getPlayerFromId', _src, function(user)
-        u_identifier = user.getIdentifier()
-        u_level = user.getLevel()
-        u_charid = user.getSessionVar("charid")
-        u_money = user.getMoney()
-    end)
+    if Inventory:getItemAmount('generic_money') < tonumber(_price*100) then
+        User:notify('Dinheiro insuficiente!')
+        return
+    end   
 
-    local _resul = GetAmmoutdogs( u_identifier, u_charid )
-
-    if u_money <= _price then
-        TriggerClientEvent( 'UI:DrawNotification', _src, Config.NoMoney )
+    if u_level < _level then
+        User:notify('Level insuficiente!')
         return
     end
 
-    if u_level <= _level then
-        TriggerClientEvent( 'UI:DrawNotification', _src, Config.LevelMissing )
-        return
-    end
+    TriggerClientEvent('FRP:PET:spawndog', _src, _model, true)
+    print(_resul)
 
-	TriggerEvent('redemrp:getPlayerFromId', _src, function(user)
-        user.removeMoney(_price)
-    end)
-
-    TriggerClientEvent('kcrp:spawndog', _src, _model, true)
-
-
-    if _resul ~= true then
-        local Parameters = { ['identifier'] = u_identifier, ['charid'] = u_charid, ['dog'] = _model }
-        MySQL.Async.execute("INSERT INTO dogs ( `identifier`, `charid`, `dog` ) VALUES ( @identifier, @charid, @dog )", Parameters)
-        TriggerClientEvent( 'UI:DrawNotification', _src, 'You bought a new pet' )
+    if _resul == nil then        
+        Inventory:removeItem('generic_money' , tonumber(_price*100))
+        Character:setData(Character:getId(), 'charTable', 'dog', _model)     
+        User:notify('Você comprou um novo animal de estimação.')        
     else
-        local Parameters = { ['identifier'] = u_identifier, ['charid'] = u_charid, ['dog'] = _model }
-        MySQL.Async.execute(" UPDATE dogs SET dog = @dog WHERE identifier = @identifier AND charid = @charid ", Parameters)
-        TriggerClientEvent( 'UI:DrawNotification', _src, 'You replaced your old pet' )
+        Character:remData(Character:getId(), 'charTable', 'dog')
+        Wait(500)
+                Inventory:removeItem('generic_money' , tonumber(_price*100))
+        Character:setData(Character:getId(), 'charTable', 'dog', _model)    
+        User:notify('Você comprou um novo animal de estimação.')   
     end
-
 end)
 
-RegisterServerEvent( 'kcrp:loaddog' )
-AddEventHandler( 'kcrp:loaddog', function ( )
+RegisterServerEvent( 'FRP:PET:loaddog' )
+AddEventHandler( 'FRP:PET:loaddog', function()
+    local _src = source  
+    local User = API.getUserFromSource(_src)
+    local Character = User:getCharacter()
 
-    local _src = source
+    local Hasdogs = Character:getData(Character:getId(), 'charTable', 'dog')
 
-	TriggerEvent('redemrp:getPlayerFromId', _src, function(user)
-	    u_identifier = user.getIdentifier()
-	    u_charid = user.getSessionVar("charid")
-	end)
-
-    local Parameters = { ['identifier'] = u_identifier, ['charid'] = u_charid }
-    local Hasdogs = MySQL.Sync.fetchAll( "SELECT * FROM dogs WHERE identifier = @identifier AND charid = @charid ", Parameters )
-
-    if Hasdogs[1] then
-        local dog = Hasdogs[1].dog
+    if Hasdogs ~= nil then
+        local dog = Hasdogs
         print(dog)
-        TriggerClientEvent("kcrp:spawndog", _src, dog, false)
+        TriggerClientEvent("FRP:PET:spawndog", _src, dog, false)
+    else
+        print('Error, dog!')
     end
-
 end )

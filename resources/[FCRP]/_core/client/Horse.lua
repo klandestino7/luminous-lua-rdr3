@@ -150,7 +150,7 @@ Citizen.CreateThread(
 
                     local dist = #(pCoords - GetEntityCoords(horseEntity))
                     if dist <= 100 then
-                        if IsControlJustPressed(0, 0xFF8109D8) then
+                        if IsControlJustPressed(0, 0xC1989F95) then -- I 
                             if dist <= 1.5 then
                                 TriggerServerEvent('FCRP:HORSE:openChest')
                             end

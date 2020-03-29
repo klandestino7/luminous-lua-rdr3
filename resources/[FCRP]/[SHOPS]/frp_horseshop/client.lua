@@ -37,160 +37,113 @@ local prompt
 
 
 
- buyableHorses = {
-	Riding = {
-		['Text'] = 'Riding',
-		['Horses'] = {
-			[1] = {
-				['Text'] = 'Tennesseewalker Chestnut',
-				['SubText'] = '',
-				['Model'] = 'A_C_HORSE_TENNESSEEWALKER_CHESTNUT',
-				priceMoney = 40,
-				priceGold = 1
-			},
-			[2] = {
-				['Text'] = 'SHIRE RAVENBLACK' ,
-				['SubText'] = '',
-				['Model'] = 'A_C_HORSE_SHIRE_RAVENBLACK',
-				priceMoney = 60,
-				priceGold = 1
-			},
-			[3] = {
-				['Text'] = 'APPALOOSA LEOPARD',
-				['SubText'] = '',
-				['Model'] = 'A_C_HORSE_APPALOOSA_LEOPARD',
-				priceMoney = 100,
-				priceGold = 2
-			}
-		}
 
+buyableHorses = {
+	[1] = {
+		['Text'] = 'Tennesseewalker Chestnut ~pa~40$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_TENNESSEEWALKER_CHESTNUT',
+		priceMoney = 40,
+		priceGold = 1
 	},
-
-	Draft = {
-		['Text'] = 'Draft',
+	[2] = {
+		['Text'] = 'SHIRE RAVENBLACK ~pa~60$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_SHIRE_RAVENBLACK',
+		priceMoney = 60,
+		priceGold = 1
 	},
-
-	War = {
-		['Text'] = 'War',
+	[3] = {
+		['Text'] = 'APPALOOSA LEOPARD ~pa~100$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_APPALOOSA_LEOPARD',
+		priceMoney = 100,
+		priceGold = 2
 	},
-
-	Work = {
-		['Text'] = 'Work',
+	[4] = {
+		['Text'] = 'Mr Bill W ~pa~60$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_GANG_BILL',
+		priceMoney = 150,
+		priceGold = 10
 	},
-
-	Multi = {
-		['Text'] = 'Multi',
+	[5] = {
+		['Text'] = 'Kentuckysaddle Black ~pa~70$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_KENTUCKYSADDLE_BLACK',
+		priceMoney = 35,
+		priceGold = 1
 	},
-
-	Superior = {
-		['Text'] = 'Superior',
+	[6] = {
+		['Text'] = 'THOROUGHBRED BRINDLE ~pa~150$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_THOROUGHBRED_BRINDLE',
+		priceMoney = 150,
+		priceGold = 10
+	},
+	[7] = {
+		['Text'] = 'Turcomano ~pa~3500$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_TURKOMAN_DARKBAY',
+		priceMoney = 3500,
+		priceGold = 30
+	},
+	[8] = {
+		['Text'] = 'Árabe negro ~pa~5000$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_ARABIAN_BLACK',
+		priceMoney = 7000,
+		priceGold = 70
+	},
+	[9] = {
+		['Text'] = 'Árabe branco ~pa~10000$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_ARABIAN_ROSEGREYBAY',
+		priceMoney = 10000,
+		priceGold = 10
+	},
+	[10] = {
+		['Text'] = 'MUSTANG GRULLODUN ~pa~250$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_MUSTANG_GRULLODUN',
+		priceMoney = 250,
+		priceGold = 2
+	},
+	[11] = {
+		['Text'] = 'MUSTANG WILDBAY ~pa~250$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_MUSTANG_WILDBAY',
+		priceMoney = 250,
+		priceGold = 2
+	},
+	[12] = {
+		['Text'] = 'MISSOURI FOX ~pa~350$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_MISSOURIFOXTROTTER_AMBERCHAMPAGNE',
+		priceMoney = 350,
+		priceGold = 3
+	},
+	[13] = {
+		['Text'] = 'TURKOMAN GOLD ~pa~3500$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_TURKOMAN_GOLD',
+		priceMoney = 3500,
+		priceGold = 35
+	},
+	[14] = {
+		['Text'] = 'AMERICANSTANDARDBRED ~pa~350$',
+		['SubText'] = '',
+		['Model'] = 'A_C_HORSE_AMERICANSTANDARDBRED_PALOMINODAPPLE',
+		priceMoney = 350,
+		priceGold = 3
 	}
-
-	-- [1] = {
-	-- 	['Text'] = 'Tennesseewalker Chestnut',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_TENNESSEEWALKER_CHESTNUT',
-	-- 	priceMoney = 40,
-	-- 	priceGold = 1
-	-- },
-	-- [2] = {
-	-- 	['Text'] = 'SHIRE RAVENBLACK' ,
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_SHIRE_RAVENBLACK',
-	-- 	priceMoney = 60,
-	-- 	priceGold = 1
-	-- },
-	-- [3] = {
-	-- 	['Text'] = 'APPALOOSA LEOPARD',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_APPALOOSA_LEOPARD',
-	-- 	priceMoney = 100,
-	-- 	priceGold = 2
-	-- },
-	-- [4] = {
-	-- 	['Text'] = 'Mr Bill W',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_GANG_BILL',
-	-- 	priceMoney = 150,
-	-- 	priceGold = 10
-	-- },
-	-- [5] = {
-	-- 	['Text'] = 'Kentuckysaddle Black',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_KENTUCKYSADDLE_BLACK',
-	-- 	priceMoney = 35,
-	-- 	priceGold = 1
-	-- },
-	-- [6] = {
-	-- 	['Text'] = 'THOROUGHBRED BRINDLE',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_THOROUGHBRED_BRINDLE',
-	-- 	priceMoney = 150,
-	-- 	priceGold = 10
-	-- },
-	-- [7] = {
-	-- 	['Text'] = 'Turcomano',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_TURKOMAN_DARKBAY',
-	-- 	priceMoney = 3500,
-	-- 	priceGold = 30
-	-- },
-	-- [8] = {
-	-- 	['Text'] = 'Árabe negro',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_ARABIAN_BLACK',
-	-- 	priceMoney = 7000,
-	-- 	priceGold = 70
-	-- },
-	-- [9] = {
-	-- 	['Text'] = 'Árabe branco',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_ARABIAN_ROSEGREYBAY',
-	-- 	priceMoney = 10000,
-	-- 	priceGold = 10
-	-- },
-	-- [10] = {
-	-- 	['Text'] = 'MUSTANG GRULLODUN',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_MUSTANG_GRULLODUN',
-	-- 	priceMoney = 250,
-	-- 	priceGold = 2
-	-- },
-	-- [11] = {
-	-- 	['Text'] = 'MUSTANG WILDBAY',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_MUSTANG_WILDBAY',
-	-- 	priceMoney = 250,
-	-- 	priceGold = 2
-	-- },
-	-- [12] = {
-	-- 	['Text'] = 'MISSOURI FOX',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_MISSOURIFOXTROTTER_AMBERCHAMPAGNE',
-	-- 	priceMoney = 350,
-	-- 	priceGold = 3
-	-- },
-	-- [13] = {
-	-- 	['Text'] = 'TURKOMAN GOLD',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_TURKOMAN_GOLD',
-	-- 	priceMoney = 3500,
-	-- 	priceGold = 35
-	-- },
-	-- [14] = {
-	-- 	['Text'] = 'AMERICANSTANDARDBRED',
-	-- 	['SubText'] = '',
-	-- 	['Model'] = 'A_C_HORSE_AMERICANSTANDARDBRED_PALOMINODAPPLE',
-	-- 	priceMoney = 350,
-	-- 	priceGold = 3
-	-- }
 }
 
 myHorses = {}
 
 function tryToBuyHorse(horseModel, buyWithGold)
 	local horseName = cAPI.prompt('Nomeie seu Cavalo:', 'Cavalo')
-
+	WarMenu.CloseMenu()
 	if horseName ~= '' then
 		TriggerServerEvent('FCRP:HORSESHOP:Buy', horseModel, horseName, buyWithGold)
 	end

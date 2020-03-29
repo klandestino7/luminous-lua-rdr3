@@ -11,8 +11,8 @@ API.onFirstSpawn = {}
 
 Proxy.addInterface("API", API)
 Tunnel.bindInterface("API", API)
-Tunnel.bindInterface("API_DB", API_Database)
--- Proxy.addInterface("API_DB", API_Database)
+Proxy.addInterface("API_DB", API_Database)
+
 cAPI = Tunnel.getInterface("API")
 
 function API.getUserIdByIdentifiers(ids, name)

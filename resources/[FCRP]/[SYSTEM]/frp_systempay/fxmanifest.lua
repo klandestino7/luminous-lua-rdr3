@@ -8,11 +8,11 @@ version '1.0.0'
 
 server_scripts {
   '@_core/libs/utils.lua',
-  'server/xp.lua',
+  'server/server.lua',
   'config.lua',
 }
 
 client_scripts {
-  'client/xp.lua',
+  'client/client.lua',
   'config.lua',
 }

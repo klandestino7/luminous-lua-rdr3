@@ -10,10 +10,6 @@ AddEventHandler(
     end
 )
 
-Citizen.CreateThread(function()
-    TriggerEvent('FCRP:PLANTATION:StartPlayerPlacement', tonumber(50))
-end)
-
 
 AddEventHandler(
     "FCRP:PLANTATION:SyncPlant",

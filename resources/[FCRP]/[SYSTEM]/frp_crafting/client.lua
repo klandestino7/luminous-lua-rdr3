@@ -95,7 +95,7 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if IsControlJustPressed(0, 0x8CC9CD42) then
+            if IsControlJustPressed(0, 0x4CC0E2FE) then
                 TriggerServerEvent('FCRP:CRAFTING:Open')
               
             end

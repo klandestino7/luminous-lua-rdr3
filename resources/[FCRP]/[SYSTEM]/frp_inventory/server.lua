@@ -125,7 +125,7 @@ AddEventHandler(
         end
 
         local ItemData = API.getItemDataFromId(id)
-
+        print('PESO: ' .. secondaryInventory:getWeight())
         if secondaryInventory:getWeight() + (ItemData:getWeight() * amount) >= secondaryInventory:getCapacity() then
             User:notify('Baú cheio!')
             return

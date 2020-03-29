@@ -128,12 +128,13 @@ function cAPI.setClothes(hash)
 	local Clothe = json.decode(hash)
 	if hash ~= "{}" then
 		--for _, index in pairs(Clothes) do
-			for k, v in pairs(Clothe) do		
-				print(v)
-				--if cAPI.removeClothes(Clothe[_].hash) then					
-					local modelHash = tonumber(v)
-					cAPI.LoadModel(modelHash)
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), modelHash, true, true, true)
+			for k, v in pairs(Clothe) do	
+				--if cAPI.removeClothes(Clothe[_].hash) then
+			    local model2 = GetHashKey(tonumber(v))
+			    if not HasModelLoaded(model2) then
+			        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+			    end
+			    Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  tonumber(v), true, true, true)
 				--end
 			end
 		--end
@@ -250,6 +251,8 @@ end
 
 local weaponModels = {
 	'weapon_kit_camera',
+	'WEAPON_KIT_BINOCULARS',
+	'weapon_melee_knife_hunter',
 	'weapon_moonshinejug',
 	'weapon_melee_lantern_electric',
 	'weapon_melee_torch',

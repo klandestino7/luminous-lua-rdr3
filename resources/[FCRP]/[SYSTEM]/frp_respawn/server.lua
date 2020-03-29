@@ -10,6 +10,7 @@ AddEventHandler('FCRP:Respawn:_Dead', function()
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
     Inventory:deleteInventory()
+    TriggerEvent('FRP:SYSTEMPAY:removedeath', _source)
 end)
 
 
@@ -19,9 +20,9 @@ AddEventHandler('FCRP:Respawn:checkgroup', function()
     local User = API.getUserFromSource(_source)
     local Character = User:getCharacter()
 
-    if Character:hasGroup("vip") then
-        TriggerClientEvent('FRP_respawn:respawnvip', _source)
-    else
+  --  if (Character:hasGroup("vip1") or Character:hasGroup("vip2") or Character:hasGroup("vip3")) then
+   --     TriggerClientEvent('FRP_respawn:respawnvip', _source)
+    --else
         TriggerClientEvent('FRP_respawn:respawn', _source)
-    end
+   --end
 end)

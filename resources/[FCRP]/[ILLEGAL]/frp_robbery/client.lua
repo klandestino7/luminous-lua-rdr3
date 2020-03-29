@@ -75,7 +75,6 @@ Citizen.CreateThread(
             if interiorIndexPlayerIsIn ~= nil then
                 local ped = PlayerPedId()
                 local retval, weaponHash = GetCurrentPedWeapon(ped, 1)
-
                 if weaponHash ~= hashUnarmed then
                     if interiorIndexBeingRobbed == nil then
                         if not shootingToStartCooldown then

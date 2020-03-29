@@ -7,13 +7,13 @@ dbAPI = Proxy.getInterface("API_DB")
 
 local tempPCapacity = {}
 
-RegisterNetEvent('FCRP:CHESTS:AskForSync')
-RegisterNetEvent('FCRP:CHESTS:StartPlayerPlacement')
-RegisterNetEvent('FCRP:CHESTS:EndPlayerPlacement')
-RegisterNetEvent('FCRP:CHESTS:Open')
+RegisterNetEvent('FRP:PLANTATION:AskForSync')
+RegisterNetEvent('FRP:PLANTATION:StartPlayerPlacement')
+RegisterNetEvent('FRP:PLANTATION:EndPlayerPlacement')
+RegisterNetEvent('FRP:PLANTATION:Open')
 
 AddEventHandler(
-    'FCRP:CHESTS:AskForSync',
+    'FRP:PLANTATION:AskForSync',
     function()
         local _source = source
         API.syncChestsWithPlayer(_source)
@@ -21,16 +21,16 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'FCRP:CHESTS:StartPlayerPlacement',
+    'FRP:PLANTATION:StartPlayerPlacement',
     function(source, capacity)
         local _source = source
         tempPCapacity[_source] = capacity
-        TriggerClientEvent('FCRP:CHESTS:StartPlayerPlacement', _source, capacity)
+        TriggerClientEvent('FRP:PLANTATION:StartPlayerPlacement', _source, capacity)
     end
 )
 
 AddEventHandler(
-    'FCRP:CHESTS:EndPlayerPlacement',
+    'FRP:PLANTATION:EndPlayerPlacement',
     function(capacity, x, y, z, h)
         local _source = source
 
@@ -72,7 +72,7 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'FCRP:CHESTS:Open',
+    'FRP:PLANTATION:Open',
     function(chestId)
         local _source = source
 
@@ -110,7 +110,7 @@ AddEventHandler(
     'playerConnecting',
     function(name, setReason)
         local _source = source
-        TriggerClientEvent('FCRP:CHESTS:SyncMultipleChests', _source, tempChests)
+        TriggerClientEvent('FRP:PLANTATION:SyncMultipleChests', _source, tempChests)
     end
 )
 

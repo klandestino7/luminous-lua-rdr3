@@ -26,7 +26,7 @@ ItemList = {
     },
     ['weapon_melee_cleaver'] = {
         type = 'weapon',
-        name = 'Machado Cleaver',
+        name = 'Machado Cutelo',
         weight = 1.5
     },
     ['weapon_melee_ancient_hatchet'] = {
@@ -69,6 +69,11 @@ ItemList = {
         name = 'Faca Jawbone',
         weight = 0.5
     },
+    ['weapon_melee_knife_hunter'] = {
+        type = 'weapon',
+        name = 'Faca de Caçador',
+        weight = 0.5
+    },
     ['weapon_melee_knife_miner'] = {
         type = 'weapon',
         name = 'Faca Minerio',
@@ -87,6 +92,16 @@ ItemList = {
     ['weapon_melee_machete'] = {
         type = 'weapon',
         name = 'Pexeira',
+        weight = 0.5
+    },
+    ['weapon_thrown_bolas'] = {
+        type = 'weapon',
+        name = 'Laço de Bolas',
+        weight = 0.5
+    },
+    ['weapon_bolas'] = {
+        type = 'weapon',
+        name = 'Laço de Bolas',
         weight = 0.5
     },
     ['weapon_thrown_tomahawk'] = {
@@ -111,7 +126,7 @@ ItemList = {
     },
     ['weapon_melee_knife'] = {
         type = 'weapon',
-        name = 'Faca',
+        name = 'Faca de Caça',
         weight = 0.3
     },
     ['weapon_melee_knife_bear'] = {
@@ -217,6 +232,11 @@ ItemList = {
     ['weapon_revolver_lemat'] = {
         type = 'weapon',
         name = 'Revolver Lemat',
+        weight = 1.2
+    },
+    ['WEAPON_REVOLVER_NAVY'] = {
+        type = 'weapon',
+        name = 'Revolver Navy',
         weight = 1.2
     },
     ['weapon_revolver_schofield'] = {

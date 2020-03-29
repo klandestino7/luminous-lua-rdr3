@@ -89,6 +89,7 @@ function drawTempEntity()
         if Citizen.InvokeNative(0x50F940259D3841E6, 1, 0x07CE1E61) then -- LMB
             x, y, z = table.unpack(GetEntityCoords(tempEntity))
             local h = GetEntityHeading(tempEntity)
+  
 
             DeleteEntity(tempEntity)
             tempEntity = nil
@@ -97,16 +98,18 @@ function drawTempEntity()
             y = tonumber(string.format('%.2f', y))
             z = tonumber(string.format('%.2f', z))
             h = tonumber(string.format('%.2f', h))
-            TriggerServerEvent('FCRP:CHESTS:EndPlayerPlacement', tempCapacity, x, y, z, h)
+
+            TriggerServerEvent('FCRP:CHESTS:EndPlayerPlacement1', tempCapacity, x, y, z, h)
 
             tempCapacity = nil
         end
 
         if Citizen.InvokeNative(0x50F940259D3841E6, 1, 0xF84FA74F) then -- RMB
+
             DeleteEntity(tempEntity)
             tempEntity = nil
             tempCapacity = nil
-            TriggerServerEvent('FCRP:CHESTS:EndPlayerPlacement', nil, nil, nil, nil, nil)
+            TriggerServerEvent('FCRP:CHESTS:EndPlayerPlacement1', nil, nil, nil, nil, nil)
         end
     end
 end

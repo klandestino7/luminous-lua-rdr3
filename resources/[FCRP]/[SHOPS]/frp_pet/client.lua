@@ -28,91 +28,91 @@ local dogs = {
 	{
 		['Text'] = "$15 - Chesbay Retriever",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogChesBayRetriever_011",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Husky",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogHusky_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Labrador Retriever",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogLab_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Coon Hound",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogBluetickCoonhound_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Border Collie",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogCollie_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Ches Bay Retriever",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogChesBayRetriever_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Poodle",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogPoodle_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Foxhound",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_DogAmericanFoxhound_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 	{
 		['Text'] = "$15 - Cat",
 		['SubText'] = "",
-		['Desc'] = "Level Required : ~pa~0",
+		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
 			['Model'] = "A_C_Cat_01",
-			['Level'] = 2
+			['Level'] = 1
 		}
 	},
 
@@ -190,7 +190,7 @@ Citizen.CreateThread( function()
 		if WarMenu.IsMenuOpened('id_dog') then
 			for i = 1, #dogs do
 				if WarMenu.Button(dogs[i]['Text'], dogs[i]['SubText'], dogs[i]['Desc']) then
-					TriggerServerEvent('kcrp:buydog', dogs[i]['Param'])
+					TriggerServerEvent('FRP:PET:buydog', dogs[i]['Param'])
 					print()
 					WarMenu.CloseMenu()
 				end
@@ -226,7 +226,7 @@ Citizen.CreateThread(function()
 		if pressTime == 1 then
 			if recentlySpawned <= 0 then
 				recentlySpawned = 10
-				TriggerServerEvent('kcrp:loaddog')
+				TriggerServerEvent('FRP:PET:loaddog')
 			end
 			pressTime = 0
 		end
@@ -295,18 +295,10 @@ Citizen.CreateThread(function()
     end  
 end)
 
--- | Notification | --
-
-RegisterNetEvent('UI:DrawNotification')
-AddEventHandler('UI:DrawNotification', function( _message )
-	ShowNotification( _message )
-end)
-
 -- | Spawn dog | --
 
-RegisterNetEvent( 'kcrp:spawndog' )
-AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
-
+RegisterNetEvent( 'FRP:PET:spawndog' )
+AddEventHandler( 'FRP:PET:spawndog', function ( dog, isInShop )
 
 	local player = PlayerPedId()
 
@@ -338,7 +330,6 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 		Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Your pet')
 		GiveAllAttitude( dogModel )
 
-	--	print(idOfThedog)
 		TaskGoToEntity( dogModel, player, -1, 7.2, 2.0, 0, 0 )
 
 		dogspawn[idOfThedog] = { id = idOfThedog, model = dogModel }
@@ -357,7 +348,8 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 			local blip = SET_BLIP_TYPE( dogspawn[idOfThedog].model )
 			Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Your pet')
 			GiveAllAttitude( dogspawn[idOfThedog].model )
-
+			TaskGoToEntity( dogspawn[idOfThedog].model, player, -1, 7.2, 2.0, 0, 0 )
+			CACHORROENTITY = dogspawn[idOfThedog].model
 		else
 
 			local EntityIsDead = IsEntityDead( dogspawn[idOfThedog].model )
@@ -378,18 +370,12 @@ AddEventHandler( 'kcrp:spawndog', function ( dog, isInShop )
 				SET_PED_RELATIONSHIP_GROUP_HASH( dogspawn[idOfThedog].model, model )
 				SET_PED_DEFAULT_OUTFIT( dogspawn[idOfThedog].model )
 				local blip = SET_BLIP_TYPE( dogspawn[idOfThedog].model )
-				Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Your pet')
+				Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Seu animal')
 				GiveAllAttitude( dogspawn[idOfThedog].model )
 			end
 
 			print(dogspawn[idOfThedog].model)
-			-- ClearPedTasks(dogspawn[idOfThedog].model)
-			-- ClearPedSecondaryTask(dogspawn[idOfThedog].model)
-			-- ClearPedTasksImmediately(dogspawn[idOfThedog].model)
-			-- SetPedFleeAttributes(dogspawn[idOfThedog].model, 0,0)
-			-- TaskWanderStandard(dogspawn[idOfThedog].model, 1, 0)
-			-- TaskSetBlockingOfNonTemporaryEvents(dogspawn[idOfThedog].model, 1)
-			-- SetEntityAsMissionEntity(dogspawn[idOfThedog].model) 
+
 			TaskGoToEntity( dogspawn[idOfThedog].model, player, -1, 7.2, 2.0, 0, 0 )
 			CACHORROENTITY = dogspawn[idOfThedog].model
 		end
@@ -400,18 +386,12 @@ end )
 
 
 Citizen.CreateThread(function()
-	while true do
-		
+	while true do		
 		Citizen.Wait(0)	
-
-	--	TaskGoToEntity(dogModel, PlayerPedId(), -1, 2.2, 2.0, 0, 0)
-
-		if IsControlJustPressed(1, 0x760A9C6F) then
+		if IsControlJustPressed(1, keys["J"]) then
 			print(CACHORROENTITY)
 			local playc = GetEntityCoords(PlayerPedId())
-         --   TaskGoToCoordAnyMeans(dogModel,playc.x,playc.y,playc.z, 2, 0,0,0,0);
 			TaskGoToEntity(CACHORROENTITY, PlayerPedId(), -1, 2.2, 2.0, 0, 0)
-		--	print('pass')
 		end
     end
 end)
@@ -437,9 +417,6 @@ function _GET_DEFAULT_RELATIONSHIP_GROUP_HASH ( iParam0 )
 end
 
 -- | Timer | --
-
-
-
 
 Citizen.CreateThread(function()
     while true do

@@ -28,12 +28,19 @@ while true do
   local coords = GetEntityCoords(playerPed)
     for k,v in pairs(Banks) do
         if Vdist(coords, v) < 2 then
-          DrawTxt('Aperte (ALT) para acessar seu cofre', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
-          if IsControlJustReleased(0, keys['ALT']) then					
-            inMenu = true
-            SetNuiFocus(true, true)
-            SendNUIMessage({type = 'openGeneral'})
-            TriggerServerEvent('FRP:BANKING:balance2')
+          local hashUnarmed = GetHashKey("WEAPON_UNARMED")
+
+          local retval, weaponHash = GetCurrentPedWeapon(PlayerPedId(), 1)
+
+          print(weaponHash, hashUnarmed)
+          if weaponHash == hashUnarmed then            
+            DrawTxt('Aperte (ALT) para acessar seu cofre', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
+            if IsControlJustReleased(0, keys['ALT']) then					
+              inMenu = true
+              SetNuiFocus(true, true)
+              SendNUIMessage({type = 'openGeneral'})
+              TriggerServerEvent('FRP:BANKING:balance2')
+            end
           end
         end
     end

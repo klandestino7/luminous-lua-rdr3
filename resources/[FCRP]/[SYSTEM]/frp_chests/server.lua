@@ -9,7 +9,7 @@ local tempPCapacity = {}
 
 RegisterNetEvent('FCRP:CHESTS:AskForSync')
 RegisterNetEvent('FCRP:CHESTS:StartPlayerPlacement')
-RegisterNetEvent('FCRP:CHESTS:EndPlayerPlacement')
+RegisterNetEvent('FCRP:CHESTS:EndPlayerPlacement1')
 RegisterNetEvent('FCRP:CHESTS:Open')
 
 AddEventHandler(
@@ -30,7 +30,7 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'FCRP:CHESTS:EndPlayerPlacement',
+    'FCRP:CHESTS:EndPlayerPlacement1',
     function(capacity, x, y, z, h)
         local _source = source
 
@@ -51,12 +51,14 @@ AddEventHandler(
             Inventory:addItem(item_id, 1)
         end
 
-        if Inventory:getItemAmount(item_id) < 1 then
-            User:notify('Você não tem 1x ' .. ItemData:getName() .. 'no inventário')
-            return
-        end
+        Wait(100)
 
-        Inventory:removeItem(item_id, 1)
+        -- if Inventory:getItemAmount(item_id) < 1 then
+        --     User:notify('Você não tem 1x ' .. ItemData:getName() .. ' no inventário')
+        --     return
+        -- end
+
+        -- Inventory:removeItem(item_id, 1)
 
         tempPCapacity[_source] = nil
 

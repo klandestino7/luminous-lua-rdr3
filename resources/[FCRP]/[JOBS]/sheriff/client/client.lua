@@ -247,12 +247,12 @@ AddEventHandler('sheriff:playercheck', function()
 
   if distance ~= -1 and distance <= 3.0 then
 	  	if player == handcuffed then
-	  		TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
+	  		--TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
 	  	else
 	    	TriggerServerEvent('sheriff:puting', GetPlayerServerId(player))
 		end
 	else
-		TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
+		--TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
 
   end
 end)
@@ -327,7 +327,7 @@ AddEventHandler('sheriff:cuffcheck', function()
 	end
     	TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Você Algemou. (' .. GetPlayerName(player) .. ')')
   else
-    TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
+  --  TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
   end
 end)
 
@@ -341,7 +341,7 @@ AddEventHandler('sheriff:nyckelcheck', function()
 			TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Você soltou. (' .. GetPlayerName(player) .. ')')
 			print('passou aqui uncuff')
         else
-            TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem próximo está algemado')            
+        --    TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem próximo está algemado')            
         end
 end)
 

@@ -42,10 +42,7 @@ local carried = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
         local coordes    = GetEntityCoords(PlayerPedId())
         local cords = vector3(coordes.x, coordes.y, coordes.z+4.0)
 
-                          if IsControlJustReleased(0, keys['G']) then
-            print(cords)
-            Citizen.InvokeNative(0xC7F0B43DCDC57E3D, PlayerPedId(), carried, cords, 10.0, flag)
-        end
+
  
 
 

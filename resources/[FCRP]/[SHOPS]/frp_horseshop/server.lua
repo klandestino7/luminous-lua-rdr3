@@ -76,11 +76,15 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        print('User ' .. User:getId() .. ' tentou comprar um cavelo (' .. model .. ',' .. name .. ')')
+        print('User ' .. User:getId() .. ' tentou comprar um cavalo (' .. model .. ',' .. name .. ')')
 
-        if #Character:getHorses() >= 2 then
-            User:notify('Limite de cavalos alcançado.')
-            return
+     
+
+        if Character:getHorses() ~= nil then
+            if #Character:getHorses() > nil then
+                User:notify('Limite de cavalos alcançado.')
+                return
+            end
         end
 
         local priceMoney = prices[model].priceMoney
