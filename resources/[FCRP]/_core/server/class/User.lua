@@ -215,7 +215,7 @@ function API.User(source, id, ipAddress)
 
     self.setHorse = function(this, id)
         local Horse = self:getCharacter():setHorse(id)
-        cAPI.setHorse(self:getSource(), Horse:getModel(), horse:getName())
+        cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
     end
 
     self.notify = function(this, v)

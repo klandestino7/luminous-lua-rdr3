@@ -2,10 +2,19 @@ local horseModel
 local horseEntity
 local horseName
 local horsePrompt
+local horseComponents = {}
 
-function cAPI.setHorse(model, name)
+cAPI.Horse = {}
+local Horse = cAPI.Horse
+
+function Horse.Text(text)
+    print(text)
+end
+
+function cAPI.setHorse(model, name, components)
     horseModel = model
     horseName = name
+    horseComponents = components
 end
 
 function cAPI.clearHorse()
@@ -16,6 +25,7 @@ function cAPI.clearHorse()
     horseEntity = nil
     horseName = nil
     horsePrompt = nil
+    horseComponents = {}
 end
 
 function cAPI.getHorseEnt()
@@ -25,7 +35,7 @@ end
 function cAPI.spawnHorse()
     local ped = PlayerPedId()
     local pCoords = GetEntityCoords(ped)
-    print('spawn')
+    print("spawn")
     local modelHash = GetHashKey(horseModel)
     if not HasModelLoaded(modelHash) then
         RequestModel(modelHash)
@@ -52,92 +62,93 @@ function cAPI.spawnHorse()
     horseEntity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), 1, 0)
     -- SetRandomOutfitVariation(horseEntity, true)
     Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
-   -- Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
+    -- Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
     Citizen.InvokeNative(0x58A850EAEE20FAA3, horseEntity)
     Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, horseEntity)
     SetVehicleHasBeenOwnedByPlayer(horseEntity, true)
     SetPedNameDebug(horseEntity, horseModel)
     SetPedPromptName(horseEntity, horseName)
-    
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
+
+    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
+    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
     -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x16923E26, true, true, true) --mane
     -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF867D611, true, true, true) --tail
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
+    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
+    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
+    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
+
+    for _, componentHash in pairs(components) do
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, componentHash, true, true, true)
+    end
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMaxValue", 10);
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentValue", bVar2)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMinValue", false)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMaxValue", 10)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityValue", bVar3)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMinValue", false)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMaxValue", 10)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccValue", bVar4)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMinValue", false)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMaxValue", 10)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentValue", bVar5)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMinValue", false)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMaxValue", 10)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityValue", bVar6)
-	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMaxValue", 10);
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentValue", bVar2)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedEquipmentMaxValue", 10)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityValue", bVar3)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedCapacityMaxValue", 10)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccValue", bVar4)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccMaxValue", 10)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentValue", bVar5)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMinValue", false)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccEquipmentMaxValue", 10)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityValue", bVar6)
+    -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMinValue", false)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMaxValue", 10)
 
---     Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseHandling", GetHashKey('HORSE_HANDLING_RACE'))
--- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseType", GetHashKey('HORSE_CLASS_RACE'))
--- --	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
--- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
--- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
+    --     Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseHandling", GetHashKey('HORSE_HANDLING_RACE'))
+    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseType", GetHashKey('HORSE_CLASS_RACE'))
+    -- --	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
+    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
+    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
 
     SetModelAsNoLongerNeeded(horseEntity)
 end
-
-
 
 function cAPI.stablecloth(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
         Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
     end
-    Citizen.InvokeNative(0xD3A7B003ED343FD9 , horseEntity,  tonumber(hash), true, true, true)
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(hash), true, true, true)
 end
 
 function cAPI.setHorseClothes(hash)
-	local Clothe = json.decode(hash)
-	if hash ~= "{}" then
-		--for _, index in pairs(Clothes) do
-			for k, v in pairs(Clothe) do		
-				print(v)
-				--if cAPI.removeClothes(Clothe[_].hash) then					
-					local modelHash = tonumber(v)
-					cAPI.LoadModel(modelHash)
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)
-				--end
-			end
-		--end
-	else
-		for k, v in pairs(DefaultClothes) do
-			if GetEntityModel(horseEntity) == GetHashKey(k) then
-				for _, index in pairs(v) do
-					for value, parameter in pairs(Clothes) do
-						if Clothes[value].name == _ then
-							if cAPI.removeClothes(Clothes[_].hash) then
-								local modelHash = tonumber(v)
-								cAPI.LoadModel(modelHash)
-								Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, index, true, true, true)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	return true
+    local Clothe = json.decode(hash)
+    if hash ~= "{}" then
+        --end
+        --for _, index in pairs(Clothes) do
+        for k, v in pairs(Clothe) do
+            print(v)
+            --if cAPI.removeClothes(Clothe[_].hash) then
+            local modelHash = tonumber(v)
+            cAPI.LoadModel(modelHash)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)
+            --end
+        end
+    else
+        for k, v in pairs(DefaultClothes) do
+            if GetEntityModel(horseEntity) == GetHashKey(k) then
+                for _, index in pairs(v) do
+                    for value, parameter in pairs(Clothes) do
+                        if Clothes[value].name == _ then
+                            if cAPI.removeClothes(Clothes[_].hash) then
+                                local modelHash = tonumber(v)
+                                cAPI.LoadModel(modelHash)
+                                Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, index, true, true, true)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return true
 end
-
 
 Citizen.CreateThread(
     function()
@@ -152,7 +163,7 @@ Citizen.CreateThread(
                     if dist <= 100 then
                         if IsControlJustPressed(0, 0xFF8109D8) then
                             if dist <= 1.5 then
-                                TriggerServerEvent('FCRP:HORSE:openChest')
+                                TriggerServerEvent("FCRP:HORSE:openChest")
                             end
                         end
                         if IsControlJustPressed(2, 0x24978A28) then
@@ -169,7 +180,7 @@ Citizen.CreateThread(
                     if horseModel and horseName then
                         if horseEntity == nil then
                             cAPI.spawnHorse()
-                            print('spawnhorse')
+                            print("spawnhorse")
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
                         else
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
@@ -183,14 +194,12 @@ Citizen.CreateThread(
     end
 )
 
-
 function cAPI.fleeHorse()
-		DeletePed(horseEntity)
+    DeletePed(horseEntity)
 end
 
-
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if GetCurrentResourceName() ~= resourceName then
             return

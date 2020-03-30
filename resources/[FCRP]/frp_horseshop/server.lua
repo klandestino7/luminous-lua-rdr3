@@ -141,7 +141,7 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Horse = Character:setHorse(horseId)
         if Horse then
-            cAPI.setHorse(User:getSource(), Horse:getModel(), Horse:getName())   
+            cAPI.setHorse(User:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())   
         end
     end
 )

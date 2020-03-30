@@ -23,29 +23,12 @@ function API.Horse(id, model, name, Inventory)
         return self.Inventory
     end
 
-    self.setData = function(this, cid, targetName, key, value)
-        print(targetName, key, value, cid)
-        API_Database.query('FCRP/SetCData', {target = targetName, key = key, value = value, charid = cid})
-    end    
-
-    self.getData = function(this, cid, targetName, key)
-        if key == nil then
-            key = 'all'
-        end
-        local rows = API_Database.query('FCRP/GetCData', {target = targetName, charid = cid, key = key})
-        if #rows > 0 then
-            return rows[1].Value
-        else
-            return ''
-        end
+    self.setComponents = function(this, components)
+        self.components = components
     end
 
-    self.remData = function(this, cid, targetName, key)
-        local rows = API_Database.query('FCRP/RemCData', {target = targetName, key = key, charid = cid})
-        if #rows > 0 then
-            return true
-        end
-        return false
+    self.getComponents = function(this)
+        return self.components
     end
 
     return self

@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `horses` (
   `charid` int(11) NOT NULL,
   `model` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `components` text NOT NULL DEFAULT '[]',
   PRIMARY KEY (`id`),
   KEY `FK_horses_characters` (`charid`),
   CONSTRAINT `FK_horses_characters` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
