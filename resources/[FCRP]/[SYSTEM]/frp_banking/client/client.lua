@@ -27,6 +27,7 @@ while true do
       local playerPed = PlayerPedId()
   local coords = GetEntityCoords(playerPed)
     for k,v in pairs(Banks) do
+      
         if Vdist(coords, v) < 2 then
           local hashUnarmed = GetHashKey("WEAPON_UNARMED")
 

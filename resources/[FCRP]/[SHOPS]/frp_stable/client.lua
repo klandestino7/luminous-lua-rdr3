@@ -59,7 +59,7 @@ RegisterCommand("horsemodf", function(source, args)
     inCustomization = true
    horsesp = true
    SetEntityHeading(cAPI.getHorseEnt(), 334)
-   TriggerServerEvent('FCRP:HORSESHOP:AskForMyHorses')
+   TriggerServerEvent('FRP:STABLE:AskForMyHorses')
 end)
 
 function rotation(dir)
@@ -374,14 +374,14 @@ RegisterNUICallback(
     'Myhorses',
     function(data)
         print(data.id)
-		TriggerServerEvent('FCRP:HORSESHOP:SelectHorseWithId', data.id)
+		TriggerServerEvent('FRP:STABLE:SelectHorseWithId', data.id)
 	end
 )
 
 
-RegisterNetEvent('FCRP:HORSESHOP:CHAMOUH')
+RegisterNetEvent('FRP:STABLE:callhorse')
 AddEventHandler(
-	'FCRP:HORSESHOP:CHAMOUH',
+	'FRP:STABLE:callhorse',
     function()
         for _, horseData in pairs(myHorses) do
             --	print(json.encode(horseData))
@@ -397,24 +397,22 @@ AddEventHandler(
 
 
 
-RegisterNetEvent('FCRP:HORSESHOP:ReceiveHorsesData')
+RegisterNetEvent('FRP:STABLE:ReceiveHorsesData')
 AddEventHandler(
-	'FCRP:HORSESHOP:ReceiveHorsesData',
+	'FRP:STABLE:ReceiveHorsesData',
     function(data)
-        print('dehoe')
         myHorses = data
-        print(myHorses)
 	end
 )
 
 
   
 
-RegisterNetEvent('FCRP:HORSESHOP:SelectHORSE')
+RegisterNetEvent('FRP:STABLE:SelectHORSE')
 AddEventHandler(
-	'FCRP:HORSESHOP:SelectHORSE',
+	'FRP:STABLE:SelectHORSE',
 	function(data)
-		TriggerServerEvent('FCRP:HORSESHOP:SelectHorseWithId', data.id)
+		TriggerServerEvent('FRP:STABLE:SelectHorseWithId', data.id)
 	end
 )
 
@@ -432,7 +430,7 @@ RegisterNUICallback(
             ['acshorn'] = AcsHornUsing,
             ['ascluggage'] = AcsLuggageUsing
         }
-        TriggerServerEvent('frp_stable:saveHorse', dados)
+        TriggerServerEvent('FRP:STABLE:saveHorse', dados)
         SetEntityVisible(PlayerPedId(), true)
         closeAll()
     end

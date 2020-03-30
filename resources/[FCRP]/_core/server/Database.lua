@@ -9,7 +9,7 @@ DBConnect = {
 	host = '127.0.0.1',
 	database = 'redm',
 	user = 'root',
-	password = '@#$#@%aihsdj'
+	password = ''
 }
 
 local db_drivers = {}
@@ -167,6 +167,7 @@ API_Database.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE char
 API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
 API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
 API_Database.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
+
 API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 
 -------- FORT DATATABLE QUERIES --------
@@ -180,6 +181,11 @@ API_Database.prepare('FCRP/CreateHorse', 'INSERT INTO horses(charid, model, name
 API_Database.prepare('FCRP/GetHorses', 'SELECT * from horses WHERE charid = @charid')
 API_Database.prepare('FCRP/GetHorse', 'SELECT * from horses WHERE id = @id')
 API_Database.prepare('FCRP/DeleteHorse', 'DELETE FROM horses WHERE charid = @charid')
+
+API_Database.prepare('FCRP/SetHData', 'CALL setData(@target, @key, @value, @id)')
+API_Database.prepare('FCRP/GetHData', 'CALL getData(@target, @id, @key)')
+API_Database.prepare('FCRP/RemHData', 'CALL remData(@target, @key, @charid)')
+
 
 ---------- POSSE QUERIES -------------
 API_Database.prepare('FCRP/CreatePosse', 'INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id')

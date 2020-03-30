@@ -4,26 +4,26 @@ local Proxy = module('_core', 'libs/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
-RegisterNetEvent('frp_stable:saveHorse')
-AddEventHandler('frp_stable:saveHorse', function(dados)
+RegisterNetEvent('FRP:STABLE:saveHorse')
+AddEventHandler('FRP:STABLE:saveHorse', function(dados)
     local _source = source
     print(json.encode(dados))
     local User = API.getUserFromSource(_source)
     local Character = User:getCharacter()	
     local Horse = Character:getHorse()
-        
-    if Character ~= nil then
+    
+    if Horse ~= nil then
         for k, v in pairs(dados) do
-            print(Horse:getId())
-            Horse:setData(Horse:getId() , 'clothes', k, v)
+           -- Horse:setModif(Horse:getId(), dados)
+           Horse:setData(Horse:getId(), 'modif', k, v)      
         end
     end
 
 end)
 
-RegisterNetEvent('FCRP:HORSESHOP:AskForMyHorses')
+RegisterNetEvent('FRP:STABLE:AskForMyHorses')
 AddEventHandler(
-    'FCRP:HORSESHOP:AskForMyHorses',
+    'FRP:STABLE:AskForMyHorses',
     function()
         local _source = source
 
@@ -37,22 +37,20 @@ AddEventHandler(
         end
 
         local Horse = Character:getHorse()
-        Horse:getId() 
+
         local selectedHorseId
         if Horse ~= nil then
             selectedHorseId = Horse:getId() 
         end
 
         for _, data in pairs(horses) do
-
             if selectedHorseId ~= nil and data.id == selectedHorseId then
                 data.selected = true
             end
-
             data.charid = nil
         end
 
-        TriggerClientEvent('FCRP:HORSESHOP:ReceiveHorsesData', _source, horses)
-        TriggerClientEvent('FCRP:HORSESHOP:CHAMOUH', _source)
+        TriggerClientEvent('FRP:STABLE:ReceiveHorsesData', _source, horses)
+        TriggerClientEvent('FRP:STABLE:callhorse', _source)
     end
 )

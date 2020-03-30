@@ -129,7 +129,7 @@ Citizen.CreateThread(
                         User:notify('Giving player weapon')
                         Citizen.CreateThread(
                             function()
-                                User:giveWeapon(supportedWeapon, equipedAmmo + amount)
+                                User:giveWeapon(supportedWeapon, amount)
                             end
                         )
                         return true

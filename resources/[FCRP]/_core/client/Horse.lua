@@ -59,13 +59,13 @@ function cAPI.spawnHorse()
     SetPedNameDebug(horseEntity, horseModel)
     SetPedPromptName(horseEntity, horseName)
     
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
+   -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
+    --Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
     -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x16923E26, true, true, true) --mane
     -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF867D611, true, true, true) --tail
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
+ --   Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
+   --- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
+  --  Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
 	-- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
@@ -96,7 +96,6 @@ function cAPI.spawnHorse()
 end
 
 
-
 function cAPI.stablecloth(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
@@ -106,35 +105,23 @@ function cAPI.stablecloth(hash)
 end
 
 function cAPI.setHorseClothes(hash)
-	local Clothe = json.decode(hash)
-	if hash ~= "{}" then
-		--for _, index in pairs(Clothes) do
-			for k, v in pairs(Clothe) do		
-				print(v)
-				--if cAPI.removeClothes(Clothe[_].hash) then					
-					local modelHash = tonumber(v)
-					cAPI.LoadModel(modelHash)
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)
-				--end
-			end
-		--end
-	else
-		for k, v in pairs(DefaultClothes) do
-			if GetEntityModel(horseEntity) == GetHashKey(k) then
-				for _, index in pairs(v) do
-					for value, parameter in pairs(Clothes) do
-						if Clothes[value].name == _ then
-							if cAPI.removeClothes(Clothes[_].hash) then
-								local modelHash = tonumber(v)
-								cAPI.LoadModel(modelHash)
-								Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, index, true, true, true)
-							end
-						end
-					end
-				end
-			end
+--	local Clothe = json.decode(hash)
+    if hash ~= "{}" then
+        print('TEM MODIF')
+       -- for k, v in pairs(Clothe) do		
+            local modelHash = tonumber(v)
+            cAPI.LoadModel(modelHash)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)        
+      --  end	
+    else
+        print('NÃO TEM MODIF')
+		if GetEntityModel(horseEntity) == GetHashKey(k) then
+            local modelHash = tonumber(v)
+            cAPI.LoadModel(modelHash)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
 		end
-	end
+    end
 	return true
 end
 
@@ -169,7 +156,6 @@ Citizen.CreateThread(
                     if horseModel and horseName then
                         if horseEntity == nil then
                             cAPI.spawnHorse()
-                            print('spawnhorse')
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
                         else
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)

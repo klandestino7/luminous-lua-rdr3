@@ -2,12 +2,12 @@ ItemList = {
     ['weapon_melee_lantern_electric'] = {
         type = 'weapon',
         name = 'Laterna Elétrica',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_melee_torch'] = {
         type = 'weapon',
         name = 'Tocha',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_melee_broken_sword'] = {
         type = 'weapon',
@@ -77,67 +77,67 @@ ItemList = {
     ['weapon_melee_knife_miner'] = {
         type = 'weapon',
         name = 'Faca Minerio',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_melee_knife_civil_war'] = {
         type = 'weapon',
         name = 'Faca de Guerra',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_melee_knife_vampire'] = {
         type = 'weapon',
         name = 'Faca de Vampiro',
-        weight = 0.5
+        weight = 1.5
     },
     ['weapon_melee_machete'] = {
         type = 'weapon',
         name = 'Pexeira',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_thrown_bolas'] = {
         type = 'weapon',
         name = 'Laço de Bolas',
-        weight = 0.5
+        weight = 2.5
     },
     ['weapon_bolas'] = {
         type = 'weapon',
         name = 'Laço de Bolas',
-        weight = 0.5
+        weight = 2.5
     },
     ['weapon_thrown_tomahawk'] = {
         type = 'weapon',
         name = 'Machado Craftado',
-        weight = 0.5
+        weight = 1.0
     },
     ['weapon_thrown_tomahawk_ancient'] = {
         type = 'weapon',
         name = 'Machado Craftado Velho',
-        weight = 0.5
+        weight = 1.0
     },    
     ['weapon_thrown_throwing_knives'] = {
         type = 'weapon',
         name = 'Faca Arremeçavel',
-        weight = 0.3
+        weight = 0.6
     },
     ['weapon_melee_knife_john'] = {
         type = 'weapon',
         name = 'Faca John',
-        weight = 0.3
+        weight = 1.0
     },
     ['weapon_melee_knife'] = {
         type = 'weapon',
         name = 'Faca de Caça',
-        weight = 0.3
+        weight = 1.0
     },
     ['weapon_melee_knife_bear'] = {
         type = 'weapon',
         name = 'Faca de Galhada',
-        weight = 0.3
+        weight = 1.0
     },
     ['weapon_lasso'] = {
         type = 'weapon',
         name = 'Laço',
-        weight = 0.5
+        weight = 0.7
     },
     ['weapon_pistol_mauser'] = {
         type = 'weapon',
@@ -370,19 +370,19 @@ ItemList = {
     ['tonic_special_tonic'] = {
         type = 'boos',
         name = 'Tônico de Energia (Pequeno)',
-        weight = 0.4,
+        weight = 0.5,
         var = 25
     },
     ['tonic_special_medicine'] = {
         type = 'boost',
         name = 'Tônico de Energia (Médio)',
-        weight = 0.5,
+        weight = 0.9,
         var = 50
     },
     ['tonic_special_horse_stimulant_crafted'] = {
         type = 'boost',
         name = 'Tônico de Energia (grande)',
-        weight = 0.6,
+        weight = 1.0,
         var = 100
     },
     ['consumable_ginseng_elixier'] = {
@@ -400,7 +400,7 @@ ItemList = {
     ['consumable_moonshine'] = {
         type = 'beverage',
         name = 'Moonshine',
-        weight = 0.8,
+        weight = 0.7,
         thirstVar = 1.0
     },
     ['consumable_waterbottle'] = {
@@ -412,12 +412,12 @@ ItemList = {
     ['generic_metalbruto'] = {
         type = 'normal',
         name = 'Minério de Metal',
-        weight = 1.0
+        weight = 4.2
     },
     ['generic_pedra'] = {
         type = 'normal',
         name = 'Pedra Bruta',
-        weight = 1.0
+        weight = 3.5
     },
     ['generic_pedralavada'] = {
         type = 'normal',
@@ -427,7 +427,7 @@ ItemList = {
     ['generic_ourobruto'] = {
         type = 'normal',
         name = 'Ouro Bruto',
-        weight = 1.0
+        weight = 5.0
     },
     ['generic_cobrebruto'] = {
         type = 'normal',
@@ -456,7 +456,7 @@ ItemList = {
     },
     ['generic_provision_rf_wood_minor'] = {
         type = 'normal',
-        name = 'Táboa',
+        name = 'Tábua',
         weight = 1.0
     },
     ['generic_provision_rf_wood_stick'] = {
@@ -467,12 +467,12 @@ ItemList = {
     ['generic_provision_goldbar_small'] = {
         type = 'normal',
         name = 'Barra de Metal',
-        weight = 1.0
+        weight = 3.5
     },
     ['generic_provision_disco_ammolite'] = {
         type = 'normal',
         name = 'Barra de Cobre',
-        weight = 1.0
+        weight = 1.5
     },
     ['generic_potassio'] = {
         type = 'normal',
@@ -482,7 +482,7 @@ ItemList = {
     ['generic_enxofre'] = {
         type = 'normal',
         name = 'Enxofre',
-        weight = 1.0
+        weight = 2.0
     },
     ['generic_clothing_outfit_mp_ned_kelly'] = {
         type = 'normal',
@@ -492,7 +492,7 @@ ItemList = {
     ['generic_corda'] = {
         type = 'normal',
         name = 'Corda',
-        weight = 1.0
+        weight = 2.0
     },
     ['folder_kit_keychain'] = {
         type = 'normal',
@@ -698,7 +698,7 @@ ItemList = {
     ['generic_potassio'] = {
         type = 'normal',
         name = 'Potassio',
-        weight = 0.5
+        weight = 0.7
     },
     ['generic_enxofre'] = {
         type = 'normal',
@@ -738,13 +738,13 @@ ItemList = {
     ['chest_small'] = {
         -- type = 'chest',
         name = 'Baú Pequeno',
-        weight = 3.0,
+        weight = 3.5,
         var = 25
     },
     ['chest_medium'] = {
         -- type = 'chest',
         name = 'Baú Médio',
-        weight = 4.0,
+        weight = 4.5,
         var = 50
     },
     ['chest_large'] = {
@@ -765,7 +765,7 @@ ItemList = {
     },
     ['generic_gold'] = {
         type = 'normal',
-        name = 'Ouro',
-        weight = 0.1
+        name = 'Barra de Ouro',
+        weight = 0.7
     }
 }

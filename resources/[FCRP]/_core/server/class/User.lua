@@ -123,17 +123,16 @@ function API.User(source, id, ipAddress)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
             local Horse = self:getCharacter():getHorse()
-            
-            print(Horse)
+
 
             if Horse ~= nil then
-                print('tem cavalo')
                 cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName())
+                cAPI.setHorseClothes(self:getSource(), Horse:getModif())
+                print(Horse:getModif())
             else
-                print('não tem cavalo')
-                cAPI.setHorse(self:getSource(), "A_C_Donkey_01", "Burrinho")
+                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré")
+                cAPI.setHorseClothes(Horse:getSource(), Horse:getModif())
             end
-
             
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
             if posse ~= nil then
@@ -263,9 +262,7 @@ function API.User(source, id, ipAddress)
 
     self.setPosse = function(this, id)
         self.posseId = id
-
         TriggerClientEvent("FCRP:POSSE:SetPosse", self:getSource(), id)
-
         if id ~= nil then
             self:getCharacter():setData(self:getCharacter():getId(), "charTable", "posse", id)
         else

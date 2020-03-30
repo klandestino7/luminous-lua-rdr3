@@ -166,18 +166,14 @@ function API.Character(id, charName, level, xp, groups, inventory)
 
     self.setHorse = function(this, id)
         local rows = API_Database.query('FCRP/GetHorse', {id = id})
-        print('0')
         if #rows > 0 then
             local invRows = API_Database.query('FCRP/Inventory', {id = 'horse:' .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = 'select'})
             local Inventory = nil
-            print('1')
             if #invRows > 0 then
                 local items, _ = json.decode(invRows[1].items)
                 Inventory = API.Inventory('horse:' .. id, tonumber(invRows[1].capacity), items)
             end
-            print('2')
             self.Horse = API.Horse(id, rows[1].model, rows[1].name, Inventory)
-            print('3')
             return self.Horse
         end
     end
