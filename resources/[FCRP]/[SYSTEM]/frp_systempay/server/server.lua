@@ -19,8 +19,8 @@ local xp = {
 }
 
 local perdaxp = {
---	{"admin", 20},
---	{"user", 20},
+	{"admin", 20},
+	{"user", 20},
 	{"vip1", 20*1.10},
 	{"vip2", 20*1.20},
 	{"vip3", 20*1.30}
