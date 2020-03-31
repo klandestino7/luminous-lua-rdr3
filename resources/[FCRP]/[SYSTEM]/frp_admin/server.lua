@@ -20,6 +20,18 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "tpose",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroup("admin") then
+            local x, y, z = cAPI.getPosition(source)
+            cAPI.teleport(source, x, y, z)
+        end
+    end
+)
+
+RegisterCommand(
     "tptome",
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
@@ -111,7 +123,7 @@ RegisterCommand(
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
                 UserTarget:getCharacter():addXp(tonumber(args[2]))
-                TriggerClientEvent('chatMessage', source, args[2]..' XP adicionado ao jogador '..UserTarget:getCharacter():getName())
+                TriggerClientEvent("chatMessage", source, args[2] .. " XP adicionado ao jogador " .. UserTarget:getCharacter():getName())
             end
         end
     end
@@ -126,7 +138,7 @@ RegisterCommand(
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
                 UserTarget:getCharacter():removeXp(tonumber(args[2]))
-                TriggerClientEvent('chatMessage', source, args[2]..' XP removido ao jogador '..UserTarget:getCharacter():getName())
+                TriggerClientEvent("chatMessage", source, args[2] .. " XP removido ao jogador " .. UserTarget:getCharacter():getName())
             end
         end
     end

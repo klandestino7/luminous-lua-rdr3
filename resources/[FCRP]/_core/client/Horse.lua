@@ -35,7 +35,6 @@ end
 function cAPI.spawnHorse()
     local ped = PlayerPedId()
     local pCoords = GetEntityCoords(ped)
-    print("spawn")
     local modelHash = GetHashKey(horseModel)
     if not HasModelLoaded(modelHash) then
         RequestModel(modelHash)
@@ -60,25 +59,26 @@ function cAPI.spawnHorse()
     end
 
     horseEntity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), 1, 0)
+
     -- SetRandomOutfitVariation(horseEntity, true)
+    -- ^^
     Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
-    -- Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
-    Citizen.InvokeNative(0x58A850EAEE20FAA3, horseEntity)
-    Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, horseEntity)
+
+    -- Citizen.InvokeNative(0x58A850EAEE20FAA3, horseEntity) -- PlaceObjectOnGroundProperly
+
+    -- BlipAddForEntity(-1230993421, horseEntity)
+    -- ^^
+    Citizen.InvokeNative(0x23F74C2FDA6E7C61, -1230993421, horseEntity)
+
     SetVehicleHasBeenOwnedByPlayer(horseEntity, true)
     SetPedNameDebug(horseEntity, horseModel)
     SetPedPromptName(horseEntity, horseName)
 
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x16923E26, true, true, true) --mane
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF867D611, true, true, true) --tail
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xF0C30271, true, true, true) --bag
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x12F0DF9F, true, true, true) --bedroll
-    -- Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x67AF7302, true, true, true) --stirups
-
-    for _, componentHash in pairs(components) do
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, componentHash, true, true, true)
+    if horseComponents ~= nil then
+        print(#horseComponents)
+        for _, componentHash in pairs(horseComponents) do
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(componentHash), true, true, true)
+        end
     end
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
@@ -100,11 +100,11 @@ function cAPI.spawnHorse()
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMinValue", false)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseAccCapacityMaxValue", 10)
 
-    --     Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseHandling", GetHashKey('HORSE_HANDLING_RACE'))
-    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseType", GetHashKey('HORSE_CLASS_RACE'))
-    -- --	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
-    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
-    -- 	Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
+    -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseHandling", GetHashKey('HORSE_HANDLING_RACE'))
+    -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseType", GetHashKey('HORSE_CLASS_RACE'))
+    -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
+    -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
+    -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
 
     SetModelAsNoLongerNeeded(horseEntity)
 end
@@ -117,25 +117,11 @@ function cAPI.stablecloth(hash)
     Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(hash), true, true, true)
 end
 
-function cAPI.setHorseClothes(hash)
---	local Clothe = json.decode(hash)
-    if hash ~= "{}" then
-        print('TEM MODIF')
-       -- for k, v in pairs(Clothe) do		
-            local modelHash = tonumber(v)
-            cAPI.LoadModel(modelHash)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)        
-      --  end	
-    else
-        print('NÃO TEM MODIF')
-		if GetEntityModel(horseEntity) == GetHashKey(k) then
-            local modelHash = tonumber(v)
-            cAPI.LoadModel(modelHash)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
-		end
+function cAPI.setHorseComponents(components)
+    horseComponents = components
+    for _, componentHash in pairs(horseComponents) do
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, componentHash, true, true, true)
     end
-	return true
 end
 
 Citizen.CreateThread(
@@ -149,7 +135,7 @@ Citizen.CreateThread(
 
                     local dist = #(pCoords - GetEntityCoords(horseEntity))
                     if dist <= 100 then
-                        if IsControlJustPressed(0, 0xC1989F95) then -- I 
+                        if IsControlJustPressed(0, 0xC1989F95) then -- I
                             if dist <= 1.5 then
                                 TriggerServerEvent("FCRP:HORSE:openChest")
                             end

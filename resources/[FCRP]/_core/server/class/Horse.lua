@@ -27,13 +27,18 @@ function API.Horse(id, model, name, Inventory)
     --     return self:getData(self.id, 'modificacao', nil)
     -- end
 
-    -- self.setComponents = function(this, components)
-    --     self.components = components
-    -- end
+    self.setComponents = function(this, components)
+        local encodedComponents = json.encode(components)
+        API_Database.query('UpdateHorseComponents', {id = self:getId(), components = encodedComponents})
+    end
 
-    -- self.getComponents = function(this)
-    --     return self.components
-    -- end
+    self.getComponents = function()
+        local horseComponentsRows = API_Database.query('SelectHorseComponents', {id = self:getId()})
+        
+        
+
+        return #horseComponentsRows > 0 and json.decode(horseComponentsRows[1].components) or {}
+    end
 
     return self
 end

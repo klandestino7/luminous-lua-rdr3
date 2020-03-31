@@ -4,18 +4,21 @@ local Proxy = module("_core", "libs/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-RegisterNetEvent("FRP:STABLE:saveHorse")
+RegisterNetEvent("FRP:STABLE:UpdateHorseComponents")
 AddEventHandler(
-    "FRP:STABLE:saveHorse",
-    function(dados)
+    "FRP:STABLE:UpdateHorseComponents",
+    function(components)
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Horse = Character:getHorse()
 
-        Horse:setComponents(dados)
-        cAPI.setHorseComponents(_source, dados)
-        cAPI.Horse:Text('Text')
+        if Horse == nil then
+            return
+        end
+
+        Horse:setComponents(components)
+        cAPI.setHorseComponents(_source, components)
     end
 )
 
@@ -47,7 +50,7 @@ AddEventHandler(
             data.charid = nil
         end
 
-        TriggerClientEvent('FRP:STABLE:ReceiveHorsesData', _source, horses)
-        TriggerClientEvent('FRP:STABLE:callhorse', _source)
+        TriggerClientEvent("FRP:STABLE:ReceiveHorsesData", _source, horses)
+        TriggerClientEvent("FRP:STABLE:callhorse", _source)
     end
 )

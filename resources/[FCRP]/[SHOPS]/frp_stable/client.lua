@@ -1,8 +1,8 @@
-local Tunnel = module('_core', 'libs/Tunnel')
-local Proxy = module('_core', 'libs/Proxy')
+local Tunnel = module("_core", "libs/Tunnel")
+local Proxy = module("_core", "libs/Proxy")
 
-cAPI = Proxy.getInterface('API')
-API = Tunnel.getInterface('API')
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
 adding = true
 horsesp = false
@@ -26,72 +26,76 @@ local horsetails = {}
 local acshorn = {}
 local acsluggage = {}
 
-Citizen.CreateThread(function()
-    while adding do
-        Citizen.Wait(0)
-        for i, v in ipairs(HorseComp) do
-            if v.category == "Saddles" then
-                table.insert(saddles, v.Hash)
-            elseif v.category == "Saddlecloths" then
-                table.insert(saddlecloths, v.Hash)
-            elseif v.category == "Stirrups" then
-                table.insert(stirrups, v.Hash)
-            elseif v.category == "Bags" then
-                table.insert(bags, v.Hash)
-            elseif v.category == "Manes" then
-                table.insert(manes, v.Hash)
-            elseif v.category == "HorseTails" then
-                table.insert(horsetails, v.Hash)
-            elseif v.category == "AcsHorn" then
-                table.insert(acshorn, v.Hash)
-            elseif v.category == "AcsLuggage" then
-                table.insert(acsluggage, v.Hash)           
+Citizen.CreateThread(
+    function()
+        while adding do
+            Citizen.Wait(0)
+            for i, v in ipairs(HorseComp) do
+                if v.category == "Saddles" then
+                    table.insert(saddles, v.Hash)
+                elseif v.category == "Saddlecloths" then
+                    table.insert(saddlecloths, v.Hash)
+                elseif v.category == "Stirrups" then
+                    table.insert(stirrups, v.Hash)
+                elseif v.category == "Bags" then
+                    table.insert(bags, v.Hash)
+                elseif v.category == "Manes" then
+                    table.insert(manes, v.Hash)
+                elseif v.category == "HorseTails" then
+                    table.insert(horsetails, v.Hash)
+                elseif v.category == "AcsHorn" then
+                    table.insert(acshorn, v.Hash)
+                elseif v.category == "AcsLuggage" then
+                    table.insert(acsluggage, v.Hash)
+                end
             end
+            adding = false
         end
-        adding = false
     end
-end)
+)
 
-
-
-
-RegisterCommand("horsemodf", function(source, args)
-    inCustomization = true
-   horsesp = true
-   SetEntityHeading(cAPI.getHorseEnt(), 334)
-   TriggerServerEvent('FRP:STABLE:AskForMyHorses')
-end)
+RegisterCommand(
+    "horsemodf",
+    function(source, args)
+        inCustomization = true
+        horsesp = true
+        SetEntityHeading(cAPI.getHorseEnt(), 334)
+        TriggerServerEvent("FRP:STABLE:AskForMyHorses")
+    end
+)
 
 function rotation(dir)
-    local pedRot = GetEntityHeading(cAPI.getHorseEnt())+dir
-    print(pedRot)
+    local pedRot = GetEntityHeading(cAPI.getHorseEnt()) + dir
     SetEntityHeading(cAPI.getHorseEnt(), pedRot % 360)
 end
 
-RegisterNUICallback('rotate', function(data, cb)
-    print('foi')
-    if (data["key"] == "left") then
-        rotation(20)
-    else
-        rotation(-20)
+RegisterNUICallback(
+    "rotate",
+    function(data, cb)
+        print("foi")
+        if (data["key"] == "left") then
+            rotation(20)
+        else
+            rotation(-20)
+        end
+        cb("ok")
     end
-    cb('ok')
-end)
+)
 
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(0)            
+            Citizen.Wait(0)
             if inCustomization and not hided then
                 SetNuiFocus(true, true)
                 local hashm = GetEntityModel(cAPI.getHorseEnt())
                 camera(zoom, offset)
-                
-                SetEntityVisible(PlayerPedId(), false)           
+
+                SetEntityVisible(PlayerPedId(), false)
 
                 SendNUIMessage(
                     {
-                        action = 'showCreate'                      
+                        action = "showCreate"
                     }
                 )
             end
@@ -99,7 +103,7 @@ Citizen.CreateThread(
     end
 )
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -107,7 +111,7 @@ AddEventHandler(
         SetNuiFocus(false, false)
         SendNUIMessage(
             {
-                action = 'hideOnly'
+                action = "hideOnly"
             }
         )
     end
@@ -116,7 +120,7 @@ AddEventHandler(
 function createCam(creatorType)
     for k, v in pairs(cams) do
         if cams[k].type == creatorType then
-            cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', cams[k].x, cams[k].y, cams[k].z, cams[k].rx, cams[k].ry, cams[k].rz, cams[k].fov, false, 0) -- CAMERA COORDS
+            cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", cams[k].x, cams[k].y, cams[k].z, cams[k].rx, cams[k].ry, cams[k].rz, cams[k].fov, false, 0) -- CAMERA COORDS
             SetCamActive(cam, true)
             RenderScriptCams(true, false, 3000, true, false)
             createPeds()
@@ -126,47 +130,47 @@ end
 
 function camera(zoom, offset)
     DestroyAllCams(true)
-        local playerPed = cAPI.getHorseEnt()
-        local coords    = GetEntityCoords(playerPed)
-        local heading = 45.0
-        local zoomOffset = zoom
-        local camOffset = offset
-        local angle = heading * math.pi / 180.0
-        local theta = {
-            x = math.cos(angle),
-            y = math.sin(angle)
-        }
+    local playerPed = cAPI.getHorseEnt()
+    local coords = GetEntityCoords(playerPed)
+    local heading = 45.0
+    local zoomOffset = zoom
+    local camOffset = offset
+    local angle = heading * math.pi / 180.0
+    local theta = {
+        x = math.cos(angle),
+        y = math.sin(angle)
+    }
     --    print(theta.x)
-        local pos = {
-            x = coords.x + (zoomOffset * theta.x),
-            y = coords.y + (zoomOffset * theta.y)
-        }
-     --   print(pos.x)
-        local angleToLook = heading - 140.0
-        if angleToLook > 360 then
-            angleToLook = angleToLook - 360
-        elseif angleToLook < 0 then
-            angleToLook = angleToLook + 360
-        end
-     --   print(angleToLook)
-        angleToLook = angleToLook * math.pi / 180.0
-        local thetaToLook = {
-            x = math.cos(angleToLook),
-            y = math.sin(angleToLook)
-        }
+    local pos = {
+        x = coords.x + (zoomOffset * theta.x),
+        y = coords.y + (zoomOffset * theta.y)
+    }
+    --   print(pos.x)
+    local angleToLook = heading - 140.0
+    if angleToLook > 360 then
+        angleToLook = angleToLook - 360
+    elseif angleToLook < 0 then
+        angleToLook = angleToLook + 360
+    end
+    --   print(angleToLook)
+    angleToLook = angleToLook * math.pi / 180.0
+    local thetaToLook = {
+        x = math.cos(angleToLook),
+        y = math.sin(angleToLook)
+    }
     --    print(thetaToLook.x)
-        local posToLook = {
-            x = coords.x + (zoomOffset * thetaToLook.x),
-            y = coords.y + (zoomOffset * thetaToLook.y)
-        }
-      --  print(posToLook.x)
+    local posToLook = {
+        x = coords.x + (zoomOffset * thetaToLook.x),
+        y = coords.y + (zoomOffset * thetaToLook.y)
+    }
+    --  print(posToLook.x)
 
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x-0.6, pos.y, coords.z + camOffset, 300.00,0.00,0.00, 40.00, false, 0)
-        PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, true, 500, true, true)
-        DisplayHud(false)
-        DisplayRadar(false) 
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.6, pos.y, coords.z + camOffset, 300.00, 0.00, 0.00, 40.00, false, 0)
+    PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
+    SetCamActive(cam, true)
+    RenderScriptCams(true, true, 500, true, true)
+    DisplayHud(false)
+    DisplayRadar(false)
 end
 
 function createPeds()
@@ -181,7 +185,7 @@ function createPeds()
             choosePed[k] = CreatePed(GetHashKey(peds[k].genrer), peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
             Citizen.InvokeNative(0x283978A15512B2FE, choosePed[k], true)
             Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
-           -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
+            -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
             SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
             SetModelAsNoLongerNeeded(choosePed[k])
         end
@@ -189,17 +193,17 @@ function createPeds()
 end
 
 RegisterNUICallback(
-    'CloseStable',
+    "CloseStable",
     function()
         SendNUIMessage(
             {
-                action = 'hideCreate'
+                action = "hideCreate"
             }
         )
         inCustomization = false
         horsesp = false
-      --  SetEntityVisible(cAPI.getHorseEnt(), true)
-      --  NetworkSetEntityInvisibleToNetwork(cAPI.getHorseEnt(), false)
+        --  SetEntityVisible(cAPI.getHorseEnt(), true)
+        --  NetworkSetEntityInvisibleToNetwork(cAPI.getHorseEnt(), false)
         cam = nil
         SetEntityVisible(PlayerPedId(), true)
     end
@@ -215,9 +219,8 @@ AcsHornUsing = nil
 AcsLuggageUsing = nil
 
 RegisterNUICallback(
-    'Saddles',
-    function(data)        
-        print(data.id)
+    "Saddles",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -227,16 +230,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. saddles[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. saddles[num])
+            cAPI.stablecloth(hash)
             SaddlesUsing = ("0x" .. saddles[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'Saddlecloths',
-    function(data)        
+    "Saddlecloths",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -246,16 +249,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. saddlecloths[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. saddlecloths[num])
+            cAPI.stablecloth(hash)
             SaddleclothsUsing = ("0x" .. saddlecloths[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'Stirrups',
-    function(data)        
+    "Stirrups",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -265,16 +268,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. stirrups[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. stirrups[num])
+            cAPI.stablecloth(hash)
             StirrupsUsing = ("0x" .. stirrups[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'Bags',
-    function(data)        
+    "Bags",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -284,17 +287,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. bags[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. bags[num])
+            cAPI.stablecloth(hash)
             BagsUsing = ("0x" .. bags[num])
-        end        
+        end
     end
 )
 
-
 RegisterNUICallback(
-    'Manes',
-    function(data)        
+    "Manes",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -304,16 +306,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. manes[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. manes[num])
+            cAPI.stablecloth(hash)
             ManesUsing = ("0x" .. manes[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'HorseTails',
-    function(data)        
+    "HorseTails",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -323,16 +325,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. horsetails[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. horsetails[num])
+            cAPI.stablecloth(hash)
             HorseTailsUsing = ("0x" .. horsetails[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'AcsHorn',
-    function(data)        
+    "AcsHorn",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -342,16 +344,16 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. acshorn[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. acshorn[num])
+            cAPI.stablecloth(hash)
             AcsHornUsing = ("0x" .. acshorn[num])
-        end        
+        end
     end
 )
 
 RegisterNUICallback(
-    'AcsLuggage',
-    function(data)        
+    "AcsLuggage",
+    function(data)
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
@@ -361,27 +363,25 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
-            hash = ("0x" .. acsluggage[num])               
-            cAPI.stablecloth(hash)        
+            hash = ("0x" .. acsluggage[num])
+            cAPI.stablecloth(hash)
             AcsLuggageUsing = ("0x" .. acsluggage[num])
-        end        
+        end
     end
 )
 
 myHorses = {}
 
 RegisterNUICallback(
-    'Myhorses',
+    "Myhorses",
     function(data)
-        print(data.id)
-		TriggerServerEvent('FRP:STABLE:SelectHorseWithId', data.id)
-	end
+        TriggerServerEvent("FRP:STABLE:SelectHorseWithId", data.id)
+    end
 )
 
-
-RegisterNetEvent('FRP:STABLE:callhorse')
+RegisterNetEvent("FRP:STABLE:callhorse")
 AddEventHandler(
-	'FRP:STABLE:callhorse',
+    "FRP:STABLE:callhorse",
     function()
         for _, horseData in pairs(myHorses) do
             --	print(json.encode(horseData))
@@ -390,47 +390,50 @@ AddEventHandler(
                     nomeHorse = horseData.name,
                     modelHorse = horseData.model,
                     idHorse = horseData.id
-                })  
-        end  
-	end
+                }
+            )
+        end
+    end
 )
 
-
-
-RegisterNetEvent('FRP:STABLE:ReceiveHorsesData')
+RegisterNetEvent("FRP:STABLE:ReceiveHorsesData")
 AddEventHandler(
-	'FRP:STABLE:ReceiveHorsesData',
+    "FRP:STABLE:ReceiveHorsesData",
     function(data)
         myHorses = data
-	end
+    end
 )
 
-
-  
-
-RegisterNetEvent('FRP:STABLE:SelectHORSE')
+RegisterNetEvent("FRP:STABLE:SelectHORSE")
 AddEventHandler(
-	'FRP:STABLE:SelectHORSE',
-	function(data)
-		TriggerServerEvent('FRP:STABLE:SelectHorseWithId', data.id)
-	end
+    "FRP:STABLE:SelectHORSE",
+    function(data)
+        TriggerServerEvent("FRP:STABLE:SelectHorseWithId", data.id)
+    end
 )
-
 
 RegisterNUICallback(
-    'Confirm',
+    "Confirm",
     function()
         local dados = {
-            ['saddles'] = SaddlesUsing,
-            ['saddlescloths'] = SaddleclothsUsing,
-            ['stirrups'] = StirrupsUsing,
-            ['bags'] = BagsUsing,
-            ['manes'] = ManesUsing,
-            ['horsetails'] = HorseTailsUsing,
-            ['acshorn'] = AcsHornUsing,
-            ['ascluggage'] = AcsLuggageUsing
+            -- ['saddles'] = SaddlesUsing,
+            -- ['saddlescloths'] = SaddleclothsUsing,
+            -- ['stirrups'] = StirrupsUsing,
+            -- ['bags'] = BagsUsing,
+            -- ['manes'] = ManesUsing,
+            -- ['horsetails'] = HorseTailsUsing,
+            -- ['acshorn'] = AcsHornUsing,
+            -- ['ascluggage'] = AcsLuggageUsing
+            SaddlesUsing,
+            SaddleclothsUsing,
+            StirrupsUsing,
+            BagsUsing,
+            ManesUsing,
+            HorseTailsUsing,
+            AcsHornUsing,
+            AcsLuggageUsing
         }
-        TriggerServerEvent('FRP:STABLE:saveHorse', dados)
+        TriggerServerEvent("FRP:STABLE:UpdateHorseComponents", dados)
         SetEntityVisible(PlayerPedId(), true)
         closeAll()
     end
@@ -447,47 +450,47 @@ AcsLuggageUsing = nil
 
 function camera(zoom, offset)
     DestroyAllCams(true)
-        local playerPed = cAPI.getHorseEnt()
-        local coords    = GetEntityCoords(playerPed)
-        local heading = 45.0
-        local zoomOffset = zoom
-        local camOffset = offset
-        local angle = heading * math.pi / 180.0
-        local theta = {
-            x = math.cos(angle),
-            y = math.sin(angle)
-        }
+    local playerPed = cAPI.getHorseEnt()
+    local coords = GetEntityCoords(playerPed)
+    local heading = 45.0
+    local zoomOffset = zoom
+    local camOffset = offset
+    local angle = heading * math.pi / 180.0
+    local theta = {
+        x = math.cos(angle),
+        y = math.sin(angle)
+    }
     --    print(theta.x)
-        local pos = {
-            x = coords.x + (zoomOffset * theta.x),
-            y = coords.y + (zoomOffset * theta.y)
-        }
-     --   print(pos.x)
-        local angleToLook = heading - 140.0
-        if angleToLook > 360 then
-            angleToLook = angleToLook - 360
-        elseif angleToLook < 0 then
-            angleToLook = angleToLook + 360
-        end
-     --   print(angleToLook)
-        angleToLook = angleToLook * math.pi / 180.0
-        local thetaToLook = {
-            x = math.cos(angleToLook),
-            y = math.sin(angleToLook)
-        }
+    local pos = {
+        x = coords.x + (zoomOffset * theta.x),
+        y = coords.y + (zoomOffset * theta.y)
+    }
+    --   print(pos.x)
+    local angleToLook = heading - 140.0
+    if angleToLook > 360 then
+        angleToLook = angleToLook - 360
+    elseif angleToLook < 0 then
+        angleToLook = angleToLook + 360
+    end
+    --   print(angleToLook)
+    angleToLook = angleToLook * math.pi / 180.0
+    local thetaToLook = {
+        x = math.cos(angleToLook),
+        y = math.sin(angleToLook)
+    }
     --    print(thetaToLook.x)
-        local posToLook = {
-            x = coords.x + (zoomOffset * thetaToLook.x),
-            y = coords.y + (zoomOffset * thetaToLook.y)
-        }
-      --  print(posToLook.x)
+    local posToLook = {
+        x = coords.x + (zoomOffset * thetaToLook.x),
+        y = coords.y + (zoomOffset * thetaToLook.y)
+    }
+    --  print(posToLook.x)
 
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x-0.6, pos.y, coords.z + camOffset + 2.0, 300.00,0.00,0.00, 40.00, false, 0)
-        PointCamAtCoord(cam, posToLook.x, posToLook.y+2.0, coords.z + camOffset - 1.0)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, true, 500, true, true)
-        DisplayHud(false)
-        DisplayRadar(false) 
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.6, pos.y, coords.z + camOffset + 2.0, 300.00, 0.00, 0.00, 40.00, false, 0)
+    PointCamAtCoord(cam, posToLook.x, posToLook.y + 2.0, coords.z + camOffset - 1.0)
+    SetCamActive(cam, true)
+    RenderScriptCams(true, true, 500, true, true)
+    DisplayHud(false)
+    DisplayRadar(false)
 end
 
 function closeAll()
@@ -496,7 +499,7 @@ function closeAll()
     DisplayHud(true)
     SendNUIMessage(
         {
-            action = 'hideOnly'
+            action = "hideOnly"
         }
     )
     horsesp = false
@@ -504,25 +507,22 @@ function closeAll()
 
     choosePed = {}
     local ped = cAPI.getHorseEnt()
-  --  SetEntityVisible(ped, true)
-  --  NetworkSetEntityInvisibleToNetwork(ped, false)
-  
+    --  SetEntityVisible(ped, true)
+    --  NetworkSetEntityInvisibleToNetwork(ped, false)
 end
-
-
 
 --- /// ARRASTAR CAVALO
 
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(0)                
-            if IsControlPressed(2, 0xE8342FF2) then -- Hold ALT      
-                print('askoasko')
+            Citizen.Wait(0)
+            if IsControlPressed(2, 0xE8342FF2) then -- Hold ALT
+                print("askoasko")
                 CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt())
                 print(CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt()))
-              --  TaskArrestPed(cAPI.getHorseEnt(), PlayerPedId())
+            --  TaskArrestPed(cAPI.getHorseEnt(), PlayerPedId())
             end
         end
     end
-)    
+)

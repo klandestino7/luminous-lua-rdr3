@@ -69,10 +69,10 @@ function API.User(source, id, ipAddress)
             local charId = rows[1].id
 
             Character = API.Character(charId, characterName, 1, 0, {}, API.Inventory("char:" .. charId, nil, nil))
-        --    Character:createHorse("A_C_Donkey_01", "Burrinho")
+            --    Character:createHorse("A_C_Donkey_01", "Burrinho")
             Character:setData(charId, "charTable", "hunger", 0)
             Character:setData(charId, "charTable", "thirst", 0)
-            Character:setData(charId, 'charTable', 'banco', 0)
+            Character:setData(charId, "charTable", "banco", 0)
 
             API_Database.execute(
                 "FCRP/Inventory",
@@ -99,41 +99,25 @@ function API.User(source, id, ipAddress)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            local rows2 =
-                API_Database.query(
-                "FCRP/Inventory",
-                {id = "char:" .. id, charid = id, capacity = 0, itemName = 0, itemCount = 0, typeInv = "select"}
-            )
+            local rows2 = API_Database.query("FCRP/Inventory", {id = "char:" .. id, charid = id, capacity = 0, itemName = 0, itemCount = 0, typeInv = "select"})
             local Inventory = nil
             if #rows2 > 0 then
                 Inventory = API.Inventory("char:" .. id, parseInt(rows2[1].capacity), json.decode(rows2[1].items))
             end
-            self.Character =
-                API.Character(
-                id,
-                charRow[1].characterName,
-                charRow[1].level,
-                charRow[1].xp,
-                json.decode(charRow[1].groups),
-                Inventory
-            )
+            self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), Inventory)
 
             local weapons = json.decode(charRow[1].weapons) or {}
             cAPI.replaceWeapons(self:getSource(), weapons)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
-            local Horse = self:getCharacter():getHorse()
-
+            local Horse, horseComponents = self:getCharacter():getHorse()
 
             if Horse ~= nil then
-                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName())
-                cAPI.setHorseClothes(self:getSource(), Horse:getModif())
-                print(Horse:getModif())
+                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
             else
-                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré")
-                cAPI.setHorseClothes(Horse:getSource(), Horse:getModif())
+                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", nil)
             end
-            
+
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
             if posse ~= nil then
                 self.posseId = posse:getId()
@@ -159,19 +143,19 @@ function API.User(source, id, ipAddress)
     end
     self.saveCharacter = function()
         self.Character:savePosition(self:getSource())
-
     end
 
     self.drawCharacter = function()
         if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then
             Wait(200)
-            if cAPI.startNeeds(self:getSource()) then             
+            if cAPI.startNeeds(self:getSource()) then
                 Wait(100)
                 if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
-                    Wait(100)                
+                    Wait(100)
                     cAPI.setClothes(self:getSource(), self.Character:getClothes())
                     Wait(100)
-                    cAPI.teleportSpawn(self:getSource(), self.Character:getLastPos(self:getSource()))
+                    local lastPosition = self.Character:getLastPosition()
+                    cAPI.teleportSpawn(self:getSource(), lastPosition)
                 end
             end
         end
@@ -280,5 +264,3 @@ function API.User(source, id, ipAddress)
 
     return self
 end
-
-
