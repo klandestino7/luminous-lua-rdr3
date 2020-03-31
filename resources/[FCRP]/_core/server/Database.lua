@@ -173,6 +173,13 @@ API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @we
 -------- FORT DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCFort', 'UPDATE fort SET bando = @bando WHERE id = @id')
 API_Database.prepare('FCRP/GetCFort', 'SELECT bando from fort WHERE id = @id')
+
+-------- JAIL DATATABLE QUERIES --------
+API_Database.prepare('FCRP/SetCJail', 'INSERT INTO jail(charid, jail_time) VALUES (@charid, @jail_time); SELECT LAST_INSERT_ID() AS id')
+API_Database.prepare('FCRP/UpdCJail', 'UPDATE jail SET jail_time = @jail_time WHERE charid = @charid')
+API_Database.prepare('FCRP/GetCJail', 'SELECT * from jail WHERE charid = @charid')
+API_Database.prepare('FCRP/RemCJail', 'DELETE FROM jail WHERE charid = @charid')
+
 -------- INVENTORY QUERIES -----------
 API_Database.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
 
