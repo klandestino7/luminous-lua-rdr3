@@ -1,28 +1,28 @@
-RegisterNetEvent('fc_faroeste:ped')
-AddEventHandler('fc_faroeste:ped', function(modelarg)
+RegisterNetEvent("CK:ADMIN:ChangeModel")
+AddEventHandler(
+    "CK:ADMIN:ChangeModel",
+    function(pedModel)
+        local hash = GetHashKey(pedModel)
 
-local Model = modelarg
-local characterModel = GetHashKey(Model)
-RequestModel(characterModel)
+        if not IsModelValid(hash) then
+            return
+        end
 
-Citizen.CreateThread(function() 
-        local waiting = 0
-        while not HasModelLoaded(characterModel) do
-            waiting = waiting + 100
-            Citizen.Wait(100)
-            if waiting > 5000 then
-                print("Nao e possivel mudar esse ped")
-                break
+        if not HasModelLoaded(hash) then
+            RequestModel(hash)
+            while not HasModelLoaded(hash) do
+                Citizen.wait(10)
             end
         end
-        SetPlayerModel(PlayerId(), characterModel)                    
-        print("ok")
 
-    end)
-end)
+        SetPlayerModel(PlayerId(), hash)
+    end
+)
 
-RegisterNetEvent('deletarveiculo')
-AddEventHandler('deletarveiculo',function()
-	TriggerServerEvent("trydeleteveh",VehToNet(vehicle))
-end)
-
+RegisterNetEvent("deletarveiculo")
+AddEventHandler(
+    "deletarveiculo",
+    function()
+        TriggerServerEvent("trydeleteveh", VehToNet(vehicle))
+    end
+)

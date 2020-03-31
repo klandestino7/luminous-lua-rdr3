@@ -1,4 +1,4 @@
-API_Database = {}
+dbAPI = {}
 local API = exports['GHMattiMySQL']
 
 ---------------------------------------------
@@ -19,7 +19,7 @@ local cached_queries = {}
 local prepared_queries = {}
 local db_initialized = false
 
-function API_Database.registerDBDriver(name, on_init, on_prepare, on_query)
+function dbAPI.registerDBDriver(name, on_init, on_prepare, on_query)
 	if not db_drivers[name] then
 		db_drivers[name] = {on_init, on_prepare, on_query}
 
@@ -52,12 +52,12 @@ function API_Database.registerDBDriver(name, on_init, on_prepare, on_query)
 	end
 end
 
-function API_Database.format(n)
+function dbAPI.format(n)
 	local left, num, right = string.match(n, '^([^%d]*%d)(%d*)(.-)$')
 	return left .. (num:reverse():gsub('(%d%d%d)', '%1.'):reverse()) .. right
 end
 
-function API_Database.prepare(name, query)
+function dbAPI.prepare(name, query)
 	prepared_queries[name] = true
 
 	if db_initialized then
@@ -67,7 +67,7 @@ function API_Database.prepare(name, query)
 	end
 end
 
-function API_Database.query(name, params, mode)
+function dbAPI.query(name, params, mode)
 	if not prepared_queries[name] then
 		error('query ' .. name .. " doesn't exist.")
 	end
@@ -85,8 +85,8 @@ function API_Database.query(name, params, mode)
 	end
 end
 
-function API_Database.execute(name, params)
-	return API_Database.query(name, params, 'execute')
+function dbAPI.execute(name, params)
+	return dbAPI.query(name, params, 'execute')
 end
 
 ---------------------------------------------
@@ -144,40 +144,64 @@ end
 Citizen.CreateThread(
 	function()
 		API:Query('SELECT 1')
-		API_Database.registerDBDriver('ghmattimysql', on_init, on_prepare, on_query)
+		dbAPI.registerDBDriver('ghmattimysql', on_init, on_prepare, on_query)
 	end
 )
 ----------	USER THIGNS -------------
-API_Database.prepare('FCRP/CreateUser', 'INSERT INTO users(identifier, name, banned) VALUES(@identifier, @name, 0); SELECT LAST_INSERT_ID() AS id')
-API_Database.prepare('FCRP/SelectUser', 'SELECT * from users WHERE identifier = @identifier')
-API_Database.prepare('FCRP/BannedUser', 'SELECT banned from users WHERE user_id = @user_id')
-API_Database.prepare('FCRP/SetBanned', 'UPDATE users SET banned = 1 WHERE user_id = @user_id')
-API_Database.prepare('FCRP/Whitelisted', 'SELECT * from whitelist WHERE identifier = @identifier')
+dbAPI.prepare('FCRP/CreateUser', 'INSERT INTO users(identifier, name, banned) VALUES(@identifier, @name, 0); SELECT LAST_INSERT_ID() AS id')
+dbAPI.prepare('FCRP/SelectUser', 'SELECT * from users WHERE identifier = @identifier')
+dbAPI.prepare('FCRP/BannedUser', 'SELECT banned from users WHERE user_id = @user_id')
+dbAPI.prepare('FCRP/SetBanned', 'UPDATE users SET banned = 1 WHERE user_id = @user_id')
+dbAPI.prepare('FCRP/Whitelisted', 'SELECT * from whitelist WHERE identifier = @identifier')
 
 -------- CHARACTER THIGNS -----------
-API_Database.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, age, skin, clothes, groups) VALUES (@user_id, @charName, @charAge, @charSkin, @clothes, '{\"user\":true}'); SELECT LAST_INSERT_ID() AS id")
-API_Database.prepare('FCRP/GetCharacters', 'SELECT * from characters WHERE user_id = @user_id')
-API_Database.prepare('FCRP/GetCharacter', 'SELECT * from characters WHERE charid = @charid')
-API_Database.prepare('FCRP/DeleteCharacter', 'DELETE FROM characters WHERE charid = @charid')
-API_Database.prepare('FCRP/GetUserIdByCharId', 'SELECT user_id from characters WHERE charid = @charid')
-API_Database.prepare('FCRP/GetCharNameByCharId', 'SELECT characterName from characters WHERE charid = @charid')
-API_Database.prepare('FCRP/UpdateLevel', 'UPDATE characters SET level = @level WHERE charid = @charid')
-API_Database.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE charid = @charid')
+dbAPI.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, age, skin, clothes, groups) VALUES (@user_id, @charName, @charAge, @charSkin, @clothes, '{\"user\":true}'); SELECT LAST_INSERT_ID() AS id")
+dbAPI.prepare('FCRP/GetCharacters', 'SELECT * from characters WHERE user_id = @user_id')
+dbAPI.prepare('FCRP/GetCharacter', 'SELECT * from characters WHERE charid = @charid')
+dbAPI.prepare('FCRP/DeleteCharacter', 'DELETE FROM characters WHERE charid = @charid')
+dbAPI.prepare('FCRP/GetUserIdByCharId', 'SELECT user_id from characters WHERE charid = @charid')
+dbAPI.prepare('FCRP/GetCharNameByCharId', 'SELECT characterName from characters WHERE charid = @charid')
+dbAPI.prepare('FCRP/UpdateLevel', 'UPDATE characters SET level = @level WHERE charid = @charid')
+dbAPI.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE charid = @charid')
 
 -------- CHARACTER DATATABLE --------
-API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
-API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
-API_Database.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
-API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
+dbAPI.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
+dbAPI.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
+dbAPI.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
+dbAPI.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 -------- INVENTORY THINGS -----------
-API_Database.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
-API_Database.prepare('FCRP/ForcedInventory', "INSERT INTO inventories(id, capacity, items) VALUES (@id, @capacity, @items);")
+dbAPI.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
+dbAPI.prepare('FCRP/ForcedInventory', "INSERT INTO inventories(id, capacity, items) VALUES (@id, @capacity, @items);")
+dbAPI.prepare('INVENTORY:procListOfItems', 'CALL procListOfItems(@id, @charid, @itemList, @procType);')
 
 ---------- HORSE THINGS -------------
-API_Database.prepare('FCRP/CreatePosse', 'INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id')
-API_Database.prepare('FCRP/GetPosseById', 'SELECT * from posses WHERE id = @id')
+dbAPI.prepare('FCRP/CreatePosse', 'INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id')
+dbAPI.prepare('FCRP/GetPosseById', 'SELECT * from posses WHERE id = @id')
 
 ---------- CHEST QUERIES -------------
-API_Database.prepare('FCRP/GetChests', 'SELECT * from chests')
-API_Database.prepare('FCRP/CreateChest', "INSERT INTO chests(charid, position, type, capacity) VALUES (@charid, @position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
-API_Database.prepare('FCRP/CreateStaticChest', "INSERT INTO chests(position, type, capacity) VALUES (@position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
+dbAPI.prepare('FCRP/GetChests', 'SELECT * from chests')
+dbAPI.prepare('FCRP/CreateChest', "INSERT INTO chests(charid, position, type, capacity) VALUES (@charid, @position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
+dbAPI.prepare('FCRP/CreateStaticChest', "INSERT INTO chests(position, type, capacity) VALUES (@position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
+
+
+-- BEGIN
+-- 	DECLARE json, item, itemId, itemAmount VARCHAR(4000);
+-- 	DECLARE i INT DEFAULT 0;
+-- 	SELECT itemList INTO json;
+
+-- 	WHILE i < JSON_LENGTH(json) DO
+-- 		IF (procType = "add") THEN
+-- 			SELECT JSON_EXTRACT(json,CONCAT('$[',i,']')) INTO item;
+-- 			SELECT JSON_EXTRACT(item,CONCAT('$[1]')) INTO itemId;
+-- 			SELECT JSON_EXTRACT(item,CONCAT('$[2]')) INTO itemAmount;
+-- 			UPDATE inventories SET items = JSON_SET(items, CONCAT("$.", itemId), itemAmount) WHERE id = iid;
+-- 			SELECT i + 1 INTO i;
+-- 		ELSEIF (procType = "remove") THEN
+-- 			SELECT JSON_EXTRACT(json,CONCAT('$[',i,']')) INTO item;
+-- 			SELECT JSON_EXTRACT(item,CONCAT('$[1]')) INTO itemId;
+-- 			SELECT JSON_EXTRACT(item,CONCAT('$[2]')) INTO itemAmount;
+-- 			UPDATE inventories SET items = JSON_REMOVE(items, CONCAT("$.", itemId)) WHERE id = iid;
+-- 			SELECT i + 1 INTO i;
+-- 		END IF;
+-- 	END WHILE;
+-- END

@@ -16,7 +16,7 @@ function API.createPosse(charid, name)
         end
     end ]]
     
-   --[[ local rows = API_Database.query('FCRP/CreatePosse', {charid = charid, name = name, members = json.encode(members)})
+   --[[ local rows = dbAPI.query('FCRP/CreatePosse', {charid = charid, name = name, members = json.encode(members)})
     if #rows > 0 then
         local id = rows[1].id
         User:setPosse(id)
@@ -30,7 +30,7 @@ function API.getPosse(id)
         if posses[id] ~= nil then
             return posses[id]
         else
-            local rows = API_Database.query('FCRP/GetPosseById', {id = id})            
+            local rows = dbAPI.query('FCRP/GetPosseById', {id = id})            
             if #rows > 0 then
                 
                 local Posse = API.Posse(id, rows[1].charid, rows[1].name, json.decode(rows[1].members))                

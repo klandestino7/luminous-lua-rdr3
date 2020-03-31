@@ -1,0 +1,249 @@
+        @import url(https://db.onlinewebfonts.com/c/b942f5022c0006bf5a2bae065a5a4896?family=Hurme+Geometric+Sans+No.3);
+        @import url(https://db.onlinewebfonts.com/c/6fe41ddfdaa27520c7b0d4cfe2564195?family=HurmeGeometricSans3W01-Lt);
+        * {
+            font-family: "Hurme Geometric Sans No.3";
+        }
+        
+        @font-face {
+            font-family: "Hurme Geometric Sans No.3";
+            src: url("http://db.onlinewebfonts.com/t/b942f5022c0006bf5a2bae065a5a4896.ttf") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
+        }
+        
+        @font-face {
+            font-family: "HurmeGeometricSans3W01-Lt";
+            src: url("http//db.onlinewebfonts.com/t/6fe41ddfdaa27520c7b0d4cfe2564195.ttf") format("truetype"),
+        }
+        
+        body {
+            background-size: cover;
+            -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: grey;
+            /* background-image: url(https://cdn.discordapp.com/attachments/644069827471867913/693398292687618098/unknown.png);
+            background-repeat: no-repeat;
+            background-size: cover; */
+        }
+        
+        .container {}
+        
+        .container .column {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container .row {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .container .top-container {
+            /* border: 1px solid blue; */
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+        }
+        
+        .container .top-container a {
+            /* border: 1px solid green; */
+            padding: 30px 15px 15px 0px;
+            color: rgb(204, 197, 191);
+            text-decoration: none;
+            font-size: 22px;
+        }
+        
+        .container .top-container .selected {
+            padding: 20px 15px 15px 0px;
+            font-size: 32px;
+            color: rgb(32, 36, 40);
+        }
+        
+        .container .top-container a:first-child {
+            padding-left: 20px;
+        }
+        
+        .container .top-container .right-container {
+            /* border: 1px solid red; */
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            top: 30%;
+            right: 25px;
+            transform: translateY(-30%);
+            z-index: 3;
+        }
+        
+        .container .top-container .right-container .header {
+            background-color: rgb(252, 18, 89);
+            padding: 3px;
+            color: white;
+            height: fit-content;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .container .top-container .right-container .column {}
+        
+        .container .top-container .right-container .row {
+            min-width: 200px;
+            font-size: 16px;
+        }
+        
+        .container .top-container .right-container .row:first-child span:nth-child(3) {
+            font-family: "HurmeGeometricSans3W01-Lt";
+            margin-left: 10px;
+        }
+        
+        .container .top-container .right-container .row span:first-child {
+            margin-right: 5px;
+        }
+        /* .container .top-container .right-container .row span:nth-child(2) {
+            
+        } */
+        
+        .container .top-container .right-container .row:nth-child(2) span:nth-child(3) {
+            color: rgb(0, 214, 212);
+            margin-left: 5px;
+        }
+        
+        .container .top-container .right-container .row:nth-child(2) span:nth-child(4) {
+            color: rgb(0, 214, 212);
+            margin-left: 5px;
+        }
+        
+        .container .middle-left-container {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .container .middle-left-container img {
+            /* border: 1px solid green; */
+            max-width: 130px;
+            height: auto;
+        }
+        
+        .container .middle-left-container .column {
+            padding: 10px 0px 10px 10px;
+            /* justify-content: space-between; */
+            color: white;
+            line-height: 1.8em;
+        }
+        
+        .container .middle-left-container .column #vehicle_brand {
+            font-family: "HurmeGeometricSans3W01-Lt";
+            font-size: 24px;
+        }
+        
+        .container .middle-left-container .column #vehicle_name {
+            font-size: 32px;
+        }
+        
+        .container .middle-left-container .column #vehicle_fabrication {
+            font-family: "HurmeGeometricSans3W01-Lt";
+            font-size: 18px;
+        }
+        
+        .container .middle-left-container .column img {
+            max-height: 16px;
+            max-width: 32px;
+        }
+        
+        .container .middle-right-container {
+            /* border: 1px solid green; */
+            position: absolute;
+            top: 30%;
+            right: 25px;
+            transform: translateY(-30%);
+            color: rgb(204, 197, 191);
+            width: 250px;
+        }
+        
+        .container .middle-right-container span {
+            font-family: "HurmeGeometricSans3W01-Lt";
+        }
+        
+        .container .middle-right-container .spacebetween {
+            justify-content: space-between;
+            margin: 5px 0px 5px 5px;
+        }
+        
+        .container .middle-right-container .spacebetween span:nth-child(2) {
+            font-family: "Hurme Geometric Sans No.3";
+            color: white;
+        }
+        
+        .container .middle-right-container .handling-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        
+        .container .middle-right-container .handling-container span {
+            margin: 0px 0px 0px 5px;
+        }
+        
+        .container .middle-right-container .handling-bar-container {
+            position: relative;
+            width: 100%;
+            margin: 5px 0px 5px 0px;
+        }
+        
+        .container .middle-right-container .handling-bar-container .handling-line {
+            height: 2px;
+            width: 100%;
+            background: white;
+        }
+        
+        .container .middle-right-container .handling-bar-container .handling-circle {
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            transform: translateY(-50%);
+        }
+        
+        .container .middle-right-container .handling-container .handling-difficulty {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .container .middle-right-container .handling-container .handling-difficulty span:first-child {
+            font-family: "Hurme Geometric Sans No.3";
+            color: white;
+        }
+        
+        .container .bottom-container {
+            position: absolute;
+            bottom: 0;
+            height: 67px;
+            width: 100%;
+            background: white;
+        }
+        
+        .container .upper-bottom-container {}
+        
+        .container .top-triangle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 0 400px 140px 0;
+            border-color: transparent rgb(255, 219, 21) transparent transparent;
+            z-index: 2;
+        }
+        
+        .container .bottom-triangle {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            border-style: solid;
+            border-width: 140px 0 0 400px;
+            border-color: transparent transparent transparent rgb(255, 219, 21);
+            z-index: 2;
+        }

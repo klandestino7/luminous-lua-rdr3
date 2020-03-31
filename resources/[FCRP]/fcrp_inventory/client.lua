@@ -4,127 +4,161 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             if IsControlJustPressed(0, 47) and not opened then
-                TriggerServerEvent('FCRP:INVENTORY:open')
-                Citizen.CreateThread(function()
-                    while opened == true do 
-                        Citizen.Wait(10)
-                            DisableControlAction(0,24, true) -- disable attack
-                            DisableControlAction(0,25, true) -- disable aim
+                TriggerServerEvent("FCRP:INVENTORY:open")
+                Citizen.CreateThread(
+                    function()
+                        while opened == true do
+                            Citizen.Wait(10)
+                            DisableControlAction(0, 24, true) -- disable attack
+                            DisableControlAction(0, 25, true) -- disable aim
+                        end
                     end
-                end)
+                )
                 opened = true
             end
         end
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:closeInv')
+RegisterNetEvent("FCRP:INVENTORY:closeInv")
 AddEventHandler(
-    'FCRP:INVENTORY:closeInv',
+    "FCRP:INVENTORY:closeInv",
     function()
         closeInv()
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:openAsPrimary')
+RegisterNetEvent("FCRP:INVENTORY:openAsPrimary")
 AddEventHandler(
-    'FCRP:INVENTORY:openAsPrimary',
+    "FCRP:INVENTORY:openAsPrimary",
     function(items)
-        Citizen.CreateThread(function()           
-        end)
+        for _, itemData in pairs(items) do
+            items[_].name = ItemList[itemData.id] ~= nil and ItemList[itemData.id].name or "??????"
+            -- items[_].description = ItemList[itemData.description].description or '??????'
+            items[_].description = "??????"
+        end
+
         SetNuiFocus(true, true)
         -- SetNuiFocusKeepInput(true)
         SendNUIMessage(
             {
-                action = 'clearPrimary',
+                action = "clearPrimary",
                 primaryItems = items
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:openAsSecondary')
+RegisterNetEvent("FCRP:INVENTORY:openAsSecondary")
 AddEventHandler(
-    'FCRP:INVENTORY:openAsSecondary',
+    "FCRP:INVENTORY:openAsSecondary",
     function(items)
-        Citizen.CreateThread(function()
-        end)
+        for _, itemData in pairs(items) do
+            items[_].name = ItemList[itemData.id] ~= nil and ItemList[itemData.id].name or "??????"
+            -- items[_].description = ItemList[itemData.description].description or '??????'
+            items[_].description = "??????"
+        end
+
         SetNuiFocus(true, true)
         -- SetNuiFocusKeepInput(true)
         SendNUIMessage(
             {
-                action = 'clearSecondary',
+                action = "clearSecondary",
                 secondaryItems = items
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:PrimarySyncItemAmount')
+RegisterNetEvent("FCRP:INVENTORY:PrimarySyncItemAmount")
 AddEventHandler(
-    'FCRP:INVENTORY:PrimarySyncItemAmount',
-    function(id, amount, name)
+    "FCRP:INVENTORY:PrimarySyncItemAmount",
+    function(id, amount)
+        local items = {}
+
+        table.insert(
+            items,
+            {
+                id = id,
+                amount = amount,
+                name = ItemList[id] ~= nil and ItemList[id].name or "??????",
+                description = "??????"
+            }
+        )
+
         SendNUIMessage(
             {
-                primaryItems = {{id = id, amount = amount, name = name}}
+                primaryItems = items
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:SecondarySyncItemAmount')
+RegisterNetEvent("FCRP:INVENTORY:SecondarySyncItemAmount")
 AddEventHandler(
-    'FCRP:INVENTORY:SecondarySyncItemAmount',
-    function(id, amount, name)
+    "FCRP:INVENTORY:SecondarySyncItemAmount",
+    function(id, amount)
+        local items = {}
+
+        table.insert(
+            items,
+            {
+                id = id,
+                amount = amount,
+                name = ItemList[id] ~= nil and ItemList[id].name or "??????",
+                description = "??????"
+            }
+        )
+
         SendNUIMessage(
             {
-                secondaryItems = {{id = id, amount = amount, name = name}}
+                secondaryItems = items
             }
         )
     end
 )
 
 RegisterNUICallback(
-    'useItem',
+    "useItem",
     function(data)
-        TriggerServerEvent('FCRP:INVENTORY:useItem', data)
+        TriggerServerEvent("FCRP:INVENTORY:useItem", data.itemId, data.amount)
     end
 )
 
 RegisterNUICallback(
-    'dropItem',
+    "dropItem",
     function(data)
-        TriggerServerEvent('FCRP:INVENTORY:dropItem', data)
+        TriggerServerEvent("FCRP:INVENTORY:dropItem", data.itemId, data.amount)
     end
 )
 
 RegisterNUICallback(
-    'sendItemToPrimary',
+    "sendItemToPrimary",
     function(cb)
         local id = cb.id
         local amount = cb.amount
-        TriggerServerEvent('FCRP:INVENTORY:sendItemToPrimary', id, amount)
+        TriggerServerEvent("FCRP:INVENTORY:sendItemToPrimary", id, amount)
     end
 )
 
 RegisterNUICallback(
-    'sendItemToSecondary',
+    "sendItemToSecondary",
     function(cb)
         local id = cb.id
         local amount = cb.amount
-        TriggerServerEvent('FCRP:INVENTORY:sendItemToSecondary', id, amount)
+        TriggerServerEvent("FCRP:INVENTORY:sendItemToSecondary", id, amount)
     end
 )
 
 RegisterNUICallback(
-    'NUIFocusOff',
+    "NUIFocusOff",
     function()
         closeInv()
     end
 )
 
 AddEventHandler(
-    'onResourceStart',
+    "onResourceStart",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -134,20 +168,17 @@ AddEventHandler(
 )
 
 function closeInv()
-
-
-    EnableControlAction(0,24, true) -- disable attack
-    EnableControlAction(0,25, true) -- disable aim
-
+    EnableControlAction(0, 24, true) -- disable attack
+    EnableControlAction(0, 25, true) -- disable aim
 
     SetNuiFocus(false, false)
     -- SetNuiFocusKeepInput(false)
-    
+
     SendNUIMessage(
         {
-            action = 'hide'
+            action = "hide"
         }
     )
     opened = false
-    TriggerServerEvent('FCRP:INVENTORY:Close')
+    TriggerServerEvent("FCRP:INVENTORY:Close")
 end

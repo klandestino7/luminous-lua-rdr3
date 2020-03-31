@@ -8,7 +8,7 @@ local chestsSyncData = {}
 
 Citizen.CreateThread(
     function()
-        local rows = API_Database.query('FCRP/GetChests', {})
+        local rows = dbAPI.query('FCRP/GetChests', {})
         if #rows > 0 then
             for index = 1, #rows do
                 local id = rows[index].id
@@ -18,7 +18,7 @@ Citizen.CreateThread(
                 local capacity = rows[index].capacity
                 local owner_char_id = rows[index].charid
                 local inventories = {}
-                local inventoriesRows = API_Database.query('FCRP/Inventory', {id = 'chest:' .. id, charid = 0, capacity = 0, itemName = 0, itemCount = 0, typeInv = 'select'})
+                local inventoriesRows = dbAPI.query('FCRP/Inventory', {id = 'chest:' .. id, charid = 0, capacity = 0, itemName = 0, itemCount = 0, typeInv = 'select'})
                 if #inventoriesRows > 0 then
                     for _, data in pairs(inventoriesRows) do
                         local Inventory = API.Inventory(data.id, capacity, json.decode(data.items))
@@ -41,7 +41,7 @@ Citizen.CreateThread(
             for _, data in pairs(ConfigStaticChests) do
                 local x, y, z, h, type, capacity, groups = table.unpack(data)
                 -- print('creating chest from config ', _, x, y, z, h, type, capacity)
-                local rowsWithId = API_Database.query('FCRP/CreateStaticChest', {position = json.encode({x, y, z, h}), type = type, capacity = capacity})
+                local rowsWithId = dbAPI.query('FCRP/CreateStaticChest', {position = json.encode({x, y, z, h}), type = type, capacity = capacity})
                 if #rowsWithId > 0 then
                     local id = rowsWithId[1].id
                     chests[id] = API.Chest(id, nil, position, type, capacity, {}, groups)

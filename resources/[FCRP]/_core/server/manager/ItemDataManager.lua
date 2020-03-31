@@ -14,70 +14,6 @@ function API.getItemDataFromName(name)
     return defaultItemData
 end
 
-function API.getAmmoTypeFromWeaponType(weapon)
-    weapon = weapon:upper()
-
-    local ammo = nil
-
-    if weapon == 'WEAPON_MOONSHINEJUG' then
-        ammo = 'AMMO_MOONSHINEJUG'
-    end
-
-    if weapon == 'WEAPON_FISHINGROD' then
-        ammo = 'AMMO_FISHINGROD'
-    end
-
-    if weapon == 'WEAPON_THROWN_THROWING_KNIVES' then
-        ammo = 'AMMO_THROWING_KNIVES'
-    end
-
-    if weapon == 'WEAPON_THROWN_TOMAHAWK' then
-        ammo = 'AMMO_TOMAHAWK'
-    end
-
-    if weapon == 'WEAPON_THROWN_TOMAHAWK_ANCIENT' then
-        ammo = 'AMMO_TOMAHAWK_ANCIENT'
-    end
-
-    if weapon == 'WEAPON_MOONSHINEJUG' then
-        ammo = 'AMMO_MOONSHINEJUG'
-    end
-
-    if weapon:find('_PISTOL_') then
-        ammo = 'AMMO_PISTOL'
-    end
-
-    if weapon:find('_REPEATER_') or weapon:find('WEAPON_RIFLE_VARMINT') then
-        ammo = 'AMMO_REPEATER'
-    end
-
-    if weapon:find('_REVOLVER_') then
-        ammo = 'AMMO_REVOLVER'
-    end
-
-    if weapon:find('RIFLE_') then
-        ammo = 'AMMO_RIFLE'
-    end
-
-    if weapon:find('_SHOTGUN_') then
-        ammo = 'AMMO_SHOTGUN'
-    end
-
-    if weapon:find('WEAPON_BOW') then
-        ammo = 'AMMO_ARROW'
-    end
-
-    if weapon:find('WEAPON_THROWN_DYNAMITE') then
-        ammo = 'AMMO_DYNAMITE'
-    end
-
-    if weapon:find('WEAPON_THROWN_MOLOTOV') then
-        ammo = 'AMMO_MOLOTOV'
-    end
-
-    return ammo
-end
-
 Citizen.CreateThread(
     function()
         for id, values in pairs(ItemList) do
@@ -89,16 +25,28 @@ Citizen.CreateThread(
                         local source = User:getSource()
                         local uWeapons = cAPI.getWeapons(source)
 
-                        if uWeapons[id:toupper()] then
+                        print('ye')
+
+                        print(uWeapons)
+                        print(uWeapons[id:upper()])
+                        if uWeapons[id:upper()] then
+                            print('equipda')
                             User:notify('Arma já está equipada')
                             return false
                         end
 
+                        print("yeas")
+
                         Citizen.CreateThread(
                             function()
-                                User:giveWeapon(id, 0)
+                                print('gave')
+                                User:notify(ItemData:getName() .. ' equipada!')
+                                User:giveWeapon(id, 0, false)
+                                print('gvaye')
                             end
                         )
+
+                        print('returnd')
                         return true
                     end
                 )
@@ -109,7 +57,7 @@ Citizen.CreateThread(
                     function(this, User, amount)
                         local source = User:getSource()
                         local uWeapons = cAPI.getWeapons(source)
-                        local formattedId = id:gsub('ammo_', ''):toupper()
+                        local formattedId = id:gsub('ammo_', 'weapon_'):upper()
 
                         if uWeapons[formattedId] == nil then
                             User:notify('Nenhuma arma equipada suporta este tipo de munição!')

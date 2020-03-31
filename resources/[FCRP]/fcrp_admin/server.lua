@@ -210,7 +210,7 @@ RegisterCommand(
             local User = API.getUserFromSource(source)
             local Character = User:getCharacter()
             if Character:hasGroupOrInheritance("admin") then
-                TriggerClientEvent("fc_faroeste:ped", args[1], args[2])
+                TriggerClientEvent("CK:ADMIN:ChangeModel", args[1], args[2])
             end
         end
     end
@@ -229,23 +229,46 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "group",
+    "addgroup",
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            if args[1] == "add" or args[1] == "remove" then
-                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
-                if UserTarget ~= nil then
-                    if args[1] == "add" then
-                        UserTarget:getCharacter():addGroup(args[3])
-                    elseif args[1] == "remove" then
-                        UserTarget:getCharacter():removeGroup(args[3])
-                    end
-                else
-                    User:notify("Usuario invalido!")
-                end
+            local UserTarget = API.getUserFromUserId(tonumber(args[1]))
+            if UserTarget ~= nil then
+                User:notify("Usuario invalido!")
+                return
             end
+
+            UserTarget:getCharacter():addGroup(args[2])
+        end
+    end
+)
+
+RegisterCommand(
+    "removegroup",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("admin") then
+            local UserTarget = API.getUserFromUserId(tonumber(args[1]))
+            if UserTarget ~= nil then
+                User:notify("Usuario invalido!")
+                return
+            end
+
+            UserTarget:getCharacter():removeGroup(args[2])
+        end
+    end
+)
+
+RegisterCommand(
+    "god",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("admin") then
+            cAPI.setEntityHealth(source, 200)
         end
     end
 )

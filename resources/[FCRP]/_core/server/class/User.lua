@@ -21,19 +21,8 @@ function API.User(source, id, ipAddress)
         return ipAddress
     end
 
-    self.getIdentifiers = function()
-        local num = GetNumPlayerIdentifiers(self.source)
-
-        local identifiers = {}
-        for i = 1, num do
-            table.insert(identifiers, GetPlayerIdentifier(self.source, i))
-        end
-
-        return identifiers
-    end
-
     self.getCharacters = function()
-        local rows = API_Database.query('FCRP/GetCharacters', {user_id = self.id})
+        local rows = dbAPI.query('FCRP/GetCharacters', {user_id = self.id})
         if #rows > 0 then
             return rows
         end
@@ -41,9 +30,8 @@ function API.User(source, id, ipAddress)
 
 
     self.createCharacter = function(this, characterName, age, saves, clothes)
-        print('sel')
         local Character = nil
-        local rows = API_Database.query('FCRP/CreateCharacter', {user_id = self:getId(), charName = characterName, charAge = age, charSkin = saves, clothes = clothes })
+        local rows = dbAPI.query('FCRP/CreateCharacter', {user_id = self:getId(), charName = characterName, charAge = age, charSkin = saves, clothes = clothes })
         if #rows > 0 then
             local charId = rows[1].id
 
@@ -54,7 +42,7 @@ function API.User(source, id, ipAddress)
             Character:setData(charId, 'charTable', 'thirst', 0)
             Character:setData(charId, 'charTable', 'position', '{"z":13.81,"y":-2738.70,"x":-1038.16}')
                 
-            API_Database.execute('FCRP/Inventory', {id = 'char:' .. Character:getId(), charid = Character:getId(), itemName = 0, itemCount = 0, typeInv = 'insert'})
+            dbAPI.execute('FCRP/Inventory', {id = 'char:' .. Character:getId(), charid = Character:getId(), itemName = 0, itemCount = 0, typeInv = 'insert'})
             -- Character:savePosition(self:getSource())
         end
         
@@ -62,14 +50,14 @@ function API.User(source, id, ipAddress)
     end
 
     self.deleteCharacter = function(this, id)
-        API_Database.execute('FCRP/DeleteCharacter', {charid = id})
+        dbAPI.execute('FCRP/DeleteCharacter', {charid = id})
     end
 
     self.setCharacter = function(this, id)                
-        local charRow = API_Database.query('FCRP/GetCharacter', {charid = id})
+        local charRow = dbAPI.query('FCRP/GetCharacter', {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()    
-            local rows2 = API_Database.query('FCRP/Inventory', {id = 'char:' .. id, charid = id, itemName = 0, itemCount = 0, typeInv = 'select'})
+            local rows2 = dbAPI.query('FCRP/Inventory', {id = 'char:' .. id, charid = id, itemName = 0, itemCount = 0, typeInv = 'select'})
             local Inventory = nil
             
             if #rows2 > 0 then        
@@ -103,11 +91,14 @@ function API.User(source, id, ipAddress)
     end
 
     self.drawCharacter = function()     
-        if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then 
+        local source = self:getSource()
+        local Character = self:getCharacter()
+        if cAPI.setModel(source, json.decode(Character:getModel())) then 
             Wait(200)            
-            if cAPI.setSkin(self:getSource(), self.Character:getSkin()) then
-                if cAPI.setClothes(self:getSource(), self.Character:getClothes()) then
-                    cAPI.teleportSpawn(self:getSource(), self.Character:getLastPos(self:getSource()))            
+            if cAPI.setSkin(source, Character:getSkin()) then
+                if cAPI.setClothes(source, Character:getClothes()) then
+                    local lastPosition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
+                    cAPI.teleportSpawn(source, lastPosition)            
                 end       
             end
         end
@@ -137,13 +128,11 @@ function API.User(source, id, ipAddress)
         -- TriggerClientEvent('fcrp_inventory:closeInv', self:getSource())
 
         if self.primaryViewingInventory ~= nil then
-            self.primaryViewingInventory:removeViewer(self:getSource())
-            self.primaryViewingInventory = nil
+            self.primaryViewingInventory:removeViewer(self)
         end
 
         if self.secondaryViewingInventory ~= nil then
-            self.secondaryViewingInventory:removeViewer(self:getSource())
-            self.secondaryViewingInventory = nil
+            self.secondaryViewingInventory:removeViewer(self)
         end
     end
 
@@ -156,7 +145,8 @@ function API.User(source, id, ipAddress)
     end
 
     self.notify = function(this, v)
-        cAPI.notify(self:getSource(), v)
+        print('User ' .. self:getId() .. ': ' .. v)
+        -- cAPI.notify(self:getSource(), v)
     end
 
     self.getWeapons = function()

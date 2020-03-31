@@ -8,7 +8,8 @@ local insideHomeInterior
 local closestInteriorId
 local closestOutsidePortalIndex
 
-local outsidePortalVector
+local blockedPortalVector
+local blockedInteriorId
 
 RegisterCommand(
     "interior",
@@ -52,10 +53,11 @@ Citizen.CreateThread(
                         end
                     end
 
-                    outsidePortalVector = _outsidePortalVector
+                    blockedPortalVector = _outsidePortalVector
+                    blockedInteriorId = interiorId
 
                     if insideHomeInterior == nil and GetInteriorFromEntity(ped) == interiorId then
-                        SetEntityCoords(ped, outsidePortalVector, 0, 0, 0, 0)
+                        -- SetEntityCoords(ped, blockedPortalVector, 0, 0, 0, 0)
                     end
                 end
             end
@@ -65,27 +67,47 @@ Citizen.CreateThread(
 
 Citizen.CreateThread(
     function()
+        local distanceToCheck = 1.0
         while true do
             Citizen.Wait(0)
-            if outsidePortalVector ~= nil then
-                DrawLine(GetEntityCoords(PlayerPedId()), outsidePortalVector, 255, 0, 0, 255)
+            if blockedPortalVector ~= nil then
+                DrawLine(GetEntityCoords(PlayerPedId()), blockedPortalVector, 255, 0, 0, 255)
 
                 local ped = PlayerPedId()
-                local forwardVector = GetEntityForwardVector(ped)
                 local position = GetEntityCoords(ped)
 
-                local front = position + (forwardVector * 1.0)
-                local back = position - (forwardVector * 1.0)
+                if #(position - blockedPortalVector) <= distanceToCheck + 1.0 then
+                    local interiorId = GetInteriorFromEntity(ped)
 
-                if #(outsidePortalVector - front) < #(outsidePortalVector - back) then
-                    -- print('Block W')
-                    DrawLine(position, front, 0, 0, 255, 255)
-                    -- DisableControlAction(0, 31,  true) -- MoveUpDown
-                    DisableControlAction(0, 32, true)
-                else
-                    -- print('Block S')
-                    DrawLine(position, back, 0, 0, 255, 255)
-                    DisableControlAction(0, 33, true)
+                    local forwardVector = GetEntityForwardVector(ped)
+
+                    local front = position + (forwardVector * distanceToCheck)
+                    local frontFurther = position + (forwardVector * (distanceToCheck + 1.0))
+                    local back = position - (forwardVector * distanceToCheck)
+                    local backFurther = position - (forwardVector * (distanceToCheck + 1.0))
+
+                    if interiorId ~= blockedInteriorId then
+                        if #(blockedPortalVector - front) < #(blockedPortalVector - back) then
+                            -- print("Block W")
+                            DrawLine(position, front, 255, 0, 0, 255)
+                            TaskGoStraightToCoord(ped, backFurther, 1.0, 100, 180, 0)
+                        else
+                            -- print("Block S")
+                            DrawLine(position, back, 0, 255, 0, 255)
+                            TaskGoStraightToCoord(ped, frontFurther, 1.0, 100, 180, 0)
+                        end
+                    else
+                        if #(blockedPortalVector - front) < #(blockedPortalVector - back) then
+                            -- print("Block S")
+                            DrawLine(position, front, 0, 0, 255, 255)
+                            TaskGoStraightToCoord(ped, frontFurther, 1.0, 100, 180, 0)
+
+                        else
+                            -- print("Block W")
+                            DrawLine(position, back, 255, 0, 255, 255)
+                            TaskGoStraightToCoord(ped, backFurther, 1.0, 100, 180, 0)
+                        end
+                    end
                 end
             end
         end

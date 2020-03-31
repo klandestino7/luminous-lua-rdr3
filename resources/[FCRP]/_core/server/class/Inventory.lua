@@ -1,4 +1,3 @@
-  
 function API.Inventory(id, capacity, items)
     local self = {}
 
@@ -6,6 +5,7 @@ function API.Inventory(id, capacity, items)
     self.capacity = capacity or 20
     self.items = items or {}
     self.viewersSources = {}
+    self.save = true
 
     self.getId = function()
         return self.id
@@ -56,33 +56,24 @@ function API.Inventory(id, capacity, items)
 
         self.items[id] = _temp
 
-        API_Database.execute(
-            "FCRP/Inventory",
-            {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = _temp, typeInv = "update"}
-        )
+        if self.save == true then
+            dbAPI.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = _temp, typeInv = "update"})
+        end
+
         for viewerSource, asPrimary in pairs(self.viewersSources) do
             -- Update
             local User = API.getUserFromSource(viewerSource)
 
             if asPrimary then
-                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp)
                 User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
             else
-                TriggerClientEvent(
-                    "FCRP:INVENTORY:SecondarySyncItemAmount",
-                    viewerSource,
-                    id,
-                    _temp,
-                    ItemData:getName()
-                )
+                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp)
                 User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
             end
         end
 
         return true
-        -- end
-
-        -- return false
     end
 
     self.removeItem = function(this, id, amount)
@@ -92,16 +83,14 @@ function API.Inventory(id, capacity, items)
 
             if _temp > 0 then
                 self.items[id] = _temp
-                API_Database.execute(
-                    "FCRP/Inventory",
-                    {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = _temp, typeInv = "update"}
-                )
+                if self.save == true then
+                    dbAPI.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = _temp, typeInv = "update"})
+                end
             else
                 self.items[id] = nil
-                API_Database.execute(
-                    "FCRP/Inventory",
-                    {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = 0, typeInv = "remove"}
-                )
+                if self.save == true then
+                    dbAPI.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), itemName = id, itemCount = 0, typeInv = "remove"})
+                end
             end
 
             local ItemData = API.getItemDataFromId(id)
@@ -110,22 +99,10 @@ function API.Inventory(id, capacity, items)
                 local User = API.getUserFromSource(viewerSource)
 
                 if asPrimary then
-                    TriggerClientEvent(
-                        "FCRP:INVENTORY:PrimarySyncItemAmount",
-                        viewerSource,
-                        id,
-                        _temp,
-                        ItemData:getName()
-                    )
+                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                     User:notify("Inventário Principal: - x" .. amount .. " " .. ItemData:getName())
                 else
-                    TriggerClientEvent(
-                        "FCRP:INVENTORY:SecondarySyncItemAmount",
-                        viewerSource,
-                        id,
-                        _temp,
-                        ItemData:getName()
-                    )
+                    TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
                     User:notify("Inventário Secundário: - x" .. amount .. " " .. ItemData:getName())
                 end
             end
@@ -136,72 +113,67 @@ function API.Inventory(id, capacity, items)
         return false
     end
 
-    self.getItemAmount = function(this, item_id)
-        local amount = self.items[item_id] or 0
+    self.getItemAmount = function(this, itemId)
+        local amount = self.items[itemId] or 0
         return amount
-    end
-
-    self.hasItem = function(this, item_id)
-        return self:getItemAmount(item_id) > 0
     end
 
     self.viewAsPrimary = function(this, viewerSource)
         self.viewersSources[viewerSource] = true
 
-        local parsedItems = {}
+        local items = {}
         for id, amount in pairs(self.items) do
-            local ItemData = API.getItemDataFromId(id)
-            -- if ItemData ~= nil then
             table.insert(
-                parsedItems,
+                items,
                 {
                     id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
+                    amount = amount
                 }
             )
-            -- end
         end
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, parsedItems)
+        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, items)
     end
 
     self.viewAsSecondary = function(this, viewerSource)
         self.viewersSources[viewerSource] = false
 
-        local parsedItems = {}
-        -- Dont really need to parse them as the name of the items is being read from the ItemList config by the client
+        local items = {}
         for id, amount in pairs(self.items) do
-            local ItemData = API.getItemDataFromId(id)
-            -- if ItemData ~= nil then
             table.insert(
-                parsedItems,
+                items,
                 {
                     id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
+                    amount = amount
                 }
             )
-            -- end
         end
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, parsedItems)
+        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, items)
     end
 
-    self.removeViewer = function(this, viewerSource)
-        self.viewersSources[viewerSource] = nil
+    self.removeViewer = function(this, User)
+        if self.viewersSources[User:getSource()] ~= nil then
+            if self.viewersSources[User:getSource()] == true then -- If viewing as primary
+                User.primaryViewingInventory = nil
+            else
+                User.secondaryViewingInventory = nil
+            end
+        end
+
+        self.viewersSources[User:getSource()] = nil
     end
 
-    self.deleteInventory = function(self)
-        API_Database.execute(
-            "FCRP/Inventory",
-            {id = self:getId(), charid = self:getCharId(), itemName = 0, itemCount = 0, typeInv = "deadPlayer"}
-        )
-        self.items = nil
+    self.clear = function(self)
+        self.items = {}
+
+        if self.save == true then
+            dbAPI.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), itemName = 0, itemCount = 0, typeInv = "deadPlayer"})
+        end
+    end
+
+    self.saveable = function(self, bool)
+        self.save = bool
     end
 
     return self

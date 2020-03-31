@@ -88,7 +88,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
             local savedLevel = level + 1
             if self.xp < LevelSystem[level].xp then
                 self.level = level - 1
-                API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self.level})
+                dbAPI.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self.level})
                 break
             end
         end
@@ -97,29 +97,29 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.addXp = function(this, v)
         self.xp = self.xp + v
         self.updateLevel()
-        local xp = API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
+        local xp = dbAPI.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
     end
 
     self.removeXp = function(this, v)
         self.xp = self.xp - v
         self.updateLevel()
-        local xp = API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
+        local xp = dbAPI.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
     end
 
     self.setWeapons = function(this, weapons)
-        API_Database.execute("FCRP/SetCWeaponData", {charid = self:getId(), weapons = json.encode(weapons)})
+        dbAPI.execute("FCRP/SetCWeaponData", {charid = self:getId(), weapons = json.encode(weapons)})
     end
 
     self.getModel = function()
-        return self:getData(self.id, "skin", "model")
+        return self:getData("skin", "model")
     end
 
     self.getSkin = function()
-        return self:getData(self.id, "skin", nil)
+        return self:getData("skin", nil)
     end
 
     self.getClothes = function()
-        return self:getData(self.id, "clothes", nil)
+        return self:getData("clothes", nil)
     end
 
     --[[
@@ -138,15 +138,15 @@ function API.Character(id, charName, level, xp, groups, inventory)
         
         on put key = nil is all JSON {} 
     ]]
-    self.setData = function(this, cid, targetName, key, value)
-        API_Database.query("FCRP/SetCData", {target = targetName, key = key, value = value, charid = cid})
+    self.setData = function(this, targetName, key, value)
+        dbAPI.query("FCRP/SetCData", {target = targetName, key = key, value = value, charid = self:getId()})
     end
 
-    self.getData = function(this, cid, targetName, key)
+    self.getData = function(this, targetName, key)
         if key == nil then
             key = "all"
         end
-        local rows = API_Database.query("FCRP/GetCData", {target = targetName, charid = cid, key = key})
+        local rows = dbAPI.query("FCRP/GetCData", {target = targetName, charid = self:getId(), key = key})
         if #rows > 0 then
             return rows[1].Value
         else
@@ -154,8 +154,8 @@ function API.Character(id, charName, level, xp, groups, inventory)
         end
     end
 
-    self.remData = function(this, cid, targetName, key)
-        local rows = API_Database.query("FCRP/RemCData", {target = targetName, key = key, charid = cid})
+    self.remData = function(this, targetName, key)
+        local rows = dbAPI.query("FCRP/RemCData", {target = targetName, key = key, charid = self:getId()})
         if #rows > 0 then
             return true
         end
@@ -163,22 +163,22 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.createHorse = function(this, model, name)
-        local rows = API_Database.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
+        local rows = dbAPI.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
         if #rows > 0 then
             local id = rows[1].id
             self.Horse = API.Horse(id, model, name, API.Inventory("horse" .. id, nil, nil))
             local Inventory = self.Horse:getInventory()
 
-            API_Database.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
+            dbAPI.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
         end
 
         return self.Horse
     end
 
     self.setHorse = function(this, id)
-        local rows = API_Database.query("FCRP/GetHorse", {id = id})
+        local rows = dbAPI.query("FCRP/GetHorse", {id = id})
         if #rows > 0 then
-            local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+            local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
             local Inventory = nil
             if #invRows > 0 then
                 local items, _ = json.decode(invRows[1].items)
@@ -198,7 +198,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.getHorses = function()
-        local rows = API_Database.query("FCRP/GetHorses", {charid = self.id})
+        local rows = dbAPI.query("FCRP/GetHorses", {charid = self.id})
         if #rows > 0 then
             return rows
         end
@@ -209,7 +209,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
             local horses = self:getHorses()
 
             if horses ~= nil then
-                local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. horses[1].id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+                local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. horses[1].id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
                 local Inventory = nil
                 if #invRows > 0 then
                     -- Por algum motivo o decode tá retornando 2 valores?
@@ -228,12 +228,8 @@ function API.Character(id, charName, level, xp, groups, inventory)
         end
     end
 
-    self.playerDead = function()
-        self.Inventory:deleteInventory()
-    end
-
     self.savePosition = function(this, source)
-        local x, y, z = API.getPlayerPos(source)
+        local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))
         local encoded = {
             ["x"] = tonumber(math.floor(x * 100) / 100),
             ["y"] = tonumber(math.floor(y * 100) / 100),
@@ -245,10 +241,6 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.addGroup = function(this, group)
         self:setData(self.id, "groups", group, true)
         self.groups[group] = true
-    end
-
-    self.getLastPos = function(this)
-        return json.decode(self:getData(self.id, "charTable", "position"))
     end
 
     self.saveClothes = function()

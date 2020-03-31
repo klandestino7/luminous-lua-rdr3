@@ -3,9 +3,6 @@ local Tunnel = module('_core', 'libs/Tunnel')
 
 cAPI = Proxy.getInterface('API')
 API = Tunnel.getInterface('API')
-Identity = {}
-
-ped = PlayerPedId()
 
 RegisterNetEvent('fcrp_identity:charList')
 AddEventHandler('fcrp_identity:charList', function(characters)

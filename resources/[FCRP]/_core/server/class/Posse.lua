@@ -52,7 +52,7 @@ function API.Posse(id, charid, name, members)
 
         self.members[User:getCharacter():getId()] = rank
 
-        API_Database.query('FCRP/PosseRoutine', {id = id, charid = User:getCharacter():getId(), rank = rank, type = 'update'})
+        dbAPI.query('FCRP/PosseRoutine', {id = id, charid = User:getCharacter():getId(), rank = rank, type = 'update'})
     end
 
     self.removeMember = function(this, charid)
@@ -72,7 +72,7 @@ function API.Posse(id, charid, name, members)
                 end
 
                 API.deletePosse(self.id)
-                API_Database.query('FCRP/PosseRoutine', {id = id, charid = 0, rank = 0, type = 'delete'}) -- Deletar a Row da Posse
+                dbAPI.query('FCRP/PosseRoutine', {id = id, charid = 0, rank = 0, type = 'delete'}) -- Deletar a Row da Posse
             else
                 local UserMember = API.getUserFromCharId(charid)
 

@@ -11,7 +11,7 @@ client_scripts {
 	---------------------
 	'client/_Main.lua',
 	'client/Death.lua',
-	'client/Basic_Needs.lua',
+	'client/BasicNeeds.lua',
 	--'client/LoadIPL.lua',
 }
 
@@ -27,14 +27,13 @@ server_scripts {
 	'server/_Main.lua',
 	'server/Auth.lua',
 	'server/Gui.lua',
-	'server/Basic_needs.lua',
+	'server/BasicNeeds.lua',
 	-----------------------
 	'server/class/Inventory.lua',
 	'server/class/ItemData.lua',
 	'server/class/Character.lua',
 	'server/class/User.lua',
 	'server/class/Chest.lua',
-	'server/class/ShopItem.lua',
 	'server/class/Posse.lua',
 	-----------------------
 	-- 'server/manager/ChestManager.lua',

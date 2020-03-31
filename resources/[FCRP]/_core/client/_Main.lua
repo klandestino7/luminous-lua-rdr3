@@ -8,8 +8,8 @@ Proxy.addInterface("API", cAPI)
 API = Proxy.getInterface("API")
 
 local drawable_names = {"face", "masks", "hair", "torsos", "legs", "bags", "shoes", "neck", "undershirts", "vest", "decals", "jackets"}
-local head_overlays = {"bl","fch","eyebrownhead","ageing","Makeup","Blush","Complexion","SunDamage","Lipstick","moles","chesthair","bodybl","addbodybl"}
-local face_features = {"nosew","peaknose","lengthnose","nosehigh","noselowering","nosetwist","eyebrow","eyebrow2","cheeck1","cheeck2","cheeck3","eye1","lip1","jaw1","jaw2","chimp1","chimp2","chimp3","chimp4","neck"}
+local head_overlays = {"bl", "fch", "eyebrownhead", "ageing", "Makeup", "Blush", "Complexion", "SunDamage", "Lipstick", "moles", "chesthair", "bodybl", "addbodybl"}
+local face_features = {"nosew", "peaknose", "lengthnose", "nosehigh", "noselowering", "nosetwist", "eyebrow", "eyebrow2", "cheeck1", "cheeck2", "cheeck3", "eye1", "lip1", "jaw1", "jaw2", "chimp1", "chimp2", "chimp3", "chimp4", "neck"}
 
 AddEventHandler(
 	"playerSpawned",
@@ -35,20 +35,21 @@ Citizen.CreateThread(
 	end
 )
 
-
-Citizen.CreateThread(function()
-    while true do
-        local playerPed = PlayerPedId()
-        if playerPed and playerPed ~= -1 then
-        	TriggerServerEvent('updatePosOnServerForPlayer', { table.unpack(GetEntityCoords(playerPed)) })
-        end
-        Citizen.Wait(5000)
-    end
-end)
+Citizen.CreateThread(
+	function()
+		while true do
+			local playerPed = PlayerPedId()
+			if playerPed and playerPed ~= -1 then
+				TriggerServerEvent("updatePosOnServerForPlayer", {table.unpack(GetEntityCoords(playerPed))})
+			end
+			Citizen.Wait(5000)
+		end
+	end
+)
 
 function cAPI.getPosition()
-	local x,y,z = table.unpack(GetEntityCoords(PlayerPedId(), true))
-	return x,y,z
+	local x, y, z = table.unpack(GetEntityCoords(PlayerPedId(), true))
+	return x, y, z
 end
 
 function cAPI.teleport(x, y, z, spawn)
@@ -67,17 +68,17 @@ function cAPI.getSpeed()
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
 end
 
-function cAPI.setModel(genero)    
+function cAPI.setModel(genero)
 	-- Citizen.CreateThread(function()
-		RequestModel(genero)
-        while not HasModelLoaded(genero) do
-			Citizen.Wait(100)	
-		end
-        SetPlayerModel(PlayerId(), genero)
-		SetPedDefaultComponentVariation(PlayerPedId(), true)
-    -- end)
-    return true    
-end 
+	RequestModel(genero)
+	while not HasModelLoaded(genero) do
+		Citizen.Wait(100)
+	end
+	SetPlayerModel(PlayerId(), genero)
+	SetPedDefaultComponentVariation(PlayerPedId(), true)
+	-- end)
+	return true
+end
 
 function cAPI.LoadModel(hash)
 	local waiting = 0
@@ -115,7 +116,7 @@ function cAPI.TargetT(Distance, Ped)
 	local camCoords = GetGameplayCamCoord()
 	local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
 	local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
-	local A,B,C,D,Entity = GetRaycastResult(RayHandle)
+	local A, B, C, D, Entity = GetRaycastResult(RayHandle)
 	return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
 
@@ -124,10 +125,10 @@ function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
 	local CoA = GetEntityCoords(Ped, 1)
 	local CoB = GetOffsetFromEntityInWorldCoords(Ped, 0.0, Distance, 0.0)
 	local RayHandle = StartShapeTestRay(CoA.x, CoA.y, CoA.z, CoB.x, CoB.y, CoB.z, -1, Ped, 0)
-	local A,B,C,D,Ent = GetRaycastResult(RayHandle)
+	local A, B, C, D, Ent = GetRaycastResult(RayHandle)
 	return Ent
 end
-  
+
 -- Camera's coords
 function cAPI.GetCoordsFromCam(distance)
 	local rot = GetGameplayCamRot(2)
@@ -142,7 +143,6 @@ function cAPI.GetCoordsFromCam(distance)
 	newCoordZ = coord.z + (math.sin(tX) * 8.0)
 	return newCoordX, newCoordY, newCoordZ
 end
-  
 
 function cAPI.getCamDirection()
 	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
@@ -240,11 +240,11 @@ local weaponModels = {
 	"WEAPON_FLARE"
 }
 
-function cAPI.getWeapons()	
+function cAPI.getWeapons()
 	local ped = PlayerPedId()
 	local ammo_types = {}
 	local weapons = {}
-	for k, v in pairs(weaponModels) do
+	for _, v in pairs(weaponModels) do
 		local hash = GetHashKey(v)
 		if HasPedGotWeapon(ped, hash) then
 			local atype = GetPedAmmoTypeFromWeapon(ped, hash)
@@ -285,14 +285,7 @@ function cAPI.giveWeapons(weapons, clear_before)
 	for weapon, ammo in pairs(weapons) do
 		local hash = GetHashKey(weapon)
 
-		GiveWeaponToPed(
-			PlayerPedId(),
-			hash,
-			ammo or 0,
-			false,
-			true
-		)
-		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo)
+		GiveWeaponToPed(PlayerPedId(), hash, ammo or 0, false, true)
 	end
 end
 
@@ -437,8 +430,8 @@ function cAPI.teleportToWaypoint()
 	end
 
 	local waypointBlip = GetFirstBlipInfoId(8)
-	local x,y,z = table.unpack(Citizen.InvokeNative(0xFA7C7F0AADF25D09,waypointBlip,Citizen.ResultAsVector()))
--- 
+	local x, y, z = table.unpack(Citizen.InvokeNative(0xFA7C7F0AADF25D09, waypointBlip, Citizen.ResultAsVector()))
+	--
 	local ground
 	local groundFound = false
 	local groundCheckHeights = {
@@ -572,32 +565,32 @@ function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
 end
 
 function cAPI.StartFade(timer)
-    DoScreenFadeOut(timer)
-    while IsScreenFadingOut() do
-        Citizen.Wait(1)
-    end
+	DoScreenFadeOut(timer)
+	while IsScreenFadingOut() do
+		Citizen.Wait(1)
+	end
 end
 
 function cAPI.EndFade(timer)
-    ShutdownLoadingScreen()
-    DoScreenFadeIn(timer)
-    while IsScreenFadingIn() do
-        Citizen.Wait(1)
-    end
-end  
+	ShutdownLoadingScreen()
+	DoScreenFadeIn(timer)
+	while IsScreenFadingIn() do
+		Citizen.Wait(1)
+	end
+end
 
 function cAPI.createCamera()
 	local ped = PlayerPedId()
 	SetEntityCoords(ped, 500.02, 500.02, 250.93) -- POSITION WHEN PLAYER IS CREATING/SELECTING
 	FreezeEntityPosition(GetPlayerPed(-1), true)
-	SetEntityVisible(PlayerPedId(),false)
-    SetTimecycleModifier('Base_modifier')
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 500.02, 500.02, 250.93, 360.00,0.00,0.00, 100.00, false, 0)    
-	PointCamAtCoord(cam, 500.02-25, 500.02-70, 250.93-20)
-    SetCamActive(cam, true)
-    RenderScriptCams(true, false, 1, true, true)
+	SetEntityVisible(PlayerPedId(), false)
+	SetTimecycleModifier("Base_modifier")
+	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 500.02, 500.02, 250.93, 360.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam, 500.02 - 25, 500.02 - 70, 250.93 - 20)
+	SetCamActive(cam, true)
+	RenderScriptCams(true, false, 1, true, true)
 	DisplayHud(false)
-    DisplayRadar(false)    
+	DisplayRadar(false)
 end
 
 function cAPI.destroyCamera()
@@ -605,100 +598,94 @@ function cAPI.destroyCamera()
 	DestroyAllCams(true)
 	Citizen.Wait(500)
 	DisplayHud(true)
-	DisplayRadar(true)	
+	DisplayRadar(true)
 end
 
 function cAPI.CameraWithSpawnEffect(coords)
 	DestroyCam(cam, true)
 	Citizen.Wait(100)
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x+200,coords.y+200,coords.z+200, 300.00,0.00,0.00, 100.00, false, 0) -- CAMERA COORDS
-	PointCamAtCoord(cam, coords.x,coords.y,coords.z+200)
+	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x + 200, coords.y + 200, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+	PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
 	SetCamActive(cam, true)
 	cAPI.EndFade(500)
 	RenderScriptCams(true, false, 1, true, true)
 	Citizen.Wait(500)
-	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+200, 300.00,0.00,0.00, 100.00, false, 0)
-	PointCamAtCoord(cam3, coords.x,coords.y,coords.z+200)
+	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
 	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
 	Citizen.Wait(3900)
-	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+200, 300.00,0.00,0.00, 100.00, false, 0)
-	PointCamAtCoord(cam2, coords.x,coords.y,coords.z+2)
+	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
 	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
 	RenderScriptCams(false, true, 500, true, true)
-	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z+0.5)
+	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z + 0.5)
 	Citizen.Wait(1500)
 	DestroyAllCams(true)
 	Citizen.Wait(800)
 	DisplayHud(true)
-	DisplayRadar(true)	
-	TriggerEvent('ToogleBackCharacter')
-end 
+	DisplayRadar(true)
+	TriggerEvent("ToogleBackCharacter")
+end
 
 function cAPI.SetPedHeadBlend(data)
 	local player = PlayerPedId()
-    SetPedHeadBlendData(player,
-        tonumber(data['shapeFirst']),
-        tonumber(data['shapeSecond']),
-        tonumber(data['shapeThird']),
-        tonumber(data['skinFirst']),
-        tonumber(data['skinSecond']),
-        tonumber(data['skinThird']),
-        tonumber(data['shapeMix']),
-        tonumber(data['skinMix']),
-        tonumber(data['thirdMix']),
-        false)
+	SetPedHeadBlendData(player, tonumber(data["shapeFirst"]), tonumber(data["shapeSecond"]), tonumber(data["shapeThird"]), tonumber(data["skinFirst"]), tonumber(data["skinSecond"]), tonumber(data["skinThird"]), tonumber(data["shapeMix"]), tonumber(data["skinMix"]), tonumber(data["thirdMix"]), false)
 end
 
 function cAPI.SetHeadOverlayData(data)
 	local player = PlayerPedId()
-    if json.encode(data) ~= "[]" then
-        for i = 1, #head_overlays do
-            SetPedHeadOverlay(player,  i-1, tonumber(data[i].overlayValue),  tonumber(data[i].overlayOpacity))
-            -- SetPedHeadOverlayColor(player, i-1, data[i].colourType, data[i].firstColour, data[i].secondColour)
-        end
+	if json.encode(data) ~= "[]" then
+		for i = 1, #head_overlays do
+			SetPedHeadOverlay(player, i - 1, tonumber(data[i].overlayValue), tonumber(data[i].overlayOpacity))
+			-- SetPedHeadOverlayColor(player, i-1, data[i].colourType, data[i].firstColour, data[i].secondColour)
+		end
 
-        SetPedHeadOverlayColor(player, 0, 0, tonumber(data[1].firstColour), tonumber(data[1].secondColour))
-        SetPedHeadOverlayColor(player, 1, 1, tonumber(data[2].firstColour), tonumber(data[2].secondColour))
-        SetPedHeadOverlayColor(player, 2, 1, tonumber(data[3].firstColour), tonumber(data[3].secondColour))
-        SetPedHeadOverlayColor(player, 3, 0, tonumber(data[4].firstColour), tonumber(data[4].secondColour))
-        SetPedHeadOverlayColor(player, 4, 2, tonumber(data[5].firstColour), tonumber(data[5].secondColour))
-        SetPedHeadOverlayColor(player, 5, 2, tonumber(data[6].firstColour), tonumber(data[6].secondColour))
-        SetPedHeadOverlayColor(player, 6, 0, tonumber(data[7].firstColour), tonumber(data[7].secondColour))
-        SetPedHeadOverlayColor(player, 7, 0, tonumber(data[8].firstColour), tonumber(data[8].secondColour))
-        SetPedHeadOverlayColor(player, 8, 2, tonumber(data[9].firstColour), tonumber(data[9].secondColour))
-        SetPedHeadOverlayColor(player, 9, 0, tonumber(data[10].firstColour), tonumber(data[10].secondColour))
-        SetPedHeadOverlayColor(player, 10, 1, tonumber(data[11].firstColour), tonumber(data[11].secondColour))
-        SetPedHeadOverlayColor(player, 11, 0, tonumber(data[12].firstColour), tonumber(data[12].secondColour))
-    end
+		SetPedHeadOverlayColor(player, 0, 0, tonumber(data[1].firstColour), tonumber(data[1].secondColour))
+		SetPedHeadOverlayColor(player, 1, 1, tonumber(data[2].firstColour), tonumber(data[2].secondColour))
+		SetPedHeadOverlayColor(player, 2, 1, tonumber(data[3].firstColour), tonumber(data[3].secondColour))
+		SetPedHeadOverlayColor(player, 3, 0, tonumber(data[4].firstColour), tonumber(data[4].secondColour))
+		SetPedHeadOverlayColor(player, 4, 2, tonumber(data[5].firstColour), tonumber(data[5].secondColour))
+		SetPedHeadOverlayColor(player, 5, 2, tonumber(data[6].firstColour), tonumber(data[6].secondColour))
+		SetPedHeadOverlayColor(player, 6, 0, tonumber(data[7].firstColour), tonumber(data[7].secondColour))
+		SetPedHeadOverlayColor(player, 7, 0, tonumber(data[8].firstColour), tonumber(data[8].secondColour))
+		SetPedHeadOverlayColor(player, 8, 2, tonumber(data[9].firstColour), tonumber(data[9].secondColour))
+		SetPedHeadOverlayColor(player, 9, 0, tonumber(data[10].firstColour), tonumber(data[10].secondColour))
+		SetPedHeadOverlayColor(player, 10, 1, tonumber(data[11].firstColour), tonumber(data[11].secondColour))
+		SetPedHeadOverlayColor(player, 11, 0, tonumber(data[12].firstColour), tonumber(data[12].secondColour))
+	end
 end
 
 function cAPI.SetHeadStructure(data)
 	local player = PlayerPedId()
-    for i = 1, #face_features do
-        SetPedFaceFeature(player, i-1, data[i])
-    end
+	for i = 1, #face_features do
+		SetPedFaceFeature(player, i - 1, data[i])
+	end
 end
 
 function cAPI.SetClothing(drawables, drawTextures)
 	local player = PlayerPedId()
-    for i = 1, #drawable_names do
-        if drawables[0] == nil then
-            if drawable_names[i] == "undershirts" and drawables[tostring(i-1)][2] == -1 then
-                SetPedComponentVariation(player, i-1, 15, 0, 2)
-            else
-                SetPedComponentVariation(player, i-1, drawables[tostring(i-1)][2], drawTextures[i][2], 2)
-            end
-        else
-            if drawable_names[i] == "undershirts" and drawables[i-1][2] == -1 then
-                SetPedComponentVariation(player, i-1, 15, 0, 2)
-            else
-                SetPedComponentVariation(player, i-1, drawables[i-1][2], drawTextures[i][2], 2)
-            end
-        end
-    end
+	for i = 1, #drawable_names do
+		if drawables[0] == nil then
+			if drawable_names[i] == "undershirts" and drawables[tostring(i - 1)][2] == -1 then
+				SetPedComponentVariation(player, i - 1, 15, 0, 2)
+			else
+				SetPedComponentVariation(player, i - 1, drawables[tostring(i - 1)][2], drawTextures[i][2], 2)
+			end
+		else
+			if drawable_names[i] == "undershirts" and drawables[i - 1][2] == -1 then
+				SetPedComponentVariation(player, i - 1, 15, 0, 2)
+			else
+				SetPedComponentVariation(player, i - 1, drawables[i - 1][2], drawTextures[i][2], 2)
+			end
+		end
+	end
 end
 
 function cAPI.SetHairColor(data)
 	local player = PlayerPedId()
 	SetPedHairColor(player, tonumber(data[0]), tonumber(data[1]))
+end
+
+function cAPI.setEntityHealth(v)
+	setEntityHealth(PlayerPedId(), v)
 end

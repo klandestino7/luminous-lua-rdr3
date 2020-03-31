@@ -36,7 +36,7 @@ AddEventHandler(
             return
         end
 
-        local craftingParts = CraftableItems[id].craftingParts
+        local craftingParts = CraftableItems[id][1]
 
         for cid, amount in pairs(craftingParts) do
             if Inventory:getItemAmount(cid) < amount then

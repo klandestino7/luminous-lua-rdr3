@@ -16,18 +16,12 @@ AddEventHandler(
 
         -- craftingItems
         -- {
-        --     id1 = {
-        --         canCraft = false
-        --         craftingParts = {
-        --             cId1 = amount
-        --         }
-        --     }
-        --     id2 = {
-        --         canCraft = true
-        --         craftingParts = {
+        --     id = {
+        --         {
         --             cId1 = amount
         --             cId2 = amount
         --         }
+        --         canCraft = true
         --     }
         -- }
 
@@ -42,7 +36,7 @@ AddEventHandler(
         for id, values in pairs(craftingItems) do
             parsedItemNames[id] = ItemList[id].name
             local canCraft = true
-            for idCPart, amountNeeded in pairs(values.craftingParts) do
+            for idCPart, amountNeeded in pairs(values[1]) do
                 parsedItemNames[idCPart] = ItemList[idCPart].name
                 if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
                     canCraft = false
@@ -59,8 +53,6 @@ AddEventHandler(
                 parsedItemNames = parsedItemNames
             }
         )
-        -- wasOpenedBefore = true
-        -- else
     end
 )
 
@@ -73,7 +65,7 @@ AddEventHandler(
 
         for id, values in pairs(CraftableItems) do
             local canCraft = true
-            for idCPart, amountNeeded in pairs(values.craftingParts) do
+            for idCPart, amountNeeded in pairs(values[1]) do
                 if updatedOwnedItems[idCPart] ~= nil and updatedOwnedItems[idCPart] < amountNeeded then
                     canCraft = false
                     break

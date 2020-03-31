@@ -1,19 +1,3 @@
-RegisterCommand(
-    "int",
-    function(source, args, rawCommand)
-        print(GetInteriorFromEntity(PlayerPedId()))
-    end,
-    false
-)
-
-RegisterCommand(
-    "arma",
-    function(source, args, rawCommand)
-        GiveWeaponToPed(PlayerPedId(), GetHashKey(args[1]), 250, false, false)
-    end,
-    false
-)
-
 local interiors = {
     [1] = 82690, -- Joalheria
     [2] = 179969 -- Banco Interior

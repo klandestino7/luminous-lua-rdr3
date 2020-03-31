@@ -39,7 +39,7 @@ window.addEventListener("message", function(event) {
 
             var bottomText = '<span>';
 
-            for (const [cPartId, amountNedeed] of Object.entries(data.craftingParts)) {
+            for (const [cPartId, amountNedeed] of Object.entries(data[1])) {
                 if (ownedParts[cPartId] >= amountNedeed) {
                     bottomText = bottomText + ownedParts[cPartId] + '/' + amountNedeed + ' ' + parsedItemNames[cPartId] + ', ';
                 } else {
@@ -77,7 +77,7 @@ window.addEventListener("message", function(event) {
             for (const [itemId, data] of Object.entries(craftingItems)) {
                 var bottomText = '<span>';
                 var update = false;
-                for (const [cPartId, amountNedeed] of Object.entries(data.craftingParts)) {
+                for (const [cPartId, amountNedeed] of Object.entries(data[1])) {
                     if (update == true || newOwnedParts[cPartId]) {
                         update = true
                         if (ownedParts[cPartId] >= amountNedeed) {

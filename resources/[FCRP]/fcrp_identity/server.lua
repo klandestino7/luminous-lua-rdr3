@@ -26,13 +26,6 @@ AddEventHandler('fcrp_identity:charListWithUser', function(User)
     end
 end)
 
-RegisterServerEvent('FCRP:getPOS')
-AddEventHandler('FCRP:getPOS', function(src) 
-    local _source = source
-    local User = API.getUserFromSource(_source) 
-    API.LastPos(_source)
-end)
-
 RegisterNetEvent("showPicture")
 AddEventHandler("showPicture", function(src)
     local _source = source

@@ -3,7 +3,7 @@ local Tunnel = module("libs/Tunnel")
 
 API = {}
 Proxy.addInterface("API", API)
-Proxy.addInterface("API_DB", API_Database)
+Proxy.addInterface("API_DB", dbAPI)
 
 -- cAPI = {}
 cAPI = Tunnel.getInterface("API")
@@ -17,12 +17,12 @@ API.chars = {}
 API.onFirstSpawn = {}
 
 function API.getUserIdByIdentifiers(ids, name)
-    local rows = API_Database.query("FCRP/SelectUser", {identifier = ids[1]})
+    local rows = dbAPI.query("FCRP/SelectUser", {identifier = ids[1]})
     if #rows > 0 then
         return rows[1].user_id
     end
 
-    local rows = API_Database.query("FCRP/CreateUser", {identifier = ids[1], name = name})
+    local rows = dbAPI.query("FCRP/CreateUser", {identifier = ids[1], name = name})
     if #rows > 0 then
         return rows[1].id
     end
@@ -57,7 +57,7 @@ function API.getUserIdFromCharId(charid)
     if API.chars[charid] then
         return API.chars[charid]
     else
-        local rows = API_Database.query("FCRP/GetUserIdByCharId", {charid = charid})
+        local rows = dbAPI.query("FCRP/GetUserIdByCharId", {charid = charid})
         if #rows > 0 then
             return rows[1].user_id
         end
@@ -71,13 +71,13 @@ end
 
 function API.setBanned(user_id)
     if user_id ~= nil then
-        API_Database.execute("FCRP/SetBanned", {user_id = user_id})
+        dbAPI.execute("FCRP/SetBanned", {user_id = user_id})
         DropPlayer(sourcePlayer, reason)
     end
 end
 
 function API.isBanned(user_id)
-    local rows = API_Database.query("FCRP/BannedUser", {user_id = user_id})
+    local rows = dbAPI.query("FCRP/BannedUser", {user_id = user_id})
     if #rows > 0 then
         return tonumber(rows[1].banned)
     else
@@ -86,7 +86,7 @@ function API.isBanned(user_id)
 end
 
 function API.isWhitelisted(identifier)
-    local rows = API_Database.query("FCRP/Whitelisted", {identifier = identifier})
+    local rows = dbAPI.query("FCRP/Whitelisted", {identifier = identifier})
     return #rows > 0
 end
 
@@ -105,20 +105,6 @@ end
 
 function API.kick(source, reason)
     API.dropPlayer(source, reason)
-end
-
-function API.LastPos(src)
-    local _source = src
-    local User = API.getUserFromSource(_source)
-    if User == nil then
-        return
-    end
-    local Character = User:getCharacter()
-    if Character == nil then
-        return
-    end
-    local position = Character:getData(Character:getId(), "charTable", "position")
-    TriggerClientEvent("FCRP:SendPOS", _source, json.decode(position))
 end
 
 RegisterServerEvent("FCRP:SavePos")
