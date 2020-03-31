@@ -9,7 +9,6 @@ cAPI = Tunnel.getInterface("API")
 ---------------------------
 -- Variables
 
-
 RegisterNetEvent('FRP:MEDIC:revivecheck')
 AddEventHandler('FRP:MEDIC:revivecheck', function()
   local player, distance = GetClosestPlayer()
@@ -28,8 +27,6 @@ AddEventHandler('FRP:MEDIC:heal', function(healType, quiet)
 	local maxHealth = GetEntityMaxHealth(playerPed)
 	SetEntityHealth(playerPed, maxHealth)
 end)
-
-
 
 Citizen.CreateThread(
 	function()
@@ -50,43 +47,6 @@ Citizen.CreateThread(
 		end
 	end
 )
-
--- RegisterNetEvent('FRP:MEDIC:revive')
--- AddEventHandler('FRP:MEDIC:revive', function()
--- Citizen.CreateThread(function()
-
--- 	local playerPed = PlayerPedId()
--- 	local coords = GetEntityCoords(playerPed)
--- 	--TriggerServerEvent('FRP:MEDIC:setDeathStatus', false)
-
--- 		IsDead = false
--- 		DoScreenFadeOut(800)
-
--- 		while not IsScreenFadedOut() do
--- 			Citizen.Wait(50)
--- 			IsDead = false 
--- 			local timer = tonumber(0)
--- 		end
-
--- 		DoScreenFadeOut(300)
-
--- 		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
--- 		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-
--- 	if IsDead == false then
--- 		local coords = GetEntityCoords(ped, false)
--- 		SetEntityCoords(ped, coords.x, coords.y, coords.z)	
--- 		DoScreenFadeIn(200)
--- 		IsDead = false 
---     	Citizen.InvokeNative(0x71BC8E838B9C6035, ped)
--- 		Citizen.InvokeNative(0x0E3F4AF2D63491FB)
--- 		SetEntityHealth(GetPlayerPed(-1), 200)
--- 		DisplayHud(true)
--- 		print(IsDead)
--- 		DisplayRadar(true)
--- 	end
--- end)
--- end)
 
 function isNearPlayer()
 	local player, distance = GetClosestPlayer()
