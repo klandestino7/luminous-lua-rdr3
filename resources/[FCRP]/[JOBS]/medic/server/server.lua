@@ -1,49 +1,35 @@
+local Tunnel = module("_core", "libs/Tunnel")
+local Proxy = module("_core", "libs/Proxy")
 
-RegisterCommand('curar', function(source)
-	local source = source
-	TriggerEvent("redemrp:getPlayerFromId", source, function(user)
-		local medicjob = user.getJob()
-		if medicjob == 'medic' then
-			TriggerClientEvent('fc_medicjob:revivecheck', source)
-			user.addMoney(tonumber(5))
-			user.addXP(tonumber(10))	
-		else
-			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um médico') 
-		end 
-	end)
-end)
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
-RegisterServerEvent('fc_medicjob:revivecallback2')
-AddEventHandler('fc_medicjob:revivecallback2', function(target)
-	TriggerClientEvent('fc_medicjob:revive2', target)
-end)
+RegisterServerEvent('FRP:MEDIC:checkjob')
+AddEventHandler('FRP:MEDIC:checkjob', function()
+	local _source = source
+	local User = API.getUserFromSource(_source)
+	local Character = User:getCharacter()	
+	local job = Character:hasGroup('medic')	
+	local Inventory = User:getCharacter():getInventory()
 
-
-
- --[[
-RegisterServerEvent('fc_medicjob:revive1')
-AddEventHandler('fc_medicjob:revive1', function(target)
-	local source = source
-
-TriggerEvent("redemrp:getPlayerFromId", source, function(user)
-	local medicjob = user.getJob()
-
-	if medicjob == 'medico' then
-
-		TriggerEvent('fc_medicjob:revive2', target)
-
+	if job then
+		TriggerClientEvent('FRP:MEDIC:revivecheck', _source)
+		User:addXp(10)
+		Inventory:addItem('generic_money', 5)
 	else
-	 TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um médico') 
-	end 
-
-	if handcuffs == true then
-		TriggerEvent('fc_handcuffs:prender', target)
+		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um médico')
 	end
 
 end)
-end)  ]]
 
-RegisterServerEvent('fc_medicjob:revive2')
-AddEventHandler('fc_medicjob:revive2', function(target)
-		TriggerClientEvent('fc_medicjob:revive2', target)
+RegisterServerEvent('FRP:MEDIC:revivecallback')
+AddEventHandler('FRP:MEDIC:revivecallback', function(target)
+	--TriggerClientEvent('FRP:MEDIC:revive', target)
+	TriggerClientEvent('FRP:RESPAWN:revive', target)
+end)
+
+
+RegisterServerEvent('FRP:MEDIC:revive2')
+AddEventHandler('FRP:MEDIC:revive2', function(target)
+	TriggerClientEvent('FRP:MEDIC:revive2', target)
 end)

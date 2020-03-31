@@ -5,133 +5,116 @@ local Proxy = module("_core", "libs/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
--- -- jail command
--- TriggerEvent('redem:addGroupCommand', 'jail1', 'admin', function(source, args, user)	
-
-
--- 	if args[1] and GetPlayerName(args[1]) ~= nil and tonumber(args[2]) then
--- 		TriggerEvent('frp_jail:sendToJail', tonumber(args[1]), tonumber(args[2] * 60))
--- 	else
--- 		TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'ID ou Tempo Inválido!' } } )
--- 	end
-
-
--- end, function(source, args, user)
--- 	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
--- end, {help = "Put a player in jail", params = {{name = "id", help = "target id"}, {name = "time", help = "jail time in minutes"}}})
-
-
-
 RegisterCommand(
     "jail",
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
-        local Character = User:getCharacter()
-        if Character:hasGroup("admin") and args[1] then
-            local tplayer = API.getUserSource(parseInt(args[1]))
-            if tplayer then
-                TriggerEvent('frp_jail:sendToJail', tonumber(args[1]), tonumber(args[2] * 60))
+		local Character = User:getCharacter()
+		if Character:hasGroup("police") or Character:hasGroup("admin") and args[1] then
+			if args[1] then
+                TriggerEvent('FRP:JAIL:sendToJail', API.getUserFromUserId(parseInt(tonumber(args[1]))):getSource(), tonumber(args[2] * 60))
             end
         end
     end
 )
 
-
--- -- unjail
--- TriggerEvent('redem:addGroupCommand', 'unjail', 'admin', function(source, args, user)
--- 	if args[1] then
--- 		if GetPlayerName(args[1]) ~= nil then
--- 			TriggerEvent('frp_jail:unjailQuest', tonumber(args[1]))
--- 		else
--- 			TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Invalid player ID!' } } )
--- 		end
--- 	else
--- 		TriggerEvent('frp_jail:unjailQuest', source)
--- 	end
--- end, function(source, args, user)
--- 	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
--- end, {help = "Unjail people from jail", params = {{name = "id", help = "target id"}}})
-
-
-
+RegisterCommand(
+    "unjail",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+		local Character = User:getCharacter()
+		if Character:hasGroup("police") or Character:hasGroup("admin") and args[1] then
+			if args[1] then
+				TriggerEvent('FRP:JAIL:unjailQuest', tonumber(args[1]))
+            end
+        end
+    end
+)
 
 -- send to jail and register in database
-RegisterServerEvent('frp_jail:sendToJail')
-AddEventHandler('frp_jail:sendToJail', function(target, jailTime)
-	local _source = source -- cannot parse source to client trigger for some weird reason
-	local User = API.getUserFromSource(source)
+RegisterServerEvent('FRP:JAIL:sendToJail')
+AddEventHandler('FRP:JAIL:sendToJail', function(target, jailTime)
+	local User = API.getUserFromSource(target)
 	local Character = User:getCharacter()		
-	local identifier = GetPlayerIdentifiers(_source)[1] -- get steam identifier
 	local nome = Character:getName()
 
---	TriggerClientEvent('chat:addMessage', -1, { args = { 'JUSTIÇA', nome.. ' está agora preso por '.. jailTime ..' minutos', GetPlayerName(_source), tonumber(jailTime / 60) }, color = { 147, 196, 109 } })
---	TriggerClientEvent('esx_policejob:unrestrain', target)
-	print(jailTime)	
-	TriggerClientEvent('frp_jail:jail', target, jailTime)
+	TriggerClientEvent('FRP:JAIL:jail', User, jailTime)
+
+	local check = Character:getJail(Character:getId())
+
+	if check == '' then	
+		Character:setJail(Character:getId(), jailTime)
+		TriggerClientEvent('FRP:JAIL:jail', User, tonumber(jailTime))
+	else
+		Character:updJail(Character:getId(), jailTime)
+		TriggerClientEvent('FRP:JAIL:jail', User, json.encode(check[1].jail_time))
+	end
+
+	print(nome .. ' foi preso por ' .. jailTime)
 end)
 
 
-
-
-
-
 -- should the player be in jail?
-RegisterServerEvent('frp_jail:checkJail')
-AddEventHandler('frp_jail:checkJail', function()
-	local _source = source -- cannot parse source to client trigger for some weird reason
-	local User = API.getUserFromSource(source)
-	local Character = User:getCharacter()		
-	local identifier = GetPlayerIdentifiers(_source)[1] -- get steam identifier
+RegisterServerEvent('FRP:JAIL:checkJail')
+AddEventHandler('FRP:JAIL:checkJail', function()
+	local _source = source
+	local User = API.getUserFromSource(_source)
+	local Character = User:getCharacter()
 	local nome = Character:getName()
-	local time = 2
---	TriggerClientEvent('chat:addMessage', -1, { args = { 'JUSTIÇA', nome.. ' está agora preso por '.. time ..' minutos', GetPlayerName(_source), tonumber(time / 60) }, color = { 147, 196, 109 } })
---	TriggerClientEvent('frp_jail:jail', _source, time )
+	local check = Character:getJail(Character:getId())
+
+	print(check)
+	
+	if check ~= '' then		
+		TriggerClientEvent('FRP:JAIL:jail', _source, tonumber(check[1].jail_time))
+	end
 	
 end) 
 
 -- unjail via command
-RegisterServerEvent('frp_jail:unjailQuest')
-AddEventHandler('frp_jail:unjailQuest', function(source)
+RegisterServerEvent('FRP:JAIL:unjailQuest')
+AddEventHandler('FRP:JAIL:unjailQuest', function(source)
 	if source ~= nil then
 		unjail(source)
 	end
 end)
 
 -- unjail after time served
-RegisterServerEvent('frp_jail:unjailTime')
-AddEventHandler('frp_jail:unjailTime', function()
+RegisterServerEvent('FRP:JAIL:unjailTime')
+AddEventHandler('FRP:JAIL:unjailTime', function()
 	unjail(source)
 end)
 
--- -- keep jailtime updated
--- RegisterServerEvent('frp_jail:updateRemaining')
--- AddEventHandler('frp_jail:updateRemaining', function(jailTime)
--- 	local identifier = GetPlayerIdentifiers(source)[1]
--- 	MySQL.Async.fetchAll('SELECT * FROM jail WHERE identifier = @identifier', {
--- 		['@identifier'] = identifier
--- 	}, function(result)
--- 		if result[1] then
--- 			MySQL.Async.execute('UPDATE jail SET jail_time = @jailTime WHERE identifier = @identifier', {
--- 				['@identifier'] = identifier,
--- 				['@jailTime'] = jailTime
--- 			})
--- 		end
--- 	end)
--- end)
 
--- function unjail(target)
--- 	local identifier = GetPlayerIdentifiers(target)[1]
--- 	MySQL.Async.fetchAll('SELECT * FROM jail WHERE identifier = @identifier', {
--- 		['@identifier'] = identifier
--- 	}, function(result)
--- 		if result[1] then
--- 			MySQL.Async.execute('DELETE from jail WHERE identifier = @identifier', {
--- 				['@identifier'] = identifier
--- 			})
+RegisterServerEvent('FRP:JAIL:updateRemaining')
+AddEventHandler('FRP:JAIL:updateRemaining', function(jailTime)
+	local _source = source
+	local User = API.getUserFromSource(_source)
+	local Character = User:getCharacter()	
+	local nome = Character:getName()
 
--- 			TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('unjailed', GetPlayerName(target)) }, color = { 147, 196, 109 } })
--- 		end
--- 	end)
+	Character:updJail(Character:getId(), jailTime)
+end)
 
--- 	TriggerClientEvent('frp_jail:unjail', target)
--- end
+
+
+function unjail(target)
+	local _source = target 
+	local User = API.getUserFromSource(_source)
+	local Character = User:getCharacter()	
+	local nome = Character:getName()
+
+	Character:remJail(Character:getId())
+
+--	TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('unjailed', GetPlayerName(target)) }, color = { 147, 196, 109 } })
+
+	cAPI.setModel(User:getSource(), json.decode(Character:getModel()))
+	Wait(1000)
+	cAPI.setDados(User:getSource(), Character:getCharTable())
+	Wait(500)                
+	cAPI.setClothes(User:getSource(), Character:getClothes())
+
+	TriggerClientEvent('FRP:JAIL:unjail', target)
+
+	print(nome .. ' foi solto por ')
+end

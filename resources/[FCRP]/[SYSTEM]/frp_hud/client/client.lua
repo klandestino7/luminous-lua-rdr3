@@ -12,11 +12,8 @@ Citizen.CreateThread(function() -- ESCONDER E MOSTRAR ALGUMAS HUDS
      --   N_0x69d65e89ffd72313(true) -- cinematic--
 --N_0xbae08f00021bffb2(horse) -- agitates the horse
 
-        DisableControlAction(0, 0x6E9734E8, true)
 
         N_0x8bc7c1f929d07bf3(-1679307491) -- show   
-        DisableControlAction(0, 0x295175BF, true)  
-
 
 
 
@@ -43,26 +40,6 @@ RegisterCommand('cans', function(source,args)
    print(Citizen.InvokeNative(IsDeadeyeAbilityLocked,PlayerPedId()))
     Wait(100)
    -- print(GetAttributeCoreValue(PlayerPedId, 2))
-end)
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(0)
-        local ped = PlayerPedId()            
-        if IsPedOnMount(ped) or IsPedInAnyVehicle(ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-          --  print"set1"
-        else
-            SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
-          --  print"set2"
-        end                 
-        if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1,ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-          --  print"set1.1"
-        else
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-          --  print"set2.1"
-        end
-    end
 end)
 
 

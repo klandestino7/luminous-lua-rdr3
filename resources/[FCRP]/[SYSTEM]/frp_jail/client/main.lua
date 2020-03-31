@@ -4,10 +4,8 @@ local JailTime = 0
 local fastTimer = 0
 local JailLocation = 3372.48, -667.09, 46.41
 
-
-
-RegisterNetEvent('frp_jail:jail')
-AddEventHandler('frp_jail:jail', function(jailTime)
+RegisterNetEvent('FRP:JAIL:jail')
+AddEventHandler('FRP:JAIL:jail', function(jailTime)
 	if IsJailed then -- don't allow multiple jails
 		return
 	end
@@ -22,22 +20,51 @@ AddEventHandler('frp_jail:jail', function(jailTime)
     		local maleped = -171876066			
 			print(tostring(pedplayer))	
 			-- Assign jail skin to user		
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x9925C067, 0) -- HAT REMOVE
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)		
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x2026C46D, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)	
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x485EE834, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)	
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x1D4C528A, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x777EC6EF, 0) -- Set target category
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- REMOVE COMPONENT
+				Wait(100)	
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x7505EF42, 0) -- Set target category, here the hash is for hats            
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x662AC34, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xEABE0032, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x5FC29285, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
+				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x9B2C8B89, 0) -- Set target category, here the hash is for hats
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+				Wait(100)
 				if pedplayer == maleped then
-					--print('HOMEM SKIN')						
+					--print('HOMEM SKIN')	
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x5BA76CCF,true,true,true) -- CAMISA	
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x216612F0,true,true,true) -- CALÇA
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0xF082E23A,true,true,true) -- SAPATO		
+
 				else
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
 					--print('MULHER SKIN')
 				end
+
 			-- Clear player
-			--SetPedArmour(playerPed, 0)
-			--ClearPedBloodDamage(playerPed)
-			--ResetPedVisibleDamage(playerPed)
-			--ClearPedLastWeaponDamage(playerPed)
-			--ResetPedMovementClipset(playerPed, 0)
+			ClearPedBloodDamage(playerPed)
+			ClearPedLastWeaponDamage(playerPed)
 			
 			print(playerPed)
 			SetEntityCoords(playerPed,  3372.48, -667.09, 46.41)
@@ -47,31 +74,25 @@ AddEventHandler('frp_jail:jail', function(jailTime)
 
 			while JailTime > 0 and not unjail do
 				playerPed = PlayerPedId()
-				SetEntityInvincible(PlayerPed, false)
-				RemoveAllPedWeapons(playerPed, true)
+				SetEntityInvincible(PlayerPed, false)				
+				RemoveAllPedWeapons(PlayerPedId(), false, true)
 				if IsPedInAnyVehicle(playerPed, false) then
 					ClearPedTasksImmediately(playerPed)
 				end
 				if JailTime % 100 == 0 then
-					TriggerServerEvent('frp_jail:updateRemaining', JailTime)
+					TriggerServerEvent('FRP:JAIL:updateRemaining', JailTime)
 				end
 				Citizen.Wait(20000)
 				-- Is the player trying to escape?
 				if Vdist(GetEntityCoords(playerPed), 3372.48, -667.09, 46.41) > 70 then
 					SetEntityCoords(playerPed, 3372.48, -667.09, 46.41)
-					TriggerEvent('chat:addMessage', { args = { _U('judge'), _U('escape_attempt') }, color = { 147, 196, 109 } })
+					--TriggerEvent('chat:addMessage', { args = { _U('judge'), _U('escape_attempt') }, color = { 147, 196, 109 } })
 				end				
 				JailTime = JailTime - 20
 			end
-
-			-- jail time served
-			TriggerServerEvent('frp_jail:unjailTime', -1)
-			SetEntityCoords(playerPed, Config.JailBlip)
+			TriggerServerEvent('FRP:JAIL:unjailTime', -1)
+			--SetEntityCoords(playerPed, 3372.48, -667.09, 46.41)
 			IsJailed = false
-			-- Change back the user skin
-		--	ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
-		--		TriggerEvent('skinchanger:loadSkin', skin)
-		--	end)
 		end)
 	end
 end)
@@ -79,64 +100,49 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1)
-
-		if JailTime > 0 and IsJailed then
+		Citizen.Wait(0)
+		if JailTime > 1 and IsJailed then
 			if fastTimer < 0 then
 				fastTimer = JailTime
 			end
-	--	DrawTxt(Config.LocaleTimer .. " " .. tonumber(string.format("%.0f", (((GetGameTimer() - timer) * -1)/1000))), 0.50, 0.80, 0.7, 0.7, true, 255, 255, 255, 255, true) 
-			
-			DrawTxt('Ainda falta ' .. tonumber(string.format("%.0f",fastTimer)) .. ' segundos para você ser libertado.', 0.3, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
-			--draw2dText('Restam', tonumber(fastTimer)), { 0.175, 0.955 } )
+			DrawTxt('PRESO: ' .. tonumber(string.format("%.0f", fastTimer)) .. ' segundos para você ser libertado.', 0.70, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
 			fastTimer = fastTimer - 0.01
-
 		else
 			Citizen.Wait(1000)
 		end
 	end
 end)
 
-RegisterNetEvent('frp_jail:unjail')
-AddEventHandler('frp_jail:unjail', function(source)
+RegisterNetEvent('FRP:JAIL:unjail')
+AddEventHandler('FRP:JAIL:unjail', function(source)
 	unjail = true
 	JailTime = 0
 	fastTimer = 0
 	local playerPed = PlayerPedId()
 	SetEntityInvincible(PlayerPed, false)
 	SetEntityCoords(playerPed, 2929.51, -1252.1, 42.28)
-	Citizen.Wait(1000)
-	TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
-	end)
 end)
 
 -- When player respawns / joins
-AddEventHandler('playerSpawned', function(spawn)
+AddEventHandler('playerSpawned', function()
 	if IsJailed then
 		SetEntityCoords(PlayerPedId(), JailLocation)
 	else
-		TriggerServerEvent('frp_jail:checkJail')
+		TriggerServerEvent('FRP:JAIL:checkJail')
 	end
 end)
 
 -- When script starts
-Citizen.CreateThread(function()
-	Citizen.Wait(2000) -- wait for mysql-async to be ready, this should be enough time
-	TriggerServerEvent('frp_jail:checkJail')
-end)
-
-
---[[
-Citizen.CreateThread(function()
-	Wait(0)
-	for k,v in pairs(Config.JailBlip) do
-		Citizen.InvokeNative(0x554d9d53f696d002, 168093330, v)
+Citizen.CreateThread(function()	
+	local spawned = Citizen.InvokeNative(0xB8DFD30D6973E135 --[[NetworkIsPlayerActive]], PlayerPedId(), Citizen.ResultAsInteger())
+	Citizen.Wait(3000)
+	if spawned then
+		TriggerServerEvent('FRP:JAIL:checkJail')
 	end
-end) ]]
+end)
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
     local str = CreateVarString(10, "LITERAL_STRING", str)
-    --Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
     SetTextScale(w, h)
     SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
 	SetTextCentre(centre)

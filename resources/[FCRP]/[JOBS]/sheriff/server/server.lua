@@ -9,12 +9,9 @@ AddEventHandler('sheriff:checkjob', function()
 	local _source = source
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()	
-	local policejob = Character:hasGroup('police')		
+	local job = Character:hasGroup('police')		
 
-	--TriggerClientEvent('sheriff:result', _source, policejob)	
-
-	local policejob = Character:hasGroup('police')	
-	if policejob == false then
+	if job then
 		TriggerClientEvent('sheriff:cuffcheck', source)
 	else
 		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 

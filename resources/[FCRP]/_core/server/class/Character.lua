@@ -151,6 +151,36 @@ function API.Character(id, charName, level, xp, groups, inventory)
         return false
     end
 
+    self.setJail = function(this, cid, value)
+        print(value, cid)
+        API_Database.execute('FCRP/SetCJail', {jail_time = value, charid = cid})
+    end    
+
+    self.updJail = function(this, cid, value)
+        print(value, cid)
+        API_Database.execute('FCRP/UpdCJail', {jail_time = value, charid = cid})        
+    end
+
+    self.getJail = function(this, cid)
+        if key == nil then
+            key = 'all'
+        end
+        local rows = API_Database.query('FCRP/GetCJail', {charid = cid})
+        if #rows > 0 then
+            return rows
+        else
+            return ''
+        end
+    end
+
+    self.remJail = function(this, cid)
+        local rows = API_Database.query('FCRP/RemCJail', {charid = cid})
+        if #rows > 0 then
+            return true
+        end
+        return false
+    end
+
     self.createHorse = function(this, model, name)
         local rows = API_Database.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
         if #rows > 0 then

@@ -25,14 +25,13 @@ RegisterCommand('kys', function()
     Citizen.InvokeNative(0x697157CED63F18D4, ped, 500000, false, true, true)
 end)
 
-RegisterCommand('revive', function()
+RegisterNetEvent('FRP:RESPAWN:revive')
+AddEventHandler('FRP:RESPAWN:revive', function()
 	NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 	isDead = false
 	DestroyAllCams(true)
-	clearDeath()	
+	clearDeath()
 end)
-
-
 
 Citizen.CreateThread(
 	function()

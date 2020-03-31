@@ -603,28 +603,23 @@ function cAPI.playAnim(dict, anim, speed)
 	end
 end
 
-function cAPI.createVehicle(modelName)
-	local modelHash = GetHashKey(modelName)
 
-	if not IsModelValid(modelHash) then
-		return
-	end
-
-	if not HasModelLoaded(modelHash) then
-		RequestModel(modelHash)
-		while not HasModelLoaded(modelHash) do
-			Citizen.Wait(10)
-		end
-	end
-
-	local ped = PlayerPedId()
-	local nveh = CreateVehicle_2(mhash, GetEntityCoords(ped), GetEntityHeading(ped), true, false, true)
-
-	SetVehicleOnGroundProperly(nveh)
-	SetEntityAsMissionEntity(nveh, true, true)
-	TaskWarpPedIntoVehicle(ped, nveh, -1)
-	SetModelAsNoLongerNeeded(mhash)
-	SetVehicleDirtLevel(nveh, 0)
+function cAPI.createVehicle(Vmodel)
+    local veh = GetHashKey(Vmodel)
+    local ply = GetPlayerPed()
+    local coords = GetEntityCoords(ply)
+    local head = GetEntityHeading(ply)
+    Citizen.CreateThread(function()
+        RequestModel(veh)
+        while not HasModelLoaded(veh) do
+            Wait(1000)
+            print("Loading Model: "..Vmodel.."Loading Hash: "..veh)
+        end
+        if HasModelLoaded(veh) then
+            local car = CreateVehicle(veh,coords.x-2,coords.y,coords.z,head,true,true,false,true)
+            print("Model spawned Succes: "..Vmodel)
+        end
+    end)
 end
 
 function cAPI.isPlayingAnimation(dict, anim)
