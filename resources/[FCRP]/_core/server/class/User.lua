@@ -69,9 +69,10 @@ function API.User(source, id, ipAddress)
             local charId = rows[1].id
 
             Character = API.Character(charId, characterName, 1, 0, {}, API.Inventory("char:" .. charId, nil, nil))
-            Character:createHorse("A_C_Donkey_01", "Burrinho")
+        --    Character:createHorse("A_C_Donkey_01", "Burrinho")
             Character:setData(charId, "charTable", "hunger", 0)
             Character:setData(charId, "charTable", "thirst", 0)
+            Character:setData(charId, 'charTable', 'banco', 0)
 
             API_Database.execute(
                 "FCRP/Inventory",
@@ -122,10 +123,16 @@ function API.User(source, id, ipAddress)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
             local Horse = self:getCharacter():getHorse()
-            if Horse then
-                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName())
-            end
 
+
+            if Horse ~= nil then
+                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName())
+                cAPI.setHorseClothes(self:getSource(), Horse:getModif())
+                print(Horse:getModif())
+            else
+                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré")
+                cAPI.setHorseClothes(Horse:getSource(), Horse:getModif())
+            end
             
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
             if posse ~= nil then
@@ -255,9 +262,7 @@ function API.User(source, id, ipAddress)
 
     self.setPosse = function(this, id)
         self.posseId = id
-
         TriggerClientEvent("FCRP:POSSE:SetPosse", self:getSource(), id)
-
         if id ~= nil then
             self:getCharacter():setData(self:getCharacter():getId(), "charTable", "posse", id)
         else

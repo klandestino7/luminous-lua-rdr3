@@ -22,14 +22,18 @@ function API.Horse(id, model, name, Inventory)
     self.getInventory = function()
         return self.Inventory
     end
+    
+    -- self.getModif = function()       
+    --     return self:getData(self.id, 'modificacao', nil)
+    -- end
 
-    self.setComponents = function(this, components)
-        self.components = components
-    end
+    -- self.setComponents = function(this, components)
+    --     self.components = components
+    -- end
 
-    self.getComponents = function(this)
-        return self.components
-    end
+    -- self.getComponents = function(this)
+    --     return self.components
+    -- end
 
     return self
 end

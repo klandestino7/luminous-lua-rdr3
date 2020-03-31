@@ -128,12 +128,13 @@ function cAPI.setClothes(hash)
 	local Clothe = json.decode(hash)
 	if hash ~= "{}" then
 		--for _, index in pairs(Clothes) do
-			for k, v in pairs(Clothe) do		
-				print(v)
-				--if cAPI.removeClothes(Clothe[_].hash) then					
-					local modelHash = tonumber(v)
-					cAPI.LoadModel(modelHash)
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), modelHash, true, true, true)
+			for k, v in pairs(Clothe) do	
+				--if cAPI.removeClothes(Clothe[_].hash) then
+			    local model2 = GetHashKey(tonumber(v))
+			    if not HasModelLoaded(model2) then
+			        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+			    end
+			    Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  tonumber(v), true, true, true)
 				--end
 			end
 		--end
@@ -249,35 +250,71 @@ function cAPI.getNearestPlayer(radius)
 end
 
 local weaponModels = {
-	"weapon_melee_hatchet",
-	"weapon_thrown_throwing_knives",
-	"weapon_lasso",
-	"weapon_pistol_mauser",
-	"weapon_pistol_semiauto",
-	"weapon_pistol_volcanic",
-	"weapon_repeater_carbine",
-	"weapon_repeater_henry",
-	"weapon_rifle_varmint",
-	"weapon_shotgun_repeating",
-	"weapon_revolver_cattleman",
-	"weapon_revolver_doubleaction",
-	"weapon_revolver_schofield",
-	"weapon_revolver_schofield",
-	"weapon_revolver_schofield",
-	"weapon_rifle_boltaction",
-	"weapon_sniperrifle_carcano",
-	"weapon_sniperrifle_carcano",
-	"weapon_rifle_springfield",
-	"weapon_shotgun_doublebarrel",
-	"weapon_shotgun_pump",
-	"weapon_shotgun_repeating",
-	"weapon_shotgun_sawedoff",
-	"weapon_bow",
-	"weapon_thrown_dynamite0",
-	"weapon_thrown_molotov",
-	"weapon_melee_electric_lantern",
-	"weapon_melee_torch",
-	"weapon_fishingrod"
+	'weapon_kit_camera',
+	'WEAPON_KIT_BINOCULARS',
+	'weapon_melee_knife_hunter',
+	'weapon_moonshinejug',
+	'weapon_melee_lantern_electric',
+	'weapon_melee_torch',
+	'weapon_melee_broken_sword',
+	'weapon_fishingrod',
+	'weapon_melee_hatchet',
+	'weapon_melee_cleaver',
+	'weapon_melee_ancient_hatchet',
+	'weapon_melee_hatchet_viking',
+	'weapon_melee_hatchet_hewing',
+	'weapon_melee_hatchet_double_bit',
+	'weapon_melee_hatchet_double_bit_rusted',
+	'weapon_melee_hatchet_hunter',
+	'weapon_melee_hatchet_hunter_rusted',
+	'weapon_melee_knife_john',
+	'weapon_melee_knife',
+	'weapon_melee_knife_jawbone',
+	'weapon_thrown_throwing_knives',
+	'weapon_melee_knife_miner',
+	'weapon_melee_knife_civil_war',
+	'weapon_melee_knife_bear',
+	'weapon_melee_knife_vampire',
+	'weapon_lasso',
+	'weapon_melee_machete',
+	'weapon_thrown_tomahawk',
+	'weapon_thrown_tomahawk_ancient',
+	'weapon_pistol_m1899',
+	'weapon_pistol_mauser',
+	'weapon_pistol_mauser_drunk',
+	'weapon_pistol_semiauto',
+	'weapon_pistol_volcanic',
+	'weapon_repeater_carbine',
+	'weapon_repeater_evans',
+	'weapon_repeater_henry',
+	'weapon_rifle_varmint',
+	'weapon_repeater_winchester',
+	'weapon_revolver_cattleman',
+	'weapon_revolver_cattleman_john',
+	'weapon_revolver_cattleman_mexican',
+	'weapon_revolver_cattleman_pig',
+	'weapon_revolver_doubleaction',
+	'weapon_revolver_doubleaction_exotic',
+	'weapon_revolver_doubleaction_gambler',
+	'weapon_revolver_doubleaction_micah',
+	'weapon_revolver_lemat',
+	'weapon_revolver_schofield',
+	'weapon_revolver_schofield_golden',
+	'weapon_revolver_schofield_calloway',
+	'weapon_rifle_boltaction',
+	'weapon_sniperrifle_carcano',
+	'weapon_sniperrifle_rollingblock',
+	'weapon_sniperrifle_rollingblock_exotic',
+	'weapon_rifle_springfield',
+	'weapon_shotgun_doublebarrel',
+	'weapon_shotgun_doublebarrel_exotic',
+	'weapon_shotgun_pump',
+	'weapon_shotgun_repeating',
+	'weapon_shotgun_sawedoff',
+	'weapon_shotgun_semiauto',
+	'weapon_bow',
+	'weapon_thrown_dynamite',
+	'weapon_thrown_molotov',
 }
 
 function cAPI.getWeapons()
@@ -346,6 +383,8 @@ function cAPI.giveWeapons(weapons, clear_before)
 		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo)
 	end
 end
+
+
 
 function cAPI.setArmour(amount)
 	SetPedArmour(PlayerPedId(), amount)
@@ -619,6 +658,32 @@ function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
 	end
 	Citizen.InvokeNative(0xADA9255D, font)
 	DisplayText(str, x, y)
+end
+
+function cAPI.Temperatura()
+	local _source = source
+	local ent = GetPlayerPed(_source)
+	local pp = GetEntityCoords(ent)
+	   local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))     
+	local vida = GetEntityHealth(PlayerPedId())
+	if vida <= 5 then
+	 -- print('chegou')
+	else
+	if temperatura < -5 then
+	  Wait(5000)
+		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+	  Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)     
+	  print('está muito frio')     
+	end
+	if temperatura > 40 then 
+	  Wait(5000)
+		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+	   Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)  
+	  print('está muito calor')   
+	end
+  end
 end
 
 function cAPI.LoadModel(hash)

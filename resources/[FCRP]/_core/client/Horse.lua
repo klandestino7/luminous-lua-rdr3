@@ -118,36 +118,24 @@ function cAPI.stablecloth(hash)
 end
 
 function cAPI.setHorseClothes(hash)
-    local Clothe = json.decode(hash)
+--	local Clothe = json.decode(hash)
     if hash ~= "{}" then
-        --end
-        --for _, index in pairs(Clothes) do
-        for k, v in pairs(Clothe) do
-            print(v)
-            --if cAPI.removeClothes(Clothe[_].hash) then
+        print('TEM MODIF')
+       -- for k, v in pairs(Clothe) do		
             local modelHash = tonumber(v)
             cAPI.LoadModel(modelHash)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)
-            --end
-        end
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, modelHash, true, true, true)        
+      --  end	
     else
-        for k, v in pairs(DefaultClothes) do
-            if GetEntityModel(horseEntity) == GetHashKey(k) then
-                for _, index in pairs(v) do
-                    for value, parameter in pairs(Clothes) do
-                        if Clothes[value].name == _ then
-                            if cAPI.removeClothes(Clothes[_].hash) then
-                                local modelHash = tonumber(v)
-                                cAPI.LoadModel(modelHash)
-                                Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, index, true, true, true)
-                            end
-                        end
-                    end
-                end
-            end
-        end
+        print('NÃO TEM MODIF')
+		if GetEntityModel(horseEntity) == GetHashKey(k) then
+            local modelHash = tonumber(v)
+            cAPI.LoadModel(modelHash)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0xFD4E14C5, true, true, true) --saddle
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
+		end
     end
-    return true
+	return true
 end
 
 Citizen.CreateThread(
@@ -161,7 +149,7 @@ Citizen.CreateThread(
 
                     local dist = #(pCoords - GetEntityCoords(horseEntity))
                     if dist <= 100 then
-                        if IsControlJustPressed(0, 0xFF8109D8) then
+                        if IsControlJustPressed(0, 0xC1989F95) then -- I 
                             if dist <= 1.5 then
                                 TriggerServerEvent("FCRP:HORSE:openChest")
                             end
@@ -180,7 +168,6 @@ Citizen.CreateThread(
                     if horseModel and horseName then
                         if horseEntity == nil then
                             cAPI.spawnHorse()
-                            print("spawnhorse")
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
                         else
                             TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)

@@ -54,7 +54,7 @@ function API.getAmmoTypeFromWeaponType(weapon)
         ammo = 'AMMO_REVOLVER'
     end
 
-    if weapon:find('RIFLE_') then
+    if weapon:find('_RIFLE_') then
         ammo = 'AMMO_RIFLE'
     end
 
@@ -76,6 +76,7 @@ function API.getAmmoTypeFromWeaponType(weapon)
 
     return ammo
 end
+
 
 Citizen.CreateThread(
     function()
@@ -102,7 +103,7 @@ Citizen.CreateThread(
                         return true
                     end
                 )
-            elseif id:find('ammo_') then
+           elseif id:find('ammo_') then
                 ItemData:onUse(
                     function(this, User, amount)
                         local source = User:getSource()
@@ -128,7 +129,7 @@ Citizen.CreateThread(
                         User:notify('Giving player weapon')
                         Citizen.CreateThread(
                             function()
-                                User:giveWeapon(supportedWeapon, equipedAmmo + amount)
+                                User:giveWeapon(supportedWeapon, amount)
                             end
                         )
                         return true

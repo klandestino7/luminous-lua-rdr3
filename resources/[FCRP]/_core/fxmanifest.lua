@@ -9,12 +9,13 @@ client_scripts {
 	'config/Items.lua',
 	'config/CraftableItems.lua',
 	'config/DefaultClothes.lua',
+	--'config/Weapons.lua',
 	---------------------
 	'client/_Main.lua',
 	'client/Horse.lua',
 	'client/BasicNeeds.lua',
 	'client/LoadIPL.lua',
- --	'client/DebuggingControls.lua'
+ 	--'client/DebuggingControls.lua'
 }
 
 server_scripts {

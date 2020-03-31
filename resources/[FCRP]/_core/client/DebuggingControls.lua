@@ -2189,7 +2189,7 @@ Citizen.CreateThread(
             if IsControlJustPressed(0, 0x6E9734E8) then
                 print('CarriableSuicide')
                 TriggerEvent('chatMessage', 'CONTROL', {0, 0, 0}, 'CarriableSuicide')
-            end
+            end 
             if IsControlJustPressed(0, 0x295175BF) then
                 print('CarriableBreakFree')
                 TriggerEvent('chatMessage', 'CONTROL', {0, 0, 0}, 'CarriableBreakFree')

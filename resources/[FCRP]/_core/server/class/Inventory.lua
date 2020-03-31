@@ -19,10 +19,9 @@ function API.Inventory(id, capacity, items)
         for id, amount in pairs(self.items) do
             local ItemData = API.getItemDataFromId(id)
             if ItemData ~= nil then
-                local weight = weight + (ItemData:getWeight() * amount)
+                weight = weight + (ItemData:getWeight() * amount)              
             end
         end
-
         return weight
     end
 

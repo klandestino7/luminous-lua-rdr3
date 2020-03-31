@@ -113,6 +113,39 @@ RegisterCommand('testservjob', function(source)
 end)
 
 
+RegisterServerEvent('sheriff:cuffing')
+AddEventHandler('sheriff:cuffing', function(source)
+
+  TriggerClientEvent('sheriff:cuff', source)
+ --TriggerClientEvent("ic_sound:source",target,'cuff',0.1)
+  --TriggerClientEvent("ic_sound:source",source,'cuff',0.1)
+end)
+
+
+RegisterServerEvent('sheriff:unlocking')
+AddEventHandler('sheriff:unlocking', function(source)
+
+  TriggerClientEvent('sheriff:uncuff', source)
+  
+end)
+
+RegisterCommand('soltar', function(target)
+
+		TriggerClientEvent('sheriff:nyckelcheck', target)
+		--xPlayer.removeInventoryItem('handcuffs', 1)  
+	end)
+	
+
+	RegisterServerEvent('sheriff:unlocking')
+AddEventHandler('sheriff:unlocking', function(source)
+
+  TriggerClientEvent('sheriff:uncuff', source)
+  TriggerClientEvent("ic_sound:source",source,'uncuff',0.1)   
+
+end)
+
+
+
 
 -- RegisterCommand('prender', function(source)
 -- 	local _source = source
@@ -176,13 +209,6 @@ end)
 -- end)
 
 
--- RegisterServerEvent('sheriff:cuffing')
--- AddEventHandler('sheriff:cuffing', function(source)
-
---   TriggerClientEvent('sheriff:cuff', source)
---  --TriggerClientEvent("ic_sound:source",target,'cuff',0.1)
---   TriggerClientEvent("ic_sound:source",source,'cuff',0.1)
--- end)
 
 --  --[[
 -- ESX.RegisterUsableItem('key', function(target)	
@@ -198,16 +224,6 @@ end)
 -- 	TriggerClientEvent('sheriff:unlockingcuffs', source)
 -- 	xPlayer.removeInventoryItem('blowpipe', 1)
 -- end) ]]
-
--- RegisterServerEvent('sheriff:unlocking')
--- AddEventHandler('sheriff:unlocking', function(source)
-
---   TriggerClientEvent('sheriff:uncuff', source)
---   --TriggerClientEvent("ic_sound:source",source,'uncuff',0.1)   
---   -- 	local xPlayer = ESX.GetPlayerFromId(target)
--- 	--xPlayer.addInventoryItem('handcuffs', 1)
-
--- end)
 
 
 

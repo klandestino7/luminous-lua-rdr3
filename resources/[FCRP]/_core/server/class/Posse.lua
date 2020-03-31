@@ -44,6 +44,32 @@ function API.Posse(id, charid, name, members)
             self.members[charid] = self.members[charid] + 1
         end
     end
+   
+    self.setData = function(this, id, targetName, key, value)
+        print(targetName, key, value, id)
+        API_Database.execute('FCRP/SetCFort', {bando = value, id = id})
+    end    
+
+    self.getData = function(this, id, value)
+        if key == nil then
+            key = 'all'
+        end
+        local rows = API_Database.query('FCRP/GetCFort', {bando = value, id = id})
+        if #rows > 0 then
+            return rows[1].Value
+        else
+            return ''
+        end
+    end
+
+    self.remData = function(this, cid, targetName, key)
+        local rows = API_Database.query('FCRP/RemCFort', {target = targetName, key = key, id = cid})
+        if #rows > 0 then
+            return true
+        end
+        return false
+    end
+
 
     -- 1 - Owner
     -- 2 - Leader

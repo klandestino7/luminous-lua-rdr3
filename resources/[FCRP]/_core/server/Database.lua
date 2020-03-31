@@ -167,8 +167,12 @@ API_Database.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE char
 API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
 API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
 API_Database.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
+
 API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 
+-------- FORT DATATABLE QUERIES --------
+API_Database.prepare('FCRP/SetCFort', 'UPDATE fort SET bando = @bando WHERE id = @id')
+API_Database.prepare('FCRP/GetCFort', 'SELECT bando from fort WHERE id = @id')
 -------- INVENTORY QUERIES -----------
 API_Database.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
 

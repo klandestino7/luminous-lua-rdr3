@@ -191,6 +191,8 @@ function API.Character(id, charName, level, xp, groups, inventory)
         local rows = API_Database.query('FCRP/GetHorses', {charid = self.id})
         if #rows > 0 then
             return rows
+        else
+            return nil
         end
     end
 
@@ -210,7 +212,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
 
                 return self.Horse
             else
-                return self:createHorse('A_C_Donkey_01', 'Burrinho')
+                return 
             end
         else      
             return self.Horse

@@ -468,11 +468,6 @@ RegisterCommand('undrag', function()
 
 end)
 
--- Events
-AddEventHandler('playerSpawned', function()
-	local id = KeyboardInput("Roleplay Name:", "", 20)
-end)
-
 
 
 
