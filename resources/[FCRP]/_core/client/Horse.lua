@@ -76,10 +76,13 @@ function cAPI.spawnHorse()
 
     if horseComponents ~= nil then
         print(#horseComponents)
+        
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
         for _, componentHash in pairs(horseComponents) do
             Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(componentHash), true, true, true)
         end
     end
+    
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)

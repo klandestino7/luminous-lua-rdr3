@@ -7,14 +7,14 @@ cAPI = Tunnel.getInterface("API")
 local data = {
     [1] = {
         staticReward = 10000,
-        staticSecondsToReward = 700,
+        staticSecondsToReward = 7,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60,
         staticName = 'Mercer'
     },
     [2] = {
         staticReward = 10000,
-        staticSecondsToReward = 700,
+        staticSecondsToReward = 7,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60,
         staticName = 'Wallace'
@@ -28,9 +28,9 @@ local indexBeingRobbed_playerSourceWhoStarted = nil
 
 local robberyBeingEnded = false
 local index = nil
-RegisterNetEvent("FCRP:ROBBERY:TryToStartRobbery")
+RegisterNetEvent("FRP:FORT:TryToStartRobbery")
 AddEventHandler(
-    "FCRP:ROBBERY:TryToStartRobbery",
+    "FRP:FORT:TryToStartRobbery",
     function(index, participants)
         local _source = source
         local User = API.getUserFromSource(_source)
@@ -40,8 +40,6 @@ AddEventHandler(
         local Character = User:getCharacter()
         local userRank = Posse:getMemberRank(Character:getId())
         local fortbando = Posse:getData(indexBeingRobbed,'bando')
-
-
 
         if not User:isInAPosse() then
            -- User:notify("Você não está em um bando.")            
@@ -95,19 +93,19 @@ AddEventHandler(
                         if numParticipants < maxParticipants then
                             numParticipants = numParticipants + 1
                             print(indexBeingRobbed_seconds)
-                            TriggerClientEvent("FCRP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
+                            TriggerClientEvent("FRP:FORT:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
 
                             TriggerClientEvent('FRP:Notify', -1, "O Forte ".. data[indexBeingRobbed].staticName .." está sendo disputado.")
                             participants[participantSource] = true
                         else
-                            TriggerClientEvent("FCRP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
+                            TriggerClientEvent("FRP:FORT:StartRobberyAsBlocked", participantSource, index)
                         end
                     end
                 end
             end
 
             if isParticipant == false then
-                TriggerClientEvent("FCRP:ROBBERY:StartRobbery", playerSource, index, false, nil)
+                TriggerClientEvent("FRP:FORT:StartRobbery", playerSource, index, false, nil)
             end
 
             isParticipant = nil
@@ -177,12 +175,12 @@ function endRobberyGiveReward()
     indexBeingRobbed_participants = {}
     robberyBeingEnded = false
     
-    TriggerClientEvent("FCRP:ROBBERY:EndRobbery", -1)
+    TriggerClientEvent("FRP:FORT:EndRobbery", -1)
 end
 
-RegisterNetEvent("FCRP:ROBBERY:PlayerAbandonedRobbery")
+RegisterNetEvent("FRP:FORT:PlayerAbandonedRobbery")
 AddEventHandler(
-    "FCRP:ROBBERY:PlayerAbandonedRobbery",
+    "FRP:FORT:PlayerAbandonedRobbery",
     function()
         if indexBeingRobbed == nil then
             return
@@ -204,7 +202,7 @@ AddEventHandler(
             indexBeingRobbed_participants = {}
             robberyBeingEnded = false
 
-            TriggerClientEvent("FCRP:ROBBERY:EndRobbery", -1)
+            TriggerClientEvent("FRP:FORT:EndRobbery", -1)
         end
 
         local User = API.getUserFromSource(_source)
@@ -219,7 +217,7 @@ AddEventHandler(
     "playerDropped",
     function(source, reason)
         if indexBeingRobbed_participants[source] ~= nil then
-            TriggerEvent("FCRP:ROBBERY:PlayerAbandonedRobbery", source)
+            TriggerEvent("FRP:FORT:PlayerAbandonedRobbery", source)
         end
     end
 )

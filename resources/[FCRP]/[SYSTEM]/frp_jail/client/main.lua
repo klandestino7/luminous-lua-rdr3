@@ -64,7 +64,7 @@ AddEventHandler('FRP:JAIL:jail', function(jailTime)
 
 			-- Clear player
 			ClearPedBloodDamage(playerPed)
-			ClearPedLastWeaponDamage(playerPed)
+--			ClearPedLastWeaponDamage(playerPed)
 			
 			print(playerPed)
 			SetEntityCoords(playerPed,  3372.48, -667.09, 46.41)

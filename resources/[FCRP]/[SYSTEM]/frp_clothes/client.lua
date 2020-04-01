@@ -330,7 +330,7 @@ RegisterNUICallback(
         zoom = 1.5
         offset = 0.5
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             HatUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x9925C067, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -356,7 +356,7 @@ RegisterNUICallback(
         zoom = 2.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             ShirtsUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x2026C46D, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -365,7 +365,7 @@ RegisterNUICallback(
                 local num = tonumber(data.id)
                 hash = ("0x" .. shirts_m[num])               
                 setcloth(hash) 
-                ShirtsUsing = ("0x" .. shirts_f[num])                 
+                ShirtsUsing = ("0x" .. shirts_m[num])                 
             else
                 local num = tonumber(data.id)
                 hash = ("0x" .. shirts_f[num])               
@@ -382,7 +382,7 @@ RegisterNUICallback(
         zoom = 2.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil    
+            num = 0    
             VestsUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x485EE834, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -391,7 +391,7 @@ RegisterNUICallback(
                 local num = tonumber(data.id)
                 hash = ("0x" .. vests_m[num])               
                 setcloth(hash)                  
-                VestsUsing = ("0x" .. vests_f[num]) 
+                VestsUsing = ("0x" .. vests_m[num]) 
             else
                 local num = tonumber(data.id)
                 hash = ("0x" .. vests_f[num])               
@@ -408,7 +408,7 @@ RegisterNUICallback(
         zoom = 2.1
         offset = -0.5
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             PantsUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x1D4C528A, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -434,7 +434,7 @@ RegisterNUICallback(
         zoom = 1.5
         offset = -0.7
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             BootsUsing = num            
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x777EC6EF, 0) -- Set target category
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- REMOVE COMPONENT
@@ -460,7 +460,7 @@ RegisterNUICallback(
         zoom = 1.5
         offset = 0.5
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             MasksUsing = num           
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x7505EF42, 0) -- Set target category, here the hash is for hats            
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -486,7 +486,7 @@ RegisterNUICallback(
         zoom = 2.2
         offset = 0.1
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             CoatsUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x662AC34, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -512,7 +512,7 @@ RegisterNUICallback(
         zoom = 2.1
         offset = -0.4
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             SkirtsUsing = num
                 Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xA0E3AB7F, 0) -- Set target category, here the hash is for hats
                 Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -535,7 +535,7 @@ RegisterNUICallback(
 --     'Legs',
 --     function(data)
 --         if tonumber(data.id) == 0 then
---             num = nil
+--             num = 0
 --             LegsUsing = num
 --         else
 --             if sex == 'mp_male' then
@@ -559,7 +559,7 @@ RegisterNUICallback(
         zoom = 2.0
         offset = -0.3
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             GlovesUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xEABE0032, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -585,7 +585,7 @@ RegisterNUICallback(
         zoom = 1.5
         offset = 0.5
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             NeckwearUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x5FC29285, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -611,7 +611,7 @@ RegisterNUICallback(
         zoom = 2.0
         offset = -0.3
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             GunbeltsUsing = num
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x9B2C8B89, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
@@ -639,8 +639,6 @@ function setcloth(hash)
     Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  tonumber(hash), true, true, true)
 end
 
-
-
 RegisterNUICallback(
     'Confirm',
     function()
@@ -659,7 +657,7 @@ RegisterNUICallback(
             ['gunbelts'] = GunbeltsUsing
         }
         if dados ~= nil then
-            TriggerServerEvent('clothes:buy')
+            TriggerServerEvent('clothes:buy', 2)
         end
         TriggerServerEvent('frp_clothes:saveCloth', dados)
         closeAll()

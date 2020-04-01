@@ -26,16 +26,16 @@ local roubo = false
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(1000)
+            Citizen.Wait(1000)            
             local ped = PlayerPedId()
             local interiorIdPlayerIsIn = GetInteriorFromEntity(ped)
-            local coords = GetEntityCoords(ped)                
-           
+            local coords = GetEntityCoords(ped)
             for index, vector in pairs(Locations) do
                 local dst = #(vector[1] - coords)
                 if dst < vector[2] then
-                    inposition = index                        
-                else
+                    inposition = index    
+                    break                    
+                else 
                     inposition = nil               
                 end    
             end      
@@ -46,13 +46,13 @@ Citizen.CreateThread(
 Citizen.CreateThread(
     function()
         ClearPedTasksImmediately(PlayerPedId())
-        
+            
         --AddTextEntry("shoot_to_start", "Atire para começar o assalto")
         --AddTextEntry("wait_to_shoot", "Aguarde 10 segundos...")
         local hashUnarmed = GetHashKey("WEAPON_UNARMED")
         while true do
             Citizen.Wait(0)
-           -- print(inposition)
+            --print(inposition)
             if inposition ~= nil then
                 local ped = PlayerPedId()
                 local retval, weaponHash = GetCurrentPedWeapon(ped, 1)
@@ -60,7 +60,7 @@ Citizen.CreateThread(
                     if interiorIndexBeingRobbed == nil then
                         if not shootingToStartCooldown then
                             if not roubo then
-                                notify('Atire para começar a dominação.')
+                                notify('Atire para começar a ~e~dominação.')
                                 roubo = true
                             end
                           --  TriggerEvent('FRP:Notify', 'Atire para começar o assalto.')
@@ -84,7 +84,7 @@ Citizen.CreateThread(
                                         end
                                     end
                                 end
-                                TriggerServerEvent("FCRP:ROBBERY:TryToStartRobbery", interiorIdPlayerIsIn, participants)
+                                TriggerServerEvent("FRP:FORT:TryToStartRobbery", interiorIdPlayerIsIn, participants)
                             end
                         else
                             notify('Começando...')
@@ -165,14 +165,14 @@ function initCheckPedIsOutside()
                     if secondsUntilAbandonRobbery <= 0 then
                         if not isBlockedByRobbery then
                             print("Você ficou tempo demais fora do roubo")
-                            TriggerServerEvent("FCRP:ROBBERY:PlayerAbandonedRobbery")
+                            TriggerServerEvent("FRP:FORT:PlayerAbandonedRobbery")
                         else
                             isBlockedByRobbery = false
                             ClearPedTasks(ped)
                             print("Você ficou tempo demais fora do roubo blocked")
                         end
 
-                        TriggerEvent("FCRP:ROBBERY:EndRobbery")
+                        TriggerEvent("FRP:FORT:EndRobbery")
 
                         break
                     end
@@ -228,9 +228,9 @@ function initShootingCountdown()
     )
 end
 
-RegisterNetEvent("FCRP:ROBBERY:StartRobbery")
+RegisterNetEvent("FRP:FORT:StartRobbery")
 AddEventHandler(
-    "FCRP:ROBBERY:StartRobbery",
+    "FRP:FORT:StartRobbery",
     function(index, asParticipant, seconds)
         interiorIndexBeingRobbed = index
         if asParticipant then
@@ -240,9 +240,9 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("FCRP:ROBBERY:StartRobberyAsBlocked")
+RegisterNetEvent("FRP:FORT:StartRobberyAsBlocked")
 AddEventHandler(
-    "FCRP:ROBBERY:StartRobberyAsBlocked",
+    "FRP:FORT:StartRobberyAsBlocked",
     function(index)
         interiorIndexBeingRobbed = index
         isBlockedByRobbery = true
@@ -255,9 +255,9 @@ AddEventHandler(
 )
 
 
-RegisterNetEvent("FCRP:ROBBERY:EndRobbery")
+RegisterNetEvent("FRP:FORT:EndRobbery")
 AddEventHandler(
-    "FCRP:ROBBERY:EndRobbery",
+    "FRP:FORT:EndRobbery",
     function()
         interiorIndexBeingRobbed = nil
 

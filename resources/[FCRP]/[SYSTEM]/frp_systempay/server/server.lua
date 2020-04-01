@@ -1,5 +1,6 @@
 local Tunnel = module('_core', 'libs/Tunnel')
 local Proxy = module('_core', 'libs/Proxy')
+
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
@@ -11,11 +12,11 @@ local salario = {
 
   
 local xp = {
-	{"admin", 20},
-	{"user", 20},
-	{"vip1", 20*1.10},
-	{"vip2", 20*1.20},
-	{"vip3", 20*1.30}
+	{"admin", 1},
+	{"user", 1},
+	{"vip1", 1.10},
+	{"vip2", 1.20},
+	{"vip3", 1.30}
 }
 
 local perdaxp = {
@@ -55,7 +56,7 @@ AddEventHandler('FRP:SYSTEMPAY:xp', function(count)
 	for i,v in pairs(xp) do
 		local group = Character:hasGroup(v[1])
 		if group then			
-			Character:addXp(tonumber(v[2]))
+			Character:addXp(tonumber(countxp*v[2]))
 		end
 	end
 	print("XP Distribuido com Sucesso.")

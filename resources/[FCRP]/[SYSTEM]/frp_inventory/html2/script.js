@@ -29,13 +29,13 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primaryItems) {
-            primarySetup(event.data.primaryItems, true);
+            primarySetup(event.data.primaryItems, true, event.data.primaryWeight, event.data.primaryCapacity);
             //$(".helper").html("Siga a legenda ao lado do seu visor.");
         }
 
         if (event.data.secondaryItems) {
             $("#secondary").show();
-            secondarySetup(event.data.secondaryItems, true);
+            secondarySetup(event.data.secondaryItems, true, event.data.secondaryWeight, event.data.secondaryCapacity);
             //
         }
         // helper message
@@ -70,7 +70,7 @@ function previousCategory() {
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${secondaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
-        secondarySetup(secondaryItemList, false);
+        secondarySetup(secondaryItemList, false, null , null);
     } else {
         if (primaryCategoriesIndex != 1) {
             primaryCategoriesIndex--;
@@ -79,7 +79,7 @@ function previousCategory() {
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${primaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
-        primarySetup(primaryItemList, false);
+        primarySetup(primaryItemList, false, null, null);
     }
 
     $(`#${parentInventoryId} .enabled`).removeClass('enabled');
@@ -280,11 +280,16 @@ $(document).ready(function() {
     })
 });
 
-function primarySetup(items, saveOnArray) {
+function primarySetup(items, saveOnArray, Weight, Capacity ) {
     $.each(items, function(index, item) {
         if (saveOnArray == true) {
             primaryItemList.push(item);
+        }   
+
+        if (Weight != null) {
+            $(".headpeso").html(`<img src="images/peso.png">${Weight}/${Capacity}`);
         }
+
         if (item.id == "generic_money" || item.id == "generic_gold" ) {    
             if (item.id == "generic_money") {                
                 $(".headmoney").html(`<img src="images/money.png">${(item.amount / 100).toFixed(2)}`);               
@@ -375,12 +380,16 @@ function primarySetup(items, saveOnArray) {
     }
 }
 
-function secondarySetup(items, saveOnArray) {
+function secondarySetup(items, saveOnArray, Weight, Capacity ) {
     $.each(items, function(index, item) {
 
 
         if (saveOnArray == true) {
             secondaryItemList.push(item);
+        }
+
+        if (Weight != null) {
+            $(".headpeso").html(`<img src="images/peso.png">${Weight}/${Capacity}`);
         }
 
         if (fitsSelectedCategory(item.id, false)) {

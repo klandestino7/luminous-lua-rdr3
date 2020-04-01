@@ -7,8 +7,8 @@ cAPI = Tunnel.getInterface("API")
 
 local webhookLink = "https://discordapp.com/api/webhooks/670247764919189504/UD3Rj9xqa76sJVAjWACCmDg8bGojZqE1xb2nV70uRIaRW361Yt90ydh_u11LTvypoNYc"
 
-RegisterServerEvent('frp_acougue:addmoneyskin')
-AddEventHandler( 'frp_acougue:addmoneyskin', function (carried)
+RegisterServerEvent('FRP:BUTCHER:addmoneyskin')
+AddEventHandler( 'FRP:BUTCHER:addmoneyskin', function (carried)
 	local _source = source
 	local User = API.getUserFromSource(source)
 	local Character = User:getCharacter()
@@ -23,8 +23,8 @@ AddEventHandler( 'frp_acougue:addmoneyskin', function (carried)
 end)
 
 
-RegisterServerEvent('frp_acougue:addmoney')
-AddEventHandler( 'frp_acougue:addmoney', function (amount, carried)
+RegisterServerEvent('FRP:BUTCHER:addmoney')
+AddEventHandler( 'FRP:BUTCHER:addmoney', function (amount, carried)
 	local price = amount
 	local _source = source
 	local User = API.getUserFromSource(source)

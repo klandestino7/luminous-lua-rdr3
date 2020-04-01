@@ -62,11 +62,24 @@ function API.Inventory(id, capacity, items)
             local User = API.getUserFromSource(viewerSource)
 
             if asPrimary then
-                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, self:getWeight(), self:getCapacity())
+                if ItemData.id == "generic_money" then
+                    User:notify("~d~+ ~o~$" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                elseif ItemData.id == "generic_gold" then
+                    User:notify("~d~+ ~pa~G" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                else
+                    User:notify("~d~+ ~o~x" .. amount .. " " .. ItemData:getName())
+                end                
             else
-                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, self:getWeight(), self:getCapacity())
+
+                if ItemData.id == "generic_money" then
+                    User:notify("~d~+ ~o~$" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                elseif ItemData.id == "generic_gold" then
+                    User:notify("~d~+ ~pa~G" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                else
+                    User:notify("~d~+ ~o~x" .. amount .. " ~q~" .. ItemData:getName())
+                end  
             end
         end
 
@@ -96,11 +109,23 @@ function API.Inventory(id, capacity, items)
                 local User = API.getUserFromSource(viewerSource)
 
                 if asPrimary then
-                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                    User:notify("Inventário Principal: - x" .. amount .. " " .. ItemData:getName())
+                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, self:getWeight(), self:getCapacity())
+                    if ItemData.id == "generic_money" then
+                        User:notify("~e~- ~o~$" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                    elseif ItemData.id == "generic_gold" then
+                        User:notify("~e~- ~pa~G" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                    else
+                        User:notify("~e~- ~o~x" .. amount .. " ~q~" .. ItemData:getName())
+                    end    
                 else
-                    TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                    User:notify("Inventário Secundário: - x" .. amount .. " " .. ItemData:getName())
+                    TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, self:getWeight(), self:getCapacity())
+                    if ItemData.id == "generic_money" then
+                        User:notify("~e~- ~o~$" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                    elseif ItemData.id == "generic_gold" then
+                        User:notify("~e~- ~pa~G" .. tonumber(amount/100) .. " ~q~" .. ItemData:getName())
+                    else
+                        User:notify("~e~- ~o~x" .. amount .. " ~q~" .. ItemData:getName())
+                    end    
                 end
             end
 
@@ -130,16 +155,13 @@ function API.Inventory(id, capacity, items)
                 parsedItems,
                 {
                     id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
+                    amount = amount
                 }
             )
             -- end
         end
-
-        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, parsedItems)
+        
+        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, parsedItems, self:getWeight(), self:getCapacity())
     end
 
     self.viewAsSecondary = function(this, viewerSource)
@@ -154,16 +176,13 @@ function API.Inventory(id, capacity, items)
                 parsedItems,
                 {
                     id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
+                    amount = amount
                 }
             )
             -- end
         end
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, parsedItems)
+        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, parsedItems, self:getWeight(), self:getCapacity())
     end
 
     self.removeViewer = function(this, viewerSource)

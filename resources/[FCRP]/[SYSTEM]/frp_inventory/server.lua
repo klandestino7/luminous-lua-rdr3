@@ -3,6 +3,10 @@ local Proxy = module('_core', 'libs/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
+local Primary = nil
+local Secundary = nil
+local Capacity = nil
+
 RegisterNetEvent('FCRP:INVENTORY:open')
 AddEventHandler(
     'FCRP:INVENTORY:open',
@@ -11,6 +15,15 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         User:viewInventory()
+        
+        local primaryInventory = User:getPrimaryInventoryViewing()
+        local secondaryInventory = User:getSecondaryInventoryViewing()
+                
+        Primary = primaryInventory:getWeight()        
+        Capacity = primaryInventory:getCapacity()
+    
+        TriggerClientEvent('FCRP:INVENTORY:weight', _source, Primary, Capacity)
+
     end
 )
 
@@ -136,8 +149,6 @@ AddEventHandler(
         end
     end
 )
-
-
 
 RegisterCommand('garmas', function(source, args)
     local _source = source

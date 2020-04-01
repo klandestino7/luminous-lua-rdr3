@@ -54,9 +54,10 @@ function API.Posse(id, charid, name, members)
         if key == nil then
             key = 'all'
         end
+
         local rows = API_Database.query('FCRP/GetCFort', {bando = value, id = id})
-        if #rows > 0 then
-            return rows[1].Value
+        if #rows > 0 then                       
+            return rows[1].bando
         else
             return ''
         end
