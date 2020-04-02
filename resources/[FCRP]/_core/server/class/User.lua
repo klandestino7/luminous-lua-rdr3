@@ -80,10 +80,10 @@ function API.User(source, id, ipAddress)
                     id = "char:" .. Character:getId(),
                     charid = Character:getId(),
                     capacity = 20,
-                    itemName = 0,
-                    itemCount = 0,
-                    items = json.encode({}),
-                    typeInv = "insert"
+                    slot = 0,
+                    itemId = 0,
+                    itemAmount = 0,
+                    procType = "insert"
                 }
             )
         end
@@ -99,7 +99,7 @@ function API.User(source, id, ipAddress)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            local rows2 = API_Database.query("FCRP/Inventory", {id = "char:" .. id, charid = id, capacity = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+            local rows2 = API_Database.query("FCRP/Inventory", {id = "char:" .. id, charid = id, capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local Inventory = nil
             if #rows2 > 0 then
                 Inventory = API.Inventory("char:" .. id, parseInt(rows2[1].capacity), json.decode(rows2[1].items))
@@ -110,13 +110,13 @@ function API.User(source, id, ipAddress)
             cAPI.replaceWeapons(self:getSource(), weapons)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
-            local Horse, horseComponents = self:getCharacter():getHorse()
+            -- local Horse, horseComponents = self:getCharacter():getHorse()
 
-            if Horse ~= nil then
-                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
-            else
-                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", nil)
-            end
+            -- if Horse ~= nil then
+            --     cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
+            -- else
+            --     cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", nil)
+            -- end
 
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
             if posse ~= nil then
@@ -154,7 +154,8 @@ function API.User(source, id, ipAddress)
                     Wait(100)
                     cAPI.setClothes(self:getSource(), self.Character:getClothes())
                     Wait(100)
-                    local lastPosition = self.Character:getLastPosition()
+                    -- local lastPosition = self.Character:getLastPosition()
+                    local lastPosition = {x = 0, y = 0, z = 0}
                     cAPI.teleportSpawn(self:getSource(), lastPosition)
                 end
             end

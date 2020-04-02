@@ -23,6 +23,26 @@ function API.ItemData(id, name, weight, subTitle)
         return self.weight
     end
 
+    self.getStackSize = function()
+        return 16
+    end
+
+    self.getSlotType = function()
+
+        -- local slotTypes = {
+        --     "Food",
+        --     "Tonics",
+        --     "Ingredients",
+        --     "Tools_Weapons",
+        --     "Kit",
+        --     "Valuables",
+        --     "Documents"
+        -- }
+
+        -- return slotTypes[math.random(1, #slotTypes)]
+        return "Food"
+    end
+
     -- # Caso queria fazer um ItemDrop com um prop
     --
     -- self.getWorldModel = function()

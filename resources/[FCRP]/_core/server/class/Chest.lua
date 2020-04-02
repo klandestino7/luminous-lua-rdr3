@@ -67,7 +67,7 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories, gro
             if Inventory == nil then
                 Citizen.CreateThread(
                     function()
-                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = 0, capacity = self:getCapacity(), itemName = 0, itemCount = 0, items = json.encode({}), typeInv = "insert"})
+                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = 0, capacity = self:getCapacity(), slot =0, itemId = 0, itemAmount = 0, procType = "insert"})
                     end
                 )
 
@@ -82,7 +82,7 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories, gro
             if self.inventories[self:getOwnerCharId()] == nil then
                 Citizen.CreateThread(
                     function()
-                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = self:getOwnerCharId(), capacity = self:getCapacity(), itemName = 0, itemCount = 0, items = json.encode({}), typeInv = "insert"})
+                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = self:getOwnerCharId(), capacity = self:getCapacity(), slot =0, itemId = 0, itemAmount = 0, procType = "insert"})
                     end
                 )
 

@@ -188,7 +188,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
             self.Horse = API.Horse(id, model, name, API.Inventory("horse" .. id, nil, nil))
             local Inventory = self.Horse:getInventory()
 
-            API_Database.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
+            API_Database.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), slot = 0, itemId = 0, itemAmount = 0, procType = "insert"})
         end
 
         return self.Horse
@@ -197,7 +197,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.setHorse = function(this, id)
         local horseRows = API_Database.query("FCRP/GetHorse", {id = id})
         if #horseRows > 0 then
-            local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+            local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local Inventory = nil
             if #invRows > 0 then
                 local items, _ = json.decode(invRows[1].items)

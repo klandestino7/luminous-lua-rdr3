@@ -18,7 +18,7 @@ Citizen.CreateThread(
                 local capacity = rows[index].capacity
                 local owner_char_id = rows[index].charid
                 local inventories = {}
-                local inventoriesRows = API_Database.query('FCRP/Inventory', {id = 'chest:' .. id, charid = 0, capacity = 0, itemName = 0, itemCount = 0, typeInv = 'select'})
+                local inventoriesRows = API_Database.query('FCRP/Inventory', {id = 'chest:' .. id, charid = 0, capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = 'select'})
                 if #inventoriesRows > 0 then
                     for _, data in pairs(inventoriesRows) do
                         local Inventory = API.Inventory(data.id, capacity, json.decode(data.items))

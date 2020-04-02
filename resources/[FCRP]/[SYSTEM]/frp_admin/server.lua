@@ -190,7 +190,7 @@ RegisterCommand(
         end
 
         if Character:hasGroup("admin") then
-            Character:getInventory():addItem(args[1], tonumber(args[2]))
+            Character:getInventory():addItem(-1, args[1], tonumber(args[2]))
         end
     end
 )

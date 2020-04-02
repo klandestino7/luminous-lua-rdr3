@@ -4,114 +4,130 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             if IsControlJustPressed(0, 0xC1989F95) and not opened then
-                TriggerServerEvent('FCRP:INVENTORY:open')
+                TriggerServerEvent("FCRP:INVENTORY:open")
                 opened = true
             end
         end
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:closeInv')
+RegisterNetEvent("FCRP:INVENTORY:closeInv")
 AddEventHandler(
-    'FCRP:INVENTORY:closeInv',
+    "FCRP:INVENTORY:closeInv",
     function()
         closeInv()
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:openAsPrimary')
+RegisterNetEvent("FCRP:INVENTORY:openAsPrimary")
 AddEventHandler(
-    'FCRP:INVENTORY:openAsPrimary',
-    function(items)
+    "FCRP:INVENTORY:openAsPrimary",
+    function(slots)
+        slots = parseItemTable(slots)
+
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
-                action = 'clearPrimary',
-                primaryItems = items
+                type = "clearPrimary",
+                primarySlots = slots
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:openAsSecondary')
+RegisterNetEvent("FCRP:INVENTORY:openAsSecondary")
 AddEventHandler(
-    'FCRP:INVENTORY:openAsSecondary',
-    function(items)
+    "FCRP:INVENTORY:openAsSecondary",
+    function(slots)
+        slots = parseItemTable(slots)
+
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
-                action = 'clearSecondary',
-                secondaryItems = items
+                type = "clearSecondary",
+                secondarySlots = slots
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:PrimarySyncItemAmount')
+RegisterNetEvent("FCRP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
-    'FCRP:INVENTORY:PrimarySyncItemAmount',
-    function(id, amount, name)
+    "FCRP:INVENTORY:PrimarySyncSlots",
+    function(slots)
+        slots = parseItemTable(slots)
+
         SendNUIMessage(
             {
-                primaryItems = {{id = id, amount = amount, name = name}}
+                primarySlots = slots
             }
         )
     end
 )
 
-RegisterNetEvent('FCRP:INVENTORY:SecondarySyncItemAmount')
+RegisterNetEvent("FCRP:INVENTORY:SecondarySyncSlots")
 AddEventHandler(
-    'FCRP:INVENTORY:SecondarySyncItemAmount',
-    function(id, amount, name)
+    "FCRP:INVENTORY:SecondarySyncSlots",
+    function(slots)
+        slots = parseItemTable(slots)
+
         SendNUIMessage(
             {
-                secondaryItems = {{id = id, amount = amount, name = name}}
+                type = "secondarySyncSlots",
+                slots = slots
             }
         )
     end
 )
 
 RegisterNUICallback(
-    'useItem',
+    "useItem",
     function(data)
-        TriggerServerEvent('FCRP:INVENTORY:useItem', data)
+        TriggerServerEvent("FCRP:INVENTORY:useItem", data)
     end
 )
 
 RegisterNUICallback(
-    'dropItem',
+    "dropItem",
     function(data)
-        TriggerServerEvent('FCRP:INVENTORY:dropItem', data)
+        TriggerServerEvent("FCRP:INVENTORY:dropItem", data)
     end
 )
 
 RegisterNUICallback(
-    'sendItemToPrimary',
+    "sendItemToPrimary",
     function(cb)
         local id = cb.id
         local amount = cb.amount
-        TriggerServerEvent('FCRP:INVENTORY:sendItemToPrimary', id, amount)
+        TriggerServerEvent("FCRP:INVENTORY:sendItemToPrimary", id, amount)
     end
 )
 
 RegisterNUICallback(
-    'sendItemToSecondary',
+    "sendItemToSecondary",
     function(cb)
         local id = cb.id
         local amount = cb.amount
-        TriggerServerEvent('FCRP:INVENTORY:sendItemToSecondary', id, amount)
+        TriggerServerEvent("FCRP:INVENTORY:sendItemToSecondary", id, amount)
     end
 )
 
 RegisterNUICallback(
-    'NUIFocusOff',
+    "primarySwitchItemSlot",
+    function(cb)
+        TriggerServerEvent("FCRP:INVENTORY:primarySwitchItemSlot", cb.slotFrom, cb.slotTo, cb.itemAmount)
+    end
+)
+
+RegisterNUICallback(
+    "NUIFocusOff",
     function()
         closeInv()
     end
 )
 
 AddEventHandler(
-    'onResourceStart',
+    "onResourceStart",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -124,26 +140,31 @@ function closeInv()
     SetNuiFocus(false, false)
     SendNUIMessage(
         {
-            action = 'hide'
+            action = "hide"
         }
     )
     opened = false
-    TriggerServerEvent('FCRP:INVENTORY:Close')
+    TriggerServerEvent("FCRP:INVENTORY:Close")
 end
 
-RegisterNetEvent('frp_inventory:removeWeapons')
-AddEventHandler('frp_inventory:removeWeapons', function()
-    local var, model = GetCurrentPedWeapon(PlayerPedId())
-    RemoveAllPedWeapons(PlayerPedId(), false, true)
-end)
+RegisterNetEvent("frp_inventory:removeWeapons")
+AddEventHandler(
+    "frp_inventory:removeWeapons",
+    function()
+        local var, model = GetCurrentPedWeapon(PlayerPedId())
+        RemoveAllPedWeapons(PlayerPedId(), false, true)
+    end
+)
 
+local promptUse
+local promptDrop
 
 Citizen.CreateThread(
     function()
         local prompt = PromptRegisterBegin()
         local promptGroup = GetRandomIntInRange(0, 0xffffff)
         PromptSetControlAction(prompt, 0x7F8D09B8)
-        PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Usar Item'))
+        PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Usar Item"))
         PromptSetEnabled(prompt, 1)
         PromptSetVisible(prompt, 1)
         PromptSetHoldMode(prompt, 1)
@@ -162,8 +183,20 @@ Citizen.CreateThread(
             Citizen.Wait(0)
 
             if opened then
-                PromptSetActiveGroupThisFrame(promptGroup, CreateVarString(10, 'LITERAL_STRING', 'Inventário'))
+                PromptSetActiveGroupThisFrame(promptGroup, CreateVarString(10, "LITERAL_STRING", "Inventário"))
             end
         end
     end
 )
+
+function parseItemTable(table)
+    print('Parsing table')
+    for _, values in pairs(table) do
+        print(_)
+        values[3] = ItemList[values[1]].stackSize or 16
+        values[4] = ItemList[values[1]].name
+        values[5] = ItemList[values[1]].description or "Descrição"
+    end
+
+    return table
+end

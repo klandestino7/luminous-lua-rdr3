@@ -6,6 +6,16 @@ function API.Inventory(id, capacity, items)
     self.items = items or {}
     self.viewersSources = {}
 
+   
+
+    self.slots = {}
+
+    if items ~= nil then
+        for slot, values in pairs(items) do
+            self.slots[tonumber(slot)] = API.ItemSlot(tonumber(slot), values[1], tonumber(values[2]))
+        end
+    end
+
     self.getId = function()
         return self.id
     end
@@ -19,7 +29,7 @@ function API.Inventory(id, capacity, items)
         for id, amount in pairs(self.items) do
             local ItemData = API.getItemDataFromId(id)
             if ItemData ~= nil then
-                weight = weight + (ItemData:getWeight() * amount)              
+                weight = weight + (ItemData:getWeight() * amount)
             end
         end
         return weight
@@ -42,76 +52,317 @@ function API.Inventory(id, capacity, items)
         return 0
     end
 
-    self.addItem = function(this, id, amount)
-        local ItemData = API.getItemDataFromId(id)
-        if ItemData == nil then
-            return false
-        end
-
-        local _temp = self.items[id] or 0
-        _temp = _temp + amount
-
-        self.items[id] = _temp
-
-        if self:getId() ~= nil then
-            API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = _temp, typeInv = "update"})
-        end
-
-        for viewerSource, asPrimary in pairs(self.viewersSources) do
-            -- Update
-            local User = API.getUserFromSource(viewerSource)
-
-            if asPrimary then
-                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
-            else
-                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
-            end
-        end
-
-        return true
+    self.getItemSlotAt = function(this, slotId)
+        return self.slots[slotId]
     end
 
-    self.removeItem = function(this, id, amount)
-        if self.items[id] then
-            local _temp = self.items[id] or 0
-            _temp = _temp - amount
+    self.getFirstItemSlotWithId = function(this, itemId)
+        return self:getListItemSlotsWithId(itemId, 1)[1] or nil
+    end
 
-            if _temp > 0 then
-                self.items[id] = _temp
-                if self:getId() ~= nil then
-                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = _temp, typeInv = "update"})
+    self.getListItemSlotsWithId = function(this, itemId, listSize)
+        local list = {}
+
+        for _, ItemSlot in pairs(self.slots) do
+            if ItemSlot:getItemId() == itemId then
+                table.insert(list, ItemSlot)
+
+                if listSize ~= nil then
+                    if #list >= listSize then
+                        break
+                    end
                 end
-            else
-                self.items[id] = nil
-                if self:getId() ~= nil then
-                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = id, itemCount = 0, typeInv = "remove"})
+            end
+        end
+
+        return list
+    end
+
+    self.getFreeSlotOfType = function(this, slotType)
+        local slotIndex = slotTypeToSlotIndex(slotType)
+
+        return self:getFreeSlotOfTypeIndex(index)
+    end
+
+    self.getListFreeSlotsOfType = function(this, slotType)
+        local slotIndex = slotTypeToSlotIndex(slotType)
+
+        return self:getListFreeSlotsOfTypeIndex(slotIndex)
+    end
+
+    self.getFreeSlotOfTypeIndex = function(this, slotTypeIndex)
+        return self:getListFreeSlotsOfTypeIndex(slotTypeIndex)[1] or -1
+    end
+
+    self.getListFreeSlotsOfTypeIndex = function(this, slotTypeIndex)
+        local slot_start = (16 * (slotTypeIndex + 1)) - (16 - 1)
+        local slot_end = (16 * (slotTypeIndex + 1))
+
+        local freeSlots = {}
+
+        for i = slot_start, slot_end do
+            if self.slots[i] == nil then
+                table.insert(freeSlots, i)
+            end
+        end
+
+        return freeSlots
+    end
+
+    self.canFit = function(this, itemId, itemAmount)
+        return #self:getFittableSlots(itemId, itemAmount) > 0
+    end
+
+    self.getFittableSlots = function(this, itemId, itemAmount)
+        local ItemData = API.getItemDataFromId(itemId)
+
+        local stackSize = ItemData.getStackSize()
+        local slotType = ItemData.getSlotType()
+
+        local fittableSlots = {}
+
+        local amountLeft = itemAmount
+
+        local listFreeSlotsOfType = self:getListFreeSlotsOfType(slotType)
+        local listItemSlotWithId = self:getListItemSlotsWithId(itemId)
+
+        for _, ItemSlot in pairs(listItemSlotWithId) do
+            local slot_itemAmount = ItemSlot:getItemAmount()
+            if slot_itemAmount < stackSize then
+                local maxFittable = (stackSize - slot_itemAmount)
+
+                if maxFittable > 0 then
+                    local toFit = 0
+                    if amountLeft > maxFittable then
+                        toFit = maxFittable
+                    else
+                        toFit = amountLeft
+                        amountLeft = 0
+                    end
+
+                    fittableSlots[ItemSlot:getSlot()] = toFit
+
+                    if amountLeft <= 0 then
+                        break
+                    end
+                end
+            end
+        end
+
+        if amountLeft > 0 then
+            if #listFreeSlotsOfType > 0 then
+                for _, slot in pairs(listFreeSlotsOfType) do
+                    if amountLeft > 0 then
+                        local amountFittable = stackSize
+
+                        if amountFittable > amountLeft then
+                            amountFittable = amountLeft
+                            amountLeft = 0
+                        else
+                            amountLeft = amountLeft - amountFittable
+                        end
+
+                        fittableSlots[slot] = amountFittable
+                    end
                 end
             end
 
-            local ItemData = API.getItemDataFromId(id)
-            for viewerSource, asPrimary in pairs(self.viewersSources) do
-                -- Update
-                local User = API.getUserFromSource(viewerSource)
+            if amountLeft > 0 then
+                fittableSlots = {}
+            end
+        end
 
-                if asPrimary then
-                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                    User:notify("Inventário Principal: - x" .. amount .. " " .. ItemData:getName())
+        return fittableSlots
+    end
+
+    self.addItem = function(this, slot, itemId, itemAmount)
+        local syncSlotQueue = {}
+        local switchSlotQueue = {}
+
+        if slot == -1 then
+            local fittableSlots = self:getFittableSlots(itemId, itemAmount)
+
+            for slot, fittableAmount in pairs(fittableSlots) do
+                if self.slots[slot] == nil then
+                    self.slots[slot] = API.ItemSlot(slot, itemId, fittableAmount)
                 else
-                    TriggerClientEvent("FCRP:INVENTORY:SecondarySyncItemAmount", viewerSource, id, _temp, ItemData:getName())
-                    User:notify("Inventário Secundário: - x" .. amount .. " " .. ItemData:getName())
+                    local ItemSlot = self.slots[slot]
+                    ItemSlot:setItemAmount(ItemSlot:getItemAmount() + fittableAmount)
+                end
+
+                syncSlotQueue[slot] = self.slots[slot]
+
+                Citizen.CreateThread(
+                    function()
+                        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = itemId, itemAmount = self.slots[slot]:getItemAmount(), procType = "update"})
+                    end
+                )
+            end
+        else
+            if self.slots[slot] == nil then
+                self.slots[slot] = API.ItemSlot(slot, itemId, itemAmount)
+                syncSlotQueue[slot] = self.slots[slot]
+                Citizen.CreateThread(
+                    function()
+                        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = itemId, itemAmount = self.slots[slot]:getItemAmount(), procType = "update"})
+                    end
+                )
+            else
+                local ItemSlot = self.slots[slot]
+                if ItemSlot:getItemId() == itemId then
+                    ItemSlot:setItemAmount(ItemSlot:getItemAmount() + itemAmount)
+                    syncSlotQueue[slot] = self.slots[slot]
+                    Citizen.CreateThread(
+                        function()
+                            API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = itemId, itemAmount = self.slots[slot]:getItemAmount(), procType = "update"})
+                        end
+                    )
                 end
             end
+        end
 
+        local parsedSlots = parseSlots(syncSlotQueue)
+        for viewerSource, asPrimary in pairs(self.viewersSources) do
+            -- local User = API.getUserFromSource(viewerSource)
+
+            if asPrimary then
+                -- User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", viewerSource, parsedSlots)
+            else
+                -- User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncSlots", viewerSource, parsedSlots)
+            end
+        end
+    end
+
+    self.removeItem = function(this, slot, itemId, itemAmount)
+        local syncSlotQueue = {}
+
+        if slot == -1 then
+            for _, slot in pairs(self:getListItemSlotsWithId(itemId)) do
+                local ItemSlot = self.slots[slot]
+                local _amount = ItemSlot:getItemAmount()
+                _amount = _amount - itemAmount
+
+                ItemSlot:setItemAmount(_amount)
+                syncSlotQueue[slot] = ItemSlot
+
+                if _amount <= 0 then
+                    self.slots[slot] = nil
+                end
+            end
+        else
+            if self.slots[slot] ~= nil then
+                local ItemSlot = self.slots[slot]
+                local _amount = ItemSlot:getItemAmount()
+
+                if itemAmount == nil then
+                    itemAmount = _amount
+                end
+
+                _amount = _amount - itemAmount
+
+                ItemSlot:setItemAmount(_amount)
+
+                syncSlotQueue[slot] = ItemSlot
+
+                if _amount > 0 then
+                    Citizen.CreateThread(
+                        function()
+                            API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = ItemSlot:getItemId(), itemAmount = _amount, procType = "update"})
+                        end
+                    )
+                else
+                    self.slots[slot] = nil
+
+                    Citizen.CreateThread(
+                        function()
+                            API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = 0, itemAmount = 0, procType = "remove"})
+                        end
+                    )
+                end
+            end
+        end
+
+        local parsedSlots = parseSlots(syncSlotQueue)
+        for viewerSource, asPrimary in pairs(self.viewersSources) do
+            -- local User = API.getUserFromSource(viewerSource)
+
+            if asPrimary then
+                -- User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", viewerSource, parsedSlots)
+            else
+                -- User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
+                TriggerClientEvent("FCRP:INVENTORY:SecondarySyncSlots", viewerSource, parsedSlots)
+            end
+        end
+    end
+
+    self.moveToSlot = function(this, slotFrom, slotTo, amount)
+        local slotA = self.slots[slotFrom]
+        local slotB = self.slots[slotTo]
+
+        if amount == -2 then -- NULL key
+            amount = slotA:getItemAmount()
+        end
+
+        if amount == -1 then -- SHIFT key
+            amount = math.floor(slotA:getItemAmount() / 2)
+        end
+
+        if slotB == nil then
+            self:addItem(slotTo, slotA:getItemId(), amount)
+            self:removeItem(slotFrom, slotA:getItemId(), amount)
+            return true
+        end
+
+        -- local itemD_A = ItemData.getItemDataFromId(slotA:getItemId())
+        -- local itemD_B = ItemData.getItemDataFromId(slotB:getItemId())
+
+        if slotA:getItemId() == slotB:getItemId() then
+            local itemId = slotA:getItemId()
+            local itemD = API.getItemDataFromId(slotA:getItemId())
+
+            if slotB:getItemAmount() == itemD:getStackSize() then
+                return false
+            end
+
+            if (amount + slotB:getItemAmount() <= itemD:getStackSize()) then
+                self:addItem(slotTo, itemId, amount)
+                self:removeItem(slotFrom, itemId, amount)
+                return true
+            else
+                local diff = itemD:getStackSize() - slotB:getItemAmount()
+
+                if diff > 0 then
+                    self:addItem(slotTo, itemId, diff)
+                    self:removeItem(slotFrom, itemId, diff)
+                    return true
+                end
+            end
+        else
+            local amountA = slotA:getItemAmount()
+            local amountB = slotB:getItemAmount()
+
+            self:removeItem(slotFrom, slotA:getItemId(), slotA:getItemAmount())
+            self:removeItem(slotTo, slotB:getItemId(), slotB:getItemAmount())
+
+            self:addItem(slotTo, slotA:getItemId(), amountA)
+            self:addItem(slotFrom, slotB:getItemId(), amountB)
             return true
         end
 
         return false
     end
 
-    self.getItemAmount = function(this, item_id)
-        local amount = self.items[item_id] or 0
+    self.getItemAmount = function(this, itemId)
+        local amount = 0
+
+        for _, slot in pairs(self:getListItemSlotsWithId(itemId)) do
+            local _amount = self.slots[slot]:getItemAmount()
+            amount = amount + _amount
+        end
+
         return amount
     end
 
@@ -122,48 +373,17 @@ function API.Inventory(id, capacity, items)
     self.viewAsPrimary = function(this, viewerSource)
         self.viewersSources[viewerSource] = true
 
-        local parsedItems = {}
-        for id, amount in pairs(self.items) do
-            local ItemData = API.getItemDataFromId(id)
-            -- if ItemData ~= nil then
-            table.insert(
-                parsedItems,
-                {
-                    id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
-                }
-            )
-            -- end
-        end
+        local parsedSlots = parseSlots(self.slots)
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, parsedItems)
+        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, parsedSlots)
     end
 
     self.viewAsSecondary = function(this, viewerSource)
         self.viewersSources[viewerSource] = false
 
-        local parsedItems = {}
-        -- Dont really need to parse them as the name of the items is being read from the ItemList config by the client
-        for id, amount in pairs(self.items) do
-            local ItemData = API.getItemDataFromId(id)
-            -- if ItemData ~= nil then
-            table.insert(
-                parsedItems,
-                {
-                    id = id,
-                    amount = amount,
-                    name = ItemData:getName(),
-                    subtitle = ItemData:getSubTitle()
-                    -- name = ItemData:getName()
-                }
-            )
-            -- end
-        end
+        local parsedSlots = parseSlots(self.slots)
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, parsedItems)
+        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, parsedSlots)
     end
 
     self.removeViewer = function(this, viewerSource)
@@ -181,9 +401,76 @@ function API.Inventory(id, capacity, items)
     end
 
     self.deleteInventory = function(self)
-        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, itemName = 0, itemCount = 0, typeInv = "deadPlayer"})
+        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "clear"})
         self.items = nil
     end
 
     return self
+end
+
+function slotTypeToSlotIndex(slotType)
+    local slotTypes = {
+        -- "Recents",
+        -- 1 2 3 4
+        -- 4 5 6 7
+        -- 9 10 11 12
+        -- 13 14 15 16
+        "Food",
+        -- 17 18 19 20
+        -- 21 21 23 24
+        -- 25 26 27 28
+        -- 29 30 31 32
+        "Tonics",
+        -- 33 34 35 36
+        -- 37 38 39 40
+        -- 41 42 43 44
+        -- 45 46 47 48
+        "Ingredients",
+        -- 49 50 51 52
+        -- 53 54 55 56
+        -- 57 58 59 60
+        -- 61 62 63 64
+        "Tools_Weapons",
+        -- 65 66 67 68
+        -- 69 70 71 72
+        -- 73 74 75 76
+        -- 77 78 79 80
+        "Kit",
+        -- 81 82 83 84
+        -- 85 86 87 88
+        -- 89 90 91 92
+        -- 93 94 95 96
+        "Valuables",
+        -- 97 98 99 100
+        -- 101 102 103 104
+        -- 105 106 107 108
+        -- 109 110 110 112
+        "Documents"
+        -- 113 114 115 116
+        -- 117 118 119 120
+        -- 121 122 123 124
+        -- 125 126 127 128
+        --
+        -- "Hotbar"
+        -- 129 130 131 132
+    }
+
+    for slotIndex, _slotType in pairs(slotTypes) do
+        if slotType == _slotType then
+            return slotIndex
+        end
+    end
+
+    return nil
+end
+
+function parseSlots(slots)
+    local parsedSlots = {}
+    for slot, ItemSlot in pairs(slots) do
+        parsedSlots[slot] = {
+            ItemSlot:getItemId(),
+            ItemSlot:getItemAmount()
+        }
+    end
+    return parsedSlots
 end

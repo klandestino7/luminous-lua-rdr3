@@ -174,7 +174,7 @@ API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @we
 API_Database.prepare('FCRP/SetCFort', 'UPDATE fort SET bando = @bando WHERE id = @id')
 API_Database.prepare('FCRP/GetCFort', 'SELECT bando from fort WHERE id = @id')
 -------- INVENTORY QUERIES -----------
-API_Database.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
+API_Database.prepare('FCRP/Inventory', 'CALL procInventory(@id, @charid, @slot, @itemId, @itemAmount, @procType);')
 
 ---------- HORSE QUERIES -------------
 API_Database.prepare('FCRP/CreateHorse', 'INSERT INTO horses(charid, model, name) VALUES (@charid, @model, @name); SELECT LAST_INSERT_ID() AS id')

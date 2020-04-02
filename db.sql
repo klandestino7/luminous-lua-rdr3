@@ -152,26 +152,27 @@ INSERT INTO `inventories` (`id`, `charid`, `capacity`, `items`) VALUES
 
 -- Copiando estrutura para procedure redm.inventories
 DELIMITER //
-CREATE PROCEDURE `inventories`(
+CREATE PROCEDURE `procInventory`(
 	IN `iid` VARCHAR(20),
 	IN `charid` INT(8),
-	IN `itemName` VARCHAR(100),
-	IN `itemCount` INT(8),
-	IN `typeInv` VARCHAR(8)
+  IN `slot` INT(8),
+	IN `itemId` VARCHAR(100),
+	IN `itemAmount` INT(8),
+	IN `procType` VARCHAR(8)
 
 
 
 )
 BEGIN
-    IF (typeInv = "update") THEN
-        UPDATE inventories SET items = JSON_SET(items, CONCAT("$.", itemName), itemCount) WHERE id = iid;
-    ELSEIF (typeInv = "remove") THEN
-        UPDATE inventories SET items = JSON_REMOVE(items, CONCAT("$.", itemName)) WHERE id = iid;
-    ELSEIF (typeInv = "select") THEN
+    IF (procType = "update") THEN
+        UPDATE inventories SET items = JSON_SET(items, 'CONCAT("$.", slot)[0]', itemId, 'CONCAT("$.", slot)[1]', itemAmount) WHERE id = iid;
+    ELSEIF (procType = "remove") THEN
+        UPDATE inventories SET items = JSON_REMOVE(items, CONCAT("$.", slot)) WHERE id = iid;
+    ELSEIF (procType = "select") THEN
         SELECT * from inventories WHERE id = iid;
-    ELSEIF (typeInv = "insert") THEN
+    ELSEIF (procType = "insert") THEN
         INSERT INTO inventories(id, charid, capacity, items) VALUES (iid, charid, 20, "{}");
-    ELSEIF (typeInv = "deadPlayer") THEN
+    ELSEIF (procType = "clear") THEN
         UPDATE inventories SET items = '{}' WHERE id = iid and charid = charid;
     END IF;
 END//
