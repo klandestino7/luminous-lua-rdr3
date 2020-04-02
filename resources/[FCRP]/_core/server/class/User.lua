@@ -110,12 +110,13 @@ function API.User(source, id, ipAddress)
             cAPI.replaceWeapons(self:getSource(), weapons)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
+
             local Horse, horseComponents = self:getCharacter():getHorse()
 
             if Horse ~= nil then
                 cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
             else
-                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", nil)
+                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8,0x508B80B9})
             end
 
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))

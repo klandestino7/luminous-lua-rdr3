@@ -125,11 +125,11 @@ end)
 
 -- When player respawns / joins
 AddEventHandler('playerSpawned', function()
-	if IsJailed then
-		SetEntityCoords(PlayerPedId(), JailLocation)
-	else
-		TriggerServerEvent('FRP:JAIL:checkJail')
-	end
+	-- if IsJailed then
+	-- 	SetEntityCoords(PlayerPedId(), JailLocation)
+	-- else
+	-- 	TriggerServerEvent('FRP:JAIL:checkJail')
+	-- end
 end)
 
 -- When script starts

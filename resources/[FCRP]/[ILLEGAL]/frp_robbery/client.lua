@@ -23,7 +23,8 @@ RegisterCommand(
 local interiors = {
     [1] = 72962, -- BANCO BLACKWATER
     [2] = 42754, -- BANCO SAINT DENNIS
-    [3] = 29442 -- BANCO RHODES
+    [3] = 29442, -- BANCO RHODES
+    [4] = 12290 -- BANCO VALENTINE
 }
 
 local interiorIndexBeingRobbed = nil
@@ -47,10 +48,11 @@ Citizen.CreateThread(
             local ped = PlayerPedId()
 
             local interiorIdPlayerIsIn = GetInteriorFromEntity(ped)
-
+            
             if interiorIdPlayerIsIn ~= 0 then
                 for index, interiorId in pairs(interiors) do
                     if interiorIdPlayerIsIn == interiorId then
+                        print(index)
                         interiorIndexPlayerIsIn = index
                     end
                 end

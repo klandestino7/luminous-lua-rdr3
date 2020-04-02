@@ -222,7 +222,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
         if #rows > 0 then
             return rows
         else
-            return nil
+            return ''
         end
     end
 
