@@ -3,34 +3,34 @@ local Proxy = module('_core', 'libs/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
-RegisterServerEvent('clothes:checkmoney')
-AddEventHandler('clothes:checkmoney', function(price)
+RegisterServerEvent('FRP:STORECLOTHES:checkmoney')
+AddEventHandler('FRP:STORECLOTHES:checkmoney', function(price)
     local _source = source
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-	if Inventory:getItemAmount('generic_money') < 2 then
+	if Inventory:getItemAmount('generic_money') < 200 then
         User:notify('Dinheiro insuficiente!')
         return
 	end
-	TriggerClientEvent('clothes:open', _source)	
+	TriggerClientEvent('FRP:STORECLOTHES:open', _source)	
 end)
 
 
 
-RegisterServerEvent('clothes:buy')
-AddEventHandler('clothes:buy', function(price)
+RegisterServerEvent('FRP:STORECLOTHES:buy')
+AddEventHandler('FRP:STORECLOTHES:buy', function(price)
     local _source = source
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-	if Inventory:getItemAmount('generic_money') < price then
+	if Inventory:getItemAmount('generic_money') < price*100 then
         User:notify('Dinheiro insuficiente!')
         return
 	end
-	User:notify('Você pagou ~pa~' .. price ..'$')
+	User:notify('Você pagou ~pa~' .. price*100 ..'$')
 
-	Inventory:removeItem('generic_money', price)
+	Inventory:removeItem('generic_money', price*100)
 
 end)
 

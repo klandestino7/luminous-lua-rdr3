@@ -1102,7 +1102,8 @@ RegisterNUICallback(
             ['offhand'] = beltbuckleUsing
         }
         if dados ~= nil then
-            TriggerServerEvent('clothes:buy', 2)
+            local pdado = #dados
+            TriggerServerEvent('FRP:STORECLOTHES:buy', tonumber(pdado*0.2)
         end
         TriggerServerEvent('FRP:CLOTHES:saveCloth', dados)
         closeAll()
