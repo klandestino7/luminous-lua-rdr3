@@ -220,7 +220,7 @@ Its simulated from .selected :D
     font-size: 16px;
 }
 
-.container .inventory .inventory-container .description-container .description-subtitle {
+.container .inventory .inventory-container .description-container .description-description {
     font-family: 'Hapna';
     max-height: 80%;
     text-align: center;

@@ -77,7 +77,7 @@ function previousCategory() {
     $(`#${parentInventoryId} .enabled`).removeClass('enabled');
     $(categoryElement).addClass('enabled');
     $(`#${parentInventoryId} .control-info-container #selected-category`).text($(categoryElement).attr('data-name'));
-    select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
+    // select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
 }
 
 function nextCategory() {
@@ -114,7 +114,7 @@ function nextCategory() {
     $(`#${parentInventoryId} .enabled`).removeClass('enabled');
     $(categoryElement).addClass('enabled');
     $(`#${parentInventoryId} .control-info-container #selected-category`).text($(categoryElement).attr('data-name'));
-    select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
+    // select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
 }
 
 // function dev() {
@@ -172,38 +172,44 @@ $(document).ready(function() {
 
         if (event.which == 37) { // LEFT ARROW
             if ($('#primary').hasClass('focus')) {
-                var selected = $('#primary-inventory .slot-container .slot')
-                $.each(selected, function(index, item) {
-                    if (!$(this).hasClass('empty')) {
-                        if ($(this).hasClass('selected')) {
-                            setTimeout(() => { select($(this).prev()) }, 0)
+                if (primaryCategoriesIndex != 1) {
+                    var selected = $('#primary-inventory .slot-container .slot')
+                    $.each(selected, function(index, item) {
+                        if (!$(this).hasClass('empty')) {
+                            if ($(this).hasClass('selected')) {
+                                setTimeout(() => { select($(this).prev()) }, 0)
+                            }
                         }
-                    }
-                });
+                    });
+                }
             } else if ($('#secondary').hasClass('focus')) {
-                var selected = $('#secondary-inventory .slot-container .slot')
-                $.each(selected, function(index, item) {
-                    if (!$(this).hasClass('empty')) {
-                        if ($(this).hasClass('selected')) {
-                            setTimeout(() => { select($(this).prev()) }, 0)
+                if (secondaryCategoriesIndex != 1) {
+                    var selected = $('#secondary-inventory .slot-container .slot')
+                    $.each(selected, function(index, item) {
+                        if (!$(this).hasClass('empty')) {
+                            if ($(this).hasClass('selected')) {
+                                setTimeout(() => { select($(this).prev()) }, 0)
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
 
         if (event.which == 39) { // RIGHT ARROW
             if ($('#primary').hasClass('focus')) {
-                var selected = $('#primary-inventory .slot-container .slot')
-                $.each(selected, function(index, item) {
-                    if (!$(this).hasClass('empty')) {
-                        if ($(this).hasClass('selected')) {
-                            if (!$(this).next().hasClass('empty')) {
-                                setTimeout(() => { select($(this).next()) }, 0)
+                if (primaryCategoriesIndex != 1) {
+                    var selected = $('#primary-inventory .slot-container .slot')
+                    $.each(selected, function(index, item) {
+                        if (!$(this).hasClass('empty')) {
+                            if ($(this).hasClass('selected')) {
+                                if (!$(this).next().hasClass('empty')) {
+                                    setTimeout(() => { select($(this).next()) }, 0)
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             } else if ($('#secondary').hasClass('focus')) {
                 var selected = $('#secondary-inventory .slot-container .slot')
                 $.each(selected, function(index, item) {
@@ -219,19 +225,23 @@ $(document).ready(function() {
         }
 
         if (event.which == 65) {
-            let amount = 1;
-            $.post('http://frp_inventory/useItem', JSON.stringify({
-                slot: $('.focus .selected').attr('id'),
-                itemAmount: amount,
-            }));
+            if (primaryCategoriesIndex != 1) {
+                let amount = 1;
+                $.post('http://frp_inventory/useItem', JSON.stringify({
+                    slot: $('.focus .selected').attr('id'),
+                    itemAmount: amount,
+                }));
+            }
         }
 
         if (event.which == 68) {
-            let amount = 1;
-            $.post('http://frp_inventory/dropItem', JSON.stringify({
-                slot: $('.focus .selected').attr('id'),
-                itemAmount: 1,
-            }));
+            if (primaryCategoriesIndex != 1) {
+                let amount = 1;
+                $.post('http://frp_inventory/dropItem', JSON.stringify({
+                    slot: $('.focus .selected').attr('id'),
+                    itemAmount: 1,
+                }));
+            }
         }
 
     });
@@ -287,7 +297,7 @@ function drawPrimary() {
 
     $(`#primary-inventory .slot-container`).html('');
     for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot][1] > 0) {
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] > 0) {
             var ItemSlot = primaryItemList[slot];
             $(`#primary-inventory .slot-container`).append(`
                 <div class="slot" id="${slot}" onclick="select(this)">
@@ -296,30 +306,32 @@ function drawPrimary() {
                 </div>
             `)
 
-            var element = $(`#primary-inventory .slot-container #${slot}`);
+            if (primaryCategoriesIndex != 1) {
+                var element = $(`#primary-inventory .slot-container #${slot}`);
 
-            element.attr('itemId', ItemSlot[0]);
-            element.attr('title', ItemSlot[3]);
-            element.attr('description', ItemSlot[4]);
-            element.draggable({
-                appendTo: 'body',
-                scroll: false,
-                revert: true,
-                revertDuration: 200,
-                helper: 'clone',
-                zIndex: 99999,
-                start: function(event, ui) {
-                    $(this).draggable('instance').offset.click = {
-                        left: Math.floor(ui.helper.width() / 2),
-                        top: Math.floor(ui.helper.height() / 2)
-                    };
-                    ui.helper.css('position', 'absolute');
-                    select($(this));
-                },
-                stop: function(event, ui) {
-                    unSelect($(this));
-                },
-            });
+                element.attr('itemId', ItemSlot[0]);
+                element.attr('title', ItemSlot[3]);
+                element.attr('description', ItemSlot[4]);
+                element.draggable({
+                    appendTo: 'body',
+                    scroll: false,
+                    revert: true,
+                    revertDuration: 200,
+                    helper: 'clone',
+                    zIndex: 99999,
+                    start: function(event, ui) {
+                        $(this).draggable('instance').offset.click = {
+                            left: Math.floor(ui.helper.width() / 2),
+                            top: Math.floor(ui.helper.height() / 2)
+                        };
+                        ui.helper.css('position', 'absolute');
+                        select($(this));
+                    },
+                    stop: function(event, ui) {
+                        unSelect($(this));
+                    },
+                });
+            }
         } else {
 
             if (primaryItemList[slot] !== undefined) {
@@ -333,88 +345,72 @@ function drawPrimary() {
         }
     }
 
-    <<
-    << << < HEAD
-    $(`#primary-inventory .slot-container`).children().droppable({
-                tolerance: 'pointer',
-                drop: function(event, ui) {
-                        $(ui.helper).remove();
-                        // let valueCount = $('.count').value;
-                        let selfSlot = $(this).attr('id');
-                        let draggableSlot = $(ui.draggable).attr('id');
+    if (primaryCategoriesIndex != 1) {
+        $(`#primary-inventory .slot-container`).children().droppable({
+            tolerance: 'pointer',
+            drop: function(event, ui) {
+                $(ui.helper).remove();
+                // let valueCount = $('.count').value;
+                let selfSlot = $(this).attr('id');
+                let draggableSlot = $(ui.draggable).attr('id');
 
-                        if (shortcutPressed == null) {
-                            itemAmount = -2; // quantidade = TODOS
-                        } ===
-                        === =
-                        function secondarySetup(items, saveOnArray, Weight, Capacity) {
-                            $.each(items, function(index, item) {
+                if (shortcutPressed == null) {
+                    itemAmount = -2; // quantidade = TODOS
+                }
+
+                if (shortcutPressed == 16) { // SHIFT
+                    itemAmount = -1
+                }
+
+                if (shortcutPressed == 17) { // CTRL
+                    itemAmount = 1
+                }
+
+                if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory') {
+                    $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
+                        slotFrom: draggableSlot,
+                        slotTo: selfSlot,
+                        itemAmount: itemAmount,
+                    }));
+                } else {
+                    let amount = 1;
+                    $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
+                        slotFrom: draggableSlot,
+                        slotTo: selfSlot,
+                        itemAmount: itemAmount,
+                    }));
+                }
+            }
+        });
+    }
+}
 
 
-                                if (saveOnArray == true) {
-                                    secondaryItemList.push(item);
-                                }
+function select(element) {
+    // let count = $('.count')[0].innerText;
+    // $('.count').attr("disabled", false);
+    let elementParentParentId = $(element).parent().parent().attr('id');
+    $(`#${elementParentParentId} .description-title`).text('');
+    $(`#${elementParentParentId} .description-description`).text('');
+    $(`#${elementParentParentId} .selected`).removeClass('selected');
+    $(element).addClass('selected');
+    $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+    $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
+    indexSelected = $(element).attr('id');
+}
 
-                                if (Weight != null) {
-                                    $(".headpeso").html(`<img src="images/peso.png">${Weight}/${Capacity}`);
-                                }
+function unSelect(element) {
+    if ($(element).hasClass('selected')) {
+        $(element).removeClass('selected');
+        let elementParentParentId = $(element).parent().parent().attr('id');
+        $(`${elementParentParentId} .description-title`).text('');
+        $(`${elementParentParentId} .description-description`).text('');
+    }
+}
 
-                                if (fitsSelectedCategory(item.id, false)) { >>>
-                                    >>> > 9 ace2582b8b17b3e470b18ef54a8d55c463a0712
-
-                                    if (shortcutPressed == 16) { // SHIFT
-                                        itemAmount = -1
-                                    }
-
-                                    if (shortcutPressed == 17) { // CTRL
-                                        itemAmount = 1
-                                    }
-
-                                    if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory') {
-                                        $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
-                                            slotFrom: draggableSlot,
-                                            slotTo: selfSlot,
-                                            itemAmount: itemAmount,
-                                        }));
-                                    } else {
-                                        let amount = 1;
-                                        $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
-                                            slotFrom: draggableSlot,
-                                            slotTo: selfSlot,
-                                            itemAmount: itemAmount,
-                                        }));
-                                    }
-                                },
-                            });
-                        }
-
-                        function select(element) {
-                            // let count = $('.count')[0].innerText;
-                            // $('.count').attr("disabled", false);
-                            let elementParentParentId = $(element).parent().parent().attr('id');
-                            $(`#${elementParentParentId} .description-title`).text('');
-                            $(`#${elementParentParentId} .description-description`).text('');
-                            $(`#${elementParentParentId} .selected`).removeClass('selected');
-                            if ($(element).attr('id') != undefined) {
-                                $(element).addClass('selected');
-                                $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
-                                $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
-                                indexSelected = $(element).attr('id');
-                            }
-                        }
-
-                        function unSelect(element) {
-                            if ($(element).hasClass('selected')) {
-                                $(element).removeClass('selected');
-                                let elementParentParentId = $(element).parent().parent().attr('id');
-                                $(`${elementParentParentId} .description-title`).text('');
-                                $(`${elementParentParentId} .description-description`).text('');
-                            }
-                        }
-
-                        function closeInventory() {
-                            primaryItemList = [];
-                            secondaryItemList = [];
-                            $("#secondary").hide();
-                            $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
-                        }
+function closeInventory() {
+    primaryItemList = [];
+    secondaryItemList = [];
+    $("#secondary").hide();
+    $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
+}

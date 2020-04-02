@@ -6,8 +6,6 @@ function API.Inventory(id, capacity, items)
     self.items = items or {}
     self.viewersSources = {}
 
-   
-
     self.slots = {}
 
     if items ~= nil then
@@ -197,6 +195,22 @@ function API.Inventory(id, capacity, items)
                         API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = itemId, itemAmount = self.slots[slot]:getItemAmount(), procType = "update"})
                     end
                 )
+
+                -- Update recent items tab
+                -- for i = 16, 1, -1 do
+                --     if self.slots[i] ~= nil then
+                --         if i == 16 then
+                --             self.slots[16] = nil
+                --         else
+                --             self.slots[i + 1] = self.slots[i]
+                --             self.slots[i] = nil
+                --         end
+                --     end
+                --     syncSlotQueue[slot] = self.slots[i]
+                -- end
+                -- self.slots[1] = self.slots[slot]
+                -- syncSlotQueue[1] = self.slots[slot]
+
             end
         else
             if self.slots[slot] == nil then

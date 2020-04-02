@@ -59,6 +59,7 @@ RegisterNetEvent("FCRP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
     "FCRP:INVENTORY:PrimarySyncSlots",
     function(slots)
+        print('PrimarySyncSlots')
         slots = parseItemTable(slots)
 
         SendNUIMessage(
