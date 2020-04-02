@@ -3,7 +3,15 @@ local Proxy = module("_core", "libs/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+<<<<<<< HEAD
 RegisterNetEvent("FCRP:INVENTORY:open")
+=======
+local Primary = nil
+local Secundary = nil
+local Capacity = nil
+
+RegisterNetEvent('FCRP:INVENTORY:open')
+>>>>>>> 9ace2582b8b17b3e470b18ef54a8d55c463a0712
 AddEventHandler(
     "FCRP:INVENTORY:open",
     function()
@@ -11,6 +19,15 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         User:viewInventory()
+        
+        local primaryInventory = User:getPrimaryInventoryViewing()
+        local secondaryInventory = User:getSecondaryInventoryViewing()
+                
+        Primary = primaryInventory:getWeight()        
+        Capacity = primaryInventory:getCapacity()
+    
+        TriggerClientEvent('FCRP:INVENTORY:weight', _source, Primary, Capacity)
+
     end
 )
 

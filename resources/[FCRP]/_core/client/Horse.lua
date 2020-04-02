@@ -15,6 +15,7 @@ function cAPI.setHorse(model, name, components)
     horseModel = model
     horseName = name
     horseComponents = components
+
 end
 
 function cAPI.clearHorse()
@@ -60,6 +61,11 @@ function cAPI.spawnHorse()
 
     horseEntity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), 1, 0)
 
+    if modelHash == 'A_C_Horse_MP_Mangy_Backup' then
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x106961A8, true, true, true) --sela
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
+    end
+
     -- SetRandomOutfitVariation(horseEntity, true)
     -- ^^
     Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
@@ -74,13 +80,14 @@ function cAPI.spawnHorse()
     SetPedNameDebug(horseEntity, horseModel)
     SetPedPromptName(horseEntity, horseName)
 
+
     if horseComponents ~= nil then
-        print(#horseComponents)
+        print(#horseComponents)        
         for _, componentHash in pairs(horseComponents) do
             Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(componentHash), true, true, true)
         end
     end
-
+    
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMaxValue", 10);
@@ -146,6 +153,15 @@ Citizen.CreateThread(
                     else
                         horseEntity = nil
                     end
+
+                    if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
+                        if horseEntity ~= nil then
+                            TaskAnimalFlee(horseEntity, PlayerPedId() , -1)
+                            Wait(20000)
+                            cAPI.fleeHorse()
+                        end       
+                    end
+
                 else
                     horseEntity = nil
                 end
@@ -161,7 +177,7 @@ Citizen.CreateThread(
                     else
                         -- print('Cavalo invalido! Relogue')
                     end
-                end
+                end   
             end
         end
     end

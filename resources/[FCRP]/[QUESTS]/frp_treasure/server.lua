@@ -66,7 +66,7 @@ end)
 
 RegisterNetEvent('TREASURE:timeCall')
 AddEventHandler('TREASURE:timeCall', function()
-    local hora = 6000*60
+    local hora = 60000*60
     local horas = 60000*180
     local timeram = math.random(hora,horas)
 

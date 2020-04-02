@@ -23,7 +23,14 @@ local data = {
         staticSecondsToReward = 30,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
+    },
+    [4] = {
+        staticReward = 10000,
+        staticSecondsToReward = 30,
+        staticMaxParticipants = 3,
+        staticCooldown = 30 * 60
     }
+
 }
 
 local indexBeingRobbed = nil

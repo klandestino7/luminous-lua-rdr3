@@ -26,6 +26,7 @@ AddEventHandler(
         slots = parseItemTable(slots)
 
         SetNuiFocus(true, true)
+        print(Weight, Capacity)
         SendNUIMessage(
             {
                 type = "clearPrimary",
@@ -42,6 +43,9 @@ AddEventHandler(
         slots = parseItemTable(slots)
 
         SetNuiFocus(true, true)
+        for _, v in pairs(items) do
+            v.name = ItemList[v.id].name
+        end
         SendNUIMessage(
             {
                 type = "clearSecondary",
@@ -170,6 +174,7 @@ Citizen.CreateThread(
         PromptSetHoldMode(prompt, 1)
         PromptSetGroup(prompt, promptGroup)
         PromptRegisterEnd(prompt)
+
         -- prompt2 = PromptRegisterBegin()
         -- local promptGroup = GetRandomIntInRange(0, 0xffffff)
         -- PromptSetControlAction(prompt2, 0x7F8D09B8)
@@ -181,7 +186,6 @@ Citizen.CreateThread(
         -- PromptRegisterEnd(prompt2)
         while true do
             Citizen.Wait(0)
-
             if opened then
                 PromptSetActiveGroupThisFrame(promptGroup, CreateVarString(10, "LITERAL_STRING", "Inventário"))
             end

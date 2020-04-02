@@ -17,7 +17,7 @@ Citizen.CreateThread(function()
 					if Vdist(coords, v) < 2 then
 						DrawTxt(Config.Shoptext, 0.50, 0.95, 0.6, 0.6, true, 255, 255, 255, 255, true, 10000)
 						if IsControlJustReleased(0, keys['ALT']) then					
-							  TriggerServerEvent("clothes:checkmoney")
+							  TriggerServerEvent("FRP:STORECLOTHES:checkmoney")
 						end
 					end
 			end

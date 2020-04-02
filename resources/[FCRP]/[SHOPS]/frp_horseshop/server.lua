@@ -81,7 +81,7 @@ AddEventHandler(
      
 
         if Character:getHorses() ~= nil then
-            if #Character:getHorses() > nil then
+            if #Character:getHorses() > 2 then
                 User:notify('Limite de cavalos alcançado.')
                 return
             end
@@ -139,12 +139,12 @@ RegisterNetEvent('FCRP:HORSESHOP:SelectHorseWithId')
 AddEventHandler(
     'FCRP:HORSESHOP:SelectHorseWithId',
     function(horseId)
-    
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Horse = Character:setHorse(horseId)
-        if Horse then
+
+        if Horse ~= nil then
             cAPI.setHorse(User:getSource(), Horse:getModel(), Horse:getName())   
         end
     end

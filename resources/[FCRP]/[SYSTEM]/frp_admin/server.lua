@@ -252,3 +252,20 @@ RegisterCommand(
         end
     end
 )
+
+RegisterCommand('revive', function(source, args, rawCommand)
+    local _source = source
+    local User = API.getUserFromSource(source)
+    local Character = User:getCharacter()
+
+    if Character:hasGroup("admin") or Character:hasGroup("medic") then
+        if args[1] ~= nil then
+            local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
+            if tplayer ~= nil then
+                TriggerClientEvent('FRP:RESPAWN:revive', tplayer)
+            end
+        else
+            TriggerClientEvent('FRP:RESPAWN:revive', _source)
+        end
+    end
+end) 

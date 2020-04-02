@@ -64,7 +64,7 @@ AddEventHandler('FRP:JAIL:jail', function(jailTime)
 
 			-- Clear player
 			ClearPedBloodDamage(playerPed)
-			ClearPedLastWeaponDamage(playerPed)
+--			ClearPedLastWeaponDamage(playerPed)
 			
 			print(playerPed)
 			SetEntityCoords(playerPed,  3372.48, -667.09, 46.41)
@@ -125,11 +125,11 @@ end)
 
 -- When player respawns / joins
 AddEventHandler('playerSpawned', function()
-	if IsJailed then
-		SetEntityCoords(PlayerPedId(), JailLocation)
-	else
-		TriggerServerEvent('FRP:JAIL:checkJail')
-	end
+	-- if IsJailed then
+	-- 	SetEntityCoords(PlayerPedId(), JailLocation)
+	-- else
+	-- 	TriggerServerEvent('FRP:JAIL:checkJail')
+	-- end
 end)
 
 -- When script starts

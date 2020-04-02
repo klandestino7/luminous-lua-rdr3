@@ -333,71 +333,88 @@ function drawPrimary() {
         }
     }
 
+    <<
+    << << < HEAD
     $(`#primary-inventory .slot-container`).children().droppable({
-        tolerance: 'pointer',
-        drop: function(event, ui) {
-            $(ui.helper).remove();
-            // let valueCount = $('.count').value;
-            let selfSlot = $(this).attr('id');
-            let draggableSlot = $(ui.draggable).attr('id');
+                tolerance: 'pointer',
+                drop: function(event, ui) {
+                        $(ui.helper).remove();
+                        // let valueCount = $('.count').value;
+                        let selfSlot = $(this).attr('id');
+                        let draggableSlot = $(ui.draggable).attr('id');
 
-            if (shortcutPressed == null) {
-                itemAmount = -2; // quantidade = TODOS
-            }
+                        if (shortcutPressed == null) {
+                            itemAmount = -2; // quantidade = TODOS
+                        } ===
+                        === =
+                        function secondarySetup(items, saveOnArray, Weight, Capacity) {
+                            $.each(items, function(index, item) {
 
-            if (shortcutPressed == 16) { // SHIFT
-                itemAmount = -1
-            }
 
-            if (shortcutPressed == 17) { // CTRL
-                itemAmount = 1
-            }
+                                if (saveOnArray == true) {
+                                    secondaryItemList.push(item);
+                                }
 
-            if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory') {
-                $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
-                    slotFrom: draggableSlot,
-                    slotTo: selfSlot,
-                    itemAmount: itemAmount,
-                }));
-            } else {
-                let amount = 1;
-                $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
-                    slotFrom: draggableSlot,
-                    slotTo: selfSlot,
-                    itemAmount: itemAmount,
-                }));
-            }
-        },
-    });
-}
+                                if (Weight != null) {
+                                    $(".headpeso").html(`<img src="images/peso.png">${Weight}/${Capacity}`);
+                                }
 
-function select(element) {
-    // let count = $('.count')[0].innerText;
-    // $('.count').attr("disabled", false);
-    let elementParentParentId = $(element).parent().parent().attr('id');
-    $(`#${elementParentParentId} .description-title`).text('');
-    $(`#${elementParentParentId} .description-description`).text('');
-    $(`#${elementParentParentId} .selected`).removeClass('selected');
-    if ($(element).attr('id') != undefined) {
-        $(element).addClass('selected');
-        $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
-        $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
-        indexSelected = $(element).attr('id');
-    }
-}
+                                if (fitsSelectedCategory(item.id, false)) { >>>
+                                    >>> > 9 ace2582b8b17b3e470b18ef54a8d55c463a0712
 
-function unSelect(element) {
-    if ($(element).hasClass('selected')) {
-        $(element).removeClass('selected');
-        let elementParentParentId = $(element).parent().parent().attr('id');
-        $(`${elementParentParentId} .description-title`).text('');
-        $(`${elementParentParentId} .description-description`).text('');
-    }
-}
+                                    if (shortcutPressed == 16) { // SHIFT
+                                        itemAmount = -1
+                                    }
 
-function closeInventory() {
-    primaryItemList = [];
-    secondaryItemList = [];
-    $("#secondary").hide();
-    $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
-}
+                                    if (shortcutPressed == 17) { // CTRL
+                                        itemAmount = 1
+                                    }
+
+                                    if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory') {
+                                        $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
+                                            slotFrom: draggableSlot,
+                                            slotTo: selfSlot,
+                                            itemAmount: itemAmount,
+                                        }));
+                                    } else {
+                                        let amount = 1;
+                                        $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
+                                            slotFrom: draggableSlot,
+                                            slotTo: selfSlot,
+                                            itemAmount: itemAmount,
+                                        }));
+                                    }
+                                },
+                            });
+                        }
+
+                        function select(element) {
+                            // let count = $('.count')[0].innerText;
+                            // $('.count').attr("disabled", false);
+                            let elementParentParentId = $(element).parent().parent().attr('id');
+                            $(`#${elementParentParentId} .description-title`).text('');
+                            $(`#${elementParentParentId} .description-description`).text('');
+                            $(`#${elementParentParentId} .selected`).removeClass('selected');
+                            if ($(element).attr('id') != undefined) {
+                                $(element).addClass('selected');
+                                $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+                                $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
+                                indexSelected = $(element).attr('id');
+                            }
+                        }
+
+                        function unSelect(element) {
+                            if ($(element).hasClass('selected')) {
+                                $(element).removeClass('selected');
+                                let elementParentParentId = $(element).parent().parent().attr('id');
+                                $(`${elementParentParentId} .description-title`).text('');
+                                $(`${elementParentParentId} .description-description`).text('');
+                            }
+                        }
+
+                        function closeInventory() {
+                            primaryItemList = [];
+                            secondaryItemList = [];
+                            $("#secondary").hide();
+                            $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
+                        }

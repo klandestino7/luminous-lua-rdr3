@@ -42,34 +42,17 @@ Citizen.CreateThread(
 CreateThread(function()
     while true do
 		Wait(0)
+		ShutdownLoadingScreen()
 		Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
 		NetworkSetFriendlyFireOption(true)
-		SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')	
-		
-		local ped = PlayerPedId()
-        if IsPedOnMount(ped) or IsPedInAnyVehicle(ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-        else
-            SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
-        end                 
-        if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1,ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-        else
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-		end
-		
-		DisableControlAction(0, 0x580C4473, true) -- hud disable
-		DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
-
-		DisableControlAction(0, 0x41AC83D1, true) -- loot
-		DisableControlAction(0, 0x399C6619, true) -- loot 2
+		SetRelationshipBetweenGroups(5, `PLAYER`, `PLAYER`)
+		 DisableControlAction(0, 0x41AC83D1, true) -- loot
+		 DisableControlAction(0, 0x399C6619, true) -- loot 2
 		-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
 		-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
 		-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
-		DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
-	--	 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
-		DisableControlAction(0, 0x6E9734E8, true) 	-- DESATIVAR DESISTIR
-    	DisableControlAction(0, 0x295175BF, true)   -- DESATIVAR SOLTAR DA CORDA
+		 DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
+		 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
     end
 end)
 
@@ -94,8 +77,9 @@ function cAPI.teleport(x, y, z, spawn)
 end
 
 function cAPI.teleportSpawn(coordinate)
-	cAPI.CameraWithSpawnEffect(coordinate)
-	SetEntityCoords(PlayerPedId(), coordinate.x + 0.0001, coordinate.y + 0.0001, coordinate.z + 0.0001, 1, 0, 0, 1)
+	local coords = json.decode(coordinate)
+	cAPI.CameraWithSpawnEffect(coords)
+	SetEntityCoords(PlayerPedId(), coords.x + 0.0001, coords.y + 0.0001, coords.z + 0.0001, 1, 0, 0, 1)
 end
 
 -- return vx,vy,vz

@@ -39,8 +39,9 @@ end)
 
 function createCamera()
     DisplayHud(false)
-    -- cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA",1062.78,1597.82,373.29, 0.00,0.00,168.00,100.00, false, 0) -- CAMERA COORDS
-    -- PointCamAtCoord(cam, 1062.78,1597.82,373.29)
-    -- SetCamActive(cam, true)
-    -- RenderScriptCams(true, false, 1, true, true)
+    SetEntityCoords(PlayerPedId(), 1062.78,1597.82,373.29)
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA",1062.78,1597.82,373.29, 0.00,0.00,168.00,100.00, false, 0) -- CAMERA COORDS
+    PointCamAtCoord(cam, 1062.78,1597.82,373.29)
+    SetCamActive(cam, true)
+    RenderScriptCams(true, false, 1, true, true)
 end
