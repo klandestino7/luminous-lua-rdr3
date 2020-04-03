@@ -1,11 +1,15 @@
-function API.ItemData(id, name, weight, subTitle)
+function API.ItemData(id, name, type, weight, description)
     local self = {}
 
     self.id = id
     self.name = name
     self.weight = weight
-    self.subTitle = subTitle or "NULL"
-    -- self.worldModel = 'default_prop'
+    self.type = type
+    self.description = description or "DESCRIPTION"
+
+    -- self.triggerOnUse
+    -- self.triggerOnEnterHotbar
+    -- self.triggerOnLeaveHotbar
 
     self.getId = function()
         return self.id
@@ -15,9 +19,9 @@ function API.ItemData(id, name, weight, subTitle)
         return self.name
     end
 
-    self.getSubTitle = function(this)
-        return self.subTitle
-    end
+    -- self.getDescription = function(this)
+    --     return self.description
+    -- end
 
     self.getWeight = function()
         return self.weight
@@ -27,9 +31,25 @@ function API.ItemData(id, name, weight, subTitle)
         return 16
     end
 
+    self.getType = function()
+        return self.type
+    end
+
     self.getSlotType = function()
+        if self.type == "food" or self.type == "beverage" then
+            return "Food"
+        end
+
+        if self.type == "tonics" or self.type == "boost" then
+            return "Tonics"
+        end
+
+        if self.type == "weapon" or self.type == "ammo" then
+            return "Tools_Weapons"
+        end
 
         -- local slotTypes = {
+        --     "Recents",
         --     "Food",
         --     "Tonics",
         --     "Ingredients",
@@ -37,24 +57,21 @@ function API.ItemData(id, name, weight, subTitle)
         --     "Kit",
         --     "Valuables",
         --     "Documents"
+        --     "Hotbar",
         -- }
-
-        -- return slotTypes[math.random(1, #slotTypes)]
         return "Food"
     end
 
-    -- # Caso queria fazer um ItemDrop com um prop
-    --
-    -- self.getWorldModel = function()
-    --     return self.worldModel
-    -- end
-
-    self.onUse = function(this, v)
-        self.use = v
+    self.hasOnUseHandler = function()
+        return self.triggerOnUse ~= nil
     end
 
-    self.use = function(this, User)
-        return false
+    self.hasOnHotbarEnterHandler = function()
+        return self.triggerOnEnterHotbar ~= nil
+    end
+
+    self.hasOnHotbarLeaveHandler = function()
+        return self.triggerOnLeaveHotbar ~= nil
     end
 
     return self

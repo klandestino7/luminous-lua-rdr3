@@ -275,3 +275,7 @@ Its simulated from .selected :D
     background: url('images/border.png');
     background-size: contain;
 }
+
+.ab {
+    border: 1px solid green;
+}

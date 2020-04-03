@@ -24,10 +24,17 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primarySlots) {
+            var hotbar = false;
             $.each(event.data.primarySlots, function(slot, ItemSlot) {
                 primaryItemList[slot] = ItemSlot;
+                if (slot >= 129 && slot <= 132) {
+                    hotbar = true;
+                }
             });
             drawPrimary();
+            if (hotbar == true) {
+                drawHotbar();
+            }
         }
 
         if (!$('#secondary').is(":hidden")) {
@@ -246,8 +253,9 @@ $(document).ready(function() {
 
     });
 
-    $('.hotbat').droppable({
+    $('.hotbar .slot').droppable({
         tolerance: 'pointer',
+        hoverClass: 'ab',
         accept: function(e) {
             if (e.parent().parent().attr('id') === 'primary-inventory') {
                 return true;
@@ -258,29 +266,39 @@ $(document).ready(function() {
             $(ui.helper).remove();
             // let valueCount = $('.count').value;
             let valueCount = 1;
-            $.post('http://frp_inventory/sendItemSlotToHotbar', JSON.stringify({
-                slot: slot,
+            // $.post('http://frp_inventory/sendItemSlotToHotbar', JSON.stringify({
+            //     slot: slot,
+            // }));
+
+            let selfSlot = $(this).attr('id');
+            let draggableSlot = $(ui.draggable).attr('id');
+            let itemAmount = 1;
+
+            $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
+                slotFrom: draggableSlot,
+                slotTo: selfSlot,
+                itemAmount: itemAmount,
             }));
         },
     });
 
-    $('body').droppable({
-        tolerance: 'pointer',
-        accept: function(e) {
-            if (e.parent().parent().attr('id') === 'primary-inventory') {
-                return true;
-            }
-        },
-        drop: function(event, ui) {
-            let slot = $(ui.draggable).attr('id');
-            console.log('droppin');
-            $(ui.helper).remove();
-            let valueCount = 1;
-            // $.post('http://frp_inventory/dropItem', JSON.stringify({
-            //     slot: slot,
-            // }));
-        },
-    });
+    // $('body').droppable({
+    //     tolerance: 'pointer',
+    //     accept: function(e) {
+    //         if (e.parent().parent().attr('id') === 'primary-inventory') {
+    //             return true;
+    //         }
+    //     },
+    //     drop: function(event, ui) {
+    //         let slot = $(ui.draggable).attr('id');
+    //         console.log('droppin');
+    //         $(ui.helper).remove();
+    //         let valueCount = 1;
+    //         // $.post('http://frp_inventory/dropItem', JSON.stringify({
+    //         //     slot: slot,
+    //         // }));
+    //     },
+    // });
 
     $('#primary').on('mouseover', function() {
         $('.focus').removeClass('focus');
@@ -293,44 +311,71 @@ $(document).ready(function() {
     })
 });
 
+
+function elementAsDraggable(element, a, b, c) {
+    element.attr('itemId', a);
+    element.attr('title', b);
+    element.attr('description', c);
+    element.draggable({
+        appendTo: 'body',
+        scroll: false,
+        revert: true,
+        revertDuration: 200,
+        helper: 'clone',
+        zIndex: 99999,
+        start: function(event, ui) {
+            $(this).draggable('instance').offset.click = {
+                left: Math.floor(ui.helper.width() / 2),
+                top: Math.floor(ui.helper.height() / 2)
+            };
+            ui.helper.css('position', 'absolute');
+            select($(this));
+        },
+        stop: function(event, ui) {
+            unSelect($(this));
+        },
+    });
+}
+
+function drawHotbar() {
+    for (var slot = 129; slot < 133; slot++) {
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] > 0) {
+            var ItemSlot = primaryItemList[slot];
+            $(`#primary .hotbar #${slot}`).html("");
+            $(`#primary .hotbar #${slot}`).append(`
+                    <img src="images/items/${ItemSlot[0]}.png">
+                    <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+            `);
+            var element = $(`#primary .hotbar #${slot}`);
+            elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
+        } else {
+            if (primaryItemList[slot] !== undefined) {
+                delete primaryItemList[slot];
+            }
+
+            $(`#primary .hotbar #${slot}`).html("");
+        }
+    }
+}
+
 function drawPrimary() {
 
     $(`#primary-inventory .slot-container`).html('');
     for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
         if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] > 0) {
             var ItemSlot = primaryItemList[slot];
+
             $(`#primary-inventory .slot-container`).append(`
-                <div class="slot" id="${slot}" onclick="select(this)">
-                    <img src="images/items/${ItemSlot[0]}.png">
-                    <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
-                </div>
-            `)
+                    <div class="slot" id="${slot}" onclick="select(this)">
+                        <img src="images/items/${ItemSlot[0]}.png">
+                        <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+                    </div>
+                `);
+
+            var element = $(`#primary-inventory .slot-container #${slot}`);
 
             if (primaryCategoriesIndex != 1) {
-                var element = $(`#primary-inventory .slot-container #${slot}`);
-
-                element.attr('itemId', ItemSlot[0]);
-                element.attr('title', ItemSlot[3]);
-                element.attr('description', ItemSlot[4]);
-                element.draggable({
-                    appendTo: 'body',
-                    scroll: false,
-                    revert: true,
-                    revertDuration: 200,
-                    helper: 'clone',
-                    zIndex: 99999,
-                    start: function(event, ui) {
-                        $(this).draggable('instance').offset.click = {
-                            left: Math.floor(ui.helper.width() / 2),
-                            top: Math.floor(ui.helper.height() / 2)
-                        };
-                        ui.helper.css('position', 'absolute');
-                        select($(this));
-                    },
-                    stop: function(event, ui) {
-                        unSelect($(this));
-                    },
-                });
+                elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
             }
         } else {
 
@@ -348,6 +393,7 @@ function drawPrimary() {
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
             tolerance: 'pointer',
+            hoverClass: 'ab',
             drop: function(event, ui) {
                 $(ui.helper).remove();
                 // let valueCount = $('.count').value;
@@ -366,7 +412,8 @@ function drawPrimary() {
                     itemAmount = 1
                 }
 
-                if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory') {
+                console.log($(ui.draggable).parent().hasClass('hotbar'));
+                if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory' || $(ui.draggable).parent().hasClass('hotbar')) {
                     $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
                         slotFrom: draggableSlot,
                         slotTo: selfSlot,

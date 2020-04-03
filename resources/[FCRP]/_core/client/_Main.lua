@@ -77,8 +77,8 @@ function cAPI.teleport(x, y, z, spawn)
 end
 
 function cAPI.teleportSpawn(coordinate)
-	-- local coords = json.decode(coordinate)
-	local coords = {x = 0, y = 0, z =0}
+	local coords = json.decode(coordinate)
+	-- local coords = {x = 0, y = 0, z =0}
 	cAPI.CameraWithSpawnEffect(coords)
 	SetEntityCoords(PlayerPedId(), coords.x + 0.0001, coords.y + 0.0001, coords.z + 0.0001, 1, 0, 0, 1)
 end
@@ -339,6 +339,14 @@ function cAPI.getWeapons()
 
 	return weapons
 end
+
+-- function cAPI.removeWeapon(weapon)
+-- 	local weapons = cAPI.getWeapons()
+-- 	if weapons[weapon] then
+-- 		weapons[weapon] = nil
+-- 	end
+-- 	cAPI.replaceWeapons(weapons)
+-- end
 
 function cAPI.replaceWeapons(weapons)
 	local old_weapons = cAPI.getWeapons()

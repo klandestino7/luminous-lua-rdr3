@@ -13,10 +13,10 @@ AddEventHandler(
         User:viewInventory()
         -- local primaryInventory = User:getPrimaryInventoryViewing()
         -- local secondaryInventory = User:getSecondaryInventoryViewing()
-                
-        -- Primary = primaryInventory:getWeight()        
+
+        -- Primary = primaryInventory:getWeight()
         -- Capacity = primaryInventory:getCapacity()
-    
+
         -- TriggerClientEvent('FCRP:INVENTORY:weight', _source, Primary, Capacity)
     end
 )
@@ -157,7 +157,18 @@ AddEventHandler(
             return
         end
 
-        primaryInventory:moveToSlot(tonumber(slotFrom), tonumber(slotTo), tonumber(itemAmount))
+        slotFrom = tonumber(slotFrom)
+        slotTo = tonumber(slotTo)
+        itemAmount = tonumber(itemAmount)
+
+        if (slotTo >= 129 and slotTo <= 132) or (slotFrom >= 129 and slotFrom <= 132) then
+            if (slotTo >= 129 and slotTo <= 132) and (slotFrom >= 129 and slotFrom <= 132) then
+                return
+            end
+            primaryInventory:moveToFromSlotHotbar(User, slotFrom, slotTo, itemAmount)
+        else
+            primaryInventory:moveToSlot(slotFrom, slotTo, itemAmount)
+        end
     end
 )
 

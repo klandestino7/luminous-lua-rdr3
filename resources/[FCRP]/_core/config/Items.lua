@@ -1,330 +1,330 @@
 ItemList = {
-    ['weapon_melee_lantern_electric'] = {
+    ['melee_lantern_electric'] = {
         type = 'weapon',
         name = 'Laterna Elétrica',
         weight = 1.0
     },
-    ['weapon_melee_torch'] = {
+    ['melee_torch'] = {
         type = 'weapon',
         name = 'Tocha',
         weight = 1.0
     },
-    ['weapon_melee_broken_sword'] = {
+    ['melee_broken_sword'] = {
         type = 'weapon',
         name = 'Espada Quebrada',
         weight = 1.0
     },
-    ['weapon_fishingrod'] = {
+    ['fishingrod'] = {
         type = 'weapon',
         name = 'Vara de Pescar',
         weight = 1.0
     },
-    ['weapon_melee_hatchet'] = {
+    ['melee_hatchet'] = {
         type = 'weapon',
         name = 'Machado',
         weight = 1.0
     },
-    ['weapon_melee_cleaver'] = {
+    ['melee_cleaver'] = {
         type = 'weapon',
         name = 'Machado Cutelo',
         weight = 1.5
     },
-    ['weapon_melee_ancient_hatchet'] = {
+    ['melee_ancient_hatchet'] = {
         type = 'weapon',
         name = 'Machado Raro',
         weight = 1.0
     },
-    ['weapon_melee_hatchet_viking'] = {
+    ['melee_hatchet_viking'] = {
         type = 'weapon',
         name = 'Machado Viking',
         weight = 1.2
     },
-    ['weapon_melee_hatchet_hewing'] = {
+    ['melee_hatchet_hewing'] = {
         type = 'weapon',
         name = 'Machado Hewing',
         weight = 1.2
     },
-    ['weapon_melee_hatchet_double_bit'] = {
+    ['melee_hatchet_double_bit'] = {
         type = 'weapon',
         name = 'Machado Duplo',
         weight = 1.9
     },
-    ['weapon_melee_hatchet_double_bit_rusted'] = {
+    ['melee_hatchet_double_bit_rusted'] = {
         type = 'weapon',
         name = 'Machado Duplo Velho',
         weight = 2.0
     },
-    ['weapon_melee_hatchet_hunter'] = {
+    ['melee_hatchet_hunter'] = {
         type = 'weapon',
         name = 'Machado de Caçador',
         weight = 1.5
     },
-    ['weapon_melee_hatchet_hunter_rusted'] = {
+    ['melee_hatchet_hunter_rusted'] = {
         type = 'weapon',
         name = 'Machado de Caçador Velho',
         weight = 1.5
     },
-    ['weapon_melee_knife_jawbone'] = {
+    ['melee_knife_jawbone'] = {
         type = 'weapon',
         name = 'Faca Jawbone',
         weight = 0.5
     },
-    ['weapon_melee_knife_hunter'] = {
+    ['melee_knife_hunter'] = {
         type = 'weapon',
         name = 'Faca de Caçador',
         weight = 0.5
     },
-    ['weapon_melee_knife_miner'] = {
+    ['melee_knife_miner'] = {
         type = 'weapon',
         name = 'Faca Minerio',
         weight = 1.0
     },
-    ['weapon_melee_knife_civil_war'] = {
+    ['melee_knife_civil_war'] = {
         type = 'weapon',
         name = 'Faca de Guerra',
         weight = 1.0
     },
-    ['weapon_melee_knife_vampire'] = {
+    ['melee_knife_vampire'] = {
         type = 'weapon',
         name = 'Faca de Vampiro',
         weight = 1.5
     },
-    ['weapon_melee_machete'] = {
+    ['melee_machete'] = {
         type = 'weapon',
         name = 'Pexeira',
         weight = 1.0
     },
-    ['weapon_thrown_bolas'] = {
+    ['thrown_bolas'] = {
         type = 'weapon',
         name = 'Laço de Bolas',
         weight = 2.5
     },
-    ['weapon_bolas'] = {
+    ['bolas'] = {
         type = 'weapon',
         name = 'Laço de Bolas',
         weight = 2.5
     },
-    ['weapon_thrown_tomahawk'] = {
+    ['thrown_tomahawk'] = {
         type = 'weapon',
         name = 'Machado Craftado',
         weight = 1.0
     },
-    ['weapon_thrown_tomahawk_ancient'] = {
+    ['thrown_tomahawk_ancient'] = {
         type = 'weapon',
         name = 'Machado Craftado Velho',
         weight = 1.0
     },    
-    ['weapon_thrown_throwing_knives'] = {
+    ['thrown_throwing_knives'] = {
         type = 'weapon',
         name = 'Faca Arremeçavel',
         weight = 0.6
     },
-    ['weapon_melee_knife_john'] = {
+    ['melee_knife_john'] = {
         type = 'weapon',
         name = 'Faca John',
         weight = 1.0
     },
-    ['weapon_melee_knife'] = {
+    ['melee_knife'] = {
         type = 'weapon',
         name = 'Faca de Caça',
         weight = 1.0
     },
-    ['weapon_melee_knife_bear'] = {
+    ['melee_knife_bear'] = {
         type = 'weapon',
         name = 'Faca de Galhada',
         weight = 1.0
     },
-    ['weapon_lasso'] = {
+    ['lasso'] = {
         type = 'weapon',
         name = 'Laço',
         weight = 0.7
     },
-    ['weapon_pistol_mauser'] = {
+    ['pistol_mauser'] = {
         type = 'weapon',
         name = 'Pistola Mauser',
         weight = 1.2
     },  
-    ['weapon_pistol_mauser_drunk'] = {
+    ['pistol_mauser_drunk'] = {
         type = 'weapon',
         name = 'Pistola Mauser Midnight',
         weight = 1.4
     },          
-    ['weapon_pistol_m1899'] = {
+    ['pistol_m1899'] = {
         type = 'weapon',
         name = 'Pistola M1899',
         weight = 1.2
     },    
-    ['weapon_pistol_semiauto'] = {
+    ['pistol_semiauto'] = {
         type = 'weapon',
         name = 'Pistola Semi-auto',
         weight = 1.2
     },
-    ['weapon_pistol_volcanic'] = {
+    ['pistol_volcanic'] = {
         type = 'weapon',
         name = 'Pistola Volcanic',
         weight = 1.2
     },
-    ['weapon_repeater_carbine'] = {
+    ['repeater_carbine'] = {
         type = 'weapon',
         name = 'Carabina de Repetição',
         weight = 2.0
     },
-    ['weapon_repeater_henry'] = {
+    ['repeater_henry'] = {
         type = 'weapon',
         name = 'Litchfield de Repetição',
         weight = 2.0
     },
-    ['weapon_repeater_evans'] = {
+    ['repeater_evans'] = {
         type = 'weapon',
         name = 'Evans de Repetição',
         weight = 2.0
     },
-    ['weapon_repeater_winchester'] = {
+    ['repeater_winchester'] = {
         type = 'weapon',
         name = 'Winchester de Repetição',
         weight = 2.0
     },
-    ['weapon_rifle_varmint'] = {
+    ['rifle_varmint'] = {
         type = 'weapon',
         name = 'Rifle Anti-pragas',
         weight = 1.5
     },
-    ['weapon_shotgun_repeating'] = {
+    ['shotgun_repeating'] = {
         type = 'weapon',
         name = 'Winchester de Repetição',
         weight = 2.0
     },
-    ['weapon_revolver_cattleman'] = {
+    ['revolver_cattleman'] = {
         type = 'weapon',
         name = 'Revolver de Vaqueiro',
         weight = 1.2
     },
-    ['weapon_revolver_cattleman_john'] = {
+    ['revolver_cattleman_john'] = {
         type = 'weapon',
         name = 'Revolver John',
         weight = 1.2
     },
-    ['weapon_revolver_cattleman_mexican'] = {
+    ['revolver_cattleman_mexican'] = {
         type = 'weapon',
         name = 'Revolver Mexicano',
         weight = 1.2
     },
-    ['weapon_revolver_cattleman_pig'] = {
+    ['revolver_cattleman_pig'] = {
         type = 'weapon',
         name = 'Revolver Granger',
         weight = 1.2
     },    
-    ['weapon_revolver_doubleaction'] = {
+    ['revolver_doubleaction'] = {
         type = 'weapon',
         name = 'Revolver Ação dupla',
         weight = 1.2
     },
-    ['weapon_revolver_doubleaction_exotic'] = {
+    ['revolver_doubleaction_exotic'] = {
         type = 'weapon',
         name = 'Revolver Ação Dupla Raro',
         weight = 1.2
     },
-    ['weapon_revolver_doubleaction_micah'] = {
+    ['revolver_doubleaction_micah'] = {
         type = 'weapon',
         name = 'Revolver Ação Dupla Micah',
         weight = 1.2
     },
-    ['weapon_revolver_lemat'] = {
+    ['revolver_lemat'] = {
         type = 'weapon',
         name = 'Revolver Lemat',
         weight = 1.2
     },
-    ['WEAPON_REVOLVER_NAVY'] = {
+    ['REVOLVER_NAVY'] = {
         type = 'weapon',
         name = 'Revolver Navy',
         weight = 1.2
     },
-    ['weapon_revolver_schofield'] = {
+    ['revolver_schofield'] = {
         type = 'weapon',
         name = 'Revolver Schofield',
         weight = 1.2
     },    
-    ['weapon_revolver_schofield_golden'] = {
+    ['revolver_schofield_golden'] = {
         type = 'weapon',
         name = 'Revolver Schofield Gold',
         weight = 2.0
     },
-    ['weapon_revolver_schofield_calloway'] = {
+    ['revolver_schofield_calloway'] = {
         type = 'weapon',
         name = 'Revolver Schofield Calloway',
         weight = 2.0
     },    
-    ['weapon_rifle_boltaction'] = {
+    ['rifle_boltaction'] = {
         type = 'weapon',
         name = 'Rifle de Ferrolho',
         weight = 2.5
     },    
-    ['weapon_sniperrifle_carcano'] = {
+    ['sniperrifle_carcano'] = {
         type = 'weapon',
         name = 'Rifle Carcano',
         weight = 4.5
     },
-    ['weapon_sniperrifle_rollingblock'] = {
+    ['sniperrifle_rollingblock'] = {
         type = 'weapon',
         name = 'Rifle Rolling Block',
         weight = 4.5
     },
-    ['weapon_sniperrifle_rollingblock_exotic'] = {
+    ['sniperrifle_rollingblock_exotic'] = {
         type = 'weapon',
         name = 'Rifle Rolling Block Raro',
         weight = 4.5
     },
-    ['weapon_rifle_springfield'] = {
+    ['rifle_springfield'] = {
         type = 'weapon',
         name = 'Rifle Springfield',
         weight = 2.5
     },
-    ['weapon_shotgun_doublebarrel'] = {
+    ['shotgun_doublebarrel'] = {
         type = 'weapon',
         name = 'Escopeta de Cano duplo',
         weight = 2.2
     },
-    ['weapon_shotgun_doublebarrel'] = {
+    ['shotgun_doublebarrel'] = {
         type = 'weapon',
         name = 'Escopeta de Cano duplo Raro',
         weight = 2.5
     },
-    ['weapon_shotgun_double_pump'] = {
+    ['shotgun_double_pump'] = {
         type = 'weapon',
         name = 'Escopeta de Cano duplo Pump',
         weight = 2.2
     },
-    ['weapon_shotgun_pump'] = {
+    ['shotgun_pump'] = {
         type = 'weapon',
         name = 'Escopeta Pump-Action',
         weight = 2.2
     },
-    ['weapon_shotgun_repeating'] = {
+    ['shotgun_repeating'] = {
         type = 'weapon',
         name = 'Escopeta Repetidora',
         weight = 2.2
     },
-    ['weapon_shotgun_sawedoff'] = {
+    ['shotgun_sawedoff'] = {
         type = 'weapon',
         name = 'Escopeta Cano serrado',
         weight = 2.2
     },
-    ['weapon_shotgun_semiauto'] = {
+    ['shotgun_semiauto'] = {
         type = 'weapon',
         name = 'Escopeta Semi Auto',
         weight = 2.2
     },
-    ['weapon_bow'] = {
+    ['bow'] = {
         type = 'weapon',
         name = 'Arco',
         weight = 1.0
     },
-    ['weapon_thrown_dynamite'] = {
+    ['thrown_dynamite'] = {
         type = 'weapon',
         name = 'Dinamite',
         weight = 0.3
     },
-    ['weapon_thrown_molotov'] = {
+    ['thrown_molotov'] = {
         type = 'weapon',
         name = 'Molotov',
         weight = 0.3
@@ -409,93 +409,93 @@ ItemList = {
         weight = 0.2,
         ThirstVar = 1.0
     },
-    ['generic_metalbruto'] = {
-        type = 'normal',
+    ['metalbruto'] = {
+        type = 'generic',
         name = 'Minério de Metal',
         weight = 4.2
     },
-    ['generic_pedra'] = {
-        type = 'normal',
+    ['pedra'] = {
+        type = 'generic',
         name = 'Pedra Bruta',
         weight = 3.5
     },
-    ['generic_pedralavada'] = {
-        type = 'normal',
+    ['pedralavada'] = {
+        type = 'generic',
         name = 'Pedra Lavada',
         weight = 0.3
     },
-    ['generic_ourobruto'] = {
-        type = 'normal',
+    ['ourobruto'] = {
+        type = 'generic',
         name = 'Ouro Bruto',
         weight = 5.0
     },
-    ['generic_cobrebruto'] = {
-        type = 'normal',
+    ['cobrebruto'] = {
+        type = 'generic',
         name = 'Minério de Cobre',
         weight = 1.0
     },
-    ['generic_carvaobruto'] = {
-        type = 'normal',
+    ['carvaobruto'] = {
+        type = 'generic',
         name = 'Minério de Carvão',
         weight = 1.0
     },
-    ['generic_carvaorefi'] = {
-        type = 'normal',
+    ['carvaorefi'] = {
+        type = 'generic',
         name = 'Carvão Refinado',
         weight = 0.3
     },
-    ['generic_provision_coal'] = {
-        type = 'normal',
+    ['provision_coal'] = {
+        type = 'generic',
         name = 'Carvão Refinado',
         weight = 1.0
     },
-    ['generic_provision_rf_wood_cobalt'] = {
-        type = 'normal',
+    ['provision_rf_wood_cobalt'] = {
+        type = 'generic',
         name = 'Tora de Madeira',
         weight = 1.0
     },
-    ['generic_provision_rf_wood_minor'] = {
-        type = 'normal',
+    ['provision_rf_wood_minor'] = {
+        type = 'generic',
         name = 'Tábua',
         weight = 1.0
     },
-    ['generic_provision_rf_wood_stick'] = {
-        type = 'normal',
+    ['provision_rf_wood_stick'] = {
+        type = 'generic',
         name = 'Estaca de Madeira',
         weight = 1.0
     },    
-    ['generic_provision_goldbar_small'] = {
-        type = 'normal',
+    ['provision_goldbar_small'] = {
+        type = 'generic',
         name = 'Barra de Metal',
         weight = 3.5
     },
-    ['generic_provision_disco_ammolite'] = {
-        type = 'normal',
+    ['provision_disco_ammolite'] = {
+        type = 'generic',
         name = 'Barra de Cobre',
         weight = 1.5
     },
-    ['generic_potassio'] = {
-        type = 'normal',
+    ['potassio'] = {
+        type = 'generic',
         name = 'Nitrato de Potássio',
         weight = 1.0
     },
-    ['generic_enxofre'] = {
-        type = 'normal',
+    ['enxofre'] = {
+        type = 'generic',
         name = 'Enxofre',
         weight = 2.0
     },
-    ['generic_clothing_outfit_mp_ned_kelly'] = {
-        type = 'normal',
+    ['clothing_outfit_mp_ned_kelly'] = {
+        type = 'generic',
         name = 'Pano',
         weight = 1.0
     },
-    ['generic_corda'] = {
-        type = 'normal',
+    ['corda'] = {
+        type = 'generic',
         name = 'Corda',
         weight = 2.0
     },
     ['folder_kit_keychain'] = {
-        type = 'normal',
+        type = 'generic',
         name = 'Chave Misteriosa',
         weight = 0.5
     },
@@ -680,32 +680,32 @@ ItemList = {
         name = 'Isca de Peixe',
         weight = 0.1
     },
-    ['generic_tobacco'] = {
-        type = 'normal',
+    ['tobacco'] = {
+        type = 'generic',
         name = 'Tabaco',
         weight = 0.5
     },
-    ['generic_corn'] = {
-        type = 'normal',
+    ['corn'] = {
+        type = 'generic',
         name = 'Milho',
         weight = 0.5
     },
-    ['generic_picareta'] = {
-        type = 'normal',
+    ['picareta'] = {
+        type = 'generic',
         name = 'Picareta',
         weight = 1.5
     },
-    ['generic_potassio'] = {
-        type = 'normal',
+    ['potassio'] = {
+        type = 'generic',
         name = 'Potassio',
         weight = 0.7
     },
-    ['generic_enxofre'] = {
-        type = 'normal',
+    ['enxofre'] = {
+        type = 'generic',
         name = 'Enxofre',
         weight = 0.5
     },
-    ['generic_sugar'] = {
+    ['sugar'] = {
         type = 'usable',
         name = 'Açucar',
         weight = 0.5
@@ -753,18 +753,18 @@ ItemList = {
         weight = 5.0,
         var = 100
     },
-    ['generic_money'] = {
-        type = 'normal',
+    ['money'] = {
+        type = 'generic',
         name = 'Dólar',
         weight = 0.01
     },
-    ['generic_blackmoney'] = {
-        type = 'normal',
+    ['blackmoney'] = {
+        type = 'generic',
         name = 'Dólar Sujo',
         weight = 0.01
     },
-    ['generic_gold'] = {
-        type = 'normal',
+    ['gold'] = {
+        type = 'generic',
         name = 'Barra de Ouro',
         weight = 0.7
     }

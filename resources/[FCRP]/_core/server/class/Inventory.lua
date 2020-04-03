@@ -77,30 +77,22 @@ function API.Inventory(id, capacity, items)
     end
 
     self.getFreeSlotOfType = function(this, slotType)
-        local slotIndex = slotTypeToSlotIndex(slotType)
-
-        return self:getFreeSlotOfTypeIndex(index)
+        return self:getListFreeSlotsOfType(slotType)[1] or -1
     end
 
     self.getListFreeSlotsOfType = function(this, slotType)
-        local slotIndex = slotTypeToSlotIndex(slotType)
-
-        return self:getListFreeSlotsOfTypeIndex(slotIndex)
-    end
-
-    self.getFreeSlotOfTypeIndex = function(this, slotTypeIndex)
-        return self:getListFreeSlotsOfTypeIndex(slotTypeIndex)[1] or -1
-    end
-
-    self.getListFreeSlotsOfTypeIndex = function(this, slotTypeIndex)
-        local slot_start = (16 * (slotTypeIndex + 1)) - (16 - 1)
-        local slot_end = (16 * (slotTypeIndex + 1))
+        local slotTypeIndex = slotTypeToSlotIndex(slotType)
 
         local freeSlots = {}
 
-        for i = slot_start, slot_end do
-            if self.slots[i] == nil then
-                table.insert(freeSlots, i)
+        if slotTypeIndex ~= -1 then
+            local slot_start = (16 * (slotTypeIndex)) - (16 - 1)
+            local slot_end = (16 * (slotTypeIndex))
+
+            for i = slot_start, slot_end do
+                if self.slots[i] == nil and (i < 129 or i > 132) then
+                    table.insert(freeSlots, i)
+                end
             end
         end
 
@@ -114,8 +106,8 @@ function API.Inventory(id, capacity, items)
     self.getFittableSlots = function(this, itemId, itemAmount)
         local ItemData = API.getItemDataFromId(itemId)
 
-        local stackSize = ItemData.getStackSize()
-        local slotType = ItemData.getSlotType()
+        local stackSize = ItemData:getStackSize()
+        local slotType = ItemData:getSlotType()
 
         local fittableSlots = {}
 
@@ -125,23 +117,25 @@ function API.Inventory(id, capacity, items)
         local listItemSlotWithId = self:getListItemSlotsWithId(itemId)
 
         for _, ItemSlot in pairs(listItemSlotWithId) do
-            local slot_itemAmount = ItemSlot:getItemAmount()
-            if slot_itemAmount < stackSize then
-                local maxFittable = (stackSize - slot_itemAmount)
+            if (_ < 129 or _ > 132) then -- Not in hotbar
+                local slot_itemAmount = ItemSlot:getItemAmount()
+                if slot_itemAmount < stackSize then
+                    local maxFittable = (stackSize - slot_itemAmount)
 
-                if maxFittable > 0 then
-                    local toFit = 0
-                    if amountLeft > maxFittable then
-                        toFit = maxFittable
-                    else
-                        toFit = amountLeft
-                        amountLeft = 0
-                    end
+                    if maxFittable > 0 then
+                        local toFit = 0
+                        if amountLeft > maxFittable then
+                            toFit = maxFittable
+                        else
+                            toFit = amountLeft
+                            amountLeft = 0
+                        end
 
-                    fittableSlots[ItemSlot:getSlot()] = toFit
+                        fittableSlots[ItemSlot:getSlot()] = toFit
 
-                    if amountLeft <= 0 then
-                        break
+                        if amountLeft <= 0 then
+                            break
+                        end
                     end
                 end
             end
@@ -210,7 +204,6 @@ function API.Inventory(id, capacity, items)
                 -- end
                 -- self.slots[1] = self.slots[slot]
                 -- syncSlotQueue[1] = self.slots[slot]
-
             end
         else
             if self.slots[slot] == nil then
@@ -369,6 +362,89 @@ function API.Inventory(id, capacity, items)
         return false
     end
 
+    self.moveToFromSlotHotbar = function(this, User, slotFrom, slotTo, amount)
+        print("moveToSlotHorbar")
+        local slotA = self.slots[slotFrom]
+        local slotB = self.slots[slotTo]
+
+        local itemDaA = API.getItemDataFromId(slotA:getItemId())
+
+        if slotB == nil then
+            print("type: slot b nil", itemDaA:getType())
+            if itemDaA:getType() == "weapon" then
+                print("is weapon")
+                if slotTo >= 129 and slotTo <= 132 then
+                    print("slotTo is to hotbar")
+                    if itemDaA:hasOnHotbarEnterHandler() then
+                        print("has enter handler")
+                        if not itemDaA:triggerOnEnterHotbar(User, amount) then
+                            print("not triggered handler")
+                            return false
+                        end
+                    end
+                else
+                    print("slotTo not to hotbar")
+                    if itemDaA:hasOnHotbarLeaveHandler() then
+                        print("has leave handler triggered")
+                        itemDaA:triggerOnLeaveHotbar(User)
+                    end
+                end
+
+                print("added removed")
+                self:addItem(slotTo, slotA:getItemId(), 1)
+                self:removeItem(slotFrom, slotA:getItemId(), 1)
+                return true
+            end
+        else
+            print("slotB not nil")
+            local itemDaB = API.getItemDataFromId(slotB:getItemId())
+
+            -- Tirando item da hotbar
+            -- Subtituir posição de item com outro
+            if slotFrom >= 129 and slotFrom <= 132 then
+                if itemDaB.getType() == "weapon" then
+                    local amountA = slotA:getItemAmount()
+                    local amountB = slotB:getItemAmount()
+
+                    self:removeItem(slotFrom, slotA:getItemId(), slotA:getItemAmount())
+                    self:removeItem(slotTo, slotB:getItemId(), slotB:getItemAmount())
+
+                    itemDaA:triggerOnLeaveHotbar(User) -- From vai sair da hotbar
+                    itemDaB:triggerOnEnterHotbar(User, amount) -- To vai entrar na hotbar
+
+                    self:addItem(slotTo, slotA:getItemId(), amountA)
+                    self:addItem(slotFrom, slotB:getItemId(), amountB)
+                    return true
+                end
+            else
+                if itemDaA:getType() == "ammo" then
+                    if itemDaA:triggerOnEnterHotbar(User, amount) then
+                        self:removeItem(slotFrom, slotA:getItemId(), amount)
+                        return true
+                    end
+                    return false
+                end
+
+                if itemDaA.getType() == "weapon" then
+                    local amountA = slotA:getItemAmount()
+                    local amountB = slotB:getItemAmount()
+
+                    self:removeItem(slotFrom, slotA:getItemId(), slotA:getItemAmount())
+                    self:removeItem(slotTo, slotB:getItemId(), slotB:getItemAmount())
+
+                    if itemDaB:triggerOnLeaveHotbar(User) then -- From vai sair da hotbar
+                        itemDaA:triggerOnEnterHotbar(User, amount)
+                    end -- To vai entrar na hotbar
+
+                    self:addItem(slotTo, slotA:getItemId(), amountA)
+                    self:addItem(slotFrom, slotB:getItemId(), amountB)
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
     self.getItemAmount = function(this, itemId)
         local amount = 0
 
@@ -424,7 +500,7 @@ end
 
 function slotTypeToSlotIndex(slotType)
     local slotTypes = {
-        -- "Recents",
+        "Recents",
         -- 1 2 3 4
         -- 4 5 6 7
         -- 9 10 11 12
@@ -459,13 +535,13 @@ function slotTypeToSlotIndex(slotType)
         -- 101 102 103 104
         -- 105 106 107 108
         -- 109 110 110 112
-        "Documents"
+        "Documents",
         -- 113 114 115 116
         -- 117 118 119 120
         -- 121 122 123 124
         -- 125 126 127 128
         --
-        -- "Hotbar"
+        "Hotbar"
         -- 129 130 131 132
     }
 

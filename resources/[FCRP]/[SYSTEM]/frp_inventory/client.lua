@@ -26,7 +26,6 @@ AddEventHandler(
         slots = parseItemTable(slots)
 
         SetNuiFocus(true, true)
-        print(Weight, Capacity)
         SendNUIMessage(
             {
                 type = "clearPrimary",
@@ -59,7 +58,6 @@ RegisterNetEvent("FCRP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
     "FCRP:INVENTORY:PrimarySyncSlots",
     function(slots)
-        print('PrimarySyncSlots')
         slots = parseItemTable(slots)
 
         SendNUIMessage(
@@ -195,9 +193,8 @@ Citizen.CreateThread(
 )
 
 function parseItemTable(table)
-    print('Parsing table')
     for _, values in pairs(table) do
-        print(_)
+        print(_, values[1])
         values[3] = ItemList[values[1]].stackSize or 16
         values[4] = ItemList[values[1]].name
         values[5] = ItemList[values[1]].description or "Descrição"
