@@ -325,20 +325,19 @@ function computeSlots(table)
         values[4] = ItemList[values[1]].name
         values[5] = ItemList[values[1]].description or "Descrição"
         if ItemList[values[1]].type ~= "weapon" then
-            values[3] = ItemList[values[1]].stackSize or 16
+            values[3] = ItemList[values[1]].stack or 1
         else
-            local _temp3 = values[3]
+
             values[3] = values[2]
-            if values[2] == nil then
-                values[2] = 0
-            else
-                values[3] = _temp3
-            end
+            values[2] = 0
 
             if _ >= 129 and _ <= 132 then
                 whereWeaponIsAtSlot["weapon_" .. values[1]] = _
             end
         end
+
+        print(_, values[1], values[2], values[3])
+
     end
 
     return table

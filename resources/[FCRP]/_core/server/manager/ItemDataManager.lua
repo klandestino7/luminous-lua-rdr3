@@ -18,7 +18,7 @@ end
 Citizen.CreateThread(
     function()
         for id, values in pairs(ItemList) do
-            local ItemData = API.ItemData(id, values.name, values.type, values.weight or 0.1, values.description)
+            local ItemData = API.ItemData(id, values.name, values.type, values.weight or 0.1, values.description, values.stack)
 
             if values.type == "food" then
                 ItemData.triggerOnUse = function(this, User, amount)

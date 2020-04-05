@@ -757,18 +757,18 @@ ItemList = {
         type = 'generic',
         name = 'Dólar',
         weight = 0.01,
-        stackSize = -1,
+        stack = -1,
     },
     ['blackmoney'] = {
         type = 'generic',
         name = 'Dólar Sujo',
         weight = 0.01,
-        stackSize = -1,
+        stack = -1,
     },
     ['gold'] = {
         type = 'generic',
         name = 'Barra de Ouro',
         weight = 0.7,
-        stackSize = -1,
+        stack = -1,
     }
 }

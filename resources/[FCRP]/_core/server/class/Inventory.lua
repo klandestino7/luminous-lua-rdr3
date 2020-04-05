@@ -8,19 +8,19 @@ function API.Inventory(id, capacity, items)
 
     self.slots = {}
 
-    local recents = {}
+    -- local recents = {}
     if items ~= nil then
         for slot, values in pairs(items) do
-            if type(values) == "table" then
+            -- if type(values) == "table" then
                 self.slots[tonumber(slot)] = API.ItemSlot(tonumber(slot), values[1], tonumber(values[2]))
-            else
-                recents[slot] = values
-            end
+            -- else
+            --     recents[slot] = values
+            -- end
         end
 
-        for k, v in pairs(recents) do
-            self.slots[k] = self.slots[v]
-        end
+        -- for k, v in pairs(recents) do
+        --     self.slots[k] = self.slots[v]
+        -- end
     end
 
     self.getId = function()
@@ -115,7 +115,7 @@ function API.Inventory(id, capacity, items)
     self.getFittableSlots = function(this, itemId, itemAmount)
         local ItemData = API.getItemDataFromId(itemId)
 
-        local stackSize = ItemData:getStackSize() or 1
+        local stackSize = ItemData:getStackSize()
         local slotType = ItemData:getSlotType()
 
         local fittableSlots = {}
@@ -128,7 +128,8 @@ function API.Inventory(id, capacity, items)
         for _, ItemSlot in pairs(listItemSlotWithId) do
             if (_ < 129 or _ > 132) then -- Not in hotbar
                 local slot_itemAmount = ItemSlot:getItemAmount()
-                if stackSize == -1 or slot_itemAmount < stackSize then
+                -- if stackSize == -1 or slot_itemAmount < stackSize then
+                if  slot_itemAmount < stackSize then
                     local maxFittable = (stackSize - slot_itemAmount)
 
                     if maxFittable > 0 then
@@ -140,12 +141,12 @@ function API.Inventory(id, capacity, items)
                             amountLeft = 0
                         end
 
-                        if stackSize ~= -1 then
+                        -- if stackSize ~= -1 then
                             fittableSlots[ItemSlot:getSlot()] = toFit
-                        else
-                            fittableSlots[ItemSlot:getSlot()] = itemAmount
-                            break
-                        end
+                        -- else
+                        --     fittableSlots[ItemSlot:getSlot()] = itemAmount
+                        --     break
+                        -- end
 
                         if amountLeft <= 0 then
                             break
@@ -155,26 +156,31 @@ function API.Inventory(id, capacity, items)
             end
         end
 
+        print('ye', amountLeft, stackSize)
         if amountLeft > 0 then
+            print('b', #listFreeSlotsOfType)
             if #listFreeSlotsOfType > 0 then
                 for _, slot in pairs(listFreeSlotsOfType) do
-                    if amountLeft > 0 then
-                        local amountFittable = stackSize
-
-                        if amountFittable > amountLeft then
-                            amountFittable = amountLeft
-                            amountLeft = 0
-                        else
-                            amountLeft = amountLeft - amountFittable
-                        end
-
-                        if stackSize ~= -1 then
-                            fittableSlots[slot] = amountFittable
-                        else
-                            fittableSlots[slot] = itemAmount
-                            break
-                        end
+                    print('c', amountLeft)
+                    if amountLeft <= 0 then
+                        break
                     end
+
+                    local amountFittable = stackSize
+
+                    if amountFittable > amountLeft then
+                        amountFittable = amountLeft
+                        amountLeft = 0
+                    else
+                        amountLeft = amountLeft - amountFittable
+                    end
+
+                    -- if stackSize ~= -1 then
+                        fittableSlots[slot] = amountFittable
+                    -- else
+                    --     fittableSlots[slot] = itemAmount
+                    --     break
+                    -- end
                 end
             end
 
@@ -420,11 +426,11 @@ function API.Inventory(id, capacity, items)
                     return true
                 end
             else
-                if itemDaA:getType() == "ammo" and slotB:getType() == 'weapon' then
+                if itemDaA:getType() == "ammo" and slotB:getType() == "weapon" then
                     -- Add weapon supports ammo
 
-                    if getAmmoTypeFromWeaponType('weapon_' .. slotB:getItemId()) ~= slotA:getItemId() then
-                        User:notify('Esse equipamento não suporta este tipo de munição!')
+                    if getAmmoTypeFromWeaponType("weapon_" .. slotB:getItemId()) ~= slotA:getItemId() then
+                        User:notify("Esse equipamento não suporta este tipo de munição!")
                         return false
                     end
 
@@ -620,7 +626,6 @@ end
 
 --     return slots
 -- end
-
 
 function getAmmoTypeFromWeaponType(weapon)
     weapon = weapon:upper()

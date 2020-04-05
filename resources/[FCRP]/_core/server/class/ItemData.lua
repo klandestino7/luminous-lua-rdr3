@@ -1,4 +1,4 @@
-function API.ItemData(id, name, type, weight, description)
+function API.ItemData(id, name, type, weight, description, stackSize)
     local self = {}
 
     self.id = id
@@ -6,6 +6,7 @@ function API.ItemData(id, name, type, weight, description)
     self.weight = weight
     self.type = type
     self.description = description or "DESCRIPTION"
+    self.stackSize = stackSize or 1
 
     -- self.triggerOnUse
 
@@ -26,7 +27,7 @@ function API.ItemData(id, name, type, weight, description)
     end
 
     self.getStackSize = function()
-        return 16
+        return self.stackSize
     end
 
     self.getType = function()

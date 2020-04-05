@@ -71,9 +71,7 @@ window.addEventListener("message", function(event) {
             var hotbar = false;
             var hotbarOnly = true;
 
-
-            if (event.data.primarySlots.length > 0) {
-
+            if (Object.keys(event.data.primarySlots).length > 0) {
                 $.each(event.data.primarySlots, function(slot, ItemSlot) {
                     primaryItemList[slot] = ItemSlot;
                     if (slot >= 129 && slot <= 132) {
@@ -413,7 +411,7 @@ function drawHotbar() {
                 console.log(i + ' ' + element);
             });
 
-            $(`#primary .hotbar #${slot}`).children().not('.number').remove();
+            $(`#primary .hotbar #${slot}`).html('');
             $(`#primary .hotbar #${slot}`).append(`
                     <img src="images/items/${ItemSlot[0]}.png">
                     <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
@@ -434,6 +432,7 @@ function drawPrimary() {
 
     $(`#primary-inventory .slot-container`).html('');
     for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
+        console.log(slot + ' ' + primaryItemList[slot]);
         if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] > 0) {
             var ItemSlot = primaryItemList[slot];
 
