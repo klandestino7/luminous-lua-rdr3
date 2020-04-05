@@ -16,7 +16,7 @@ var hotbarSlotSelected = null;
 window.addEventListener("message", function(event) {
     if (event.data.action == 'hide') {
         $("#primary-inventory").css('opacity', '0');
-        $("#primary img").css('opacity', '0');
+        $("#primary #background-image").css('opacity', '0');
         $("#secondary").hide();
     } else {
 
@@ -88,7 +88,7 @@ window.addEventListener("message", function(event) {
 
                 if ($("#primary-inventory").css('opacity') == 0) {
                     $("#primary-inventory").css('opacity', '1');
-                    $("#primary img").css('opacity', '1');
+                    $("#primary #background-image").css('opacity', '1');
                 }
             }
             if (hotbar == true) {
@@ -403,13 +403,8 @@ function elementAsDraggable(element, a, b, c) {
 
 function drawHotbar() {
     for (var slot = 129; slot < 133; slot++) {
-        // console.log(slot + ' ' + primaryItemList[slot][1] + ' ' + primaryItemList[slot][2]);
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null) {
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][2] > -1) {
             var ItemSlot = primaryItemList[slot];
-
-            primaryItemList[slot].forEach(function(element, i) {
-                console.log(i + ' ' + element);
-            });
 
             $(`#primary .hotbar #${slot}`).html('');
             $(`#primary .hotbar #${slot}`).append(`
@@ -431,17 +426,27 @@ function drawHotbar() {
 function drawPrimary() {
 
     $(`#primary-inventory .slot-container`).html('');
+    var money = 0;
     for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
-        console.log(slot + ' ' + primaryItemList[slot]);
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] > 0) {
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] >= -1) {
             var ItemSlot = primaryItemList[slot];
 
-            $(`#primary-inventory .slot-container`).append(`
+            if (primaryItemList[slot][2] > -1) {
+                $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slot}" onclick="select(this)">
                         <img src="images/items/${ItemSlot[0]}.png">
                         <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
                     </div>
                 `);
+            } else {
+                $(`#primary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slot}" onclick="select(this)">
+                        <img src="images/items/${ItemSlot[0]}.png">
+                        <div class="counter">${ItemSlot[1]}</div>
+                    </div>
+                `);
+                if (primaryItemList[slot][0] == 'money') {}
+            }
 
             var element = $(`#primary-inventory .slot-container #${slot}`);
 
@@ -460,6 +465,17 @@ function drawPrimary() {
             `);
         }
     }
+
+    var money = 0;
+    $.each(primaryItemList, function(slot, ItemSlot) {
+        if (ItemSlot != undefined) {
+            if (ItemSlot[0] == 'money') {
+                money = money + ItemSlot[1];
+            }
+        }
+    });
+
+    $('#money').text(money / 100);
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
@@ -483,7 +499,6 @@ function drawPrimary() {
                     itemAmount = 1
                 }
 
-                console.log($(ui.draggable).parent().hasClass('hotbar'));
                 if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory' || $(ui.draggable).parent().hasClass('hotbar')) {
                     $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
                         slotFrom: draggableSlot,

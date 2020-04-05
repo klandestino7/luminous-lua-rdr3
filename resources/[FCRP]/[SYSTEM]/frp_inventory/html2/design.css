@@ -39,7 +39,7 @@
     opacity: 0;
 }
 
-.container #primary img {
+.container #primary #background-image {
     opacity: 0;
 }
 
@@ -292,7 +292,7 @@ Its simulated from .selected :D
     top: 10%;
     left: 10%;
     font-size: 10px;
-    color: white;
+    color: rgba(255, 255, 255, 0.3);
 }
 
 #primary .hotbar .slot img {

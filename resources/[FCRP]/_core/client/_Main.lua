@@ -77,8 +77,8 @@ function cAPI.teleport(x, y, z, spawn)
 end
 
 function cAPI.teleportSpawn(coordinate)
-	-- local coords = json.decode(coordinate)
-	local coords = {x = 0, y = 0, z =0}
+	local coords = json.decode(coordinate)
+	-- local coords = {x = -204.78715515137, y = -21.117504119873,z =73.484031677246}
 	cAPI.CameraWithSpawnEffect(coords)
 	SetEntityCoords(PlayerPedId(), coords.x + 0.0001, coords.y + 0.0001, coords.z + 0.0001, 1, 0, 0, 1)
 end

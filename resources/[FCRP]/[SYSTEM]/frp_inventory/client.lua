@@ -34,8 +34,8 @@ Citizen.CreateThread(
             --     -- )
             -- end
 
-            if IsControlJustPressed(0, 0x24978A28) then -- H
-                -- if IsDisabledControlJustPressed(0, 0x85D24405) then -- ToggleHolster
+            if IsControlJustPressed(0, 0x4216AF06) then -- F
+                -- if IsDisabledControlJustPressed(0, 0x85D24405) then -- ToggleHolster TAB
                 SendNUIMessage(
                     {
                         type = "nextHotbarSlot"
@@ -43,32 +43,32 @@ Citizen.CreateThread(
                 )
             end
 
-            for i, weaponId in pairs(lastWeaponsShot) do
-                local weaponHash = GetHashKey(weaponId)
-                local _, inClip = GetAmmoInClip(ped, weaponHash)
-                local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
-                if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId] ~= (inClip + inWeapon) then
-                    print("ammo changed")
-                    lastWeaponAmmoCount[weaponId] = nil
-                    lastWeaponsShot[i] = nil
+            -- for i, weaponId in pairs(lastWeaponsShot) do
+            --     local weaponHash = GetHashKey(weaponId)
+            --     local _, inClip = GetAmmoInClip(ped, weaponHash)
+            --     local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
+            --     if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId] ~= (inClip + inWeapon) then
+            --         print("ammo changed")
+            --         lastWeaponAmmoCount[weaponId] = nil
+            --         lastWeaponsShot[i] = nil
 
-                    local slot = whereWeaponIsAtSlot[weaponId]
+            --         local slot = whereWeaponIsAtSlot[weaponId]
 
-                    if slot ~= nil then
-                        local slots = {
-                            [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
-                        }
+            --         if slot ~= nil then
+            --             local slots = {
+            --                 [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
+            --             }
 
-                        SendNUIMessage(
-                            {
-                                primarySlots = computeSlots(slots)
-                            }
-                        )
-                    end
+            --             SendNUIMessage(
+            --                 {
+            --                     primarySlots = computeSlots(slots)
+            --                 }
+            --             )
+            --         end
 
-                    break
-                end
-            end
+            --         break
+            --     end
+            -- end
         end
     end
 )
@@ -80,23 +80,35 @@ Citizen.CreateThread(
             local ped = PlayerPedId()
             for weaponId, slot in pairs(whereWeaponIsAtSlot) do
                 local weaponHash = GetHashKey(weaponId)
-                local _, inClip = GetAmmoInClip(ped, weaponHash)
-                local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
-                if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId][1] ~= inClip or lastWeaponAmmoCount[weaponId][2] ~= inWeapon then
-                    lastWeaponAmmoCount[weaponId] = {inClip, inWeapon}
+                local _, currentWeapon = GetCurrentPedWeapon(ped, 1)
+                if currentWeapon == weaponHash then
+                    local _, inClip = GetAmmoInClip(ped, weaponHash)
+                    local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
+                    if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId] ~= (inWeapon + inClip) then
+                        local dontSave = false
+                        if lastWeaponAmmoCount[weaponId] ~= nil then
+                            if  lastWeaponAmmoCount[weaponId] == (inWeapon + inClip) then
+                                dontSave = true
+                            end
+                        end
 
-                    if slot ~= nil then
-                        local slots = {
-                            [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
-                        }
+                        if dontSave == false then
+                            lastWeaponAmmoCount[weaponId] = (inWeapon + inClip)
 
-                        TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slot, inClip + inWeapon)
+                            print("dontSave", lastWeaponAmmoCount[weaponId], (inWeapon + inClip))
 
-                        SendNUIMessage(
-                            {
-                                primarySlots = computeSlots(slots)
+                            TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slot, (inWeapon + inClip))
+
+                            local slots = {
+                                [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
                             }
-                        )
+
+                            SendNUIMessage(
+                                {
+                                    primarySlots = computeSlots(slots)
+                                }
+                            )
+                        end
                     end
                 end
             end
@@ -228,6 +240,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "interactWithHotbarSlot",
     function(cb)
+        lastWeaponAmmoCount = {}
+
         local ped = PlayerPedId()
         RemoveAllPedWeapons(ped, true, true)
 
@@ -235,19 +249,16 @@ RegisterNUICallback(
         local weaponClip = tonumber(cb.weaponClip)
         local weaponAmmo = tonumber(cb.weaponAmmo)
 
-        print("interact", weaponClip, weaponAmmo)
-
         if itemId ~= nil then
             local weaponId = "weapon_" .. itemId
 
             local hash = GetHashKey(weaponId)
 
-            -- GiveWeaponToPed_2(ped, hash, weaponAmmo or 0, true, true, GetWeapontypeGroup(hash), weaponAmmo > 0, 0.5, 1.0, 0, true, 0, 0)
             Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, hash, 0, true, true)
-            -- Citizen.InvokeNative(0x5FD1E1F011E76D7E, ped, GetPedAmmoTypeFromWeapon(ped, hash), ammo)
+            -- SetPedAmmo(ped, hash, 0)
+            -- SetAmmoInClip(ped, hash, 0)
             SetPedAmmo(ped, hash, weaponAmmo)
             SetAmmoInClip(ped, hash, weaponClip)
-        -- table.insert(lastWeaponsShot, 'weapon_' .. itemId)
         end
     end
 )
@@ -327,7 +338,6 @@ function computeSlots(table)
         if ItemList[values[1]].type ~= "weapon" then
             values[3] = ItemList[values[1]].stack or 1
         else
-
             values[3] = values[2]
             values[2] = 0
 
@@ -335,9 +345,6 @@ function computeSlots(table)
                 whereWeaponIsAtSlot["weapon_" .. values[1]] = _
             end
         end
-
-        print(_, values[1], values[2], values[3])
-
     end
 
     return table
