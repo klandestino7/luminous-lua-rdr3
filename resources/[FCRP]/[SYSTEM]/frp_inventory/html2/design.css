@@ -36,11 +36,11 @@
 } */
 
 .container #primary-inventory {
-    /* opacity: 0; */
+    opacity: 0;
 }
 
 .container #primary img {
-    /* opacity: 0; */
+    opacity: 0;
 }
 
 .container #secondary {
@@ -272,6 +272,7 @@ Its simulated from .selected :D
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    opacity: 0.0;
 }
 
 #primary .hotbar .slot {

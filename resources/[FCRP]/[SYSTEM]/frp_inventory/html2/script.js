@@ -413,7 +413,7 @@ function drawHotbar() {
                 console.log(i + ' ' + element);
             });
 
-            $(`#primary .hotbar #${slot}`).html("");
+            $(`#primary .hotbar #${slot}`).children().not('.number').remove();
             $(`#primary .hotbar #${slot}`).append(`
                     <img src="images/items/${ItemSlot[0]}.png">
                     <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
