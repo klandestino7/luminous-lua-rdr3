@@ -3,6 +3,8 @@ var secondaryItemList = [];
 var indexSelected = null;
 var shortcutPressed = null;
 
+var hotbarSlotSelected = null;
+
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -13,29 +15,93 @@ var shortcutPressed = null;
 
 window.addEventListener("message", function(event) {
     if (event.data.action == 'hide') {
-        $(".container").hide();
+        $("#primary-inventory").css('opacity', '0');
+        $("#primary img").css('opacity', '0');
+        $("#secondary").hide();
     } else {
-        $('.container:hidden').css('display', 'flex');
-        $(".helper").html("");
+
         // $(".container").fadeIn();
 
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
         }
 
+        if (event.data.type == 'nextHotbarSlot') {
+
+            if (hotbarSlotSelected != undefined) {
+                hotbarSlotSelected = hotbarSlotSelected + 1;
+                if (hotbarSlotSelected == 5) {
+                    hotbarSlotSelected = 1;
+                }
+            } else {
+                hotbarSlotSelected = 1;
+            }
+
+            $('.hotbar-slot-selected').removeClass("hotbar-slot-selected");
+
+            let element = $(`.hotbar .slot:nth-child(${hotbarSlotSelected}`);
+            element.addClass("hotbar-slot-selected");
+
+            let itemId = $(element).attr('itemId');
+            let counter = $(element).find('.counter');
+            let weaponClip = $(counter).text().split('/')[0];
+            let weaponAmmo = $(counter).text().split('/')[1];
+
+            $.post('http://frp_inventory/interactWithHotbarSlot', JSON.stringify({
+                itemId: itemId,
+                weaponClip: weaponClip,
+                weaponAmmo: weaponAmmo,
+            }));
+        } else {
+            // $('.container:hidden').css('display', 'flex');
+
+            $(".helper").html("");
+        }
+
+        if (event.data.ToggleHotbar) {
+            if (event.data.val == true) {
+                $('.hotbar').css('opacity', '1');
+
+            } else {
+                $('.hotbar').css('opacity', '0');
+            }
+        }
+
         if (event.data.primarySlots) {
             var hotbar = false;
-            $.each(event.data.primarySlots, function(slot, ItemSlot) {
-                primaryItemList[slot] = ItemSlot;
-                if (slot >= 129 && slot <= 132) {
-                    hotbar = true;
+            var hotbarOnly = true;
+
+
+            if (event.data.primarySlots.length > 0) {
+
+                $.each(event.data.primarySlots, function(slot, ItemSlot) {
+                    primaryItemList[slot] = ItemSlot;
+                    if (slot >= 129 && slot <= 132) {
+                        hotbar = true;
+                    } else {
+                        hotbarOnly = false;
+                    }
+                });
+            } else {
+                hotbarOnly = false;
+            }
+            if (hotbarOnly == false) {
+                drawPrimary();
+
+                if ($("#primary-inventory").css('opacity') == 0) {
+                    $("#primary-inventory").css('opacity', '1');
+                    $("#primary img").css('opacity', '1');
                 }
-            });
-            drawPrimary();
+            }
             if (hotbar == true) {
                 drawHotbar();
             }
+
+            if ($(".hotbar").css('opacity') == 0) {
+                $(".hotbar").css('opacity', '1');
+            }
         }
+
 
         if (!$('#secondary').is(":hidden")) {
             $(".helper").html("Basta arrastar o item ao proximo inventário para despejar.");
@@ -339,8 +405,14 @@ function elementAsDraggable(element, a, b, c) {
 
 function drawHotbar() {
     for (var slot = 129; slot < 133; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] > 0) {
+        // console.log(slot + ' ' + primaryItemList[slot][1] + ' ' + primaryItemList[slot][2]);
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null) {
             var ItemSlot = primaryItemList[slot];
+
+            primaryItemList[slot].forEach(function(element, i) {
+                console.log(i + ' ' + element);
+            });
+
             $(`#primary .hotbar #${slot}`).html("");
             $(`#primary .hotbar #${slot}`).append(`
                     <img src="images/items/${ItemSlot[0]}.png">
@@ -362,7 +434,7 @@ function drawPrimary() {
 
     $(`#primary-inventory .slot-container`).html('');
     for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] > 0) {
+        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] > 0) {
             var ItemSlot = primaryItemList[slot];
 
             $(`#primary-inventory .slot-container`).append(`
@@ -432,6 +504,9 @@ function drawPrimary() {
     }
 }
 
+$('.hotbar .slot').on('click', function() {
+    selectHotbarSlot($(this));
+});
 
 function select(element) {
     // let count = $('.count')[0].innerText;
@@ -456,8 +531,9 @@ function unSelect(element) {
 }
 
 function closeInventory() {
-    primaryItemList = [];
-    secondaryItemList = [];
+    // primaryItemList = [];
+    // secondaryItemList = [];
+    $('.selected').removeClass('selected');
     $("#secondary").hide();
     $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
 }

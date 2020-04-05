@@ -649,7 +649,7 @@ ItemList = {
         name = 'Flecha',
         weight = 0.2
     },
-    ['AMMO_ARROW_DYNAMITE'] = {
+    ['ammo_arrow_dynamite'] = {
         type = 'ammo',
         name = 'Flecha',
         weight = 0.2
@@ -756,16 +756,19 @@ ItemList = {
     ['money'] = {
         type = 'generic',
         name = 'Dólar',
-        weight = 0.01
+        weight = 0.01,
+        stackSize = -1,
     },
     ['blackmoney'] = {
         type = 'generic',
         name = 'Dólar Sujo',
-        weight = 0.01
+        weight = 0.01,
+        stackSize = -1,
     },
     ['gold'] = {
         type = 'generic',
         name = 'Barra de Ouro',
-        weight = 0.7
+        weight = 0.7,
+        stackSize = -1,
     }
 }

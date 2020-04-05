@@ -8,8 +8,6 @@ function API.ItemData(id, name, type, weight, description)
     self.description = description or "DESCRIPTION"
 
     -- self.triggerOnUse
-    -- self.triggerOnEnterHotbar
-    -- self.triggerOnLeaveHotbar
 
     self.getId = function()
         return self.id
@@ -64,14 +62,6 @@ function API.ItemData(id, name, type, weight, description)
 
     self.hasOnUseHandler = function()
         return self.triggerOnUse ~= nil
-    end
-
-    self.hasOnHotbarEnterHandler = function()
-        return self.triggerOnEnterHotbar ~= nil
-    end
-
-    self.hasOnHotbarLeaveHandler = function()
-        return self.triggerOnLeaveHotbar ~= nil
     end
 
     return self

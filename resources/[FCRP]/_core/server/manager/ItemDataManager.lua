@@ -13,69 +13,7 @@ function API.getItemDataFromName(name)
     end
 end
 
-function API.getAmmoTypeFromWeaponType(weapon)
-    weapon = weapon:upper()
 
-    local ammo = nil
-
-    if weapon == "WEAPON_MOONSHINEJUG" then
-        ammo = "AMMO_MOONSHINEJUG"
-    end
-
-    if weapon == "WEAPON_FISHINGROD" then
-        ammo = "AMMO_FISHINGROD"
-    end
-
-    if weapon == "WEAPON_THROWN_THROWING_KNIVES" then
-        ammo = "AMMO_THROWING_KNIVES"
-    end
-
-    if weapon == "WEAPON_THROWN_TOMAHAWK" then
-        ammo = "AMMO_TOMAHAWK"
-    end
-
-    if weapon == "WEAPON_THROWN_TOMAHAWK_ANCIENT" then
-        ammo = "AMMO_TOMAHAWK_ANCIENT"
-    end
-
-    if weapon == "WEAPON_MOONSHINEJUG" then
-        ammo = "AMMO_MOONSHINEJUG"
-    end
-
-    if weapon:find("_PISTOL_") then
-        ammo = "AMMO_PISTOL"
-    end
-
-    if weapon:find("_REPEATER_") or weapon:find("WEAPON_RIFLE_VARMINT") then
-        ammo = "AMMO_REPEATER"
-    end
-
-    if weapon:find("_REVOLVER_") then
-        ammo = "AMMO_REVOLVER"
-    end
-
-    if weapon:find("_RIFLE_") then
-        ammo = "AMMO_RIFLE"
-    end
-
-    if weapon:find("_SHOTGUN_") then
-        ammo = "AMMO_SHOTGUN"
-    end
-
-    if weapon:find("WEAPON_BOW") then
-        ammo = "AMMO_ARROW"
-    end
-
-    if weapon:find("WEAPON_THROWN_DYNAMITE") then
-        ammo = "AMMO_DYNAMITE"
-    end
-
-    if weapon:find("WEAPON_THROWN_MOLOTOV") then
-        ammo = "AMMO_MOLOTOV"
-    end
-
-    return ammo
-end
 
 Citizen.CreateThread(
     function()
@@ -147,70 +85,65 @@ Citizen.CreateThread(
                 end
             end
 
-            if values.type == "weapon" then
-                ItemData.triggerOnEnterHotbar = function(this, User, amount)
+            -- if values.type == "weapon" then
+            --     ItemData.triggerOnEnterHotbar = function(this, User, amount)
+            --         local source = User:getSource()
+            --         local uWeapons = cAPI.getWeapons(source)
+
+            --         local fixedWeaponId = "weapon_" .. id
+
+            --         if uWeapons[fixedWeaponId] then
+            --             User:notify("Arma já está equipada")
+            --             return false
+            --         end
+
+            --         User:notify("Giving player weapon")
+            --         Citizen.CreateThread(
+            --             function()
+            --                 User:giveWeapon(fixedWeaponId, 1)
+            --             end
+            --         )
+
+            --         return true
+            --     end
+
+            --     -- Remove from the thread
+            --     -- to prevent weapon not showing
+            --     -- when switching weapons on the hotbar
+            --     ItemData.triggerOnLeaveHotbar = function(this, User)
+            --         local source = User:getSource()
+
+            --         local fixedWeaponId = "weapon_" .. id
+
+            --         Citizen.CreateThread(
+            --             function()
+            --                 User:removeWeapon(fixedWeaponId)
+            --             end
+            --         )
+
+            --         return true
+            --     end
+            -- else
+            if values.type == "ammo" then
+                ItemData.triggerOnEnterHotbar = function(this, User, amount, slotToItemId)
+                    print('tiggered', User, amount, slotToItemId)
                     local source = User:getSource()
                     local uWeapons = cAPI.getWeapons(source)
 
-                    local fixedWeaponId = "weapon_" .. id
+                    local weaponId = "weapon_" .. slotToItemId
 
-                    if uWeapons[fixedWeaponId] then
-                        User:notify("Arma já está equipada")
+                    local ammoType = API.getAmmoTypeFromWeaponType(weaponId)
+                    print('ammotype', ammoType)
+                    if ammoType == nil or ammoType ~= id:upper() then
+                        User:notify("Essa arma não suporta esse tipo de munição!")
                         return false
                     end
+
 
                     User:notify("Giving player weapon")
                     Citizen.CreateThread(
                         function()
-                            User:giveWeapon(fixedWeaponId, 1)
-                        end
-                    )
-
-                    return true
-                end
-
-                -- Remove from the thread
-                -- to prevent weapon not showing
-                -- when switching weapons on the hotbar
-                ItemData.triggerOnLeaveHotbar = function(this, User)
-                    local source = User:getSource()
-
-                    local fixedWeaponId = "weapon_" .. id
-
-                    Citizen.CreateThread(
-                        function()
-                            User:removeWeapon(fixedWeaponId)
-                        end
-                    )
-
-                    return true
-                end
-            elseif values.type == "ammo" then
-                ItemData.triggerOnEnterHotbar = function(this, User, amount)
-                    local source = User:getSource()
-                    local uWeapons = cAPI.getWeapons(source)
-
-                    local supportedWeapon = nil
-                    local equipedAmmo = 0
-
-                    for weapon, ammo in pairs(uWeapons) do
-                        local ammoType = API.getAmmoTypeFromWeaponType(weapon)
-                        if ammoType == id:upper() then
-                            supportedWeapon = weapon
-                            equipedAmmo = ammo
-                            break
-                        end
-                    end
-
-                    if supportedWeapon == nil then
-                        User:notify("Nenhuma arma equipada suporta este tipo de munição!")
-                        return false
-                    end
-
-                    User:notify("Giving player weapon")
-                    Citizen.CreateThread(
-                        function()
-                            User:giveWeapon(supportedWeapon, amount)
+                            User:giveWeapon(weaponId, amount)
                         end
                     )
 

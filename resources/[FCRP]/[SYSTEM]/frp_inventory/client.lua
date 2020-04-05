@@ -1,4 +1,7 @@
-local items = {}
+local whereWeaponIsAtSlot = {}
+local lastWeaponAmmoCount = {}
+local lastWeaponsShot = {}
+
 Citizen.CreateThread(
     function()
         while true do
@@ -7,7 +10,110 @@ Citizen.CreateThread(
                 TriggerServerEvent("FCRP:INVENTORY:open")
                 opened = true
             end
+
+            -- DisableControlAction(0, 0xB238FE0B, true) -- ToggleHolster
+            -- -- DisableControlAction(0, 0x6070D032, true) -- QuickEquipItem
+            -- DisableControlAction(0, 0xAC4BD4F1, true) -- OpenWheelMenu
+            -- DisableControlAction(0, 0x85D24405, true) -- CreatorMenuToggle
+
+            -- if IsDisabledControlJustPressed(0, 0xB238FE0B) then -- ToggleHolster
+            --     print('ToggleHolster')
+            --     -- SendNUIMessage(
+            --     --     {
+            --     --         type = "nextHotbarSlot"
+            --     --     }
+            --     -- )
+            -- end
+
+            -- if IsDisabledControlJustPressed(0, 0x6070D032) then -- QuickEquipItem
+            --     print('QuickEquipItem')
+            --     -- SendNUIMessage(
+            --     --     {
+            --     --         type = "nextHotbarSlot"
+            --     --     }
+            --     -- )
+            -- end
+
+            if IsControlJustPressed(0, 0x24978A28) then -- H
+                -- if IsDisabledControlJustPressed(0, 0x85D24405) then -- ToggleHolster
+                SendNUIMessage(
+                    {
+                        type = "nextHotbarSlot"
+                    }
+                )
+            end
+
+            for i, weaponId in pairs(lastWeaponsShot) do
+                local weaponHash = GetHashKey(weaponId)
+                local _, inClip = GetAmmoInClip(ped, weaponHash)
+                local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
+                if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId] ~= (inClip + inWeapon) then
+                    print("ammo changed")
+                    lastWeaponAmmoCount[weaponId] = nil
+                    lastWeaponsShot[i] = nil
+
+                    local slot = whereWeaponIsAtSlot[weaponId]
+
+                    if slot ~= nil then
+                        local slots = {
+                            [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
+                        }
+
+                        SendNUIMessage(
+                            {
+                                primarySlots = computeSlots(slots)
+                            }
+                        )
+                    end
+
+                    break
+                end
+            end
         end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(5)
+            local ped = PlayerPedId()
+            for weaponId, slot in pairs(whereWeaponIsAtSlot) do
+                local weaponHash = GetHashKey(weaponId)
+                local _, inClip = GetAmmoInClip(ped, weaponHash)
+                local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
+                if lastWeaponAmmoCount[weaponId] == nil or lastWeaponAmmoCount[weaponId][1] ~= inClip or lastWeaponAmmoCount[weaponId][2] ~= inWeapon then
+                    lastWeaponAmmoCount[weaponId] = {inClip, inWeapon}
+
+                    if slot ~= nil then
+                        local slots = {
+                            [slot] = {weaponId:gsub("weapon_", ""), inClip, inWeapon}
+                        }
+
+                        TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slot, inClip + inWeapon)
+
+                        SendNUIMessage(
+                            {
+                                primarySlots = computeSlots(slots)
+                            }
+                        )
+                    end
+                end
+            end
+        end
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:ToggleHotbar")
+AddEventHandler(
+    "FCRP:INVENTORY:ToggleHotbar",
+    function(bool)
+        SendNUIMessage(
+            {
+                type = "ToggleHotbar",
+                val = bool
+            }
+        )
     end
 )
 
@@ -23,7 +129,7 @@ RegisterNetEvent("FCRP:INVENTORY:openAsPrimary")
 AddEventHandler(
     "FCRP:INVENTORY:openAsPrimary",
     function(slots)
-        slots = parseItemTable(slots)
+        slots = computeSlots(slots)
 
         SetNuiFocus(true, true)
         SendNUIMessage(
@@ -39,12 +145,9 @@ RegisterNetEvent("FCRP:INVENTORY:openAsSecondary")
 AddEventHandler(
     "FCRP:INVENTORY:openAsSecondary",
     function(slots)
-        slots = parseItemTable(slots)
+        slots = computeSlots(slots)
 
         SetNuiFocus(true, true)
-        for _, v in pairs(items) do
-            v.name = ItemList[v.id].name
-        end
         SendNUIMessage(
             {
                 type = "clearSecondary",
@@ -58,7 +161,7 @@ RegisterNetEvent("FCRP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
     "FCRP:INVENTORY:PrimarySyncSlots",
     function(slots)
-        slots = parseItemTable(slots)
+        slots = computeSlots(slots)
 
         SendNUIMessage(
             {
@@ -72,7 +175,7 @@ RegisterNetEvent("FCRP:INVENTORY:SecondarySyncSlots")
 AddEventHandler(
     "FCRP:INVENTORY:SecondarySyncSlots",
     function(slots)
-        slots = parseItemTable(slots)
+        slots = computeSlots(slots)
 
         SendNUIMessage(
             {
@@ -123,6 +226,33 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
+    "interactWithHotbarSlot",
+    function(cb)
+        local ped = PlayerPedId()
+        RemoveAllPedWeapons(ped, true, true)
+
+        local itemId = cb.itemId
+        local weaponClip = tonumber(cb.weaponClip)
+        local weaponAmmo = tonumber(cb.weaponAmmo)
+
+        print("interact", weaponClip, weaponAmmo)
+
+        if itemId ~= nil then
+            local weaponId = "weapon_" .. itemId
+
+            local hash = GetHashKey(weaponId)
+
+            -- GiveWeaponToPed_2(ped, hash, weaponAmmo or 0, true, true, GetWeapontypeGroup(hash), weaponAmmo > 0, 0.5, 1.0, 0, true, 0, 0)
+            Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, hash, 0, true, true)
+            -- Citizen.InvokeNative(0x5FD1E1F011E76D7E, ped, GetPedAmmoTypeFromWeapon(ped, hash), ammo)
+            SetPedAmmo(ped, hash, weaponAmmo)
+            SetAmmoInClip(ped, hash, weaponClip)
+        -- table.insert(lastWeaponsShot, 'weapon_' .. itemId)
+        end
+    end
+)
+
+RegisterNUICallback(
     "NUIFocusOff",
     function()
         closeInv()
@@ -149,15 +279,6 @@ function closeInv()
     opened = false
     TriggerServerEvent("FCRP:INVENTORY:Close")
 end
-
-RegisterNetEvent("frp_inventory:removeWeapons")
-AddEventHandler(
-    "frp_inventory:removeWeapons",
-    function()
-        local var, model = GetCurrentPedWeapon(PlayerPedId())
-        RemoveAllPedWeapons(PlayerPedId(), false, true)
-    end
-)
 
 local promptUse
 local promptDrop
@@ -192,13 +313,41 @@ Citizen.CreateThread(
     end
 )
 
-function parseItemTable(table)
+function computeSlots(table)
+    local ped = PlayerPedId()
     for _, values in pairs(table) do
-        print(_, values[1])
-        values[3] = ItemList[values[1]].stackSize or 16
+        -- 1 = id
+        -- 2 = amount
+        -- 3 stackSize
+        -- 4 name
+        -- 5 description
+
         values[4] = ItemList[values[1]].name
         values[5] = ItemList[values[1]].description or "Descrição"
+        if ItemList[values[1]].type ~= "weapon" then
+            values[3] = ItemList[values[1]].stackSize or 16
+        else
+            local _temp3 = values[3]
+            values[3] = values[2]
+            if values[2] == nil then
+                values[2] = 0
+            else
+                values[3] = _temp3
+            end
+
+            if _ >= 129 and _ <= 132 then
+                whereWeaponIsAtSlot["weapon_" .. values[1]] = _
+            end
+        end
     end
 
     return table
 end
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(100)
+        end
+    end
+)

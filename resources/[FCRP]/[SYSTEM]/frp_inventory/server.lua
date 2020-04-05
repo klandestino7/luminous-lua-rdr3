@@ -161,6 +161,8 @@ AddEventHandler(
         slotTo = tonumber(slotTo)
         itemAmount = tonumber(itemAmount)
 
+        print("switching", itemAmount)
+
         if (slotTo >= 129 and slotTo <= 132) or (slotFrom >= 129 and slotFrom <= 132) then
             if (slotTo >= 129 and slotTo <= 132) and (slotFrom >= 129 and slotFrom <= 132) then
                 return
@@ -169,6 +171,19 @@ AddEventHandler(
         else
             primaryInventory:moveToSlot(slotFrom, slotTo, itemAmount)
         end
+    end
+)
+
+RegisterNetEvent("VP:INVENTORY:SaveWeaponAmmoOnDB")
+AddEventHandler(
+    "VP:INVENTORY:SaveWeaponAmmoOnDB",
+    function(slot, ammoCount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local primaryInventory = User:getCharacter():getInventory()
+
+        primaryInventory:saveWeaponSlotIntoDb(slot, ammoCount)
     end
 )
 

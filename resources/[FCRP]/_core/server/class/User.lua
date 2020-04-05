@@ -106,8 +106,29 @@ function API.User(source, id, ipAddress)
             end
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), Inventory)
 
-            local weapons = json.decode(charRow[1].weapons) or {}
-            cAPI.replaceWeapons(self:getSource(), weapons)
+            -- Enviar informaçoes da Hotbar
+            if rows2[1] ~= nil then
+                local parsedSlots = {}
+                local decodedItems = json.decode(rows2[1].items)
+                local found = false
+                for i = 129, 132 do
+                    local stringd = tostring(i)
+                    if decodedItems[stringd] ~= nil then
+                        found = true
+                        parsedSlots[i] = {
+                            decodedItems[stringd][1],
+                            decodedItems[stringd][2]
+                        }
+                    end
+                end
+                if found == true then
+                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
+                end
+            end
+
+
+            -- local weapons = json.decode(charRow[1].weapons) or {}
+            -- cAPI.replaceWeapons(self:getSource(), weapons)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
 
@@ -116,7 +137,7 @@ function API.User(source, id, ipAddress)
             if Horse ~= nil then
                 cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
             else
-                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8,0x508B80B9})
+                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
             end
 
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))

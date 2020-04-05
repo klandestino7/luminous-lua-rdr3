@@ -8,9 +8,18 @@ function API.Inventory(id, capacity, items)
 
     self.slots = {}
 
+    local recents = {}
     if items ~= nil then
         for slot, values in pairs(items) do
-            self.slots[tonumber(slot)] = API.ItemSlot(tonumber(slot), values[1], tonumber(values[2]))
+            if type(values) == "table" then
+                self.slots[tonumber(slot)] = API.ItemSlot(tonumber(slot), values[1], tonumber(values[2]))
+            else
+                recents[slot] = values
+            end
+        end
+
+        for k, v in pairs(recents) do
+            self.slots[k] = self.slots[v]
         end
     end
 
@@ -106,7 +115,7 @@ function API.Inventory(id, capacity, items)
     self.getFittableSlots = function(this, itemId, itemAmount)
         local ItemData = API.getItemDataFromId(itemId)
 
-        local stackSize = ItemData:getStackSize()
+        local stackSize = ItemData:getStackSize() or 1
         local slotType = ItemData:getSlotType()
 
         local fittableSlots = {}
@@ -119,7 +128,7 @@ function API.Inventory(id, capacity, items)
         for _, ItemSlot in pairs(listItemSlotWithId) do
             if (_ < 129 or _ > 132) then -- Not in hotbar
                 local slot_itemAmount = ItemSlot:getItemAmount()
-                if slot_itemAmount < stackSize then
+                if stackSize == -1 or slot_itemAmount < stackSize then
                     local maxFittable = (stackSize - slot_itemAmount)
 
                     if maxFittable > 0 then
@@ -131,7 +140,12 @@ function API.Inventory(id, capacity, items)
                             amountLeft = 0
                         end
 
-                        fittableSlots[ItemSlot:getSlot()] = toFit
+                        if stackSize ~= -1 then
+                            fittableSlots[ItemSlot:getSlot()] = toFit
+                        else
+                            fittableSlots[ItemSlot:getSlot()] = itemAmount
+                            break
+                        end
 
                         if amountLeft <= 0 then
                             break
@@ -154,7 +168,12 @@ function API.Inventory(id, capacity, items)
                             amountLeft = amountLeft - amountFittable
                         end
 
-                        fittableSlots[slot] = amountFittable
+                        if stackSize ~= -1 then
+                            fittableSlots[slot] = amountFittable
+                        else
+                            fittableSlots[slot] = itemAmount
+                            break
+                        end
                     end
                 end
             end
@@ -190,7 +209,6 @@ function API.Inventory(id, capacity, items)
                     end
                 )
 
-                -- Update recent items tab
                 -- for i = 16, 1, -1 do
                 --     if self.slots[i] ~= nil then
                 --         if i == 16 then
@@ -251,27 +269,33 @@ function API.Inventory(id, capacity, items)
                 local _amount = ItemSlot:getItemAmount()
                 _amount = _amount - itemAmount
 
-                ItemSlot:setItemAmount(_amount)
-                syncSlotQueue[slot] = ItemSlot
-
                 if _amount <= 0 then
                     self.slots[slot] = nil
+                    _amount = -1
                 end
+
+                ItemSlot:setItemAmount(_amount)
+                syncSlotQueue[slot] = ItemSlot
             end
         else
             if self.slots[slot] ~= nil then
                 local ItemSlot = self.slots[slot]
                 local _amount = ItemSlot:getItemAmount()
 
+                local ItemData = API.getItemDataFromId(itemId)
+
+                -- Remover completamente a arma
+                -- Já que a "quantidade" dela é considerada
+                -- como quantidade de munição carregada
+                if ItemData:getType() == "weapon" then
+                    itemAmount = _amount
+                end
+
                 if itemAmount == nil then
                     itemAmount = _amount
                 end
 
                 _amount = _amount - itemAmount
-
-                ItemSlot:setItemAmount(_amount)
-
-                syncSlotQueue[slot] = ItemSlot
 
                 if _amount > 0 then
                     Citizen.CreateThread(
@@ -281,6 +305,10 @@ function API.Inventory(id, capacity, items)
                     )
                 else
                     self.slots[slot] = nil
+
+                    _amount = -1
+                    ItemSlot:setItemAmount(_amount)
+                    syncSlotQueue[slot] = ItemSlot
 
                     Citizen.CreateThread(
                         function()
@@ -363,40 +391,18 @@ function API.Inventory(id, capacity, items)
     end
 
     self.moveToFromSlotHotbar = function(this, User, slotFrom, slotTo, amount)
-        print("moveToSlotHorbar")
         local slotA = self.slots[slotFrom]
         local slotB = self.slots[slotTo]
 
         local itemDaA = API.getItemDataFromId(slotA:getItemId())
 
         if slotB == nil then
-            print("type: slot b nil", itemDaA:getType())
             if itemDaA:getType() == "weapon" then
-                print("is weapon")
-                if slotTo >= 129 and slotTo <= 132 then
-                    print("slotTo is to hotbar")
-                    if itemDaA:hasOnHotbarEnterHandler() then
-                        print("has enter handler")
-                        if not itemDaA:triggerOnEnterHotbar(User, amount) then
-                            print("not triggered handler")
-                            return false
-                        end
-                    end
-                else
-                    print("slotTo not to hotbar")
-                    if itemDaA:hasOnHotbarLeaveHandler() then
-                        print("has leave handler triggered")
-                        itemDaA:triggerOnLeaveHotbar(User)
-                    end
-                end
-
-                print("added removed")
                 self:addItem(slotTo, slotA:getItemId(), 1)
                 self:removeItem(slotFrom, slotA:getItemId(), 1)
                 return true
             end
         else
-            print("slotB not nil")
             local itemDaB = API.getItemDataFromId(slotB:getItemId())
 
             -- Tirando item da hotbar
@@ -409,20 +415,21 @@ function API.Inventory(id, capacity, items)
                     self:removeItem(slotFrom, slotA:getItemId(), slotA:getItemAmount())
                     self:removeItem(slotTo, slotB:getItemId(), slotB:getItemAmount())
 
-                    itemDaA:triggerOnLeaveHotbar(User) -- From vai sair da hotbar
-                    itemDaB:triggerOnEnterHotbar(User, amount) -- To vai entrar na hotbar
-
                     self:addItem(slotTo, slotA:getItemId(), amountA)
                     self:addItem(slotFrom, slotB:getItemId(), amountB)
                     return true
                 end
             else
-                if itemDaA:getType() == "ammo" then
-                    if itemDaA:triggerOnEnterHotbar(User, amount) then
-                        self:removeItem(slotFrom, slotA:getItemId(), amount)
-                        return true
+                if itemDaA:getType() == "ammo" and slotB:getType() == 'weapon' then
+                    -- Add weapon supports ammo
+
+                    if getAmmoTypeFromWeaponType('weapon_' .. slotB:getItemId()) ~= slotA:getItemId() then
+                        User:notify('Esse equipamento não suporta este tipo de munição!')
+                        return false
                     end
-                    return false
+
+                    self:removeItem(slotFrom, slotA:getItemId(), amount)
+                    return true
                 end
 
                 if itemDaA.getType() == "weapon" then
@@ -432,10 +439,6 @@ function API.Inventory(id, capacity, items)
                     self:removeItem(slotFrom, slotA:getItemId(), slotA:getItemAmount())
                     self:removeItem(slotTo, slotB:getItemId(), slotB:getItemAmount())
 
-                    if itemDaB:triggerOnLeaveHotbar(User) then -- From vai sair da hotbar
-                        itemDaA:triggerOnEnterHotbar(User, amount)
-                    end -- To vai entrar na hotbar
-
                     self:addItem(slotTo, slotA:getItemId(), amountA)
                     self:addItem(slotFrom, slotB:getItemId(), amountB)
                     return true
@@ -443,6 +446,42 @@ function API.Inventory(id, capacity, items)
             end
         end
         return false
+    end
+
+    self.saveWeaponSlotIntoDb = function(this, slot, ammoCount)
+        if slot < 129 or slot > 132 then
+            API.log("LUA INJECTION? Tentativa de duplicar item: " .. self:getId())
+            return
+        end
+
+        local ItemSlot = self.slots[slot]
+
+        if ItemSlot == nil then
+            return
+        end
+
+        local ItemData = API.getItemDataFromId(ItemSlot:getItemId())
+
+        if ItemData:getType() ~= "weapon" then
+            API.log("LUA INJECTION? Tentativa de duplicar item: " .. self:getId())
+            return
+        end
+
+        if ammoCount > 0 then
+            Citizen.CreateThread(
+                function()
+                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = ItemSlot:getItemId(), itemAmount = ammoCount, procType = "update"})
+                end
+            )
+        else
+            self.slots[slot] = nil
+
+            Citizen.CreateThread(
+                function()
+                    API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = 0, itemAmount = 0, procType = "remove"})
+                end
+            )
+        end
     end
 
     self.getItemAmount = function(this, itemId)
@@ -563,4 +602,86 @@ function parseSlots(slots)
         }
     end
     return parsedSlots
+end
+
+-- function rearrangeRecents(slots)
+--     local lastEmpty
+--     for i= 1, 17 do
+--         if slots[i] == nil then
+--             lastEmpty = i
+--         else
+--             if lastEmpty ~= nil then
+--                 slots[lastEmpty] = slots[i]
+--                 slots[i] = nil
+--                 lastEmpty = i
+--             end
+--         end
+--     end
+
+--     return slots
+-- end
+
+
+function getAmmoTypeFromWeaponType(weapon)
+    weapon = weapon:upper()
+
+    local ammo = nil
+
+    if weapon == "WEAPON_MOONSHINEJUG" then
+        ammo = "AMMO_MOONSHINEJUG"
+    end
+
+    if weapon == "WEAPON_FISHINGROD" then
+        ammo = "AMMO_FISHINGROD"
+    end
+
+    if weapon == "WEAPON_THROWN_THROWING_KNIVES" then
+        ammo = "AMMO_THROWING_KNIVES"
+    end
+
+    if weapon == "WEAPON_THROWN_TOMAHAWK" then
+        ammo = "AMMO_TOMAHAWK"
+    end
+
+    if weapon == "WEAPON_THROWN_TOMAHAWK_ANCIENT" then
+        ammo = "AMMO_TOMAHAWK_ANCIENT"
+    end
+
+    if weapon == "WEAPON_MOONSHINEJUG" then
+        ammo = "AMMO_MOONSHINEJUG"
+    end
+
+    if weapon:find("_PISTOL_") then
+        ammo = "AMMO_PISTOL"
+    end
+
+    if weapon:find("_REPEATER_") or weapon:find("WEAPON_RIFLE_VARMINT") then
+        ammo = "AMMO_REPEATER"
+    end
+
+    if weapon:find("_REVOLVER_") then
+        ammo = "AMMO_REVOLVER"
+    end
+
+    if weapon:find("_RIFLE_") then
+        ammo = "AMMO_RIFLE"
+    end
+
+    if weapon:find("_SHOTGUN_") then
+        ammo = "AMMO_SHOTGUN"
+    end
+
+    if weapon:find("WEAPON_BOW") then
+        ammo = "AMMO_ARROW"
+    end
+
+    if weapon:find("WEAPON_THROWN_DYNAMITE") then
+        ammo = "AMMO_DYNAMITE"
+    end
+
+    if weapon:find("WEAPON_THROWN_MOLOTOV") then
+        ammo = "AMMO_MOLOTOV"
+    end
+
+    return ammo:lower()
 end
