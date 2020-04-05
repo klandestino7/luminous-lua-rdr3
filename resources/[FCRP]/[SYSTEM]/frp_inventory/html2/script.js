@@ -525,14 +525,17 @@ $('.hotbar .slot').on('click', function() {
 function select(element) {
     // let count = $('.count')[0].innerText;
     // $('.count').attr("disabled", false);
-    let elementParentParentId = $(element).parent().parent().attr('id');
-    $(`#${elementParentParentId} .description-title`).text('');
-    $(`#${elementParentParentId} .description-description`).text('');
-    $(`#${elementParentParentId} .selected`).removeClass('selected');
-    $(element).addClass('selected');
-    $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
-    $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
-    indexSelected = $(element).attr('id');
+
+    if (($(element).attr('itemId') != undefined)) {
+        let elementParentParentId = $(element).parent().parent().attr('id');
+        $(`#${elementParentParentId} .description-title`).text('');
+        $(`#${elementParentParentId} .description-description`).text('');
+        $(`#${elementParentParentId} .selected`).removeClass('selected');
+        $(element).addClass('selected');
+        $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+        $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
+        indexSelected = $(element).attr('id');
+    }
 }
 
 function unSelect(element) {
