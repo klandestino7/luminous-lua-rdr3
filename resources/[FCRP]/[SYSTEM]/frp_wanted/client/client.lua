@@ -44,18 +44,22 @@ local pname = "Nome Desconhecido"
 local annon = false
 local CityName = "Cidade Fantasma"
 
-RegisterNetEvent('FRP:WANTED:RewardNotify')
-AddEventHandler('FRP:WANTED:RewardNotify', function(id, reward, playername)
+RegisterCommand('wanted', 
+    function(source, args, rawCommand)
+        if args[1] ~= nil then        
+            TriggerServerEvent('FRP:WANTED:RewardNotify', args[1], args[2], GetCurrentTownName()) 
+            TriggerServerEvent('FRP:WANTED:RewardSERVER', args[1], args[2], GetCurrentTownName())
+        end
+end)
 
+RegisterNetEvent('FRP:WANTED:RewardNotify')
+AddEventHandler('FRP:WANTED:RewardNotify', function(reward, playername, city)
     reward2 = reward
     pname = playername
-    CityName = GetCurrentTownName()
-
-    print(CityName)
+    CityName = city
     local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)    
     annon = true
-    TriggerServerEvent('FRP:WANTED:RewardSERVER', id, reward, CityName)
     Wait(5000)
     annon = false
 end)
@@ -67,9 +71,6 @@ AddEventHandler('FRP:WANTED:GetWanted', function(city)
 
    end
 end)
-
-
-
 
 Citizen.CreateThread(function()
     while true do

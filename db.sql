@@ -83,26 +83,27 @@ CREATE PROCEDURE `getData`(
 BEGIN
 	IF (keyValue = 'all' && typeData = 'clothes') THEN
 		SELECT clothes as Value FROM characters WHERE charid = id;
+	ELSEIF (keyValue = 'all' && typeData = 'wanted') THEN
+		SELECT wanted as Value FROM characters WHERE charid = id;
 	ELSEIF (keyValue = 'all' && typeData = 'groups') THEN
 		SELECT groups as Value FROM characters WHERE charid = id;
 	ELSEIF (keyValue = 'all' && typeData = 'charTable') THEN
 		SELECT charTable as Value FROM characters WHERE charid = id;
-	ELSEIF (keyValue = 'all' && typeData = 'modif') THEN
-		SELECT modif as Value FROM horses WHERE id = id;
-	ELSEIF (keyValue = 'all' && typeData = 'bando') THEN
-		SELECT bando as Value FROM fort WHERE id = id;
+	ELSEIF (keyValue = 'all' && typeData = 'modificacao') THEN
+		SELECT modificacao as Value FROM horses WHERE id = id;
 	END IF;
+	
 	
 	IF (typeData = 'groups') THEN
 		SELECT json_extract(groups, CONCAT("$.", keyValue)) as Value FROM characters WHERE charid = id;
+	ELSEIF (typeData = 'wanted') THEN
+		SELECT json_extract(wanted, CONCAT("$.", keyValue)) as Value FROM characters WHERE charid = id;
 	ELSEIF (typeData = 'clothes') THEN
 		SELECT json_extract(clothes, CONCAT("$.", keyValue)) as Value FROM characters WHERE charid = id;
 	ELSEIF (typeData = 'charTable') THEN
 		SELECT json_extract(charTable, CONCAT("$.", keyValue)) as Value FROM characters WHERE charid = id;
-	ELSEIF (typeData = 'modif') THEN
-		SELECT json_extract(modif, CONCAT("$.", keyValue)) as Value FROM horses WHERE id = id;
-	ELSEIF (typeData = 'bando') THEN
-		SELECT json_extract(bando, CONCAT("$.", keyValue)) as Value FROM fort WHERE id = id;
+	ELSEIF (typeData = 'modificacao') THEN
+		SELECT json_extract(modificacao, CONCAT("$.", keyValue)) as Value FROM horses WHERE id = id;
 	END IF;
 END//
 DELIMITER ;
@@ -113,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `horses` (
   `charid` int(11) NOT NULL,
   `model` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `components` text,
+  `modif` text DEFAULT '{}',
   PRIMARY KEY (`id`),
   KEY `FK_horses_characters` (`charid`),
   CONSTRAINT `FK_horses_characters` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -152,27 +153,26 @@ INSERT INTO `inventories` (`id`, `charid`, `capacity`, `items`) VALUES
 
 -- Copiando estrutura para procedure redm.inventories
 DELIMITER //
-CREATE PROCEDURE `procInventory`(
+CREATE PROCEDURE `inventories`(
 	IN `iid` VARCHAR(20),
 	IN `charid` INT(8),
-  IN `slot` INT(8),
-	IN `itemId` VARCHAR(100),
-	IN `itemAmount` INT(8),
-	IN `procType` VARCHAR(8)
+	IN `itemName` VARCHAR(100),
+	IN `itemCount` INT(8),
+	IN `typeInv` VARCHAR(8)
 
 
 
 )
 BEGIN
-    IF (procType = "update") THEN
-        UPDATE inventories SET items = JSON_SET(items, 'CONCAT("$.", slot)[0]', itemId, 'CONCAT("$.", slot)[1]', itemAmount) WHERE id = iid;
-    ELSEIF (procType = "remove") THEN
-        UPDATE inventories SET items = JSON_REMOVE(items, CONCAT("$.", slot)) WHERE id = iid;
-    ELSEIF (procType = "select") THEN
+    IF (typeInv = "update") THEN
+        UPDATE inventories SET items = JSON_SET(items, CONCAT("$.", itemName), itemCount) WHERE id = iid;
+    ELSEIF (typeInv = "remove") THEN
+        UPDATE inventories SET items = JSON_REMOVE(items, CONCAT("$.", itemName)) WHERE id = iid;
+    ELSEIF (typeInv = "select") THEN
         SELECT * from inventories WHERE id = iid;
-    ELSEIF (procType = "insert") THEN
+    ELSEIF (typeInv = "insert") THEN
         INSERT INTO inventories(id, charid, capacity, items) VALUES (iid, charid, 20, "{}");
-    ELSEIF (procType = "clear") THEN
+    ELSEIF (typeInv = "deadPlayer") THEN
         UPDATE inventories SET items = '{}' WHERE id = iid and charid = charid;
     END IF;
 END//
@@ -232,15 +232,15 @@ CREATE PROCEDURE `remData`(
 )
 BEGIN
 	IF (typeData = 'groups') THEN
-		UPDATE characters SET groups = JSON_REMOVE(groups, CONCAT("$.", keyValue)) WHERE charid = id;
+		UPDATE characters SET groups = JSON_REMOVE(groups, CONCAT("$.", keyValue)) WHERE charid = id;		
 	ELSEIF (typeData = 'clothes') THEN
 		UPDATE characters SET clothes = JSON_REMOVE(clothes, CONCAT("$.", keyValue)) WHERE charid = id;
+	ELSEIF (typeData = 'wanted') THEN
+		UPDATE characters SET wanted = JSON_REMOVE(wanted, CONCAT("$.", keyValue)) WHERE charid = id;
 	ELSEIF (typeData = 'charTable') THEN
 		UPDATE characters SET charTable = JSON_REMOVE(charTable, CONCAT("$.", keyValue)) WHERE charid = id;
-	ELSEIF (typeData = 'modif') THEN
-		UPDATE horses SET charTable = JSON_REMOVE(modif, CONCAT("$.", keyValue)) WHERE id = id;
-	ELSEIF (typeData = 'bando') THEN
-		UPDATE fort SET charTable = JSON_REMOVE(bando, CONCAT("$.", keyValue)) WHERE id = id;
+	ELSEIF (typeData = 'modificacao') THEN
+		UPDATE horses SET modificacao = JSON_REMOVE(modificacao, CONCAT("$.", keyValue)) WHERE charid = id;
 	END IF;
 END//
 DELIMITER ;
@@ -255,11 +255,15 @@ CREATE PROCEDURE `setData`(
 )
 BEGIN
 	IF (typeData = 'groups') THEN
-		UPDATE characters SET groups = JSON_SET(groups, CONCAT("$.", keyValue), valueKey) WHERE charid = id;
+		UPDATE characters SET groups = JSON_SET(groups, CONCAT("$.", keyValue), valueKey) WHERE charid = id;		
 	ELSEIF (typeData = 'clothes') THEN
-		UPDATE characters SET clothes = JSON_SET(clothes, CONCAT("$.", keyValue), valueKey) WHERE charid = id;
+		UPDATE characters SET clothes = JSON_SET(clothes, CONCAT("$.", keyValue), valueKey) WHERE charid = id;	
+	ELSEIF (typeData = 'wanted') THEN
+		UPDATE characters SET wanted = JSON_SET(wanted, CONCAT("$.", keyValue), valueKey) WHERE charid = id;			
 	ELSEIF (typeData = 'charTable') THEN
-		UPDATE characters SET charTable = JSON_SET(charTable, CONCAT("$.", keyValue), valueKey) WHERE charid = id;
+		UPDATE characters SET charTable = JSON_SET(charTable, CONCAT("$.", keyValue), valueKey) WHERE charid = id;		
+	ELSEIF (typeData = 'modificacao') THEN
+		UPDATE horses SET modificacao = JSON_SET(modif, CONCAT("$.", keyValue), valueKey) WHERE id = id;
 	END IF;
 END//
 DELIMITER ;

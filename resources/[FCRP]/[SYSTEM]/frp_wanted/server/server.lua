@@ -31,32 +31,39 @@ AddEventHandler('FRP:WANTED:gunshotInProgress', function(targetCoords, CityName,
 end)
 
 RegisterServerEvent('FRP:WANTED:RewardNotify')
-AddEventHandler('FRP:WANTED:RewardNotify', function(id, reward)
+AddEventHandler('FRP:WANTED:RewardNotify', function(id, reward, city)
     local tplayer = API.getUserFromUserId(parseInt(id)):getSource()
     local User = API.getUserFromSource(tplayer)      
     local Character = User:getCharacter()
     local pname = Character:getName()
-    TriggerClientEvent('FRP:WANTED:RewardNotify', -1, tplayer, reward, pname)
+    local charid = Character:getId()
+    local wan = Character:getData(charid, "wanted", city)
+    local wantedvalue = json.decode(wan)
+    
+    TriggerClientEvent('FRP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+
 end)
 
 RegisterServerEvent('FRP:WANTED:RewardSERVER')
 AddEventHandler('FRP:WANTED:RewardSERVER', function(id, value, city)
-    local User = API.getUserFromSource(id)
+    local tplayer = API.getUserFromUserId(parseInt(id)):getSource()
+    local User = API.getUserFromSource(tplayer)
+
     local Character = User:getCharacter()
     local charid = Character:getId()
+
+    local wan = Character:getData(charid, "wanted", city)
+    local wantedvalue = json.decode(wan)
+
+    print(wantedvalue)
+
     local wanted = {
         [city] = value
     }    
-    Character:setData(charid, "wanted", city, value)
+    Character:setData(charid, "wanted", city, value+wantedvalue)
  --   Character:setWanted(charid, json.encode(wanted))
 end)
         
-RegisterCommand('wanted', 
-    function(source, args, rawCommand)
-        if args[1] ~= nil then        
-            TriggerEvent('FRP:WANTED:RewardNotify', args[1], args[2])      
-        end
-end)
 
 RegisterCommand('gwanted2', function(source)
     local _source = source
