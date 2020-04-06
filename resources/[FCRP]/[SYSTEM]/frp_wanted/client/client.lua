@@ -1,5 +1,11 @@
-RegisterNetEvent('WANTED:gunshotInProgress')
-AddEventHandler('WANTED:gunshotInProgress', function(targetCoords)
+local Tunnel = module("_core", "libs/Tunnel")
+local Proxy = module("_core", "libs/Proxy")
+
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
+
+RegisterNetEvent('FRP:WANTED:gunshotInProgress')
+AddEventHandler('FRP:WANTED:gunshotInProgress', function(targetCoords)
     local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 408396114, targetCoords.x, targetCoords.y, targetCoords.z, 60.0)	
     Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Disparo de Tiro')
     Wait(8000)
@@ -12,15 +18,10 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 		local playerCoords = GetEntityCoords(playerPed)
-        local CityName = GetCurentTownName()
-
-
+   --     local CityName = GetCurentTownName()
         if IsPedShooting(playerPed) then
-
-            local Policia = TriggerServerEvent('WANTED:checkJOB')
-        
+            local Policia = TriggerServerEvent('FRP:WANTED:checkJOB')        
             print(Policia)
-
             if CityName ~= nil then
                 local ped = PlayerPedId()
                 local currentWeaponHash = GetCurrentPedWeapon(ped)
@@ -28,29 +29,70 @@ Citizen.CreateThread(function()
                 local playerGender = GetEntityModel(ped)		            
                 Citizen.Wait(3000)                                   
                 DecorSetInt(playerPed, 'isOutlaw', 2)
-                TriggerServerEvent('WANTED:gunshotInProgress', {
+                TriggerServerEvent('FRP:WANTED:gunshotInProgress', {
                     x = playerCoords.x,
                     y = playerCoords.y,
                     z = playerCoords.z,
-                }, CityName, playerGender)
-                
+                }, CityName, playerGender)                
             end
 		end
 	end
 end)
 
+local reward2 = 0 
+local pname = "Nome Desconhecido"
+local annon = false
+local CityName = "Cidade Fantasma"
+
+RegisterNetEvent('FRP:WANTED:RewardNotify')
+AddEventHandler('FRP:WANTED:RewardNotify', function(id, reward, playername)
+
+    reward2 = reward
+    pname = playername
+    CityName = GetCurrentTownName()
+
+    print(CityName)
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)    
+    annon = true
+    TriggerServerEvent('FRP:WANTED:RewardSERVER', id, reward, CityName)
+    Wait(5000)
+    annon = false
+end)
+
+
+RegisterNetEvent('FRP:WANTED:GetWanted')
+AddEventHandler('FRP:WANTED:GetWanted', function(city)
+    for city, value in pairs(city) do
+
+   end
+end)
 
 
 
-RegisterNetEvent('WANTED:outlawNotify')
-AddEventHandler('WANTED:outlawNotify', function(alert)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)        
+        if annon then            
+            DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.30, 0.10, 0.8, 0, 0, 0, 250, 1)
+            DrawTxt('~e~PROCURADO', 0.50, 0.05, 0.9, 0.9, true, 255, 255, 255, 255, true)
+            DrawTxt('Capture ~e~' .. pname .. ' ~q~morto ou vivo, recompensa $' .. reward2, 0.50, 0.10, 0.3, 0.3, true, 255, 255, 255, 255, true)
+            DrawTxt('E leve para o Sheriff de ~e~'.. CityName, 0.50, 0.12, 0.3, 0.3, true, 255, 255, 255, 255, true)
+        end
+    end
+end)
+
+RegisterNetEvent('FRP:WANTED:outlawNotify')
+AddEventHandler('FRP:WANTED:outlawNotify', function(alert)
     print('notifi')
     TriggerEvent('Distress', 'sucesso', "<b style='color:#007cb5; font-weight:700;'>Sheriff:</b> ".. (alert))
 end)
 
-function GetCurentTownName()
+function GetCurrentTownName()
     local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords ,1)
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
+
     if town_hash == GetHashKey("Annesburg") then
         return "Annesburg"
     elseif town_hash == GetHashKey("Annesburg") then
@@ -101,9 +143,93 @@ function GetCurentTownName()
         return "Aguasdulces Villa"
     elseif town_hash == GetHashKey("Manicato") then
         return "Manicato"
+    elseif town_hash == false then
+        return "Cidade Fantasma"
     end
 end
 
+
+function GetCurrentStateName()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, -1)
+
+    -- if town_hash == GetHashKey("GuarmaD") then
+    --     return "GuarmaD"
+    -- elseif town_hash == GetHashKey("BayouNwa") then
+    --     return "BayouNwa"
+    -- elseif town_hash == GetHashKey("bigvalley") then
+    --     return "bigvalley"
+    -- elseif town_hash == GetHashKey("BluewaterMarsh") then
+    --     return "BluewaterMarsh"
+    -- elseif town_hash == GetHashKey("ChollaSprings") then
+    --     return "ChollaSprings"
+    -- elseif town_hash == GetHashKey("Cumberland") then
+    --     return "Cumberland"
+    -- elseif town_hash == GetHashKey("DiezCoronas") then
+    --     return "DiezCoronas"
+    -- elseif town_hash == GetHashKey("GaptoothRidge") then
+    --     return "GaptoothRidge"
+    -- elseif town_hash == GetHashKey("greatPlains") then
+    --     return "greatPlains"
+    -- elseif town_hash == GetHashKey("GrizzliesEast") then
+    --     return "GrizzliesEast"
+    -- elseif town_hash == GetHashKey("GrizzliesWest") then
+    --     return "GrizzliesWest"
+    -- elseif town_hash == GetHashKey("HennigansStead") then
+    --     return "HennigansStead"
+    -- elseif town_hash == GetHashKey("Perdido") then
+    --     return "Perdido"
+    -- elseif town_hash == GetHashKey("PuntaOrgullo") then
+    --     return "PuntaOrgullo"
+    -- elseif town_hash == GetHashKey("RioBravo") then
+    --     return "RioBravo"
+    -- elseif town_hash == GetHashKey("roanoke") then
+    --     return "roanoke"     
+    -- elseif town_hash == GetHashKey("scarlettMeadows") then
+    --     return "scarlettMeadows"     
+    -- elseif town_hash == GetHashKey("TallTrees") then
+    --     return "TallTrees"     
+    -- elseif town_hash == GetHashKey("Heartlands") then
+    --     return "Heartlands"     
+    -- elseif town_hash == false then
+    --     return "Cidade Fantasma"
+    -- end
+
+    if town_hash == 999150106 then
+        return "Ambarino"
+    elseif town_hash == -1806461473 then
+        return "Lemoyne"    
+    elseif town_hash == -694461623 then 
+        return "West Elizabeth"
+    elseif town_hash == 1098225713 then
+        return "New Austin"
+    elseif town_hash == 1093870742 then  
+        return "New Hanover"
+    elseif town_hash == -1828192959 then  
+        return "Guarma"
+    end
+
+end
+--=============================================================-- DRAW TEXT SECTION--=============================================================--
+function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
+	local str = CreateVarString(10, 'LITERAL_STRING', str)
+	--Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
+	SetTextScale(w, h)
+	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+	SetTextCentre(centre)
+	if enableShadow then
+		SetTextDropshadow(1, 0, 0, 0, 255)
+	end
+	Citizen.InvokeNative(0xADA9255D, 1)
+	DisplayText(str, x, y)
+end
+
+
+
+
+function CreateVarString(p0, p1, variadic)
+	return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
+end
 
 
 

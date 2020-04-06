@@ -294,7 +294,7 @@ Its simulated from .selected :D
     position: absolute;
     right: 5%;
     bottom: 5%;
-    color: white;
+    color: gray;
     font-size: 11px;
 }
 
@@ -303,12 +303,12 @@ Its simulated from .selected :D
 }
 
 #primary .hotbar .slot:hover>* {
-    color: black;
+    color: black !important;
 }
 
 #primary .hotbar .hotbar-slot-selected {
     background-color: white;
-    color: black;
+    color: black !important;
 }
 
 

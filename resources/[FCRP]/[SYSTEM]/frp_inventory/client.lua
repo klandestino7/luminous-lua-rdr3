@@ -34,7 +34,7 @@ Citizen.CreateThread(
             --     -- )
             -- end
 
-            if IsControlJustPressed(0, 0x4216AF06) then -- F
+            if IsControlJustPressed(0, 0x3076E97C) then -- F
                 -- if IsDisabledControlJustPressed(0, 0x85D24405) then -- ToggleHolster TAB
                 SendNUIMessage(
                     {
