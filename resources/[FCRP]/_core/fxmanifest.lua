@@ -10,11 +10,13 @@ client_scripts {
 	'config/Garages.lua',
 	---------------------
 	'client/_Main.lua',
+	'client/Wrapper.lua',
 	'client/Death.lua',
 	'client/BasicNeeds.lua',
 	'client/Ped.lua',
 	'client/UI.lua',
 	'client/Vehicle.lua',
+	'client/Player.lua',
 	--'client/LoadIPL.lua',
 }
 

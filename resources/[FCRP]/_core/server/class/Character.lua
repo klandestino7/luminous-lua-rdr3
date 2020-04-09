@@ -13,7 +13,6 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.addGroup = function(this, group)
-        
         local groupType = Config_Permissions[group].type
         if groupType ~= nil then
             for tempGroup, _ in pairs(self.groups) do
@@ -231,9 +230,9 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.savePosition = function(this, source)
         local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))
         local encoded = {
-            ["x"] = tonumber(math.floor(x * 100) / 100),
-            ["y"] = tonumber(math.floor(y * 100) / 100),
-            ["z"] = tonumber(math.floor(z * 100) / 100)
+            tonumber(math.floor(x * 100) / 100),
+            tonumber(math.floor(y * 100) / 100),
+            tonumber(math.floor(z * 100) / 100)
         }
         self:setData(self:getId(), "charTable", "position", json.encode(encoded))
     end
