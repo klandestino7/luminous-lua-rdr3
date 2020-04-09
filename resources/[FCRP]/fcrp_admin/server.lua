@@ -4,6 +4,8 @@ local Tunnel = module("_core", "libs/Tunnel")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+cPed = Tunnel.getInterface("API:cPed")
+
 ------------------------------------
 ------------ADMIN COMMANDS----------
 ------------------------------------
@@ -222,8 +224,8 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))
-            API.prompt(source, "Cordenadas:", string.format("%.2f", x) .. "," .. string.format("%.2f", y) .. "," .. string.format("%.2f", z))
+            local v = cPed.getCoords(source)
+            API.prompt(source, "Cordenadas:", string.format("%.2f", v.x) .. "," .. string.format("%.2f", v.y) .. "," .. string.format("%.2f", v.z))
         end
     end
 )

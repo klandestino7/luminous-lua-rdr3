@@ -7,7 +7,13 @@ Proxy.addInterface("API_DB", dbAPI)
 
 -- cAPI = {}
 cAPI = Tunnel.getInterface("API")
-Tunnel.bindInterface("API", cAPI)
+-- Tunnel.bindInterface("API", cAPI)
+
+cPed = Tunnel.getInterface('API:cPed')
+cPlayer = Tunnel.getInterface('API:cPlayer')
+cUI = Tunnel.getInterface('API:cUI')
+cVehicle = Tunnel.getInterface('API:cVehicle')
+cWrapper = Tunnel.getInterface('API:cWrapper')
 
 API.users = {} -- key: user_id | value: User.class
 API.sources = {} -- key: source | value: user_id

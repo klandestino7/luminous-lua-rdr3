@@ -1,5 +1,5 @@
-local Tunnel = module("_core", "libs/Tunnel")
-local Proxy = module("_core", "libs/Proxy")
+Tunnel = module("_core", "libs/Tunnel")
+Proxy = module("_core", "libs/Proxy")
 
 cAPI = {}
 Tunnel.bindInterface("API", cAPI)
@@ -7,10 +7,22 @@ Proxy.addInterface("API", cAPI)
 
 API = Proxy.getInterface("API")
 
-local drawable_names = {"face", "masks", "hair", "torsos", "legs", "bags", "shoes", "neck", "undershirts", "vest", "decals", "jackets"}
-local head_overlays = {"bl", "fch", "eyebrownhead", "ageing", "Makeup", "Blush", "Complexion", "SunDamage", "Lipstick", "moles", "chesthair", "bodybl", "addbodybl"}
-local face_features = {"nosew", "peaknose", "lengthnose", "nosehigh", "noselowering", "nosetwist", "eyebrow", "eyebrow2", "cheeck1", "cheeck2", "cheeck3", "eye1", "lip1", "jaw1", "jaw2", "chimp1", "chimp2", "chimp3", "chimp4", "neck"}
+Citizen.CreateThread(
+	function()
+		DensityMultiplier = 0.0
 
+		cWrapper.SkyCameraAtCoords({709.69,1139.10,327.35})
+
+		while true do
+			Citizen.Wait(0)
+			SetVehicleDensityMultiplierThisFrame(DensityMultiplier)
+			SetPedDensityMultiplierThisFrame(DensityMultiplier)
+			SetRandomVehicleDensityMultiplierThisFrame(DensityMultiplier)
+			SetParkedVehicleDensityMultiplierThisFrame(DensityMultiplier)
+			SetScenarioPedDensityMultiplierThisFrame(DensityMultiplier, DensityMultiplier)
+		end
+	end
+)
 AddEventHandler(
 	"playerSpawned",
 	function()
@@ -55,49 +67,6 @@ end
 function cAPI.getSpeed()
 	local vx, vy, vz = table.unpack(GetEntityVelocity(PlayerPedId()))
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
-end
-
-function cAPI.setModel(genero)
-	-- Citizen.CreateThread(function()
-	RequestModel(genero)
-	while not HasModelLoaded(genero) do
-		Citizen.Wait(100)
-	end
-	SetPlayerModel(PlayerId(), genero)
-	SetPedDefaultComponentVariation(PlayerPedId(), true)
-	-- end)
-	return true
-end
-
-function cAPI.LoadModel(hash)
-	local waiting = 0
-	while not HasModelLoaded(hash) do
-		waiting = waiting + 100
-		Citizen.Wait(100)
-		if waiting > 0 then
-			break
-		end
-	end
-	return true
-end
-
-function cAPI.removeClothes(hash)
-end
-
-function cAPI.setClothes(hash)
-	local decoded = json.decode(hash)
-	cAPI.SetClothing(decoded.drawables, decoded.drawTextures)
-	cAPI.SetHairColor(decoded.getHair)
-	return true
-end
-
-function cAPI.setSkin(hash)
-	local decoded = json.decode(hash)
-	cAPI.SetPedHeadBlend(decoded.headBlend)
-	cAPI.SetHeadOverlayData(decoded.overlayHead)
-	cAPI.SetHeadStructure(decoded.headStruct)
-	cAPI.EndFade(500)
-	return true
 end
 
 function cAPI.getCamDirection()
@@ -341,21 +310,6 @@ function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
 	DisplayText(str, x, y)
 end
 
-function cAPI.StartFade(timer)
-	DoScreenFadeOut(timer)
-	while IsScreenFadingOut() do
-		Citizen.Wait(1)
-	end
-end
-
-function cAPI.EndFade(timer)
-	ShutdownLoadingScreen()
-	DoScreenFadeIn(timer)
-	while IsScreenFadingIn() do
-		Citizen.Wait(1)
-	end
-end
-
 function cAPI.createCamera()
 	local ped = PlayerPedId()
 	SetEntityCoords(ped, 500.02, 500.02, 250.93) -- POSITION WHEN PLAYER IS CREATING/SELECTING
@@ -376,32 +330,6 @@ function cAPI.destroyCamera()
 	Citizen.Wait(500)
 	DisplayHud(true)
 	DisplayRadar(true)
-end
-
-function cAPI.CameraWithSpawnEffect(coords)
-	DestroyCam(cam, true)
-	Citizen.Wait(100)
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x + 200, coords.y + 200, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
-	PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
-	SetCamActive(cam, true)
-	cAPI.EndFade(500)
-	RenderScriptCams(true, false, 1, true, true)
-	Citizen.Wait(500)
-	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
-	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
-	Citizen.Wait(3900)
-	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
-	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
-	RenderScriptCams(false, true, 500, true, true)
-	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z + 0.5)
-	Citizen.Wait(1500)
-	DestroyAllCams(true)
-	Citizen.Wait(800)
-	DisplayHud(true)
-	DisplayRadar(true)
-	TriggerEvent("ToogleBackCharacter")
 end
 
 function cAPI.SetPedHeadBlend(data)
@@ -430,35 +358,4 @@ function cAPI.SetHeadOverlayData(data)
 		SetPedHeadOverlayColor(player, 10, 1, tonumber(data[11].firstColour), tonumber(data[11].secondColour))
 		SetPedHeadOverlayColor(player, 11, 0, tonumber(data[12].firstColour), tonumber(data[12].secondColour))
 	end
-end
-
-function cAPI.SetHeadStructure(data)
-	local player = PlayerPedId()
-	for i = 1, #face_features do
-		SetPedFaceFeature(player, i - 1, data[i])
-	end
-end
-
-function cAPI.SetClothing(drawables, drawTextures)
-	local player = PlayerPedId()
-	for i = 1, #drawable_names do
-		if drawables[0] == nil then
-			if drawable_names[i] == "undershirts" and drawables[tostring(i - 1)][2] == -1 then
-				SetPedComponentVariation(player, i - 1, 15, 0, 2)
-			else
-				SetPedComponentVariation(player, i - 1, drawables[tostring(i - 1)][2], drawTextures[i][2], 2)
-			end
-		else
-			if drawable_names[i] == "undershirts" and drawables[i - 1][2] == -1 then
-				SetPedComponentVariation(player, i - 1, 15, 0, 2)
-			else
-				SetPedComponentVariation(player, i - 1, drawables[i - 1][2], drawTextures[i][2], 2)
-			end
-		end
-	end
-end
-
-function cAPI.SetHairColor(data)
-	local player = PlayerPedId()
-	SetPedHairColor(player, tonumber(data[0]), tonumber(data[1]))
 end

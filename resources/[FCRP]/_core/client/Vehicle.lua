@@ -1,9 +1,10 @@
-cAPI.Vehicle = {}
-local Vehicle = cAPI.Vehicle
+cVehicle = {}
+Tunnel.bindInterface("API:cVehicle", cVehicle)
+Proxy.addInterface("API:cVehicle", cVehicle)
 
-function Vehicle.getClosest(radius, maxArraySize)
+function cVehicle.GetClosest(radius, maxArraySize)
     local r = {}
-    local px, py, pz = tvRP.getPosition()
+    local px, py, pz = table.unpack(GetEntityCoords(PlayerPedId()))
     for _, veh in pairs(tvRP.getAllVehicles()) do
         local x, y, z = table.unpack(GetEntityCoords(veh))
         local distance = GetDistanceBetweenCoords(x, y, z, px, py, pz, true)

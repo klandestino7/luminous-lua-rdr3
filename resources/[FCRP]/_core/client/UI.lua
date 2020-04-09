@@ -1,3 +1,7 @@
+cUI = {}
+Tunnel.bindInterface("API:cUI", cUI)
+Proxy.addInterface("API:cUI", cUI)
+
 local prompResult = nil
 local canDisplayNUI = true
 
