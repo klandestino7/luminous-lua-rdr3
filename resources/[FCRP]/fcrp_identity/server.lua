@@ -37,6 +37,7 @@ RegisterServerEvent('fcrp_identity:selectCharacter')
 AddEventHandler('fcrp_identity:selectCharacter', function(cid) 
     print('server  selectcharacter')
     local _source = source
+    -- cAPI.camera
     local User = API.getUserFromSource(_source) 
     User:setCharacter(cid) 
 end)

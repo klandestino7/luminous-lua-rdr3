@@ -6,11 +6,15 @@ Config.ShopDatas = {
 		["Armas"] = {
 			-- Level, Price
 			{"weapon_combatpistol", 1, 50},
-			{"weapon_assaultrifle", 6, 10}
+			{"weapon_assaultrifle", 6, 10},
+			{"weapon_specialcarbine", 6, 10},
+			{"weapon_carbinerifle_mk2", 6, 10},
+			{"weapon_vintagepistol", 6, 10},
+			{"weapon_smg_mk2", 6, 10},
 		},
 		["Munições"] = {
 			-- Level, Price
-			{"ammo_combatpistol", 2, 25}
+			{"ammo_assaultrifle", 2, 25}
 		},
 		["Armas Brancas"] = {
 			-- Level, Price
