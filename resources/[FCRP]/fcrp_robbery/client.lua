@@ -138,13 +138,19 @@ function initCheckPedIsOutside()
     isParticipantOfRobbery = true
     Citizen.CreateThread(
         function()
-            local defaultSeconds = 5 
+            local defaultSeconds = 5
             defaultSeconds = defaultSeconds * 10 -- 100ms (Wait) * 50 = 5000ms
             secondsUntilAbandonRobbery = defaultCount
             while isParticipantOfRobbery do
                 Citizen.Wait(100)
 
                 local ped = PlayerPedId()
+
+                if IsPlayerDead(PlayerId()) then
+                    print("Você morreu em meio a um roubo")
+                    TriggerServerEvent("FCRP:ROBBERY:PlayerAbandonedRobbery")
+                    TriggerEvent("FCRP:ROBBERY:EndRobbery")
+                end
 
                 local interiorIdBeingRobbed = interiors[interiorIndexBeingRobbed]
                 local interiorIdPlayerIsIn = GetInteriorFromEntity(ped)
