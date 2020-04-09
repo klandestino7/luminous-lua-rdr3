@@ -12,6 +12,9 @@ client_scripts {
 	'client/_Main.lua',
 	'client/Death.lua',
 	'client/BasicNeeds.lua',
+	'client/Ped.lua',
+	'client/UI.lua',
+	'client/Vehicle.lua',
 	--'client/LoadIPL.lua',
 }
 

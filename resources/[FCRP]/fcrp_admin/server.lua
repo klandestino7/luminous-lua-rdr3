@@ -26,9 +26,9 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") and args[1] then
             local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
-            local x, y, z = cAPI.getPosition(source)
+            local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))
             if tplayer then
-                cAPI.teleport(tplayer, x, y, z)
+                cAPI.setPosition(tplayer, x, y, z)
             end
         end
     end
@@ -42,7 +42,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") and args[1] then
             local tplayer = API.getUserSource(parseInt(args[1]))
             if tplayer then
-                cAPI.teleport(source, cAPI.getPosition(tplayer))
+                cAPI.setPosition(source, table.unpack(GetEntityCoords(GetPlayerPed(tplayer))))
             end
         end
     end
@@ -64,7 +64,7 @@ RegisterCommand(
                 table.insert(coords, parseInt(coord))
             end
             print(coords[1], coords[2], coords[3])
-            cAPI.teleport(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
+            cAPI.setPosition(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
         end
     end
 )
@@ -222,7 +222,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            local x, y, z = cAPI.getPosition(source)
+            local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))
             API.prompt(source, "Cordenadas:", string.format("%.2f", x) .. "," .. string.format("%.2f", y) .. "," .. string.format("%.2f", z))
         end
     end
@@ -268,7 +268,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            cAPI.setEntityHealth(source, 200)
+            cAPI.setPlayerHealth(source, 200)
         end
     end
 )

@@ -35,24 +35,13 @@ Citizen.CreateThread(
 	end
 )
 
-Citizen.CreateThread(
-	function()
-		while true do
-			local playerPed = PlayerPedId()
-			if playerPed and playerPed ~= -1 then
-				TriggerServerEvent("updatePosOnServerForPlayer", {table.unpack(GetEntityCoords(playerPed))})
-			end
-			Citizen.Wait(5000)
-		end
-	end
-)
-
-function cAPI.getPosition()
-	local x, y, z = table.unpack(GetEntityCoords(PlayerPedId(), true))
-	return x, y, z
+function cAPI.varyHealth(variation)
+	local ped = PlayerPedId()
+	local n = math.floor(GetEntityHealth(ped) + variation)
+	SetEntityHealth(ped, n)
 end
 
-function cAPI.teleport(x, y, z, spawn)
+function cAPI.setPosition(x, y, z, spawn)
 	SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
 end
 
@@ -111,39 +100,6 @@ function cAPI.setSkin(hash)
 	return true
 end
 
-function cAPI.TargetT(Distance, Ped)
-	local Entity = nil
-	local camCoords = GetGameplayCamCoord()
-	local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
-	local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
-	local A, B, C, D, Entity = GetRaycastResult(RayHandle)
-	return Entity, farCoordsX, farCoordsY, farCoordsZ
-end
-
-function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
-	local Ent = nil
-	local CoA = GetEntityCoords(Ped, 1)
-	local CoB = GetOffsetFromEntityInWorldCoords(Ped, 0.0, Distance, 0.0)
-	local RayHandle = StartShapeTestRay(CoA.x, CoA.y, CoA.z, CoB.x, CoB.y, CoB.z, -1, Ped, 0)
-	local A, B, C, D, Ent = GetRaycastResult(RayHandle)
-	return Ent
-end
-
--- Camera's coords
-function cAPI.GetCoordsFromCam(distance)
-	local rot = GetGameplayCamRot(2)
-	local coord = GetGameplayCamCoord()
-
-	local tZ = rot.z * 0.0174532924
-	local tX = rot.x * 0.0174532924
-	local num = math.abs(math.cos(tX))
-
-	newCoordX = coord.x + (-math.sin(tZ)) * (num + distance)
-	newCoordY = coord.y + (math.cos(tZ)) * (num + distance)
-	newCoordZ = coord.z + (math.sin(tX) * 8.0)
-	return newCoordX, newCoordY, newCoordZ
-end
-
 function cAPI.getCamDirection()
 	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
 	local pitch = GetGameplayCamRelativePitch()
@@ -190,185 +146,6 @@ function cAPI.getNearestPlayer(radius)
 	return p
 end
 
-local weaponModels = {
-	"WEAPON_KNIFE",
-	"WEAPON_STUNGUN",
-	"WEAPON_FLASHLIGHT",
-	"WEAPON_NIGHTSTICK",
-	"WEAPON_HAMMER",
-	"WEAPON_BAT",
-	"WEAPON_GOLFCLUB",
-	"WEAPON_CROWBAR",
-	"WEAPON_PISTOL",
-	"WEAPON_COMBATPISTOL",
-	"WEAPON_APPISTOL",
-	"WEAPON_PISTOL50",
-	"WEAPON_MICROSMG",
-	"WEAPON_SMG",
-	"WEAPON_ASSAULTSMG",
-	"WEAPON_ASSAULTRIFLE",
-	"WEAPON_CARBINERIFLE",
-	"WEAPON_ADVANCEDRIFLE",
-	"WEAPON_MG",
-	"WEAPON_COMBATMG",
-	"WEAPON_PUMPSHOTGUN",
-	"WEAPON_SAWNOFFSHOTGUN",
-	"WEAPON_ASSAULTSHOTGUN",
-	"WEAPON_BULLPUPSHOTGUN",
-	"WEAPON_STUNGUN",
-	"WEAPON_SNIPERRIFLE",
-	"WEAPON_HEAVYSNIPER",
-	"WEAPON_REMOTESNIPER",
-	"WEAPON_GRENADELAUNCHER",
-	"WEAPON_GRENADELAUNCHER_SMOKE",
-	"WEAPON_RPG",
-	"WEAPON_PASSENGER_ROCKET",
-	"WEAPON_AIRSTRIKE_ROCKET",
-	"WEAPON_STINGER",
-	"WEAPON_MINIGUN",
-	"WEAPON_GRENADE",
-	"WEAPON_STICKYBOMB",
-	"WEAPON_SMOKEGRENADE",
-	"WEAPON_BZGAS",
-	"WEAPON_MOLOTOV",
-	"WEAPON_FIREEXTINGUISHER",
-	"WEAPON_PETROLCAN",
-	"WEAPON_DIGISCANNER",
-	"WEAPON_BRIEFCASE",
-	"WEAPON_BRIEFCASE_02",
-	"WEAPON_BALL",
-	"WEAPON_FLARE"
-}
-
-function cAPI.getWeapons()
-	local ped = PlayerPedId()
-	local ammo_types = {}
-	local weapons = {}
-	for _, v in pairs(weaponModels) do
-		local hash = GetHashKey(v)
-		if HasPedGotWeapon(ped, hash) then
-			local atype = GetPedAmmoTypeFromWeapon(ped, hash)
-			if ammo_types[atype] == nil then
-				ammo_types[atype] = true
-				weapons[v] = GetAmmoInPedWeapon(ped, hash)
-			else
-				weapons[v] = 0
-			end
-		end
-	end
-
-	return weapons
-end
-
-function cAPI.replaceWeapons(weapons)
-	local old_weapons = cAPI.getWeapons()
-	cAPI.giveWeapons(weapons, true)
-	return old_weapons
-end
-
-function cAPI.giveWeapon(weapon, ammo, clear_before)
-	cAPI.giveWeapons(
-		{
-			weapon = ammo
-		},
-		clear_before
-	)
-end
-
-function cAPI.giveWeapons(weapons, clear_before)
-	local ped = PlayerPedId()
-
-	if clear_before then
-		RemoveAllPedWeapons(ped, true, true)
-	end
-
-	for weapon, ammo in pairs(weapons) do
-		local hash = GetHashKey(weapon)
-
-		GiveWeaponToPed(PlayerPedId(), hash, ammo or 0, false, true)
-	end
-end
-
-function cAPI.setArmour(amount)
-	SetPedArmour(PlayerPedId(), amount)
-end
-
-function cAPI.getArmour()
-	return GetPedArmour(PlayerPedId())
-end
-
-function cAPI.setHealth(amount)
-	SetEntityHealth(PlayerPedId(), math.floor(amount))
-end
-
-function cAPI.getHealth()
-	return GetEntityHealth(PlayerPedId())
-end
-
-local prompResult = nil
-
-function cAPI.prompt(title, default_text)
-	SendNUIMessage({act = "prompt", title = title, text = tostring(default_text)})
-	SetNuiFocus(true)
-	while prompResult == nil do
-		Citizen.Wait(10)
-	end
-	local _temp = prompResult
-	prompResult = nil
-	return _temp
-end
-
-RegisterNUICallback(
-	"prompt",
-	function(data, cb)
-		if data.act == "close" then
-			SetNuiFocus(false)
-			prompResult = data.result
-		end
-	end
-)
-
-local requests = {}
-
-function cAPI.request(text, time)
-	local id = math.random(999999)
-	SendNUIMessage({act = "request", id = id, text = tostring(text), time = time})
-
-	-- !!! OPTIMIZATION
-	-- Stop the loop while the time has passed
-
-	while requests[id] == nil do
-		Citizen.Wait(10)
-	end
-
-	local _temp = requests[id] or false
-	requests[id] = nil
-	return _temp
-end
-
-RegisterNUICallback(
-	"request",
-	function(data, cb)
-		if data.act == "response" then
-			requests[data.id] = data.ok
-		end
-	end
-)
-
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(3)
-			if IsControlJustPressed(1, 166) then
-				SendNUIMessage({act = "event", event = "yes"})
-			end
-			if IsControlJustPressed(1, 167) then
-				SendNUIMessage({act = "event", event = "no"})
-			end
-		end
-	end
-)
-
 local noclip = false
 local noclip_speed = 10.0
 
@@ -393,7 +170,7 @@ Citizen.CreateThread(
 			SetPlayerHealthRechargeMultiplier(PlayerId(), 0.0)
 			if noclip then
 				local ped = PlayerPedId()
-				local x, y, z = cAPI.getPosition()
+				local x, y, z = table.unpack(GetEntityCoords(ped))
 				local dx, dy, dz = cAPI.getCamDirection()
 				local speed = noclip_speed
 				SetEntityVelocity(ped, 0.0001, 0.0001, 0.0001)
@@ -684,8 +461,4 @@ end
 function cAPI.SetHairColor(data)
 	local player = PlayerPedId()
 	SetPedHairColor(player, tonumber(data[0]), tonumber(data[1]))
-end
-
-function cAPI.setEntityHealth(v)
-	setEntityHealth(PlayerPedId(), v)
 end

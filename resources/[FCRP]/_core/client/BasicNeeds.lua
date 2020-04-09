@@ -1,19 +1,10 @@
-needs = false
-
-function cAPI.startNeeds()
-    needs = true
-    TriggerEvent("fc_basicneeds:startUI")
-end
-
-function cAPI.isStartedNeeds()
-    return needs
-end
 
 Citizen.CreateThread(
     function()
+        TriggerEvent("fc_basicneeds:startUI")
         while true do
             Citizen.Wait(5000)
-            if IsPlayerPlaying(PlayerId()) and needs then
+            if IsPlayerPlaying(PlayerId()) then
                 local ped = PlayerPedId()
                 local vthirst = 0
                 local vhunger = 0
@@ -46,8 +37,3 @@ Citizen.CreateThread(
     end
 )
 
-function cAPI.varyHealth(variation)
-    local ped = PlayerPedId()
-    local n = math.floor(GetEntityHealth(ped)+variation)
-	SetEntityHealth(ped,n)
-end
