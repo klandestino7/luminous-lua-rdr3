@@ -41,7 +41,18 @@ function API.User(source, id, ipAddress)
             Character:setData(charId, "charTable", "thirst", 0)
             Character:setData(charId, "charTable", "position", '{"z":13.81,"y":-2738.70,"x":-1038.16}')
 
-            dbAPI.execute("FCRP/Inventory", {id = "char:" .. Character:getId(), charid = Character:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
+            dbAPI.execute(
+                "FCRP/Inventory",
+                {
+                    id = "char:" .. Character:getId(),
+                    charid = Character:getId(),
+                    capacity = 20,
+                    slot = 0,
+                    itemId = 0,
+                    itemAmount = 0,
+                    procType = "insert"
+                }
+            )
         -- Character:savePosition(self:getSource())
         end
 
@@ -56,7 +67,7 @@ function API.User(source, id, ipAddress)
         local charRow = dbAPI.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            local rows2 = dbAPI.query("FCRP/Inventory", {id = "char:" .. id, charid = id, itemName = 0, itemCount = 0, typeInv = "select"})
+            local rows2 = dbAPI.query("FCRP/Inventory", {id = "char:" .. id, charid = id, capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local Inventory = nil
 
             if #rows2 > 0 then
@@ -64,12 +75,30 @@ function API.User(source, id, ipAddress)
             end
 
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), Inventory)
-            local weapons = json.decode(charRow[1].weapons) or {}
-            cAPI.replaceWeapons(self:getSource(), weapons)
-            local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
-            if posse ~= nil then
-                self.posseId = posse:getId()
+
+            if rows2[1] ~= nil then
+                local parsedSlots = {}
+                local decodedItems = json.decode(rows2[1].items)
+                local found = false
+                for i = 129, 132 do
+                    local stringd = tostring(i)
+                    if decodedItems[stringd] ~= nil then
+                        found = true
+                        parsedSlots[i] = {
+                            decodedItems[stringd][1],
+                            decodedItems[stringd][2]
+                        }
+                    end
+                end
+                if found == true then
+                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
+                end
             end
+
+            -- local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
+            -- if posse ~= nil then
+            --     self.posseId = posse:getId()
+            -- end
             ---------------- AUTO ADMING GROUP TO USER WITH ID 1
             if self:getId() == 1 then
                 if not self.Character:hasGroup("admin") then
@@ -109,13 +138,16 @@ function API.User(source, id, ipAddress)
 
     self.viewInventory = function()
         if self.Character ~= nil then
+            print("user char not nil")
             self:viewInventoryAsPrimary(self.Character:getInventory())
         end
     end
 
     self.viewInventoryAsPrimary = function(this, Inventory)
+        print("user view as primary")
         self.primaryViewingInventory = Inventory
         Inventory:viewAsPrimary(self:getSource())
+        print("user viwed primeary")
     end
 
     self.viewInventoryAsSecondary = function(this, Inventory)

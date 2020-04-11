@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/eb73bbb7e4.js" crossorigin="anonymous"></script>
+    <link href="https://db.onlinewebfonts.com/c/b942f5022c0006bf5a2bae065a5a4896?family=Hurme+Geometric+Sans+No.3" rel="stylesheet" type="text/css" />
+    <link href="https://db.onlinewebfonts.com/c/6fe41ddfdaa27520c7b0d4cfe2564195?family=HurmeGeometricSans3W01-Lt" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -26,49 +28,30 @@
             </div>
 
             <div class="items" id="all">
-                <div class="item">
-                    <img src="../../fcrp_inventory/html/img/items/weapon_assaultrifle.png">
-                    <div class="borderl"></div>
-                    <div class="label">
-                        <p>AK-47</p>
-                        <p>Level: 1</p>
-                        <p>Preço: $250,00</p>
-                    </div>
-                    <div class="borderr"></div>
-                    <div class='button-container'>
-                        <div class="button-column">
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-arrow-up"></i>
-                            </button>
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                100
-                            </button>
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-arrow-down"></i>
-                            </button>
+                <div class="slot">
+                    <div class="item">
+                        <div class="column">
+                            <div class="information-row">
+                                <span class="info-name">${itemName}</span>
+                                <span class="info-level">LVL. ${itemLevel}</span>
+                            </div>
+                            <div class="img-container">
+                                <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
+                            </div>
                         </div>
-                        <div class="button">
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-shopping-basket"></i>
-                            </button>
-                        </div>
+                        <span class="info-price">${itemPrice} $</span>
                     </div>
+                    <button onclick="buyItem('${shopId}', '${itemId}')">
+                    $
+                </button>
+                    <div class="empty-container"> </div>
                 </div>
             </div>
-
-            <div class="items" id="weapon" style="display: none;">
-
-            </div>
-            <div class="items" id="ammo" style="display: none;">
-
-            </div>
-
-            <div class="items" id="melee" style="display: none;">
-
-            </div>
-
-
-        </div> -->
+        </div>
+        <div class="items" id="weapon" style="display: none;"></div>
+        <div class="items" id="ammo" style="display: none;"></div>
+        <div class="items" id="melee" style="display: none;"></div> -->
+    </div>
     </div>
     <script src="app.js"></script>
 </body>

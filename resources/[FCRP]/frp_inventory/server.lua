@@ -1,0 +1,232 @@
+local Tunnel = module("_core", "libs/Tunnel")
+local Proxy = module("_core", "libs/Proxy")
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
+
+RegisterNetEvent("FCRP:INVENTORY:open")
+AddEventHandler(
+    "FCRP:INVENTORY:open",
+    function()
+        print('FCRP:INVENTORY:open')
+        local _source = source
+        print('FCRP:INVENTORY:open source', _source)
+        local User = API.getUserFromSource(_source)
+        print('FCRP:INVENTORY:open user')
+        local Character = User:getCharacter()
+        print('FCRP:INVENTORY:open char')
+        User:viewInventory()
+        print('FCRP:INVENTORY:open view')
+        -- local primaryInventory = User:getPrimaryInventoryViewing()
+        -- local secondaryInventory = User:getSecondaryInventoryViewing()
+
+        -- Primary = primaryInventory:getWeight()
+        -- Capacity = primaryInventory:getCapacity()
+
+        -- TriggerClientEvent('FCRP:INVENTORY:weight', _source, Primary, Capacity)
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:Close")
+AddEventHandler(
+    "FCRP:INVENTORY:Close",
+    function()
+        local _source = source
+        local User = API.getUserFromSource(_source)
+
+        if User == nil then
+            return
+        end
+
+        local Character = User:getCharacter()
+        User:closeInventory()
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:useItem")
+AddEventHandler(
+    "FCRP:INVENTORY:useItem",
+    function(data)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local Inventory = User:getPrimaryInventoryViewing()
+
+        if Inventory == nil then
+            return
+        end
+
+        local ItemData = API.getItemDataFromId(data.id)
+        local amount = tonumber(data.amount) or 1
+        if Inventory:getItemAmount(data.id) >= amount then
+            if ItemData:use(User, amount) then
+                Inventory:removeItem(data.id, amount)
+                User:notify(ItemData:getName() .. " usado!")
+            else
+                User:notify(ItemData:getName() .. " não pode ser usado usado!")
+            end
+        else
+            User:notify(ItemData:getName() .. " não encontrado no inventário")
+        end
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:dropItem")
+AddEventHandler(
+    "FCRP:INVENTORY:dropItem",
+    function(data)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local Inventory = User:getPrimaryInventoryViewing()
+
+        if Inventory == nil then
+            return
+        end
+
+        local ItemData = API.getItemDataFromId(data.id)
+
+        if Inventory:removeItem(data.id, data.amount) then
+            User:notify(ItemData:getName() .. " dropado!")
+        else
+            User:notify("x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
+        end
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:sendItemToPrimary")
+AddEventHandler(
+    "FCRP:INVENTORY:sendItemToPrimary",
+    function(id, amount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local primaryInventory = User:getPrimaryInventoryViewing()
+        local secondaryInventory = User:getSecondaryInventoryViewing()
+
+        if primaryInventory == nil or secondaryInventory == nil then
+            User:closeInventory()
+            return
+        end
+
+        local ItemData = API.getItemDataFromId(id)
+
+        if primaryInventory:getWeight() + (ItemData:getWeight() * amount) >= primaryInventory:getCapacity() then
+            User:notify("Inventário cheio!")
+            return
+        end
+
+        if secondaryInventory:removeItem(id, amount) then
+            primaryInventory:addItem(-1, id, amount)
+        end
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:sendItemToSecondary")
+AddEventHandler(
+    "FCRP:INVENTORY:sendItemToSecondary",
+    function(id, amount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local primaryInventory = User:getPrimaryInventoryViewing()
+        local secondaryInventory = User:getSecondaryInventoryViewing()
+
+        if primaryInventory == nil or secondaryInventory == nil then
+            User:closeInventory()
+            return
+        end
+
+        local ItemData = API.getItemDataFromId(id)
+        if secondaryInventory:getWeight() + (ItemData:getWeight() * amount) >= secondaryInventory:getCapacity() then
+            User:notify("Baú cheio!")
+            return
+        end
+
+        if primaryInventory:removeItem(id, amount) then
+            secondaryInventory:addItem(-1, id, amount)
+        end
+    end
+)
+
+RegisterNetEvent("FCRP:INVENTORY:primarySwitchItemSlot")
+AddEventHandler(
+    "FCRP:INVENTORY:primarySwitchItemSlot",
+    function(slotFrom, slotTo, itemAmount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local primaryInventory = User:getPrimaryInventoryViewing()
+
+        if primaryInventory == nil then
+            User:closeInventory()
+            return
+        end
+
+        slotFrom = tonumber(slotFrom)
+        slotTo = tonumber(slotTo)
+        itemAmount = tonumber(itemAmount)
+
+        if primaryInventory:getSlots()[slotFrom] == nil then
+            return
+        end
+
+        if itemAmount == -2 then
+            itemAmount = primaryInventory:getSlots()[slotFrom]:getItemAmount()
+        end
+
+        if itemAmount == -1 then
+            itemAmount = primaryInventory:getSlots()[slotFrom]:getItemAmount() / 2
+        end
+
+        print(' primaryInventory:moveSlot', slotFrom, slotTo, itemAmount)
+
+        primaryInventory:moveSlot(slotFrom, slotTo, itemAmount)
+
+        -- print("switching", itemAmount)
+
+        -- if (slotTo >= 129 and slotTo <= 132) or (slotFrom >= 129 and slotFrom <= 132) then
+        --     if (slotTo >= 129 and slotTo <= 132) and (slotFrom >= 129 and slotFrom <= 132) then
+        --         return
+        --     end
+        --     primaryInventory:moveToFromSlotHotbar(User, slotFrom, slotTo, itemAmount)
+        -- else
+        --     primaryInventory:moveToSlot(slotFrom, slotTo, itemAmount)
+        -- end
+    end
+)
+
+RegisterNetEvent("VP:INVENTORY:SaveWeaponAmmoOnDB")
+AddEventHandler(
+    "VP:INVENTORY:SaveWeaponAmmoOnDB",
+    function(slot, ammoCount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local primaryInventory = User:getCharacter():getInventory()
+
+        primaryInventory:saveWeaponSlotIntoDb(slot, ammoCount)
+    end
+)
+
+RegisterCommand(
+    "garmas",
+    function(source, args)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+
+        local armas = cAPI.getWeapons(_source)
+        local Inventory = Character:getInventory()
+        local ammo = cAPI.getAmmo(_source)
+
+        -- for w, v in pairs(armas) do
+        --     Inventory:addItem(w, 1)
+        -- end
+
+        -- for a, v in pairs(ammo) do
+        --     Inventory:addItem(w, v)
+        -- end
+
+        TriggerClientEvent("frp_inventory:removeWeapons", _source)
+    end
+)

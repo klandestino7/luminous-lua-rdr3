@@ -161,71 +161,71 @@ function API.Character(id, charName, level, xp, groups, inventory)
         return false
     end
 
-    self.createHorse = function(this, model, name)
-        local rows = dbAPI.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
-        if #rows > 0 then
-            local id = rows[1].id
-            self.Horse = API.Horse(id, model, name, API.Inventory("horse" .. id, nil, nil))
-            local Inventory = self.Horse:getInventory()
+    -- self.createHorse = function(this, model, name)
+    --     local rows = dbAPI.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
+    --     if #rows > 0 then
+    --         local id = rows[1].id
+    --         self.Horse = API.Horse(id, model, name, API.Inventory("horse" .. id, nil, nil))
+    --         local Inventory = self.Horse:getInventory()
 
-            dbAPI.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
-        end
+    --         dbAPI.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), itemName = 0, itemCount = 0, typeInv = "insert"})
+    --     end
 
-        return self.Horse
-    end
+    --     return self.Horse
+    -- end
 
-    self.setHorse = function(this, id)
-        local rows = dbAPI.query("FCRP/GetHorse", {id = id})
-        if #rows > 0 then
-            local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
-            local Inventory = nil
-            if #invRows > 0 then
-                local items, _ = json.decode(invRows[1].items)
-                Inventory = API.Inventory("horse:" .. id, tonumber(invRows[1].capacity), items)
-            end
-            self.Horse = API.Horse(id, rows[1].model, rows[1].name, Inventory)
-            return self:getHorse()
-        end
-    end
+    -- self.setHorse = function(this, id)
+    --     local rows = dbAPI.query("FCRP/GetHorse", {id = id})
+    --     if #rows > 0 then
+    --         local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+    --         local Inventory = nil
+    --         if #invRows > 0 then
+    --             local items, _ = json.decode(invRows[1].items)
+    --             Inventory = API.Inventory("horse:" .. id, tonumber(invRows[1].capacity), items)
+    --         end
+    --         self.Horse = API.Horse(id, rows[1].model, rows[1].name, Inventory)
+    --         return self:getHorse()
+    --     end
+    -- end
 
-    self.removeHorse = function(this, id)
-        if self.Horse ~= nil then
-            if self.Horse:getId() == id then
-                self.Horse = nil
-            end
-        end
-    end
+    -- self.removeHorse = function(this, id)
+    --     if self.Horse ~= nil then
+    --         if self.Horse:getId() == id then
+    --             self.Horse = nil
+    --         end
+    --     end
+    -- end
 
-    self.getHorses = function()
-        local rows = dbAPI.query("FCRP/GetHorses", {charid = self.id})
-        if #rows > 0 then
-            return rows
-        end
-    end
+    -- self.getHorses = function()
+    --     local rows = dbAPI.query("FCRP/GetHorses", {charid = self.id})
+    --     if #rows > 0 then
+    --         return rows
+    --     end
+    -- end
 
-    self.getHorse = function()
-        if self.Horse == nil then
-            local horses = self:getHorses()
+    -- self.getHorse = function()
+    --     if self.Horse == nil then
+    --         local horses = self:getHorses()
 
-            if horses ~= nil then
-                local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. horses[1].id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
-                local Inventory = nil
-                if #invRows > 0 then
-                    -- Por algum motivo o decode tá retornando 2 valores?
-                    local items, _ = json.decode(invRows[1].items)
-                    Inventory = API.Inventory("horse:" .. horses[1].id, tonumber(invRows[1].capacity), items)
-                end
+    --         if horses ~= nil then
+    --             local invRows = dbAPI.query("FCRP/Inventory", {id = "horse:" .. horses[1].id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
+    --             local Inventory = nil
+    --             if #invRows > 0 then
+    --                 -- Por algum motivo o decode tá retornando 2 valores?
+    --                 local items, _ = json.decode(invRows[1].items)
+    --                 Inventory = API.Inventory("horse:" .. horses[1].id, tonumber(invRows[1].capacity), items)
+    --             end
 
-                self.Horse = API.Horse(tonumber(horses[1].id), horses[1].model, horses[1].name, Inventory)
+    --             self.Horse = API.Horse(tonumber(horses[1].id), horses[1].model, horses[1].name, Inventory)
 
-                return self.Horse
-            else
-                return self:createHorse("A_C_Donkey_01", "Burrinho")
-            end
-        else
-            return self.Horse
-        end
-    end
+    --             return self.Horse
+    --         else
+    --             return self:createHorse("A_C_Donkey_01", "Burrinho")
+    --         end
+    --     else
+    --         return self.Horse
+    --     end
+    -- end
 
     self.savePosition = function(this, source)
         local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(source)))

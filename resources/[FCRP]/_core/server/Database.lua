@@ -170,9 +170,9 @@ dbAPI.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
 dbAPI.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
 dbAPI.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 -------- INVENTORY THINGS -----------
-dbAPI.prepare('FCRP/Inventory', 'CALL inventories(@id, @charid, @itemName, @itemCount, @typeInv);')
-dbAPI.prepare('FCRP/ForcedInventory', "INSERT INTO inventories(id, capacity, items) VALUES (@id, @capacity, @items);")
-dbAPI.prepare('INVENTORY:procListOfItems', 'CALL procListOfItems(@id, @charid, @itemList, @procType);')
+dbAPI.prepare('FCRP/Inventory', 'CALL procInventory(@id, @charid, @slot, @itemId, @itemAmount, @procType);')
+-- dbAPI.prepare('FCRP/ForcedInventory', "INSERT INTO inventories(id, capacity, items) VALUES (@id, @capacity, @items);")
+-- dbAPI.prepare('INVENTORY:procListOfItems', 'CALL procListOfItems(@id, @charid, @itemList, @procType);')
 
 ---------- HORSE THINGS -------------
 dbAPI.prepare('FCRP/CreatePosse', 'INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id')

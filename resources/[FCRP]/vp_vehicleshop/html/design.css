@@ -21,9 +21,8 @@
             padding: 0;
             font-family: 'Inter', sans-serif;
             background-color: grey;
-            /* background-image: url(https://cdn.discordapp.com/attachments/644069827471867913/693398292687618098/unknown.png);
-            background-repeat: no-repeat;
-            background-size: cover; */
+            /* display: none; */
+            overflow: hidden;
         }
         
         .container {}
@@ -226,7 +225,53 @@
             background: white;
         }
         
-        .container .upper-bottom-container {}
+        .container .upper-bottom-container {
+            bottom: 0;
+            /* z-index: 3; */
+            /* border: 1px solid green; */
+            /* margin: 0px 20px 0px 20px; */
+            /* display: flex; */
+            /* flex-direction: row; */
+        }
+        
+        .container .upper-bottom-container .item {
+            width: 250px;
+            height: 170px;
+            background: white;
+            margin: 0px 10px 0px 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container .upper-bottom-container .item img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .container .upper-bottom-container .selected {
+            height: 220px;
+            transform: translateY(-50px);
+        }
+        
+        .container .upper-bottom-container .selected .button-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container .upper-bottom-container .selected .button-container button {
+            font-size: 14px;
+            color: black;
+            background: white;
+            padding: 3px;
+            border: none;
+            font-family: "HurmeGeometricSans3W01-Lt";
+        }
+        
+        .container .upper-bottom-container .selected .button-container button:hover,
+        .container .upper-bottom-container .selected .button-container button:focus {
+            background: purple;
+            color: white;
+        }
         
         .container .top-triangle {
             position: absolute;

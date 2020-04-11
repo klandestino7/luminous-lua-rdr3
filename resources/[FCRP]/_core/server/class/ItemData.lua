@@ -23,6 +23,14 @@ function API.ItemData(id, name, weight, description)
         return self.description or ''
     end
 
+    self.getStackSize = function()
+        return self.stackSize or 16
+    end
+
+    self.getType = function()
+        return self.type or 'edible'
+    end
+
     self.onUse = function(this, v)
         self.use = v
     end

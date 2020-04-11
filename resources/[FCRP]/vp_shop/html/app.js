@@ -75,43 +75,41 @@ function newShopItem(shopId, itemClass, shopItemData, appendToAll) {
 
     if (appendToAll == true) {
         $(`#${shopId} #all`).append(`
-        <div class="item">
-            <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
-            <div class="borderl"></div>
-            <div class="label">
-                <p>${itemName}</p>
-                <p class="small">NÍVEL ${itemLevel}</p>
-                <p><i class="fas fa-dollar-sign"></i> ${itemPrice},00</p>
-            </div>
-            <div class="borderr"></div>
-            <div class='button-container'>
-                <div class="button">
-                    <button class="inner" onclick="buyItem('${shopId}', '${itemId}')">
-                        <i class="fas fa-shopping-cart"></i>
-                    </button>
+        <div class="slot">
+            <div class="item">
+                <div class="column">
+                    <div class="information-row">
+                        <span class="info-name">${itemName}</span>
+                        <span class="info-level">LVL. ${itemLevel}</span>
+                    </div>
+                    <div class="img-container">
+                        <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
+                    </div>
                 </div>
+                <span class="info-price">${itemPrice} $</span>
             </div>
+            <button onclick="buyItem('${shopId}', '${itemId}')">$</button>
+            <div class="empty-container"></div>
         </div>
         `);
     }
 
     $(`#${shopId} #${itemClass}`).append(`
-        <div class="item">
-            <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
-            <div class="borderl"></div>
-            <div class="label">
-                <p>${itemName}</p>
-                <p class="small">NÍVEL ${itemLevel}</p>
-                <p><i class="fas fa-dollar-sign"></i> ${itemPrice},00</p>
-            </div>
-            <div class="borderr"></div>
-            <div class='button-container'>
-                <div class="button">
-                    <button class="inner" onclick="buyItem('${shopId}', '${itemId}')">
-                        <i class="fas fa-shopping-cart"></i>
-                    </button>
+        <div class="slot">
+            <div class="item">
+                <div class="column">
+                    <div class="information-row">
+                        <span class="info-name">${itemName}</span>
+                        <span class="info-level">LVL. ${itemLevel}</span>
+                    </div>
+                    <div class="img-container">
+                        <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
+                    </div>
                 </div>
+                <span class="info-price">${itemPrice} $</span>
             </div>
+            <button onclick="buyItem('${shopId}', '${itemId}')">$</button>
+            <div class="empty-container"></div>
         </div>
     `);
 }
@@ -121,12 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function buyItem(shopId, itemId) {
+    console.log(itemId);
     $.post('http://vp_shop/buyItem', JSON.stringify({ shopId: shopId, itemId: itemId }));
 }
-
-// $(".buttonstab").on("click", ".button", function() {
-//     tryToChangePage(this);
-// });
 
 function tryToChangePage(element) {
     if (!($(element).hasClass("active"))) {

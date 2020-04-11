@@ -1,9 +1,45 @@
 window.addEventListener('message', function(event) {
     var data = event.data;
 
-    if (data.clear == true) {
-        $(".items").empty();
+    if (event.data.type == "display") {
+        $("body").fadeIn();
     }
+
+    if (event.data.type == "hide") {
+        $("body").fadeOut();
+    }
+});
+
+$(document).ready(function() {
+    $('.upper-bottom-container').slick({
+        centerMode: true,
+        centerPadding: '60px',
+        slidesToShow: 5,
+        responsive: [{
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 5
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+            }
+        ]
+    });
+
+    $('.upper-bottom-container').on('afterChange', function(event, slick, currentSlide) {
+        console.log(currentSlide);
+        $('.button-container').appendTo(currentSlide);
+    });
 });
 
 function buyItem(shopId, itemId) {
