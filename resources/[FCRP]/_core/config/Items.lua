@@ -1,206 +1,244 @@
 ItemList = {
     ["weapon_carbinerifle_mk2"] = {
         -- ☆☆☆☆☆
-        type = "weapon",
-        -- name = 'Sig Sauer MPX-C',
         name = "MPX-C",
+        -- name = 'Sig Sauer MPX-C',
+        description = "submetralhadora operada a gás, projetada e fabricada pela SIG Sauer,",
+        type = "weapon",
+        stackSize = 1,
         weight = 0.5
     },
     ["weapon_specialcarbine"] = {
         -- ☆☆☆☆
         type = "weapon",
         name = "H&K G36C",
+        stackSize = 1,
         weight = 0.5
     },
     ["weapon_assaultrifle"] = {
         -- ☆☆☆
         type = "weapon",
         name = "AK-47",
-        weight = 0.5,
         stackSize = 1,
+        weight = 0.5
     },
     ["weapon_compactrifle"] = {
         -- ☆☆
         type = "weapon",
         name = "AK-47 Pistol",
+        stackSize = 1,
         weight = 0.5
     },
     ["weapon_assaultsmg"] = {
         -- ☆☆☆☆☆
         type = "weapon",
         name = "SMG de Assalto",
+        stackSize = 1,
         weight = 0.5
     },
     ["weapon_smg_mk2"] = {
         -- ☆☆☆☆
         type = "weapon",
-        -- name = 'Sig Sauer MPX',
         name = "MPX",
+        -- name = 'Sig Sauer MPX',
+        stackSize = 1,
         weight = 0.5
     },
     ["weapon_machinepistol"] = {
         -- ☆☆☆
         type = "weapon",
         name = "TEC-9",
+        stackSize = 1,
         weight = 1.2
     },
     ["weapon_heavypistol"] = {
         -- ☆☆☆☆☆
         type = "weapon",
         name = "1911",
+        stackSize = 1,
         weight = 1.2
     },
     ["weapon_combatpistol"] = {
         -- ☆☆☆☆
         type = "weapon",
         name = "H&K P2000",
+        stackSize = 1,
         weight = 1.2
     },
     ["weapon_vintagepistol"] = {
         -- ☆☆☆
         type = "weapon",
         name = "FN Model 1922",
+        stackSize = 1,
         weight = 2.0
     },
     ["weapon_knife"] = {
         type = "weapon",
         name = "Faca",
+        stackSize = 1,
         weight = 1.0
     },
     ----------------------------------------------------------------------------------------------
     ["ammo_carbinerifle_mk2"] = {
         name = "9mm (MPX-C)",
+        type = "ammo",
+        stackSize = 60,
         weight = 0.1
     },
     ["ammo_specialcarbine"] = {
-        type = "ammo",
         name = "5.56x45mm (H&K G36C)",
+        type = "ammo",
+        stackSize = 45,
         weight = 0.1
     },
     ["ammo_assaultrifle"] = {
         type = "ammo",
         name = "7.62x39mm (AK-47)",
+        stackSize = 45,
         weight = 0.1
     },
     ["ammo_compactrifle"] = {
         name = "7.62x39mm (AK-47 Pistol)",
+        stackSize = 45,
         weight = 0.1
     },
     ["ammo_assaultsmg"] = {
         name = "? 5.7x28mm (SMG de Assalto)",
+        stackSize = 45,
         weight = 0.1
     },
     ["ammo_smg_mk2"] = {
         name = "9mm (MPX)",
+        stackSize = 60,
         weight = 0.1
     },
     ["ammo_machinepistol"] = {
         name = "9mm (TEC-9)",
+        stackSize = 60,
         weight = 0.2
     },
     ["ammo_heavypistol"] = {
         name = ".45 ACP (1911)",
+        stackSize = 60,
         weight = 0.2
     },
     ["ammo_combatpistol"] = {
         name = ".357 SIG (H&K P2000)",
+        stackSize = 60,
         weight = 0.2
     },
     ["ammo_vintagepistol"] = {
         name = ".32 ACP (FN Model 1922)",
+        stackSize = 60,
         weight = 0.2
     },
     ----------------------------------------------------------------------------------------------
-    ["consumable_bread"] = {
-        type = "food",
+    ["bread"] = {
         name = "Pão",
+        description = "",
+        type = "food",
+        stackSize = 64,
         weight = 0.1,
         hungerVar = 1.0
     },
-    ["consumable_apple"] = {
-        type = "food",
+    ["apple"] = {
         name = "Maçã",
-        subtitle = "asjiasjiajioaa",
-        weight = 0.3,
-        hungerVar = 1.0
-    },
-    ["consumable_carrot"] = {
+        description = "asjiasjiajioaa",
         type = "food",
-        name = "Cenoura",
+        stackSize = 64,
         weight = 0.3,
         hungerVar = 1.0
     },
-    ["consumable_vodka"] = {
-        type = "beverage",
+    ["carrot"] = {
+        name = "Cenoura",
+        type = "food",
+        stackSize = 64,
+        weight = 0.3,
+        hungerVar = 1.0
+    },
+    ["vodka"] = {
         name = "Vodka",
+        type = "beverage",
+        stackSize = 10,
         weight = 0.8,
         thirstVar = 1.0
     },
-    ["consumable_waterbottle"] = {
-        type = "beverage",
+    ["waterbottle"] = {
         name = "Água",
+        type = "beverage",
+        stackSize = 24,
         weight = 0.2,
         ThirstVar = 1.0
     },
-    ["consumable_energydrink"] = {
+    ["energydrink"] = {
+        name = "Energético",
         type = "beverage",
-        name = "Água",
+        stackSize = 10,
         weight = 0.2,
         ThirstVar = 1.0
     },
-    ["consumable_chest_small"] = {
+    ["chest_small"] = {
         name = "Baú Pequeno",
+        type = "consumable",
         weight = 3.0,
         var = 25
     },
-    ["consumable_chest_medium"] = {
+    ["chest_medium"] = {
         name = "Baú Médio",
+        type = "consumable",
         weight = 4.0,
         var = 50
     },
-    ["consumable_chest_large"] = {
+    ["chest_large"] = {
         name = "Baú Grande",
+        type = "consumable",
         weight = 5.0,
         var = 100
     },
-    ["consumable_wateringcan"] = {
-        type = "farm",
+    ["wateringcan"] = {
         name = "Balde de Água",
+        type = "consumable",
+        stackSize = 1,
         weight = 1.5
     },
-    ["consumable_kevlar"] = {
+    ["kevlar"] = {
         name = "Kevlar",
+        type = "consumable",
+        stackSize = 1,
         weight = 5.0
     },
-    ["consumable_cigarette"] = {
+    ["cigarette"] = {
         name = "Cigarro",
+        type = "consumable",
         weight = 0.1
     },
-    ["consumable_tobaccoseed"] = {
+    ["tobaccoseed"] = {
         type = "farm",
         name = "Semente de Tabaco",
         weight = 0.2
     },
-    ["consumable_sugarcaneseed"] = {
+    ["sugarcaneseed"] = {
         type = "farm",
         name = "Semente de Cana",
         weight = 0.2
     },
-    ["consumable_cornseed"] = {
+    ["cornseed"] = {
         type = "farm",
         name = "Semente de Milho",
         weight = 0.2
     },
     ----------------------------------------------------------------------------------------------
-    ["generic_dollar"] = {
+    ["dollar"] = {
         name = "Dólar",
+        stackSize = -1,
         weight = 0.01
     },
-    ["generic_bitcoin"] = {
+    ["bitcoin"] = {
         name = "Bitcoin",
-        weight = 0.1
+        stackSize = -1,
+        weight = 0.01
     },
-    ["generic_weed"] = {
+    ["weed"] = {
         name = "Quilo de Maconha",
         weight = 1.0
     }

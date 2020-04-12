@@ -94,17 +94,18 @@
 }
 
 .container .inventory .inventory-container .divider {
-    margin: 10px auto 5px auto;
+    margin: 10px auto 10px auto;
     background-image: url(images/divider.png);
     background-size: contain;
     background-repeat: no-repeat;
     width: 80%;
-    height: 10px;
+    height: 2px;
+    opacity: 0.3;
 }
 
 .container .inventory .inventory-container .control-info-container {
     width: 100%;
-    margin: 0 auto 0 auto;
+    margin: 30px auto 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -151,6 +152,7 @@
 
 .container .inventory .inventory-container .slot-container {
     margin: -10px auto -10px auto;
+    padding: 5px 0 0 0;
     height: 286px;
     width: 286px;
     display: flex;
@@ -195,7 +197,7 @@ Its simulated from .selected :D
 }
 
 .container .inventory .inventory-container .slot-container .selected {
-    opacity: 0.8;
+    /* opacity: 0.3; */
     background-image: url('images/border.png');
     background-size: contain;
 }
@@ -211,7 +213,7 @@ Its simulated from .selected :D
 
 .container .inventory .inventory-container .description-container {
     max-width: 80%;
-    margin: 10px auto 10px auto;
+    margin: 20px auto 10px auto;
     height: 70px;
     max-height: 110px;
 }

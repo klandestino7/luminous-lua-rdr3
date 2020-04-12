@@ -9,7 +9,6 @@ function API.Inventory(id, capacity, slots)
 
     if slots ~= nil then
         for slotId, values in pairs(slots) do
-            -- if type(values) == "table" then
             local tableSize = table.getn(values)
 
             slotId = tonumber(slot)
@@ -19,14 +18,7 @@ function API.Inventory(id, capacity, slots)
             local ammoInWeapon = tonumber(values[4])
 
             self.slots[slotId] = API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
-            -- else
-            --     recents[slot] = values
-            -- end
         end
-
-    -- for k, v in pairs(recents) do
-    --     self.slots[k] = self.slots[v]
-    -- end
     end
 
     self.getId = function()
@@ -35,13 +27,10 @@ function API.Inventory(id, capacity, slots)
 
     self.getWeight = function()
         local weight = 0
-        for id, amount in pairs(self.slots) do
-            local ItemData = API.getItemDataFromId(id)
-            if ItemData ~= nil then
-                local weight = weight + (ItemData:getWeight() * amount)
-            end
+        for slotId, Slot in pairs(self.slots) do
+            local itemData = Slot:getItemData()
+            weight = weight + (itemData:getWeight() * Slot:getItemAmount())
         end
-
         return weight
     end
 
@@ -81,7 +70,6 @@ function API.Inventory(id, capacity, slots)
 
         local first, last = getFirstLastSlots(Slot:getItemId())
 
-
         -- Slot youre trying to move the item
         -- does not support the item
 
@@ -104,8 +92,7 @@ function API.Inventory(id, capacity, slots)
         local SlotTo = self.slots[slotIdTo]
 
         if SlotTo == nil then
-
-            if (slotIdTo >= 129 and slotIdTo <= 132) and itemType ~= 'weapon' then
+            if (slotIdTo >= 129 and slotIdTo <= 132) and itemType ~= "weapon" then
                 return false
             end
 
@@ -168,7 +155,7 @@ function API.Inventory(id, capacity, slots)
             end
         end
 
-        syncToViewers(self.viewersSources, sync)
+        syncToViewers(self.viewersSources, sync, self:getWeight())
     end
 
     self.setSlot = function(this, slotId, itemId, itemAmount)
@@ -194,6 +181,12 @@ function API.Inventory(id, capacity, slots)
             return
         end
 
+        local itemWeight = itemData:getWeight()
+
+        if (itemWeight * itemAmount) + self:getWeight() > self:getCapacity() then
+            return
+        end
+
         local itemStackSize = itemData:getStackSize()
 
         local candidatesSlots = {}
@@ -202,32 +195,11 @@ function API.Inventory(id, capacity, slots)
         local equalSlots = getSlotsWithEqualItemId(self.slots, itemId)
         for _, slotId in pairs(equalSlots) do
             local Slot = self.slots[slotId]
-            if Slot:getItemAmount() < itemStackSize then
-                local a = itemStackSize - Slot:getItemAmount()
+            if itemStackSize ~= -1 then
+                if Slot:getItemAmount() < itemStackSize then
+                    local a = itemStackSize - Slot:getItemAmount()
 
-                if a > amountLeftToAdd then
-                    a = amountLeftToAdd
-                end
-
-                candidatesSlots[slotId] = a
-                amountLeftToAdd = amountLeftToAdd - a
-
-                if amountLeftToAdd <= 0 then
-                    break
-                end
-            end
-        end
-
-        local freeSlots = getFreeSlots(self.slots, itemId)
-        if amountLeftToAdd > 0 then
-            local amountCanFitFreeSlots = #freeSlots * itemStackSize
-
-            if amountCanFitFreeSlots >= amountLeftToAdd then
-                for _, slotId in pairs(freeSlots) do
-                    local a
-                    if amountLeftToAdd >= itemStackSize then
-                        a = itemStackSize
-                    else
+                    if a > amountLeftToAdd then
                         a = amountLeftToAdd
                     end
 
@@ -238,6 +210,40 @@ function API.Inventory(id, capacity, slots)
                         break
                     end
                 end
+            else
+                candidatesSlots[slotId] = amountLeftToAdd
+                amountLeftToAdd = 0
+                break
+            end
+        end
+
+        local freeSlots = getFreeSlots(self.slots, itemId)
+        if amountLeftToAdd > 0 then
+            if itemStackSize ~= -1 then
+                local amountCanFitFreeSlots = #freeSlots * itemStackSize
+
+                if amountCanFitFreeSlots >= amountLeftToAdd then
+                    for _, slotId in pairs(freeSlots) do
+                        local a
+                        if amountLeftToAdd >= itemStackSize then
+                            a = itemStackSize
+                        else
+                            a = amountLeftToAdd
+                        end
+
+                        candidatesSlots[slotId] = a
+                        amountLeftToAdd = amountLeftToAdd - a
+
+                        if amountLeftToAdd <= 0 then
+                            break
+                        end
+                    end
+                end
+            else
+                if freeSlots[1] ~= nil then
+                    candidatesSlots[freeSlots[1]] = amountLeftToAdd
+                    amountLeftToAdd = 0
+                end
             end
         end
 
@@ -245,7 +251,7 @@ function API.Inventory(id, capacity, slots)
 
         if amountLeftToAdd <= 0 then
             for slotId, amount in pairs(candidatesSlots) do
-                local Slot 
+                local Slot
                 if self.slots[slotId] == nil then
                     Slot = self:setSlot(slotId, itemId, amount)
                 else
@@ -262,7 +268,7 @@ function API.Inventory(id, capacity, slots)
         -- Will sync twice
         self:addRecent(itemId, itemAmount)
 
-        syncToViewers(self.viewersSources, sync)
+        syncToViewers(self.viewersSources, sync, self:getWeight())
     end
 
     self.removeItem = function(this, itemId, itemAmount)
@@ -307,7 +313,7 @@ function API.Inventory(id, capacity, slots)
             end
         end
 
-        return syncToViewers(self.viewersSources, sync)
+        return syncToViewers(self.viewersSources, sync, self:getWeight())
     end
 
     self.getItemAmount = function(this, itemId)
@@ -365,7 +371,7 @@ function API.Inventory(id, capacity, slots)
         -- end
         -- local Slot = self:setSlot(1, itemId, itemAmount)
         -- sync[1] = Slot:getSyncData()
-        -- syncToViewers(self.viewersSources, sync)
+        --   syncToViewers(self.viewersSources, sync, self:getWeight())
     end
 
     self.viewAsPrimary = function(this, viewerSource)
@@ -377,7 +383,7 @@ function API.Inventory(id, capacity, slots)
             _slots[slotId] = Slot:getSyncData()
         end
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, _slots)
+        TriggerClientEvent("FCRP:INVENTORY:openAsPrimary", viewerSource, _slots, self:getWeight(), self:getCapacity())
     end
 
     self.viewAsSecondary = function(this, viewerSource)
@@ -389,7 +395,7 @@ function API.Inventory(id, capacity, slots)
             _slots[slotId] = Slot:getSyncData()
         end
 
-        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, _slots)
+        TriggerClientEvent("FCRP:INVENTORY:openAsSecondary", viewerSource, _slots, self:getWeight(), self:getCapacity())
     end
 
     self.removeViewer = function(this, User)
@@ -419,16 +425,16 @@ function API.Inventory(id, capacity, slots)
     return self
 end
 
-function syncToViewers(viewers, slotsToSync)
+function syncToViewers(viewers, slotsToSync, inventoryWeight)
     for viewerSource, asPrimary in pairs(viewers) do
         -- local User = API.getUserFromSource(viewerSource)
 
         if asPrimary then
             -- User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
-            TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", viewerSource, slotsToSync)
+            TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", viewerSource, slotsToSync, inventoryWeight)
         else
             -- User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
-            TriggerClientEvent("FCRP:INVENTORY:SecondarySyncSlots", viewerSource, slotsToSync)
+            TriggerClientEvent("FCRP:INVENTORY:SecondarySyncSlots", viewerSource, slotsToSync, inventoryWeight)
         end
     end
 end
@@ -493,7 +499,7 @@ local b = {
     -- ['Recents']  = {}
     ["Food"] = {"edible", "beverage"},
     ["Tonics"] = {"tonic", "boost"},
-    ["Ingredients"] = {"generic"},
+    ["Ingredients"] = {"generic", "consumable"},
     ["Tools_Weapons"] = {"weapon", "ammo"},
     ["Kit"] = {"kit"},
     ["Valuables"] = {"valuable"},

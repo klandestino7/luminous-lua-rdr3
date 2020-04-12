@@ -1,7 +1,7 @@
 local itemDatas = {}
 local names = {}
 
-local defaultItemData = API.ItemData('iteminvalido', nil,  'iteminvalido', 16, 'iteminvalido_desc')
+local defaultItemData = API.ItemData("iteminvalido", nil, "iteminvalido", 16, "iteminvalido_desc")
 
 function API.getItemDataFromId(id)
     return itemDatas[id] or defaultItemData
@@ -17,21 +17,22 @@ end
 Citizen.CreateThread(
     function()
         for id, values in pairs(ItemList) do
-            local ItemData = API.ItemData(id, values.type, values.name, values.stackSize, values.description)
+            
+            local ItemData = API.ItemData(id,  values.name, values.description, values.type, values.stackSize, values.weight)
 
-            if id:find('weapon_') then
+            if id:find("weapon_") then
                 ItemData:onUse(
                     function(this, User, amount)
                         local source = User:getSource()
                         local uWeapons = cAPI.getWeapons(source)
 
-                        print('ye')
+                        print("ye")
 
                         print(uWeapons)
                         print(uWeapons[id:upper()])
                         if uWeapons[id:upper()] then
-                            print('equipda')
-                            User:notify('Arma já está equipada')
+                            print("equipda")
+                            User:notify("Arma já está equipada")
                             return false
                         end
 
@@ -39,28 +40,28 @@ Citizen.CreateThread(
 
                         Citizen.CreateThread(
                             function()
-                                print('gave')
-                                User:notify(ItemData:getName() .. ' equipada!')
+                                print("gave")
+                                User:notify(ItemData:getName() .. " equipada!")
                                 User:giveWeapon(id, 0, false)
-                                print('gvaye')
+                                print("gvaye")
                             end
                         )
 
-                        print('returnd')
+                        print("returnd")
                         return true
                     end
                 )
             end
 
-            if id:find('ammo_') then
+            if id:find("ammo_") then
                 ItemData:onUse(
                     function(this, User, amount)
                         local source = User:getSource()
                         local uWeapons = cAPI.getWeapons(source)
-                        local formattedId = id:gsub('ammo_', 'weapon_'):upper()
+                        local formattedId = id:gsub("ammo_", "weapon_"):upper()
 
                         if uWeapons[formattedId] == nil then
-                            User:notify('Nenhuma arma equipada suporta este tipo de munição!')
+                            User:notify("Nenhuma arma equipada suporta este tipo de munição!")
                             return false
                         end
 
@@ -76,7 +77,7 @@ Citizen.CreateThread(
                 )
             end
 
-            if values.type == 'food' then
+            if values.type == "food" then
                 ItemData:onUse(
                     function(this, User, amount)
                         local hungerVar = values.hungerVar
@@ -91,7 +92,7 @@ Citizen.CreateThread(
                 )
             end
 
-            if values.type == 'beverage' then
+            if values.type == "beverage" then
                 ItemData:onUse(
                     function(this, User, amount)
                         local thirstVar = values.thirstVar
@@ -106,15 +107,15 @@ Citizen.CreateThread(
                 )
             end
 
-            if id:find('tonic_') then
+            if id:find("tonic_") then
                 ItemData:onUse(
                     function(this, User, amount)
                         local var = values.var
-                        if id == 'medicine' or id == 'tonic' or id == 'potent_medicine' then
+                        if id == "medicine" or id == "tonic" or id == "potent_medicine" then
                             cAPI.varyHealth(User:getSource(), var)
                         end
 
-                        if id == 'special_tonic' or id == 'special_medicine' or id == 'special_horse_stimulant_crafted' then
+                        if id == "special_tonic" or id == "special_medicine" or id == "special_horse_stimulant_crafted" then
                             cAPI.varyStamina(User:getSource(), var)
                         end
 

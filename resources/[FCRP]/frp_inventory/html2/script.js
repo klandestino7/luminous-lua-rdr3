@@ -88,6 +88,22 @@ window.addEventListener("message", function(event) {
 
             });
 
+
+            if (event.data.primaryWeight != undefined) {
+                if (event.data.primaryMaxWeight != undefined) {
+                    $('#primary #weight').text(`${event.data.primaryWeight}/${event.data.primaryMaxWeight}kg`);
+                    var percentage = 100 * (event.data.primaryWeight / event.data.primaryMaxWeight);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(255, 0, 0) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                } else {
+                    var oldText = $('#primary #weight').text();
+                    var maxWeight = oldText.split('/')[1];
+                    maxWeight = maxWeight.replace('kg', '');
+                    $('#primary #weight').text(`${event.data.primaryWeight}/${maxWeight}kg`);
+                    var percentage = 100 * (event.data.primaryWeight / maxWeight);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(255, 0, 0) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                }
+            }
+
             drawPrimary();
             drawHotbar();
         }
@@ -371,8 +387,10 @@ function elementAsDraggable(element, a, b, c) {
         start: function(event, ui) {
 
             ui.helper.css('position', 'absolute');
+            ui.helper.css('font-size', '8px');
 
             $(ui.helper).find('.number').remove();
+            $(ui.helper).find('.counter').css('font-size', '8px');
 
             var imgElement = $(ui.helper).find('img')
             imgElement.css('width', '70px');
@@ -448,12 +466,21 @@ function drawPrimary() {
             var itemDescription = Slot.itemDescription;
 
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
-                $(`#primary-inventory .slot-container`).append(`
+                if (itemStackSize != -1) {
+                    $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
                         <img src="images/items/${itemId}.png">
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                } else {
+                    $(`#primary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}</div>
+                    </div>
+                `);
+                }
             } else {
                 $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
@@ -480,16 +507,23 @@ function drawPrimary() {
         }
     }
 
-    var money = 0;
-    $.each(primaryItemList, function(slot, ItemSlot) {
-        if (ItemSlot != undefined) {
-            if (ItemSlot[0] == 'money') {
-                money = money + ItemSlot[1];
+    var currency1 = 0;
+    var currency2 = 0;
+
+    $.each(primaryItemList, function(slot, Slot) {
+        if (Slot != undefined) {
+            var itemName = Slot[1];
+            var itemAmount = Slot[2];
+            if (itemName == 'bitcoin') {
+                currency1 = currency1 + itemAmount;
+            } else if (itemName == 'dollar') {
+                currency2 = currency2 + itemAmount;
             }
         }
     });
 
-    $('#money').text(money / 100);
+    $('#primary #currency1').text(currency1);
+    $('#primary #currency2').text(currency2);
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({

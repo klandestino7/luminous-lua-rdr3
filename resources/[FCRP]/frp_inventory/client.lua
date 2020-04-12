@@ -95,14 +95,16 @@ AddEventHandler(
 RegisterNetEvent("FCRP:INVENTORY:openAsPrimary")
 AddEventHandler(
     "FCRP:INVENTORY:openAsPrimary",
-    function(slots)
+    function(slots, inventoryWeight, inventoryMaxWeight)
         slots = computeSlots(slots)
 
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
                 type = "clearPrimary",
-                primarySlots = slots
+                primarySlots = slots,
+                primaryWeight = inventoryWeight,
+                primaryMaxWeight = inventoryMaxWeight
             }
         )
     end
@@ -111,14 +113,15 @@ AddEventHandler(
 RegisterNetEvent("FCRP:INVENTORY:openAsSecondary")
 AddEventHandler(
     "FCRP:INVENTORY:openAsSecondary",
-    function(slots)
+    function(slots, inventoryWeight)
         slots = computeSlots(slots)
 
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
                 type = "clearSecondary",
-                secondarySlots = slots
+                secondarySlots = slots,
+                secondaryWeight = inventoryWeight
             }
         )
     end
@@ -127,12 +130,13 @@ AddEventHandler(
 RegisterNetEvent("FCRP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
     "FCRP:INVENTORY:PrimarySyncSlots",
-    function(slots)
+    function(slots, inventoryWeight)
         slots = computeSlots(slots)
 
         SendNUIMessage(
             {
-                primarySlots = slots
+                primarySlots = slots,
+                primaryWeight = inventoryWeight
             }
         )
     end
@@ -243,7 +247,7 @@ function computeSlots(table, shotOrReloaded)
 
             values.itemName = itemInfo.name
             values.itemDescription = itemInfo.description or "Descrição"
-            values.itemStackSize = itemInfo.stackSize or 16
+            values.itemStackSize = itemInfo.stackSize or 1
 
             local itemType = itemInfo.type
 
