@@ -1,15 +1,20 @@
-@import url(https://db.onlinewebfonts.com/c/6fe41ddfdaa27520c7b0d4cfe2564195?family=HurmeGeometricSans3W01-Lt);
 @font-face {
-    font-family: "HurmeGeometricSans3W01-Lt";
-    src: url("http//db.onlinewebfonts.com/t/6fe41ddfdaa27520c7b0d4cfe2564195.ttf") format("truetype"),
+    font-family: 'Lino';
+    src: url("fonts/RDRLino-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'Hapna';
+    src: url("fonts/HapnaSlabSerif-DemiBold.ttf");
 }
 
 * {
+    font-family: 'Lino';
+    color: white;
     user-select: none;
     letter-spacing: 0.10em;
     font-size: 14px;
-    font-family: "HurmeGeometricSans3W01-Lt";
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .container {
@@ -26,24 +31,6 @@
     height: 592px;
 }
 
-.inventory .inventory-container .top-container {
-    width: 80%;
-    margin: 0 auto;
-    background-color: white;
-    padding: 0px 0px 10px 0px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.inventory .inventory-container .bottom-container {
-    width: 80%;
-    margin: 0 auto;
-    background-color: white;
-    padding: 0px 0px 10px 0px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
 
 /* 
 .container #primary {
@@ -54,11 +41,9 @@
     opacity: 0;
 }
 
-
-/* .container #primary #background-image {
+.container #primary #background-image {
     opacity: 0;
-    filter: invert(1);
-} */
+}
 
 .container #secondary {
     display: none;
@@ -87,17 +72,6 @@
     flex-direction: row;
 }
 
-.container .inventory .inventory-container .info>span>img {
-    width: 24px;
-    height: 24px;
-    background: black;
-    border-radius: 12px;
-}
-
-.container .inventory .inventory-container .info>span>span {
-    color: black;
-}
-
 .container .inventory .inventory-container span {
     width: auto;
     margin-left: 5px;
@@ -120,13 +94,13 @@
 }
 
 .container .inventory .inventory-container .divider {
-    margin: 0px auto 0px auto;
-    /* background-image: url(images/divider.png); */
-    background: white;
-    /* background-size: contain; */
-    /* background-repeat: no-repeat; */
+    margin: 10px auto 10px auto;
+    background-image: url(images/divider.png);
+    background-size: contain;
+    background-repeat: no-repeat;
     width: 80%;
-    height: 4px;
+    height: 2px;
+    opacity: 0.3;
 }
 
 .container .inventory .inventory-container .control-info-container {
@@ -135,23 +109,21 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    color: black;
 }
 
-.container .inventory .inventory-container .control-info-container #selected-category {
-    margin: 5px 0 0 0;
+.container .inventory .inventory-container .control-info-container .selected-category {
     position: relative;
-    color: black;
 }
 
-
-/* .container .inventory .inventory-container .control-info-container .squared {
+.container .inventory .inventory-container .control-info-container .squared {
     position: relative;
-    padding: 2px;
-    width: 18px;
-    height: 18px;
-    border: 1px solid black;
-} */
+    padding: 0px 5px 0px 5px;
+    width: 15px;
+    height: 22px;
+    border-radius: 2px;
+    background-color: white;
+    color: black;
+}
 
 .container .inventory .inventory-container .item-categories-container {
     width: fit-content;
@@ -172,9 +144,6 @@
 
 .container .inventory .inventory-container .item-categories-container .icon img {
     opacity: 0.25;
-    background: black;
-    border-radius: 12px;
-    /* border: 1px solid black; */
 }
 
 .container .inventory .inventory-container .item-categories-container .enabled>img {
@@ -182,10 +151,10 @@
 }
 
 .container .inventory .inventory-container .slot-container {
-    margin: 5px auto 5px auto;
+    margin: -10px auto -10px auto;
     padding: 5px 0 0 0;
     height: 286px;
-    width: 290px;
+    width: 286px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -200,27 +169,16 @@
 
 .container .inventory .inventory-container .slot-container .slot {
     position: relative;
-    /* margin: 2px 2px 0px 2px; */
-    margin: 0px 1px;
+    margin: -2px -0px;
     width: 70px;
     height: 70px;
-    /* background-image: url(images/slot.png);
+    background-image: url(images/slot.png);
     background-size: contain;
-    background-repeat: no-repeat; */
-    background: rgba(97, 201, 102, 0.747);
-    border-radius: 5px;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.container .inventory .inventory-container .slot-container .slot.empty {
-    background: repeating-linear-gradient( 135deg, #ffffff00, #ffffff00 2px, #cacaca41 2px, #cacaca41 4px);
-}
-
-.container .inventory .inventory-container .slot-container .slot.blocked {
-    background: repeating-linear-gradient( 135deg, rgba(201, 97, 97, 0.747), #ffffff00 1px, rgba(201, 97, 97, 0.747) 1px, rgba(201, 97, 97, 0.747) 8px);
 }
 
 
@@ -240,21 +198,8 @@ Its simulated from .selected :D
 
 .container .inventory .inventory-container .slot-container .selected {
     /* opacity: 0.3; */
-    background: repeating-linear-gradient( 135deg, rgba(97, 201, 102, 0.747), #ffffff00 1px, rgba(97, 201, 102, 0.747) 1px, rgba(97, 201, 102, 0.747) 8px);
-    background-size: 400% 400%;
-    animation: gradient 15s infinite;
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    background-image: url('images/border.png');
+    background-size: contain;
 }
 
 .container .inventory .inventory-container .slot-container .slot .counter {
@@ -264,13 +209,11 @@ Its simulated from .selected :D
     bottom: 10%;
     color: white;
     font-size: 11px;
-    text-shadow: none;
 }
 
 .container .inventory .inventory-container .description-container {
     max-width: 80%;
-    margin: 0px auto 10px auto;
-    padding: 20px 0 0 0;
+    margin: 20px auto 10px auto;
     height: 70px;
     max-height: 110px;
 }
@@ -280,7 +223,6 @@ Its simulated from .selected :D
     margin-top: -10px;
     margin-bottom: 5px;
     font-size: 16px;
-    color: black;
 }
 
 .container .inventory .inventory-container .description-container .description-description {
@@ -290,7 +232,6 @@ Its simulated from .selected :D
     font-size: 12px;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    color: black;
 }
 
 .container .inventory .inventory-container .control-tip-container {
@@ -307,12 +248,11 @@ Its simulated from .selected :D
     width: fit-content;
 }
 
-
-/* .helper {
+.helper {
     text-align: center;
     color: rgba(255, 255, 255, 1.0);
     font-size: 10px;
-} */
+}
 
 #primary .hotbar {
     position: fixed;
@@ -331,7 +271,8 @@ Its simulated from .selected :D
 #primary .hotbar .slot {
     position: relative;
     width: 60px;
-    background: repeating-linear-gradient( 135deg, rgba(97, 201, 102, 0.3), #ffffff00 1px, rgba(97, 201, 102, 0.3) 1px, rgba(97, 201, 102, 0.3) 8px);
+    background: url(images/slotHighOpacity.png);
+    /* background: rgba(0, 0, 0, 0.7); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -344,8 +285,7 @@ Its simulated from .selected :D
     top: 10%;
     left: 10%;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: none;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #primary .hotbar .slot img {
@@ -361,11 +301,6 @@ Its simulated from .selected :D
     bottom: 5%;
     color: white;
     font-size: 11px;
-    text-shadow: none;
-}
-
-#primary .hotbar .slot.empty {
-    background: repeating-linear-gradient( 135deg, #ffffff00, #ffffff00 2px, #cacaca41 2px, #cacaca41 4px);
 }
 
 
@@ -377,8 +312,15 @@ Its simulated from .selected :D
     color: black;
 } */
 
-#primary .hotbar .slot.hotbar-slot-selected {
-    background: repeating-linear-gradient( 135deg, rgba(97, 201, 102, 0.747), #ffffff00 1px, rgba(97, 201, 102, 0.747) 1px, rgba(97, 201, 102, 0.747) 8px);
+#primary .hotbar .hotbar-slot-selected {
+    border-bottom: 1px solid white;
+}
+
+.blocked {
+    /* background-image: url(images/borderHighOpacity.png);
+    background-size: contain;
+    background-repeat: no-repeat; */
+    background: red;
 }
 
 

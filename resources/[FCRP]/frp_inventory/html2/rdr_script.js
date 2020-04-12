@@ -16,7 +16,7 @@ var hotbarSlotSelected = null;
 window.addEventListener("message", function(event) {
     if (event.data.action == 'hide') {
         $("#primary-inventory").css('opacity', '0');
-        // $("#primary #background-image").css('opacity', '0');
+        $("#primary #background-image").css('opacity', '0');
         $("#secondary").hide();
     } else {
 
@@ -25,7 +25,7 @@ window.addEventListener("message", function(event) {
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
             $("#primary-inventory").css('opacity', '1');
-            // $("#primary #background-image").css('opacity', '0.1');
+            $("#primary #background-image").css('opacity', '1');
         }
 
         if (event.data.type == 'nextHotbarSlot') {
@@ -93,14 +93,14 @@ window.addEventListener("message", function(event) {
                 if (event.data.primaryMaxWeight != undefined) {
                     $('#primary #weight').text(`${event.data.primaryWeight}/${event.data.primaryMaxWeight}kg`);
                     var percentage = 100 * (event.data.primaryWeight / event.data.primaryMaxWeight);
-                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(255, 0, 0) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 } else {
                     var oldText = $('#primary #weight').text();
                     var maxWeight = oldText.split('/')[1];
                     maxWeight = maxWeight.replace('kg', '');
                     $('#primary #weight').text(`${event.data.primaryWeight}/${maxWeight}kg`);
                     var percentage = 100 * (event.data.primaryWeight / maxWeight);
-                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747)) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(255, 0, 0) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 }
             }
 
@@ -391,7 +391,6 @@ function elementAsDraggable(element, a, b, c) {
 
             $(ui.helper).find('.number').remove();
             $(ui.helper).find('.counter').css('font-size', '8px');
-            $(ui.helper).find('.counter').css('color', 'white');
 
             var imgElement = $(ui.helper).find('img')
             imgElement.css('width', '70px');
@@ -436,17 +435,15 @@ function drawHotbar() {
 
             // $(`#primary .hotbar #${slotId}`).html('');
 
-            $(`#primary .hotbar #${slotId}`).removeClass('empty');
             $(`#primary .hotbar #${slotId}`).append(`
-                <img src="images/items/${itemId}.png">
-                <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
+                    <img src="images/items/${itemId}.png">
+                    <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
             `);
 
             var element = $(`#primary .hotbar #${slotId}`);
             elementAsDraggable(element, itemId, itemName, itemDescription);
         } else {
             $(`#primary .hotbar #${slotId}`).html("");
-            $(`#primary .hotbar #${slotId}`).addClass("empty");
         }
     }
 }
