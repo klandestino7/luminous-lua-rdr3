@@ -16,7 +16,8 @@ ItemList = {
         -- ☆☆☆
         type = "weapon",
         name = "AK-47",
-        weight = 0.5
+        weight = 0.5,
+        stackSize = 1,
     },
     ["weapon_compactrifle"] = {
         -- ☆☆
@@ -72,10 +73,12 @@ ItemList = {
         weight = 0.1
     },
     ["ammo_specialcarbine"] = {
+        type = "ammo",
         name = "5.56x45mm (H&K G36C)",
         weight = 0.1
     },
     ["ammo_assaultrifle"] = {
+        type = "ammo",
         name = "7.62x39mm (AK-47)",
         weight = 0.1
     },
@@ -167,11 +170,11 @@ ItemList = {
     },
     ["consumable_kevlar"] = {
         name = "Kevlar",
-        weight = 5.0,
+        weight = 5.0
     },
     ["consumable_cigarette"] = {
         name = "Cigarro",
-        weight = 0.1,
+        weight = 0.1
     },
     ["consumable_tobaccoseed"] = {
         type = "farm",
@@ -199,8 +202,7 @@ ItemList = {
     },
     ["generic_weed"] = {
         name = "Quilo de Maconha",
-        weight = 1.0,
-    },
+        weight = 1.0
+    }
     ----------------------------------------------------------------------------------------------
-    
 }

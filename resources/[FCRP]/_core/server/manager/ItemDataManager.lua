@@ -1,7 +1,7 @@
 local itemDatas = {}
 local names = {}
 
-local defaultItemData = API.ItemData('????????', '????????', 0.1)
+local defaultItemData = API.ItemData('iteminvalido', nil,  'iteminvalido', 16, 'iteminvalido_desc')
 
 function API.getItemDataFromId(id)
     return itemDatas[id] or defaultItemData
@@ -17,7 +17,7 @@ end
 Citizen.CreateThread(
     function()
         for id, values in pairs(ItemList) do
-            local ItemData = API.ItemData(id, values.name, values.weight or 0.1, values.subtitle)
+            local ItemData = API.ItemData(id, values.type, values.name, values.stackSize, values.description)
 
             if id:find('weapon_') then
                 ItemData:onUse(

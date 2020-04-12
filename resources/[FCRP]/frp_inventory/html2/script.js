@@ -24,6 +24,8 @@ window.addEventListener("message", function(event) {
 
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
+            $("#primary-inventory").css('opacity', '1');
+            $("#primary #background-image").css('opacity', '1');
         }
 
         if (event.data.type == 'nextHotbarSlot') {
@@ -68,36 +70,26 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primarySlots) {
-            var hotbar = false;
-            var hotbarOnly = true;
+            var clearedRecent = false;
+            $.each(event.data.primarySlots, function(slotId, Slot) {
 
-            if (Object.keys(event.data.primarySlots).length > 0) {
-                $.each(event.data.primarySlots, function(slot, ItemSlot) {
-                    primaryItemList[slot] = ItemSlot;
-                    if (slot >= 129 && slot <= 132) {
-                        hotbar = true;
-                    } else {
-                        hotbarOnly = false;
+                if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
+                    clearedRecent = true;
+                    for (var i = 1; i < 16; i++) {
+                        delete primaryItemList[1];
                     }
-                });
-            } else {
-                hotbarOnly = false;
-            }
-            if (hotbarOnly == false) {
-                drawPrimary();
-
-                if ($("#primary-inventory").css('opacity') == 0) {
-                    $("#primary-inventory").css('opacity', '1');
-                    $("#primary #background-image").css('opacity', '1');
                 }
-            }
-            if (hotbar == true) {
-                drawHotbar();
-            }
 
-            if ($(".hotbar").css('opacity') == 0) {
-                $(".hotbar").css('opacity', '1');
-            }
+                if (Slot[2] > 0) {
+                    primaryItemList[slotId] = Slot;
+                } else {
+                    delete primaryItemList[slotId];
+                }
+
+            });
+
+            drawPrimary();
+            drawHotbar();
         }
 
 
@@ -326,17 +318,24 @@ $(document).ready(function() {
             }
         },
         drop: function(event, ui) {
-            let slot = $(ui.draggable).attr('id');
-            // $(ui.helper).remove();
-            // let valueCount = $('.count').value;
-            let valueCount = 1;
-            // $.post('http://frp_inventory/sendItemSlotToHotbar', JSON.stringify({
-            //     slot: slot,
-            // }));
 
+
+            $(ui.helper).remove();
+            // let valueCount = $('.count').value;
             let selfSlot = $(this).attr('id');
             let draggableSlot = $(ui.draggable).attr('id');
-            let itemAmount = 1;
+
+            if (shortcutPressed == null) {
+                itemAmount = -2; // quantidade = TODOS
+            }
+
+            if (shortcutPressed == 16) { // SHIFT
+                itemAmount = -1
+            }
+
+            if (shortcutPressed == 17) { // CTRL
+                itemAmount = 1
+            }
 
             $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
                 slotFrom: draggableSlot,
@@ -345,24 +344,6 @@ $(document).ready(function() {
             }));
         },
     });
-
-    // $('body').droppable({
-    //     tolerance: 'pointer',
-    //     accept: function(e) {
-    //         if (e.parent().parent().attr('id') === 'primary-inventory') {
-    //             return true;
-    //         }
-    //     },
-    //     drop: function(event, ui) {
-    //         let slot = $(ui.draggable).attr('id');
-    //         console.log('droppin');
-    //         $(ui.helper).remove();
-    //         let valueCount = 1;
-    //         // $.post('http://frp_inventory/dropItem', JSON.stringify({
-    //         //     slot: slot,
-    //         // }));
-    //     },
-    // });
 
     $('#primary').on('mouseover', function() {
         $('.focus').removeClass('focus');
@@ -388,11 +369,19 @@ function elementAsDraggable(element, a, b, c) {
         helper: 'clone',
         zIndex: 99999,
         start: function(event, ui) {
-            $(this).draggable('instance').offset.click = {
-                left: Math.floor(ui.helper.width() / 2),
-                top: Math.floor(ui.helper.height() / 2)
-            };
+
             ui.helper.css('position', 'absolute');
+
+            $(ui.helper).find('.number').remove();
+
+            var imgElement = $(ui.helper).find('img')
+            imgElement.css('width', '70px');
+
+            $(this).draggable('instance').offset.click = {
+                left: Math.floor(70 / 2),
+                top: Math.floor(70 / 2)
+            };
+
             select($(this));
         },
         stop: function(event, ui) {
@@ -401,68 +390,93 @@ function elementAsDraggable(element, a, b, c) {
     });
 }
 
+function slotsAsFakeDroppable() {
+    $(`#primary-inventory .slot-container .slot`).droppable({
+        tolerance: 'pointer',
+        activeClass: 'blocked',
+    });
+}
+
 function drawHotbar() {
-    for (var slot = 129; slot < 133; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][2] > -1) {
-            var ItemSlot = primaryItemList[slot];
+    $(".hotbar").css('opacity', '1');
 
-            $(`#primary .hotbar #${slot}`).html('');
-            $(`#primary .hotbar #${slot}`).append(`
-                    <img src="images/items/${ItemSlot[0]}.png">
-                    <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+    $(`#primary .hotbar .slot`).children().not('.number').remove();
+
+    for (var slotId = 129; slotId <= 132; slotId++) {
+        var Slot = primaryItemList[slotId];
+        if (Slot != undefined && Slot != null) {
+
+            var itemId = Slot[1];
+            // var itemAmount = Slot[2];
+            var ammoInClip = Slot[3];
+            var ammoInWeapon = Slot[4];
+
+            // var itemStackSize = Slot.itemStackSize;
+            var itemName = Slot.itemName;
+            var itemDescription = Slot.itemDescription;
+
+            // $(`#primary .hotbar #${slotId}`).html('');
+
+            $(`#primary .hotbar #${slotId}`).append(`
+                    <img src="images/items/${itemId}.png">
+                    <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
             `);
-            var element = $(`#primary .hotbar #${slot}`);
-            elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
-        } else {
-            if (primaryItemList[slot] !== undefined) {
-                delete primaryItemList[slot];
-            }
 
-            $(`#primary .hotbar #${slot}`).html("");
+            var element = $(`#primary .hotbar #${slotId}`);
+            elementAsDraggable(element, itemId, itemName, itemDescription);
+        } else {
+            $(`#primary .hotbar #${slotId}`).html("");
         }
     }
 }
 
 function drawPrimary() {
-
     $(`#primary-inventory .slot-container`).html('');
     var money = 0;
-    for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] >= -1) {
-            var ItemSlot = primaryItemList[slot];
 
-            if (primaryItemList[slot][2] > -1) {
+    for (var slotId = (primaryCategoriesIndex * 16) - 15; slotId < (primaryCategoriesIndex * 16) + 1; slotId++) {
+        var Slot = primaryItemList[slotId];
+        if (Slot !== undefined && Slot !== null) {
+            var itemId = Slot[1];
+            var itemAmount = Slot[2];
+            var ammoInClip = Slot[3];
+            var ammoInWeapon = Slot[4];
+
+
+            var itemStackSize = Slot.itemStackSize;
+            var itemName = Slot.itemName;
+            var itemDescription = Slot.itemDescription;
+
+            if (ammoInClip == undefined && ammoInWeapon == undefined) {
                 $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slot}" onclick="select(this)">
-                        <img src="images/items/${ItemSlot[0]}.png">
-                        <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
             } else {
                 $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slot}" onclick="select(this)">
-                        <img src="images/items/${ItemSlot[0]}.png">
-                        <div class="counter">${ItemSlot[1]}</div>
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
                     </div>
                 `);
-                if (primaryItemList[slot][0] == 'money') {}
             }
 
-            var element = $(`#primary-inventory .slot-container #${slot}`);
+            var element = $(`#primary-inventory .slot-container #${slotId}`);
 
             if (primaryCategoriesIndex != 1) {
-                elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
+                elementAsDraggable(element, itemId, itemName, itemDescription);
             }
         } else {
-
-            if (primaryItemList[slot] !== undefined) {
-                delete primaryItemList[slot];
-            }
-
             $("#primary-inventory .slot-container").append(`
-                <div class="slot empty" id="${slot}">
+                <div class="slot empty" id="${slotId}">
                 </div>
             `);
+        }
+
+        if (primaryCategoriesIndex == 1) {
+            slotsAsFakeDroppable();
         }
     }
 
@@ -499,20 +513,11 @@ function drawPrimary() {
                     itemAmount = 1
                 }
 
-                if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory' || $(ui.draggable).parent().hasClass('hotbar')) {
-                    $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
-                        slotFrom: draggableSlot,
-                        slotTo: selfSlot,
-                        itemAmount: itemAmount,
-                    }));
-                } else {
-                    let amount = 1;
-                    $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
-                        slotFrom: draggableSlot,
-                        slotTo: selfSlot,
-                        itemAmount: itemAmount,
-                    }));
-                }
+                $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
+                    slotFrom: draggableSlot,
+                    slotTo: selfSlot,
+                    itemAmount: itemAmount,
+                }));
             }
         });
     }
@@ -548,8 +553,8 @@ function unSelect(element) {
 }
 
 function closeInventory() {
-    // primaryItemList = [];
-    // secondaryItemList = [];
+    primaryItemList = [];
+    secondaryItemList = [];
     $('.selected').removeClass('selected');
     $("#secondary").hide();
     $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));

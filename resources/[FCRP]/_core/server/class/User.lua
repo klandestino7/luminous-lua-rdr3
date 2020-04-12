@@ -76,24 +76,27 @@ function API.User(source, id, ipAddress)
 
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), Inventory)
 
-            if rows2[1] ~= nil then
-                local parsedSlots = {}
-                local decodedItems = json.decode(rows2[1].items)
-                local found = false
-                for i = 129, 132 do
-                    local stringd = tostring(i)
-                    if decodedItems[stringd] ~= nil then
-                        found = true
-                        parsedSlots[i] = {
-                            decodedItems[stringd][1],
-                            decodedItems[stringd][2]
-                        }
-                    end
-                end
-                if found == true then
-                    TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
-                end
-            end
+            -- HUNGIN THREAD  ~~~~ BELOW
+            -- if rows2[1] ~= nil then
+            --     local parsedSlots = {}
+            --     local decodedItems = json.decode(rows2[1].items)
+            --     print('gg')
+            --     local found = false
+            --     for i = 129, 132 do
+            --         local stringd = tostring(i)
+            --         if decodedItems[stringd] ~= nil then
+            --             print('bbb')
+            --             found = true
+            --             parsedSlots[i] = {
+            --                 decodedItems[stringd][1],
+            --                 decodedItems[stringd][2]
+            --             }
+            --         end
+            --     end
+            --     if found == true then
+            --         TriggerClientEvent("FCRP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
+            --     end
+            -- end
 
             -- local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
             -- if posse ~= nil then
@@ -138,16 +141,13 @@ function API.User(source, id, ipAddress)
 
     self.viewInventory = function()
         if self.Character ~= nil then
-            print("user char not nil")
             self:viewInventoryAsPrimary(self.Character:getInventory())
         end
     end
 
     self.viewInventoryAsPrimary = function(this, Inventory)
-        print("user view as primary")
         self.primaryViewingInventory = Inventory
         Inventory:viewAsPrimary(self:getSource())
-        print("user viwed primeary")
     end
 
     self.viewInventoryAsSecondary = function(this, Inventory)

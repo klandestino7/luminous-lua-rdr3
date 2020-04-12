@@ -1,10 +1,11 @@
-function API.ItemData(id, name, weight, description)
+function API.ItemData(id, type, name, stackSize, description)
     local self = {}
 
     self.id = id
     self.name = name
-    self.weight = weight
-    self.description = description
+    self.type = type
+    self.description = description 
+    self.stackSize = stackSize
     -- self.worldModel = 'default_prop'
 
     self.getId = function()
@@ -12,15 +13,11 @@ function API.ItemData(id, name, weight, description)
     end
 
     self.getName = function(this)
-        return self.name or ''
-    end
-
-    self.getWeight = function()
-        return self.weight or 0.0
+        return self.name or 'nome'
     end
 
     self.getDescription = function()
-        return self.description or ''
+        return self.description or 'descricao'
     end
 
     self.getStackSize = function()
@@ -28,7 +25,7 @@ function API.ItemData(id, name, weight, description)
     end
 
     self.getType = function()
-        return self.type or 'edible'
+        return self.type or 'weapon'
     end
 
     self.onUse = function(this, v)

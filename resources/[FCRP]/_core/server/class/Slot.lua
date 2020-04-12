@@ -1,15 +1,21 @@
-function API.Slot(Inventory, slotId, itemId, itemAmount)
+function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
     local self = {}
 
-    self.Inventory = Inventory
-    self.slotId = slotId
+    -- self.slotId = slotId
     self.itemId = itemId
     self.itemAmount = itemAmount
     self.itemData = API.getItemDataFromId(itemId)
 
-    self.getSlotId = function()
-        return self.slotId
-    end
+    self.ammoInClip = ammoInClip
+    self.ammoInWeapon = ammoInWeapon
+
+    -- self.getSlotId = function()
+    --     return self.slotId
+    -- end
+
+    -- self.setSlotId = function(this, v)
+    --     self.slotId = v
+    -- end
 
     self.getItemId = function()
         return self.itemId
@@ -24,11 +30,7 @@ function API.Slot(Inventory, slotId, itemId, itemAmount)
     end
 
     self.setItemAmount = function(this, v)
-        if v <= 0 then
-            self:destroy()
-        else
-            self.itemAmount = v
-        end
+        self.itemAmount = v
     end
 
     self.addItemAmount = function(this, v)
@@ -39,10 +41,32 @@ function API.Slot(Inventory, slotId, itemId, itemAmount)
         self:setItemAmount(self:getItemAmount() - v)
     end
 
-    self.destroy = function()
-        self.Inventory:getSlots()[self:getSlotId()] = nil
-        self = nil
-        return self
+    self.getAmmoInClip = function()
+        if self.ammoInClip == nil and self:getItemData():getType() == "weapon" then
+            self.ammoInClip = 0
+        end
+
+        return self.ammoInClip
+    end
+
+    self.setAmmoInClip = function(this, v)
+        self.ammoInClip = v
+    end
+
+    self.getAmmoInWeapon = function()
+        if self.ammoInWeapon == nil and self:getItemData():getType() == "weapon" then
+            self.ammoInWeapon = 0
+        end
+
+        return self.ammoInWeapon
+    end
+
+    self.setAmmoInWeapon = function(this, v)
+        self.ammoInWeapon = v
+    end
+
+    self.getSyncData = function()
+        return {self.itemId, self.itemAmount, self:getAmmoInClip(), self:getAmmoInWeapon()}
     end
 
     return self

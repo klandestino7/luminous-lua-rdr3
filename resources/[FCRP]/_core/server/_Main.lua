@@ -11,8 +11,8 @@ cAPI = Tunnel.getInterface("API")
 
 cPed = Tunnel.getInterface('API:cPed')
 cPlayer = Tunnel.getInterface('API:cPlayer')
--- cUI = Tunnel.getInterface('API:cUI')
--- cVehicle = Tunnel.getInterface('API:cVehicle')
+cUI = Tunnel.getInterface('API:cUI')
+cVehicle = Tunnel.getInterface('API:cVehicle')
 cWrapper = Tunnel.getInterface('API:cWrapper')
 
 API.users = {} -- key: user_id | value: User.class
@@ -39,7 +39,6 @@ function API.getUserFromUserId(user_id)
 end
 
 function API.getUserFromSource(source)
-    print('API.getUserFromSource(source)', source, API.sources[source], API.users[API.sources[source]])
     return API.users[API.sources[source]]
 end
 

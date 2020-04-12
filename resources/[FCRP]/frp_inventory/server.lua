@@ -7,15 +7,10 @@ RegisterNetEvent("FCRP:INVENTORY:open")
 AddEventHandler(
     "FCRP:INVENTORY:open",
     function()
-        print('FCRP:INVENTORY:open')
         local _source = source
-        print('FCRP:INVENTORY:open source', _source)
         local User = API.getUserFromSource(_source)
-        print('FCRP:INVENTORY:open user')
         local Character = User:getCharacter()
-        print('FCRP:INVENTORY:open char')
         User:viewInventory()
-        print('FCRP:INVENTORY:open view')
         -- local primaryInventory = User:getPrimaryInventoryViewing()
         -- local secondaryInventory = User:getSecondaryInventoryViewing()
 
@@ -178,33 +173,25 @@ AddEventHandler(
             itemAmount = primaryInventory:getSlots()[slotFrom]:getItemAmount() / 2
         end
 
-        print(' primaryInventory:moveSlot', slotFrom, slotTo, itemAmount)
+        if itemAmount <= 0 then
+            itemAmount = 1
+        end
 
+        itemAmount = math.floor(itemAmount)
         primaryInventory:moveSlot(slotFrom, slotTo, itemAmount)
-
-        -- print("switching", itemAmount)
-
-        -- if (slotTo >= 129 and slotTo <= 132) or (slotFrom >= 129 and slotFrom <= 132) then
-        --     if (slotTo >= 129 and slotTo <= 132) and (slotFrom >= 129 and slotFrom <= 132) then
-        --         return
-        --     end
-        --     primaryInventory:moveToFromSlotHotbar(User, slotFrom, slotTo, itemAmount)
-        -- else
-        --     primaryInventory:moveToSlot(slotFrom, slotTo, itemAmount)
-        -- end
     end
 )
 
 RegisterNetEvent("VP:INVENTORY:SaveWeaponAmmoOnDB")
 AddEventHandler(
     "VP:INVENTORY:SaveWeaponAmmoOnDB",
-    function(slot, ammoCount)
+    function(slot, ammoInClip, ammoInWeapon)
         local _source = source
 
         local User = API.getUserFromSource(_source)
         local primaryInventory = User:getCharacter():getInventory()
 
-        primaryInventory:saveWeaponSlotIntoDb(slot, ammoCount)
+        primaryInventory:saveWeaponSlotIntoDb(slot, ammoInClip, ammoInWeapon)
     end
 )
 

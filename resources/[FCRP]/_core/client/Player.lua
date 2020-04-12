@@ -6,14 +6,19 @@ local isHandcuffed = false
 local handcuff_prevDrawable
 
 function cPlayer.Initialize(model, skin, clothing, lastPosition)
+    print('da')
     local decodedLastPosition = json.decode(lastPosition)
 
+    print('c')
     local camera = cWrapper.SkyCameraAtCoords(decodedLastPosition)
 
+    print('b')
     cPed.SetModel(model)
     cPed.SetHeadData(skin)
     cPed.SetClothing(clothing)
     cWrapper.PlaySkyCameraAnimationAtCoords(decodedLastPosition, camera)
+
+    print('yes')
 
     TriggerEvent("ToogleBackCharacter")
 end
