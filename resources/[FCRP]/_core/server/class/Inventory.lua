@@ -115,7 +115,7 @@ function API.Inventory(id, capacity, slots)
 
                 local itemStackSize = data:getStackSize()
 
-                if SlotTo:getItemAmount() < itemStackSize and (SlotTo:getItemAmount() + amount) <= itemStackSize then
+                if itemStackSize == -1 or (SlotTo:getItemAmount() + amount) <= itemStackSize then
                     Slot:removeItemAmount(amount)
                     SlotTo:addItemAmount(amount)
 
