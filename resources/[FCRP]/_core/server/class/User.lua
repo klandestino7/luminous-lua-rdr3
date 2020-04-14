@@ -168,20 +168,30 @@ function API.User(source, id, ipAddress)
     end
 
     self.drawCharacter = function()
-        if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then
-            Wait(200)
-            if cAPI.startNeeds(self:getSource()) then
-                Wait(100)
-                if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
-                    Wait(100)
-                    cAPI.setClothes(self:getSource(), self.Character:getClothes())
-                    Wait(100)
-                    -- local lastPosition = self.Character:getLastPosition()
-                    local lastPosition = {x = 0, y = 0, z = 0}
-                    cAPI.teleportSpawn(self:getSource(), lastPosition)
-                end
-            end
-        end
+        -- if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then
+        --     Wait(200)
+        --     if cAPI.startNeeds(self:getSource()) then
+        --         Wait(100)
+        --         if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
+        --             Wait(100)
+        --             cAPI.setClothes(self:getSource(), self.Character:getClothes())
+        --             Wait(100)
+        --             -- local lastPosition = self.Character:getLastPosition()
+        --             local lastPosition = {x = 0, y = 0, z = 0}
+        --             cAPI.teleportSpawn(self:getSource(), lastPosition)
+        --         end
+        --     end
+        -- end
+
+        local source = self:getSource()
+        local Character = self:getCharacter()
+
+        local character_model = Character:getModel()
+        local character_skin = Character:getSkin()
+        local character_clothing = Character:getClothes()
+        local character_lastposition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
+
+        cAPI.Initialize(source, character_model, character_skin, character_clothing, character_lastposition)
     end
 
     self.disconnect = function(this, reason)

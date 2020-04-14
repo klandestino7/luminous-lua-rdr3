@@ -15,6 +15,9 @@ client_scripts {
 	'client/Horse.lua',
 	'client/BasicNeeds.lua',
 	'client/LoadIPL.lua',
+	'client/Player.lua',
+	'client/Ped.lua',
+	'client/Wrapper.lua',
  	-- 'client/DebuggingControls.lua'
 }
 
