@@ -13,15 +13,15 @@ AddEventHandler('carroca:buyvehicle', function(price, vehicle, level)
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-    if Inventory:getItemAmount('generic_money') < tonumber(price*100) then
-        print(Inventory:getItemAmount('generic_money'))
+    if Inventory:getItemAmount('money') < tonumber(price*100) then
+        print(Inventory:getItemAmount('money'))
         User:notify('Dinheiro insuficiente!')
         TriggerClientEvent('Message:cancel', source)
         return
     end
     print('comprou')
 
-    Inventory:removeItem('generic_money', tonumber(price*100))
+    Inventory:removeItem('money', tonumber(price*100))
     TriggerClientEvent('carrocaspawn:vehicle', _source, vehicle)
 
 end)

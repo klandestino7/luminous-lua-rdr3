@@ -151,7 +151,7 @@ Citizen.CreateThread(
                 end
             end
 
-            itemDatas[id] = ItemData
+            itemDatas[id] = ItemData 
             names[values.name] = id
         end
     end

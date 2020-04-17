@@ -22,7 +22,7 @@ AddEventHandler('FRP:BANKING:withdraw', function(amount)
         else      
             Character:setData(Character:getId(), 'charTable', 'banco', tonumber(call-(amount*100)))
             Wait(100)
-            Inventory:addItem('generic_money', amount*100)  
+            Inventory:addItem('money', amount*100)  
             Wait(100)
            -- TriggerClientEvent("redemrp_notification:start",_source, "Withdrawal made.." , 2, "success")
             Wait(1000)
@@ -30,7 +30,6 @@ AddEventHandler('FRP:BANKING:withdraw', function(amount)
         end  
 	end
 end)
-
 
 RegisterServerEvent('FRP:BANKING:deposit')
 AddEventHandler('FRP:BANKING:deposit', function(amount)
@@ -42,13 +41,13 @@ AddEventHandler('FRP:BANKING:deposit', function(amount)
     local Inventory = User:getCharacter():getInventory()
     local call = json.decode(Character:getData(Character:getId(), 'charTable', 'banco'))
 	if amount ~= nil then
-        if _amount == nil or _amount <= 0 or _amount > Inventory:getItemAmount("generic_money") then
+        if _amount == nil or _amount <= 0 or _amount > Inventory:getItemAmount("money") then
             User:notify("Quantia inválida!")
             return
         else      
             Character:setData(Character:getId(), 'charTable', 'banco', tonumber(call+(amount*100)))
             Wait(100)
-            Inventory:removeItem('generic_money', amount*100)  
+            Inventory:removeItem('money', amount*100)  
             Wait(100)
            -- TriggerClientEvent("redemrp_notification:start",_source, "Withdrawal made.." , 2, "success")
             Wait(1000)
@@ -76,33 +75,52 @@ AddEventHandler('FRP:BANKING:balance2', function()
     TriggerClientEvent('currentbalance1', _source, tonumber(call/100), Character:getName())			
 end)
 
+RegisterCommand('pagar', function(source, args)
+    local playersend tonumber(args[1])
+    local amount = tonumber(args[2])
 
-RegisterServerEvent('FRP:BANKING:sendmoney')
-AddEventHandler('FRP:BANKING:sendmoney', function(source, amount)
-TriggerEvent('redemrp:getPlayerFromId', source, function(user)
-    local playermoney = user.getMoney()
-   -- local removemoney = user.removeMoney(amount)
-    if amount ~= nil then
-        if playermoney >= amount then
-           user.removeMoney(amount)
-         --   TriggerClientEvent('FRP:BANKING:sendmoney' playersend, amount)            
-        else
-            TriggerClientEvent('fc_notify', 'Você não tem essa quantia', 5)
-        end
+    if amount ~= nil and playersend ~= nil then
+      TriggerServerEvent('FRP:BANKING:sendmoney', source, playersend, amount)
     else
-        TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEMA', 'ID ou Valor Inválido.' } })
+      TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEMA', 'ID ou Valor Inválido.' } })
     end
 end)
-end, false)
 
+RegisterServerEvent('FRP:BANKING:sendmoney')
+AddEventHandler('FRP:BANKING:sendmoney', function(source, id, amount)
+    local _source = source
+    local User = API.getUserFromSource(_source)      
+    local Character = User:getCharacter()
+    local name = Character:getName()
+    local Inventory = User:getCharacter():getInventory()
+    local call = json.decode(Character:getData(Character:getId(), 'charTable', 'banco'))
+    local tplayer = API.getUserFromUserId(parseInt(id)):getSource()
+    local tname = tplayer:getName()
+    if amount ~= nil then
+        if _amount == nil or _amount <= 0 or _amount > tonumber(call) then
+            User:notify("Quantia inválida!")
+            return
+        else      
+            Character:setData(Character:getId(), 'charTable', 'banco', tonumber(call-(amount*100)))
+            Wait(100)
+            Inventory:removeItem('money', amount*100)  
+            Wait(500)            
+            TriggerClientEvent('FRP:BANKING:sendmoney', tplayer, amount, name)      
+            TriggerClientEvent('chatMessage', source, '^1SISTEMA', {255, 255, 255}, 'Você deu '.. amount*100 .. ' para ' .. tname .. '')
+        end  
+    end
+end)
 
 RegisterServerEvent('FRP:BANKING:recmoney')
 AddEventHandler('FRP:BANKING:recmoney', function(source, amount, name)
     local _name = name
-    local _amount = amount
+    local _source = source
+    local User = API.getUserFromSource(_source)      
+    local Character = User:getCharacter()
+    local Inventory = User:getCharacter():getInventory()
 
-    TriggerEvent('redemrp:getPlayerFromId', source, function(user)
-        user.addMoney(_amount)          
-        TriggerClientEvent('chatMessage', source, '^1SISTEMA', {255, 255, 255}, 'Você recebeu $'.. amount .. ' de ' .. _name .. '')
-    end)
+    if Character ~= nil then
+        Inventory:addItem('money', amount*100)
+        TriggerClientEvent('chatMessage', source, '^1SISTEMA', {255, 255, 255}, 'Você recebeu $'.. amount*100 .. ' de ' .. _name .. '')
+    end
 end)

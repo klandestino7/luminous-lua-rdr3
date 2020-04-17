@@ -14,6 +14,7 @@ Citizen.CreateThread(
 				Citizen.Wait(0) -- DO NOT REMOVE
 				isDead = true				
 				deathEndingTime = GetGameTimer() + Config.RespawnTime	
+				--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 			end
 		end
 	end
@@ -43,14 +44,16 @@ Citizen.CreateThread(
 			--	Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
 			--	Citizen.InvokeNative(0x405224591DF02025, 0.50, 0.475, 1.0, 0.22, 1, 1, 1, 100, true, true)
 	
-			DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.43, 0.28, 0.28, 0.8, 0, 0, 0, 250, 1)
-				if deathEndingTime > GetGameTimer() then
-					DrawTxt(Config.LocaleDead, 0.50, 0.32, 2.0, 2.0, true, 255, 0, 0, 255, true)
-					DrawTxt(Config.LocaleTimer, 0.50, 0.45, 0.5, 0.5, true, 255, 255, 255, 255, true)
-					DrawTxt('' .. tonumber(string.format('%.0f', (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.48, 0.7, 0.7, true, 255, 255, 255, 255, true)
+				DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.90, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+				if deathEndingTime > GetGameTimer() then					
+					DrawTxt(Config.LocaleDead, 0.50, 0.84, 0.8, 0.8, true, 255, 255, 255, 255, true)
+					DrawTxt(Config.LocaleTimer, 0.50, 0.895, 0.4, 0.4, true, 255, 255, 255, 255, true)
+					DrawTxt('' .. tonumber(string.format('%.0f', (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.92, 0.5, 0.5, true, 255, 255, 255, 255, true)
 					DisableAllControlActions(0)
 					DisableAllControlActions(1)
 					DisableAllControlActions(2)
+					ClearTimecycleModifier()
+					DestroyAllCams(true)
 				else
 					TriggerServerEvent('FCRP:Respawn:checkgroup')
 				end

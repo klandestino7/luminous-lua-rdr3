@@ -6,7 +6,7 @@ AddEventHandler('kcrp:buydog', function(dog)
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-	if Inventory:getItemAmount('generic_money') < 2 then
+	if Inventory:getItemAmount('money') < 2 then
         User:notify('Dinheiro insuficiente!')
         return
 	end
@@ -21,13 +21,13 @@ AddEventHandler('clothes:buy', function(price)
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-	if Inventory:getItemAmount('generic_money') < price then
+	if Inventory:getItemAmount('money') < price then
         User:notify('Dinheiro insuficiente!')
         return
 	end
 	User:notify('Você pagou ~pa~' .. price ..'$')
 
-	Inventory:removeItem('generic_money', price)
+	Inventory:removeItem('money', price)
 
 end)
 

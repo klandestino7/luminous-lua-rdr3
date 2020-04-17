@@ -52,14 +52,14 @@ AddEventHandler('FC:WEAPONSHOP:BuyWeapon', function(data)
     local level = User:getCharacter():getLevel()
 
     if level < tonumber(price*100) then
-        print(Inventory:getItemAmount('generic_money'))
+        print(Inventory:getItemAmount('money'))
         User:notify('Dinheiro insuficiente!')
         TriggerClientEvent('Message:cancel', source)
         return
     end
 
-    if Inventory:getItemAmount('generic_money') < tonumber(dolar) then
-        print(Inventory:getItemAmount('generic_money'))
+    if Inventory:getItemAmount('money') < tonumber(dolar) then
+        print(Inventory:getItemAmount('money'))
         User:notify('Dinheiro insuficiente!')
         return
     end
@@ -75,7 +75,7 @@ AddEventHandler('FC:WEAPONSHOP:BuyWeapon', function(data)
     end
 
     Inventory:addItem(itemId, tonumber(amount))
-    Inventory:removeItem('generic_money', tonumber(dolar))
+    Inventory:removeItem('money', tonumber(dolar))
     Inventory:removeItem('generic_gold', tonumber(gold))
     User:notify(ItemData:getName() .. ' comprada!')
 end)
@@ -97,7 +97,7 @@ AddEventHandler('FC:WEAPONSHOP:BuyAmmo', function(id)
 
     local ItemData = API.getItemDataFromId(muni)
 
-    if Inventory:getItemAmount('generic_money') < price then
+    if Inventory:getItemAmount('money') < price then
         User:notify('Dinheiro insuficiente!')
         return
     end
@@ -108,6 +108,6 @@ AddEventHandler('FC:WEAPONSHOP:BuyAmmo', function(id)
     end
 
     Inventory:addItem(muni, amount)
-    Inventory:removeItem('generic_money', price)
+    Inventory:removeItem('money', price)
     User:notify(ItemData:getName() .. ' comprado!')
 end)

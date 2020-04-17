@@ -39,23 +39,40 @@ Citizen.CreateThread(
 )
 
 
+
 CreateThread(function()
     while true do
 		Wait(0)
-		ShutdownLoadingScreen()
 		Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
 		NetworkSetFriendlyFireOption(true)
-		SetRelationshipBetweenGroups(5, `PLAYER`, `PLAYER`)
-		 DisableControlAction(0, 0x41AC83D1, true) -- loot
-		 DisableControlAction(0, 0x399C6619, true) -- loot 2
+		SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')	
+		
+		local ped = PlayerPedId()
+        if IsPedOnMount(ped) or IsPedInAnyVehicle(ped,false) then            
+            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
+        else
+            SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
+        end                 
+        if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1,ped,false) then            
+            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
+        else
+            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
+		end
+		
+		DisableControlAction(0, 0x580C4473, true) -- hud disable
+		DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
+
+		DisableControlAction(0, 0x41AC83D1, true) -- loot
+		DisableControlAction(0, 0x399C6619, true) -- loot 2
 		-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
 		-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
 		-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
-		 DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
-		 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
+		DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
+	--	 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
+		DisableControlAction(0, 0x6E9734E8, true) 	-- DESATIVAR DESISTIR
+    	DisableControlAction(0, 0x295175BF, true)   -- DESATIVAR SOLTAR DA CORDA
     end
 end)
-
 
 Citizen.CreateThread(function()
     while true do
@@ -77,10 +94,70 @@ function cAPI.teleport(x, y, z, spawn)
 end
 
 function cAPI.teleportSpawn(coordinate)
+	--local coords = {x = 0, y = 0, z =0}
 	local coords = json.decode(coordinate)
-	-- local coords = {x = -204.78715515137, y = -21.117504119873,z =73.484031677246}
+
 	cAPI.CameraWithSpawnEffect(coords)
 	SetEntityCoords(PlayerPedId(), coords.x + 0.0001, coords.y + 0.0001, coords.z + 0.0001, 1, 0, 0, 1)
+end
+
+function cAPI.GetCurrentTownName()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
+
+    if town_hash == GetHashKey("Annesburg") then
+        return "Annesburg"
+    elseif town_hash == GetHashKey("Annesburg") then
+        return "Annesburg"
+    elseif town_hash == GetHashKey("Armadillo") then
+        return "Armadillo"
+    elseif town_hash == GetHashKey("Blackwater") then
+        return "Blackwater"
+    elseif town_hash == GetHashKey("BeechersHope") then
+        return "BeechersHope"
+    elseif town_hash == GetHashKey("Braithwaite") then
+        return "Braithwaite"
+    elseif town_hash == GetHashKey("Butcher") then
+        return "Butcher"
+    elseif town_hash == GetHashKey("Caliga") then
+        return "Caliga"
+    elseif town_hash == GetHashKey("cornwall") then
+        return "Cornwall"
+    elseif town_hash == GetHashKey("Emerald") then
+        return "Emerald"
+    elseif town_hash == GetHashKey("lagras") then
+        return "lagras"
+    elseif town_hash == GetHashKey("Manzanita") then
+        return "Manzanita"
+    elseif town_hash == GetHashKey("Rhodes") then
+        return "Rhodes"
+    elseif town_hash == GetHashKey("Siska") then
+        return "Siska"
+    elseif town_hash == GetHashKey("StDenis") then
+        return "Saint Denis"
+    elseif town_hash == GetHashKey("Strawberry") then
+        return "Strawberry"
+    elseif town_hash == GetHashKey("Tumbleweed") then
+        return "Tumbleweed"
+    elseif town_hash == GetHashKey("valentine") then
+        return "Valentine"
+    elseif town_hash == GetHashKey("VANHORN") then
+        return "Vanhorn"
+    elseif town_hash == GetHashKey("Wallace") then
+        return "Wallace"
+    elseif town_hash == GetHashKey("wapiti") then
+        return "Wapiti"
+    elseif town_hash == GetHashKey("AguasdulcesFarm") then
+        return "Aguasdulces Farm"
+    elseif town_hash == GetHashKey("AguasdulcesRuins") then
+        return "Aguasdulces Ruins"
+    elseif town_hash == GetHashKey("AguasdulcesVilla") then
+        return "Aguasdulces Villa"
+    elseif town_hash == GetHashKey("Manicato") then
+        return "Manicato"
+    elseif town_hash == false then
+        return "Cidade Fantasma"
+    end
 end
 
 -- return vx,vy,vz
@@ -88,7 +165,6 @@ function cAPI.getSpeed()
 	local vx, vy, vz = table.unpack(GetEntityVelocity(PlayerPedId()))
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
 end
-
 
 function cAPI.setModel(modelo)    
 	Citizen.CreateThread(function()
@@ -101,7 +177,7 @@ function cAPI.setModel(modelo)
 		Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
     end)
     return true    
-end 
+end
 
 
 -- function cAPI.setModel(modelo)
@@ -172,6 +248,14 @@ function cAPI.setDados(hash)
 	end
 end
 
+function cAPI.CWanted(reward)
+	local Wanted = true
+	if reward == 0 then
+		return false
+	end
+	return reward
+end
+
 function cAPI.getCamDirection()
 	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
 	local pitch = GetGameplayCamRelativePitch()
@@ -187,15 +271,29 @@ function cAPI.getCamDirection()
 	return x, y, z
 end
 
+function cAPI.GetCoordsFromCam(distance)
+	local rot = GetGameplayCamRot(2)
+	local coord = GetGameplayCamCoord()
+  
+	local tZ = rot.z * 0.0174532924
+	local tX = rot.x * 0.0174532924
+	local num = math.abs(math.cos(tX))
+  
+	newCoordX = coord.x + (-math.sin(tZ)) * (num + distance)
+	newCoordY = coord.y + (math.cos(tZ)) * (num + distance)
+	newCoordZ = coord.z + (math.sin(tX) * 8.0)
+	return newCoordX, newCoordY, newCoordZ
+end
 
 function cAPI.Target(Distance, Ped)
-	local Entity = nil
-	local camCoords = GetGameplayCamCoord()
-	local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
-	local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
-	local A,B,C,D,Entity = GetRaycastResult(RayHandle)
-	return Entity, farCoordsX, farCoordsY, farCoordsZ
+  local Entity = nil
+  local camCoords = GetGameplayCamCoord()
+  local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
+  local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
+  local A,B,C,D,Entity = GetShapeTestResult(RayHandle)
+  return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
+
 
 
 function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
@@ -203,7 +301,7 @@ function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
 	local CoA = GetEntityCoords(Ped, 1)
 	local CoB = GetOffsetFromEntityInWorldCoords(Ped, 0.0, Distance, 0.0)
 	local RayHandle = StartShapeTestRay(CoA.x, CoA.y, CoA.z, CoB.x, CoB.y, CoB.z, -1, Ped, 0)
-	local A,B,C,D,Ent = GetRaycastResult(RayHandle)
+	local A,B,C,D,Ent = GetShapeTestResult(RayHandle)
 	return Ent
   end
 
@@ -675,10 +773,13 @@ function cAPI.Temperatura()
 	else
 	if temperatura < -5 then
 	  Wait(5000)
+	  	Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Cold_Stamina", 1, -1);
 		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
 		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
 	  Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)     
 	  print('está muito frio')     
+	else
+		Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Cold_Stamina", 0, 0);
 	end
 	if temperatura > 40 then 
 	  Wait(5000)

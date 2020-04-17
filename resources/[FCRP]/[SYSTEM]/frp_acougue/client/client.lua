@@ -32,6 +32,23 @@ Citizen.CreateThread(function()
 while true do
     Citizen.Wait(0)
     local coords = GetEntityCoords(PlayerPedId())
+    for _, ped in pairs(Config.PedAcougue) do
+        print('lop')
+        if pedsSpawned == nil then
+            local model = GetHashKey('U_M_M_VALBUTCHER_01')
+            RequestModel(model)
+            while HasModelLoaded(model) do
+                Citizen.Wait(1000)
+                RequestModel(model)
+            end            
+            pedsSpawned = CreatePed(model, ped.x, ped.y, ped.z, ped.h, 1, 0)
+            SetPedOutfitPreset(pedsSpawned, 2, false)
+            FreezeEntityPosition(pedsSpawned, true)
+            PlaceObjectOnGroundProperly(pedsSpawned true)       
+        end
+    end  
+
+
     for _, info in pairs(Config.Acougue) do
 
         -- if (Vdist(coords.x, coords.y, coords.z, info.x, info.y, info.z) < 10.0) then --f6

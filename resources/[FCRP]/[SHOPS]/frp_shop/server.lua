@@ -61,14 +61,14 @@ AddEventHandler(
 
         local Inventory = Character:getInventory()
 
-        if Inventory:getItemAmount("generic_money") < itemPrice then
+        if Inventory:getItemAmount("money") < itemPrice then
             User:notify("Você não tem dinheiro suficiente")
             return
         end
 
         local itemAmount = itemData[3]
 
-        Inventory:removeItem("generic_money", itemPrice)
+        Inventory:removeItem("money", itemPrice)
         Inventory:addItem(itemId, itemAmount or 1)
 
         User:notify("- $" .. itemPrice .. ",00")

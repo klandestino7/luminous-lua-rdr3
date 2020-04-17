@@ -148,7 +148,7 @@ function endRobberyGiveReward()
         local Character = User:getCharacter()
         if Character ~= nil then
             local reward = data[indexBeingRobbed].staticReward
-            Character:getInventory():addItem("generic_money", reward)
+            Character:getInventory():addItem("money", reward)
             --TriggerClientEvent('FRP:Notify', User, "Você recebeu R$ " .. reward .. " pelo assalto")
             print("Você recebeu R$ " .. reward / 100 .. " de dólar sujo pelo assalto")
             User:notify("Você recebeu R$ " .. reward / 100 .. " de dólar sujo pelo assalto")

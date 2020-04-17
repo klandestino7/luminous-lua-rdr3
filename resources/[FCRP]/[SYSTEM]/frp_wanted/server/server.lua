@@ -33,14 +33,21 @@ end)
 RegisterServerEvent('FRP:WANTED:RewardNotify')
 AddEventHandler('FRP:WANTED:RewardNotify', function(id, reward, city)
     local tplayer = API.getUserFromUserId(parseInt(id)):getSource()
+
     local User = API.getUserFromSource(tplayer)      
+
     local Character = User:getCharacter()
     local pname = Character:getName()
     local charid = Character:getId()
     local wan = Character:getData(charid, "wanted", city)
-    local wantedvalue = json.decode(wan)
-    
-    TriggerClientEvent('FRP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+
+    if wan ~= nil then  
+        local wantedvalue = json.decode(wan)
+        TriggerClientEvent('FRP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+    else
+        TriggerClientEvent('FRP:WANTED:RewardNotify', -1, reward, pname, city) 
+    end
+
 
 end)
 
@@ -51,16 +58,21 @@ AddEventHandler('FRP:WANTED:RewardSERVER', function(id, value, city)
 
     local Character = User:getCharacter()
     local charid = Character:getId()
-
     local wan = Character:getData(charid, "wanted", city)
-    local wantedvalue = json.decode(wan)
+    
+    if wan ~= nil then    
+        local wantedvalue = json.decode(wan)
+        local wanted = {
+            [city] = value
+        }    
+        Character:setData(charid, "wanted", city, value+wantedvalue)
+    else       
+        local wanted = {
+            [city] = value
+        }    
+        Character:setData(charid, "wanted", city, value)
+    end
 
-    print(wantedvalue)
-
-    local wanted = {
-        [city] = value
-    }    
-    Character:setData(charid, "wanted", city, value+wantedvalue)
  --   Character:setWanted(charid, json.encode(wanted))
 end)
         

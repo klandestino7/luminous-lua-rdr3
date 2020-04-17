@@ -15,12 +15,12 @@ AddEventHandler('bberry:buyvehicle', function(price, vehicle, level)
     local Inventory = User:getCharacter():getInventory()
     local Character = User:getCharacter()
 
-    if Inventory:getItemAmount('generic_money') < tonumber(price*100) then
-        print(Inventory:getItemAmount('generic_money'))
+    if Inventory:getItemAmount('money') < tonumber(price*100) then
+        print(Inventory:getItemAmount('money'))
         User:notify('Dinheiro insuficiente!')
         TriggerClientEvent('Message:cancel', source)
         return
     end
-    Inventory:removeItem('generic_money', tonumber(price*100))
+    Inventory:removeItem('money', tonumber(price*100))
     TriggerClientEvent('spawn:vehicle', _source, vehicle)
 end)

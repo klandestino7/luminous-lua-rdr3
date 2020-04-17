@@ -9,7 +9,7 @@ cAPI = Tunnel.getInterface('API')
 --     local _source = source
 --     local User = API.getUserFromSource(_source)
 --     local Inventory = User:getCharacter():getInventory()
--- 	if Inventory:getItemAmount('generic_money') < 2 then
+-- 	if Inventory:getItemAmount('money') < 2 then
 --         User:notify('Dinheiro insuficiente!')
 --         return
 --     end    
@@ -28,8 +28,7 @@ AddEventHandler( 'FRP:PET:buydog', function (args)
     local u_level = User:getCharacter():getLevel()
     local _resul = Character:getData(Character:getId(), 'charTable', 'dog')
 
-
-    if Inventory:getItemAmount('generic_money') < tonumber(_price*100) then
+    if Inventory:getItemAmount('money') < tonumber(_price*100) then
         User:notify('Dinheiro insuficiente!')
         return
     end   
@@ -43,13 +42,13 @@ AddEventHandler( 'FRP:PET:buydog', function (args)
     print(_resul)
 
     if _resul == nil then        
-        Inventory:removeItem('generic_money' , tonumber(_price*100))
+        Inventory:removeItem('money' , tonumber(_price*100))
         Character:setData(Character:getId(), 'charTable', 'dog', _model)     
         User:notify('Você comprou um novo animal de estimação.')        
     else
         Character:remData(Character:getId(), 'charTable', 'dog')
         Wait(500)
-                Inventory:removeItem('generic_money' , tonumber(_price*100))
+                Inventory:removeItem('money' , tonumber(_price*100))
         Character:setData(Character:getId(), 'charTable', 'dog', _model)    
         User:notify('Você comprou um novo animal de estimação.')   
     end

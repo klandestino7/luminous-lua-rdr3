@@ -18,10 +18,10 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 		local playerCoords = GetEntityCoords(playerPed)
-   --     local CityName = GetCurentTownName()
+       local CityName = GetCurrentTownName()
         if IsPedShooting(playerPed) then
             local Policia = TriggerServerEvent('FRP:WANTED:checkJOB')        
-            print(Policia)
+   
             if CityName ~= nil then
                 local ped = PlayerPedId()
                 local currentWeaponHash = GetCurrentPedWeapon(ped)
@@ -152,7 +152,7 @@ end
 
 function GetCurrentStateName()
     local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, -1)
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 0)
 
     -- if town_hash == GetHashKey("GuarmaD") then
     --     return "GuarmaD"

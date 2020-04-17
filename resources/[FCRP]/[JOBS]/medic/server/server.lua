@@ -15,7 +15,7 @@ AddEventHandler('FRP:MEDIC:checkjob', function()
 	if job then
 		TriggerClientEvent('FRP:MEDIC:revivecheck', _source)
 		User:addXp(10)
-		Inventory:addItem('generic_money', 5)
+		Inventory:addItem('money', 5)
 	else
 		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um médico')
 	end

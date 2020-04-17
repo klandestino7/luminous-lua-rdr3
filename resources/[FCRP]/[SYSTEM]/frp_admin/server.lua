@@ -116,7 +116,7 @@ RegisterCommand(
 
 RegisterCommand(
     "addxp",
-    function(source, args, raw)
+    function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroup("admin") then
@@ -241,7 +241,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "ped",
+    "spawnped",
     function(source, args, rawCommand)
         if #args >= 1 then
             local User = API.getUserFromSource(source)
@@ -268,4 +268,5 @@ RegisterCommand('revive', function(source, args, rawCommand)
             TriggerClientEvent('FRP:RESPAWN:revive', _source)
         end
     end
-end) 
+end
+) 

@@ -4,33 +4,51 @@ local Proxy = module("_core", "libs/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-RegisterServerEvent('sheriff:checkjob')
-AddEventHandler('sheriff:checkjob', function()
+-- RegisterServerEvent('FRP:SHERIFF:checkjob')
+-- AddEventHandler('FRP:SHERIFF:checkjob', function()
+-- 	local _source = source
+-- 	local User = API.getUserFromSource(_source)
+-- 	local Character = User:getCharacter()	
+-- 	local job = Character:hasGroup('police')		
+
+-- 	if job then
+		
+-- 	else
+-- 		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
+-- 	end 
+-- end)
+
+
+RegisterServerEvent('FRP:SHERIFF:checkjob')
+AddEventHandler('FRP:SHERIFF:checkjob', function()
 	local _source = source
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()	
-	local job = Character:hasGroup('police')		
+	local police = Character:hasGroup('police')		
+	local sheriff = Character:hasGroup('sheriff')		
 
-	if job then
-		TriggerClientEvent('sheriff:cuffcheck', source)
-	else
-		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
-	end 
+	if police then
+		TriggerClientEvent('FRP:SHERIFF:PoliceCheck', _source, police)
+	end
+	if sheriff then
+		TriggerClientEvent('FRP:SHERIFF:SheriffCheck', _source, sheriff)
+	end
 end)
 
 
-RegisterServerEvent('sheriff:soltar')
-AddEventHandler('sheriff:soltar', function()
+
+RegisterServerEvent('FRP:SHERIFF:soltar')
+AddEventHandler('FRP:SHERIFF:soltar', function()
 	local _source = source
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()	
 	local policejob = Character:hasGroup('police')		
 
-	--TriggerClientEvent('sheriff:result', _source, policejob)	
+	--TriggerClientEvent('FRP:SHERIFF:result', _source, policejob)	
 
 	local policejob = Character:hasGroup('police')	
 	if policejob == false then
-		TriggerEvent('sheriff:soltar', target)
+		TriggerEvent('FRP:SHERIFF:soltar', target)
 	else
 		TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
 	end 
@@ -59,7 +77,7 @@ RegisterCommand('colocar', function(source)
 	TriggerEvent("redemrp:getPlayerFromId", source, function(user)
 		local policejob = user.getJob()
 	--	if policejob == 'police' then
-		TriggerClientEvent('sheriff:playercheck', source)
+		TriggerClientEvent('FRP:SHERIFF:playercheck', source)
 		--xPlayer.removeInventoryItem('handcuffs', 1)
 	--	else
 	--	 TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
@@ -68,75 +86,66 @@ RegisterCommand('colocar', function(source)
 end)
 
 
-RegisterServerEvent('sheriff:puting')
-AddEventHandler('sheriff:puting', function(target)
+RegisterServerEvent('FRP:SHERIFF:puting')
+AddEventHandler('FRP:SHERIFF:puting', function(target)
 
-  TriggerClientEvent('sheriff:vehiclep', target)
+  TriggerClientEvent('FRP:SHERIFF:vehiclep', target)
  --TriggerClientEvent("ic_sound:source",target,'cuff',0.1)
  -- TriggerClientEvent("ic_sound:source",source,'cuff',0.1)
 end)
 
+RegisterServerEvent('FRP:SHERIFF:outing')
+AddEventHandler('FRP:SHERIFF:outing', function(target)
 
+  TriggerClientEvent('FRP:SHERIFF:vehicleout', target)
+end)
 
-RegisterServerEvent('sheriff:putInVehicle')
-AddEventHandler('sheriff:putInVehicle', function(target)
+RegisterServerEvent('FRP:SHERIFF:putInVehicle')
+AddEventHandler('FRP:SHERIFF:putInVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
 	if xPlayer.job.name == 'police' then
 		
 	else
-		print(('sheriff: %s attempted to put in vehicle (not cop)!'):format(xPlayer.identifier))
+		print(('FRP:SHERIFF: %s attempted to put in vehicle (not cop)!'):format(xPlayer.identifier))
 	end
 end)
 
-
-
-RegisterCommand('menupolice', function(source)
-	local _source = source
-
-	TriggerEvent("redemrp:getPlayerFromId", _source, function(user)
-		local policejob = user.getJob()
-		if policejob == 'police' then
-			TriggerClientEvent('sheriff:openmenu', _source)
-		else
-		 TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
-		end 
-	end)
-end)
-
-
 RegisterCommand('testservjob', function(source)
-	TriggerEvent('sheriff:checkjob', source)
+	TriggerEvent('FRP:SHERIFF:checkjob', source)
 end)
 
 
-RegisterServerEvent('sheriff:cuffing')
-AddEventHandler('sheriff:cuffing', function(source)
+RegisterServerEvent('FRP:SHERIFF:cuffing')
+AddEventHandler('FRP:SHERIFF:cuffing', function(source)
 
-  TriggerClientEvent('sheriff:cuff', source)
+  TriggerClientEvent('FRP:SHERIFF:cuff', source)
  --TriggerClientEvent("ic_sound:source",target,'cuff',0.1)
   --TriggerClientEvent("ic_sound:source",source,'cuff',0.1)
 end)
 
 
-RegisterServerEvent('sheriff:unlocking')
-AddEventHandler('sheriff:unlocking', function(source)
-
-  TriggerClientEvent('sheriff:uncuff', source)
+RegisterServerEvent('FRP:SHERIFF:unlocking')
+AddEventHandler('FRP:SHERIFF:unlocking', function(source)
+  TriggerClientEvent('FRP:SHERIFF:uncuff', source)
   
 end)
 
-RegisterCommand('soltar', function(target)
+RegisterServerEvent('FRP:SHERIFF:soltar')
+AddEventHandler('FRP:SHERIFF:soltar', function(target)
+	TriggerClientEvent('FRP:SHERIFF:nyckelcheck', target)  	
+end) 
 
-		TriggerClientEvent('sheriff:nyckelcheck', target)
+RegisterCommand('soltar', function(target)
+	TriggerClientEvent('FRP:SHERIFF:nyckelcheck', target)
 		--xPlayer.removeInventoryItem('handcuffs', 1)  
-	end)
+end)
 	
 
-	RegisterServerEvent('sheriff:unlocking')
-AddEventHandler('sheriff:unlocking', function(source)
+	RegisterServerEvent('FRP:SHERIFF:unlocking')
+AddEventHandler('FRP:SHERIFF:unlocking', function(source)
 
-  TriggerClientEvent('sheriff:uncuff', source)
+  TriggerClientEvent('FRP:SHERIFF:uncuff', source)
   TriggerClientEvent("ic_sound:source",source,'uncuff',0.1)   
 
 end)
@@ -152,53 +161,53 @@ end)
 -- 	handcuffs = false
 -- 		local policejob = Character:hasGroup('police')
 -- 		if policejob == true then			
--- 			TriggerClientEvent('sheriff:cuffcheck', source)
+-- 			TriggerClientEvent('FRP:SHERIFF:cuffcheck', source)
 -- 			handcuffs = true
 -- 		else
 -- 			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial') 
 -- 		end 
 -- 		if handcuffs == true then
--- 			TriggerEvent('sheriff:prender', target)
+-- 			TriggerEvent('FRP:SHERIFF:prender', target)
 -- 		end
 -- end)
 
 
--- RegisterServerEvent('sheriff:checkjob')
--- AddEventHandler('sheriff:checkjob', function(source, playerjob)
+-- RegisterServerEvent('FRP:SHERIFF:checkjob')
+-- AddEventHandler('FRP:SHERIFF:checkjob', function(source, playerjob)
 -- local _source = source
 
 -- TriggerEvent("redemrp:getPlayerFromId", _source, function(user)
 
 -- 	playerjob = user.getJob()
 
--- 	TriggerClientEvent('sheriff:checkjob', _source, playerjob)
+-- 	TriggerClientEvent('FRP:SHERIFF:checkjob', _source, playerjob)
 -- 	end)
 -- end)
 
 
 
--- RegisterServerEvent('sheriff:soltar')
--- AddEventHandler('sheriff:prender', function(target)
--- 	TriggerClientEvent('sheriff:nyckelcheck', target)
+-- RegisterServerEvent('FRP:SHERIFF:soltar')
+-- AddEventHandler('FRP:SHERIFF:prender', function(target)
+-- 	TriggerClientEvent('FRP:SHERIFF:nyckelcheck', target)
 -- end)
 
 -- RegisterCommand('soltar', function(target)
 
--- 	TriggerClientEvent('sheriff:nyckelcheck', target)
+-- 	TriggerClientEvent('FRP:SHERIFF:nyckelcheck', target)
 -- 	--xPlayer.removeInventoryItem('handcuffs', 1)  
 -- end)
 
 
--- RegisterServerEvent('sheriff:remove')
--- AddEventHandler('sheriff:remove', function()
+-- RegisterServerEvent('FRP:SHERIFF:remove')
+-- AddEventHandler('FRP:SHERIFF:remove', function()
 -- 	local _source = source
 -- 	TriggerEvent("redemrp:getPlayerFromId", _source, function(user)
 -- 	--xPlayer.removeInventoryItem('handcuffs', 1)
 -- end)
 -- end)
 
--- RegisterServerEvent('sheriff:give')
--- AddEventHandler('sheriff:give', function()
+-- RegisterServerEvent('FRP:SHERIFF:give')
+-- AddEventHandler('FRP:SHERIFF:give', function()
 -- 	local _source = source
 -- 	TriggerEvent("redemrp:getPlayerFromId", _source, function(user)
 -- 	--xPlayer.addInventoryItem('handcuffs', 1)
@@ -209,7 +218,7 @@ end)
 
 --  --[[
 -- ESX.RegisterUsableItem('key', function(target)	
---     TriggerClientEvent('sheriff:nyckelcheck', target)
+--     TriggerClientEvent('FRP:SHERIFF:nyckelcheck', target)
 --     --TriggerClientEvent("ic_sound:source",target,'uncuff',0.1)    
 --  --   TriggerClientEvent("ic_sound:source",target,'uncuff',0.1)
 
@@ -218,7 +227,7 @@ end)
 -- --[[
 -- ESX.RegisterUsableItem('blowpipe', function(source)
 -- 	local xPlayer = ESX.GetPlayerFromId(target)	
--- 	TriggerClientEvent('sheriff:unlockingcuffs', source)
+-- 	TriggerClientEvent('FRP:SHERIFF:unlockingcuffs', source)
 -- 	xPlayer.removeInventoryItem('blowpipe', 1)
 -- end) ]]
 
