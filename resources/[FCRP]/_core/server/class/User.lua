@@ -126,7 +126,6 @@ function API.User(source, id, ipAddress)
                 end
             end
 
-
             -- local weapons = json.decode(charRow[1].weapons) or {}
             -- cAPI.replaceWeapons(self:getSource(), weapons)
 
@@ -168,30 +167,40 @@ function API.User(source, id, ipAddress)
     end
 
     self.drawCharacter = function()
-        -- if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then
-        --     Wait(200)
-        --     if cAPI.startNeeds(self:getSource()) then
-        --         Wait(100)
-        --         if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
-        --             Wait(100)
-        --             cAPI.setClothes(self:getSource(), self.Character:getClothes())
-        --             Wait(100)
-        --             -- local lastPosition = self.Character:getLastPosition()
-        --             local lastPosition = {x = 0, y = 0, z = 0}
-        --             cAPI.teleportSpawn(self:getSource(), lastPosition)
-        --         end
-        --     end
-        -- end
+        if cAPI.setModel(self:getSource(), json.decode(self.Character:getModel())) then
+            Wait(200)
+            if cAPI.startNeeds(self:getSource()) then
+                Wait(100)
+                if cAPI.setDados(self:getSource(), self.Character:getCharTable()) then
+                    Wait(100)
+                    cAPI.setClothes(self:getSource(), self.Character:getClothes())
+                    Wait(100)
+                    -- local lastPosition = self.Character:getLastPosition()
+                    local lastPosition = json.encode({x = 33.080871582031, y = 32.801963806152, z = 101.56585693359})
+                    cAPI.teleportSpawn(self:getSource(), lastPosition)
+                end
+            end
+        end
 
-        local source = self:getSource()
-        local Character = self:getCharacter()
+        -- print('aa')
 
-        local character_model = Character:getModel()
-        local character_skin = Character:getSkin()
-        local character_clothing = Character:getClothes()
-        local character_lastposition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
+        -- local source = self:getSource()
+        -- local Character = self:getCharacter()
 
-        cAPI.Initialize(source, character_model, character_skin, character_clothing, character_lastposition)
+        -- print('d')
+        -- local character_model = Character:getModel()
+        -- print("a")
+        -- -- local character_skin = Character:getSkin()
+        -- local character_skin = {}
+        -- print('b')
+        -- local character_clothing = Character:getClothes()
+        -- print('c')
+        -- -- local character_lastposition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
+        -- local character_lastposition = json.encode({0, 0, 0})
+
+        -- print(character_model, character_skin, character_clothing, character_lastposition)
+
+        -- cAPI.Initialize(source, character_model, character_skin, character_clothing, character_lastposition)
     end
 
     self.disconnect = function(this, reason)

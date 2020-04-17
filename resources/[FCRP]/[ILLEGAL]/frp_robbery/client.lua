@@ -12,14 +12,6 @@ RegisterCommand(
     false
 )
 
-RegisterCommand(
-    "arma",
-    function(source, args, rawCommand)
-        GiveWeaponToPed(PlayerPedId(), GetHashKey(args[1]), 250, false, false)
-    end,
-    false
-)
-
 local interiors = {
     [1] = 72962, -- BANCO BLACKWATER
     [2] = 42754, -- BANCO SAINT DENNIS
