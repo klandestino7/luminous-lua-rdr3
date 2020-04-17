@@ -4,9 +4,9 @@ local Proxy = module("_core", "libs/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-RegisterNetEvent("FRP:STABLE:UpdateHorseComponents")
+RegisterNetEvent("VP:STABLE:UpdateHorseComponents")
 AddEventHandler(
-    "FRP:STABLE:UpdateHorseComponents",
+    "VP:STABLE:UpdateHorseComponents",
     function(components)
         local _source = source
         local User = API.getUserFromSource(_source)
@@ -22,10 +22,11 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("FCRP:HORSESHOP:AskForMyHorses")
+RegisterNetEvent("VP:STABLE:AskForMyHorses")
 AddEventHandler(
-    "FCRP:HORSESHOP:AskForMyHorses",
+    "VP:STABLE:AskForMyHorses",
     function()
+        print('VP:STABLE:AskForMyHorses')
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -50,7 +51,11 @@ AddEventHandler(
             data.charid = nil
         end
 
-        TriggerClientEvent("FRP:STABLE:ReceiveHorsesData", _source, horses)
-        TriggerClientEvent("FRP:STABLE:callhorse", _source)
+        for k,v in pairs(horses) do
+            print(k,v)
+        end
+
+        TriggerClientEvent("VP:STABLE:ReceiveHorsesData", _source, horses)
+        -- TriggerClientEvent("VP:STABLE:callhorse", _source)
     end
 )

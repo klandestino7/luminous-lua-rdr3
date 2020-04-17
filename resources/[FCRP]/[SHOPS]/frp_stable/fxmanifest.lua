@@ -19,6 +19,5 @@ files {
 	'html/*',
 	'html/css/*',
 	'html/fonts/*',
-	'html/js/*',
-	'html/assets/*'
+	'html/img/*'
 }

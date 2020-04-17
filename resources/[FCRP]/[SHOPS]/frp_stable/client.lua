@@ -4,9 +4,6 @@ local Proxy = module("_core", "libs/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
-adding = true
-horsesp = false
-inCustomization = false
 cam = nil
 hided = false
 spawnedCamera = nil
@@ -16,51 +13,39 @@ sex = nil
 zoom = 4.0
 offset = 0.2
 
-local adding = true
-local saddles = {}
-local saddlecloths = {}
-local stirrups = {}
-local bags = {}
-local manes = {}
-local horsetails = {}
-local acshorn = {}
-local acsluggage = {}
-
-Citizen.CreateThread(
-    function()
-        while adding do
-            Citizen.Wait(0)
-            for i, v in ipairs(HorseComp) do
-                if v.category == "Saddles" then
-                    table.insert(saddles, v.Hash)
-                elseif v.category == "Saddlecloths" then
-                    table.insert(saddlecloths, v.Hash)
-                elseif v.category == "Stirrups" then
-                    table.insert(stirrups, v.Hash)
-                elseif v.category == "Bags" then
-                    table.insert(bags, v.Hash)
-                elseif v.category == "Manes" then
-                    table.insert(manes, v.Hash)
-                elseif v.category == "HorseTails" then
-                    table.insert(horsetails, v.Hash)
-                elseif v.category == "AcsHorn" then
-                    table.insert(acshorn, v.Hash)
-                elseif v.category == "AcsLuggage" then
-                    table.insert(acsluggage, v.Hash)
-                end
-            end
-            adding = false
-        end
-    end
-)
-
 RegisterCommand(
     "horsemodf",
     function(source, args)
         inCustomization = true
         horsesp = true
         SetEntityHeading(cAPI.getHorseEnt(), 334)
-        TriggerServerEvent("FRP:STABLE:AskForMyHorses")
+
+        SetNuiFocus(true, true)
+
+        local hashm = GetEntityModel(cAPI.getHorseEnt())
+
+        if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
+            camera(zoom, offset)
+        end
+
+        SetEntityVisible(PlayerPedId(), false)
+
+        if not alreadySentShopData then
+            SendNUIMessage(
+                {
+                    action = "show",
+                    shopData = getShopData()
+                }
+            )
+        else
+            SendNUIMessage(
+                {
+                    action = "show"
+                }
+            )
+        end
+
+        TriggerServerEvent("VP:STABLE:AskForMyHorses")
     end
 )
 
@@ -72,7 +57,6 @@ end
 RegisterNUICallback(
     "rotate",
     function(data, cb)
-        print("foi")
         if (data["key"] == "left") then
             rotation(20)
         else
@@ -82,34 +66,17 @@ RegisterNUICallback(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-            if inCustomization and not hided then
-                SetNuiFocus(true, true)
-            
-                local hashm = GetEntityModel(cAPI.getHorseEnt())
-                
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+--             if inCustomization and not hided then
 
+--             end
+--         end
+--     end
+-- )
 
-                if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
-                    camera(zoom, offset)
-                end
-
-
-
-                SetEntityVisible(PlayerPedId(), false)
-
-                SendNUIMessage(
-                    {
-                        action = "showCreate"
-                    }
-                )
-            end
-        end
-    end
-)
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
@@ -119,7 +86,7 @@ AddEventHandler(
         SetNuiFocus(false, false)
         SendNUIMessage(
             {
-                action = "hideOnly"
+                action = "hide"
             }
         )
     end
@@ -181,50 +148,25 @@ function camera(zoom, offset)
     DisplayRadar(false)
 end
 
-function createPeds()
-    for k, v in pairs(peds) do
-        if choosePed[k] == nil then
-            local waiting = 0
-            local hash = GetHashKey(peds[k].genrer)
-            RequestModel(hash)
-            while not HasModelLoaded(hash) do
-                Citizen.Wait(10)
-            end
-            choosePed[k] = CreatePed(GetHashKey(peds[k].genrer), peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
-            Citizen.InvokeNative(0x283978A15512B2FE, choosePed[k], true)
-            Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
-            -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
-            SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
-            SetModelAsNoLongerNeeded(choosePed[k])
-        end
-    end
-end
-
 RegisterNUICallback(
     "CloseStable",
     function()
         SendNUIMessage(
             {
-                action = "hideCreate"
+                action = "hide"
             }
         )
-        inCustomization = false
-        horsesp = false
-        --  SetEntityVisible(cAPI.getHorseEnt(), true)
-        --  NetworkSetEntityInvisibleToNetwork(cAPI.getHorseEnt(), false)
-        cam = nil
         SetEntityVisible(PlayerPedId(), true)
+
+        showroomHorse_model = nil
+
+        if showroomHorse_entity ~= nil then
+            DeleteEntity(showroomHorse_entity)
+        end
+
+        showroomHorse_entity = nil
     end
 )
-
-SaddlesUsing = nil
-SaddleclothsUsing = nil
-StirrupsUsing = nil
-BagsUsing = nil
-ManesUsing = nil
-HorseTailsUsing = nil
-AcsHornUsing = nil
-AcsLuggageUsing = nil
 
 RegisterNUICallback(
     "Saddles",
@@ -381,42 +323,29 @@ RegisterNUICallback(
 myHorses = {}
 
 RegisterNUICallback(
-    "Myhorses",
+    "selectHorse",
     function(data)
-        TriggerServerEvent("FRP:STABLE:SelectHorseWithId", data.id)
+        TriggerServerEvent("VP:STABLE:SelectHorseWithId", tonumber(data.horseId))
     end
 )
 
-RegisterNetEvent("FRP:STABLE:callhorse")
+RegisterNetEvent("VP:STABLE:ReceiveHorsesData")
 AddEventHandler(
-    "FRP:STABLE:callhorse",
-    function()
-        for _, horseData in pairs(myHorses) do
-            --	print(json.encode(horseData))
-            SendNUIMessage(
-                {
-                    nomeHorse = horseData.name,
-                    modelHorse = horseData.model,
-                    idHorse = horseData.id
-                }
-            )
-        end
+    "VP:STABLE:ReceiveHorsesData",
+    function(data)
+        SendNUIMessage(
+            {
+                myHorsesData = data
+            }
+        )
     end
 )
 
-RegisterNetEvent("FRP:STABLE:ReceiveHorsesData")
+RegisterNetEvent("VP:STABLE:SelectHORSE")
 AddEventHandler(
-    "FRP:STABLE:ReceiveHorsesData",
+    "VP:STABLE:SelectHORSE",
     function(data)
-        myHorses = data
-    end
-)
-
-RegisterNetEvent("FRP:STABLE:SelectHORSE")
-AddEventHandler(
-    "FRP:STABLE:SelectHORSE",
-    function(data)
-        TriggerServerEvent("FRP:STABLE:SelectHorseWithId", data.id)
+        TriggerServerEvent("VP:STABLE:SelectHorseWithId", data.id)
     end
 )
 
@@ -441,7 +370,7 @@ RegisterNUICallback(
             AcsHornUsing,
             AcsLuggageUsing
         }
-        TriggerServerEvent("FRP:STABLE:UpdateHorseComponents", dados)
+        TriggerServerEvent("VP:STABLE:UpdateHorseComponents", dados)
         SetEntityVisible(PlayerPedId(), true)
         closeAll()
     end
@@ -507,7 +436,7 @@ function closeAll()
     DisplayHud(true)
     SendNUIMessage(
         {
-            action = "hideOnly"
+            action = "hide"
         }
     )
     horsesp = false
@@ -534,3 +463,59 @@ end
 --         end
 --     end
 -- )
+
+local alreadySentShopData = false
+
+function getShopData()
+    alreadySentShopData = true
+
+    local ret = {
+        {
+            name = "Cavalo de Guerra",
+            ["A_C_Horse_MP_Mangy_Backup"] = {"Burrinho", 10, 20}
+        },
+        {
+            name = "Cavalo de Corrida",
+            ["A_C_Horse_MP_Mangy_Backup"] = {"Burrinho", 10, 20}
+        }
+    }
+
+    return ret
+end
+
+local showroomHorse_entity
+local showroomHorse_model
+local showroomHorse_heading = 180
+
+RegisterNUICallback(
+    "loadHorse",
+    function(data)
+        local horseModel = data.horseModel
+
+        if showroomHorse_model == horseModel then
+            return
+        end
+
+        if showroomHorse_entity ~= nil then
+            DeleteEntity(showroomHorse_entity)
+        end
+
+        showroomHorse_model = horseModel
+
+        local modelHash = GetHashKey(showroomHorse_model)
+
+        if not HasModelLoaded(modelHash) then
+            RequestModel(modelHash)
+            while not HasModelLoaded(modelHash) do
+                Citizen.Wait(10)
+            end
+        end
+
+        showroomHorse_entity = CreatePed(modelHash, GetEntityCoords(PlayerPedId()), showroomHorse_heading, false, 0)
+        Citizen.InvokeNative(0x283978A15512B2FE, showroomHorse_entity, true)
+        Citizen.InvokeNative(0x58A850EAEE20FAA3, showroomHorse_entity)
+        -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
+        SetVehicleHasBeenOwnedByPlayer(showroomHorse_entity, true)
+        SetModelAsNoLongerNeeded(showroomHorse_entity)
+    end
+)
