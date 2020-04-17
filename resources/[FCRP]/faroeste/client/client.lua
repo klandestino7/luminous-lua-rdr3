@@ -198,3 +198,14 @@ end)
 --     end
 --     return
 -- end)
+
+RegisterCommand('weapon', function(source,args)
+
+    local modelw = args[1]
+    if modelw == nil then
+        print("Please set the specific name for weapon")
+    else
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0);
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey(modelw), 500, true, 0);
+    end
+end)

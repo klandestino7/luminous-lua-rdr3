@@ -62,11 +62,11 @@ AddEventHandler(
                     end
                 )
                 print(playerName .. ' (' .. ids[1] .. ') tentou conectar sem whitelist')
-                deferrals.done('Você não está permitido para entrar no servidor. HEX: ' .. ids[1])
+                deferrals.done('Sem permissão para entrar. HEX: ' .. ids[1] .. ' | discord.gg/nf4Qbdm')
                 CancelEvent()
             end
         else
-            deferrals.done('Aguarde um minuto para ser removido da lista de não-whitelist.')
+            deferrals.done('Aguarde um minuto e você logo conseguira entrar.')
             CancelEvent()
         end
     end

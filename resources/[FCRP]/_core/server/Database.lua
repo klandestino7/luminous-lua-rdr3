@@ -180,6 +180,15 @@ API_Database.prepare('FCRP/UpdCJail', 'UPDATE jail SET jail_time = @jail_time WH
 API_Database.prepare('FCRP/GetCJail', 'SELECT * from jail WHERE charid = @charid')
 API_Database.prepare('FCRP/RemCJail', 'DELETE FROM jail WHERE charid = @charid')
 
+-------- WANTED DATATABLE QUERIES --------
+API_Database.prepare('FCRP/SetCWanted', 'INSERT INTO characters(wanted) VALUES (@wanted); SELECT LAST_INSERT_ID() AS user_id')
+API_Database.prepare('FCRP/GetCWanted', 'SELECT wanted from characters WHERE charid = @charid')
+API_Database.prepare('FCRP/UpdCWanted', 'UPDATE wanted SET wanted = @wanted WHERE charid = @charid')
+
+-------- JOINAPP DATATABLE QUERIES --------
+API_Database.prepare('FCRP/JoinAppS', 'SELECT steam from playerjoin WHERE steam = @identifier')
+API_Database.prepare('FCRP/JoinAppD', 'DELETE FROM jail WHERE charid = @charid')
+
 -------- INVENTORY QUERIES -----------
 API_Database.prepare('FCRP/Inventory', 'CALL procInventory(@id, @charid, @slot, @itemId, @itemAmount, @procType);')
 

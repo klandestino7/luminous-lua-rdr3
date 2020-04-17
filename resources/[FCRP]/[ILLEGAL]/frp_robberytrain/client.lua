@@ -5,12 +5,9 @@ local Proxy = module('_core', 'libs/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
-
 trainHash = -2006657222
 CURRENT_TRAIN = nil
 train = nil
-
-
 
 --     -1464742217, trem 3 pass
 --     -577630801, TREM CARCA E PASS 1 
@@ -26,25 +23,26 @@ train = nil
 
 --     1094934838, -- carga e pass grande
 
-
-
 --     1054492269, -- trem de duas pessoas
 --     1216031719, -- trem de carga usado
 
 
-local stops = {
-    {["dst"] = 180.0, ["dst2"] = 4.0, ["x"] = -4343.20,  ["y"] = -3084.541,   ["z"] = -9.895, ["time"] = 3000, ["name"] = "Mercer Station"},
-    {["dst"] = 400.0, ["dst2"] = 4.0, ["x"] = -3749.27,  ["y"] = -2617.67, ["z"] = -13.760,  ["time"] = 6000, ["name"] = "Armadillo Station"},
-   -- {["dst"] = 220.0, ["dst2"] = 4.0, ["x"] = -2497.32,  ["y"] = -2437.034, ["z"] = 60.199,  ["time"] = 60000, ["name"] = "Macfarlane's Ranch Station"},
-    {["dst"] = 220.0, ["dst2"] = 4.0, ["x"] = -1871.85,  ["y"] = -2314.516,  ["z"] = 52.093,  ["time"] = 3000, ["name"] = "Stillwater Creek Station"},
-    {["dst"] = 220.0, ["dst2"] = 4.0, ["x"] = -2497.32,  ["y"] = -2437.034, ["z"] = 60.199,  ["time"] = 6000, ["name"] = "Macfarlane's Ranch Station"},
-    {["dst"] = 400.0, ["dst2"] = 4.0, ["x"] = -3749.27,  ["y"] = -2617.67, ["z"] = -13.760,  ["time"] = 6000, ["name"] = "Armadillo Station"},
-    {["dst"] = 180.0, ["dst2"] = 4.0, ["x"] = -4343.20,  ["y"] = -3084.541,   ["z"] = -9.895, ["time"] = 3000, ["name"] = "Mercer Station"},   
-    {["dst"] = 180.0, ["dst2"] = 4.0, ["x"] = -5235.58, ["y"] = -3467.379,  ["z"] = -21.258,  ["time"] = 3000, ["name"] = "Riggs Station"},
-
-} 
+-- -64257206 cofre
 
 
+
+Citizen.CreateThread(function()
+    Wait(500)
+    while true do
+        Wait(1000)
+        local game = NetworkIsGameInProgress()
+        if StartRobbery then
+            if GetEntitySpeed(CURRENT_TRAIN) == 0 then
+                print('tremparou')
+            end
+        end
+    end
+end)
 
 
 Citizen.CreateThread(function()
@@ -60,46 +58,12 @@ Citizen.CreateThread(function()
 end)
 
 
-
-
-
-function SWITCHTRACK(bool)
-    local param1
-    local param2
-    print(bool)
-	if bool == 1 then	
-		N_0x2a7413168f6cd5a8()
-		local param1 = 1
-		while param1 <= 4 do
-			if N_0xc29996a337bdd099(param2) then			
-                N_0xf8f7da13cfbd4532(param2, 0)    
-                print('1')
-            end	
-            Citizen.Wait(10)
-		end	
-	else	
-		local param2 = 1
-		while param2 <= 4 do		
-			if N_0xc29996a337bdd099(param2) then			
-            N_0xf8f7da13cfbd4532(param2 ,0)
-                print('2')
-            end		
-            N_0x4c05b42a8d937796()
-            N_0x16b86a49e072aa85()
-            Citizen.Wait(10)
-        end
-    end
-
-end
-
-
 RegisterNetEvent('FRP:Trainroute')
 AddEventHandler('FRP:Trainroute', function(n)
     DeleteAllTrains()
-    SetRandomTrains(false) 
+    SetRandomTrains(false)
 
     local trainWagons = N_0x635423d55ca84fc8(trainHash)
-
     for wagonIndex = 0, trainWagons - 1 do
         local trainWagonModel = N_0x8df5f6a19f99f0d5(trainHash, wagonIndex)
         while not HasModelLoaded(trainWagonModel) do
@@ -110,7 +74,7 @@ AddEventHandler('FRP:Trainroute', function(n)
 
     --spawn--
     local ped = PlayerPedId()
-    local train = N_0xc239dbd9a57d2a71(trainHash, -1951.7194824219,-2605.0729980469,67.672920227051, 1, 1, 1, 1)
+    local train = N_0xc239dbd9a57d2a71(trainHash, -5235.03515625,-3480.6264648438,-21.132341384888, 0, 1, 1, 1)
     local coords = GetEntityCoords(train)
     local trainV = vector3(coords.x, coords.y, coords.z)
   --  Citizen.InvokeNative(0xBA8818212633500A, train, 0, 1) -- this makes the train undrivable for players         
@@ -126,45 +90,53 @@ AddEventHandler('FRP:Trainroute', function(n)
     local cruisespeed = 0.0
     SetTrainCruiseSpeed(CURRENT_TRAIN, cruisespeed)
 
-
-
-    Wait(60000)
+    Citizen.InvokeNative(0xE6C5E2125EB210C1 , -988268728, 0 ,1)
+    Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -988268728, 0 ,1)
     
-    local cruisespeed = 15.0
+    Citizen.InvokeNative(0xE6C5E2125EB210C1 , -988268728, 1 ,1)
+    Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -988268728, 1 ,1)
+
+    Citizen.InvokeNative(0xE6C5E2125EB210C1 , -1467515357, 0,1)
+    Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -1467515357, 0,1)
+
+    Wait(600000)
+
+    local cruisespeed = 90.0
     SetTrainCruiseSpeed(CURRENT_TRAIN, cruisespeed)
+
     Citizen.InvokeNative(0xF8F7DA13CFBD4532, CURRENT_TRAIN, 0)
-    --trainroute()
+
 end)
 
 
 
--- function trainroute()
---     while trainspawned == true do
---         for i = 1, #stops do
---             local coords = GetEntityCoords(CURRENT_TRAIN)
---             local trainV = vector3(coords.x, coords.y, coords.z)
---             local distance = #(vector3(stops[i]["x"], stops[i]["y"], stops[i]["z"]) - trainV)
+Citizen.CreateThread(function()
+    while true do        
+    Citizen.Wait(1)
+        local Ped = PlayerPedId()
+        local Entity, farCoordsX, farCoordsY, farCoordsZ = cAPI.Target(6.0, Ped)
+        local EntityType = GetEntityType(Entity)
+
+
+
+            if TrainIdPlayerIsIn ~= 0 then
+                TrainIndexPlayerIsIn = CURRENT_TRAIN
+        
+            else
+                TrainIndexPlayerIsIn = nil
     
---             --speed--
---             local stopspeed = 0.0
---             local cruisespeed = 20.0
---             local fullspeed = 60.0
---             if distance < stops[i]["dst"] then
---                 SetTrainCruiseSpeed(CURRENT_TRAIN, cruisespeed)
---                 Wait(200)
---                 if distance < stops[i]["dst2"] then
---                     SetTrainCruiseSpeed(CURRENT_TRAIN, stopspeed)
---                     Wait(stops[i]["time"])
---                     SetTrainCruiseSpeed(CURRENT_TRAIN, cruisespeed)
---                     Wait(10000)
---                 end
---             elseif distance > stops[i]["dst"] then
---                 SetTrainCruiseSpeed(CURRENT_TRAIN, fullspeed)
---                 Wait(25)
---             end
---         end
---     end
--- end
+            end
+        end
+    end
+)
+
+
+
+function explosion(player)
+    local coords = GetEntityCoords(player)
+    AddExplosion(coords.x, coords.y, coords.z, 25, 1, 1, 1, 10)
+    AddExplosionWithUserVfx(coords.x, coords.y, coords.z, 26, GetHashKey('EXP_VFXTAG_TRN4_DYNAMITE'), 1, true, false, 1)
+end
 
 RegisterNetEvent('TRAIN:create')
 AddEventHandler('TRAIN:create', function()
@@ -176,18 +148,92 @@ RegisterCommand('deletartrain', function()
 end)
 
 RegisterCommand('change', function(source,args)
-    TriggerEvent('TRAIN:createPedDefender')
+    Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Crafting_SatchelUpgrade", 1, -1);    
+end)
+
+RegisterCommand('int', function(source,args)
+    --TaskItemInteraction(PlayerPedId(), -569063887, GetHashKey('PROVISION_OLD_BRASS_COMPASS'), 1, 1, -1082130432)
+
+    SetAnimSceneEntity(PlayerPedId(), "s_moneysackbig01x", N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_cs_sackCorn01x_PH_R_HAND", 0), 0)
+
+    N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_bottleBeer01x_PH_R_HAND", 1)
+    TaskItemInteraction(PlayerPedId(), -24362764, GetHashKey("p_bottlebeer01x_ph_r_hand"), 1587785400, 1, 0, -1082130432)
+    print( GetHashKey('PROVISION_OLD_BRASS_COMPASS'))
 end)
 
 
-RegisterCommand('road', function(source,args)
-   print(GetTrainCurrentTrackNode(CURRENT_TRAIN))
+
+RegisterCommand("explosao", function()
+    explosion(PlayerPedId())
 end)
+
+local SwitchTrack = {
+    -1739625337,    -- 13
+    -1748581154,   -- 2
+    -1716490906,    
+    -2069622439,
+    1751550675,
+    1499637393,
+    -1240153854,
+    1229981728,
+    -705539859,
+    -1242669618,
+    1039216354,
+    -1467515357,
+    -988268728,
+    760570040,
+}   
+
+
+-- local SwitchTrack = {
+--     -705539859,
+--     1499637393,
+--     -760570040,
+--     -988268728,   -- onde eu quero
+--     -1467515357, -- 2 
+-- }   
+
+-- Citizen.CreateThread(function()
+--     while true do
+--         Wait(3000)
+--         for _, trackHash in pairs(SwitchTrack) do
+--             print('Doing track' .. trackHash)
+--              for i = 0, 13 do
+--                 Citizen.InvokeNative(0xE6C5E2125EB210C1, trackHash, i ,1 )
+--                 Citizen.InvokeNative(0x3ABFA128F5BF5A70, trackHash, i ,1 )
+--                 print(i)
+--                 Citizen.Wait(10)
+--              end
+--             Citizen.Wait(50)
+--          end
+--     end
+-- end)
+
+-- RegisterCommand('switch', function(source,args)
+--     local state = tonumber(args[1])
+--     Citizen.InvokeNative(0xE6C5E2125EB210C1 , -988268728, 1 ,1)
+--     Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -988268728, 1 ,1)
+
+--     Citizen.InvokeNative(0xE6C5E2125EB210C1 , -1467515357, 1 ,1)
+--     Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -1467515357, 1 ,1)
+-- end)
+
+
+RegisterCommand('acentos', function(source,args)
+    print(GetVehicleModelNumberOfSeats(CURRENT_TRAIN))
+end)
+
+
+
+
+
 
 local seguranca = GetHashKey("S_M_M_UniTrainGuards_01")
 
+
 RegisterNetEvent('TRAIN:createPedDefender')
 AddEventHandler('TRAIN:createPedDefender', function()
+
     print('vapo')
 
     print(-1947.3331298828,-2605.48828125,68.722503662109)
@@ -224,6 +270,45 @@ AddEventHandler('TRAIN:createPedDefender', function()
     guardasinfo(seguranca_spw_9)
     guardasinfo(seguranca_spw_10)
 end)
+
+
+RegisterCommand('criarped2', function(source,args)    
+
+    local pedModel = "S_M_M_UniTrainGuards_01"
+
+    local pedModelHash = GetHashKey(pedModel)
+    if not IsModelValid(pedModelHash) then
+        print('model is not valid')
+        return
+    end
+
+    if not HasModelLoaded(pedModelHash) then
+        RequestModel(pedModelHash)
+        while not HasModelLoaded(pedModelHash) do
+            Citizen.Wait(10)
+        end
+    end
+
+    local ped = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
+    Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
+    Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+
+    ClearPedTasks(ped)
+    ClearPedSecondaryTask(ped)
+    ClearPedTasksImmediately(ped)
+    SetPedFleeAttributes(ped, 0,0)
+    TaskWanderStandard(ped, 1, 0)
+    TaskSetBlockingOfNonTemporaryEvents(ped, 1)
+    SetEntityAsMissionEntity(ped)
+
+    guardasinfo(ped)
+        
+    N_0x841475ac96e794d1(0)
+    TaskRideTrain(CURRENT_TRAIN, seguranca_spw, 0, 0);
+
+end)
+
+
 
 
 function setupModelo(modelo)

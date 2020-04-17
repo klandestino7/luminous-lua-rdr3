@@ -1103,13 +1103,20 @@ RegisterNUICallback(
         }
         if dados ~= nil then
             local pdado = #dados
-            TriggerServerEvent('FRP:STORECLOTHES:buy', tonumber(pdado*0.2)
+            TriggerServerEvent('FRP:STORECLOTHES:buy', tonumber(pdado*0.2))
         end
         TriggerServerEvent('FRP:CLOTHES:saveCloth', dados)
         closeAll()
     end
 )
 
+
+RegisterCommand('clotheat', function()
+    local bandana = 0x34E62EF6
+    print(bandana)
+Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  bandana, true, true, true)
+
+end)
 function closeAll()
     DestroyAllCams(true)
     SetNuiFocus(false, false)

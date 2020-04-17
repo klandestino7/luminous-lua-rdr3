@@ -12,8 +12,7 @@ Citizen.CreateThread(function() -- ESCONDER E MOSTRAR ALGUMAS HUDS
      --   N_0x69d65e89ffd72313(true) -- cinematic--
 --N_0xbae08f00021bffb2(horse) -- agitates the horse
 
-
-        N_0x8bc7c1f929d07bf3(-1679307491) -- show   
+        -- N_0x8bc7c1f929d07bf3(-1679307491) -- show   
 
 
 

@@ -57,13 +57,13 @@ AddEventHandler('FRP:JAIL:jail', function(jailTime)
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0xF082E23A,true,true,true) -- SAPATO		
 
 				else
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
-					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
+					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x6AB27695,true,true,true) -- CAMISA	
+					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x75BC0CF5,true,true,true) -- PANTS
+					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x56906647,true,true,true) -- SAPATO
 					--print('MULHER SKIN')
 				end
-
 			-- Clear player
-			ClearPedBloodDamage(playerPed)
+			--ClearPedBloodDamage(playerPed)
 --			ClearPedLastWeaponDamage(playerPed)
 			
 			print(playerPed)
@@ -123,20 +123,13 @@ AddEventHandler('FRP:JAIL:unjail', function(source)
 	SetEntityCoords(playerPed, 2929.51, -1252.1, 42.28)
 end)
 
--- When player respawns / joins
-AddEventHandler('playerSpawned', function()
-	-- if IsJailed then
-	-- 	SetEntityCoords(PlayerPedId(), JailLocation)
-	-- else
-	-- 	TriggerServerEvent('FRP:JAIL:checkJail')
-	-- end
-end)
-
 -- When script starts
-Citizen.CreateThread(function()	
-	local spawned = Citizen.InvokeNative(0xB8DFD30D6973E135 --[[NetworkIsPlayerActive]], PlayerPedId(), Citizen.ResultAsInteger())
-	Citizen.Wait(3000)
+Citizen.CreateThread(function()
+	local retval, ped = PlayerPedId()
+	local spawned =	NetworkIsPlayerActive(ped, Citizen.ResultAsInteger())
+	Citizen.Wait(7000)
 	if spawned then
+		print(spawned)
 		TriggerServerEvent('FRP:JAIL:checkJail')
 	end
 end)

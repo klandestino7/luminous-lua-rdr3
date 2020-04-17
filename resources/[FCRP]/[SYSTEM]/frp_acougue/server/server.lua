@@ -17,7 +17,7 @@ AddEventHandler( 'FRP:BUTCHER:addmoneyskin', function (carried)
 	local Inventory = User:getCharacter():getInventory()
 
 	User:notify("Você entregou o animal "..carried.." e recebeu "..amount)
-	Inventory:addItem('generic_money', tonumber(amount))
+	Inventory:addItem('money', tonumber(amount))
 	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..amount/100, 17411680)
 
 end)
@@ -34,7 +34,7 @@ AddEventHandler( 'FRP:BUTCHER:addmoney', function (amount, carried)
 
 	local Inventory = User:getCharacter():getInventory()
 	print(price)
-	Inventory:addItem('generic_money', price)
+	Inventory:addItem('money', price)
 	
 	User:notify("Você entregou o animal "..carried.." e recebeu "..price/100)
 	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..price/100, 17411680)

@@ -7,6 +7,11 @@ Config.Coords = {
 	vector3(-5508.29, -2948.16, -1.87)   --Cabana de Açougue de Tumbleweed
 }
  
+
+Config.PedAcougue = {
+{x = -339.21, y = 767.67, z = 116.57, h = 93.03}, -- VALENTINE
+}
+
 Config.Acougue = {
 
 { x= -341.10, y = 767.28, z = 116.71 }, --val

@@ -178,29 +178,31 @@ function API.User(source, id, ipAddress)
                     -- local lastPosition = self.Character:getLastPosition()
                     local lastPosition = json.encode({x = 33.080871582031, y = 32.801963806152, z = 101.56585693359})
                     cAPI.teleportSpawn(self:getSource(), lastPosition)
+                    Wait(100)
+                    cAPI.CWanted(Character:getWanted())
+
+                -- print('aa')
+
+                -- local source = self:getSource()
+                -- local Character = self:getCharacter()
+
+                -- print('d')
+                -- local character_model = Character:getModel()
+                -- print("a")
+                -- -- local character_skin = Character:getSkin()
+                -- local character_skin = {}
+                -- print('b')
+                -- local character_clothing = Character:getClothes()
+                -- print('c')
+                -- -- local character_lastposition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
+                -- local character_lastposition = json.encode({0, 0, 0})
+
+                -- print(character_model, character_skin, character_clothing, character_lastposition)
+
+                -- cAPI.Initialize(source, character_model, character_skin, character_clothing, character_lastposition)
                 end
             end
         end
-
-        -- print('aa')
-
-        -- local source = self:getSource()
-        -- local Character = self:getCharacter()
-
-        -- print('d')
-        -- local character_model = Character:getModel()
-        -- print("a")
-        -- -- local character_skin = Character:getSkin()
-        -- local character_skin = {}
-        -- print('b')
-        -- local character_clothing = Character:getClothes()
-        -- print('c')
-        -- -- local character_lastposition = json.decode(Character:getData("charTable", "position")) or {0, 0, 0}
-        -- local character_lastposition = json.encode({0, 0, 0})
-
-        -- print(character_model, character_skin, character_clothing, character_lastposition)
-
-        -- cAPI.Initialize(source, character_model, character_skin, character_clothing, character_lastposition)
     end
 
     self.disconnect = function(this, reason)

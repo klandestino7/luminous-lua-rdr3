@@ -71,7 +71,7 @@ AddEventHandler(
                 return
             end
         else
-            if Inventory:getItemAmount("generic_money") < tonumber(price_dolar*100) then
+            if Inventory:getItemAmount("money") < tonumber(price_dolar*100) then
                 User:notify("Dinheiro insuficiente!")
                 return
             end
@@ -87,7 +87,7 @@ AddEventHandler(
             Inventory:removeItem("generic_gold", tonumber(price_gold*100))   
         else
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("generic_money", tonumber(price_dolar*100)) 
+            Inventory:removeItem("money", tonumber(price_dolar*100)) 
         end    
 
         User:notify(ItemData:getName() .. " comprada!")
@@ -126,7 +126,7 @@ AddEventHandler(
                 return
             end
         else
-            if Inventory:getItemAmount("generic_money") < tonumber(price_dolar*100) then
+            if Inventory:getItemAmount("money") < tonumber(price_dolar*100) then
                 User:notify("Dinheiro insuficiente!")
                 return
             end
@@ -142,7 +142,7 @@ AddEventHandler(
             Inventory:removeItem("generic_gold", tonumber(price_gold*100))   
         else
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("generic_money", tonumber(price_dolar*100)) 
+            Inventory:removeItem("money", tonumber(price_dolar*100)) 
         end               
 
         User:notify(ItemData:getName() .. " comprado!")

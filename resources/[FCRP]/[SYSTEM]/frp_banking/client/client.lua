@@ -67,37 +67,22 @@ end
 -- end)
 
 RegisterNetEvent('FRP:BANKING:sendmoney')
-AddEventHandler('FRP:BANKING:sendmoney', function(player, amount)
+AddEventHandler('FRP:BANKING:sendmoney', function(player, amount, nome)
+
   local playeri = player
   local _amount = amount
   local player, distance = GetClosestPlayer()
-  local jogadornome = GetPlayerName(PlayerPedId())
+  local jogadornome = nome
 
   if distance ~= -1 and distance <= 3.0 then    
-    TriggerServerEvent('FRP:BANKING:recmoney', GetPlayerServerId(player), amount, jogadornome)
-    TriggerServerEvent('FRP:BANKING:sendmoney', source, amount)
 
-    TriggerEvent('chatMessage', '^1SISTEMA', {255, 255, 255}, 'Você deu '.. amount .. ' para ' .. GetPlayerName(playerid) .. '')
+    TriggerServerEvent('FRP:BANKING:recmoney', GetPlayerServerId(player), amount, jogadornome)
+
+   
   else
     TriggerEvent('chatMessage', '^1SISTEMA', {255, 255, 255}, 'Ninguem por perto')
   end
 end)
-
-
--- RegisterCommand('pagar2', function(source, args)
---     local playersend tonumber(args[1])
---     local amount = tonumber(args[2])
-
---     if amount ~= nil and playersend ~= nil then
--- -- TriggerServerEvent('FRP:BANKING:sendmoney', playersend, amount)
---     TriggerServerEvent('FRP:BANKING:recmoney', playersend, amount, jogadornome)
-
---     TriggerServerEvent('FRP:BANKING:sendmoney', source, amount)
-
---     else
---       TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEMA', 'ID ou Valor Inválido.' } })
---     end
--- end)
 
 
 

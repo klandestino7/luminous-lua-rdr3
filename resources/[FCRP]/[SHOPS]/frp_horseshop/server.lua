@@ -91,7 +91,7 @@ AddEventHandler(
         local priceGold = prices[model].priceGold
         print(priceMoney)
 
-        if Character:getInventory():removeItem('generic_money', priceMoney) or Character:getInventory():removeItem('generic_gold', priceGold) then
+        if Character:getInventory():removeItem('money', priceMoney) or Character:getInventory():removeItem('generic_gold', priceGold) then
             Character:createHorse(model, name)
             User:notify('Você comprou o ' .. name .. ' por ' .. priceMoney or priceGold)
         else

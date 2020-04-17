@@ -25,7 +25,7 @@ RegisterCommand(
 		local Character = User:getCharacter()
 		if Character:hasGroup("police") or Character:hasGroup("admin") and args[1] then
 			if args[1] then
-				TriggerEvent('FRP:JAIL:unjailQuest', tonumber(args[1]))
+				TriggerEvent('FRP:JAIL:unjailQuest', API.getUserFromUserId(parseInt(tonumber(args[1]))):getSource())
             end
         end
     end
@@ -99,7 +99,7 @@ end)
 
 
 function unjail(target)
-	local _source = target 
+	local _source = target
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()	
 	local nome = Character:getName()
