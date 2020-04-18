@@ -634,11 +634,18 @@ function getFirstLastSlots(itemId)
 end
 
 local melee = {
-    "weapon_knife"
+    "lasso",
+    "melee_knife_john",
+    "melee_knife",
+    "melee_knife_bear",
 }
 
 local throwable = {
-    "weapon_molotov"
+    "thrown_ancient_tomahawk",
+    "thrown_dynamite",
+    "thrown_molotov",
+    "thrown_throwing_knives",
+    "thrown_throwing_knives_improved",
 }
 
 function isMelee(itemId)

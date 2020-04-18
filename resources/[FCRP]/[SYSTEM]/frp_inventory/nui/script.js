@@ -522,6 +522,9 @@ function drawPrimary() {
             var ammoInClip = Slot[3];
             var ammoInWeapon = Slot[4];
 
+            if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
+                itemAmount = itemAmount / 100;
+            }
 
             var itemStackSize = Slot.itemStackSize;
             var itemName = Slot.itemName;
@@ -645,6 +648,10 @@ function drawSecondary() {
             var itemAmount = Slot[2];
             var ammoInClip = Slot[3];
             var ammoInWeapon = Slot[4];
+
+            if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
+                itemAmount = itemAmount / 100;
+            }
 
             var itemStackSize = Slot.itemStackSize;
             var itemName = Slot.itemName;

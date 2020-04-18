@@ -328,7 +328,7 @@ ItemList = {
         description = 'O revólver Lemat causa um dano desestrutural a inimigos alados, seja rápido e sua presa não resistirá.',
         stackSize = 1,
     },
-    ['REVOLVER_NAVY'] = {
+    ['revolver_navy'] = {
         type = 'weapon',
         name = 'Revolver da Marinha',
         weight = 1.2,
@@ -461,7 +461,7 @@ ItemList = {
         description = 'Frasco enrijecido com moonshine, altamente inflamável quando aceso.',
         stackSize = 6,
     },
-    ['consumable_bread'] = {
+    ['bread'] = {
         type = 'food',
         name = 'Pão',
         weight = 0.1,
@@ -469,21 +469,21 @@ ItemList = {
         description = 'Alimento produzido através de massa e farinha.',
         stackSize = 5,
     },
-    ['consumable_apple'] = {
+    ['apple'] = {
         type = 'food',
         name = 'Maçã',
         weight = 0.3,
         description = 'Uma fruta recém colhida, serve de alimento para humanos e animais.',
         stackSize = 5,
     },
-    ['consumable_carrot'] = {
+    ['carrot'] = {
         type = 'food',
         name = 'Cenoura',
         weight = 0.3,
         description = 'Um legume recém colhido, serve de alimento para humanos e animais.',
         stackSize = 5,
     },
-    ['tonic_medicine'] = {
+    ['medicine'] = {
         type = 'boost',
         name = 'Tônico de Vida (Usado)',
         weight = 0.4,
@@ -491,7 +491,7 @@ ItemList = {
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
         stackSize = 5,
     },
-    ['tonic_tonic'] = {
+    ['tonic'] = {
         type = 'boost',
         name = 'Tônico de Vida (Médio)',
         weight = 0.5,
@@ -499,7 +499,7 @@ ItemList = {
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
         stackSize = 5,
     },
-    ['tonic_potent_medicine'] = {
+    ['potent_medicine'] = {
         type = 'boost',
         name = 'Tônico de Vida (Grande)',
         weight = 0.6,
@@ -507,15 +507,15 @@ ItemList = {
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
         stackSize = 5,
     },
-    ['tonic_special_tonic'] = {
-        type = 'boos',
+    ['special_tonic'] = {
+        type = 'boost',
         name = 'Tônico de Energia (Usado)',
         weight = 0.5,
         varOnUse = 25,
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
         stackSize = 5,
     },
-    ['tonic_special_medicine'] = {
+    ['special_medicine'] = {
         type = 'boost',
         name = 'Tônico de Energia (Médio)',
         weight = 0.9,
@@ -523,7 +523,7 @@ ItemList = {
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
         stackSize = 5,
     },
-    ['tonic_special_horse_stimulant_crafted'] = {
+    ['special_horse_stimulant_crafted'] = {
         type = 'boost',
         name = 'Tônico de Energia (grande)',
         weight = 1.0,
@@ -531,7 +531,7 @@ ItemList = {
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
         stackSize = 5,
     },
-    ['consumable_ginseng_elixier'] = {
+    ['ginseng_elixier'] = {
         type = 'beverage',
         name = 'Cerveja',
         weight = 0.7,
@@ -539,7 +539,7 @@ ItemList = {
         description = 'A cerveja é uma bebida produzida a partir da fermentação de cereais, principal bebida das festas.',
         stackSize = 10,
     },
-    ['consumable_irish_whiskey'] = {
+    ['irish_whiskey'] = {
         type = 'beverage',
         name = 'Uísque',
         weight = 0.8,
@@ -547,7 +547,7 @@ ItemList = {
         description = 'Bebida alcólica, razoável, ajuda a relaxar.',
         stackSize = 8,
     },
-    ['consumable_moonshine'] = {
+    ['moonshine'] = {
         type = 'beverage',
         name = 'Moonshine',
         weight = 0.4,
@@ -555,7 +555,7 @@ ItemList = {
         description = 'Bebida alcólica destilada de alto teor, produzido através do mosto de milho. É ilícita.',
         stackSize = 25,
     },
-    ['consumable_waterbottle'] = {
+    ['waterbottle'] = {
         type = 'beverage',
         name = 'Garrafa de Água',
         weight = 0.2,
@@ -584,70 +584,70 @@ ItemList = {
         description = 'Uma garnet linda e brilhante, quase tão preciosa quanto um diamante.',
         stackSize = 7,
     },
-    ['ourobruto'] = {
+    ['raw_gold'] = {
         type = 'generic',
         name = 'Ouro Bruto',
         weight = 7.0,
         description = 'Ouro recém minerado, está em forma bruta, e por isso é tão pesado.',
         stackSize = 7,
     },
-    ['cobrebruto'] = {
+    ['raw_coppere'] = {
         type = 'generic',
         name = 'Minério de Cobre',
         weight = 1.0,
         description = 'Uma pedra de cobre bem suja e danificada, pode ser processada para virar uma barra.',
         stackSize = 20,
     },
-    ['carvaobruto'] = {
+    ['raw_coal'] = {
         type = 'generic',
         name = 'Minério de Carvão',
         weight = 1.0,
         description = 'Carvão amontoado, precisa ser refinado para extrair seu sulfato inflamável.',
         stackSize = 45,
     },
-    ['carvaorefi'] = {
+    ['refined_coal'] = {
         type = 'generic',
         name = 'Carvão Refinado',
         weight = 0.3,
         description = 'Minério de carvão já processado.',
         stackSize = 20,
     },
-    ['provision_coal'] = {
+    ['coal'] = {
         type = 'generic',
         name = 'Carvão Refinado',
         weight = 1.0,
         description = 'Minério de carvão já processado.',
         stackSize = 20,
     },
-    ['provision_rf_wood_cobalt'] = {
+    ['wood_log'] = {
         type = 'generic',
         name = 'Tora de Madeira',
         weight = 1.0,
         description = 'Toco de madeira, pobrezito, arrancado de suas raízes tão cedo.',
         stackSize = 20,
     },
-    ['provision_rf_wood_minor'] = {
+    ['wood_board'] = {
         type = 'generic',
         name = 'Tábua',
         weight = 1.0,
         description = 'Tábua... uma solitária tábua de madeira, apenas isso.',
         stackSize = 20,
     },
-    ['provision_rf_wood_stick'] = {
+    ['wood_stake'] = {
         type = 'generic',
         name = 'Estaca de Madeira',
         weight = 1.0,
         description = 'Ferrão de madeira, forte e afiado, cuidado com o que for espetar.',
         stackSize = 20,
     },    
-    ['provision_goldbar_small'] = {
+    ['metal_bar'] = {
         type = 'generic',
         name = 'Barra de Metal',
         weight = 3.5,
         description = 'Uma formosa barra de metal, uou... é tão pesada.',
         stackSize = 20,
     },
-    ['provision_disco_ammolite'] = {
+    ['copper_bar'] = {
         type = 'generic',
         name = 'Barra de Cobre',
         weight = 1.5,
@@ -661,56 +661,56 @@ ItemList = {
         description = 'Salitre é um nitrato de potássio usado para várias finalidades, como produzir fertilizantes e explosivos.',
         stackSize = 17,
     },
-    ['enxofre'] = {
+    ['sulfur'] = {
         type = 'generic',
         name = 'Enxofre',
         weight = 2.0,
         description = 'O sulfato de enxofre é removido das áreas termais de West Elizabeth, serve para a criação de pólvora.',
         stackSize = 10,
     },
-    ['clothing_outfit_mp_ned_kelly'] = {
+    ['outfit_mp_ned_kelly'] = {
         type = 'generic',
         name = 'Pano',
         weight = 1.0,
         description = 'Tecido leve, feito de tecelã.',
         stackSize = 5,
     },
-    ['corda'] = {
+    ['rope'] = {
         type = 'generic',
         name = 'Corda',
         weight = 2.0,
         description = 'Uma longa corda feita de cipó resistente.',
         stackSize = 3,
     },
-    ['folder_kit_keychain'] = {
-        type = 'generic',
+    ['keychain'] = {
+        type = 'kit',
         name = 'Chave Misteriosa',
         weight = 0.5,
         description = '????????',
         stackSize = 1,
     },
-    ['planting_tobaccoseed'] = {
+    ['tobacco_seed'] = {
         type = 'planting',
         name = 'Semente de Tabaco',
         weight = 0.2,
         description = 'Uma pequena lasca de uma semente nicotiana, pode ser plantada.',
         stackSize = 15,
     },
-    ['planting_sugarcaneseed'] = {
+    ['sugarcane_seed'] = {
         type = 'planting',
         name = 'Semente de Cana',
         weight = 0.2,
         description = 'Uma pequena lasca de uma semente, pode ser plantada.',
         stackSize = 15,
     },
-    ['planting_planting_cornseed'] = {
+    ['corn_seed'] = {
         type = 'planting',
         name = 'Semente de Milho',
         weight = 0.2,
         description = 'Uma pequena lasca de uma semente, pode ser plantada.',
         stackSize = 15,
     },
-    ['planting_wateringcan'] = {
+    ['wateringcan'] = {
         type = 'planting',
         name = 'Balde de Água',
         weight = 1.5,
@@ -935,7 +935,7 @@ ItemList = {
         stackSize = 25,
     },
 
-    ['provision_fish_bullhead_catfish'] = {
+    ['fish_bullhead_catfish'] = {
         type = 'provision',
         name = 'Isca de Peixe',
         weight = 0.1,
@@ -970,7 +970,7 @@ ItemList = {
         description = 'O potássio é um elemento extremamente violento quando em combustão, seu uso é diverso.',
         stackSize = 30,
     },
-    ['enxofre'] = {
+    ['sulfur'] = {
         type = 'generic',
         name = 'Enxofre',
         weight = 0.5,
@@ -984,43 +984,36 @@ ItemList = {
         description = 'Material extraído das canas-de-açucar de Rhodes, o açúcar é útil em várias criações.',
         stackSize = 45,
     },
-    ['kit_camp_simple'] = {
+    ['firepit'] = {
         type = 'usable',
         name = 'Fogueira',
         weight = 3.0,
         description = 'Um saco cheio de madeira e carvão. Serve para montar uma estrutural fogueira, que iluminará e aquecerá tudo ao seu redor.',
         stackSize = 1,
     },
-    ['kit_camp_tent_small'] = {
-        type = 'tents',
+    ['tent_small'] = {
+        type = 'kit',
         name = 'Tenda Pequena',
         weight = 5.0,
         description = 'Uma pequena caixa com pregos e tecelã que te permitem montar uma pequena tenda.',
         stackSize = 2,
     },
-    ['kit_camp_tent_medium'] = {
-        type = 'tents',
+    ['tent_small'] = {
+        type = 'kit',
         name = 'Tenda Média',
         weight = 7.0,
         description = 'Uma caixa com pregos e tecelã que te permitem montar uma tenda mediana.',
         stackSize = 1,
     },
-    ['kit_camp_tent_large'] = {
-        type = 'tents',
+    ['tent_small'] = {
+        type = 'kit',
         name = 'Tenda Grande',
         weight = 10.0,
         description = 'Uma grande caixa com pregos e tecelã que te permitem montar uma tenda venerável.',
         stackSize = 1,
     },
-    ['kit_camp_simple'] = {
-        type = 'tents',
-        name = 'Fogueira Simples',
-        weight = 3.0,
-        description = 'Um simples conjunto de materiais que te permite montar uma fogueira.',
-        stackSize = 1,
-    },
     ['chest_small'] = {
-        -- type = 'chest',
+        type = 'kit',
         name = 'Baú Pequeno',
         weight = 3.5,
         varOnUse = 25,
@@ -1028,7 +1021,7 @@ ItemList = {
         stackSize = 2,
     },
     ['chest_medium'] = {
-        -- type = 'chest',
+        type = 'kit',
         name = 'Baú Médio',
         weight = 4.5,
         varOnUse = 50,
@@ -1036,7 +1029,7 @@ ItemList = {
         stackSize = 2,
     },
     ['chest_large'] = {
-        -- type = 'chest',
+        type = 'kit',
         name = 'Baú Grande',
         weight = 5.0,
         varOnUse = 100,
@@ -1048,7 +1041,7 @@ ItemList = {
         name = 'Dólar',
         weight = 0.01,
         description = 'Uma nota de valor, pode ser usada para comprar diversos itens. É a moeda da economia.',
-        stackSize = 2000,
+        stackSize = -1,
     },
     ['blackmoney'] = {
         type = 'valuable',
@@ -1062,6 +1055,6 @@ ItemList = {
         name = 'Barra de Ouro',
         weight = 0.7,
         description = 'Uma brilhante e cara barra de ouro.',
-        stackSize = 2000,
+        stackSize = -1,
     }
 }
