@@ -33,7 +33,7 @@ function API.ItemData(id, name, description, type, stackSize, weight)
     end
 
     self.triggerUse = function(this, User)
-        return triggerUse(User, self.id, self.type)
+        return triggerUse(User, self)
     end
 
     return self
