@@ -24,6 +24,14 @@ window.addEventListener("message", function(event) {
 
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
+            $("#primary-inventory").css('opacity', '1');
+            $("#primary #background-image").css('opacity', '1');
+        }
+
+        if (event.data.type == 'clearSecondary') {
+            secondaryItemList = [];
+            $("#secondary").show();
+            $("#secondary #background-image").css('opacity', '1');
         }
 
         if (event.data.type == 'nextHotbarSlot') {
@@ -68,38 +76,86 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primarySlots) {
-            var hotbar = false;
-            var hotbarOnly = true;
+            var clearedRecent = false;
+            $.each(event.data.primarySlots, function(slotId, Slot) {
 
-            if (Object.keys(event.data.primarySlots).length > 0) {
-                $.each(event.data.primarySlots, function(slot, ItemSlot) {
-                    primaryItemList[slot] = ItemSlot;
-                    if (slot >= 129 && slot <= 132) {
-                        hotbar = true;
-                    } else {
-                        hotbarOnly = false;
+                if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
+                    clearedRecent = true;
+                    for (var i = 1; i < 16; i++) {
+                        delete primaryItemList[1];
                     }
-                });
-            } else {
-                hotbarOnly = false;
-            }
-            if (hotbarOnly == false) {
-                drawPrimary();
+                }
 
-                if ($("#primary-inventory").css('opacity') == 0) {
-                    $("#primary-inventory").css('opacity', '1');
-                    $("#primary #background-image").css('opacity', '1');
+                if (Slot[2] > 0) {
+                    primaryItemList[slotId] = Slot;
+                } else {
+                    delete primaryItemList[slotId];
+                }
+
+            });
+
+
+            if (event.data.primaryWeight != undefined) {
+                var weight = event.data.primaryWeight
+                var maxWeight = event.data.primaryMaxWeight
+                if (maxWeight != undefined) {
+                    $('#primary #weight').text(`${weight}/${maxWeight}kg`);
+                    var percentage = 100 * (weight / maxWeight);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                } else {
+                    var oldText = $('#primary #weight').text();
+                    var maxWeight = oldText.split('/')[1];
+                    maxWeight = maxWeight.replace('kg', '');
+                    $('#primary #weight').text(`${weight}/${maxWeight}kg`);
+                    var percentage = 100 * (weight / maxWeight);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747)) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 }
             }
-            if (hotbar == true) {
-                drawHotbar();
-            }
 
-            if ($(".hotbar").css('opacity') == 0) {
-                $(".hotbar").css('opacity', '1');
-            }
+            drawPrimary();
+            drawHotbar();
         }
 
+        if (event.data.secondarySlots) {
+            console.log('received secondary data');
+            var clearedRecent = false;
+            $.each(event.data.secondarySlots, function(slotId, Slot) {
+
+                if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
+                    clearedRecent = true;
+                    for (var i = 1; i < 16; i++) {
+                        delete secondaryItemList[1];
+                    }
+                }
+
+                if (Slot[2] > 0) {
+                    secondaryItemList[slotId] = Slot;
+                } else {
+                    delete secondaryItemList[slotId];
+                }
+
+            });
+
+
+            if (event.data.secondaryWeight != undefined) {
+                var weight = event.data.secondaryWeight;
+                var maxWeight = event.data.secondaryMaxWeight;
+                if (maxWeight != undefined) {
+                    $('#secondary #weight').text(`${weight}/${maxWeight}kg`);
+                    var percentage = 100 * (weight / maxWeight);
+                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                } else {
+                    var oldText = $('#primary #weight').text();
+                    maxWeight = oldText.split('/')[1];
+                    maxWeight = maxWeight.replace('kg', '');
+                    $('#secondary #weight').text(`${weight}/${maxWeight}kg`);
+                    var percentage = 100 * (weight / maxWeight);
+                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747)) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                }
+            }
+
+            drawSecondary();
+        }
 
         if (!$('#secondary').is(":hidden")) {
             $(".helper").html("Basta arrastar o item ao proximo inventário para despejar.");
@@ -132,7 +188,7 @@ function previousCategory() {
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${secondaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
-        // secondarySetup(secondaryItemList, false);
+        drawSecondary();
     } else {
         if (primaryCategoriesIndex != 1) {
             primaryCategoriesIndex--;
@@ -141,14 +197,12 @@ function previousCategory() {
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${primaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
-        // primarySetup(primaryItemList, false);
         drawPrimary();
     }
 
     $(`#${parentInventoryId} .enabled`).removeClass('enabled');
     $(categoryElement).addClass('enabled');
     $(`#${parentInventoryId} .control-info-container #selected-category`).text($(categoryElement).attr('data-name'));
-    // select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
 }
 
 function nextCategory() {
@@ -170,7 +224,7 @@ function nextCategory() {
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${secondaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
-        secondarySetup(secondaryItemList, false);
+        drawSecondary();
     } else {
         if (primaryCategoriesIndex != 8) {
             primaryCategoriesIndex++;
@@ -185,7 +239,6 @@ function nextCategory() {
     $(`#${parentInventoryId} .enabled`).removeClass('enabled');
     $(categoryElement).addClass('enabled');
     $(`#${parentInventoryId} .control-info-container #selected-category`).text($(categoryElement).attr('data-name'));
-    // select($(`#${parentInventoryId} .slot-container .slot:nth-child(1)`));
 }
 
 // function dev() {
@@ -326,53 +379,55 @@ $(document).ready(function() {
             }
         },
         drop: function(event, ui) {
-            let slot = $(ui.draggable).attr('id');
+
+
             $(ui.helper).remove();
             // let valueCount = $('.count').value;
-            let valueCount = 1;
-            // $.post('http://frp_inventory/sendItemSlotToHotbar', JSON.stringify({
-            //     slot: slot,
-            // }));
-
             let selfSlot = $(this).attr('id');
             let draggableSlot = $(ui.draggable).attr('id');
-            let itemAmount = 1;
 
-            $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
-                slotFrom: draggableSlot,
-                slotTo: selfSlot,
-                itemAmount: itemAmount,
-            }));
+            if (shortcutPressed == null) {
+                itemAmount = -2; // quantidade = TODOS
+            }
+
+            if (shortcutPressed == 16) { // SHIFT
+                itemAmount = -1
+            }
+
+            if (shortcutPressed == 17) { // CTRL
+                itemAmount = 1
+            }
+
+            if ($(ui.helper).parent().parent().attr('id') == 'secondary') {
+                $.post('http://frp_inventory/moveSlotToPrimary', JSON.stringify({
+                    slotFrom: draggableSlot,
+                    slotTo: selfSlot,
+                    itemAmount: itemAmount,
+                }));
+            } else {
+                $.post('http://frp_inventory/primarySwitchSlot', JSON.stringify({
+                    slotFrom: draggableSlot,
+                    slotTo: selfSlot,
+                    itemAmount: itemAmount,
+                }));
+            }
         },
     });
-
-    // $('body').droppable({
-    //     tolerance: 'pointer',
-    //     accept: function(e) {
-    //         if (e.parent().parent().attr('id') === 'primary-inventory') {
-    //             return true;
-    //         }
-    //     },
-    //     drop: function(event, ui) {
-    //         let slot = $(ui.draggable).attr('id');
-    //         console.log('droppin');
-    //         $(ui.helper).remove();
-    //         let valueCount = 1;
-    //         // $.post('http://frp_inventory/dropItem', JSON.stringify({
-    //         //     slot: slot,
-    //         // }));
-    //     },
-    // });
 
     $('#primary').on('mouseover', function() {
         $('.focus').removeClass('focus');
         $('#primary').addClass('focus');
-    })
+    });
+
+    $('.hotbar').on('mouseover', function() {
+        $('.focus').removeClass('focus');
+        $('#primary').addClass('focus');
+    });
 
     $('#secondary').on('mouseover', function() {
         $('.focus').removeClass('focus');
         $('#secondary').addClass('focus');
-    })
+    });
 });
 
 
@@ -388,11 +443,22 @@ function elementAsDraggable(element, a, b, c) {
         helper: 'clone',
         zIndex: 99999,
         start: function(event, ui) {
-            $(this).draggable('instance').offset.click = {
-                left: Math.floor(ui.helper.width() / 2),
-                top: Math.floor(ui.helper.height() / 2)
-            };
+
             ui.helper.css('position', 'absolute');
+            ui.helper.css('font-size', '8px');
+
+            $(ui.helper).find('.number').remove();
+            $(ui.helper).find('.counter').css('font-size', '8px');
+            $(ui.helper).find('.counter').css('color', 'white');
+
+            var imgElement = $(ui.helper).find('img')
+            imgElement.css('width', '70px');
+
+            $(this).draggable('instance').offset.click = {
+                left: Math.floor(70 / 2),
+                top: Math.floor(70 / 2)
+            };
+
             select($(this));
         },
         stop: function(event, ui) {
@@ -401,81 +467,133 @@ function elementAsDraggable(element, a, b, c) {
     });
 }
 
+function slotsAsFakeDroppable() {
+    $(`#primary-inventory .slot-container .slot`).droppable({
+        tolerance: 'pointer',
+        activeClass: 'blocked',
+    });
+}
+
 function drawHotbar() {
-    for (var slot = 129; slot < 133; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][2] > -1) {
-            var ItemSlot = primaryItemList[slot];
+    $(".hotbar").css('opacity', '1');
 
-            $(`#primary .hotbar #${slot}`).html('');
-            $(`#primary .hotbar #${slot}`).append(`
-                    <img src="images/items/${ItemSlot[0]}.png">
-                    <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+    $(`#primary .hotbar .slot`).children().not('.number').remove();
+
+    for (var slotId = 129; slotId <= 132; slotId++) {
+        var Slot = primaryItemList[slotId];
+        if (Slot != undefined && Slot != null) {
+
+            var itemId = Slot[1];
+            // var itemAmount = Slot[2];
+            var ammoInClip = Slot[3];
+            var ammoInWeapon = Slot[4];
+
+            // var itemStackSize = Slot.itemStackSize;
+            var itemName = Slot.itemName;
+            var itemDescription = Slot.itemDescription;
+
+            // $(`#primary .hotbar #${slotId}`).html('');
+
+            $(`#primary .hotbar #${slotId}`).removeClass('empty');
+            $(`#primary .hotbar #${slotId}`).append(`
+                <img src="images/items/${itemId}.png">
+                <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
             `);
-            var element = $(`#primary .hotbar #${slot}`);
-            elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
-        } else {
-            if (primaryItemList[slot] !== undefined) {
-                delete primaryItemList[slot];
-            }
 
-            $(`#primary .hotbar #${slot}`).html("");
+            var element = $(`#primary .hotbar #${slotId}`);
+            elementAsDraggable(element, itemId, itemName, itemDescription);
+        } else {
+            $(`#primary .hotbar #${slotId}`).html("");
+            $(`#primary .hotbar #${slotId}`).addClass("empty");
         }
     }
 }
 
 function drawPrimary() {
-
     $(`#primary-inventory .slot-container`).html('');
     var money = 0;
-    for (var slot = (primaryCategoriesIndex * 16) - 15; slot < (primaryCategoriesIndex * 16) + 1; slot++) {
-        if (primaryItemList[slot] !== undefined && primaryItemList[slot] !== null && primaryItemList[slot][1] >= 0 && primaryItemList[slot][2] >= -1) {
-            var ItemSlot = primaryItemList[slot];
 
-            if (primaryItemList[slot][2] > -1) {
-                $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slot}" onclick="select(this)">
-                        <img src="images/items/${ItemSlot[0]}.png">
-                        <div class="counter">${ItemSlot[1]}/${ItemSlot[2]}</div>
+    for (var slotId = (primaryCategoriesIndex * 16) - 15; slotId < (primaryCategoriesIndex * 16) + 1; slotId++) {
+        var Slot = primaryItemList[slotId];
+
+        if (Slot !== undefined && Slot !== null) {
+            var itemId = Slot[1];
+            var itemAmount = Slot[2];
+            var ammoInClip = Slot[3];
+            var ammoInWeapon = Slot[4];
+
+
+            var itemStackSize = Slot.itemStackSize;
+            var itemName = Slot.itemName;
+            var itemDescription = Slot.itemDescription;
+
+            if (ammoInClip == undefined && ammoInWeapon == undefined) {
+                if (itemStackSize != -1) {
+                    $(`#primary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                } else {
+                    $(`#primary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}</div>
+                    </div>
+                `);
+                }
             } else {
                 $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slot}" onclick="select(this)">
-                        <img src="images/items/${ItemSlot[0]}.png">
-                        <div class="counter">${ItemSlot[1]}</div>
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
                     </div>
                 `);
-                if (primaryItemList[slot][0] == 'money') {}
             }
 
-            var element = $(`#primary-inventory .slot-container #${slot}`);
+            var element = $(`#primary-inventory .slot-container #${slotId}`);
 
             if (primaryCategoriesIndex != 1) {
-                elementAsDraggable(element, ItemSlot[0], ItemSlot[3], ItemSlot[4]);
+                elementAsDraggable(element, itemId, itemName, itemDescription);
+
+                $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
+                    console.log('double click');
+                    let selfSlot = $(this).attr('id');
+                    $.post('http://frp_inventory/use', JSON.stringify({
+                        slotId: selfSlot,
+                    }));
+                })
             }
         } else {
-
-            if (primaryItemList[slot] !== undefined) {
-                delete primaryItemList[slot];
-            }
-
             $("#primary-inventory .slot-container").append(`
-                <div class="slot empty" id="${slot}">
+                <div class="slot empty" id="${slotId}">
                 </div>
             `);
         }
+
+        if (primaryCategoriesIndex == 1) {
+            slotsAsFakeDroppable();
+        }
     }
 
-    var money = 0;
-    $.each(primaryItemList, function(slot, ItemSlot) {
-        if (ItemSlot != undefined) {
-            if (ItemSlot[0] == 'money') {
-                money = money + ItemSlot[1];
+    var currency1 = 0;
+    var currency2 = 0;
+
+    $.each(primaryItemList, function(slot, Slot) {
+        if (Slot != undefined) {
+            var itemName = Slot[1];
+            var itemAmount = Slot[2];
+            if (itemName == 'gold') {
+                currency1 = currency1 + itemAmount;
+            } else if (itemName == 'money') {
+                currency2 = currency2 + itemAmount;
             }
         }
     });
 
-    $('#money').text(money / 100);
+    $('#primary #currency1').text(currency1 / 100);
+    $('#primary #currency2').text(currency2 / 100);
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
@@ -499,15 +617,13 @@ function drawPrimary() {
                     itemAmount = 1
                 }
 
-                if ($(ui.draggable).parent().parent().attr('id') === 'primary-inventory' || $(ui.draggable).parent().hasClass('hotbar')) {
-                    $.post('http://frp_inventory/primarySwitchItemSlot', JSON.stringify({
-                        slotFrom: draggableSlot,
-                        slotTo: selfSlot,
+                if ($(ui.draggable).parent().parent().attr('id') == 'secondary-inventory') {
+                    $.post('http://frp_inventory/moveSlotToPrimary', JSON.stringify({
+                        slotId: draggableSlot,
                         itemAmount: itemAmount,
                     }));
                 } else {
-                    let amount = 1;
-                    $.post('http://frp_inventory/sendItemSlotToPrimary', JSON.stringify({
+                    $.post('http://frp_inventory/primarySwitchSlot', JSON.stringify({
                         slotFrom: draggableSlot,
                         slotTo: selfSlot,
                         itemAmount: itemAmount,
@@ -518,9 +634,123 @@ function drawPrimary() {
     }
 }
 
-$('.hotbar .slot').on('click', function() {
-    selectHotbarSlot($(this));
-});
+function drawSecondary() {
+    $(`#secondary-inventory .slot-container`).html('');
+    var money = 0;
+
+    for (var slotId = (secondaryCategoriesIndex * 16) - 15; slotId < (secondaryCategoriesIndex * 16) + 1; slotId++) {
+        var Slot = secondaryItemList[slotId];
+        if (Slot !== undefined && Slot !== null) {
+            var itemId = Slot[1];
+            var itemAmount = Slot[2];
+            var ammoInClip = Slot[3];
+            var ammoInWeapon = Slot[4];
+
+            var itemStackSize = Slot.itemStackSize;
+            var itemName = Slot.itemName;
+            var itemDescription = Slot.itemDescription;
+
+            if (ammoInClip == undefined && ammoInWeapon == undefined) {
+                if (itemStackSize != -1) {
+                    $(`#secondary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}/${itemStackSize}</div>
+                    </div>
+                `);
+                } else {
+                    $(`#secondary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${itemAmount}</div>
+                    </div>
+                `);
+                }
+            } else {
+                $(`#secondary-inventory .slot-container`).append(`
+                    <div class="slot" id="${slotId}" onclick="select(this)">
+                        <img src="images/items/${itemId}.png">
+                        <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
+                    </div>
+                `);
+            }
+
+            var element = $(`#secondary-inventory .slot-container #${slotId}`);
+
+            if (secondaryCategoriesIndex != 1) {
+                elementAsDraggable(element, itemId, itemName, itemDescription);
+            }
+        } else {
+            $("#secondary-inventory .slot-container").append(`
+                <div class="slot empty" id="${slotId}">
+                </div>
+            `);
+        }
+
+        if (secondaryCategoriesIndex == 1) {
+            slotsAsFakeDroppable();
+        }
+    }
+
+    var currency1 = 0;
+    var currency2 = 0;
+
+    $.each(secondaryItemList, function(slot, Slot) {
+        if (Slot != undefined) {
+            var itemName = Slot[1];
+            var itemAmount = Slot[2];
+            if (itemName == 'gold') {
+                currency1 = currency1 + itemAmount;
+            } else if (itemName == 'money') {
+                currency2 = currency2 + itemAmount;
+            }
+        }
+    });
+
+    $('#secondary #currency1').text(currency1 / 100);
+    $('#secondary #currency2').text(currency2 / 100);
+
+    if (secondaryCategoriesIndex != 1) {
+        $(`#secondary-inventory .slot-container`).children().droppable({
+            tolerance: 'pointer',
+            hoverClass: 'ab',
+            drop: function(event, ui) {
+                $(ui.helper).remove();
+                // let valueCount = $('.count').value;
+                let selfSlot = $(this).attr('id');
+                let draggableSlot = $(ui.draggable).attr('id');
+
+                if (shortcutPressed == null) {
+                    itemAmount = -2; // quantidade = TODOS
+                }
+
+                if (shortcutPressed == 16) { // SHIFT
+                    itemAmount = -1
+                }
+
+                if (shortcutPressed == 17) { // CTRL
+                    itemAmount = 1
+                }
+
+
+                if ($(ui.draggable).parent().parent().attr('id') == 'primary-inventory') {
+                    console.log('droppable is primary');
+                    $.post('http://frp_inventory/moveSlotToSecondary', JSON.stringify({
+                        slotId: draggableSlot,
+                        itemAmount: itemAmount,
+                    }));
+                } else {
+                    $.post('http://frp_inventory/secondarySwitchSlot', JSON.stringify({
+                        slotFrom: draggableSlot,
+                        slotTo: selfSlot,
+                        itemAmount: itemAmount,
+                    }));
+                }
+
+            }
+        });
+    }
+}
 
 function select(element) {
     // let count = $('.count')[0].innerText;
@@ -548,8 +778,8 @@ function unSelect(element) {
 }
 
 function closeInventory() {
-    // primaryItemList = [];
-    // secondaryItemList = [];
+    primaryItemList = [];
+    secondaryItemList = [];
     $('.selected').removeClass('selected');
     $("#secondary").hide();
     $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));

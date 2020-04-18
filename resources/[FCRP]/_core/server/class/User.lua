@@ -222,21 +222,18 @@ function API.User(source, id, ipAddress)
 
     self.viewInventoryAsSecondary = function(this, Inventory)
         self.secondaryViewingInventory = Inventory
-        if self.primaryViewingInventory == nil then
-            self:viewInventory()
-        end
         Inventory:viewAsSecondary(self:getSource())
     end
 
     self.closeInventory = function()
+        -- TriggerClientEvent('fcrp_inventory:closeInv', self:getSource())
+
         if self.primaryViewingInventory ~= nil then
-            self.primaryViewingInventory:removeViewer(self:getSource())
-            self.primaryViewingInventory = nil
+            self.primaryViewingInventory:removeViewer(self)
         end
 
         if self.secondaryViewingInventory ~= nil then
-            self.secondaryViewingInventory:removeViewer(self:getSource())
-            self.secondaryViewingInventory = nil
+            self.secondaryViewingInventory:removeViewer(self)
         end
     end
 

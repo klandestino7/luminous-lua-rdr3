@@ -31,7 +31,7 @@ server_scripts {
 	'server/Gui.lua',
 	'server/BasicNeeds.lua',
 	-----------------------
-	'server/class/ItemSlot.lua',
+	'server/class/Slot.lua',
 	'server/class/Inventory.lua',
 	'server/class/ItemData.lua',
 	'server/class/Character.lua',

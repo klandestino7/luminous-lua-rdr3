@@ -12,11 +12,11 @@ server_scripts {
 	'server.lua'
 }
 
-ui_page './html2/index.html'
+ui_page 'html2/index.html'
 
 files {
-    './html2/fonts/*',
-    './html2/*',
-    './html2/images/*',
-    './html2/images/items/*'
+    'html2/fonts/*',
+    'html2/*',
+    'html2/images/*',
+    'html2/images/items/*'
 }

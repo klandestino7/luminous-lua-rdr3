@@ -115,7 +115,7 @@ RegisterCommand(
         if isAllowedToChange(source) then
             if nomew ~= nil then
                 TriggerClientEvent('vSync:notify', source, 'Weather will change to: ~y~' .. string.lower(nomew) .. '~s~.')
-                CurrentWeather = nomew:toupper()
+                CurrentWeather = nomew:upper()
                 newWeatherTimer = 60
                 -- NewWeather = AvailableWeatherTypes[nomew:toupper()]
                 TriggerEvent('vSync:requestSync')

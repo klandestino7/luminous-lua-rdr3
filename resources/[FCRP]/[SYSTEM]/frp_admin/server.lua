@@ -189,8 +189,8 @@ RegisterCommand(
             return
         end
 
-        if Character:hasGroup("admin") then
-            Character:getInventory():addItem(-1, args[1], tonumber(args[2]))
+        if Character:hasGroupOrInheritance("admin") then
+            Character:getInventory():addItem(args[1], tonumber(args[2]))
         end
     end
 )
