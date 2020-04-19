@@ -1,0 +1,680 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'robotoslab', sans-serif;
+    text-transform: none;
+    text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
+    user-select: none;
+}
+
+@font-face {
+    font-family: 'crock';
+    font-style: normal;
+    src: url('assets/crock.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'robotoslab';
+    font-style: normal;
+    src: url('assets/robotoslab.ttf') format('truetype')
+}
+
+body {
+    color: white;
+    /* background-color: transparent !important; */
+    background-position: auto;
+    background-size: contain;
+    overflow: hidden;
+}
+
+.ui {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.50);
+    z-index: 0;
+    display: none;
+}
+
+.inventory {
+    width: 100vw;
+    height: 100vh;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.textomenu {
+    bottom: 105px;
+    left: 550px;
+    text-align: left;
+    width: 290px;
+    height: 100px;
+    text-transform: none;
+    position: absolute;
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+#playerInventory {
+    width: 605px;
+    height: 500px;
+    float: left;
+    position: relative;
+    border-radius: 5px;
+    overflow-y: auto;
+    z-index: 1000;
+    /*  background-image: url('assets/bginventory.png'); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 30px 20px 30px 20px;
+}
+
+#controls {
+    width: 250px;
+    height: 600px;
+    float: left;
+    position: relative;
+}
+
+.containinv {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 440px;
+    scroll-behavior: smooth;
+    /* <--- */
+    overflow-x: scroll;
+    overflow-y: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.title {
+    position: fixed;
+    margin-top: -280px;
+    margin-left: -400px;
+}
+
+#count {
+    outline: none;
+    font-size: 16px;
+    opacity: 0.5;
+    transition: 0.6s;
+    margin: 0 5px;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+#count:hover {
+    opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(5, 116px);
+    grid-template-rows: repeat(8, 135px);
+    grid-gap: 4px;
+    z-index: 1;
+}
+
+#slottest {
+    background-color: rgba(115, 115, 115, 0.04);
+    border: 1.2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    opacity: 1;
+    transition: 0.6s;
+    z-index: 1;
+}
+
+#slottest:hover {
+    border: 1.2px solid rgba(227, 227, 227, 0.9);
+    z-index: 1;
+}
+
+.items2 {
+    display: grid;
+    grid-template-columns: repeat(5, 116px);
+    grid-template-rows: repeat(8, 135px);
+    grid-gap: 4px;
+    z-index: 1;
+}
+
+#slottest2 {
+    background-color: rgba(115, 115, 115, 0.04);
+    border: 1.2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    opacity: 1;
+    transition: 0.6s;
+    z-index: 1;
+}
+
+#slottest2:hover {
+    border: 1.2px solid rgba(227, 227, 227, 0.9);
+    z-index: 1;
+}
+
+.bg-image {}
+
+.craftitem .slot {
+    float: left;
+    width: 116px;
+    height: 135px;
+    background-image: url('assets/bgitem.png');
+    background-size: contain;
+    background-color: transparent;
+    margin: 0.5px;
+    position: relative;
+    opacity: 1;
+    transition: 0.8s;
+    /*border: 1px solid rgba(255, 255, 255, 0.08); */
+}
+
+.slot:not(.disabled):hover {
+    opacity: 0.8;
+    background-image: url('assets/border.png');
+    background-size: contain;
+}
+
+.selected {
+    background-color: rgba(17, 5, 17, 0.0);
+    background-image: url('assets/border.png');
+    background-size: contain;
+}
+
+.item,
+.item-other {
+    width: 116px;
+    height: 110px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.item-name {
+    position: absolute;
+    bottom: 4px;
+    text-align: center;
+    padding-top: 0.2px;
+    padding-bottom: 0.2px;
+    width: 116px;
+    min-height: 20px;
+    z-index: 500;
+    font-size: 14px;
+    font-family: 'crock';
+    background-color: rgba(17, 5, 17, 0.0);
+}
+
+.ui-draggable-dragging .item-name,
+.ui-draggable-dragging .item-count {
+    display: inline-block;
+}
+
+.ui-draggable-dragging:hover {
+    opacity: 0.6;
+    z-index: 500;
+}
+
+.item-count {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    text-align: right;
+    width: 114px;
+    height: 20px;
+    z-index: 500;
+    font-size: 10px;
+}
+
+.item-count:active {
+    position: absolute;
+    top: 0;
+    text-align: right;
+    width: 114px;
+    height: 20px;
+    z-index: 500;
+    font-size: 10px;
+}
+
+
+/* -------------- CRAFT SIDE -------------   */
+
+.craftinv {
+    width: 300px;
+    height: 500px;
+    float: left;
+    position: relative;
+    border-radius: 5px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-image: url('assets/bginventory.png');
+    background-size: 100% 97%;
+    background-repeat: no-repeat;
+    padding: 30px 20px 30px 20px;
+}
+
+.craftinv .itemselected {
+    position: fixed;
+    margin-top: -60px;
+    width: 300px;
+    max-height: 180px;
+    background-image: url('assets/oldpaper.png');
+    background-size: 65% 85%;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+.itemselected .invtitle {
+    margin-top: 20px;
+    padding-left: 30px;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.itemselected .invdesc {
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 15px;
+    line-height: 20px;
+    opacity: 0.7;
+}
+
+.craftinv .containinv {
+    margin-top: 200px;
+    height: 220px;
+    align-items: stretch;
+}
+
+.craftinv .imageitem {
+    width: 100px;
+    height: 100px;
+    padding: 20px 100px;
+}
+
+.craftinv .imageitem img {}
+
+.craftinv .slot {
+    float: left;
+    left: 30px;
+    width: 76px;
+    height: 76px;
+    background-image: url('assets/bgitem.png');
+    background-size: 100% 100%;
+    background-color: transparent;
+    margin: 2px;
+    margin-bottom: 10px;
+    position: relative;
+    opacity: 1;
+    transition: 0.8s;
+    /*border: 1px solid rgba(255, 255, 255, 0.08); */
+}
+
+.craftinv .slot:not(.disabled):hover {
+    opacity: 0.8;
+    background-image: url('assets/border.png');
+    background-size: 100% 100%;
+}
+
+.craftinv .selected:not(.disabled) {
+    background-color: rgba(17, 5, 17, 0.0);
+    background-image: url('assets/border.png');
+    background-size: 100% 100%;
+}
+
+.craftinv .item,
+.craftinv .item-other {
+    width: 76px;
+    height: 76px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.craftinv .item-name {
+    position: absolute;
+    bottom: 4px;
+    text-align: center;
+    padding-top: 0.2px;
+    padding-bottom: 0.2px;
+    width: 75px;
+    z-index: 500;
+    font-size: 14px;
+    font-family: 'crock';
+    background-color: rgba(17, 5, 17, 0.0);
+}
+
+.craftinv .ui-draggable-dragging .item-name,
+.craftinv .ui-draggable-dragging .item-count {
+    display: inline-block;
+}
+
+.craftinv .ui-draggable-dragging:hover {
+    opacity: 0.6;
+    z-index: 500;
+}
+
+.craftinv .item-count {
+    margin-bottom: 100px;
+    color: white;
+    margin-top: -15px;
+    left: 0px;
+    width: 74px;
+    height: 15px;
+    z-index: 500;
+    font-size: 12px;
+    background-image: url('assets/namebg.png');
+    background-repeat: no-repeat;
+    background-size: 74px 15px;
+    background-color: transparent;
+}
+
+.craftinv .item-count-bg {
+    text-align: center;
+    width: 74px;
+    min-height: 15px;
+    z-index: 400;
+    font-size: 10px;
+    margin-top: 2.5px;
+}
+
+.craftinv .item-name-bg {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 74px;
+    min-height: 20px;
+    z-index: 400;
+    font-size: 10px;
+    background-image: url('assets/namebg.png');
+    background-repeat: no-repeat;
+    background-size: 74px 25px;
+    background-color: transparent;
+}
+
+.craftinv .disabler {
+    color: red;
+    float: left;
+    background-image: url('assets/bgitem.png');
+    opacity: 0.4;
+}
+
+.craftinv .disabler:hover {
+    opacity: 0.6;
+    background-image: url('assets/bgitem.png');
+}
+
+.craftinv .craftbutton {
+    width: 300px;
+    height: 40px;
+    position: relative;
+    top: 15px;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.craftinv .craftbutton button {
+    width: 100px;
+    height: 30px;
+    position: relative;
+    background: transparent;
+    border: 0px solid;
+    color: white;
+    border-bottom: 2px solid red;
+    font-family: 'crock';
+    transition-duration: 0.2s;
+}
+
+.craftinv .craftbutton button:hover {
+    color: red;
+    border-radius: 0px 0px 5px 5px;
+    background-color: rgba(227, 227, 227, 0.1);
+    border-bottom: 5px solid red;
+    font-family: 'crock';
+}
+
+red {
+    color: rgba(253, 93, 93, 0.65);
+    font-size: 14px;
+}
+
+
+/* -------------- CRAFT SIDE -------------   */
+
+.ammoIcon {
+    width: 10px;
+    height: 10px;
+}
+
+.baritemname {
+    width: 100%;
+    width: 117px;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+}
+
+.tooltip {
+    padding: 2px;
+    background-color: rgba(161, 161, 161, 0.1);
+    width: 20vw;
+    position: absolute;
+    left: 50%;
+    top: 98%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: 0.6s;
+}
+
+.tooltiptext {
+    position: absolute;
+    top: 90%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: 0.6s;
+    margin: 0 5px;
+    margin-top: 25px;
+    max-height: 100px;
+    margin-left: -55px;
+}
+
+.tooltiptext::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.info-div {
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+}
+
+.controls-div {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+}
+
+.control {
+    width: 140px;
+    height: 50px;
+    margin: 15px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    background-image: url('assets/button.png');
+    background-size: contain;
+    background-color: transparent;
+    /*  background-color: rgba(115, 115, 115,  0.09); */
+    border: 0px solid rgba(255, 255, 255, 0.08);
+    opacity: 1;
+    transition: 0.6s;
+}
+
+.control:hover {
+    background-image: url('assets/button2.png');
+    background-size: contain;
+}
+
+.control.disabled {
+    background-color: rgba(107, 0, 0, 0.1);
+}
+
+.hoverControl {
+    background-color: rgb(0, 107, 0, 0.1);
+}
+
+.item-name-bg {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 116px;
+    min-height: 20px;
+    z-index: 400;
+    font-size: 10px;
+    background-image: url('assets/namebg.png');
+    background-repeat: no-repeat;
+    background-size: 116px 25px;
+    background-color: transparent;
+}
+
+#playerInventory::-webkit-scrollbar-track,
+#otherInventory::-webkit-scrollbar-track {
+    background-color: none;
+    border: none;
+}
+
+#playerInventory::-webkit-scrollbar,
+#otherInventory::-webkit-scrollbar {
+    width: 3px;
+    background-color: rgba(17, 5, 17, 0.0);
+}
+
+#playerInventory::-webkit-scrollbar-thumb,
+#otherInventory::-webkit-scrollbar-thumb {
+    background-color: rgba(227, 227, 227, 1);
+}
+
+.nearbyPlayerButton {
+    width: 100%;
+    margin-top: 5px;
+    display: block;
+    text-decoration: none;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(0, 0, 0, 0.8);
+    text-shadow: none;
+    font-size: 14px !important;
+    outline: none;
+    text-transform: none;
+    text-align: center;
+    line-height: 30px;
+    border: none;
+}
+
+.nearbyPlayerButton:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+#noSecondInventoryMessage {
+    width: 605px;
+    height: 500px;
+    line-height: 480px;
+    text-align: center;
+}
+
+.bar {
+    position: relative;
+    left: 1px;
+    top: 108px;
+    width: 112px;
+    height: 25px;
+    border-radius: 0px 0px 2px 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+}
+
+.invtext {
+    z-index: 4;
+}
+
+#playerInventory .containinv .disabled {
+    opacity: 0.4;
+}
+
+#playerInventory .containinv .disabled:hover {
+    opacity: 0.6;
+}
+
+
+/*
+@media screen and (max-width: 1545px) {
+    #playerInventory {
+    width:48%;
+    }
+    #otherInventory{
+        width:48%;
+    }
+    .containinv{
+        height:25vw;
+    }
+    #controls{
+        width:12vw;
+    }
+    .controls-div{
+        top:20vw;
+    }
+    .slot {
+        width:110px;
+    }
+    .item,
+    .item-other {
+        width: 110px;
+    }    
+    .item-name {
+        width: 110px;
+
+    }   
+    .item-name-bg {
+        width: 110px;
+        background-size: 110px 25px; 
+    }
+    .item-count {
+        width: 108px;
+    }    
+    .item-count:active {
+        width: 108px;
+    }    
+    .baritemname {
+        width: 101px;
+    }    
+
+  }*/
