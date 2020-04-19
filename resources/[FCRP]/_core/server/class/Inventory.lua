@@ -32,8 +32,10 @@ function API.Inventory(id, capacity, slots)
     self.getWeight = function()
         local weight = 0
         for slotId, Slot in pairs(self.slots) do
-            local itemData = Slot:getItemData()
-            weight = weight + (itemData:getWeight() * Slot:getItemAmount())
+            if slotId < 129 or slotId > 132 then
+                local itemData = Slot:getItemData()
+                weight = weight + (itemData:getWeight() * Slot:getItemAmount())
+            end
         end
         return weight
     end
@@ -166,7 +168,7 @@ function API.Inventory(id, capacity, slots)
                 if itemType == "ammo" and itemTypeTo == "weapon" then
                     if getAmmoTypeFromWeaponType("weapon_" .. SlotTo:getItemId()) == Slot:getItemId() then
                         Slot:removeItemAmount(amount)
-                        SlotTo:setAmmoInWeapon(SlotTo:getAmmoInWeapon() + (amount + 1))
+                        SlotTo:setAmmoInWeapon(SlotTo:getAmmoInWeapon() + amount)
 
                         if Slot:getItemAmount() <= 0 then
                             self.slots[slotId] = nil
@@ -384,13 +386,13 @@ function API.Inventory(id, capacity, slots)
         return amount
     end
 
-    self.saveWeaponSlotIntoDb = function(this, slot, ammoInClip, ammoInWeapon)
-        if slot < 129 or slot > 132 then
+    self.saveWeaponSlotIntoDb = function(this, _source, slotId, ammoInClip, ammoInWeapon)
+        if slotId < 129 or slotId > 132 then
             -- API.log("LUA INJECTION? Tentativa de duplicar item: " .. self:getId())
             return
         end
 
-        local Slot = self.slots[slot]
+        local Slot = self.slots[slotId]
 
         if Slot == nil then
             return
@@ -405,6 +407,20 @@ function API.Inventory(id, capacity, slots)
 
         Slot:setAmmoInClip(ammoInClip)
         Slot:setAmmoInWeapon(ammoInWeapon)
+
+        if (itemData:isThrowable() or itemData:isMelee()) and ammoInWeapon <= 0 then
+            Slot:setItemAmount(0)
+        end
+
+        local sync = {
+            [slotId] = Slot:getSyncData()
+        }
+
+        if Slot:getItemAmount() <= 0 then
+            self.slots[slotId] = nil
+        end
+
+        syncToViewers({[_source] = true}, sync, self:getWeight())
 
         -- Citizen.CreateThread(
         --     function()
@@ -430,7 +446,6 @@ function API.Inventory(id, capacity, slots)
         -- sync[1] = Slot:getSyncData()
         --   syncToViewers(self.viewersSources, sync, self:getWeight())
     end
-
 
     self.viewAsPrimary = function(this, viewerSource)
         self.viewersSources[viewerSource] = true
@@ -633,48 +648,11 @@ function getFirstLastSlots(itemId)
     return table.unpack(a[itemTabType])
 end
 
-local melee = {
-    "lasso",
-    "melee_knife_john",
-    "melee_knife",
-    "melee_knife_bear",
-}
-
-local throwable = {
-    "thrown_ancient_tomahawk",
-    "thrown_dynamite",
-    "thrown_molotov",
-    "thrown_throwing_knives",
-    "thrown_throwing_knives_improved",
-}
-
-function isMelee(itemId)
-    -- itemId = 'weapon_' .. itemId
-
-    for _, col in pairs(melee) do
-        if itemId == col then
-            return true
-        end
-    end
-
-    return false
-end
-
-function isThrowable(itemId)
-    -- itemId = 'weapon_' .. itemId
-
-    for _, col in pairs(throwable) do
-        if itemId == col then
-            return true
-        end
-    end
-
-    return false
-end
-
 function canFitHotbarSlot(slotId, itemId)
+    local itemData = API.getItemDataFromId(itemId)
+
     if slotId == 129 or slotId == 130 then
-        if not isMelee(itemId) and not isThrowable(itemId) then
+        if not itemData:isMelee(itemId) and not itemData:isThrowable(itemId) then
             return true
         else
             return false
@@ -682,10 +660,25 @@ function canFitHotbarSlot(slotId, itemId)
     end
 
     if slotId == 131 then
-        return isMelee(itemId)
+        return itemData:isMelee(itemId)
     end
 
     if slotId == 132 then
-        return isThrowable(itemId)
+        return itemData:isThrowable(itemId)
     end
+end
+
+function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == "table" then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
 end

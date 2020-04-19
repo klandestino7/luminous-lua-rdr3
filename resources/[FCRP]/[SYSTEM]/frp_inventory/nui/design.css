@@ -309,6 +309,7 @@ Its simulated from .selected :D
 
 #primary .hotbar .hotbar-slot-selected {
     border-bottom: 1px solid white;
+    margin: 0 0 -1px 0;
 }
 
 .blocked {

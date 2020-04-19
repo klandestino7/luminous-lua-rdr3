@@ -36,6 +36,14 @@ function API.ItemData(id, name, description, type, stackSize, weight)
         return triggerUse(User, self)
     end
 
+    self.isMelee = function()
+        return isMelee(self:getId())
+    end
+
+    self.isThrowable = function()
+        return isThrowable(self:getId())
+    end
+
     return self
 end
 
@@ -87,7 +95,7 @@ function triggerUse(User, itemData)
         return true
     end
 
-    if itemType == "tonic" then
+    if itemType == "boost" then
         local var = values.varOnUse
 
         if itemId == "tonic_medicine" or itemId == "tonic" or itemId == "tonic_potent_medicine" then
@@ -106,6 +114,58 @@ function triggerUse(User, itemData)
         local var = values.varOnUse
 
         TriggerEvent("FCRP:CHESTS:StartPlayerPlacement", source, var)
+    end
+
+    return false
+end
+
+local melee = {
+    "lasso",
+    "melee_knife_john",
+    "melee_knife",
+    "melee_knife_bear",
+    "melee_cleaver",
+    "melee_ancient_hatchet",
+    "melee_knife_jawbone",
+    "melee_knife_hunter",
+    "melee_knife_miner",
+    "melee_machete",
+}
+
+local throwable = {
+    "thrown_ancient_tomahawk",
+    "thrown_dynamite",
+    "thrown_molotov",
+    "thrown_throwing_knives",
+    "thrown_throwing_knives_improved",
+    "melee_hatchet",
+    "melee_hatchet_viking",
+    "melee_hatchet_hewing",
+    "melee_hatchet_double_bit",
+    "melee_hatchet_double_bit_rusted",
+    "melee_hatchet_hunter",
+    "melee_hatchet_hunter_rusted",
+}
+
+function isMelee(itemId)
+    -- itemId = 'weapon_' .. itemId
+
+    for _, col in pairs(melee) do
+        if itemId == col then
+            return true
+        end
+    end
+
+    return false
+end
+
+function isThrowable(itemId)
+    -- itemId = 'weapon_' .. itemId
+
+    for _, col in pairs(throwable) do
+        if itemId == col then
+            return true
+        end
     end
 
     return false

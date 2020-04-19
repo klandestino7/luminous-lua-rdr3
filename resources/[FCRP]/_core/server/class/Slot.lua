@@ -42,8 +42,10 @@ function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
     end
 
     self.getAmmoInClip = function()
-        if self.ammoInClip == nil and self:getItemData():getType() == "weapon" then
-            self.ammoInClip = 0
+        if self:getItemId() ~= "lasso" then
+            if self.ammoInClip == nil and self:getItemData():getType() == "weapon" then
+                self.ammoInClip = 0
+            end
         end
 
         return self.ammoInClip
@@ -54,8 +56,14 @@ function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
     end
 
     self.getAmmoInWeapon = function()
-        if self.ammoInWeapon == nil and self:getItemData():getType() == "weapon" then
-            self.ammoInWeapon = 0
+        if self:getItemId() ~= "lasso" then
+            if self.ammoInWeapon == nil and self:getItemData():getType() == "weapon" then
+                if not self:getItemData():isMelee() and not self:getItemData():isThrowable() then
+                    self.ammoInWeapon = 0
+                else
+                    self.ammoInWeapon = 1
+                end
+            end
         end
 
         return self.ammoInWeapon

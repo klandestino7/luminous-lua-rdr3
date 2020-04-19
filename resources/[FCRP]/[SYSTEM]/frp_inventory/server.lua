@@ -224,9 +224,12 @@ AddEventHandler(
         local _source = source
 
         local User = API.getUserFromSource(_source)
-        local primaryInventory = User:getCharacter():getInventory()
+        local Character = User:getCharacter()
+        local primaryInventory = Character:getInventory()
 
-        primaryInventory:saveWeaponSlotIntoDb(slot, ammoInClip, ammoInWeapon)
+        if primaryInventory ~= nil then
+            primaryInventory:saveWeaponSlotIntoDb(_source, slot, ammoInClip, ammoInWeapon)
+        end
     end
 )
 
@@ -237,9 +240,9 @@ RegisterCommand(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        local armas = cAPI.getWeapons(_source)
+        local armas = cAPI.replaceWeapons(_source, {})
         local Inventory = Character:getInventory()
-        local ammo = cAPI.getAmmo(_source)
+        -- local ammo = cAPI.getAmmo(_source)
 
         -- for w, v in pairs(armas) do
         --     Inventory:addItem(w, 1)

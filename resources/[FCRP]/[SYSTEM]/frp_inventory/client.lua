@@ -22,53 +22,56 @@ Citizen.CreateThread(
 local whereWeaponIsAtSlot = {}
 local isReloadingOrShooting = false
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
---             local ped = PlayerPedId()
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
 
---             -- 0x24B100C68C645951 IS_PED_RELOADING
---             local _, currentWeapon = Citizen.InvokeNative(0x3A87E44BB9A01D54, ped, 1, 1, 1)
---             if IsPedShooting(ped) or Citizen.InvokeNative(0x24B100C68C645951, ped) then
---                 -- local wasReloading = false
---                 while Citizen.InvokeNative(0x24B100C68C645951, ped) do
---                     -- wasReloading = true
---                     Citizen.Wait(0)
---                 end
---                 isReloadingOrShooting = true
---                 for weaponId, slotId in pairs(whereWeaponIsAtSlot) do
---                     local weaponHash = GetHashKey(weaponId)
---                     if currentWeapon == weaponHash then
---                         local _, inClip = GetAmmoInClip(ped, weaponHash)
+            local ped = PlayerPedId()
 
---                         local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
---                         local ammoRemaining = math.floor(inWeapon - inClip)
+            -- 0x24B100C68C645951 IS_PED_RELOADING
+            local _, currentWeapon = GetCurrentPedWeapon(ped, true, 0, true)
+            if currentWeapon ~= GetHashKey("weapon_lasso") then
+                if IsPedShooting(ped) or Citizen.InvokeNative(0x24B100C68C645951, ped) then
+                    -- local wasReloading = false
+                    while Citizen.InvokeNative(0x24B100C68C645951, ped) do
+                        -- wasReloading = true
+                        Citizen.Wait(0)
+                    end
+                    isReloadingOrShooting = true
+                    for weaponId, slotId in pairs(whereWeaponIsAtSlot) do
+                        local weaponHash = GetHashKey(weaponId)
+                        if currentWeapon == weaponHash then
+                            local _, inClip = GetAmmoInClip(ped, weaponHash)
 
---                         -- if not wasReloading then
---                         --     inClip = inClip - 1
---                         -- end
+                            local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
+                            local ammoRemaining = math.floor(inWeapon - inClip)
 
---                         -- print(weaponId .. " inClip: " .. inClip .. " Remaining: " .. ammoRemaining)
+                            -- if not wasReloading then
+                            --     inClip = inClip - 1
+                            -- end
 
---                         TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slotId, inClip, ammoRemaining)
+                            -- print(weaponId .. " inClip: " .. inClip .. " Remaining: " .. ammoRemaining)
 
---                         local slots = {
---                             [slotId] = {weaponId:gsub("weapon_", ""), 1, inClip, ammoRemaining}
---                             -- [slotId] = {weaponId, 1, inClip, ammoRemaining}
---                         }
+                            TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slotId, inClip, ammoRemaining)
 
---                         SendNUIMessage(
---                             {
---                                 primarySlots = computeSlots(slots, true)
---                             }
---                         )
---                     end
---                 end
---             end
---         end
---     end
--- )
+                        -- local slots = {
+                        --     [slotId] = {weaponId:gsub("weapon_", ""), 1, inClip, ammoRemaining}
+                        -- [slotId] = {weaponId, 1, inClip, ammoRemaining}
+                        -- }
+
+                        -- SendNUIMessage(
+                        --     {
+                        --         primarySlots = computeSlots(slots, true)
+                        --     }
+                        -- )
+                        end
+                    end
+                end
+            end
+        end
+    end
+)
 
 RegisterNetEvent("FCRP:INVENTORY:ToggleHotbar")
 AddEventHandler(
@@ -113,7 +116,6 @@ RegisterNetEvent("FCRP:INVENTORY:openAsSecondary")
 AddEventHandler(
     "FCRP:INVENTORY:openAsSecondary",
     function(slots, inventoryWeight, inventoryMaxWeight)
-
         slots = computeSlots(slots)
 
         SetNuiFocus(true, true)
@@ -204,13 +206,16 @@ RegisterNUICallback(
     "interactWithHotbarSlot",
     function(cb)
         local itemId = cb.itemId or "unarmed"
-        -- SetCurrentPedWeapon(PlayerPedId(), GetHashKey("weapon_" .. itemId), true)
+        local weaponId = "weapon_" .. itemId
+        local weaponHash = GetHashKey(weaponId)
 
-        Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), GetHashKey("weapon_" .. itemId), 0, true, true)
+        local ped = PlayerPedId()
 
-        -- SetCurrentPedWeapon(PlayerPedId(), itemId, true)
-        -- MakePedReload(ped)
-        TaskReloadWeapon(ped, 0)
+        local _, currentWeapon = GetCurrentPedWeapon(ped, true, 0, true)
+        if currentWeapon ~= weaponHash then
+            Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, weaponHash, 0, true, true)
+            TaskReloadWeapon(ped, 0)
+        end
     end
 )
 
@@ -250,6 +255,7 @@ function computeSlots(table, shotOrReloaded)
         if itemInfo ~= nil then
             local itemId = values[1]
             local itemAmount = values[2]
+
             local ammoInClip = values[3]
             local ammoInWeapon = values[4]
 
@@ -265,47 +271,37 @@ function computeSlots(table, shotOrReloaded)
                 values[4] = ammoInWeapon
 
                 if (slotId >= 129 and slotId <= 132) then
-                    if not shotOrReloaded then
-                        local weaponId = 'weapon_' .. itemId
-                        local weaponHash = GetHashKey(weaponId)
+                    -- if not shotOrReloaded then
+                    local weaponId = "weapon_" .. itemId
+                    local weaponHash = GetHashKey(weaponId)
 
-                        whereWeaponIsAtSlot[weaponId] = nil
+                    whereWeaponIsAtSlot[weaponId] = nil
 
-
-                        if itemAmount > 0 then
-                            for wId, slot in pairs(whereWeaponIsAtSlot) do
-                                if slot == slotId and weaponId ~= wId then
-                                    local foundHash = GetHashKey(wId)
-                                    SetPedAmmo(ped, foundHash, 0)
-                                    RemoveWeaponFromPed(ped, foundHash)
-                                    whereWeaponIsAtSlot[wId] = nil
-                                end
-                            end
-
-                            if not HasPedGotWeapon(ped, weaponHash, false) then
-                                GiveWeaponToPed(ped, weaponHash, ammoInWeapon, false, false)
-                            end
-
-                            SetPedAmmo(ped, weaponHash, ammoInWeapon)
-                            SetAmmoInClip(ped, weaponHash, ammoInClip)
-
-                            local _, inClip = GetAmmoInClip(ped, weaponHash)
-
-                            local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
-                            local ammoRemaining = math.floor(inWeapon - inClip)
-
-                            TaskReloadWeapon(ped, 0)
-
-                            whereWeaponIsAtSlot[weaponId] = slotId
-                        else
-                            if HasPedGotWeapon(ped, weaponHash, false) then
-                                SetPedAmmo(ped, weaponHash, 0)
-                                RemoveWeaponFromPed(ped, weaponHash)
+                    if itemAmount > 0 then
+                        for wId, slot in pairs(whereWeaponIsAtSlot) do
+                            if slot == slotId and weaponId ~= wId then
+                                local foundHash = GetHashKey(wId)
+                                SetPedAmmo(ped, foundHash, 0)
+                                RemoveWeaponFromPed(ped, foundHash)
+                                whereWeaponIsAtSlot[wId] = nil
                             end
                         end
+
+                        if not HasPedGotWeapon(ped, weaponHash, false) then
+                            GiveWeaponToPed(ped, weaponHash, ammoInWeapon, false, false)
+                        end
+
+                        SetPedAmmo(ped, weaponHash, ammoInWeapon)
+                        SetAmmoInClip(ped, weaponHash, ammoInClip)
+
+                        whereWeaponIsAtSlot[weaponId] = slotId
                     else
-                        -- A arma já estava equipada e só está atualizando o numero de munição
+                        if HasPedGotWeapon(ped, weaponHash, false) then
+                            SetPedAmmo(ped, weaponHash, 0)
+                            RemoveWeaponFromPed(ped, weaponHash)
+                        end
                     end
+                -- end
                 end
             end
         end

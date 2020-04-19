@@ -3,7 +3,7 @@ var secondaryItemList = [];
 var indexSelected = null;
 var shortcutPressed = null;
 
-var hotbarSlotSelected = null;
+var hotbarSlotSelected = 5;
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ window.addEventListener("message", function(event) {
 
             if (hotbarSlotSelected != undefined) {
                 hotbarSlotSelected = hotbarSlotSelected + 1;
-                if (hotbarSlotSelected == 5) {
+                if (hotbarSlotSelected == 6) {
                     hotbarSlotSelected = 1;
                 }
             } else {
@@ -51,14 +51,9 @@ window.addEventListener("message", function(event) {
             element.addClass("hotbar-slot-selected");
 
             let itemId = $(element).attr('itemId');
-            let counter = $(element).find('.counter');
-            let weaponClip = $(counter).text().split('/')[0];
-            let weaponAmmo = $(counter).text().split('/')[1];
 
             $.post('http://frp_inventory/interactWithHotbarSlot', JSON.stringify({
                 itemId: itemId,
-                weaponClip: weaponClip,
-                weaponAmmo: weaponAmmo,
             }));
         } else {
             // $('.container:hidden').css('display', 'flex');
@@ -76,15 +71,15 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primarySlots) {
-            var clearedRecent = false;
+            // var clearedRecent = false;
             $.each(event.data.primarySlots, function(slotId, Slot) {
 
-                if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
-                    clearedRecent = true;
-                    for (var i = 1; i < 16; i++) {
-                        delete primaryItemList[1];
-                    }
-                }
+                // if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
+                //     clearedRecent = true;
+                //     for (var i = 1; i < 16; i++) {
+                //         delete primaryItemList[1];
+                //     }
+                // }
 
                 if (Slot[2] > 0) {
                     primaryItemList[slotId] = Slot;
@@ -101,14 +96,14 @@ window.addEventListener("message", function(event) {
                 if (maxWeight != undefined) {
                     $('#primary #weight').text(`${weight}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
-                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 } else {
                     var oldText = $('#primary #weight').text();
                     var maxWeight = oldText.split('/')[1];
                     maxWeight = maxWeight.replace('kg', '');
                     $('#primary #weight').text(`${weight}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
-                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747)) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#primary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 }
             }
 
@@ -117,16 +112,15 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.secondarySlots) {
-            console.log('received secondary data');
-            var clearedRecent = false;
+            // var clearedRecent = false;
             $.each(event.data.secondarySlots, function(slotId, Slot) {
 
-                if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
-                    clearedRecent = true;
-                    for (var i = 1; i < 16; i++) {
-                        delete secondaryItemList[1];
-                    }
-                }
+                // if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
+                //     clearedRecent = true;
+                //     for (var i = 1; i < 16; i++) {
+                //         delete secondaryItemList[1];
+                //     }
+                // }
 
                 if (Slot[2] > 0) {
                     secondaryItemList[slotId] = Slot;
@@ -143,14 +137,14 @@ window.addEventListener("message", function(event) {
                 if (maxWeight != undefined) {
                     $('#secondary #weight').text(`${weight}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
-                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 } else {
                     var oldText = $('#primary #weight').text();
                     maxWeight = oldText.split('/')[1];
                     maxWeight = maxWeight.replace('kg', '');
                     $('#secondary #weight').text(`${weight}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
-                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, rgba(97, 201, 102, 0.747)) ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
+                    $('#secondary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 }
             }
 
@@ -370,7 +364,7 @@ $(document).ready(function() {
 
     });
 
-    $('.hotbar .slot').droppable({
+    $('.hotbar .slot').not('#unarmed').droppable({
         tolerance: 'pointer',
         hoverClass: 'ab',
         accept: function(e) {
@@ -477,12 +471,12 @@ function slotsAsFakeDroppable() {
 function drawHotbar() {
     $(".hotbar").css('opacity', '1');
 
-    $(`#primary .hotbar .slot`).children().not('.number').remove();
-
     for (var slotId = 129; slotId <= 132; slotId++) {
         var Slot = primaryItemList[slotId];
-        if (Slot != undefined && Slot != null) {
 
+        $(`#primary .hotbar #${slotId}`).children().filter(":not(.number)").remove();
+
+        if (Slot != undefined) {
             var itemId = Slot[1];
             // var itemAmount = Slot[2];
             var ammoInClip = Slot[3];
@@ -495,17 +489,35 @@ function drawHotbar() {
             // $(`#primary .hotbar #${slotId}`).html('');
 
             $(`#primary .hotbar #${slotId}`).removeClass('empty');
-            $(`#primary .hotbar #${slotId}`).append(`
-                <img src="images/items/${itemId}.png">
-                <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
-            `);
+
+            if (itemId != 'lasso') {
+                $(`#primary .hotbar #${slotId}`).append(`
+                    <img src="images/items/${itemId}.png">
+                    <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
+                `);
+            } else {
+                $(`#primary .hotbar #${slotId}`).append(`
+                    <img src="images/items/${itemId}.png">
+                `);
+            }
 
             var element = $(`#primary .hotbar #${slotId}`);
             elementAsDraggable(element, itemId, itemName, itemDescription);
         } else {
-            $(`#primary .hotbar #${slotId}`).html("");
             $(`#primary .hotbar #${slotId}`).addClass("empty");
+            $(`#primary .hotbar #${slotId}`).removeAttr('itemId');
         }
+    }
+
+    if ($('.hotbar-slot-selected').length > 0) {
+        let element = $(`.hotbar-slot-selected`);
+        // let selectedSlotId = $(element).attr('id');
+
+        let itemId = $(element).attr('itemId');
+
+        $.post('http://frp_inventory/interactWithHotbarSlot', JSON.stringify({
+            itemId: itemId,
+        }));
     }
 }
 
@@ -532,19 +544,27 @@ function drawPrimary() {
 
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
                 if (itemStackSize != -1) {
-                    $(`#primary-inventory .slot-container`).append(`
+                    if (itemId != "lasso") {
+                        $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
                         <img src="images/items/${itemId}.png">
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                    } else {
+                        $(`#primary-inventory .slot-container`).append(`
+                        <div class="slot" id="${slotId}" onclick="select(this)">
+                            <img src="images/items/${itemId}.png">
+                        </div>
+                    `);
+                    }
                 } else {
                     $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
-                        <div class="counter">${itemAmount}</div>
-                    </div>
-                `);
+                            <div class="slot" id="${slotId}" onclick="select(this)">
+                                <img src="images/items/${itemId}.png">
+                                <div class="counter">${itemAmount}</div>
+                            </div>
+                        `);
                 }
             } else {
                 $(`#primary-inventory .slot-container`).append(`
@@ -561,7 +581,6 @@ function drawPrimary() {
                 elementAsDraggable(element, itemId, itemName, itemDescription);
 
                 $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
-                    console.log('double click');
                     let selfSlot = $(this).attr('id');
                     $.post('http://frp_inventory/use', JSON.stringify({
                         slotId: selfSlot,
@@ -595,8 +614,11 @@ function drawPrimary() {
         }
     });
 
-    $('#primary #currency1').text(currency1 / 100);
-    $('#primary #currency2').text(currency2 / 100);
+    currency1 = currency1 / 100;
+    currency2 = currency2 / 100;
+
+    $('#primary #currency1').text(currency1.toFixed(2));
+    $('#primary #currency2').text(currency2.toFixed(2));
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
@@ -659,19 +681,27 @@ function drawSecondary() {
 
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
                 if (itemStackSize != -1) {
-                    $(`#secondary-inventory .slot-container`).append(`
+                    if (itemId != "lasso") {
+                        $(`#secondary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
                         <img src="images/items/${itemId}.png">
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                    } else {
+                        $(`#secondary-inventory .slot-container`).append(`
+                        <div class="slot" id="${slotId}" onclick="select(this)">
+                            <img src="images/items/${itemId}.png">
+                        </div>
+                    `);
+                    }
                 } else {
                     $(`#secondary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
-                        <div class="counter">${itemAmount}</div>
-                    </div>
-                `);
+                        <div class="slot" id="${slotId}" onclick="select(this)">
+                            <img src="images/items/${itemId}.png">
+                            <div class="counter">${itemAmount}</div>
+                        </div>
+                    `);
                 }
             } else {
                 $(`#secondary-inventory .slot-container`).append(`
@@ -714,8 +744,11 @@ function drawSecondary() {
         }
     });
 
-    $('#secondary #currency1').text(currency1 / 100);
-    $('#secondary #currency2').text(currency2 / 100);
+    currency1 = currency1 / 100;
+    currency2 = currency2 / 100;
+
+    $('#secondary #currency1').text(currency1.toFixed(2));
+    $('#secondary #currency2').text(currency2.toFixed(2));
 
     if (secondaryCategoriesIndex != 1) {
         $(`#secondary-inventory .slot-container`).children().droppable({
@@ -741,7 +774,6 @@ function drawSecondary() {
 
 
                 if ($(ui.draggable).parent().parent().attr('id') == 'primary-inventory') {
-                    console.log('droppable is primary');
                     $.post('http://frp_inventory/moveSlotToSecondary', JSON.stringify({
                         slotId: draggableSlot,
                         itemAmount: itemAmount,
@@ -785,8 +817,6 @@ function unSelect(element) {
 }
 
 function closeInventory() {
-    primaryItemList = [];
-    secondaryItemList = [];
     $('.selected').removeClass('selected');
     $("#secondary").hide();
     $.post("http://frp_inventory/NUIFocusOff", JSON.stringify({}));
