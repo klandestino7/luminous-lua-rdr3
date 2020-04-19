@@ -103,6 +103,10 @@ function API.Character(id, charName, level, xp, groups, inventory)
         return self:getData(self.id, "charTable", "model")
     end
 
+    self.getSkin = function()
+        return self:getData(self.id, "SkinMdf", nil)
+    end
+
     self.getCharTable = function()
         return self:getData(self.id, "charTable", nil)
     end

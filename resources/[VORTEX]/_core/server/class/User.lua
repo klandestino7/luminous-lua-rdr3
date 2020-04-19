@@ -170,7 +170,7 @@ function API.User(source, id, ipAddress)
         local Character = self:getCharacter()
 
         local character_model = Character:getModel()
-        -- local character_skin = Character:getSkin()
+        local character_skin = Character:getSkin()
         local character_clothing = Character:getClothes()
         local character_lastposition = json.decode(Character:getData("charTable", "position")) or json.encode({33.08, 32.80, 101.56})
 

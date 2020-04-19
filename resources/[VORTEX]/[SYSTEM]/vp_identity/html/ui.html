@@ -6,22 +6,21 @@
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,thin,italic,mediumitalic,bold"
 		title="roboto">
-	<link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet">
-	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>	
+	<script src="https://kit.fontawesome.com/eb73bbb7e4.js" crossorigin="anonymous"></script>
 	<script src="js/jquery.js" type="text/javascript"></script>
 </head>
 
 <body id="body">
-	<div id="logo" style="display: none;"></div>
-	<script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
-	<script src="js/jquery.jcarousel.pack.js" type="text/javascript"></script>
-	<script src="js/jquery-func.js" type="text/javascript"></script>
-	<script src="js/listener.js" type="text/javascript"></script>
-	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
-	<div id="main">
+	<div class="contain">		
+		<div id="head">
+			<div class="header-text">   PERSONAGENS</div>
+			<div id="main">
+			</div>
+			<div class='line'></div>
+		</div>
 	</div>
-	<div id="creatorcontain" style="display:none;">
-	</div>
+
 	<script>
 		window.addEventListener('message', (event) => {
 			if (event.data.type == 1){
@@ -33,9 +32,8 @@
 		var body = document.getElementById('body');
 		var main = document.getElementById('main');
 		function loadCharacters(list) {
-			document.getElementById("body").style.display = "block";
-			document.getElementById("logo").style.display = "block";
-			main.style.visibility = 'visible';
+			$("body").slideDown();			
+			$(".contain").slideDown();
 			if (list != undefined) {
 				main.innerHTML = "";
 				var free = list.length;
@@ -47,25 +45,27 @@
 						set = true;
 						free = i;
 					}
-					main.innerHTML += '<div class="char"><header><h2>Personagem</h2></header><br/><div class="linehead"></div><div class="nometitle">Nome</div><div class="fname">' + char.characterName + '</div><div class="linehead"></div>' +
-							'<button class="create" onclick="select(' + chid + ')">Selecionar</button><br/><button class="delete" onclick="delet(' + chid + ')">Deletar Personagem</button></div></div>';
-				}
+					main.innerHTML += '<div class="char"><div class="content"><div class="fname">' + char.characterName + '</div><div class="job">' + char.characterJob + '</div><div class="money">R$' + char.getMoney + '</div>'  +
+							'</div><div class="buttons"><div class="b1"><button class="create" onclick="select(' + chid + ')"><i class="fas fa-play"></i><span class="name" style="padding-left: 0.2vw;"> Play</span></button></div><div class="b2"><button class="delete" onclick="delet(' + chid + ')"><i class="fas fa-minus-square"></i><span class="name" style="padding-left: 0.2vw;"> Deletar</span></button></div></div></div></div>';
+												
+					}
+
 				if (list.length < 2) {
-					main.innerHTML += '<div class="char"><header><h2 style="font-size:30px;">Criar Personagem</h2></header> <button class="createnew" onclick="createNewCharacter()">CRIAR</button></div>'
+					main.innerHTML += '<button class="createnew" onclick="createNewCharacter()">CRIAR UM NOVO PERSONAGEM</button>'
 				}
 
 			} else {
-				main.innerHTML = '<div class="char"><div class="ctext">Criar personagem</div> <button class="createnew" onclick="createNewCharacter()">CRIAR</button></div>'
+				main.innerHTML = '<button class="createnew" onclick="createNewCharacter()">CRIAR UM NOVO PERSONAGEM</button>'
 			}
 		}
 
 		function createNewCharacter() {
-			document.getElementById("body").style.display = "none";
+			$("body").slideUp();
 			$.post('http:/vp_identity/createCharacter', JSON.stringify({}));
 		}
 
-		function select(id) {
-			document.getElementById("body").style.display = "none";
+		function select(id) {			
+			$("body").slideUp();
 			$.post('http:/vp_identity/selectCharacter', JSON.stringify(id));
 		}
 		

@@ -6,11 +6,10 @@ function cAPI.Initialize(model, skin, clothing, lastPosition)
     end
 
     -- local camera = cAPI.SkyCameraAtCoords(decodedLastPosition)
-    print(model, skin, clothing, lastPosition)
     cAPI.SetModel(model)
-    -- cAPI.SetSkin(skin)
+    cAPI.SetSkin(skin)
     cAPI.replaceWeapons({})
-  --  cAPI.SetClothing(clothing)
+    cAPI.SetCloth(clothing)
     Citizen.CreateThread(
         function()
             cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)

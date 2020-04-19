@@ -44,7 +44,7 @@ Citizen.CreateThread( function()
 		m = math.floor( (secondOfDay - (h * 3600)) / 60 )
 		s = secondOfDay - (h * 3600) - (m * 60)
         secondOfDay = (h * 3600) + (m * 60) + s
-        NetworkClockTimeOverride( math.floor( secondOfDay / 3600 ), math.floor( (secondOfDay - (h * 3600)) / 60 ), secondOfDay - (math.floor( secondOfDay / 3600 ) * 3600) - (math.floor( (secondOfDay - (h * 3600)) / 60 ) * 60), 100, true )
+        NetworkClockTimeOverride( math.floor( secondOfDay / 3600 ), math.floor( (secondOfDay - (h * 3600)) / 60 ), secondOfDay - (math.floor( secondOfDay / 3600 ) * 3600) - (math.floor( (secondOfDay - (h * 3600)) / 60 ) * 60), 300, true )
 
     end
 end)
