@@ -1,6 +1,7 @@
 function cAPI.SetModel(hash)
     cAPI.RequestModel(hash)
 
+    Wait(500)
     SetPlayerModel(PlayerId(), hash)
 
     -- SetPedDefaultComponentVariation(PlayerPedId(), true)

@@ -54,7 +54,7 @@ files {
 	'lib/Tunnel.lua',
 	'lib/Proxy.lua',
 	'lib/Tools.lua',
-	'lib/warmanu.lua',
+	'lib/warmenu.lua',
 	'html/*',
 	'html/img/*',
 	'html/fonts/*',

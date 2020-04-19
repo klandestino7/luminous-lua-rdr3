@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/lib/jquery/3.4.1/jquery.min.js"></script>
+    <script src="jquery.js"></script>
     <script src="https://kit.fontawesome.com/eb73bbb7e4.js" crossorigin="anonymous"></script>
 
 </head>
@@ -68,7 +68,7 @@
         if (e.key === "Escape") {
             $(".items").empty();
             $(".container").fadeOut(100);
-            $.post('http://frp_weaponshop/focusOff');
+            $.post('http://vp_weaponshop/focusOff');
         }
     });
     </script>

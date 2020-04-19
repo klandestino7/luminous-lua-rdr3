@@ -33,7 +33,6 @@ while true do
     Citizen.Wait(0)
     local coords = GetEntityCoords(PlayerPedId())
     for _, ped in pairs(Config.PedAcougue) do
-        print('lop')
         if pedsSpawned == nil then
             local model = GetHashKey('U_M_M_VALBUTCHER_01')
             RequestModel(model)

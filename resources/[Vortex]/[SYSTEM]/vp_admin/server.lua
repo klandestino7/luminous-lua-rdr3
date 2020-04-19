@@ -202,7 +202,7 @@ RegisterCommand(
         local Character = User:getCharacter()
 
         if Character:hasGroup("admin") then
-            cAPI._setModel(source, args[1])
+            cAPI.SetModel(source, args[1])
         end
     end
 )

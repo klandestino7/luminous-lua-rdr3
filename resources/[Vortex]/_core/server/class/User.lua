@@ -174,7 +174,7 @@ function API.User(source, id, ipAddress)
         local character_clothing = Character:getClothes()
         local character_lastposition = json.decode(Character:getData("charTable", "position")) or json.encode({33.08, 32.80, 101.56})
 
-        print(character_model, character_skin, character_clothing, character_lastposition)
+     --   print(character_model, character_skin, character_clothing, character_lastposition)
 
         cAPI.Initialize(self:getSource(), character_model, character_skin, character_clothing, character_lastposition)
         -- cAPI.CWanted(Character:getWanted())
