@@ -1,5 +1,4 @@
 function cAPI.Initialize(model, skin, clothing, lastPosition)
-    print("initialize")
     local decodedLastPosition = json.decode(lastPosition)
 
     if decodedLastPosition.x ~= nil then
@@ -12,7 +11,6 @@ function cAPI.Initialize(model, skin, clothing, lastPosition)
     cAPI.SetClothing(clothing)
     Citizen.CreateThread(
         function()
-            -- Citizen.Wait(10000)
             cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
         end
     )

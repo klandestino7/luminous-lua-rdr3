@@ -50,7 +50,6 @@ end
 -- end
 
 function cAPI.PlaySkyCameraAnimationAtCoords(coords)
-	print('playskycamera')
 	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
 	PointCamAtCoord(cam, coords[1], coords[2], coords[3] + 200)
 	SetCamActive(cam, true)
