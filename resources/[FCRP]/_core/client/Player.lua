@@ -1,12 +1,21 @@
 function cAPI.Initialize(model, skin, clothing, lastPosition)
+    print("initialize")
     local decodedLastPosition = json.decode(lastPosition)
 
-    local camera = cAPI.SkyCameraAtCoords(decodedLastPosition)
+    if decodedLastPosition.x ~= nil then
+        decodedLastPosition = {decodedLastPosition.x, decodedLastPosition.y, decodedLastPosition.z}
+    end
+
+    -- local camera = cAPI.SkyCameraAtCoords(decodedLastPosition)
     cAPI.SetModel(model)
-    cAPI.SetHeadData(skin)
+    cAPI.replaceWeapons({})
     cAPI.SetClothing(clothing)
-    cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition, camera)
+    Citizen.CreateThread(
+        function()
+            -- Citizen.Wait(10000)
+            cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
+        end
+    )
 
     TriggerEvent("ToogleBackCharacter")
 end
-

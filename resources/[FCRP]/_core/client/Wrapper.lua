@@ -38,40 +38,33 @@ function cAPI.OutFade(timer)
 end
 
 -- {x, y, z}
-function cAPI.SkyCameraAtCoords(coords)
-	local cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1] + 200, coords[2] + 200, coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+-- function cAPI.SkyCameraAtCoords(coords)
+-- 	local cam =  CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+-- 	PointCamAtCoord(cam, coords[1], coords[2], coords[3] + 200)
+-- 	SetCamActive(cam, true)
+
+-- 	cAPI.EndFade(500)
+
+-- 	RenderScriptCams(true, false, 1, true, true)
+-- 	return cam
+-- end
+
+function cAPI.PlaySkyCameraAnimationAtCoords(coords)
+	print('playskycamera')
+	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
 	PointCamAtCoord(cam, coords[1], coords[2], coords[3] + 200)
 	SetCamActive(cam, true)
-
-	cAPI.OutFade(500)
-
-	RenderScriptCams(true, false, 1, true, true)
-	return cam
-end
-
-function cAPI.PlaySkyCameraAnimationAtCoords(coords, cam)
-	if cam == nil then
-		cam = cAPI.SkyCameraAtCoords(coords)
-	end
-
-	local cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	cAPI.EndFade(500)
+	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
 	PointCamAtCoord(cam3, coords[1], coords[2], coords[3] + 200)
 	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
-
 	Citizen.Wait(3900)
-
-	local cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
 	PointCamAtCoord(cam2, coords[1], coords[2], coords[3] + 2)
 	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
 	RenderScriptCams(false, true, 500, true, true)
 	SetEntityCoords(PlayerPedId(), coords[1], coords[2], coords[3] + 0.5)
-
-	Citizen.Wait(1500)
-
+	Citizen.Wait(500)
+	Citizen.Wait(3000)
 	DestroyAllCams(true)
-
-	Citizen.Wait(800)
-
-	DisplayHud(true)
-	DisplayRadar(true)
 end

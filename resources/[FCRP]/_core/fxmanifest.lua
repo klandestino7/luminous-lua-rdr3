@@ -8,13 +8,14 @@ client_scripts {
 	'config/Clothes.lua',
 	'config/Items.lua',
 	'config/CraftableItems.lua',
-	'config/DefaultClothes.lua',
-	--'config/Weapons.lua',
 	---------------------
 	'client/_Main.lua',
 	'client/Horse.lua',
 	'client/BasicNeeds.lua',
 	'client/LoadIPL.lua',
+	'client/Ped.lua',
+	'client/Player.lua',
+	'client/Wrapper.lua'
  	-- 'client/DebuggingControls.lua'
 }
 

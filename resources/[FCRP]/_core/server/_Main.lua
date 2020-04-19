@@ -105,16 +105,3 @@ end
 function API.kick(source, reason)
     API.dropPlayer(source, reason)
 end
-
-
-RegisterCommand('loadskin', function(source)
-	local _source = source
-	local User = API.getUserFromSource(_source)
-    local Character = User:getCharacter()	    
-    
-        cAPI.setModel(User:getSource(), json.decode(Character:getModel()))
-        Wait(1000)
-        cAPI.setDados(User:getSource(), Character:getCharTable())
-        Wait(500)                
-        cAPI.setClothes(User:getSource(), Character:getClothes())
-end)

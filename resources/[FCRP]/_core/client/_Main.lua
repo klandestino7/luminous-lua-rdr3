@@ -30,13 +30,13 @@ AddEventHandler(
 	end
 )
 
-Citizen.CreateThread(
-	function()
-		SetMinimapHideFow(true)
-		Citizen.InvokeNative(0x63E7279D04160477, true)
-		Citizen.InvokeNative("0x1E5B70E53DB661E5", 1122662550, 347053089, 0, "Faroeste", "Roleplay", "Bem-vindo!")
-	end
-)
+-- Citizen.CreateThread(
+-- 	function()
+-- 		SetMinimapHideFow(true)
+-- 		Citizen.InvokeNative(0x63E7279D04160477, true)
+-- 		Citizen.InvokeNative("0x1E5B70E53DB661E5", 1122662550, 347053089, 0, "Faroeste", "Roleplay", "Bem-vindo!")
+-- 	end
+-- )
 
 
 
@@ -91,14 +91,6 @@ end
 
 function cAPI.teleport(x, y, z, spawn)
 	SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
-end
-
-function cAPI.teleportSpawn(coordinate)
-	--local coords = {x = 0, y = 0, z =0}
-	local coords = json.decode(coordinate)
-
-	cAPI.CameraWithSpawnEffect(coords)
-	SetEntityCoords(PlayerPedId(), coords.x + 0.0001, coords.y + 0.0001, coords.z + 0.0001, 1, 0, 0, 1)
 end
 
 function cAPI.GetCurrentTownName()
@@ -164,88 +156,6 @@ end
 function cAPI.getSpeed()
 	local vx, vy, vz = table.unpack(GetEntityVelocity(PlayerPedId()))
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
-end
-
-function cAPI.setModel(modelo)    
-	Citizen.CreateThread(function()
-		local model = GetHashKey(modelo)		
-		RequestModel(model)
-        while not HasModelLoaded(model) do
-			Wait(100)				
-		end
-        SetPlayerModel(PlayerId(), model, true)
-		Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
-    end)
-    return true    
-end
-
-
--- function cAPI.setModel(modelo)
--- 	SetEntityAlpha(PlayerPedId(), 0)
--- 	local model = GetHashKey(modelo)
--- 	RequestModel(model)
--- 	cAPI.LoadModel(model)
--- 	Wait(200)
--- 	SetPlayerModel(PlayerId(), model, true)       
--- 	Wait(100)     
--- 	Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
--- 	SetModelAsNoLongerNeeded(model)
--- 	SetEntityAlpha(PlayerPedId(), 255)
--- 	return true
--- end
-
-function cAPI.removeClothes(hash)
-	local ped = PlayerPedId()
-	Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), hash, 0)
-	Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0)
-	return true
-end
-
-function cAPI.setClothes(hash)
-	local Clothe = json.decode(hash)
-	if hash ~= "{}" then
-		--for _, index in pairs(Clothes) do
-			for k, v in pairs(Clothe) do	
-				--if cAPI.removeClothes(Clothe[_].hash) then
-			    local model2 = GetHashKey(tonumber(v))
-			    if not HasModelLoaded(model2) then
-			        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
-			    end
-			    Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),  tonumber(v), true, true, true)
-				--end
-			end
-		--end
-	else
-		for k, v in pairs(DefaultClothes) do
-			if GetEntityModel(PlayerPedId()) == GetHashKey(k) then
-				for _, index in pairs(v) do
-					for value, parameter in pairs(Clothes) do
-						if Clothes[value].name == _ then
-							if cAPI.removeClothes(Clothes[_].hash) then
-								local modelHash = tonumber(v)
-								cAPI.LoadModel(modelHash)
-								Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), index, true, true, true)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	return true
-end
-
-function cAPI.setDados(hash)
-	local Dados = json.decode(hash)
-	if Dados then
-		local ArrayDados = { 
-			Dados.head, Dados.hair, Dados.torso, Dados.legs, Dados.eyes, Dados.bodySize, Dados.teeth, Dados.mustache
-		}
-		for _,index in pairs(ArrayDados) do
-			Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(index), true, true, true)
-		end
-		return true
-	end
 end
 
 function cAPI.CWanted(reward)
