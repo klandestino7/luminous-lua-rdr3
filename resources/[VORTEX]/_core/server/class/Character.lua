@@ -156,27 +156,27 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.setJail = function(this, cid, value)
-        API_Database.execute('FCRP/SetCJail', {jail_time = value, charid = cid})
-    end    
+        API_Database.execute("FCRP/SetCJail", {jail_time = value, charid = cid})
+    end
 
     self.updJail = function(this, cid, value)
-        API_Database.execute('FCRP/UpdCJail', {jail_time = value, charid = cid})        
+        API_Database.execute("FCRP/UpdCJail", {jail_time = value, charid = cid})
     end
 
     self.getJail = function(this, cid)
         if key == nil then
-            key = 'all'
+            key = "all"
         end
-        local rows = API_Database.query('FCRP/GetCJail', {charid = cid})
+        local rows = API_Database.query("FCRP/GetCJail", {charid = cid})
         if #rows > 0 then
             return rows
         else
-            return ''
+            return ""
         end
     end
 
     self.remJail = function(this, cid)
-        local rows = API_Database.query('FCRP/RemCJail', {charid = cid})
+        local rows = API_Database.query("FCRP/RemCJail", {charid = cid})
         if #rows > 0 then
             return true
         end
@@ -184,11 +184,11 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.setWanted = function(this, cid, value)
-        API_Database.execute('FCRP/SetCWanted', {wanted = value, charid = cid})
+        API_Database.execute("FCRP/SetCWanted", {wanted = value, charid = cid})
     end
 
     self.getWanted = function(this, cid)
-        local rows = API_Database.query('FCRP/GetCWanted', {user_id = cid})
+        local rows = API_Database.query("FCRP/GetCWanted", {user_id = cid})
         if rows ~= "{}" then
             return rows[1]
         else
@@ -197,9 +197,9 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.updWanted = function(this, cid, value)
-        API_Database.execute('FCRP/GetCWanted', {reward = value, charid = cid})   
+        API_Database.execute("FCRP/GetCWanted", {reward = value, charid = cid})
     end
-    
+
     self.createHorse = function(this, model, name)
         local rows = API_Database.query("FCRP/CreateHorse", {charid = self:getId(), model = model, name = name})
         if #rows > 0 then
@@ -241,7 +241,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
         if #rows > 0 then
             return rows
         else
-            return ''
+            return ""
         end
     end
 
@@ -272,19 +272,14 @@ function API.Character(id, charName, level, xp, groups, inventory)
         self.Inventory:deleteInventory()
     end
 
-    self.savePosition = function(this, source)
-        local x, y, z = API.getPlayerPos(source)
-        local encoded = {
-            tonumber(math.floor(x * 100) / 100),
-            tonumber(math.floor(y * 100) / 100),
-            tonumber(math.floor(z * 100) / 100)
-        }
-        self:setData(self:getId(), "charTable", "position", json.encode(encoded))
+    self.savePosition = function(this, x, y, z)
+        local encoded = json.encode({x, y, z})
+        self:setData(self:getId(), "charTable", "position", encoded)
     end
 
     self.getLastPosition = function(this)
         local lastPositionFromDb = self:getData(self.id, "charTable", "position")
-        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {x = 0, y = 0, z = 0}
+        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb)
     end
 
     self.saveClothes = function()

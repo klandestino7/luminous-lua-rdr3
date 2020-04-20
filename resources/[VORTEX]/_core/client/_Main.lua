@@ -6,6 +6,8 @@ cAPI = {}
 Tunnel.bindInterface("API", cAPI)
 Proxy.addInterface("API", cAPI)
 
+initializedPlayer = false
+
 AddEventHandler(
 	"playerSpawned",
 	function()
@@ -13,12 +15,14 @@ AddEventHandler(
 	end
 )
 
-AddEventHandler('onClientMapStart', function()
-	print('client map initialized')
-    -- exports.spawnmanager:setAutoSpawn(true)
-    -- exports.spawnmanager:forceRespawn()
-end)
-
+AddEventHandler(
+	"onClientMapStart",
+	function()
+		print("client map initialized")
+		-- exports.spawnmanager:setAutoSpawn(true)
+		-- exports.spawnmanager:forceRespawn()
+	end
+)
 
 AddEventHandler(
 	"onResourceStart",
@@ -38,55 +42,63 @@ AddEventHandler(
 -- 	end
 -- )
 
+CreateThread(
+	function()
+		while true do
+			Wait(0)
+			Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
+			NetworkSetFriendlyFireOption(true)
+			SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
 
+			local ped = PlayerPedId()
+			if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+			else
+				SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
+			end
+			if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+			else
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+			end
 
-CreateThread(function()
-    while true do
-		Wait(0)
-		Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
-		NetworkSetFriendlyFireOption(true)
-		SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')	
-		
-		local ped = PlayerPedId()
-        if IsPedOnMount(ped) or IsPedInAnyVehicle(ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-        else
-            SetRelationshipBetweenGroups(5, 'PLAYER', 'PLAYER')
-        end                 
-        if IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1,ped,false) then            
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
-        else
-            SetRelationshipBetweenGroups(1, 'PLAYER', 'PLAYER')
+			DisableControlAction(0, 0x580C4473, true) -- hud disable
+			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
+
+			DisableControlAction(0, 0x41AC83D1, true) -- loot
+			DisableControlAction(0, 0x399C6619, true) -- loot 2
+			-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
+			-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
+			-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
+			DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
+			--	 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda
+			DisableControlAction(0, 0x6E9734E8, true) -- DESATIVAR DESISTIR
+			DisableControlAction(0, 0x295175BF, true) -- DESATIVAR SOLTAR DA CORDA
 		end
-		
-		DisableControlAction(0, 0x580C4473, true) -- hud disable
-		DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
+	end
+)
 
-		DisableControlAction(0, 0x41AC83D1, true) -- loot
-		DisableControlAction(0, 0x399C6619, true) -- loot 2
-		-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
-		-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
-		-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
-		DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
-	--	 DisableControlAction(0, 0xD2CC4644, true) -- soltar corda		
-		DisableControlAction(0, 0x6E9734E8, true) 	-- DESATIVAR DESISTIR
-    	DisableControlAction(0, 0x295175BF, true)   -- DESATIVAR SOLTAR DA CORDA
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        local playerPed = PlayerPedId()
-        if playerPed and playerPed ~= -1 then
-        	TriggerServerEvent('updatePosOnServerForPlayer', { table.unpack(GetEntityCoords(playerPed)) })
-        end
-        Citizen.Wait(5000)
-    end
-end)
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(10000)
+			if initializedPlayer then
+				local playerPed = PlayerPedId()
+				if playerPed and playerPed ~= -1 then
+					local x, y, z = table.unpack(GetEntityCoords(playerPed))
+					x = tonumber(string.format("%.3f", x))
+					y = tonumber(string.format("%.3f", y))
+					z = tonumber(string.format("%.3f", z))
+					TriggerServerEvent("updatePosOnServerForPlayer", x, y, z)
+				end
+			end
+		end
+	end
+)
 
 function cAPI.getPosition()
 	local x, y, z = table.unpack(GetEntityCoords(PlayerPedId(), true))
-	return x,y,z
+	return x, y, z
 end
 
 function cAPI.teleport(x, y, z, spawn)
@@ -94,62 +106,62 @@ function cAPI.teleport(x, y, z, spawn)
 end
 
 function cAPI.GetCurrentTownName()
-    local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
+	local pedCoords = GetEntityCoords(PlayerPedId())
+	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
 
-    if town_hash == GetHashKey("Annesburg") then
-        return "Annesburg"
-    elseif town_hash == GetHashKey("Annesburg") then
-        return "Annesburg"
-    elseif town_hash == GetHashKey("Armadillo") then
-        return "Armadillo"
-    elseif town_hash == GetHashKey("Blackwater") then
-        return "Blackwater"
-    elseif town_hash == GetHashKey("BeechersHope") then
-        return "BeechersHope"
-    elseif town_hash == GetHashKey("Braithwaite") then
-        return "Braithwaite"
-    elseif town_hash == GetHashKey("Butcher") then
-        return "Butcher"
-    elseif town_hash == GetHashKey("Caliga") then
-        return "Caliga"
-    elseif town_hash == GetHashKey("cornwall") then
-        return "Cornwall"
-    elseif town_hash == GetHashKey("Emerald") then
-        return "Emerald"
-    elseif town_hash == GetHashKey("lagras") then
-        return "lagras"
-    elseif town_hash == GetHashKey("Manzanita") then
-        return "Manzanita"
-    elseif town_hash == GetHashKey("Rhodes") then
-        return "Rhodes"
-    elseif town_hash == GetHashKey("Siska") then
-        return "Siska"
-    elseif town_hash == GetHashKey("StDenis") then
-        return "Saint Denis"
-    elseif town_hash == GetHashKey("Strawberry") then
-        return "Strawberry"
-    elseif town_hash == GetHashKey("Tumbleweed") then
-        return "Tumbleweed"
-    elseif town_hash == GetHashKey("valentine") then
-        return "Valentine"
-    elseif town_hash == GetHashKey("VANHORN") then
-        return "Vanhorn"
-    elseif town_hash == GetHashKey("Wallace") then
-        return "Wallace"
-    elseif town_hash == GetHashKey("wapiti") then
-        return "Wapiti"
-    elseif town_hash == GetHashKey("AguasdulcesFarm") then
-        return "Aguasdulces Farm"
-    elseif town_hash == GetHashKey("AguasdulcesRuins") then
-        return "Aguasdulces Ruins"
-    elseif town_hash == GetHashKey("AguasdulcesVilla") then
-        return "Aguasdulces Villa"
-    elseif town_hash == GetHashKey("Manicato") then
-        return "Manicato"
-    elseif town_hash == false then
-        return "Cidade Fantasma"
-    end
+	if town_hash == GetHashKey("Annesburg") then
+		return "Annesburg"
+	elseif town_hash == GetHashKey("Annesburg") then
+		return "Annesburg"
+	elseif town_hash == GetHashKey("Armadillo") then
+		return "Armadillo"
+	elseif town_hash == GetHashKey("Blackwater") then
+		return "Blackwater"
+	elseif town_hash == GetHashKey("BeechersHope") then
+		return "BeechersHope"
+	elseif town_hash == GetHashKey("Braithwaite") then
+		return "Braithwaite"
+	elseif town_hash == GetHashKey("Butcher") then
+		return "Butcher"
+	elseif town_hash == GetHashKey("Caliga") then
+		return "Caliga"
+	elseif town_hash == GetHashKey("cornwall") then
+		return "Cornwall"
+	elseif town_hash == GetHashKey("Emerald") then
+		return "Emerald"
+	elseif town_hash == GetHashKey("lagras") then
+		return "lagras"
+	elseif town_hash == GetHashKey("Manzanita") then
+		return "Manzanita"
+	elseif town_hash == GetHashKey("Rhodes") then
+		return "Rhodes"
+	elseif town_hash == GetHashKey("Siska") then
+		return "Siska"
+	elseif town_hash == GetHashKey("StDenis") then
+		return "Saint Denis"
+	elseif town_hash == GetHashKey("Strawberry") then
+		return "Strawberry"
+	elseif town_hash == GetHashKey("Tumbleweed") then
+		return "Tumbleweed"
+	elseif town_hash == GetHashKey("valentine") then
+		return "Valentine"
+	elseif town_hash == GetHashKey("VANHORN") then
+		return "Vanhorn"
+	elseif town_hash == GetHashKey("Wallace") then
+		return "Wallace"
+	elseif town_hash == GetHashKey("wapiti") then
+		return "Wapiti"
+	elseif town_hash == GetHashKey("AguasdulcesFarm") then
+		return "Aguasdulces Farm"
+	elseif town_hash == GetHashKey("AguasdulcesRuins") then
+		return "Aguasdulces Ruins"
+	elseif town_hash == GetHashKey("AguasdulcesVilla") then
+		return "Aguasdulces Villa"
+	elseif town_hash == GetHashKey("Manicato") then
+		return "Manicato"
+	elseif town_hash == false then
+		return "Cidade Fantasma"
+	end
 end
 
 -- return vx,vy,vz
@@ -184,11 +196,11 @@ end
 function cAPI.GetCoordsFromCam(distance)
 	local rot = GetGameplayCamRot(2)
 	local coord = GetGameplayCamCoord()
-  
+
 	local tZ = rot.z * 0.0174532924
 	local tX = rot.x * 0.0174532924
 	local num = math.abs(math.cos(tX))
-  
+
 	newCoordX = coord.x + (-math.sin(tZ)) * (num + distance)
 	newCoordY = coord.y + (math.cos(tZ)) * (num + distance)
 	newCoordZ = coord.z + (math.sin(tX) * 8.0)
@@ -196,24 +208,22 @@ function cAPI.GetCoordsFromCam(distance)
 end
 
 function cAPI.Target(Distance, Ped)
-  local Entity = nil
-  local camCoords = GetGameplayCamCoord()
-  local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
-  local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
-  local A,B,C,D,Entity = GetShapeTestResult(RayHandle)
-  return Entity, farCoordsX, farCoordsY, farCoordsZ
+	local Entity = nil
+	local camCoords = GetGameplayCamCoord()
+	local farCoordsX, farCoordsY, farCoordsZ = cAPI.GetCoordsFromCam(Distance)
+	local RayHandle = StartShapeTestRay(camCoords.x, camCoords.y, camCoords.z, farCoordsX, farCoordsY, farCoordsZ, -1, Ped, 0)
+	local A, B, C, D, Entity = GetShapeTestResult(RayHandle)
+	return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
-
-
 
 function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
 	local Ent = nil
 	local CoA = GetEntityCoords(Ped, 1)
 	local CoB = GetOffsetFromEntityInWorldCoords(Ped, 0.0, Distance, 0.0)
 	local RayHandle = StartShapeTestRay(CoA.x, CoA.y, CoA.z, CoB.x, CoB.y, CoB.z, -1, Ped, 0)
-	local A,B,C,D,Ent = GetShapeTestResult(RayHandle)
+	local A, B, C, D, Ent = GetShapeTestResult(RayHandle)
 	return Ent
-  end
+end
 
 function cAPI.getNearestPlayers(radius)
 	local r = {}
@@ -259,71 +269,71 @@ function cAPI.getNearestPlayer(radius)
 end
 
 local weaponModels = {
-	'weapon_kit_camera',
-	'WEAPON_KIT_BINOCULARS',
-	'weapon_melee_knife_hunter',
-	'weapon_moonshinejug',
-	'weapon_melee_lantern_electric',
-	'weapon_melee_torch',
-	'weapon_melee_broken_sword',
-	'weapon_fishingrod',
-	'weapon_melee_hatchet',
-	'weapon_melee_cleaver',
-	'weapon_melee_ancient_hatchet',
-	'weapon_melee_hatchet_viking',
-	'weapon_melee_hatchet_hewing',
-	'weapon_melee_hatchet_double_bit',
-	'weapon_melee_hatchet_double_bit_rusted',
-	'weapon_melee_hatchet_hunter',
-	'weapon_melee_hatchet_hunter_rusted',
-	'weapon_melee_knife_john',
-	'weapon_melee_knife',
-	'weapon_melee_knife_jawbone',
-	'weapon_thrown_throwing_knives',
-	'weapon_melee_knife_miner',
-	'weapon_melee_knife_civil_war',
-	'weapon_melee_knife_bear',
-	'weapon_melee_knife_vampire',
-	'weapon_lasso',
-	'weapon_melee_machete',
-	'weapon_thrown_tomahawk',
-	'weapon_thrown_tomahawk_ancient',
-	'weapon_pistol_m1899',
-	'weapon_pistol_mauser',
-	'weapon_pistol_mauser_drunk',
-	'weapon_pistol_semiauto',
-	'weapon_pistol_volcanic',
-	'weapon_repeater_carbine',
-	'weapon_repeater_evans',
-	'weapon_repeater_henry',
-	'weapon_rifle_varmint',
-	'weapon_repeater_winchester',
-	'weapon_revolver_cattleman',
-	'weapon_revolver_cattleman_john',
-	'weapon_revolver_cattleman_mexican',
-	'weapon_revolver_cattleman_pig',
-	'weapon_revolver_doubleaction',
-	'weapon_revolver_doubleaction_exotic',
-	'weapon_revolver_doubleaction_gambler',
-	'weapon_revolver_doubleaction_micah',
-	'weapon_revolver_lemat',
-	'weapon_revolver_schofield',
-	'weapon_revolver_schofield_golden',
-	'weapon_revolver_schofield_calloway',
-	'weapon_rifle_boltaction',
-	'weapon_sniperrifle_carcano',
-	'weapon_sniperrifle_rollingblock',
-	'weapon_sniperrifle_rollingblock_exotic',
-	'weapon_rifle_springfield',
-	'weapon_shotgun_doublebarrel',
-	'weapon_shotgun_doublebarrel_exotic',
-	'weapon_shotgun_pump',
-	'weapon_shotgun_repeating',
-	'weapon_shotgun_sawedoff',
-	'weapon_shotgun_semiauto',
-	'weapon_bow',
-	'weapon_thrown_dynamite',
-	'weapon_thrown_molotov',
+	"weapon_kit_camera",
+	"WEAPON_KIT_BINOCULARS",
+	"weapon_melee_knife_hunter",
+	"weapon_moonshinejug",
+	"weapon_melee_lantern_electric",
+	"weapon_melee_torch",
+	"weapon_melee_broken_sword",
+	"weapon_fishingrod",
+	"weapon_melee_hatchet",
+	"weapon_melee_cleaver",
+	"weapon_melee_ancient_hatchet",
+	"weapon_melee_hatchet_viking",
+	"weapon_melee_hatchet_hewing",
+	"weapon_melee_hatchet_double_bit",
+	"weapon_melee_hatchet_double_bit_rusted",
+	"weapon_melee_hatchet_hunter",
+	"weapon_melee_hatchet_hunter_rusted",
+	"weapon_melee_knife_john",
+	"weapon_melee_knife",
+	"weapon_melee_knife_jawbone",
+	"weapon_thrown_throwing_knives",
+	"weapon_melee_knife_miner",
+	"weapon_melee_knife_civil_war",
+	"weapon_melee_knife_bear",
+	"weapon_melee_knife_vampire",
+	"weapon_lasso",
+	"weapon_melee_machete",
+	"weapon_thrown_tomahawk",
+	"weapon_thrown_tomahawk_ancient",
+	"weapon_pistol_m1899",
+	"weapon_pistol_mauser",
+	"weapon_pistol_mauser_drunk",
+	"weapon_pistol_semiauto",
+	"weapon_pistol_volcanic",
+	"weapon_repeater_carbine",
+	"weapon_repeater_evans",
+	"weapon_repeater_henry",
+	"weapon_rifle_varmint",
+	"weapon_repeater_winchester",
+	"weapon_revolver_cattleman",
+	"weapon_revolver_cattleman_john",
+	"weapon_revolver_cattleman_mexican",
+	"weapon_revolver_cattleman_pig",
+	"weapon_revolver_doubleaction",
+	"weapon_revolver_doubleaction_exotic",
+	"weapon_revolver_doubleaction_gambler",
+	"weapon_revolver_doubleaction_micah",
+	"weapon_revolver_lemat",
+	"weapon_revolver_schofield",
+	"weapon_revolver_schofield_golden",
+	"weapon_revolver_schofield_calloway",
+	"weapon_rifle_boltaction",
+	"weapon_sniperrifle_carcano",
+	"weapon_sniperrifle_rollingblock",
+	"weapon_sniperrifle_rollingblock_exotic",
+	"weapon_rifle_springfield",
+	"weapon_shotgun_doublebarrel",
+	"weapon_shotgun_doublebarrel_exotic",
+	"weapon_shotgun_pump",
+	"weapon_shotgun_repeating",
+	"weapon_shotgun_sawedoff",
+	"weapon_shotgun_semiauto",
+	"weapon_bow",
+	"weapon_thrown_dynamite",
+	"weapon_thrown_molotov"
 }
 
 function cAPI.getWeapons()
@@ -381,27 +391,11 @@ function cAPI.giveWeapons(weapons, clear_before)
 	for weapon, ammo in pairs(weapons) do
 		local hash = GetHashKey(weapon)
 
-		GiveWeaponToPed_2(
-			PlayerPedId(),
-			hash,
-			ammo or 0,
-			false,
-			true,
-			GetWeapontypeGroup(hash),
-			ammo > 0,
-			0.5,
-			1.0,
-			0,
-			true,
-			0,
-			0
-		)
+		GiveWeaponToPed_2(PlayerPedId(), hash, ammo or 0, false, true, GetWeapontypeGroup(hash), ammo > 0, 0.5, 1.0, 0, true, 0, 0)
 		Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), hash, 0, false, true)
 		Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), hash), ammo)
 	end
 end
-
-
 
 function cAPI.setArmour(amount)
 	SetPedArmour(PlayerPedId(), amount)
@@ -621,23 +615,24 @@ function cAPI.playAnim(dict, anim, speed)
 	end
 end
 
-
 function cAPI.createVehicle(Vmodel)
-    local veh = GetHashKey(Vmodel)
-    local ply = GetPlayerPed()
-    local coords = GetEntityCoords(ply)
-    local head = GetEntityHeading(ply)
-    Citizen.CreateThread(function()
-        RequestModel(veh)
-        while not HasModelLoaded(veh) do
-            Wait(1000)
-            print("Loading Model: "..Vmodel.."Loading Hash: "..veh)
-        end
-        if HasModelLoaded(veh) then
-            local car = CreateVehicle(veh,coords.x-2,coords.y,coords.z,head,true,true,false,true)
-            print("Model spawned Succes: "..Vmodel)
-        end
-    end)
+	local veh = GetHashKey(Vmodel)
+	local ply = GetPlayerPed()
+	local coords = GetEntityCoords(ply)
+	local head = GetEntityHeading(ply)
+	Citizen.CreateThread(
+		function()
+			RequestModel(veh)
+			while not HasModelLoaded(veh) do
+				Wait(1000)
+				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
+			end
+			if HasModelLoaded(veh) then
+				local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
+				print("Model spawned Succes: " .. Vmodel)
+			end
+		end
+	)
 end
 
 function cAPI.isPlayingAnimation(dict, anim)
@@ -676,29 +671,29 @@ function cAPI.Temperatura()
 	local _source = source
 	local ent = GetPlayerPed(_source)
 	local pp = GetEntityCoords(ent)
-	   local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))     
+	local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))
 	local vida = GetEntityHealth(PlayerPedId())
 	if vida <= 5 then
-	 -- print('chegou')
+		-- print('chegou')
 	else
-	if temperatura < -5 then
-	  Wait(5000)
-	  	Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Cold_Stamina", 1, -1);
-		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-	  Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)     
-	  print('está muito frio')     
-	else
-		Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Cold_Stamina", 0, 0);
+		if temperatura < -5 then
+			Wait(5000)
+			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 1, -1)
+			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+			Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)
+			print("está muito frio")
+		else
+			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 0, 0)
+		end
+		if temperatura > 40 then
+			Wait(5000)
+			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+			Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)
+			print("está muito calor")
+		end
 	end
-	if temperatura > 40 then 
-	  Wait(5000)
-		local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-		local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-	   Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)  
-	  print('está muito calor')   
-	end
-  end
 end
 
 function cAPI.LoadModel(hash)
@@ -714,56 +709,55 @@ function cAPI.LoadModel(hash)
 	return true
 end
 
-
 function cAPI.varyHealth(variation)
-    local ped = PlayerPedId()
-    local n = math.floor(GetEntityHealth(ped)+variation)
+	local ped = PlayerPedId()
+	local n = math.floor(GetEntityHealth(ped) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, n)
 end
 
 function cAPI.varyStamina(variation)
-    local ped = PlayerPedId()
-    local n = math.floor(GetEntityHealth(ped)+variation)
+	local ped = PlayerPedId()
+	local n = math.floor(GetEntityHealth(ped) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, n)
 end
 
 function cAPI.varyEye(variation)
-    local ped = PlayerPedId()
-    local n = math.floor(GetEntityHealth(ped)+variation)
+	local ped = PlayerPedId()
+	local n = math.floor(GetEntityHealth(ped) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 2, n)
 end
 
 function cAPI.StartFade(timer)
-    DoScreenFadeOut(timer)
-    while IsScreenFadingOut() do
-        Citizen.Wait(1)
-    end
+	DoScreenFadeOut(timer)
+	while IsScreenFadingOut() do
+		Citizen.Wait(1)
+	end
 end
 
 function cAPI.EndFade(timer)
-    ShutdownLoadingScreen()
-    DoScreenFadeIn(timer)
-    while IsScreenFadingIn() do
-        Citizen.Wait(1)
-    end
-end  
+	ShutdownLoadingScreen()
+	DoScreenFadeIn(timer)
+	while IsScreenFadingIn() do
+		Citizen.Wait(1)
+	end
+end
 
 function cAPI.CameraWithSpawnEffect(coords)
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67,374.08,873.24, 300.00,0.00,0.00, 100.00, false, 0) -- CAMERA COORDS
-	PointCamAtCoord(cam, coords.x,coords.y,coords.z+200)
+	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+	PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
 	SetCamActive(cam, true)
 	cAPI.EndFade(500)
 	RenderScriptCams(true, false, 1, true, true)
 	Citizen.Wait(500)
-	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+200, 300.00,0.00,0.00, 100.00, false, 0)
-	PointCamAtCoord(cam3, coords.x,coords.y,coords.z+200)
+	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
 	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
 	Citizen.Wait(3900)
-	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+200, 300.00,0.00,0.00, 100.00, false, 0)
-	PointCamAtCoord(cam2, coords.x,coords.y,coords.z+2)
+	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
 	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
 	RenderScriptCams(false, true, 500, true, true)
-	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z+0.5)
+	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z + 0.5)
 	Citizen.Wait(500)
 	Citizen.Wait(3000)
 	DestroyAllCams(true)

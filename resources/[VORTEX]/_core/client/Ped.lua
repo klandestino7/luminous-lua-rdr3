@@ -1,23 +1,22 @@
-function cAPI.SetModel(hash)    
-	Citizen.CreateThread(function()
-		local model = GetHashKey(hash)		
-		RequestModel(model)
-        while not HasModelLoaded(model) do
-			Wait(100)				
-		end
-        SetPlayerModel(PlayerId(), model, true)
-		Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
-    end)
-    return true    
-end 
-
+function cAPI.SetModel(hash)
+    Citizen.CreateThread(
+        function()
+            local model = GetHashKey(hash)
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Wait(100)
+            end
+            SetPlayerModel(PlayerId(), model, true)
+            Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
+        end
+    )
+    return true
+end
 
 function cAPI.SetSkin(encoded)
-    local decoded = json.decode(encoded)
-    if encoded ~= "{}" then
-        for _, hash in pairs(decoded) do
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
-        end
+    local decoded = json.decode(encoded) or {}
+    for _, hash in pairs(decoded) do
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
     end
 end
 
@@ -60,7 +59,7 @@ local faceFeatures = {
     0xC375,
     0xBB4D,
     0xB0B0,
-    0x5D16,
+    0x5D16
 }
 
 function cAPI.SetFaceFeatures(encoded)
@@ -69,18 +68,17 @@ function cAPI.SetFaceFeatures(encoded)
         for _, values in pairs(decoded) do
             for i = 1, 39 do
                 print(tonumber(hash)[i], values)
-               -- Citizen.InvokeNative(0x5653AB26C82938CF, PlayerPedId(), tonumber(hash)[i], values)                
-             --   Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false) 
-            end        
+                -- Citizen.InvokeNative(0x5653AB26C82938CF, PlayerPedId(), tonumber(hash)[i], values)
+                --   Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false)
+            end
         end
-    end    
+    end
 end
 
-
-function cAPI.SetCloth(hash)    
-    local Clothe = json.decode(hash)    
-	if hash ~= "{}" then
-        for k, v in pairs(Clothe) do		
+function cAPI.SetCloth(hash)
+    local Clothe = json.decode(hash)
+    if hash ~= "{}" then
+        for k, v in pairs(Clothe) do
             local modelHash = tonumber(v)
             cAPI.LoadModel(modelHash)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), modelHash, true, true, true)

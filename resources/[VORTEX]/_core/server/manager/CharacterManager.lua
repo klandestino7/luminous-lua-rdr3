@@ -9,17 +9,26 @@ end
 -- Save Server Position --
 --------------------------
 
-serverPositions	= {}
+-- serverPositions	= {}
 
-RegisterServerEvent('updatePosOnServerForPlayer')
-AddEventHandler('updatePosOnServerForPlayer', function(newpos)
-	serverPositions[source] = newpos
-end)
+RegisterServerEvent("updatePosOnServerForPlayer")
+AddEventHandler(
+    "updatePosOnServerForPlayer",
+    function(x, y, z)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+        if Character ~= nil then
+            Character:savePosition(x, y, z)
+        end
+        -- serverPositions[source] = newpos
+    end
+)
 
-function API.unloadPosForPlayer(source)
-	serverPositions[source] = {0.0,0.0,0.0}
-end
+-- function API.unloadPosForPlayer(source)
+-- 	serverPositions[source] = {0.0,0.0,0.0}
+-- end
 
-function API.getPlayerPos(source)
-    return table.unpack(serverPositions[source])
-end 
+-- function API.getPlayerPos(source)
+--     return table.unpack(serverPositions[source])
+-- end

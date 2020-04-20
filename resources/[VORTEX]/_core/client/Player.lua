@@ -17,4 +17,10 @@ function cAPI.Initialize(model, skin, clothing, lastPosition)
     )
 
     TriggerEvent("ToogleBackCharacter")
+
+    initializedPlayer = true
+end
+
+function cAPI.setAsInitialized(bool)
+    initializedPlayer = bool
 end
