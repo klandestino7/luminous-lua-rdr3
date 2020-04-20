@@ -4,6 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_scripts {
 	'lib/utils.lua',
+	'lib/area.lua',
 	---------------------
 	'config/Clothes.lua',
 	'config/Items.lua',
@@ -15,7 +16,8 @@ client_scripts {
 	'client/LoadIPL.lua',
 	'client/Ped.lua',
 	'client/Player.lua',
-	'client/Wrapper.lua'
+	'client/Wrapper.lua',
+	'client/Area.lua',
  	-- 'client/DebuggingControls.lua'
 }
 
@@ -46,7 +48,9 @@ server_scripts {
 	'server/manager/ItemDataManager.lua',
 	'server/manager/CharacterManager.lua',
 	'server/manager/HorseManager.lua',
-	'server/manager/PosseManager.lua'
+	'server/manager/PosseManager.lua',
+	'server/manager/AreaManager.lua',
+
 }
 
 files {
