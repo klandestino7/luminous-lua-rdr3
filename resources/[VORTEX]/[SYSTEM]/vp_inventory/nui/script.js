@@ -13,6 +13,8 @@ var hotbarSlotSelected = 5;
 
 // Criar uma descrição para os items em _core/config/Items.lua
 
+
+
 window.addEventListener("message", function(event) {
     if (event.data.action == 'hide') {
         $("#primary-inventory").css('opacity', '0');
@@ -25,13 +27,13 @@ window.addEventListener("message", function(event) {
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
             $("#primary-inventory").css('opacity', '1');
-            $("#primary #background-image").css('opacity', '1');
+            $("#primary #background-image").css('opacity', '0.98');
         }
 
         if (event.data.type == 'clearSecondary') {
             secondaryItemList = [];
             $("#secondary").show();
-            $("#secondary #background-image").css('opacity', '1');
+            $("#secondary #background-image").css('opacity', '0.98');
         }
 
         if (event.data.type == 'nextHotbarSlot') {
