@@ -275,9 +275,9 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.savePosition = function(this, source)
         local x, y, z = API.getPlayerPos(source)
         local encoded = {
-            ["x"] = tonumber(math.floor(x * 100) / 100),
-            ["y"] = tonumber(math.floor(y * 100) / 100),
-            ["z"] = tonumber(math.floor(z * 100) / 100)
+            tonumber(math.floor(x * 100) / 100),
+            tonumber(math.floor(y * 100) / 100),
+            tonumber(math.floor(z * 100) / 100)
         }
         self:setData(self:getId(), "charTable", "position", json.encode(encoded))
     end
