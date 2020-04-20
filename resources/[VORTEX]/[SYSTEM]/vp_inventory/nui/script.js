@@ -534,11 +534,13 @@ function drawPrimary() {
         if (Slot !== undefined && Slot !== null) {
             var itemId = Slot[1];
             var itemAmount = Slot[2];
+
             var ammoInClip = Slot[3];
             var ammoInWeapon = Slot[4];
 
             if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
                 itemAmount = itemAmount / 100;
+                itemAmount = itemAmount.toFixed(2);
             }
 
             var itemStackSize = Slot.itemStackSize;
@@ -679,6 +681,7 @@ function drawSecondary() {
 
             if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
                 itemAmount = itemAmount / 100;
+                itemAmount = itemAmount.toFixed(2);
             }
 
             var itemStackSize = Slot.itemStackSize;
