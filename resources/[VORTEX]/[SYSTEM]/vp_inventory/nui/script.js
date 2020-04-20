@@ -522,6 +522,9 @@ function drawHotbar() {
 }
 
 function drawPrimary() {
+    $(`#primary-inventory .description-title`).text('');
+    $(`#primary-inventory .description-description`).text('');
+
     $(`#primary-inventory .slot-container`).html('');
     var money = 0;
 
@@ -660,6 +663,9 @@ function drawPrimary() {
 }
 
 function drawSecondary() {
+    $(`#secondary-inventory .description-title`).text('');
+    $(`#secondary-inventory .description-description`).text('');
+
     $(`#secondary-inventory .slot-container`).html('');
     var money = 0;
 
