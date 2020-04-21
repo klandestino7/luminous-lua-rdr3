@@ -12,7 +12,6 @@ function cAPI.RegisterAreas(areas)
 end
 
 function cAPI.RegisterArea(areaId, ...)
-
     local params = {}
     local vectors = {}
 
@@ -28,6 +27,11 @@ function cAPI.RegisterArea(areaId, ...)
     area.addBulk(table.unpack(vectors))
 
     registeredAreas[areaId] = area
+
+    if areaPlayerIsInside == areaId then
+        areaPlayerIsInside = nil
+    end
+
     return area
 end
 
@@ -39,21 +43,21 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            for areaId, area in pairs(registeredAreas) do
-                if area.isInside() then
-                    -- area.draw()
-                    if areaPlayerIsInside ~= areaId then
+
+            if areaPlayerIsInside ~= nil then
+                local area = registeredAreas[areaPlayerIsInside]
+                if not area.isInside() then
+                    TriggerServerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
+                    TriggerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
+                    areaPlayerIsInside = nil
+                end
+            else
+                for areaId, area in pairs(registeredAreas) do
+                    if area.isInside() then
                         areaPlayerIsInside = areaId
                         TriggerServerEvent("VP:AREA:PlayerEnteredArea", areaId)
                         TriggerEvent("VP:AREA:PlayerEnteredArea", areaId)
-                    end
-                else
-                    if areaPlayerIsInside ~= nil then
-                        if areaPlayerIsInside == areaId then
-                            TriggerServerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
-                            TriggerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
-                            areaPlayerIsInside = nil
-                        end
+                        break
                     end
                 end
             end
