@@ -50,18 +50,18 @@ end
 local function _wall(p1,p1a,p2,p2a,R,G,B,A,compare)
     if A > 0 then
         if not compare then
-            DrawPoly(p1,p1a,p2,R,G,B,A)
-            DrawPoly(p1a,p2a,p2,R,G,B,A)
-            DrawPoly(p2,p2a,p1a,R,G,B,A)
-            DrawPoly(p2,p1a,p1,R,G,B,A)
+            Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p1,p1a,p2,R,G,B,A)
+            Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p1a,p2a,p2,R,G,B,A)
+            Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p2,p2a,p1a,R,G,B,A)
+            Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p2,p1a,p1,R,G,B,A)
         else
             local outerProduct = (compare.x-p1.x)*(p2.y-p1.y) - (compare.y-p1.y)*(p2.x-p1.x)
             if outerProduct <= 0 then
-                DrawPoly(p1,p1a,p2,R,G,B,A)
-                DrawPoly(p1a,p2a,p2,R,G,B,A)
+                Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p1,p1a,p2,R,G,B,A)
+                Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p1a,p2a,p2,R,G,B,A)
             else
-                DrawPoly(p2,p2a,p1a,R,G,B,A)
-                DrawPoly(p2,p1a,p1,R,G,B,A)
+                Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p2,p2a,p1a,R,G,B,A)
+                Citizen.InvokeNative(`DRAW_POLY` & 0xFFFFFFFF, p2,p1a,p1,R,G,B,A)
             end
         end
     end
@@ -143,9 +143,9 @@ local function _draw(area,comparePoint)
                         _wall(point,above,lastPoint,lastAbove,wR,wG,wB,wallAlpha,comparePoint)
                     end
                     if borderAlpha > 0 then
-                        DrawLine(lastPoint,point,bR,bG,bB,borderAlpha)
-                        DrawLine(lastAbove,above,bR,bG,bB,borderAlpha)
-                        DrawLine(point,above,bR,bG,bB,borderAlpha)
+                        Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, lastPoint,point,bR,bG,bB,borderAlpha)
+                        Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, lastAbove,above,bR,bG,bB,borderAlpha)
+                        Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, point,above,bR,bG,bB,borderAlpha)
                     end
                 else
                     firstAbove = above
@@ -185,10 +185,10 @@ local function _draw(area,comparePoint)
                 borderAlpha = math.min(255,borderAlpha)
             end
             if borderAlpha > 0 then
-                DrawLine(lastPoint,firstPoint,bR,bG,bB,borderAlpha)
-                DrawLine(lastAbove,firstAbove,bR,bG,bB,borderAlpha)
-                DrawLine(point,above,bR,bG,bB,borderAlpha)
-                DrawLine(firstPoint,firstAbove,bR,bG,bB,borderAlpha)
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, lastPoint,firstPoint,bR,bG,bB,borderAlpha)
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, lastAbove,firstAbove,bR,bG,bB,borderAlpha)
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, point,above,bR,bG,bB,borderAlpha)
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, firstPoint,firstAbove,bR,bG,bB,borderAlpha)
             end
             if wallAlpha > 0 then
                 _wall(lastPoint,lastAbove,firstPoint,firstAbove,wR,wG,wB,wallAlpha,comparePoint)
@@ -342,153 +342,3 @@ function pArea(spec)
 end
 
 exports('create',pArea)
-
--- if false then -- Change to true for "demo mode"
---     Citizen.CreateThread(function()
-
---         local demoTextBeginY = 0.1
---         local demoTextY = 0.3
---         local demoTextX = 0.5
---         local demoTextSpacing = 0.01
-
---         local function demoText(text)
---             SetTextEntry('STRING')
---             SetTextCentre(true)
---             SetTextOutline()
---             SetTextScale(0.2,0.2)
---             AddTextComponentString(text)
---             DrawText(demoTextX,demoTextY)
---             demoTextY = demoTextY + demoTextSpacing
---         end
-
---         local prison = pArea({
---             fade = 400, -- The alpha value goes from the specified value to zero, where zero is reached when you are this many meters from the center point
---             height = 20, -- Height of the area
---             color = {255,10,10,128},
---             border = {255,0,0,255},
---             wallFade = 20, -- Overrides "fade" (except for the label) to draw the walls when within this number of meters from it. As the name implies, it fades in and out.
---             numbered = true, -- Makes little numbers appear on the "fenceposts" to show which point that "fencepost" represents. Respects fade and wallFade
---             label = 'Bolingbroke Penetentiary', -- Text shown at the center of the area. Respects fade.
---         })
---         prison.addBulk( -- You usually want to add points in bulk!
---             -- These points define the inner fence of Bolingbroke Penitentiary
---             vector3(1809.6550,2611.9644,44.0), -- These points all have the same Z, but they don't need to.
---             vector3(1809.8136,2620.5571,44.0), -- Just keep in mind that the floor will always be the lowest Z
---             vector3(1834.8809,2688.9844,44.0), -- and the ceiling will always be the highest Z+height.
---             vector3(1829.8210,2703.4316,44.0),
---             vector3(1776.4961,2746.9063,44.0), -- This is a counter-clockwise walk around the inner perimeter
---             vector3(1762.2723,2752.1399,44.0), -- fence of Bolingbroke. Clockwise or counterclockwise makes no
---             vector3(1662.0980,2748.4910,44.0), -- difference.
---             vector3(1648.5455,2741.4304,44.0),
---             vector3(1584.9486,2679.5676,44.0),
---             vector3(1575.8102,2666.8384,44.0),
---             vector3(1548.0370,2591.4705,44.0),
---             vector3(1547.4382,2576.1729,44.0),
---             vector3(1551.0304,2483.0166,44.0),
---             vector3(1558.5922,2469.4287,44.0),
---             vector3(1652.8062,2410.0327,44.0),
---             vector3(1668.0634,2407.9949,44.0),
---             vector3(1748.8489,2420.0686,44.0),
---             vector3(1762.5363,2426.9331,44.0),
---             vector3(1808.6689,2474.4841,44.0),
---             vector3(1813.4258,2489.0496,44.0),
---             vector3(1806.2424,2535.8501,44.0),
---             vector3(1808.3218,2570.0037,44.0),
---             vector3(1808.4086,2591.5320,44.0),
---             vector3(1819.0066,2591.5283,44.0),
---             vector3(1818.5493,2612.0737,44.0) -- Note:  No trailing comma here!
---         )
---         local parking = pArea() -- Meh, defaults are fine
---         local points = {
---             vector3(1866.7888,2616.8391,44.672),
---             vector3(1873.2416,2616.8735,44.672),
---             vector3(1873.2631,2613.3623,44.672),
---             vector3(1866.8092,2613.3381,44.672),
---         }
---         for i,point in ipairs(points) do
---             parking.addPoint(point) -- You can add points one by one if you want. It's slower.
---         end
-
---         local concave = pArea({
---             color = {255,0,255,60},
---         })
---         concave.addBulk(
---             vector3(1866.8142,2620.3181,44.6720),
---             vector3(1879.6829,2620.4055,44.6720),
---             vector3(1879.6213,2627.4163,44.6720),
---             vector3(1874.1449,2627.3674,44.6720),
---             vector3(1874.5432,2623.8694,44.6720),
---             vector3(1871.7843,2623.8779,44.6720),
---             vector3(1872.1609,2627.3757,44.6720),
---             vector3(1866.7350,2627.3411,44.6720)
---         )
-
---         local oddShape = pArea({
---             color = {255,255,0,60},
---         })
---         oddShape.addBulk(
---             vector3(1866.7300,2630.8433,44.6720),
---             vector3(1879.6132,2630.9250,44.6720),
---             vector3(1866.6542,2641.3596,44.6720),
---             vector3(1879.5546,2641.4207,44.6720)
---         )
-
---         local nonflat = pArea({
---             color = {72,72,200,128},
---             border = {255,255,255,128},
---             height = 3.4,
---         })
---         nonflat.addBulk(
---             vector3(1889.1487,2527.7349,44.7944),
---             vector3(1889.0958,2523.4109,44.7735),
---             vector3(1880.5088,2523.4016,44.7077),
---             vector3(1881.7913,2511.3113,45.6596),
---             vector3(1887.5636,2507.4001,48.0793),
---             vector3(1894.6342,2509.0535,49.4092),
---             vector3(1899.2479,2514.4243,49.1625),
---             vector3(1901.3768,2520.9243,48.3769),
---             vector3(1900.8844,2527.4045,47.0035),
---             vector3(1896.6481,2534.1299,44.8804)
---         )
-
---         while true do
---             demoTextY = demoTextBeginY
---             prison.draw() -- The draw call is relatively heavy, and should only ever be used for debugging purposes!
---             if prison.isInside() then
---                 demoText('Inside prison')
---             else
---                 demoText('Outside prison')
---             end
-
---             parking.draw()
---             if parking.isInside() then
---                 demoText('Inside the rectangle test')
---             else
---                 demoText('Outside the rectangle test')
---             end
-
---             concave.draw()
---             if concave.isInside() then
---                 demoText('Inside the concave test')
---             else
---                 demoText('Outside the concave test')
---             end
-
---             oddShape.draw()
---             if oddShape.isInside() then
---                 demoText('Inside the odd shape test')
---             else
---                 demoText('Outside the odd shape test')
---             end
-
---             nonflat.draw()
---             if nonflat.isInside() then
---                 demoText('Inside non-flat test')
---             else
---                 demoText('Outside non-flat test')
---             end
-
---             Citizen.Wait(0)
---         end
---     end)
--- end

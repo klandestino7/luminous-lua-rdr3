@@ -13,7 +13,7 @@ AddEventHandler(
     "API:playerSpawned",
     function(source, user_id, isFirstSpawn)
         if isFirstSpawn then
-            cAPI.RegisterAreas(registeredAreas)
+            cAPI.RegisterAreas(source, registeredAreas)
         end
     end
 )
