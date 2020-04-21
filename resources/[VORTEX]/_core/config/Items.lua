@@ -1039,21 +1039,21 @@ ItemList = {
     ['money'] = {
         type = 'valuable',
         name = 'Dólar',
-        weight = 0.01,
+        weight = 0.001,
         description = 'Uma nota de valor, pode ser usada para comprar diversos itens. É a moeda da economia.',
         stackSize = -1,
     },
     ['blackmoney'] = {
         type = 'valuable',
         name = 'Dólar Sujo',
-        weight = 0.01,
+        weight = 0.001,
         description = 'Uma nota de dólar falsa, facilmente percebida na luz natural do sol.',
         stackSize = -1,
     },
     ['gold'] = {
         type = 'valuable',
         name = 'Barra de Ouro',
-        weight = 0.7,
+        weight = 0.007,
         description = 'Uma brilhante e cara barra de ouro.',
         stackSize = -1,
     }

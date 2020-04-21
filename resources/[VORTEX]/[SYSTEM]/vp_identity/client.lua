@@ -5,16 +5,16 @@ cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 Identity = {}
 local charT = {}
-
-local choosePed = nil
-
+local DeletePed = false
+local choosePed = {}
+local peds = {}
 RegisterNetEvent("VP:IDENTITY:charList")
 AddEventHandler(
     "VP:IDENTITY:charList",
     function(characters)
         
         cAPI.setAsInitialized(false)
-
+        DeletePed = false
         ShutdownLoadingScreen()
         createCamera()
         SendNUIMessage({type = 2}) -- clear UI
@@ -26,55 +26,75 @@ AddEventHandler(
                 list = characters
             }
         )
-        for i = 0, #characters do
-            local DadosChar = characters[i]
-            if DadosChar ~= nil then
-                charT = {
-                    json.decode(DadosChar.charTable),
-                    json.decode(DadosChar.SkinMdf or '[]'),
-                    json.decode(DadosChar.clothes)
-                }
-                Wait(100)
+      --  for i = 0, #characters do
+            local DadosChar = characters
+
+       -- print(DadosChar[1].charid,)
+            -- if DadosChar ~= nil then
+            --     charT = {
+            --         json.decode(DadosChar.charTable),
+            --         json.decode(DadosChar.SkinMdf),
+            --         DadosChar.clothes,
+            --         DadosChar.charid
+            --     }
+
+         
+                peds = {  
+                   {genrer = json.decode(DadosChar[1].charTable).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = DadosChar[1].SkinMdf, clothes = DadosChar[1].clothes },
+                   {genrer = json.decode(DadosChar[2].charTable).model, x = 1061.10, y = 1591.20,  z = 369.36 - 0.98, h = 320.77, skin = DadosChar[2].SkinMdf, clothes = DadosChar[2].clothes }
+                }  
+
                 createPeds()
-            end
-        end
+                
+            --end
+
+      --  end
+         
     end
 )
 
-function createPeds(ch)
-    --  for _, k in pairs(charT) do
 
-    RequestModel(charT[1].model)
-    while not HasModelLoaded(charT[1].model) do
-        Citizen.Wait(10)
-    end
-
-    choosePed = CreatePed(GetHashKey(charT[1].model), 1063.119140625, 1594.8400878906, 370.02581787109, 333.18, false, 0)
-    Citizen.InvokeNative(0x283978A15512B2FE, choosePed, true)
-    Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed)
-
-    NetworkSetEntityInvisibleToNetwork(choosePed, true)
-    SetVehicleHasBeenOwnedByPlayer(choosePed, true)
-    SetModelAsNoLongerNeeded(choosePed)
-
-    if charT[3] ~= "{}" then
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, tonumber(charT[3]), true, true, true) -- PANTS
-    else
-        if charT.model == "mp_female" then
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0x10F5497A, true, true, true) -- PANTS
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0x14511493, true, true, true) -- COAT
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0xD03D522, true, true, true) -- BOOT
-        else
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0x10051C7, true, true, true) -- PANTS
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0x12E51663, true, true, true) -- COAT
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed, 0x192C2A4B, true, true, true) -- BOOT
+function createPeds()
+    for k, v in pairs(peds) do
+        local waiting = 0
+        local hash = GetHashKey(peds[k].genrer)
+        RequestModel(hash)
+        while not HasModelLoaded(hash) do
+            Citizen.Wait(10)
         end
-    end
+        choosePed[k] = CreatePed(GetHashKey(peds[k].genrer), peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
+        Citizen.InvokeNative(0x283978A15512B2FE, choosePed[k], true)
+        Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
+        NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
+        SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
+        SetModelAsNoLongerNeeded(choosePed[k])
 
-    -- if DeletePed then
-    --     DeleteEntity(choosePed)
-    -- end
-    --  end
+        if peds[k].clothes ~= "{}" then
+            for key, value in pairs(json.decode(peds[k].clothes)) do      
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], tonumber(value), true,true,true)
+            end
+        else   
+            if peds[k].genrer == 'mp_female' then
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x10F5497A,true,true,true) -- PANTS
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x14511493,true,true,true) -- COAT
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0xD03D522,true,true,true) -- BOOT
+            else
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x10051C7,true,true,true) -- PANTS
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x12E51663,true,true,true) -- COAT
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x192C2A4B,true,true,true) -- BOOT
+            end
+        end
+        Citizen.CreateThread(
+            function()
+            while true do
+                Citizen.Wait(100)
+                if DeletePed then
+                    DeleteEntity(choosePed[k])
+                    break
+                end
+            end
+        end)
+    end
 end
 
 RegisterNUICallback(
@@ -93,7 +113,7 @@ RegisterNUICallback(
         TriggerServerEvent("VP:IDENTITY:selectCharacter", id)
         cAPI.StartFade(500)
         Citizen.Wait(500)
-        DeleteEntity(choosePed)
+        DeletePed = true
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
     end
 )
@@ -105,12 +125,17 @@ RegisterNUICallback(
     end
 )
 
+RegisterCommand('Deletarenti', function()
+    print('deletou')
+    DeletePed = true
+end)
+
 function createCamera()
     DisplayHud(false)
     NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
-    SetEntityCoords(PlayerPedId(), 1062.78, 1597.82, 373.29)
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 1062.78, 1597.82, 373.29, 0.00, 0.00, 168.00, 100.00, false, 0) -- CAMERA COORDS
-    PointCamAtCoord(cam, 1062.78, 1597.82, 373.29)
+    SetEntityCoords(PlayerPedId(), 1060.94, 1597.82, 373.29)
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 1062.48, 1592.20, 369.79, -10.00, 0.00, 168.00, 80.00, false, 0) -- CAMERA COORDS
+    PointCamAtCoord(cam, 1062.48, 1592.20, 369.79)
     SetCamActive(cam, true)
     RenderScriptCams(true, false, 1, true, true)
 end
