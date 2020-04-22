@@ -1,6 +1,6 @@
 local registeredAreas = {}
 
-local areaPlayerIsInside
+local areasPlayerIsInside = {}
 
 RegisterNetEvent("VP:AREA:PlayerEnteredArea")
 RegisterNetEvent("VP:AREA:PlayerLeftArea")
@@ -28,36 +28,35 @@ function cAPI.RegisterArea(areaId, ...)
 
     registeredAreas[areaId] = area
 
-    if areaPlayerIsInside == areaId then
-        areaPlayerIsInside = nil
+    if areasPlayerIsInside[areaId] ~= nil then
+        areasPlayerIsInside[areaId] = nil
+        TriggerServerEvent("VP:AREA:PlayerLeftArea", areaId)
+        TriggerEvent("VP:AREA:PlayerLeftArea", areaId)
     end
 
     return area
 end
 
-function cAPI.GetAreaPlayerIsIn()
-    return areaPlayerIsInside
-end
+-- function cAPI.GetAreaPlayerIsIn()
+--     return areaPlayerIsInside
+-- end
 
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(0)
-
-            if areaPlayerIsInside ~= nil then
-                local area = registeredAreas[areaPlayerIsInside]
-                if not area.isInside() then
-                    TriggerServerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
-                    TriggerEvent("VP:AREA:PlayerLeftArea", areaPlayerIsInside)
-                    areaPlayerIsInside = nil
-                end
-            else
-                for areaId, area in pairs(registeredAreas) do
-                    if area.isInside() then
-                        areaPlayerIsInside = areaId
+            Citizen.Wait(100)
+            for areaId, area in pairs(registeredAreas) do
+                if area.isInside() then
+                    if not areasPlayerIsInside[areaId] then
+                        areasPlayerIsInside[areaId] = true
                         TriggerServerEvent("VP:AREA:PlayerEnteredArea", areaId)
                         TriggerEvent("VP:AREA:PlayerEnteredArea", areaId)
-                        break
+                    end
+                else
+                    if areasPlayerIsInside[areaId] then
+                        areasPlayerIsInside[areaId] = nil
+                        TriggerServerEvent("VP:AREA:PlayerLeftArea", areaId)
+                        TriggerEvent("VP:AREA:PlayerLeftArea", areaId)
                     end
                 end
             end
