@@ -10,7 +10,6 @@ RegisterNetEvent("VP:FARM:TryToPlantSeed")
 AddEventHandler(
     "VP:FARM:TryToPlantSeed",
     function(seedTryingToPlant, farmAreaId, spotId)
-        print(seedTryingToPlant, farmAreaId, spotId)
         local _source = source
         if not farmsInfo[farmAreaId] then
             return
@@ -51,9 +50,9 @@ AddEventHandler(
 RegisterNetEvent("VP:FARM:AskForFarmsInfo")
 AddEventHandler(
     "VP:FARM:AskForFarmsInfo",
-    function()
+    function(farmAreaId)
         local _source = source
-        TriggerClientEvent('VP:FARM:SetFarmsInfo', _source, farmsInfo)
+        TriggerClientEvent('VP:FARM:SetFarmsInfo', _source, farmAreaId, farmsInfo[farmAreaId])
     end
 )
 
