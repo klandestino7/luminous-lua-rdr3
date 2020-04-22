@@ -41,45 +41,24 @@ API = Tunnel.getInterface("API")
 -- "CRP_WHEAT_STK_AB_SIM"
 -- }
 
-local farmsRows = {
-    ["tobacco:1"] = {
-        numSpots = 50,
-        type = "tobacco",
-        {
-            vec3(1193.196, -1866.593, 51.696),
-            vec3(1193.505, -1931.186, 50.453)
-        },
-        {
-            vec3(1190.721, -1931.392, 50.299),
-            vec3(1191.124, -1866.991, 51.370)
-        },
-        {
-            vec3(1188.462, -1867.319, 51.172),
-            vec3(1188.750, -1928.589, 49.745)
-        }
-    }
-    -- ['corn'] = {
-    --     numSpots = 50,
-    --     type = 'tobacco',
-    --     {
-    --     }
-    -- }
-}
-
 local spotsData = {}
 
 local registeredFarmAreas = {}
 local spotsToDraw = {}
 local drawnObjects = {}
 
+local computedSpots = {}
+
 local tempPlacementObject
 local tempPlacementSeedType
+local insideFarmAreaId
 
 AddEventHandler(
     "VP:AREA:PlayerEnteredArea",
     function(areaId)
         print("Entrou " .. areaId)
         if areaId == "tobacco:1" or areaId == "tobacco:2" then
+            insideFarmAreaId = areaId
             TriggerServerEvent("VP:FARM:AskForFarmsInfo", areaId)
         end
     end
@@ -90,7 +69,16 @@ AddEventHandler(
     function(areaId)
         print("Saiu " .. areaId)
         if areaId == "tobacco:1" or areaId == "tobacco:2" then
+            insideFarmAreaId = nil
             spotsData[areaId] = nil
+
+            if drawnObjects[areaId] ~= nil then
+                for _, object in pairs(drawnObjects[areaId]) do
+                    SetEntityAsMissionEntity(object, true, true)
+                    DeleteObject(object)
+                end
+                drawnObjects[areaId] = nil
+            end
         end
     end
 )
@@ -100,6 +88,7 @@ AddEventHandler(
     "VP:FARM:SetFarmsInfo",
     function(farmAreaId, info)
         spotsData[farmAreaId] = info
+        renderSpots(farmAreaId)
     end
 )
 
@@ -144,159 +133,136 @@ AddEventHandler(
     end
 )
 
+function renderSpots(areaId)
+    local numSpots = farmsRows[areaId].numSpots
+    local type = getFarmAreaType(areaId)
+
+    local dObjects = drawnObjects[areaId] or {}
+    local newSpots = {}
+
+    if computedSpots[areaId] == nil then
+        local atSpotId = 1
+        for _, v in pairs(farmsRows[areaId]) do
+            if tonumber(_) ~= nil then
+                local a = v[1]
+                local b = v[2]
+
+                local d = math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)) / numSpots
+                local fi = math.atan2(b.y - a.y, b.x - a.x)
+
+                for i = 0, numSpots do
+                    local x = a.x + i * d * math.cos(fi)
+                    local y = a.y + i * d * math.sin(fi)
+                    local _, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, a.z)
+
+                    local vec = vec3(x, y, z)
+
+                    if spotsData[areaId] ~= nil and spotsData[areaId][atSpotId] ~= nil then
+                        local age = spotsData[areaId][atSpotId][1]
+                        local object = CreateObject(getModelFromTypeAndAge(type, age), vec, false, true, false, false, true)
+
+                        dObjects[atSpotId] = object
+                    end
+
+                    newSpots[atSpotId] = vec
+                    atSpotId = atSpotId + 1
+                end
+            end
+        end
+        computedSpots[areaId] = newSpots
+    else
+        newSpots = computedSpots[areaId]
+    end
+
+    -- print("rows: " .. #farmsRows[areaId], "per row: " .. numSpots, "total: " .. #farmsRows[areaId] * numSpots)
+
+    spotsToDraw[areaId] = newSpots
+    drawnObjects[areaId] = dObjects
+end
+
 Citizen.CreateThread(
     function()
         registerFarmAreas()
 
-        while true do
-            Citizen.Wait(1000)
-
-            local ped = PlayerPedId()
-            local pedVector = GetEntityCoords(ped)
-
-            for areaId, area in pairs(registeredFarmAreas) do
-                local distToCenter = #(pedVector - area.center)
-                if distToCenter <= 100 and spotsData ~= nil and spotsData[areaId] then
-                    if spotsToDraw[areaId] == nil then
-                        local numSpots = farmsRows[areaId].numSpots
-                        local type = getFarmAreaType(areaId)
-
-                        local dObjects = drawnObjects[areaId] or {}
-                        local newSpots = {}
-
-                        local atSpotId = 1
-                        for _, v in pairs(farmsRows[areaId]) do
-                            if tonumber(_) ~= nil then
-                                local a = v[1]
-                                local b = v[2]
-
-                                local d = math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)) / numSpots
-                                local fi = math.atan2(b.y - a.y, b.x - a.x)
-
-                                for i = 0, numSpots do
-                                    local x = a.x + i * d * math.cos(fi)
-                                    local y = a.y + i * d * math.sin(fi)
-                                    local _, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, a.z)
-
-                                    local vec = vec3(x, y, z)
-
-                                    if spotsData[areaId][atSpotId] ~= nil then
-                                        local age = spotsData[areaId][atSpotId][1]
-                                        local object = CreateObject(getModelFromTypeAndAge(type, age), vec, false, true, false, false, true)
-
-                                        dObjects[atSpotId] = object
-                                    end
-
-                                    newSpots[atSpotId] = vec
-                                    atSpotId = atSpotId + 1
-                                end
-                            end
-                        end
-
-                        spotsToDraw[areaId] = newSpots
-                        drawnObjects[areaId] = dObjects
-                    end
-                else
-                    if spotsToDraw[areaId] then
-                        spotsToDraw[areaId] = nil
-                    end
-                end
-            end
-
-            for areaId, objects in pairs(drawnObjects) do
-                if spotsToDraw[areaId] == nil then
-                    for _, object in pairs(objects) do
-                        SetEntityAsMissionEntity(object, true, true)
-                        DeleteObject(object)
-                    end
-                    drawnObjects[areaId] = nil
-                end
-            end
-        end
-    end
-)
-
-Citizen.CreateThread(
-    function()
         local aimMaxDistance = 5
-        local upVector = vec3(0, 0, 1.5)
+        local upVector = vec3(0, 0, 0.5)
 
         local aimingAtSpotId
-        local insideFarmAreaId
 
         while true do
             Citizen.Wait(0)
 
             -- if #spotsData > 0 then
-            local ped = PlayerPedId()
+            if insideFarmAreaId ~= nil then
+                local ped = PlayerPedId()
 
-            local pedVector = GetEntityCoords(ped)
+                local pedVector = GetEntityCoords(ped)
 
-            local cameraRotation = GetGameplayCamRot()
-            local cameraCoord = GetGameplayCamCoord()
-            local direction = RotationToDirection(cameraRotation)
-            local aimingAtVector = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
+                local cameraRotation = GetGameplayCamRot()
+                local cameraCoord = GetGameplayCamCoord()
+                local direction = RotationToDirection(cameraRotation)
+                local aimingAtVector = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
-            local rayHandle = StartShapeTestRay(pedVector, aimingAtVector, 1, ped, 0)
-            local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+                local rayHandle = StartShapeTestRay(pedVector, aimingAtVector, 1, ped, 0)
+                local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
-            if hit == 1 then
-                aimingAtVector = endCoords
-            end
+                if hit == 1 then
+                    aimingAtVector = endCoords
+                end
 
-            local placeFakeEntityAt = aimingAtVector
+                local placeFakeEntityAt = aimingAtVector
 
-            insideFarmAreaId = nil
-            aimingAtSpotId = nil
+                aimingAtSpotId = nil
 
-            for areaId, spots in pairs(spotsToDraw) do
-                for spotId, spotVector in pairs(spots) do
-                    local dist = #(aimingAtVector - spotVector)
-                    if dist <= 15.0 then
-                        insideFarmAreaId = areaId
+                for areaId, spots in pairs(spotsToDraw) do
+                    for spotId, spotVector in pairs(spots) do
+                        local dist = #(aimingAtVector - spotVector)
+                        if dist <= 10.0 then
+                            if dist <= 0.5 then
+                                placeFakeEntityAt = spotVector
+                                aimingAtSpotId = spotId
+                            end
 
-                        if dist <= 0.5 then
-                            placeFakeEntityAt = spotVector
-                            aimingAtSpotId = spotId
-                        end
-
-                        if drawnObjects[areaId] == nil or drawnObjects[areaId][spotId] == nil then
-                            Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 75, 213, 147, 255)
-                        else
-                            if drawnObjects[areaId][spotId] ~= nil then
-                                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 227, 60, 4, 255)
+                            if spotsData[areaId] == nil or spotsData[areaId][spotId] == nil then
+                                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 153, 153, 153, 255)
+                            else
+                                -- if spotsData[areaId][spotId] ~= nil then
+                                --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 230, 122, 122, 255)
+                                -- end
                             end
                         end
                     end
                 end
-            end
 
-            if aimingAtSpotId ~= nil then
-                if spotsData[insideFarmAreaId] and spotsData[insideFarmAreaId][aimingAtSpotId] then
-                    local growPercentage = spotsData[insideFarmAreaId][aimingAtSpotId][2]
-                    DisplayText('Crescimento ' .. growPercentage .. '%', 0.5, 0.5)
-                end
-            end
-
-            if tempPlacementObject ~= nil then
-                SetEntityCoords(tempPlacementObject, placeFakeEntityAt, 0, 0, 0, 0)
-            end
-
-            Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, placeFakeEntityAt, 255, 255, 255, 35)
-
-            if tempPlacementObject ~= nil then
-                if IsControlJustPressed(1, 0x07CE1E61) then -- LMB
-                    if aimingAtSpotId ~= nil and (spotsData[insideFarmAreaId] == nil or spotsData[insideFarmAreaId][aimingAtSpotId] == nil )then
-                        TriggerServerEvent("VP:FARM:TryToPlantSeed", tempPlacementSeedType, insideFarmAreaId, aimingAtSpotId)
-                        SetEntityAsMissionEntity(tempPlacementObject, true, true)
-                        DeleteObject(tempPlacementObject)
-                        tempPlacementObject = nil
+                if aimingAtSpotId ~= nil then
+                    if spotsData[insideFarmAreaId] and spotsData[insideFarmAreaId][aimingAtSpotId] then
+                        local growPercentage = spotsData[insideFarmAreaId][aimingAtSpotId][2]
+                        DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
+                    else
+                        Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, placeFakeEntityAt, placeFakeEntityAt + upVector, 252, 180, 131, 255)
                     end
-                else
-                    if IsControlJustPressed(1, 0xF84FA74F) then -- RMB
-                        SetEntityAsMissionEntity(tempPlacementObject, true, true)
-                        DeleteObject(tempPlacementObject)
-                        tempPlacementObject = nil
+                end
+
+                if tempPlacementObject ~= nil then
+                    SetEntityCoords(tempPlacementObject, placeFakeEntityAt, 0, 0, 0, 0)
+                end
+
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, placeFakeEntityAt, 255, 255, 255, 35)
+
+                if tempPlacementObject ~= nil then
+                    if IsControlJustPressed(1, 0x07CE1E61) then -- LMB
+                        if aimingAtSpotId ~= nil and (spotsData[insideFarmAreaId] == nil or spotsData[insideFarmAreaId][aimingAtSpotId] == nil) then
+                            TriggerServerEvent("VP:FARM:TryToPlantSeed", tempPlacementSeedType, insideFarmAreaId, aimingAtSpotId)
+                            SetEntityAsMissionEntity(tempPlacementObject, true, true)
+                            DeleteObject(tempPlacementObject)
+                            tempPlacementObject = nil
+                        end
+                    else
+                        if IsControlJustPressed(1, 0xF84FA74F) then -- RMB
+                            SetEntityAsMissionEntity(tempPlacementObject, true, true)
+                            DeleteObject(tempPlacementObject)
+                            tempPlacementObject = nil
+                        end
                     end
                 end
             end
@@ -349,16 +315,16 @@ function registerFarmAreas()
     registeredFarmAreas["tobacco:2"] = tobbaco2
     registeredFarmAreas["tobacco:3"] = tobbaco3
 
-    Citizen.CreateThread(
-        function()
-            while true do
-                Citizen.Wait(0)
-                tobbaco1.draw()
-                tobbaco2.draw()
-                tobbaco3.draw()
-            end
-        end
-    )
+    -- Citizen.CreateThread(
+    --     function()
+    --         while true do
+    --             Citizen.Wait(0)
+    --             tobbaco1.draw()
+    --             tobbaco2.draw()
+    --             tobbaco3.draw()
+    --         end
+    --     end
+    -- )
 end
 
 function RotationToDirection(rotation)
