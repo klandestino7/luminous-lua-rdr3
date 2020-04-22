@@ -98,3 +98,37 @@ function cAPI.SetCloth(hash)
         end
     end
 end
+
+function cAPI.TaskInteraction(interaction)
+    local ped = PlayerPedId()
+    local hasWeaponInHead = GetCurrentPedWeapon(ped, 0)
+
+    local model_Hash
+    local propname_Hash
+    local propEntity
+    local propId_Hash
+    local itemInteractionState_Hash
+
+    local unk1 = 1 -- 1 or 3
+    local unk2 = 0 -- always
+    local unk3 = -1.0
+
+    if interaction == "boost" then
+        TaskItemInteraction(PlayerPedId(), nil, GetHashKey("USE_TONIC_SATCHEL_UNARMED_QUICK"), 1, 0, 0)
+    end
+
+    if interaction == "wtv" then
+        -- model_Hash = GetHashKey('s_inv_syringe01x')
+        model_Hash = GetHashKey("p_matchstick01x")
+        propName_Hash = -1199896558
+
+        propEntity = CreateObject(model_Hash, GetEntityCoords(ped), false, true, false, false, true)
+
+        propId_Hash = GetHashKey("PrimaryItem")
+        itemInteractionState_Hash = GetHashKey("USE_STIMULANT_INJECTION_QUICK_LEFT_HAND") -- or 0x6AA3DCA2C6F5EB6D
+    end
+
+    if itemInteractionState_Hash ~= nil then
+        TaskItemInteraction_2(ped, propName_Hash, propEntity, propId_Hash, itemInteractionState_Hash, unk1, unk2, unk3)
+    end
+end
