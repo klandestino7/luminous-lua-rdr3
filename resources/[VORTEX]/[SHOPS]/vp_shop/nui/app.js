@@ -25,14 +25,13 @@ window.addEventListener('message', function(event) {
 });
 
 function newShopWindow(shopData) {
-
-
+    // <div class="button active" data-target="all" onclick="tryToChangePage(this)"><span class="helperName"> Todos</span><i class="fas fa-infinity"></i></div>
     $('.container').append(`
         <div class="shop" id="${shopData.name}">
-            <p class="title">❯  ${shopData.name}</p>
+            <p class="title">${shopData.name}</p>
             <div class="menutab">
                 <div class="buttonstab">
-                    <div class="button active" data-target="all" onclick="tryToChangePage(this)"><span class="helperName"> Todos</span><i class="fas fa-infinity"></i></div>
+                    <div class="button active" data-target="all" onclick="tryToChangePage(this)"><img src="assets/type_all.png"/></div>
                 </div>
             </div>
 
@@ -50,7 +49,7 @@ function newShopWindow(shopData) {
 
                 $(`#${shopData.name} .menutab .buttonstab`).append(`
                     <div class="button" data-target="${validSubType}" onclick="tryToChangePage(this)">
-                        <span class="helperName"> ${shopSubType}</span>
+                        <span class="helperName"><img src="assets/type_${shopItemList.icon}.png"/></span>
                     </div>
                 `);
                 $(`#${shopData.name}`).append(`
@@ -60,7 +59,9 @@ function newShopWindow(shopData) {
             }
 
             for (const [index, shopItemData] of Object.entries(shopItemList)) {
-                newShopItem(shopData.name, isNaN(shopSubType) == true ? validSubType : 'all', shopItemData, isNaN(shopSubType));
+                if (!(isNaN(index))) {
+                    newShopItem(shopData.name, isNaN(shopSubType) == true ? validSubType : 'all', shopItemData, isNaN(shopSubType));
+                }
             }
         }
     }
@@ -76,7 +77,7 @@ function newShopItem(shopId, itemClass, shopItemData, appendToAll) {
     if (appendToAll == true) {
         $(`#${shopId} #all`).append(`
         <div class="item">
-            <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
+            <img src="nui://vp_inventory/nui/images/items/${itemId}.png">
             <div class="borderl"></div>
             <div class="label">
                 <p>${itemName}</p>
@@ -97,7 +98,7 @@ function newShopItem(shopId, itemClass, shopItemData, appendToAll) {
 
     $(`#${shopId} #${itemClass}`).append(`
         <div class="item">
-            <img src="nui://fcrp_inventory/html/img/items/${itemId}.png">
+            <img src="nui://vp_inventory/nui/images/items/${itemId}.png">
             <div class="borderl"></div>
             <div class="label">
                 <p>${itemName}</p>
@@ -139,7 +140,7 @@ function tryToChangePage(element) {
         $(`#${shopId} .buttonstab .active`).removeClass('active');
 
         $(element).addClass('active');
-        $(`#${shopId} #${targetPage}`).fadeIn(100);
+        $(`#${shopId} #${targetPage}`).fadeIn(500);
     }
 }
 

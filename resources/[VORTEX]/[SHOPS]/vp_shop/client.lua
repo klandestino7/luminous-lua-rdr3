@@ -12,19 +12,19 @@ local desiredHeading = nil
 
 Citizen.CreateThread(
     function()
-        for shopId, shopLocations in pairs(Config.ShopLocations) do
-            for _, locationData in pairs(shopLocations) do
-                local x, y, z, _ = table.unpack(locationData)
-                local blip = AddBlipForCoord(x, y, z)
-                SetBlipSprite(blip, 110)
-                SetBlipDisplay(blip, 4)
-                SetBlipScale(blip, 0.7)
-                SetBlipAsShortRange(blip, true)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentSubstringPlayerName("map_blip")
-                EndTextCommandSetBlipName(blip)
-            end
-        end
+        -- for shopId, shopLocations in pairs(Config.ShopLocations) do
+        --     for _, locationData in pairs(shopLocations) do
+        --         local x, y, z, _ = table.unpack(locationData)
+        --         local blip = AddBlipForCoord(x, y, z)
+        --         SetBlipSprite(blip, 110)
+        --         SetBlipDisplay(blip, 4)
+        --         SetBlipScale(blip, 0.7)
+        --         SetBlipAsShortRange(blip, true)
+        --         BeginTextCommandSetBlipName("STRING")
+        --         AddTextComponentSubstringPlayerName("map_blip")
+        --         EndTextCommandSetBlipName(blip)
+        --     end
+        -- end
 
         while true do
             Citizen.Wait(1000)
@@ -68,14 +68,14 @@ Citizen.CreateThread(
                         local vec = vec3(x, y, z - 0.97)
                         local dist = #(pCoords - vec)
                         if dist <= 50.0 then
-                            DrawMarker(23, vec, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 0.5, 0, 155, 253, 80, false, true, 2, false, false, false, false)
+                            -- DrawMarker(23, vec, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 0.5, 0, 155, 253, 80, false, true, 2, false, false, false, false)
                             if dist <= 1.5 then
                                 -- if h ~= nil then
                                 -- TaskPedSlideToCoord(ped, x, y, z, h, 1000)
                                 --     TaskAchieveHeading(ped, h, 500)
                                 -- end
 
-                                if IsControlJustPressed(0, 38) then
+                                if IsControlJustPressed(1, 0x07CE1E61) then
                                     if sentFirstData == true then
                                         SendNUIMessage(
                                             {

@@ -5,14 +5,17 @@ Config.ShopDatas = {
 		name = "Ammunation",
 		["Armas"] = {
 			-- Level, Price
-			{"weapon_combatpistol", 1, 50},
+			icon = 'materials',
+			{"bow", 1, 50},
 			{"weapon_assaultrifle", 6, 10}
 		},
 		["Munições"] = {
+			icon = 'materials',
 			-- Level, Price
-			{"ammo_combatpistol", 2, 25}
+			{"ammo_arrow", 2, 25}
 		},
 		["Armas Brancas"] = {
+			icon = 'materials',
 			-- Level, Price
 			{"weapon_knife", 7, 65}
 		}
@@ -36,13 +39,19 @@ Config.ShopDatas = {
 		{
 			{"consumable_vodka", 1, 50}
 		}
+	},
+	{
+		name = 'PlanetaSemente',
+		{
+			{'tobacco_seed', 1, 1}
+		}
 	}
 }
 
 Config.ShopLocations = {
 	-- x, y, z, heading(optional)
 	["Ammunation"] = {
-		{21.92, -1107.15, 29.80, 338.07}
+		{1193.196, -1866.593, 51.696}
 	},
 	["Policia"] = {
 		{452.37, -980.07, 30.69}
@@ -58,6 +67,9 @@ Config.ShopLocations = {
 		{-2540.81, 2313.85, 33.41},
 		{161.41, 6640.7, 31.71},
 		{1729.216, 6414.131, 35.037}
+	},
+	['PlanetaSemente'] = {
+		{1296.121,-1279.396,75.834},
 	}
 	-- ['liquor'] = {
 	-- 	{x = 1135.808,  y = -982.281,  z = 45.415},
