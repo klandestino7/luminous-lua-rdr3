@@ -96,7 +96,7 @@ function triggerUse(User, itemData)
     end
 
     if itemType == "boost" then
-        local var = values.varOnUse
+        local var = itemData.varOnUse
 
         if itemId == "tonic_medicine" or itemId == "tonic" or itemId == "tonic_potent_medicine" then
             cAPI.varyHealth(User:getSource(), var)
@@ -107,13 +107,23 @@ function triggerUse(User, itemData)
             cAPI.varyEye(User:getSource(), var)
         end
 
+        cAPI.TaskInteraction(source, 'boost')
+
         return true
     end
 
     if itemId == "chest_small" then
-        local var = values.varOnUse
+        local var = itemData.varOnUse
 
         TriggerEvent("VP:CHESTS:StartPlayerPlacement", source, var)
+
+        return true
+    end
+
+    if itemId:find('_seed') then
+        TriggerClientEvent('VP:FARM:StartPlacingSeed', source,  itemId:sub(0, itemId:find("_") - 1))
+        User:closeInventory()
+        return false
     end
 
     return false
@@ -121,6 +131,10 @@ end
 
 local melee = {
     "lasso",
+    "melee_lantern_electric",
+    "melee_torch",
+    "melee_broken_sword",
+    "fishingrod",
     "melee_knife_john",
     "melee_knife",
     "melee_knife_bear",
