@@ -213,7 +213,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroup("admin") then
             local x, y, z = cAPI.getPosition(source)
-            API.prompt(source, "Cordenadas:", x .. "," .. y .. "," .. z)
+            API.prompt(source, "Cordenadas:", string.format("%.3f", x) .. "," .. string.format("%.3f", y) .. "," .. string.format("%.3f", z))
         end
     end
 )
