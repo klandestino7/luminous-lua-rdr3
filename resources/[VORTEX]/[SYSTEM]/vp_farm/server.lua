@@ -47,7 +47,10 @@ AddEventHandler(
         -- Age, timesWatered
 
         User:notify("Semente plantada!")
-        TriggerClientEvent("VP:FARM:SetSpot", _source, farmAreaId, slot_id, 0)
+
+        for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+            TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, 0)
+        end
 
         dbAPI.execute("INSERT:crop_insert_slot", {crop_id = farmAreaId, slot_id = slot_id, crop_min_time_water = time_next_water})
     end
@@ -82,7 +85,10 @@ AddEventHandler(
         local time_next_water = os.time() + 2
 
         farmsInfo[farmAreaId][slot_id] = {newgrowth, time_next_water}
-        TriggerClientEvent("VP:FARM:SetSpot", _source, farmAreaId, slot_id, newgrowth)
+
+        for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+            TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, newgrowth)
+        end
 
         dbAPI.execute("UPDATE:crop_update_slot", {crop_id = farmAreaId, slot_id = slot_id, crop_percent_grown = newgrowth, crop_min_time_water = time_next_water})
 
@@ -115,12 +121,15 @@ AddEventHandler(
         end
 
         local Inventory = Character:getInventory()
-        local plantItem = farmAreaId ~= 'sugarcane' and farmAreaId or 'sugar'
-        print(plantItem)
+        local plantItem = farmAreaId ~= "sugarcane" and farmAreaId or "sugar"
 
         if Inventory:addItem(plantItem, 1) then
             farmsInfo[farmAreaId][slot_id] = nil
-            TriggerClientEvent("VP:FARM:SetSpot", _source, farmAreaId, slot_id, nil)
+
+            for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+                TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, nil)
+            end
+
             dbAPI.execute("UPDATE:crop_remove_slot", {crop_id = farmAreaId, slot_id = slot_id})
         else
             User:notify("Inventário cheio!")
@@ -170,6 +179,8 @@ function getFarmAreaMaxAge(farmAreaId)
     -- end
 end
 
-Citizen.CreateThread(function()
-    print(GetHashKey('LOCO_BAIT_BUCKET'))
-end)
+Citizen.CreateThread(
+    function()
+        print(GetHashKey("LOCO_BAIT_BUCKET"))
+    end
+)
