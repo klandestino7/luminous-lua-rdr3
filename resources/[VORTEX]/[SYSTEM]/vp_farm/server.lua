@@ -1,8 +1,8 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
 local farmsInfo = {}
 
@@ -52,7 +52,7 @@ AddEventHandler(
     "VP:FARM:AskForFarmsInfo",
     function(farmAreaId)
         local _source = source
-        TriggerClientEvent('VP:FARM:SetFarmsInfo', _source, farmAreaId, farmsInfo[farmAreaId])
+        TriggerClientEvent("VP:FARM:SetFarmsInfo", _source, farmAreaId, farmsInfo[farmAreaId])
     end
 )
 
@@ -81,7 +81,9 @@ Citizen.CreateThread(
 )
 
 function init()
-    farmsInfo["tobacco:1"] = {
-        [1] = {2, 0}
+    farmsInfo = {
+        ["tobacco:1"] = {},
+        ["tobacco:2"] = {},
+        ["tobacco:3"] = {}
     }
 end

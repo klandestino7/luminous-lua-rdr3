@@ -16,18 +16,17 @@
     font-size: 14px;
     font-weight: 500;
 }
-body{
+
+body {
     display: flex;
     align-content: center;
 }
 
-
 .container {
-    margin: auto auto; 
+    margin: auto auto;
     width: fit-content;
     display: flex;
     flex-direction: row;
-
 }
 
 .container .inventory {
@@ -35,6 +34,7 @@ body{
     width: 361px;
     height: 592px;
 }
+
 
 /* 
 .container #primary {
@@ -103,7 +103,7 @@ body{
     opacity: 0.3;
 }
 
-.container .inventory .inventory-container .menutab{
+.container .inventory .inventory-container .menutab {
     width: 10%;
     position: fixed;
     margin-top: 5px;
@@ -115,7 +115,8 @@ body{
     background-size: 50px 95%;
 }
 
-.container .inventory .inventory-container .menutab .control-info-container, .container .inventory .inventory-container .control-info-container {
+.container .inventory .inventory-container .menutab .control-info-container,
+.container .inventory .inventory-container .control-info-container {
     width: 100%;
     margin: auto;
     display: flex;
@@ -123,19 +124,21 @@ body{
     justify-content: center;
 }
 
-.container .inventory .inventory-container .menutab .control-info-container .selected-category, .container .inventory .inventory-container .control-info-container .selected-category {
+.container .inventory .inventory-container .menutab .control-info-container .selected-category,
+.container .inventory .inventory-container .control-info-container .selected-category {
     position: relative;
 }
 
-.container .inventory .inventory-container .menutab .control-info-container .squared,  .container .inventory .inventory-container .control-info-container .squared{
+.container .inventory .inventory-container .menutab .control-info-container .squared,
+.container .inventory .inventory-container .control-info-container .squared {
     position: relative;
     padding: 0px 5px 0px 5px;
     width: 12px;
     height: 22px;
     border-radius: 25px;
-    background-color: rgb(97,0,0);
+    background-color: rgb(97, 0, 0);
     color: white;
-    opacity:1;
+    opacity: 1;
 }
 
 .container .inventory .inventory-container .item-categories-container {
@@ -330,8 +333,8 @@ Its simulated from .selected :D
     background: url(images/slotselect.png);
     background-size: contain;
     border-radius: 0px 0 10px 10px;
-    border-bottom: 3px solid rgb(97,0,0);
-    margin: 0 0 -1px 0;
+    border-bottom: 3px solid rgb(97, 0, 0);
+    margin: 0 0 -3px 0;
 }
 
 .blocked {

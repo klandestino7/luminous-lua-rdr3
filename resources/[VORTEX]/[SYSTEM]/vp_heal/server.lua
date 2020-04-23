@@ -16,8 +16,6 @@ AddEventHandler('frp_heal:heallife', function(price)
         return
 	end
 	User:notify('Você foi curado, pagou ~pa~' .. price ..'$')
-	Inventory:removeItem('money', price)
+	Inventory:removeItem(-1, 'money', price)
 	TriggerClientEvent('heal:player', _source)	
-
-
 end)

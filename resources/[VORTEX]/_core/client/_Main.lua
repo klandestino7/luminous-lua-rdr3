@@ -79,6 +79,7 @@ Citizen.CreateThread(
     end
 )
 
+
 Citizen.CreateThread(
 	function()
 		while true do

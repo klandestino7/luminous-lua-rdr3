@@ -23,6 +23,9 @@ local verificationData = {
     ["Mercadinho"] = {
         -- Level, Price, Amount(optional)
         ["consumable_vodka"] = {1, 50}
+    },
+    ["Planeta Semente'"]  = {
+        ['tobacco_seed'] = {1, 100, 10}
     }
 }
 

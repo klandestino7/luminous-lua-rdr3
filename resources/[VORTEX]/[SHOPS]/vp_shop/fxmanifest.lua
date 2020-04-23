@@ -1,5 +1,6 @@
 fx_version 'adamant'
-games {'gta5'}
+games {'rdr3'}
+rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
 ui_page 'nui/index.html'
 
@@ -20,5 +21,6 @@ files {
 	'nui/index.html',
 	'nui/style.css',
 	'nui/app.js',
+	'nui/assets/*'
 }
 
