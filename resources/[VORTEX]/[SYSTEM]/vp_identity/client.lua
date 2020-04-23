@@ -37,16 +37,23 @@ AddEventHandler(
             --         DadosChar.clothes,
             --         DadosChar.charid
             --     }
-
-         
-                peds = {  
-                   {genrer = json.decode(DadosChar[1].charTable).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = DadosChar[1].SkinMdf, clothes = DadosChar[1].clothes },
-                   {genrer = json.decode(DadosChar[2].charTable).model, x = 1061.10, y = 1591.20,  z = 369.36 - 0.98, h = 320.77, skin = DadosChar[2].SkinMdf, clothes = DadosChar[2].clothes }
-                }  
-
-                createPeds()
+            if #DadosChar == nil then
                 
-            --end
+            else
+                if #DadosChar == 1 then
+                    peds = {  
+                    {genrer = json.decode(DadosChar[1].SkinMdf).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = json.decode(DadosChar[1].SkinMdf).modSkin, facef = json.decode(DadosChar[1].SkinMdf).features, pedsize = json.decode(DadosChar[1].SkinMdf).pedSize, bodySize = json.decode(DadosChar[1].SkinMdf).bodySize , clothes = DadosChar[1].clothes },
+                    -- {genrer = json.decode(DadosChar[2].charTable).model, x = 1061.10, y = 1591.20,  z = 369.36 - 0.98, h = 320.77, skin = DadosChar[2].SkinMdf, clothes = DadosChar[2].clothes }
+                    }  
+                end      
+                if #DadosChar == 2  then
+                    peds = {  
+                        {genrer = json.decode(DadosChar[1].SkinMdf).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = json.decode(DadosChar[1].SkinMdf).modSkin, facef = json.decode(DadosChar[1].SkinMdf).features, pedsize = json.decode(DadosChar[1].SkinMdf).pedSize, bodySize = json.decode(DadosChar[1].SkinMdf).bodySize, clothes = DadosChar[1].clothes },
+                        {genrer = json.decode(DadosChar[2].SkinMdf).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = json.decode(DadosChar[2].SkinMdf).modSkin, facef = json.decode(DadosChar[2].SkinMdf).features, pedsize = json.decode(DadosChar[2].SkinMdf).pedSize, bodySize = json.decode(DadosChar[2].SkinMdf).bodySize, clothes = DadosChar[2].clothes },
+                    }  
+                end 
+               createPeds()                    
+            end
 
       --  end
          
@@ -62,12 +69,21 @@ function createPeds()
         while not HasModelLoaded(hash) do
             Citizen.Wait(10)
         end
+        
         choosePed[k] = CreatePed(GetHashKey(peds[k].genrer), peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
         Citizen.InvokeNative(0x283978A15512B2FE, choosePed[k], true)
         Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
         NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
         SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
         SetModelAsNoLongerNeeded(choosePed[k])
+
+        Wait(130)
+        cAPI.SetBodyType(choosePed[k], peds[k].genrer, peds[k].bodySize)
+        cAPI.SetSkin(choosePed[k], peds[k].skin)
+        Wait(300)
+        cAPI.SetFaceFeature(choosePed[k], json.decode(peds[k].facef))
+        Wait(30)        
+        cAPI.SetPedSize(choosePed[k], peds[k].pedsize)   
 
         if peds[k].clothes ~= "{}" then
             for key, value in pairs(json.decode(peds[k].clothes)) do      
@@ -102,6 +118,7 @@ RegisterNUICallback(
     function()
         SetNuiFocus(false, false)
         TriggerEvent("VP:CHARCREATION:starting")
+        DeletePed = true
     end
 )
 
@@ -115,6 +132,15 @@ RegisterNUICallback(
         Citizen.Wait(500)
         DeletePed = true
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+    end
+)
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            DeletePed = true
+        end
     end
 )
 

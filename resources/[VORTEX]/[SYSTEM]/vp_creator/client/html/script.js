@@ -123,8 +123,7 @@ function confirm(){
 
 function changeoptions(name) {
     var change = document.getElementById(name).value;
-    console.log(change)
-    $.post('http:/vp_creator/' + name, change);
+    $.post('http:/vp_creator/' + name,  JSON.stringify({ change }));
 }
 
 

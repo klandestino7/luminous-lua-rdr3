@@ -1,6 +1,6 @@
 
-local Tunnel = module("_core", "libs/Tunnel")
-local Proxy = module("_core", "libs/Proxy")
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
@@ -120,6 +120,18 @@ RegisterCommand(
     end
 )
 
+RegisterNetEvent("VP:CHARCREATION:starting")
+AddEventHandler(
+    "VP:CHARCREATION:starting",
+    function()
+        creator = true
+        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
+        SetEntityVisible(PlayerPedId(), false)
+        SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
+        DeletePed = false
+    end
+)
+
 
 RegisterNUICallback(
     "rotate",
@@ -159,6 +171,7 @@ EyesUsing = nil
 PorteUsing = nil
 TeethUsing = nil
 MustacheUsing = nil
+PedScaleUsing = nil
 
 RegisterNUICallback(
     'HeadType',
@@ -217,7 +230,7 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Idade',
     function(data)
-        CharacterAge = tonumber(data)      
+        CharacterAge = tonumber(data.change)      
     end
 )
 
@@ -406,24 +419,21 @@ RegisterNUICallback(
         local ped = pedSelected
         if data.id < 180 then
             num = (data.id / 100 + 0.01 ) - 0.78 
-            print(num)
+  
         else           
             num = (data.id / 100 ) - 0.8
-            print(num)
+  
         end
         SetPedScale(ped, num)
+        PedScaleUsing = num
     end
 )
 
 RegisterNUICallback(
     'NomePlayer',
-    function()
-        Citizen.CreateThread(
-            function(dados)                
-                print(dados)    
-                CharacterName = dados        
-            end
-        )
+    function(dados)  
+                CharacterName = dados.change        
+
     end
 )
 
@@ -480,9 +490,8 @@ local faceFeatures = {
 --     end 
 -- end)
 
-local ffDados = {}
+
 local floatIndex = nil 
-local i = nil
 RegisterNUICallback(
     "CloseCreator",
     function()
@@ -497,31 +506,39 @@ RegisterNUICallback(
             DeleteEntity(showroomHorse_entity)
         end
         showroomHorse_entity = nil
-        
-        -- for _, value in pairs(faceFeatures) do
-        --     for i = 1, 39 do
-        --         floatIndex = (Citizen.InvokeNative(0xFD1BA1EEF7985BB8, pedSelected, tonumber(value)))               
-        --         iValue = i
-        --     end        
-        --     ffDados = {
-        --         [iValue] = floatIndex,
-        --     }
-        -- end
 
-        local dados = {
-            sex,
-            CharacterAge,
+        local ffDados = {}
+
+        for _, value in pairs(faceFeatures) do  
+            local facemod = Citizen.InvokeNative(0xFD1BA1EEF7985BB8, pedSelected, tonumber(value), Citizen.ResultAsFloat())            
+            print(facemod)
+            if facemod then
+                table.insert(ffDados, tonumber(string.format('%.2f', facemod)))
+            else
+                table.insert(ffDados, 0.0)
+            end
+        end        
+
+        local modSkin = {
             HeadUsing,
             HairUsing,
             TorsoUsing,
             LegsUsing,
             EyesUsing,
-            PorteUsing,
             TeethUsing,
-            MustacheUsing
+            MustacheUsing,
         }
-    --    TriggerServerEvent('VP:CREATOR:saveCreation', CharacterName, dados)
+
+        local SkinModf = {
+        ['model'] = sex,
+        ['modSkin'] = json.encode(modSkin),
+        ['bodySize'] = tonumber(PorteUsing),
+        ['pedSize'] = tonumber(PedScaleUsing),
+        ['features'] = json.encode(ffDados) }
+
+      TriggerServerEvent('VP:CREATOR:saveCreation', CharacterName, CharacterAge, SkinModf)
         closeAll()
+
     end
 )
 
@@ -563,18 +580,8 @@ Citizen.CreateThread(
                 if  playerPed == nil then
                     playerPed = PlayerPedId()
                     camera(zoom, offset, playerPed)
-                    ClearPedTasks(playerPed)
-                    ClearPedSecondaryTask(playerPed)
-                    TaskWanderStandard(playerPed, 1, 0)
-                    TaskSetBlockingOfNonTemporaryEvents(playerPed, 1)
-                    SetEntityAsMissionEntity(playerPed)
                 else
                     camera(zoom, offset, playerPed)
-                    ClearPedTasks(playerPed)
-                    ClearPedSecondaryTask(playerPed)
-                    TaskWanderStandard(playerPed, 1, 0)
-                    TaskSetBlockingOfNonTemporaryEvents(playerPed, 1)
-                    SetEntityAsMissionEntity(playerPed)
                 end
                 
  

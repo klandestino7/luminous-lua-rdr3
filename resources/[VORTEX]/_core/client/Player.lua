@@ -1,13 +1,19 @@
-function cAPI.Initialize(model, skin, clothing, lastPosition)
+function cAPI.Initialize(model, clothing, lastPosition)
     local decodedLastPosition = json.decode(lastPosition)
-    print(lastPosition)
     if decodedLastPosition.x ~= nil then
         decodedLastPosition = {decodedLastPosition.x, decodedLastPosition.y, decodedLastPosition.z}
     end
 
-    -- local camera = cAPI.SkyCameraAtCoords(decodedLastPosition)
-    cAPI.SetModel(model)
-    cAPI.SetSkin(skin)
+    cAPI.SetModel(model.model)
+    Wait(130)
+    cAPI.SetBodyType(PlayerPedId(), model.model, model.bodySize)
+    cAPI.SetSkin(PlayerPedId(), model.modSkin) 
+    Wait(300)
+    cAPI.SetFaceFeature(PlayerPedId(), json.decode(model.features))
+    Wait(30)
+    cAPI.SetPedSize(PlayerPedId(), model.pedSize)    
+
+
     cAPI.replaceWeapons({})
     cAPI.SetCloth(clothing)
     Citizen.CreateThread(

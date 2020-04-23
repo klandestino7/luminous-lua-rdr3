@@ -1,4 +1,4 @@
-function API.Character(id, charName, level, xp, groups, inventory)
+function API.Character(id, charName, level, xp, groups, charAge, inventory)
     local self = {}
 
     self.id = id
@@ -6,6 +6,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
     self.level = level or 1
     self.xp = xp or 0
     self.groups = groups or {}
+    self.charAge = charAge
     self.Inventory = inventory or API.Inventory("char:" .. self.id, nil, nil)
     self.Horse = nil
 
@@ -100,10 +101,6 @@ function API.Character(id, charName, level, xp, groups, inventory)
     end
 
     self.getModel = function()
-        return self:getData(self.id, "charTable", "model")
-    end
-
-    self.getSkin = function()
         return self:getData(self.id, "SkinMdf", nil)
     end
 
@@ -135,6 +132,13 @@ function API.Character(id, charName, level, xp, groups, inventory)
         API_Database.query("FCRP/SetCData", {target = targetName, key = key, value = value, charid = cid})
     end
 
+    self.setSkinData = function(this, cid, value)    
+
+        API_Database.execute("FCRP/SetSkinData", {value = value, charid = cid})
+  --      API_Database.query("FCRP/SetSkinData", {key = key, value = value, charid = cid})
+    end
+
+    
     self.getData = function(this, cid, targetName, key)
         if key == nil then
             key = "all"
@@ -279,7 +283,7 @@ function API.Character(id, charName, level, xp, groups, inventory)
 
     self.getLastPosition = function(this)
         local lastPositionFromDb = self:getData(self.id, "charTable", "position")
-        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb)
+        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {-299.22,749.49,117.96}
     end
 
     self.saveClothes = function()
