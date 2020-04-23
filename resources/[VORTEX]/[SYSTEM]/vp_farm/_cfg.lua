@@ -184,7 +184,7 @@ farmsRows = {
         }
     },
     ["sugarcane"] = {
-        numSpots = 30,
+        numSpots = 20,
         type = "sugarcane",
         {
             vec3(1041.346, -1519.422, 49.778),

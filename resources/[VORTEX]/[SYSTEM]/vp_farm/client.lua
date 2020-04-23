@@ -416,14 +416,18 @@ function getRightCropModel(type, percentGrown)
         end
     end
 
+    -- "CRP_COTTON_AD_SIM",
+-- "CRP_COTTON_BA_SIM",
+-- "CRP_COTTON_BB_SIM",
+
     if type == "sugarcane" then
-        r = "P_CS_SACKSUGARCORNWALL01X"
+        r = "CRP_SUGARCANE_AD_SIM"
         if percentGrown ~= nil then
             if percentGrown >= 25 then
-                r = "S_SUGARCANEBUNDLE_02X"
+                r = "CRP_SUGARCANE_AB_SIM"
             end
             if percentGrown >= 50 then
-                r = "S_SUGARCANEDEBRIS_01X"
+                r = "CRP_SUGARCANE_AC_SIM"
             end
             if percentGrown >= 70 then
                 r = "CRP_SUGARCANE_AD_SIM"
