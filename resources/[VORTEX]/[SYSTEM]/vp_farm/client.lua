@@ -26,10 +26,6 @@ API = Tunnel.getInterface("API")
 -- "CRP_COTTON_BD_SIM",
 -- "CRP_COTTON_BE_SIM",
 -- "CRP_COTTON_PLANT_AF_P",
--- "CRP_SUGARCANE_AA_SIM",
--- "CRP_SUGARCANE_AB_SIM",
--- "CRP_SUGARCANE_AC_SIM",
--- "CRP_SUGARCANE_AD_SIM",
 -- "CRP_SUGARCANE_AE_P",
 -- "CRP_SUGARCANE_AF_P",
 -- "CRP_TOBACCOPLANT_AA_SIM",
@@ -56,8 +52,8 @@ local insideFarmAreaId
 AddEventHandler(
     "VP:AREA:PlayerEnteredArea",
     function(areaId)
-        print("Entrou " .. areaId)
-        if areaId == "tobacco:1" or areaId == "tobacco:2" then
+        -- print("Entrou " .. areaId)
+        if areaId == "tobacco" or areaId == "corn" or areaId == "sugarcane" then
             insideFarmAreaId = areaId
             TriggerServerEvent("VP:FARM:AskForFarmsInfo", areaId)
         end
@@ -67,8 +63,8 @@ AddEventHandler(
 AddEventHandler(
     "VP:AREA:PlayerLeftArea",
     function(areaId)
-        print("Saiu " .. areaId)
-        if areaId == "tobacco:1" or areaId == "tobacco:2" then
+        -- print("Saiu " .. areaId)
+        if areaId == "tobacco" or areaId == "corn" or areaId == "sugarcane" then
             insideFarmAreaId = nil
             spotsData[areaId] = nil
 
@@ -95,7 +91,7 @@ AddEventHandler(
 RegisterNetEvent("VP:FARM:SetSpot")
 AddEventHandler(
     "VP:FARM:SetSpot",
-    function(farmAreaId, spotId, age, timesWatered)
+    function(farmAreaId, spotId, percentGrown)
         if drawnObjects[farmAreaId] then
             if drawnObjects[farmAreaId][spotId] then
                 SetEntityAsMissionEntity(drawnObjects[farmAreaId][spotId], true, true)
@@ -104,16 +100,29 @@ AddEventHandler(
             end
         end
 
-        if age ~= 0 then
-            spotsData[farmAreaId][spotId] = {age, timesWatered}
+        if percentGrown ~= nil then
+            spotsData[farmAreaId][spotId] = {percentGrown}
 
-            if drawnObjects[farmAreaId] then
-                local type = getFarmAreaType(farmAreaId)
-                local object = CreateObject(getModelFromTypeAndAge(type, age), spotsToDraw[farmAreaId][spotId], false, true, false, false, true)
-                drawnObjects[farmAreaId][spotId] = object
+            if percentGrown > 0 then
+                if drawnObjects[farmAreaId] then
+                    local type = getFarmAreaType(farmAreaId)
+                    local model = getRightCropModel(type, percentGrown)
+
+                    if not HasModelLoaded(model) then
+                        RequestModel(model)
+                        while not HasModelLoaded(model) do
+                            Citizen.Wait(10)
+                        end
+                    end
+
+                    local object = CreateObject(model, spotsToDraw[farmAreaId][spotId], false, true, false, false, true)
+                    drawnObjects[farmAreaId][spotId] = object
+                end
             end
         else
-            spotsData[farmAreaId][spotId] = nil
+            if spotsData[farmAreaId] ~= nil and spotsData[farmAreaId][spotId] ~= nil then
+                spotsData[farmAreaId][spotId] = nil
+            end
         end
     end
 )
@@ -129,7 +138,16 @@ AddEventHandler(
         end
 
         tempPlacementSeedType = seedType
-        tempPlacementObject = CreateObject(getModelFromTypeAndAge(seedType, 1), GetEntityCoords(PlayerPedId()), false, true, false)
+
+        local model = getRightCropModel(seedType, nil)
+        if not HasModelLoaded(model) then
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Citizen.Wait(10)
+            end
+        end
+
+        tempPlacementObject = CreateObject(model, GetEntityCoords(PlayerPedId()), false, true, false)
     end
 )
 
@@ -157,13 +175,6 @@ function renderSpots(areaId)
 
                     local vec = vec3(x, y, z)
 
-                    if spotsData[areaId] ~= nil and spotsData[areaId][atSpotId] ~= nil then
-                        local age = spotsData[areaId][atSpotId][1]
-                        local object = CreateObject(getModelFromTypeAndAge(type, age), vec, false, true, false, false, true)
-
-                        dObjects[atSpotId] = object
-                    end
-
                     newSpots[atSpotId] = vec
                     atSpotId = atSpotId + 1
                 end
@@ -172,6 +183,25 @@ function renderSpots(areaId)
         computedSpots[areaId] = newSpots
     else
         newSpots = computedSpots[areaId]
+    end
+
+    for spotId, vec in pairs(newSpots) do
+        if spotsData[areaId] ~= nil and spotsData[areaId][spotId] ~= nil then
+            local percentGrown = spotsData[areaId][spotId][1]
+            if percentGrown > 0 then
+
+                local model = getRightCropModel(type, percentGrown)
+                if not HasModelLoaded(model) then
+                    RequestModel(model)
+                    while not HasModelLoaded(model) do
+                        Citizen.Wait(10)
+                    end
+                end
+
+                local object = CreateObject(model, vec, false, true, false, false, true)
+                dObjects[spotId] = object
+            end
+        end
     end
 
     -- print("rows: " .. #farmsRows[areaId], "per row: " .. numSpots, "total: " .. #farmsRows[areaId] * numSpots)
@@ -184,7 +214,7 @@ Citizen.CreateThread(
     function()
         registerFarmAreas()
 
-        local aimMaxDistance = 5
+        local aimMaxDistance = 7
         local upVector = vec3(0, 0, 0.5)
 
         local aimingAtSpotId
@@ -226,8 +256,8 @@ Citizen.CreateThread(
                             if spotsData[areaId] == nil or spotsData[areaId][spotId] == nil then
                                 Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 153, 153, 153, 255)
                             else
-                                -- if spotsData[areaId][spotId] ~= nil then
-                                --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 230, 122, 122, 255)
+                                -- if spotsData[areaId] ~= nil and spotsData[areaId][spotId] ~= nil and spotsData[areaId][spotId][1] == 0 then
+                                    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 230, 122, 122, 255)
                                 -- end
                             end
                         end
@@ -235,9 +265,20 @@ Citizen.CreateThread(
                 end
 
                 if aimingAtSpotId ~= nil then
-                    if spotsData[insideFarmAreaId] and spotsData[insideFarmAreaId][aimingAtSpotId] then
-                        local growPercentage = spotsData[insideFarmAreaId][aimingAtSpotId][2]
-                        DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
+                    if spotsData[insideFarmAreaId] ~= nil and spotsData[insideFarmAreaId][aimingAtSpotId] ~= nil then
+                        local growPercentage = spotsData[insideFarmAreaId][aimingAtSpotId][1]
+                        if growPercentage < 99 then
+                            DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
+                        else
+                            DisplayText("Pronto para colher", 0.5, 0.5)
+                        end
+                        if tempPlacementObject == nil and IsControlJustPressed(1, 0xF84FA74F) then
+                            if growPercentage < 99 then
+                                TriggerServerEvent("VP:FARM:TryToWaterCrop", insideFarmAreaId, aimingAtSpotId)
+                            else
+                                TriggerServerEvent("VP:FARM:TryToHarvestCrop", insideFarmAreaId, aimingAtSpotId)
+                            end
+                        end
                     else
                         Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, placeFakeEntityAt, placeFakeEntityAt + upVector, 252, 180, 131, 255)
                     end
@@ -271,9 +312,9 @@ Citizen.CreateThread(
 )
 
 function registerFarmAreas()
-    local tobbaco1 =
+    local tobbaco =
         cAPI.RegisterArea(
-        "tobacco:1",
+        "tobacco",
         {
             height = 4.0,
             color = {255, 0, 0, 60},
@@ -285,9 +326,9 @@ function registerFarmAreas()
         }
     )
 
-    local tobbaco2 =
+    local corn =
         cAPI.RegisterArea(
-        "tobacco:2",
+        "corn",
         {
             height = 3.5,
             color = {255, 0, 0, 60},
@@ -298,9 +339,9 @@ function registerFarmAreas()
         }
     )
 
-    local tobbaco3 =
+    local sugarcane =
         cAPI.RegisterArea(
-        "tobacco:3",
+        "sugarcane",
         {
             height = 3.5,
             color = {255, 0, 0, 60},
@@ -311,17 +352,17 @@ function registerFarmAreas()
         }
     )
 
-    registeredFarmAreas["tobacco:1"] = tobbaco1
-    registeredFarmAreas["tobacco:2"] = tobbaco2
-    registeredFarmAreas["tobacco:3"] = tobbaco3
+    registeredFarmAreas["tobacco"] = tobacco
+    registeredFarmAreas["corn"] = corn
+    registeredFarmAreas["sugarcane"] = sugarcane
 
     -- Citizen.CreateThread(
     --     function()
     --         while true do
     --             Citizen.Wait(0)
-    --             tobbaco1.draw()
-    --             tobbaco2.draw()
-    --             tobbaco3.draw()
+    --             tobacco.draw()
+    --             corn.draw()
+    --             sugarcane.draw()
     --         end
     --     end
     -- )
@@ -341,22 +382,60 @@ function RotationToDirection(rotation)
     return direction
 end
 
-function getModelFromTypeAndAge(type, age)
+function getRightCropModel(type, percentGrown)
+    local r
+
     if type == "tobacco" then
-        if age == 1 then
-            return "CRP_TOBACCOPLANT_AA_SIM"
-        end
-        if age == 2 then
-            return "CRP_TOBACCOPLANT_AB_SIM"
-        end
-        if age == 3 then
-            return "CRP_TOBACCOPLANT_AC_SIM"
+        r = "CRP_TOBACCOPLANT_AC_SIM"
+
+        if percentGrown ~= nil then
+            if percentGrown >= 25 then
+                r = "CRP_TOBACCOPLANT_AA_SIM"
+            end
+            if percentGrown >= 50 then
+                r = "CRP_TOBACCOPLANT_AB_SIM"
+            end
+            if percentGrown >= 70 then
+                r = "CRP_TOBACCOPLANT_AC_SIM"
+            end
         end
     end
+
+    if type == "corn" then
+        r = "CRP_CORNSTALKS_BC_SIM"
+        if percentGrown ~= nil then
+            if percentGrown >= 25 then
+                r =  "CRP_CORNSTALKS_BB_SIM"
+            end
+            if percentGrown >= 50 then
+                r =  "CRP_CORNSTALKS_BD_SIM"
+            end
+            if percentGrown >= 70 then
+                r =  "CRP_CORNSTALKS_BC_SIM"
+            end
+        end
+    end
+
+    if type == "sugarcane" then
+        r = "P_CS_SACKSUGARCORNWALL01X"
+        if percentGrown ~= nil then
+            if percentGrown >= 25 then
+                r = "S_SUGARCANEBUNDLE_02X"
+            end
+            if percentGrown >= 50 then
+                r = "S_SUGARCANEDEBRIS_01X"
+            end
+            if percentGrown >= 70 then
+                r = "CRP_SUGARCANE_AD_SIM"
+            end
+        end
+    end
+
+    return r
 end
 
 function getFarmAreaType(farmAreaId)
-    local farmtype = farmAreaId:sub(0, farmAreaId:find(":") - 1)
+    local farmtype = farmAreaId
     return farmtype
 end
 
