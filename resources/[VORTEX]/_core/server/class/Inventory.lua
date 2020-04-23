@@ -141,9 +141,27 @@ function API.Inventory(id, capacity, slots)
                 sync[slotId] = Slot:getSyncData()
                 sync[slotIdTo] = newSlot:getSyncData()
 
+                local gotRemoved = false
                 if Slot:getItemAmount() <= 0 then
+                    gotRemoved = true
                     self.slots[slotId] = nil
+                    Citizen.CreateThread(
+                        function()
+                            API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                        end
+                    )
                 end
+
+                Citizen.CreateThread(
+                    function()
+                        if gotRemoved == false then
+                            local slot_data = json.encode(Slot:getSyncData())
+                            API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                        end
+                        local slot_dataTo = json.encode(newSlot:getSyncData())
+                        API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotIdTo, slot_value = slot_dataTo})
+                    end
+                )
             end
         else
             if Slot:getItemId() == SlotTo:getItemId() then
@@ -158,9 +176,27 @@ function API.Inventory(id, capacity, slots)
                     sync[slotId] = Slot:getSyncData()
                     sync[slotIdTo] = SlotTo:getSyncData()
 
+                    local gotRemoved = false
                     if Slot:getItemAmount() <= 0 then
+                        gotRemoved = true
                         self.slots[slotId] = nil
+                        Citizen.CreateThread(
+                            function()
+                                API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                            end
+                        )
                     end
+
+                    Citizen.CreateThread(
+                        function()
+                            if gotRemoved == false then
+                                local slot_data = json.encode(Slot:getSyncData())
+                                API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                            end
+                            local slot_dataTo = json.encode(SlotTo:getSyncData())
+                            API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotIdTo, slot_value = slot_dataTo})
+                        end
+                    )
                 end
             else
                 local itemTypeTo = SlotTo:getItemData():getType()
@@ -170,9 +206,27 @@ function API.Inventory(id, capacity, slots)
                         Slot:removeItemAmount(amount)
                         SlotTo:setAmmoInWeapon(SlotTo:getAmmoInWeapon() + amount)
 
+                        local gotRemoved = false
                         if Slot:getItemAmount() <= 0 then
+                            gotRemoved = true
                             self.slots[slotId] = nil
+                            Citizen.CreateThread(
+                                function()
+                                    API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                                end
+                            )
                         end
+
+                        Citizen.CreateThread(
+                            function()
+                                if gotRemoved == false then
+                                    local slot_data = json.encode(Slot:getSyncData())
+                                    API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                                end
+                                local slot_dataTo = json.encode(SlotTo:getSyncData())
+                                API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotIdTo, slot_value = slot_dataTo})
+                            end
+                        )
 
                         sync[slotId] = Slot:getSyncData()
                         sync[slotIdTo] = SlotTo:getSyncData()
@@ -181,8 +235,16 @@ function API.Inventory(id, capacity, slots)
                     local copySlot = deepcopy(SlotTo)
 
                     self.slots[slotIdTo] = Slot
-
                     self.slots[slotId] = copySlot
+
+                    Citizen.CreateThread(
+                        function()
+                            local slot_data = json.encode(Slot:getSyncData())
+                            API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotIdTo, slot_value = slot_data})
+                            local slot_dataTo = json.encode(copySlot:getSyncData())
+                            API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_dataTo})
+                        end
+                    )
 
                     sync[slotId] = copySlot:getSyncData()
                     sync[slotIdTo] = Slot:getSyncData()
@@ -296,6 +358,13 @@ function API.Inventory(id, capacity, slots)
                 end
 
                 sync[slotId] = Slot:getSyncData()
+
+                Citizen.CreateThread(
+                    function()
+                        local slot_data = json.encode(Slot:getSyncData())
+                        API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                    end
+                )
             end
         end
 
@@ -341,6 +410,18 @@ function API.Inventory(id, capacity, slots)
 
                     if Slot:getItemAmount() <= 0 then
                         self.slots[slotId] = nil
+                        Citizen.CreateThread(
+                            function()
+                                API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                            end
+                        )
+                    else
+                        Citizen.CreateThread(
+                            function()
+                                local slot_data = json.encode(Slot:getSyncData())
+                                API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                            end
+                        )
                     end
 
                     amountLeftToRemove = amountLeftToRemove - a
@@ -369,6 +450,18 @@ function API.Inventory(id, capacity, slots)
 
             if Slot:getItemAmount() <= 0 then
                 self.slots[slotId] = nil
+                Citizen.CreateThread(
+                    function()
+                        API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                    end
+                )
+            else
+                Citizen.CreateThread(
+                    function()
+                        local slot_data = json.encode(Slot:getSyncData())
+                        API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                    end
+                )
             end
         end
 
@@ -418,15 +511,21 @@ function API.Inventory(id, capacity, slots)
 
         if Slot:getItemAmount() <= 0 then
             self.slots[slotId] = nil
+            Citizen.CreateThread(
+                function()
+                    API_Database.execute("UPDATE:inv_remove_slot", {inv_id = self:getId(), slot_id = slotId})
+                end
+            )
+        else
+            Citizen.CreateThread(
+                function()
+                    local slot_data = json.encode(Slot:getSyncData())
+                    API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
+                end
+            )
         end
 
         syncToViewers({[_source] = true}, sync, self:getWeight())
-
-        -- Citizen.CreateThread(
-        --     function()
-        --         dbAPI.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = slot, itemId = Slot:getItemId(), itemAmount = ammoCount, procType = "update"})
-        --     end
-        -- )
     end
 
     self.addRecent = function(this, itemId, itemAmount)

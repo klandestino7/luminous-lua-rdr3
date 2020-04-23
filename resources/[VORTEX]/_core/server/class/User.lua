@@ -99,32 +99,31 @@ function API.User(source, id, ipAddress)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            local rows2 = API_Database.query("FCRP/Inventory", {id = "char:" .. id, charid = id, capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
+            local inv_query = API_Database.query('SELECT:inv_select_slots_and_capacity', {inv_id = "char:" .. id})
             local Inventory = nil
-            if #rows2 > 0 then
-                Inventory = API.Inventory("char:" .. id, parseInt(rows2[1].capacity), json.decode(rows2[1].items))
+            if #inv_query > 0 then
+                Inventory = API.Inventory("char:" .. id, parseInt(inv_query[1].inv_capacity), json.decode(inv_query[1].inv_slots))
             end
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
-            if rows2[1] ~= nil then
-                local parsedSlots = {}
-                local decodedItems = json.decode(rows2[1].items)
-                local found = false
-                for i = 129, 132 do
-                    local stringd = tostring(i)
-                    if decodedItems[stringd] ~= nil then
-                        found = true
-                        parsedSlots[i] = {
-                            decodedItems[stringd][1],
-                            decodedItems[stringd][2]
-                        }
-                    end
-                end
-                if found == true then
-                    TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
-                end
-            end
+            -- print(#Inventory:getItems(), Inventory:getItems())
+            -- if #Inventory:getItems() > 0 then
+            --     local items = Inventory:getItems()
+            --     local found = false
+            --     for i = 129, 132 do
+            --         if items[stringd] ~= nil then
+            --             found = true
+            --             parsedSlots[i] = {
+            --                 items[i][1],
+            --                 items[i][2]
+            --             }
+            --         end
+            --     end
+            --     if found == true then
+            --         TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
+            --     end
+            -- end
    
             -- local weapons = json.decode(charRow[1].weapons) or {}
             -- cAPI.replaceWeapons(self:getSource(), weapons)

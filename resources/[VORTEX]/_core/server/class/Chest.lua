@@ -65,11 +65,11 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories, gro
             local Inventory = self.inventories
 
             if Inventory == nil then
-                Citizen.CreateThread(
-                    function()
-                        API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = 0, capacity = self:getCapacity(), slot =0, itemId = 0, itemAmount = 0, procType = "insert"})
-                    end
-                )
+                -- Citizen.CreateThread(
+                --     function()
+                --         API_Database.execute("FCRP/Inventory", {id = "chest:" .. self:getId(), charid = 0, capacity = self:getCapacity(), slot =0, itemId = 0, itemAmount = 0, procType = "insert"})
+                --     end
+                -- )
 
                 Inventory = API.Inventory("chest:" .. self.id .. "char:" .. 0, self.capacity, {})
                 self.inventories = Inventory
