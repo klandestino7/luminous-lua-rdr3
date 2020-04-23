@@ -14,11 +14,9 @@ function cAPI.SetModel(hash)
     return true
 end
 
-function cAPI.SetSkin(encoded)
-    local decoded = json.decode(encoded) or {}
-    for _, hash in pairs(decoded) do
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
-    end
+function cAPI.SetPedSize(pedenti, num)
+    local ped = pedenti
+    SetPedScale(ped, tonumber(num))
 end
 
 local faceFeatures = {
@@ -60,19 +58,38 @@ local faceFeatures = {
     0xC375,
     0xBB4D,
     0xB0B0,
-    0x5D16
+    0x5D16,
 }
 
-function cAPI.SetFaceFeatures(encoded)
+local Tableff = {}
+
+function cAPI.SetFaceFeature(pedenti, ff)
+    local ped = pedenti
+    for index, hash in pairs(faceFeatures) do
+        local value = ff[index]
+        Citizen.InvokeNative(0x5653AB26C82938CF, ped, tonumber(hash), value)                
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
+    end   
+end
+
+function cAPI.SetBodyType(pedenti, sex,data)
+    local ped = pedenti
+    if sex == 'mp_male' then        
+        print(data)
+        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, math.floor(tonumber(data + 124)), true, true, true)
+        print('change1')
+    else
+        print(data)
+        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, math.floor(tonumber(data + 110)), true, true, true)
+        print('change2')
+    end
+end
+
+function cAPI.SetSkin(pedenti, encoded)
+    local ped = pedenti
     local decoded = json.decode(encoded)
-    for _, hash in pairs(faceFeatures) do
-        for _, values in pairs(decoded) do
-            for i = 1, 39 do
-                print(tonumber(hash)[i], values)
-                -- Citizen.InvokeNative(0x5653AB26C82938CF, PlayerPedId(), tonumber(hash)[i], values)
-                --   Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false)
-            end
-        end
+    for _, hash in pairs(decoded) do
+        Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, tonumber(hash), true, true, true)
     end
 end
 
@@ -86,6 +103,7 @@ function cAPI.SetCloth(hash)
         end
     else
         -- Load default clothing
+        print('default')
         if IsPedMale(PlayerPedId()) then
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x1B164391, true, true, true)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x10B87936, true, true, true)

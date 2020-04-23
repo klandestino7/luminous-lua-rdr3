@@ -155,7 +155,7 @@ API_Database.prepare('FCRP/SetBanned', 'UPDATE users SET banned = 1 WHERE user_i
 API_Database.prepare('FCRP/Whitelisted', 'SELECT * from whitelist WHERE identifier = @identifier')
 
 -------- CHARACTER QUERIES -----------
-API_Database.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, groups) VALUES (@user_id, @charName, '{\"user\":true}'); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, groups, age) VALUES (@user_id, @charName, '{\"user\":true}',@charAge); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare('FCRP/GetCharacters', 'SELECT * from characters WHERE user_id = @user_id')
 API_Database.prepare('FCRP/GetCharacter', 'SELECT * from characters WHERE charid = @charid')
 API_Database.prepare('FCRP/DeleteCharacter', 'DELETE FROM characters WHERE charid = @charid')
@@ -168,6 +168,8 @@ API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @char
 API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
 API_Database.prepare('FCRP/RemCData', 'CALL remData(@target, @key, @charid)')
 
+API_Database.prepare('FCRP/SetSkinData', 'UPDATE characters SET SkinMdf = @value WHERE charid = @charid')
+
 API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 
 -------- FORT DATATABLE QUERIES --------
@@ -179,6 +181,12 @@ API_Database.prepare('FCRP/SetCJail', 'INSERT INTO jail(charid, jail_time) VALUE
 API_Database.prepare('FCRP/UpdCJail', 'UPDATE jail SET jail_time = @jail_time WHERE charid = @charid')
 API_Database.prepare('FCRP/GetCJail', 'SELECT * from jail WHERE charid = @charid')
 API_Database.prepare('FCRP/RemCJail', 'DELETE FROM jail WHERE charid = @charid')
+
+-------- QUEST DATATABLE QUERIES --------
+API_Database.prepare('FCRP/SetQuest', 'INSERT INTO quest(questId, charid, questSteps) VALUES (@questId, @charid, @questSteps); SELECT LAST_INSERT_ID() AS id')
+API_Database.prepare('FCRP/UpdQuest', 'UPDATE quest SET questSteps = @questSteps WHERE questId = @questId')
+API_Database.prepare('FCRP/GetQuest', 'SELECT * from quest WHERE charid = @charid')
+API_Database.prepare('FCRP/RemQuest', 'DELETE FROM quest WHERE questId = @questId')
 
 -------- WANTED DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCWanted', 'INSERT INTO characters(wanted) VALUES (@wanted); SELECT LAST_INSERT_ID() AS user_id')

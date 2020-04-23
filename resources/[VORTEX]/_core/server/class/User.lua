@@ -62,17 +62,17 @@ function API.User(source, id, ipAddress)
     --
     -- @info Wont do any checks, just create a new Character and into the Database
 
-    self.createCharacter = function(this, characterName)
+    self.createCharacter = function(this, characterName, age)
         local Character = nil
-        local rows = API_Database.query("FCRP/CreateCharacter", {user_id = self:getId(), charName = characterName})
+        local rows = API_Database.query("FCRP/CreateCharacter", {user_id = self:getId(), charName = characterName, charAge = age})
         if #rows > 0 then
             local charId = rows[1].id
 
-            Character = API.Character(charId, characterName, 1, 0, {}, API.Inventory("char:" .. charId, nil, nil))
+            Character = API.Character(charId, characterName, 1, 0, {}, age, API.Inventory("char:" .. charId, nil, nil))
             --    Character:createHorse("A_C_Donkey_01", "Burrinho")
-            Character:setData(charId, "charTable", "hunger", 0)
-            Character:setData(charId, "charTable", "thirst", 0)
-            Character:setData(charId, "charTable", "banco", 0)
+            -- Character:setData(charId, "charTable", "hunger", 0)
+            -- Character:setData(charId, "charTable", "thirst", 0)
+            -- Character:setData(charId, "charTable", "banco", 0)
 
             API_Database.execute(
                 "FCRP/Inventory",
@@ -104,7 +104,7 @@ function API.User(source, id, ipAddress)
             if #rows2 > 0 then
                 Inventory = API.Inventory("char:" .. id, parseInt(rows2[1].capacity), json.decode(rows2[1].items))
             end
-            self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), Inventory)
+            self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
             if rows2[1] ~= nil then
@@ -125,7 +125,7 @@ function API.User(source, id, ipAddress)
                     TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
                 end
             end
-
+   
             -- local weapons = json.decode(charRow[1].weapons) or {}
             -- cAPI.replaceWeapons(self:getSource(), weapons)
 
@@ -150,6 +150,7 @@ function API.User(source, id, ipAddress)
                     self.Character:addGroup("admin")
                 end
             end
+   
             ---------------- AUTO ADMING GROUP TO USER WITH ID 1
             self.drawCharacter()
         end
@@ -171,11 +172,13 @@ function API.User(source, id, ipAddress)
         local Character = self:getCharacter()
 
         local character_model = Character:getModel()
-        local character_skin = Character:getSkin()
+     --   local character_skin = Character:getSkin()
+   
         local character_clothing = Character:getClothes()
+  
         local character_lastposition = Character:getLastPosition()
 
-        cAPI.Initialize(self:getSource(), character_model, character_skin, character_clothing, character_lastposition)
+        cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition)
         -- cAPI.CWanted(Character:getWanted())
     end
 
