@@ -99,11 +99,11 @@ function API.User(source, id, ipAddress)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            local inv_query = API_Database.query('SELECT:inv_select_slots_and_capacity', {inv_id = "char:" .. id})
+            -- local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
             local Inventory = nil
-            if #inv_query > 0 then
-                Inventory = API.Inventory("char:" .. id, parseInt(inv_query[1].inv_capacity), json.decode(inv_query[1].inv_slots))
-            end
+            -- if #inv_query > 0 then
+            --     Inventory = API.Inventory("char:" .. id, parseInt(inv_query[1].inv_capacity), json.decode(inv_query[1].inv_slots))
+            -- end
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
@@ -124,7 +124,7 @@ function API.User(source, id, ipAddress)
             --         TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
             --     end
             -- end
-   
+
             -- local weapons = json.decode(charRow[1].weapons) or {}
             -- cAPI.replaceWeapons(self:getSource(), weapons)
 
@@ -149,7 +149,7 @@ function API.User(source, id, ipAddress)
                     self.Character:addGroup("admin")
                 end
             end
-   
+
             ---------------- AUTO ADMING GROUP TO USER WITH ID 1
             self.drawCharacter()
         end
@@ -163,18 +163,19 @@ function API.User(source, id, ipAddress)
         return self.Character
     end
     self.saveCharacter = function()
-        self.Character:savePosition(self:getSource())
-        print('SALVO')
+        if self.Character ~= nil then
+            self.Character:savePosition(self:getSource())
+        end
     end
 
     self.drawCharacter = function()
         local Character = self:getCharacter()
 
         local character_model = Character:getModel()
-     --   local character_skin = Character:getSkin()
-   
+        --   local character_skin = Character:getSkin()
+
         local character_clothing = Character:getClothes()
-  
+
         local character_lastposition = Character:getLastPosition()
 
         cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition)

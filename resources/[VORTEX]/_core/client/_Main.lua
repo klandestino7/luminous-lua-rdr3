@@ -617,6 +617,9 @@ function cAPI.playAnim(dict, anim, speed)
 	end
 end
 
+function cAPI.TaskClipSet(dict, anim)
+end
+
 function cAPI.createVehicle(Vmodel)
 	local veh = GetHashKey(Vmodel)
 	local ply = GetPlayerPed()

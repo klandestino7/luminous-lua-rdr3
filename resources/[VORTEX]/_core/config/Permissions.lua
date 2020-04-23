@@ -13,11 +13,11 @@ Config_Permissions = {
     ----------
     ["chief"] = {
         type = "police",
-        inheritance = "chief"
+        inheritance = "soldier"
     },
     ["soldier"] = {
         type = "police",
-        inheritance = "soldier"
+        inheritance = "recruit"
     },
     ["recruit"] = {
         type = "police"

@@ -220,3 +220,9 @@ API_Database.prepare('FCRP/GetPosseById', 'SELECT * from posses WHERE id = @id')
 API_Database.prepare('FCRP/GetChests', 'SELECT * from chests')
 API_Database.prepare('FCRP/CreateChest', "INSERT INTO chests(charid, position, type, capacity) VALUES (@charid, @position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare('FCRP/CreateStaticChest', "INSERT INTO chests(position, type, capacity) VALUES (@position, @type, @capacity); SELECT LAST_INSERT_ID() AS id")
+
+------------ CROP QUERIES --------------------
+API_Database.prepare('UPDATE:crop_update_slot', 'UPDATE farms SET crop_percent_grown = @crop_percent_grown, crop_min_time_water = @crop_min_time_water WHERE crop_id = @crop_id AND slot_id = @slot_id')
+API_Database.prepare('UPDATE:crop_remove_slot', 'DELETE FROM farms WHERE crop_id = @crop_id AND slot_id = @slot_id')
+API_Database.prepare('INSERT:crop_insert_slot', 'INSERT INTO farms(crop_id, slot_id, crop_percent_grown, crop_min_time_water) VALUES (@crop_id, @slot_id, 0, @crop_min_time_water)')
+API_Database.prepare('SELECT:get_crop_slots', 'SELECT slot_id, crop_percent_grown, crop_min_time_water FROM farms WHERE crop_id = @crop_id')

@@ -280,7 +280,7 @@ function API.Inventory(id, capacity, slots)
         local itemData = API.getItemDataFromId(itemId)
 
         if itemData == nil then
-            return
+            return false
         end
 
         local itemStackSize = itemData:getStackSize()
@@ -366,18 +366,14 @@ function API.Inventory(id, capacity, slots)
                     end
                 )
             end
-        end
 
-        -- Will sync twice
-        self:addRecent(itemId, itemAmount)
+            self:addRecent(itemId, itemAmount)
 
-        syncToViewers(self.viewersSources, sync, self:getWeight())
+            syncToViewers(self.viewersSources, sync, self:getWeight())
 
-        if amountLeftToAdd <= 0 then
             return true
-        else
-            return false
         end
+        return false
     end
 
     self.removeItem = function(this, slotId, itemId, itemAmount)

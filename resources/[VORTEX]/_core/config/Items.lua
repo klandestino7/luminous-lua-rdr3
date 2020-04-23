@@ -956,6 +956,13 @@ ItemList = {
         description = 'Um masto de cereal cultivado em terras férteis. Alimento humano e animal.',
         stackSize = 50,
     },
+    ['sugar'] = {
+        type = 'generic',
+        name = 'Açúcar',
+        weight = 0.5,
+        description = 'Material extraído das canas-de-açucar de Rhodes, o açúcar é útil em várias criações.',
+        stackSize = 45,
+    },
     ['picareta'] = {
         type = 'generic',
         name = 'Picareta',
@@ -976,13 +983,6 @@ ItemList = {
         weight = 0.5,
         description = 'O sulfato de enxofre é removido das áreas termais de West Elizabeth, serve para a criação de pólvora.',
         stackSize = 30,
-    },
-    ['sugar'] = {
-        type = 'usable',
-        name = 'Açúcar',
-        weight = 0.5,
-        description = 'Material extraído das canas-de-açucar de Rhodes, o açúcar é útil em várias criações.',
-        stackSize = 45,
     },
     ['firepit'] = {
         type = 'usable',
