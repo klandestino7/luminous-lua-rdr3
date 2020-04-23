@@ -37,7 +37,7 @@ AddEventHandler(
             --         DadosChar.clothes,
             --         DadosChar.charid
             --     }
-            if #DadosChar == nil then
+            if DadosChar == nil then
                 
             else
                 if #DadosChar == 1 then
