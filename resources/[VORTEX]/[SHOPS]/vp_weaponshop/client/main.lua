@@ -78,6 +78,7 @@ RegisterCommand("go", function()
         SetEntityAsMissionEntity(ammon)
         Wait(1500)
         SetPedDesiredHeading(ammon, 160.0)   
+        SetModelAsNoLongerNeeded(modelHash)
 end, false)
 
 

@@ -114,12 +114,13 @@ Citizen.CreateThread(function()
             if not isProp and frp_action.prop ~= nil and frp_action.prop.model ~= nil then
                 RequestModel(frp_action.prop.model)
 
-                while not HasModelLoaded(GetHashKey(frp_action.prop.model)) do
+                local toHash = GetHashKey(frp_action.prop.model)
+                while not HasModelLoaded(toHash) do
                     Citizen.Wait(0)
                 end
 
                 local pCoords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(PlayerId()), 0.0, 0.0, 0.0)
-                local modelSpawn = CreateObject(GetHashKey(frp_action.prop.model), pCoords.x, pCoords.y, pCoords.z, true, true, true)
+                local modelSpawn = CreateObject(toHash, pCoords.x, pCoords.y, pCoords.z, true, true, true)
 
                 local netid = ObjToNet(modelSpawn)
                 SetNetworkIdExistsOnAllMachines(netid, true)
@@ -129,6 +130,8 @@ Citizen.CreateThread(function()
                 prop_net = netid
 
                 isProp = true
+
+                SetModelAsNoLongerNeeded(toHash)
             end
 
             DisableActions(GetPlayerPed(-1))

@@ -516,6 +516,6 @@ RegisterNUICallback(
         Citizen.InvokeNative(0x58A850EAEE20FAA3, showroomHorse_entity)
         -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
         SetVehicleHasBeenOwnedByPlayer(showroomHorse_entity, true)
-        SetModelAsNoLongerNeeded(showroomHorse_entity)
+        SetModelAsNoLongerNeeded(modelHash)
     end
 )

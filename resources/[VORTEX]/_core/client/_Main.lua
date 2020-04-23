@@ -629,10 +629,9 @@ function cAPI.createVehicle(Vmodel)
 				Wait(1000)
 				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
 			end
-			if HasModelLoaded(veh) then
-				local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
-				print("Model spawned Succes: " .. Vmodel)
-			end
+			local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
+			print("Model spawned Succes: " .. Vmodel)
+			SetModelAsNoLongerNeeded(veh)
 		end
 	)
 end

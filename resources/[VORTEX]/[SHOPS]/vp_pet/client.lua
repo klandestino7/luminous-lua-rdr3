@@ -323,6 +323,7 @@ AddEventHandler( 'VP:PET:spawndog', function ( dog, isInShop )
 	if dogspawn[idOfThedog] == nil then
 
 		dogModel = CreatePed( model, x, y, z, heading, 1, 1 )
+		SetModelAsNoLongerNeeded(model)
 
 		SET_PED_RELATIONSHIP_GROUP_HASH( dogModel, model )
 		SET_PED_DEFAULT_OUTFIT( dogModel )

@@ -8,6 +8,7 @@ function cAPI.SetModel(hash)
             end
             SetPlayerModel(PlayerId(), model, true)
             Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
+            SetModelAsNoLongerNeeded(model)
         end
     )
     return true

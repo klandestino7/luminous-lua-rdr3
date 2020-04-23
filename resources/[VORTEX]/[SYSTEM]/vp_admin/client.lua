@@ -19,6 +19,7 @@ AddEventHandler(
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
 		-- Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, ped)
+		SetModelAsNoLongerNeeded(pedModelHash)
 	end
 )
 

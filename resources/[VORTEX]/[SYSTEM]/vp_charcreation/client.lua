@@ -142,12 +142,12 @@ function createPeds()
             while not HasModelLoaded(hash) do
                 Citizen.Wait(10)
             end
-            choosePed[k] = CreatePed(GetHashKey(peds[k].genrer), peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
+            choosePed[k] = CreatePed(hash, peds[k].x, peds[k].y, peds[k].z - 0.5, peds[k].h, false, 0)
             Citizen.InvokeNative(0x283978A15512B2FE, choosePed[k], true)
             Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
             NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
             SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
-            SetModelAsNoLongerNeeded(choosePed[k])
+            SetModelAsNoLongerNeeded(hash)
             if peds[k].genrer == 'mp_female' then
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x10F5497A,true,true,true) -- PANTS
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x14511493,true,true,true) -- COAT

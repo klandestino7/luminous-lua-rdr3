@@ -79,11 +79,10 @@ function SpawnVehicle(Vmodel,ply)
             Wait(1000)
             print("Loading Model: "..Vmodel.."Loading Hash: "..veh)
         end
-        if HasModelLoaded(veh) then
         local car = CreateVehicle(veh,tonumber(coords.x+10),tonumber(coords.y+5),coords.z-2.5,head,true,true,false,true)
 			print("Model spawned Succes: "..Vmodel)
+			SetModelAsNoLongerNeeded(veh)
 			SetPedIntoVehicle(PlayerPedId(), car, -1)
-		end
 		
     end)
 end

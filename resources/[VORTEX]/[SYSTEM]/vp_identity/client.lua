@@ -67,7 +67,7 @@ function createPeds()
         Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
         NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
         SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
-        SetModelAsNoLongerNeeded(choosePed[k])
+        SetModelAsNoLongerNeeded(hash)
 
         if peds[k].clothes ~= "{}" then
             for key, value in pairs(json.decode(peds[k].clothes)) do      

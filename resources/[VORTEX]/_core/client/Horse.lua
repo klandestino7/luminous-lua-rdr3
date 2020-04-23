@@ -66,6 +66,7 @@ function cAPI.spawnHorse()
         Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
     end
 
+    SetModelAsNoLongerNeeded(modelHash)
     -- SetRandomOutfitVariation(horseEntity, true)
     -- ^^
     Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
@@ -112,8 +113,6 @@ function cAPI.spawnHorse()
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseBreed", GetHashKey(fufrp_1359(iVar1)));
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
-
-    SetModelAsNoLongerNeeded(horseEntity)
 end
 
 function cAPI.stablecloth(hash)

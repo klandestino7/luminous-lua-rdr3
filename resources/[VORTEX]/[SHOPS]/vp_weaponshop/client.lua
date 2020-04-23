@@ -84,6 +84,7 @@ RegisterCommand(
         end
         ammon = CreatePed(5, modelHash, 22.79, -1105.52, 29.79, 160.0, false, false)
         SetEntityAsMissionEntity(ammon)
+        SetModelAsNoLongerNeeded(modelHash)
         Wait(1500)
         SetPedDesiredHeading(ammon, 160.0)
     end,
