@@ -126,7 +126,7 @@ AddEventHandler(
             ApplyForceToEntityCenterOfMass(obj, 1, 0, 0, 0, 0, 1, 1, 1)
             SetModelAsNoLongerNeeded(prop)
 
-            local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, GetHashKey("USABLE_ITEM"), 0, 0, 0)
+            local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, GetHashKey("USABLE_CARRIABLE_INVENTORY_ITEM"), 0, 0, 0)
 
             Citizen.InvokeNative(0x7DFB49BCDB73089A, carriable, true)
 
