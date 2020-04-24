@@ -7,6 +7,7 @@ cAPI = Tunnel.getInterface("API")
 
 local loadedFromDatabase = {}
 local farmsInfo = {}
+local notReadyFarmsInfo = {}
 
 RegisterNetEvent("VP:FARM:TryToPlantSeed")
 AddEventHandler(
@@ -24,9 +25,9 @@ AddEventHandler(
             return
         end
 
-        local type = getFarmAreaType(farmAreaId)
+        -- local type = farmAreaId
 
-        if seedTryingToPlant ~= type then
+        if seedTryingToPlant ~= farmAreaId then
             User:notify("Você não pode plantar esse tipo de semente aqui!")
             return
         end
@@ -40,12 +41,13 @@ AddEventHandler(
             return
         end
 
-        local time_next_water = os.time() + 2
+        local time_next_water = os.time() + 5
 
         Inventory:removeItem(-1, seedItem, 1)
         farmsInfo[farmAreaId][slot_id] = {0, time_next_water}
         -- Age, timesWatered
 
+        print("sement plantada")
         User:notify("Semente plantada!")
 
         for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
@@ -67,37 +69,61 @@ AddEventHandler(
         end
 
         local User = API.getUserFromSource(_source)
-        if farmsInfo[farmAreaId][slot_id][2] > os.time() then
-            print("Cuidado! se você regar demais a planta pode morrer")
-            User.notify("Cuidado! se você regar demais a planta pode morrer")
+        if (notReadyFarmsInfo[farmAreaId] and notReadyFarmsInfo[farmAreaId][slot_id]) or (farmsInfo[farmAreaId][slot_id][2] > os.time()) then
+            -- print("Cuidado! se você regar demais a planta pode morrer")
+            if (notReadyFarmsInfo[farmAreaId] and notReadyFarmsInfo[farmAreaId][slot_id]) then
+                print('nao pode regar agora')
+            else
+                print("aguarde " .. farmsInfo[farmAreaId][slot_id][2] - os.time() .. " segundos antes de regar a planta")
+                User.notify("Cuidado! se você regar demais a planta pode morrer")
+            end
             return
         end
 
         local currentgrowth = farmsInfo[farmAreaId][slot_id][1]
 
         if currentgrowth >= 99 then
-            print("Está planta já está pronta para ser colhida")
-            User.notify("Está planta já está pronta para ser colhida")
+            -- print("Está planta já está pronta para ser colhida")
+            -- User.notify("Está planta já está pronta para ser colhida")
             return
         end
 
+        local ms = 1000
+        local wateringCooldown = 6
+
         local newgrowth = currentgrowth + 33
-        local time_next_water = os.time() + 2
+        local time_next_water = (os.time() + ms) + wateringCooldown
+        -- (thread ms + new farm info time) + actual delay
+        -- farmsInfo[farmAreaId][slot_id] = {newgrowth, time_next_water}
 
-        farmsInfo[farmAreaId][slot_id] = {newgrowth, time_next_water}
-
-        for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
-            TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, newgrowth)
+        if notReadyFarmsInfo[farmAreaId] == nil then
+            notReadyFarmsInfo[farmAreaId] = {}
         end
+
+        print("planta regada")
+
+        notReadyFarmsInfo[farmAreaId][slot_id] = newgrowth
 
         dbAPI.execute("UPDATE:crop_update_slot", {crop_id = farmAreaId, slot_id = slot_id, crop_percent_grown = newgrowth, crop_min_time_water = time_next_water})
 
-        -- Citizen.CreateThread(
-        --     function()
-        --         Citizen.Wait(10000)
+        Citizen.CreateThread(
+            function()
+                Citizen.Wait(ms)
+                if notReadyFarmsInfo[farmAreaId] ~= nil and notReadyFarmsInfo[farmAreaId][slot_id] ~= nil then
+                    farmsInfo[farmAreaId][slot_id] = {newgrowth, os.time() + wateringCooldown}
+                    notReadyFarmsInfo[farmAreaId][slot_id] = nil
 
-        --     end
-        -- )
+                    if #notReadyFarmsInfo[farmAreaId] <= 0 then
+                        notReadyFarmsInfo[farmAreaId] = nil
+                    end
+
+                    print("planta cresceu")
+                    for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+                        TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, newgrowth)
+                    end
+                end
+            end
+        )
 
         -- TriggerClientEvent('VP:FARM:WaterPlantAnimation', _source, ...)
     end
@@ -124,13 +150,32 @@ AddEventHandler(
         local plantItem = farmAreaId ~= "sugarcane" and farmAreaId or "sugar"
 
         if Inventory:addItem(plantItem, 1) then
-            farmsInfo[farmAreaId][slot_id] = nil
+            -- local percentToSync = nil
 
-            for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
-                TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, nil)
-            end
+            -- if farmAreaId ~= "sugarcane" then
+                farmsInfo[farmAreaId][slot_id] = nil
+            -- else
+            --     percentToSync = 101
+            --     farmsInfo[farmAreaId][slot_id] = {percentToSync, 0}
+
+            --     Citizen.CreateThread(
+            --         function()
+            --             Citizen.Wait(5000)
+            --             print("planta sumiu")
+            --             for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+            --                 TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, nil)
+            --             end
+            --         end
+            --     )
+            -- end
+
+            print("planta colhida")
 
             dbAPI.execute("UPDATE:crop_remove_slot", {crop_id = farmAreaId, slot_id = slot_id})
+
+            for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
+                TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, percentToSync)
+            end
         else
             User:notify("Inventário cheio!")
         end
@@ -163,24 +208,5 @@ AddEventHandler(
         end
 
         TriggerClientEvent("VP:FARM:SetFarmsInfo", _source, farmAreaId, farmsInfo[farmAreaId])
-    end
-)
-
-function getFarmAreaType(farmAreaId)
-    local farmtype = farmAreaId
-    return farmtype
-end
-
-function getFarmAreaMaxAge(farmAreaId)
-    local farmtype = farmAreaId
-
-    -- if farmtype == "tobacco" then
-    return 3
-    -- end
-end
-
-Citizen.CreateThread(
-    function()
-        print(GetHashKey("LOCO_BAIT_BUCKET"))
     end
 )

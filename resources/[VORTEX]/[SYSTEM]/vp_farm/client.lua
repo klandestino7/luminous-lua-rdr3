@@ -117,6 +117,8 @@ AddEventHandler(
 
                     local object = CreateObject(model, spotsToDraw[farmAreaId][spotId], false, true, false, false, true)
                     drawnObjects[farmAreaId][spotId] = object
+
+                    SetModelAsNoLongerNeeded(model)
                 end
             end
         else
@@ -148,6 +150,8 @@ AddEventHandler(
         end
 
         tempPlacementObject = CreateObject(model, GetEntityCoords(PlayerPedId()), false, true, false)
+
+        SetModelAsNoLongerNeeded(model)
     end
 )
 
@@ -185,6 +189,8 @@ function renderSpots(areaId)
         newSpots = computedSpots[areaId]
     end
 
+    local loadedModels = {}
+
     for spotId, vec in pairs(newSpots) do
         if spotsData[areaId] ~= nil and spotsData[areaId][spotId] ~= nil then
             local percentGrown = spotsData[areaId][spotId][1]
@@ -193,6 +199,7 @@ function renderSpots(areaId)
                 local model = getRightCropModel(type, percentGrown)
                 if not HasModelLoaded(model) then
                     RequestModel(model)
+                    table.insert(loadedModels, model)
                     while not HasModelLoaded(model) do
                         Citizen.Wait(10)
                     end
@@ -203,6 +210,12 @@ function renderSpots(areaId)
             end
         end
     end
+
+    for _, model in pairs(loadedModels) do
+        SetModelAsNoLongerNeeded(model)
+    end
+
+    loadedModels = nil
 
     -- print("rows: " .. #farmsRows[areaId], "per row: " .. numSpots, "total: " .. #farmsRows[areaId] * numSpots)
 
@@ -270,13 +283,17 @@ Citizen.CreateThread(
                         if growPercentage < 99 then
                             DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
                         else
-                            DisplayText("Pronto para colher", 0.5, 0.5)
+                            -- if growPercentage <= 100 then
+                                DisplayText("Pronto para colher", 0.5, 0.5)
+                            -- end
                         end
                         if tempPlacementObject == nil and IsControlJustPressed(1, 0xF84FA74F) then
                             if growPercentage < 99 then
                                 TriggerServerEvent("VP:FARM:TryToWaterCrop", insideFarmAreaId, aimingAtSpotId)
                             else
-                                TriggerServerEvent("VP:FARM:TryToHarvestCrop", insideFarmAreaId, aimingAtSpotId)
+                                -- if growPercentage <= 100 then
+                                    TriggerServerEvent("VP:FARM:TryToHarvestCrop", insideFarmAreaId, aimingAtSpotId)
+                                -- end
                             end
                         end
                     else
@@ -416,10 +433,6 @@ function getRightCropModel(type, percentGrown)
         end
     end
 
-    -- "CRP_COTTON_AD_SIM",
--- "CRP_COTTON_BA_SIM",
--- "CRP_COTTON_BB_SIM",
-
     if type == "sugarcane" then
         r = "CRP_SUGARCANE_AD_SIM"
         if percentGrown ~= nil then
@@ -432,6 +445,9 @@ function getRightCropModel(type, percentGrown)
             if percentGrown >= 70 then
                 r = "CRP_SUGARCANE_AD_SIM"
             end
+            -- if percentGrown > 100 then
+            --     r = "CRP_SUGARCANE_AE_P"
+            -- end
         end
     end
 
