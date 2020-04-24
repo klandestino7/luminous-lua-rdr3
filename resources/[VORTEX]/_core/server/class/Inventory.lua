@@ -728,6 +728,11 @@ local b = {
 
 function getFirstLastSlots(itemId)
     local itemData = API.getItemDataFromId(itemId)
+
+    if itemData == nil then
+        return 0, 0
+    end
+
     local itemType = itemData:getType()
     local itemTabType
 

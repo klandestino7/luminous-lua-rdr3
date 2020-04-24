@@ -570,7 +570,7 @@ ItemList = {
         description = 'Gema bonita e pesada, mas está encoberta por metal pesado.',
         stackSize = 7,
     },
-    ['pedra'] = {
+    ['stone'] = {
         type = 'generic',
         name = 'Garnet Bruta',
         weight = 3.5,
@@ -591,7 +591,7 @@ ItemList = {
         description = 'Ouro recém minerado, está em forma bruta, e por isso é tão pesado.',
         stackSize = 7,
     },
-    ['raw_coppere'] = {
+    ['raw_copper'] = {
         type = 'generic',
         name = 'Minério de Cobre',
         weight = 1.0,
@@ -618,6 +618,20 @@ ItemList = {
         weight = 1.0,
         description = 'Minério de carvão já processado.',
         stackSize = 20,
+    },
+    ['ammolite'] = {
+        type ='valuable',
+        name ='Ammolite',
+        weight = 2.5,
+        description ='Mineral raro',
+        stackSize = 1,
+    },
+    ['flourite'] = {
+        type ='valuable',
+        name ='Flourite',
+        weight = 2.5,
+        description ='Mineral raro',
+        stackSize = 1,
     },
     ['wood_log'] = {
         type = 'generic',
@@ -963,7 +977,7 @@ ItemList = {
         description = 'Material extraído das canas-de-açucar de Rhodes, o açúcar é útil em várias criações.',
         stackSize = 45,
     },
-    ['picareta'] = {
+    ['pickaxe'] = {
         type = 'generic',
         name = 'Picareta',
         weight = 1.5,
