@@ -1,14 +1,19 @@
-local doorStates = {
-    [622733334] = 0
+local doorGroupsIsOpen = {
+    [1] = {
+        [1] = false,
+        [2] = false,
+        [3] = false,
+        [4] = false,
+        [10] = false,
+        [11] = false,
+    }
 }
--- [doorHash] = pair
 
 RegisterNetEvent("VP:HOUSING:TryToToggleDoorState")
 AddEventHandler(
     "VP:HOUSING:TryToToggleDoorState",
-    function(doorHash)
-
-        if doorStates[doorHash] == nil then
+    function(doorGroup, doorIndex, pairIndex)
+        if doorGroupsIsOpen[doorGroup] == nil or doorGroupsIsOpen[doorGroup][doorIndex] == nil then
             return
         end
 
@@ -27,14 +32,23 @@ AddEventHandler(
 
         -- if character_houseid == door_houseid then
 
-        if doorStates[doorHash] == 0 then
-            doorStates[doorHash] = 1
-        else
-            doorStates[doorHash] = 0
+        doorGroupsIsOpen[doorGroup][doorIndex] = not doorGroupsIsOpen[doorGroup][doorIndex]
+
+        if pairIndex ~= nil then
+            doorGroupsIsOpen[doorGroup][pairIndex] = doorGroupsIsOpen[doorGroup][doorIndex]
         end
 
-            TriggerClientEvent('VP:HOUSING:SetDoorState', -1, doorHash, doorStates[doorHash])
+        TriggerClientEvent("VP:HOUSING:SetDoorIsOpen", -1, doorGroup, doorIndex, doorGroupsIsOpen[doorGroup][doorIndex])
         -- end
+    end
+)
+
+RegisterNetEvent("VP:HOUSING:GetSynced")
+AddEventHandler(
+    "VP:HOUSING:GetSynced",
+    function()
+        local _source = source
+        TriggerClientEvent("VP:HOUSING:SyncDoorStates", _source, doorGroupsIsOpen)
     end
 )
 
@@ -42,7 +56,6 @@ AddEventHandler(
     "API:playerSpawned",
     function(source, user_id, firstSpawn)
         if firstSpawn then
-            AddEventHandler("VP:HOUSING:SyncDoorStates", source, doorStates)
         end
     end
 )
