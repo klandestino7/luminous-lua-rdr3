@@ -27,6 +27,9 @@ AddEventHandler(
 AddEventHandler(
 	"onResourceStart",
 	function(resourceName)
+
+		SetMinimapHideFow(true) -- remove
+
 		if (GetCurrentResourceName() ~= resourceName) then
 			return
 		end
@@ -36,7 +39,6 @@ AddEventHandler(
 
 -- Citizen.CreateThread(
 -- 	function()
--- 		SetMinimapHideFow(true)
 -- 		Citizen.InvokeNative(0x63E7279D04160477, true)
 -- 		Citizen.InvokeNative("0x1E5B70E53DB661E5", 1122662550, 347053089, 0, "Faroeste", "Roleplay", "Bem-vindo!")
 -- 	end

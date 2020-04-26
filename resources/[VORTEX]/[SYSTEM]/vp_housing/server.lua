@@ -1,5 +1,5 @@
 local doorGroupsIsOpen = {
-    [1] = {
+    [1] = { -- BraitWaite Mansion
         [1] = false,
         [2] = false,
         [3] = false,
@@ -7,7 +7,7 @@ local doorGroupsIsOpen = {
         [10] = false,
         [11] = false,
     },
-    [2] = {
+    [2] = { -- Mattock House
         [1] = false,
         [2] = false,
     }
@@ -22,19 +22,14 @@ AddEventHandler(
         end
 
         local _source = source
-        -- local User = API.getUserFromUserId(_source)
-        -- local Character = User:getCharacter()
+        local User = API.getUserFromUserId(_source)
+        local Character = User:getCharacter()
 
-        -- local character_houseid = Character.houseId
 
-        -- if character_houseid == nil then
-        --     User:notify("You cant open this door's house")
-        --     return
-        -- end
-
-        -- local door_houseid = doorStates[doorId]
-
-        -- if character_houseid == door_houseid then
+        if not Character:hasGroupOrInheritance('house:' .. doorGroup) then
+            User:notify('Você não tem permissão!')
+            return
+        end
 
         doorGroupsIsOpen[doorGroup][doorIndex] = not doorGroupsIsOpen[doorGroup][doorIndex]
 
@@ -43,7 +38,6 @@ AddEventHandler(
         end
 
         TriggerClientEvent("VP:HOUSING:SetDoorIsOpen", -1, doorGroup, doorIndex, doorGroupsIsOpen[doorGroup][doorIndex])
-        -- end
     end
 )
 
@@ -53,13 +47,5 @@ AddEventHandler(
     function()
         local _source = source
         TriggerClientEvent("VP:HOUSING:SyncDoorStates", _source, doorGroupsIsOpen)
-    end
-)
-
-AddEventHandler(
-    "API:playerSpawned",
-    function(source, user_id, firstSpawn)
-        if firstSpawn then
-        end
     end
 )

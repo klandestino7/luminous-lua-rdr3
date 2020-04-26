@@ -21,5 +21,12 @@ Config_Permissions = {
     },
     ["recruit"] = {
         type = "police"
+    },
+    ----------
+    ["home:1"] = {
+        type = "house_rent"
+    },
+    ["home:2"] = {
+        type = "house_rent"
     }
 }

@@ -187,6 +187,17 @@ function drawPrompt(isOpen)
         PromptSetStandardMode(prompt, true)
         PromptSetGroup(prompt, promptGroup)
         PromptRegisterEnd(prompt)
+
+        -- local prompt = PromptRegisterBegin()
+        -- PromptSetControlAction(prompt, 0xE8342FF2)
+        -- PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Comprar Armas'))
+        -- PromptSetEnabled(prompt, 1)
+        -- PromptSetVisible(prompt, 1)
+        -- PromptSetHoldMode(prompt, 1)
+        -- PromptSetPosition(prompt, values[1], values[2], values[3])
+        -- N_0x0c718001b77ca468(prompt, 3.0)
+        -- -- PrompContextSetSize(prompt, 3.0)
+        -- PromptRegisterEnd(prompt)
     else
         PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
 
