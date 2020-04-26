@@ -35,3 +35,8 @@ RegisterCommand(
 		end
 	end
 )
+
+RegisterNetEvent('VP:ADMIN:outift')
+AddEventHandler('VP:ADMIN:outift', function(kek) 
+    SetPedOutfitPreset(PlayerPedId(), kek)
+end)
