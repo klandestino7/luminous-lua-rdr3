@@ -52,7 +52,8 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroup("admin") and args[1] then
-            local tplayer = API.getUserSource(parseInt(args[1]))
+            local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
+            print(tplayer)
             if tplayer then
                 cAPI.teleport(source, cAPI.getPosition(tplayer))
             end
@@ -213,7 +214,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroup("admin") then
             local x, y, z = cAPI.getPosition(source)
-            API.prompt(source, "Cordenadas:", string.format("%.3f", x) .. "," .. string.format("%.3f", y) .. "," .. string.format("%.3f", z))
+            API.prompt(source, "Cordenadas:", x .. "," .. y .. "," .. z)
         end
     end
 )
