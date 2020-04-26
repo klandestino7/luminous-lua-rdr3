@@ -72,16 +72,12 @@ function cAPI.SetFaceFeature(pedenti, ff)
     end   
 end
 
-function cAPI.SetBodyType(pedenti, sex,data)
+function cAPI.SetBodyType(pedenti, data)
     local ped = pedenti
-    if sex == 'mp_male' then        
-        print(data)
-        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, math.floor(tonumber(data + 124)), true, true, true)
-        print('change1')
+    if IsPedMale(ped) then    
+        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, tonumber(data), true, true, true)
     else
-        print(data)
-        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, math.floor(tonumber(data + 110)), true, true, true)
-        print('change2')
+        Citizen.InvokeNative(0xA5BAE410B03E7371, ped, tonumber(data), true, true, true)
     end
 end
 

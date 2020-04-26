@@ -284,7 +284,7 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
 
     self.getLastPosition = function(this)
         local lastPositionFromDb = self:getData(self.id, "charTable", "position")
-        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {-299.22,749.49,117.96}
+        return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {-329.9, 775.11, 121.74}
     end
 
     self.saveClothes = function()

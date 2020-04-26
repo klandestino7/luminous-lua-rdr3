@@ -68,10 +68,17 @@ function API.getUsers()
     return API.users
 end
 
-function API.setBanned(user_id)
-    if user_id ~= nil then
-        API_Database.execute("FCRP/SetBanned", {user_id = user_id})
-        DropPlayer(sourcePlayer, reason)
+function API.setBanned(this, userid, reason)
+    if userid ~= nil then
+        print(userid, reason)
+        API_Database.query("FCRP/SetBanned", {user_id = userid, reason = reason})
+        DropPlayer(this, reason)
+    end
+end
+
+function API.UnBan(this, userid)
+    if userid ~= nil then
+        API_Database.query("FCRP/UnBan", {user_id = userid})
     end
 end
 
@@ -98,7 +105,7 @@ function API.dropPlayer(source, reason)
         API.sources[source] = nil
         API.identifiers[steamID] = nil
         print(GetPlayerName(source) .. ' (' .. User:getIpAddress() .. ') desconectou (motivo = ' .. reason .. ')')
-        User:saveCharacter()
+    --    User:saveCharacter()
     end
 end
 

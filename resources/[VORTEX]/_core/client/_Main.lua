@@ -81,7 +81,6 @@ Citizen.CreateThread(
     end
 )
 
-
 Citizen.CreateThread(
 	function()
 		while true do
@@ -619,9 +618,6 @@ function cAPI.playAnim(dict, anim, speed)
 	end
 end
 
-function cAPI.TaskClipSet(dict, anim)
-end
-
 function cAPI.createVehicle(Vmodel)
 	local veh = GetHashKey(Vmodel)
 	local ply = GetPlayerPed()
@@ -634,9 +630,10 @@ function cAPI.createVehicle(Vmodel)
 				Wait(1000)
 				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
 			end
-			local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
-			print("Model spawned Succes: " .. Vmodel)
-			SetModelAsNoLongerNeeded(veh)
+			if HasModelLoaded(veh) then
+				local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
+				print("Model spawned Succes: " .. Vmodel)
+			end
 		end
 	)
 end

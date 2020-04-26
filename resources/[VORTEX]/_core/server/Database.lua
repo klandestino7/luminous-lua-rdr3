@@ -151,7 +151,8 @@ Citizen.CreateThread(
 API_Database.prepare('FCRP/CreateUser', 'INSERT INTO users(identifier, name, banned) VALUES(@identifier, @name, 0); SELECT LAST_INSERT_ID() AS id')
 API_Database.prepare('FCRP/SelectUser', 'SELECT * from users WHERE identifier = @identifier')
 API_Database.prepare('FCRP/BannedUser', 'SELECT banned from users WHERE user_id = @user_id')
-API_Database.prepare('FCRP/SetBanned', 'UPDATE users SET banned = 1 WHERE user_id = @user_id')
+API_Database.prepare('FCRP/SetBanned', 'UPDATE users SET banned = 1, reason = @reason WHERE user_id = @user_id')
+API_Database.prepare('FCRP/UnBan', 'UPDATE users SET banned = 0, reason = "" WHERE user_id = @user_id')
 API_Database.prepare('FCRP/Whitelisted', 'SELECT * from whitelist WHERE identifier = @identifier')
 
 -------- CHARACTER QUERIES -----------

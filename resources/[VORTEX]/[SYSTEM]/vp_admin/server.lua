@@ -52,7 +52,8 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroup("admin") and args[1] then
-            local tplayer = API.getUserSource(parseInt(args[1]))
+            local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
+            print(tplayer)
             if tplayer then
                 cAPI.teleport(source, cAPI.getPosition(tplayer))
             end
@@ -97,7 +98,36 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroup("admin") and args[1] then
             local sourcePlayer = API.getUserFromUserId(parseInt(args[1])):getSource()
-            API.setBanned(sourcePlayer, args[1], "Banido")
+            if args[2] ~= nil then
+                API.setBanned(sourcePlayer, args[1], "Banido por " .. table.concat(args, " ",2))                 
+            else
+                API.setBanned(sourcePlayer, args[1], "Banido")
+            end
+        end
+    end
+)
+
+RegisterCommand(
+    "unban",
+    function(source, args, rawCommand)
+        if rawCommand then
+            if args[2] ~= nil then
+                API.UnBan(User, args[1])                 
+            else
+                API.UnBan(User, args[1])
+            end
+            return
+        end
+
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        
+        if Character:hasGroup("admin") and args[1] then
+            if args[2] ~= nil then
+                API.setBanned(User, args[1])                 
+            else
+                API.setBanned(User, args[1])
+            end
         end
     end
 )
@@ -155,15 +185,7 @@ RegisterCommand(
     end
 )
 
-RegisterCommand(
-    "unban",
-    function(source, args, rawCommand)
-        local User = API.getUserFromSource(source)
-        local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
-        end
-    end
-)
+
 
 RegisterCommand(
     "setlevel",
@@ -213,7 +235,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroup("admin") then
             local x, y, z = cAPI.getPosition(source)
-            API.prompt(source, "Cordenadas:", string.format("%.3f", x) .. "," .. string.format("%.3f", y) .. "," .. string.format("%.3f", z))
+            API.prompt(source, "Cordenadas:", x .. "," .. y .. "," .. z)
         end
     end
 )
@@ -272,6 +294,27 @@ RegisterCommand(
         end
     end
 )
+
+RegisterCommand(
+    "outfit",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroup("admin") then
+            if args[2] ~= nil then
+                local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
+                if tplayer ~= nil then
+                    TriggerClientEvent('VP:ADMIN:outift', tplayer, tonumber(args[2])) 
+                end
+            else
+                TriggerClientEvent('VP:ADMIN:outift', _source, tonumber(args[1])) 
+            end
+        end
+    end
+)
+
 
 -- RegisterCommand(
 --     "weapon",

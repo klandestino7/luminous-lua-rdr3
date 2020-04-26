@@ -164,7 +164,7 @@ function API.User(source, id, ipAddress)
     end
     self.saveCharacter = function()
         if self.Character ~= nil then
-            self.Character:savePosition(self:getSource())
+            self.Character:savePosition(Character:getLastPosition())
         end
     end
 

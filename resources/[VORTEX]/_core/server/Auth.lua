@@ -83,6 +83,7 @@ AddEventHandler(
             local weapons = cAPI.getWeapons(_source)
             User:getCharacter():setWeapons(weapons)
         end ]]
+        print(reason)
         API.dropPlayer(_source, reason)
     end
 )

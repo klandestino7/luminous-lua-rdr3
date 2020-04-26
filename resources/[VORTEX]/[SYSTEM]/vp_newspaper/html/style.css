@@ -9,22 +9,19 @@ body{
     background-position: center;
     background-size: 72% 84%;
     background-repeat: no-repeat;
-
-
 }
 
 .jornal{
     width:68%;
     height:80%;
-    overflow: hidden;
-    
+    overflow: hidden;    
 }
 .close {
     position: absolute;
     right: 15%;
     top:9%;
-
 }
+
 .close img{
     position: relative;
     right:1px;
