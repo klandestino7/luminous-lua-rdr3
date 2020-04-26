@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   PRIMARY KEY (`charid`),
   KEY `FK_characters_users` (`user_id`),
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela redm.characters: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `characters` DISABLE KEYS */;
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `chests` (
   PRIMARY KEY (`id`),
   KEY `FK_chests_characters` (`charid`),
   CONSTRAINT `FK_chests_characters` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela redm.chests: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `chests` DISABLE KEYS */;
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `horses` (
   PRIMARY KEY (`id`),
   KEY `FK_horses_characters` (`charid`),
   CONSTRAINT `FK_horses_characters` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela redm.horses: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `horses` DISABLE KEYS */;
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `posses` (
   PRIMARY KEY (`id`),
   KEY `charid` (`charid`),
   CONSTRAINT `FK_posses_characters` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela redm.posses: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `posses` DISABLE KEYS */;
@@ -291,7 +291,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(21) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `banned` int(11) NOT NULL DEFAULT 0,
+  `banned` int(11) unsigned NOT NULL DEFAULT 0,
+  `reason` varchar(50) NOT NULL DEFAULT 'não definido',
   PRIMARY KEY (`user_id`),
   KEY `identifier` (`identifier`),
   CONSTRAINT `FK_users_whitelist` FOREIGN KEY (`identifier`) REFERENCES `whitelist` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -304,11 +305,11 @@ INSERT INTO `users` (`user_id`, `identifier`, `name`, `banned`) VALUES
 
 -- Copiando estrutura para tabela redm.whitelist
 CREATE TABLE IF NOT EXISTS `whitelist` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(21) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `identifier` (`identifier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT AUTO_INCREMENT=2 CHARSET=utf8;
 
 -- Copiando dados para a tabela redm.whitelist: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `whitelist` DISABLE KEYS */;
