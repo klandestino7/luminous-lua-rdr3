@@ -4,6 +4,8 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local Cinematic = false
+
 Citizen.CreateThread(
     function()
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
@@ -16,10 +18,16 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
-            --   N_0x69d65e89ffd72313(true) -- cinematic--
-            --N_0xbae08f00021bffb2(horse) -- agitates the horse
+                  
+            if Cinematic then
+                N_0x69d65e89ffd72313(true)
+            else
+                N_0x69d65e89ffd72313(false)
+            end
 
-            -- N_0x8bc7c1f929d07bf3(-1679307491) -- show
+
+            --N_0xbae08f00021bffb2(horse) -- agitates the horse
+            --N_0x8bc7c1f929d07bf3(-1679307491) -- show
 
             N_0x4cc5f2fc1332577f(-66088566) -- hide mpmoney
             N_0x50c803a4cd5932c5(false)
@@ -28,21 +36,44 @@ Citizen.CreateThread(
             Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
             cAPI.Temperatura()
             DisplayRadar(true)
+
+        end
+    end
+)
+RegisterCommand(
+    "cinematic",
+    function(source, args)
+
+        if args[1] == '1' then
+            Cinematic = true
+        elseif args[1] == "2" then
+            print('foi')
+            Cinematic = false
         end
     end
 )
 
+
+
+
 RegisterCommand(
     "cans",
     function(source, args)
-        Citizen.InvokeNative(0xF6A7C08DF2E28B28, PlayerPedId(), 0, 0.5, true) -- cançaso
-        Citizen.InvokeNative(0xF0FE8E790BFEB5BB, PlayerPedId(), 0, 0.2, false)
+
+        Citizen.InvokeNative(0xF6A7C08DF2E28B28, PlayerPedId(), 2, 1.0, true) -- bost        
 
         Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 2, 100)
-        Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 1, 100)
-        print(Citizen.InvokeNative(IsDeadeyeAbilityLocked, PlayerPedId()))
+
+        Citizen.InvokeNative(0xF0FE8E790BFEB5BB, PlayerPedId(), 5)
+
+   --     Citizen.InvokeNative(IsDeadeyeAbilityLocked, PlayerPedId())
+
         Wait(100)
-        -- print(GetAttributeCoreValue(PlayerPedId, 2))
+        
+        SetDeadeyeAbilityLocked(PlayerPedId(), 5, false)
+
+        print(GetAttributeCoreValue(PlayerPedId(), 2))
+
     end
 )
 

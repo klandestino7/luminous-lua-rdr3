@@ -61,9 +61,6 @@ AddEventHandler('TREASURE:createPedDefender', function(x,y,z)
     ClearPedSecondaryTask(ped4)
 	SetEntityAsMissionEntity(ped4)
 	SetRelationshipBetweenGroups(5, ped4, `PLAYER`)
-
-	SetModelAsNoLongerNeeded(pedModelHash)
-	SetModelAsNoLongerNeeded(pedModelHash2)
 end)
 
 RegisterNetEvent('TREASURE:killblip')
