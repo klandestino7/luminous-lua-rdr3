@@ -266,12 +266,14 @@ Citizen.CreateThread(
                                 aimingAtSpotId = spotId
                             end
 
-                            if spotsData[areaId] == nil or spotsData[areaId][spotId] == nil then
-                                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 153, 153, 153, 255)
-                            else
+                            if tempPlacementObject ~= nil then
+                                if spotsData[areaId] == nil or spotsData[areaId][spotId] == nil then
+                                    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 153, 153, 153, 255)
+                                else
                                 -- if spotsData[areaId] ~= nil and spotsData[areaId][spotId] ~= nil and spotsData[areaId][spotId][1] == 0 then
                                     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 230, 122, 122, 255)
                                 -- end
+                                end
                             end
                         end
                     end
@@ -474,3 +476,11 @@ AddEventHandler(
         end
     end
 )
+
+-- AddEventHandler(
+--     "onResourceStart",
+--     function(resourceName)
+--         if resourceName == GetCurrentResourceName() then
+--         end
+--     end
+-- )

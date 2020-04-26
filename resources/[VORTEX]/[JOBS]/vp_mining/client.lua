@@ -97,7 +97,7 @@ AddEventHandler(
     function(mineral_item)
         local prop
         if mineral_item == "stone" then
-            prop = "s_meteoriteshard01x"
+            prop = "p_campfirerocksml02x"
         elseif mineral_item == "raw_coal" then
             prop = "p_coal01x"
         elseif mineral_item == "raw_copper" then

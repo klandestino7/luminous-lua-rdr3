@@ -2,10 +2,14 @@ local doorGroups = {
     [1] = {
         [1] = {1595076728, false, 2},
         [2] = {1439227364, false, 1},
-        [3] = {530930529, false , 4},
+        [3] = {530930529, false, 4},
         [4] = {1299101427, false, 3},
         [10] = {764233269, false},
-        [11] = {2504431014, false},
+        [11] = {2504431014, false}
+    },
+    [2] = {
+        [1] = {1282705079, false},
+        [2] = {1511858696, false}
     }
 }
 
@@ -14,6 +18,7 @@ local doorGroups = {
 local windows = {
     {-1484366741, vec3(-5206.49, -3493.25, -21.63)},
     {-1484366741, vec3(-5207.82, -3488.29, -21.63)},
+    {1757176412, vec3(1365.99, -874.96, 70.09)}
 }
 
 local cDoorGroup
@@ -46,11 +51,24 @@ Citizen.CreateThread(
                 local isClose = false
                 for _, v in pairs(doorGroups[cDoorGroup]) do
                     local doorHash = v[1]
-                    -- local doorState = v[2]
+                    local doorIsOpen = v[2]
                     local door = GetDoorEntity(doorHash)
 
                     if door ~= 0 then
                         if #(pedVec3 - GetEntityCoords(door)) <= 10.0 then
+                            local state = doorIsOpen == true and 0 or 1
+
+                            RegisterDoorSomething(doorHash)
+                            DoorSystemSetDoorState(doorHash, state)
+
+                            local pair = v[3]
+
+                            if pair ~= nil then
+                                local doorHash_pair = doorGroups[cDoorGroup][pair][1]
+                                RegisterDoorSomething(doorHash_pair)
+                                DoorSystemSetDoorState(doorHash_pair, state)
+                            end
+
                             isClose = true
                         end
                     end
@@ -65,13 +83,13 @@ Citizen.CreateThread(
                 for doorGroup, doorInfo in pairs(doorGroups) do
                     for _, v in pairs(doorInfo) do
                         local doorHash = v[1]
-                        -- local doorState = v[2]
+                        -- local isOpen = v[2]
                         local door = GetDoorEntity(doorHash)
 
                         if door ~= 0 then
                             if #(pedVec3 - GetEntityCoords(door)) <= 10.0 then
                                 cDoorGroup = doorGroup
-                                print("cDoorGroup", cDoorGroup)
+                                -- print("cDoorGroup", cDoorGroup)
                                 break
                             end
                         end
@@ -83,13 +101,10 @@ Citizen.CreateThread(
                 local windowModel = v[1]
                 local windowVec3 = v[2]
 
-                -- if #(pedVec3 - windowVec3) <= 100 then
                 local window = GetClosestObjectOfType(windowVec3, 1.0, windowModel, false, 0, 0)
-                -- print('Window ' .. window .. ' is now invincible')
                 if window ~= 0 then
                     SetEntityInvincible(window, true)
                 end
-                -- end
             end
         end
     end
@@ -111,7 +126,6 @@ Citizen.CreateThread(
                     local doorIsOpen = v[2]
                     local door = GetDoorEntity(doorHash)
 
-
                     local dist = #(pedVec3 - GetEntityCoords(door))
                     if door ~= 0 and dist <= 2.5 then
                         -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVec3, GetEntityCoords(door), 255, 0, 0, 255)
@@ -129,9 +143,14 @@ Citizen.CreateThread(
                             local doorIsOpen = v[2]
                             local door = GetDoorEntity(doorHash)
 
+                            local state = doorIsOpen == true and 0 or 1
+
+                            RegisterDoorSomething(doorHash)
+                            DoorSystemSetDoorState(doorHash, state)
+
                             if door ~= 0 and #(pedVec3 - GetEntityCoords(door)) <= 2.5 then
                                 cDoorIndex = _
-                                -- print("cDoorIndex", cDoorIndex)
+                            -- print("cDoorIndex", cDoorIndex)
                             end
                         end
                     end
@@ -140,7 +159,7 @@ Citizen.CreateThread(
 
             local ped = PlayerPedId()
             local pedVec3 = GetEntityCoords(ped)
-            for k,vv in pairs(doorGroups) do
+            for k, vv in pairs(doorGroups) do
                 for _, v in pairs(vv) do
                     local doorHash = v[1]
                     local door = GetDoorEntity(doorHash)
@@ -154,7 +173,7 @@ Citizen.CreateThread(
 
 local prompt
 local promptGroup
-local varStringCasa = CreateVarString(10, "LITERAL_STRING", "Casa")
+local varStringCasa = CreateVarString(10, "LITERAL_STRING", "Porta")
 
 function drawPrompt(isOpen)
     if prompt == nil then

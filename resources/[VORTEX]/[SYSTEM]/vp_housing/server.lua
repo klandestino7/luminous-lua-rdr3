@@ -6,6 +6,10 @@ local doorGroupsIsOpen = {
         [4] = false,
         [10] = false,
         [11] = false,
+    },
+    [2] = {
+        [1] = false,
+        [2] = false,
     }
 }
 
