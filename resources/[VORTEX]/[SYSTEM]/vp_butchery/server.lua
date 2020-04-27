@@ -4,53 +4,29 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local sellables = {
+    [`A_C_DEER_01`] = 100,
+}
 
-local webhookLink = "https://discordapp.com/api/webhooks/670247764919189504/UD3Rj9xqa76sJVAjWACCmDg8bGojZqE1xb2nV70uRIaRW361Yt90ydh_u11LTvypoNYc"
+RegisterNetEvent("VP:BUTCHER:TryToSell")
+AddEventHandler(
+    "VP:BUTCHER:TryToSell",
+    function(entModel, entity, quality)
+        local _source = source
+        
+        local payment = sellables[entModel]
 
-RegisterServerEvent('VP:BUTCHER:addmoneyskin')
-AddEventHandler( 'VP:BUTCHER:addmoneyskin', function (carried)
-	local _source = source
-	local User = API.getUserFromSource(source)
-	local Character = User:getCharacter()
-	local amount = math.random(1, 2)
-	local name = Character:getName()
-	local Inventory = User:getCharacter():getInventory()
+        if payment == nil then
+            TriggerClientEvent('VP:BUTCHER:EntityNotAccepted', _source, entity)
+            print('nao vendivel')
+            return
+        end
 
-	User:notify("Você entregou o animal "..carried.." e recebeu "..amount)
-	Inventory:addItem('money', tonumber(amount))
-	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..amount/100, 17411680)
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+        local Inventory = Character:getInventory()
 
-end)
-
-
-RegisterServerEvent('VP:BUTCHER:addmoney')
-AddEventHandler( 'VP:BUTCHER:addmoney', function (amount, carried)
-	local price = amount
-	local _source = source
-	local User = API.getUserFromSource(source)
-	local Character = User:getCharacter()
-	local _amount = amount	
-	local name = Character:getName()
-
-	local Inventory = User:getCharacter():getInventory()
-	print(price)
-	Inventory:addItem('money', price)
-	
-	User:notify("Você entregou o animal "..carried.." e recebeu "..price/100)
-	--sendToDiscord("Acougue Log", name.." entregou para o açougue o animal "..carried.." e recebeu "..price/100, 17411680)
-
-end)
-
--- function sendToDiscord(name, message, color)
---     local connect = {
---           {
---               ["color"] = color,
---               ["title"] = "**".. name .."**",
---               ["description"] = message,
---               ["footer"] = {
---                   ["text"] = "Criado por Crazy",
---               },
---           }
---       }
---     PerformHttpRequest(webhookLink, function(err, text, headers) end, 'POST', json.encode({username = 'Mortes', embeds = connect, avatar_url = ''}), { ['Content-Type'] = 'application/json' })
---   end
+        Inventory:addItem('money', payment)
+        User:notify('Você recebeu $' .. payment .. ' por este animal!')
+    end
+)
