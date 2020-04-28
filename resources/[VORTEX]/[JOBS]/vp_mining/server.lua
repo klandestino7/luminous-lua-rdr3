@@ -83,9 +83,51 @@ AddEventHandler(
     end
 )
 
-RegisterServerEvent("VP:MINING:TryToGetMineral")
+-- RegisterServerEvent("VP:MINING:TryToGetMineral")
+-- AddEventHandler(
+--     "VP:MINING:TryToGetMineral",
+--     function(mineral_item)
+--         local _source = source
+--         local User = API.getUserFromSource(_source)
+--         local Character = User:getCharacter()
+
+--         if Character == nil then
+--             return
+--         end
+
+--         local Inventory = Character:getInventory()
+
+--         if not found[_source] or not found[_source][mineral_item] then
+--             return
+--         end
+
+--         local prev = found[_source][mineral_item]
+
+--         if prev > 1 then
+--             found[_source][mineral_item] = prev - 1
+--         else
+--             found[_source][mineral_item] = nil
+--             if #found[_source] <= 0 then
+--                 found[_source] = nil
+--             end
+--         end
+
+--         local a = 0
+--         for i, v in pairs(r) do
+--             if mineral_item == v[1] then
+--                 math.randomseed(os.time())
+--                 a = math.random(v[3])
+--                 break
+--             end
+--         end
+
+--         Inventory:addItem(mineral_item, a)
+--     end
+-- )
+
+RegisterServerEvent("VP:MINING:TryToStartRefining")
 AddEventHandler(
-    "VP:MINING:TryToGetMineral",
+    "VP:MINING:TryToStartRefining",
     function(mineral_item)
         local _source = source
         local User = API.getUserFromSource(_source)
@@ -96,76 +138,74 @@ AddEventHandler(
         end
 
         local Inventory = Character:getInventory()
-
-        if not found[_source] or not found[_source][mineral_item] then
-            return
-        end
-
-        local prev = found[_source][mineral_item]
-
-        if prev > 1 then
-            found[_source][mineral_item] = prev - 1
-        else
-            found[_source][mineral_item] = nil
-            if #found[_source] <= 0 then
-                found[_source] = nil
-            end
-        end
-
-        local a = 0
-        for i, v in pairs(r) do
-            if mineral_item == v[1] then
-                math.randomseed(os.time())
-                a = math.random(v[3])
-                break
-            end
-        end
-
-        Inventory:addItem(mineral_item, a)
     end
 )
 
-RegisterServerEvent("VP:MINING:checkprocess")
+RegisterServerEvent("VP:MINING:TryToStartRefining")
 AddEventHandler(
-    "VP:MINING:checkprocess",
+    "VP:MINING:TryToStartRefining",
     function()
         local _source = source
         local User = API.getUserFromSource(_source)
         local Inventory = User:getCharacter():getInventory()
 
-        local pedra = Inventory:getItemAmount("generic_pedra")
-        local pedraData = API.getItemDataFromId("generic_pedra")
-        if pedra >= 1 then
-            TriggerEvent("VP:MINING:checknum", _source, 1)
-            User:notify("Você está processando " .. pedraData:getName())
+        local stone = false
+        local coal = false
+        local copper = false
+        local gold = false
+        -- local ammolite = false
+        -- local flourite = false
+
+        if Inventory:getItemAmount('stone') >= 3 then
+            stone = true
+        end
+
+        if Inventory:getItemAmount('raw_coal') >= 3 then
+            coal = true
+        end
+
+        if Inventory:getItemAmount('raw_copper') >= 2 then
+            copper = true
+        end
+
+        if Inventory:getItemAmount('raw_gold') >= 1 then
+            gold = true
+        end
+
+        if not stone and not coal and not copper and not gold then
+            User:notify('Você não tem minerais suficientes para processar!')
             return
         end
-        local carvao = Inventory:getItemAmount("generic_carvaobruto")
-        local carvaoData = API.getItemDataFromId("generic_carvaobruto")
-        if carvao >= 1 then
-            TriggerEvent("VP:MINING:checknum", _source, 2)
-            User:notify("Você está processando " .. carvaoData:getName())
-            return
+
+        TriggerClientEvent("VP:MINING:StartProcessingAnimation", _source)
+
+        User:notify('Processando...')
+
+        Citizen.Wait(20000)
+
+        if stone then
+            if Inventory:getItemAmount('stone') >= 3 then
+                Inventory:removeItem(-1, 'stone', 3)
+            end
         end
-        local cobre = Inventory:getItemAmount("generic_cobrebruto")
-        local cobreData = API.getItemDataFromId("generic_cobrebruto")
-        if cobre >= 1 then
-            TriggerEvent("VP:MINING:checknum", _source, 3)
-            User:notify("Você está processando " .. cobreData:getName())
-            return
+
+        if coal then
+            if Inventory:getItemAmount('raw_coal') >= 3 then
+                Inventory:removeItem(-1, 'raw_coal', 3)
+            end
         end
-        local ouro = Inventory:getItemAmount("generic_ourobruto")
-        local ouroData = API.getItemDataFromId("generic_ourobruto")
-        if ouro >= 3 then
-            TriggerEvent("VP:MINING:checknum", _source, 4)
-            User:notify("Você está processando " .. cobreData:getName())
-            return
-        -- else
-        --     User:notify('Precisa de 3 ouro Bruto para minerar')
-        --     return
+
+        if copper then
+            if Inventory:getItemAmount('raw_copper') >= 2 then
+                Inventory:removeItem(-1, 'raw_copper', 2)
+            end
         end
-        -- TriggerClientEvent('VP:MINING:nothaveitem', _source)
-        User:notify("Você não possuí item para minerar")
+
+        if gold then
+            if Inventory:getItemAmount('raw_gold') >= 1 then
+                Inventory:removeItem(-1, 'raw_gold', 1)
+            end
+        end
     end
 )
 

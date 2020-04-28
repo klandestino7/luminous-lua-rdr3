@@ -5,8 +5,10 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local nearMiningSpotIndex
+local nearRefiningSpotIndex
 local prompt
 local promptGroup
+local varString
 local holdModeOn = false
 local isMining = false
 local carriables = {}
@@ -24,19 +26,73 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(1000)
             local pedVector = GetEntityCoords(PlayerPedId())
+
             nearMiningSpotIndex = nil
+            nearRefiningSpotIndex = nil
+
             local lastDist = 50
+
             for _, v in pairs(Config.Locations) do
-                local dist = #(pedVector - vec3(v[1], v[2], v[3]))
+                local ve = vec3(v[1], v[2], v[3])
+                local dist = #(pedVector - ve)
                 if dist < lastDist then
                     nearMiningSpotIndex = _
                     lastDist = dist
+                    if GetClosestObjectOfType(ve, 2.5, 942176598, false, false, false) == 0 then
+                        if not HasModelLoaded(942176598) then
+                            RequestModel(942176598)
+                            while not HasModelLoaded(942176598) do
+                                Citizen.Wait(10)
+                            end
+                        end
+
+                        
+                        local obj = CreateObject(942176598, ve, true, true, false, true, true)
+                        PlaceObjectOnGroundProperly(obj)
+                        FreezeEntityPosition(obj, true)
+                        SetModelAsNoLongerNeeded(942176598)
+        
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
+                    end
                 end
             end
-            if nearMiningSpotIndex == nil then
+
+            for _, v in pairs(Config.LocationsProcess) do
+                local ve = vec3(v[1], v[2], v[3])
+                local dist = #(pedVector - ve)
+                if dist < lastDist then
+                    nearRefiningSpotIndex = _
+                    lastDist = dist
+
+                    if GetClosestObjectOfType(ve, 2.5, 942176598, false, false, false) == 0 then
+                        if not HasModelLoaded(942176598) then
+                            RequestModel(942176598)
+                            while not HasModelLoaded(942176598) do
+                                Citizen.Wait(10)
+                            end
+                        end
+                        
+                        local obj = CreateObject(942176598, ve, true, true, false, true, true)
+                        PlaceObjectOnGroundProperly(obj)
+                        FreezeEntityPosition(obj, true)
+                        SetModelAsNoLongerNeeded(942176598)
+        
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
+                    end
+                end
+            end
+
+            if nearMiningSpotIndex == nil and nearRefiningSpotIndex == nil then
                 PromptDelete(prompt)
                 prompt = nil
                 promptGroup = nil
+                varString = nil
+            end
+
+            for _, carriable in pairs(carriables) do
+                if not DoesEntityExist(carriable) then
+                    carriables[_] = nil
+                end
             end
         end
     end
@@ -44,6 +100,7 @@ Citizen.CreateThread(
 
 Citizen.CreateThread(
     function()
+        ClearPedTasksImmediately(PlayerPedId())
         while true do
             Citizen.Wait(0)
             if nearMiningSpotIndex ~= nil and isMining == false then
@@ -55,7 +112,7 @@ Citizen.CreateThread(
 
                 local carriableCloseToPrompt = false
 
-                for carriable, _ in pairs(carriables) do
+                for _, carriable in pairs(carriables) do
                     local carriableV = GetEntityCoords(carriable)
                     if #(carriableV - v) <= 2.5 then
                         carriableCloseToPrompt = true
@@ -64,7 +121,7 @@ Citizen.CreateThread(
                 end
 
                 if carriableCloseToPrompt == false then
-                    if #(pedVector - v) <= 2.0 then
+                    if #(pedVector - v) <= 1.5 then
                         drawPrompt()
                         if PromptIsJustPressed(prompt) then
                             TriggerServerEvent("VP:MINING:TryToStartMining")
@@ -72,23 +129,42 @@ Citizen.CreateThread(
                     end
                 end
             end
+
+            if nearRefiningSpotIndex ~= nil and isRefining == false then
+                local d = Config.LocationsProcess[nearRefiningSpotIndex]
+                local v = vec3(d[1], d[2], d[3])
+
+                if #(pedVector - v) <= 1.5 then
+                    drawPrompt()
+                    if PromptIsJustPressed(prompt) then
+                        TriggerServerEvent("VP:MINING:TryToStartRefining")
+                    end
+                end
+            end
         end
     end
 )
 
-function drawPrompt()
+function drawPrompt(refining)
     if prompt == nil then
+        local text = "Começar"
+        varString = CreateVarString(10, "LITERAL_STRING", "Mineirar")
+        if refining then
+            text = "Começar"
+            varString = CreateVarString(10, "LITERAL_STRING", "Processamento")
+        end
+
         prompt = PromptRegisterBegin()
         promptGroup = GetRandomIntInRange(0, 0xffffff)
         PromptSetControlAction(prompt, 0x7F8D09B8)
-        PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Mineirar"))
+        PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", text))
         PromptSetEnabled(prompt, 1)
         PromptSetVisible(prompt, 1)
         PromptSetStandardMode(prompt, true)
         PromptSetGroup(prompt, promptGroup)
         PromptRegisterEnd(prompt)
     end
-    PromptSetActiveGroupThisFrame(promptGroup, CreateVarString(10, "LITERAL_STRING", "Ação"))
+    PromptSetActiveGroupThisFrame(promptGroup, varString)
 end
 
 RegisterNetEvent("VP:MINING:DropMineral")
@@ -97,9 +173,9 @@ AddEventHandler(
     function(mineral_item)
         local prop
         if mineral_item == "stone" then
-            prop = "p_campfirerocksml02x"
+            prop = "s_meteoriteshard01x"
         elseif mineral_item == "raw_coal" then
-            prop = "p_coal01x"
+            prop = "s_meteoriteshard01x"
         elseif mineral_item == "raw_copper" then
             prop = "s_meteoriteshard01x"
         elseif mineral_item == "raw_gold" then
@@ -122,29 +198,19 @@ AddEventHandler(
 
             local s = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 1.0)
 
-            local obj = CreateObject(prop, s, false, true, true, true, true)
-            ApplyForceToEntityCenterOfMass(obj, 1, 0, 0, 0, 0, 1, 1, 1)
-            SetModelAsNoLongerNeeded(prop)
+            local rand = math.random(1, 2)
 
-            local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, GetHashKey("USABLE_CARRIABLE_INVENTORY_ITEM"), 0, 0, 0)
+            for i = 0, rand - 1 do
+                local obj = CreateObject(prop, s, true, true, true, true, true)
+                ApplyForceToEntityCenterOfMass(obj, 1, 0, 0, 0, 0, 1, 1, 1)
+                SetModelAsNoLongerNeeded(prop)
 
-            Citizen.InvokeNative(0x7DFB49BCDB73089A, carriable, true)
+                local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, Citizen.InvokeNative(0x34F008A7E48C496B, obj, 3), 0, 0, 0)
 
-            carriables[carriable] = true
+                Citizen.InvokeNative(0x7DFB49BCDB73089A, carriable, true)
 
-            Citizen.CreateThread(
-                function()
-                    while true do
-                        Citizen.Wait(250)
-
-                        if not DoesEntityExist(carriable) then
-                            carriables[carriable] = nil
-                            TriggerServerEvent("VP:MINING:TryToGetMineral", mineral_item)
-                            break
-                        end
-                    end
-                end
-            )
+                table.insert(carriables, carriable)
+            end
         end
     end
 )
@@ -164,14 +230,14 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("VP:MINING:processanim")
+RegisterNetEvent("VP:MINING:StartProcessingAnimation")
 AddEventHandler(
-    "VP:MINING:processanim",
+    "VP:MINING:StartProcessingAnimation",
     function(num)
         TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_CLEAN_TABLE"), 20000, true, false, false, false) -- colocar uma animação para processar
         --exports['progressBars']:startUI(20000, Language.translate[Config.lang]['process'])
         Wait(20000)
-        TriggerServerEvent("VP:MINING:processitem", num)
+        -- TriggerServerEvent("VP:MINING:processitem", num)
         ClearPedTasksImmediately(PlayerPedId())
     end
 )

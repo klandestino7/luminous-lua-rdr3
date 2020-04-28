@@ -17,5 +17,5 @@ Config.Locations = {
 
 -- LOCALIZAÇÃO PARA PROCESSAR O COBRE
 Config.LocationsProcess = {
-    {2942.67, 1381.81, 56.25} -- localização teste
+    {2942.4702,1382.225,56.284} -- localização teste
 }
