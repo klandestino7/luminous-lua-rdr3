@@ -9,13 +9,11 @@ function API.Inventory(id, capacity, slots)
 
     if slots ~= nil then
         for slotId, values in pairs(slots) do
-            local tableSize = table.getn(values)
-
-            slotId = tonumber(slot)
+            slotId = tonumber(slotId)
             local itemId = values[1]
             local itemAmount = tonumber(values[2])
-            local ammoInClip = tonumber(values[3])
-            local ammoInWeapon = tonumber(values[4])
+            local ammoInClip = values[3] ~= nil and tonumber(values[3]) or nil
+            local ammoInWeapon = values[4] ~= nil and tonumber(values[4]) or nil
 
             self.slots[slotId] = API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
         end

@@ -57,7 +57,8 @@ function API.Chest(id, owner_char_id, position, type, capacity, inventories, gro
         local charId = Character:getId()
         if self:isGlobal() then
             if self.group then
-                if Character:hasGroupOrInheritance(self.group) then
+                if not  Character:hasGroupOrInheritance(self.group) then
+                    return self
                 end
             end
             -- !!!!!!!!!!!! OPTIMIZATION ?KINDA OF

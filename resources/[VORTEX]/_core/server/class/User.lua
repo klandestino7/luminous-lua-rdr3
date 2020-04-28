@@ -99,11 +99,18 @@ function API.User(source, id, ipAddress)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
         if #charRow > 0 then
             API.chars[id] = self:getId()
-            -- local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
+            local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
+
             local Inventory = nil
-            -- if #inv_query > 0 then
-            --     Inventory = API.Inventory("char:" .. id, parseInt(inv_query[1].inv_capacity), json.decode(inv_query[1].inv_slots))
-            -- end
+            if #inv_query > 0 then
+                local slots, _ = json.decode(inv_query[1].inv_slots)
+
+                for k,v in pairs(slots) do
+                    slots[k] = json.decode(v)
+                end
+
+                Inventory = API.Inventory("char:" .. id, tonumber(inv_query[1].inv_capacity), slots)
+            end
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
