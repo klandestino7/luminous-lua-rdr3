@@ -29,14 +29,14 @@ while true do
     for k,v in pairs(Banks) do
       
         if Vdist(coords, v) < 2 then
-          local hashUnarmed = GetHashKey("WEAPON_UNARMED")
+          -- local hashUnarmed = GetHashKey("WEAPON_UNARMED")
 
-          local retval, weaponHash = GetCurrentPedWeapon(PlayerPedId(), 1)
+          -- local retval, weaponHash = GetCurrentPedWeapon(PlayerPedId(), 1)
 
-          print(weaponHash, hashUnarmed)
+          -- print(weaponHash, hashUnarmed)
           if weaponHash == hashUnarmed then            
             DrawTxt('Aperte (ALT) para acessar seu cofre', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
-            if IsControlJustReleased(0, keys['ALT']) then					
+            if IsControlJustPressed(0, keys['ALT']) then					
               inMenu = true
               SetNuiFocus(true, true)
               SendNUIMessage({type = 'openGeneral'})

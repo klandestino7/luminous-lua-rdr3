@@ -11,11 +11,11 @@ ui_page 'nui/index.html'
 
 
 files {
-	'html/index.html', 
-    'html/style.css',
-    'html/assets/crock.ttf',
-    'html/assets/bg.png',
-	'html/assets/bg2.png',
+	'nui/index.html', 
+    'nui/style.css',
+    'nui/assets/crock.ttf',
+    'nui/assets/bg.png',
+	'nui/assets/bg2.png',
 }
 
 game 'rdr3'

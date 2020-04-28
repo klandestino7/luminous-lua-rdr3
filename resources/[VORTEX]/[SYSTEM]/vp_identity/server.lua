@@ -12,7 +12,6 @@ AddEventHandler(
             return
         end
      
-
         TriggerClientEvent('VP:IDENTITY:charList', User:getSource(), User:getCharacters())
     end
 )
