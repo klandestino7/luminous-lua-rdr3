@@ -9,10 +9,6 @@ local closestButcherIndex
 
 Citizen.CreateThread(
     function()
-        -- local deer = CreatePed("A_C_Deer_01", GetEntityCoords(PlayerPedId()), 180, true, true, false)
-        -- Citizen.InvokeNative(0x283978A15512B2FE, deer, true)
-        -- Citizen.InvokeNative(0xF0B4F759F35CC7F5, deer, GetHashKey('GENERIC_DEAD_CARRIABLE_ANIMAL'), 0, 0, 0)
-
         while true do
             Citizen.Wait(1000)
 
@@ -58,7 +54,10 @@ Citizen.CreateThread(
 
             if closestButcherIndex ~= nil then
                 local carriedEntity = GetPedCarriedEntity()
-                if carriedEntity ~= false and GetEntityType(carriedEntity) == 1 then
+                local type = GetEntityType(carriedEntity)
+                -- 1 : animal
+                -- 3 : pelt
+                if carriedEntity ~= false and (type == 1 or type == 3) then
                     lastCarriable = carriedEntity
                 end
 
@@ -123,6 +122,3 @@ end
 
 -- ENTITY::_0x9A100F1CF4546629(iParam0) || ENTITY::_0xC346A546612C49A9(iParam0))
 -- WAS_PED_SKINNED || IS_PED_BEING_SKINNED
-
--- 0x31FEF6A20F00B963
--- GET PELT QUALITY

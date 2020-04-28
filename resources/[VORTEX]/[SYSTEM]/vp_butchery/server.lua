@@ -5,7 +5,7 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local sellables = {
-    [`A_C_DEER_01`] = 100,
+    [`A_C_Wolf_Medium`] = 100,
 }
 
 RegisterNetEvent("VP:BUTCHER:TryToSell")
@@ -14,13 +14,13 @@ AddEventHandler(
     function(entModel, entity, quality)
         local _source = source
         
-        local payment = sellables[entModel]
+        local payment = sellables[entModel] or 175
 
-        if payment == nil then
-            TriggerClientEvent('VP:BUTCHER:EntityNotAccepted', _source, entity)
-            print('nao vendivel')
-            return
-        end
+        -- if payment == nil then
+        --     TriggerClientEvent('VP:BUTCHER:EntityNotAccepted', _source, entity)
+        --     print('nao vendivel')
+        --     return
+        -- end
 
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
