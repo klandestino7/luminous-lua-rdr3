@@ -115,8 +115,8 @@ function GetCurrentRegionName()
 end
 
 
-AddEventHandler('onResourceStart', function(resoureName)
-    if resoureName == GetCurrentResourceName() then
+AddEventHandler('onResourceStart', function(resourceName)
+    if resourceName == GetCurrentResourceName() then
         TriggerServerEvent('VP:W:AskForSync')
     end
 end)
