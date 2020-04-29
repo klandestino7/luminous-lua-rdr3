@@ -1,3 +1,10 @@
+local Tunnel = module('_core', 'lib/Tunnel')
+local Proxy = module('_core', 'lib/Proxy')
+
+API = Proxy.getInterface('API')
+cAPI = Tunnel.getInterface('API')
+
+
 local doorGroupsIsOpen = {
     [1] = { -- BraitWaite Mansion
         [1] = false,
@@ -22,9 +29,8 @@ AddEventHandler(
         end
 
         local _source = source
-        local User = API.getUserFromUserId(_source)
+        local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-
 
         if not Character:hasGroupOrInheritance('house:' .. doorGroup) then
             User:notify('Você não tem permissão!')

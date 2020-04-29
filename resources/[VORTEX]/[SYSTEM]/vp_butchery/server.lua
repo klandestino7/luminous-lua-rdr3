@@ -11,7 +11,7 @@ local sellables = {
 RegisterNetEvent("VP:BUTCHER:TryToSell")
 AddEventHandler(
     "VP:BUTCHER:TryToSell",
-    function(entModel, entity, quality)
+    function(entType, entModel, entity, quality)
         local _source = source
         
         local payment = sellables[entModel] or 175
@@ -27,6 +27,13 @@ AddEventHandler(
         local Inventory = Character:getInventory()
 
         Inventory:addItem('money', payment)
-        User:notify('Você recebeu $' .. payment .. ' por este animal!')
+
+        local text = 'este animal'
+    
+        if entType == 3 then
+            text = 'esta pele'
+        end
+
+        User:notify('Você recebeu $' .. payment .. ' por ' .. text .. '!')
     end
 )

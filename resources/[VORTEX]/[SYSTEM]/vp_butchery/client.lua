@@ -68,7 +68,7 @@ Citizen.CreateThread(
 
                     if #(carriableVec - butcherVec) <= 2.5 then
                         Citizen.InvokeNative(0x18FF3110CF47115D, lastCarriable, 2, false)
-                        TriggerServerEvent("VP:BUTCHER:TryToSell", GetEntityModel(lastCarriable), lastCarriable, GetAnimalCarcassQuality(lastCarriable))
+                        TriggerServerEvent("VP:BUTCHER:TryToSell", type, GetEntityModel(lastCarriable), lastCarriable, GetAnimalCarcassQuality(lastCarriable))
 
                         lastCarriable = nil
                     end

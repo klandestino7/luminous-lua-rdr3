@@ -64,10 +64,14 @@ AddEventHandler(
 
         local charid = Character:getId()
         local position = {x, y, z, h}
-        local rowsWithId = dbAPI.query('FCRP/CreateChest', {charid = charid, position = json.encode(position), type = 1, capacity = capacity})
-        if #rowsWithId > 0 then
+        local query = dbAPI.query('FCRP/CreateChest', {charid = charid, position = json.encode(position), type = 1, capacity = capacity})
+        if #query > 0 then
             local chestId = rowsWithId[1].id
-            local Chest = API.Chest(chestId, charid, position, 1, capacity, nil)
+            local Chest = API.Chest(chestId)
+            Chest.owner_char_id = charid
+            Chest.position = position
+            Chest.type = 1
+            Chest.capacity = capacity,
             API.cacheChest(Chest)
         end
     end
@@ -76,16 +80,14 @@ AddEventHandler(
 AddEventHandler(
     'VP:CHESTS:Open',
     function(chestId)
+        print('VP:CHESTS:Open')
         local _source = source
 
         local Chest = API.getChestFromChestId(chestId)
         local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
-
-        local User = API.getUserFromSource(_source)
-        local primaryInventory = User:getPrimaryInventoryViewing()
-        local secondaryInventory = User:getSecondaryInventoryViewing()
-
+        -- local Character = User:getCharacter()
+        -- local primaryInventory = User:getPrimaryInventoryViewing()
+        -- local secondaryInventory = User:getSecondaryInventoryViewing()
 
         local chestInventory = Chest:getInventory(User)
 
@@ -93,8 +95,9 @@ AddEventHandler(
             User:notify('Você não pode abrir este baú')
             return
         end
-        User:viewInventoryAsSecondary(chestInventory)
 
+        User:viewInventory()
+        User:viewInventoryAsSecondary(chestInventory)
     end
 )
 

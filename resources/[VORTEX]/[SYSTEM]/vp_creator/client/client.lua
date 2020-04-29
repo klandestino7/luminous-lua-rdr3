@@ -1,4 +1,3 @@
-
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
@@ -27,13 +26,13 @@ A_M_M_FOREMAN
 }
 
 local peds = {
-    {genrer = 'mp_male', x = -558.9098, y = -3775.616, z = 238.59, h = 137.98},
-    {genrer = 'mp_female', x = -558.9098, y = -3776.978, z = 238.59, h = 47.11}
+    {genrer = "mp_male", x = -558.9098, y = -3775.616, z = 238.59, h = 137.98},
+    {genrer = "mp_female", x = -558.9098, y = -3776.978, z = 238.59, h = 47.11}
 }
 
 local cams = {
     {
-        type = 'customization',
+        type = "customization",
         x = -561.8157,
         y = -3780.966,
         z = 239.0805,
@@ -43,7 +42,7 @@ local cams = {
         fov = 30.0
     },
     {
-        type = 'selection',
+        type = "selection",
         x = -562.8157,
         y = -3776.266,
         z = 239.0805,
@@ -63,19 +62,19 @@ Citizen.CreateThread(
             Citizen.Wait(0)
             if creator and not inCustomization then
                 if cam == nil then
-                    createCam('selection')
+                    createCam("selection")
                 else
                     for k, v in pairs(choosePed) do
-                        if IsControlJustReleased(0, 0xA65EBAB4) and GetEntityModel(choosePed[k]) == GetHashKey('mp_male') then -- male
+                        if IsControlJustReleased(0, 0xA65EBAB4) and GetEntityModel(choosePed[k]) == GetHashKey("mp_male") then -- male
                             AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
-                            PlaySoundFrontend('gender_left', 'RDRO_Character_Creator_Sounds', true, 0)
+                            PlaySoundFrontend("gender_left", "RDRO_Character_Creator_Sounds", true, 0)
                             pedSelected = choosePed[k]
-                            sex = 'mp_male'
-                        elseif IsControlJustReleased(0, 0xDEB34313) and GetEntityModel(choosePed[k]) == GetHashKey('mp_female') then --female
+                            sex = "mp_male"
+                        elseif IsControlJustReleased(0, 0xDEB34313) and GetEntityModel(choosePed[k]) == GetHashKey("mp_female") then --female
                             AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
-                            PlaySoundFrontend('gender_right', 'RDRO_Character_Creator_Sounds', true, 0)
+                            PlaySoundFrontend("gender_right", "RDRO_Character_Creator_Sounds", true, 0)
                             pedSelected = choosePed[k]
-                            sex = 'mp_female'
+                            sex = "mp_female"
                         end
                     end
                     if IsControlJustReleased(0, 0xC7B5340A) and pedSelected ~= nil then
@@ -94,7 +93,7 @@ Citizen.CreateThread(
                 SetNuiFocus(true, true)
                 SendNUIMessage(
                     {
-                        action = 'show',
+                        action = "show",
                         gender = sex
                     }
                 )
@@ -107,7 +106,6 @@ Citizen.CreateThread(
         end
     end
 )
-
 
 RegisterCommand(
     "creatormod",
@@ -125,13 +123,13 @@ AddEventHandler(
     "VP:CHARCREATION:starting",
     function()
         creator = true
+        cAPI.EndFade(500)
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
         SetEntityVisible(PlayerPedId(), false)
         SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
         DeletePed = false
     end
 )
-
 
 RegisterNUICallback(
     "rotate",
@@ -157,7 +155,6 @@ AddEventHandler(
                 action = "hide"
             }
         )
-
     end
 )
 
@@ -174,9 +171,9 @@ MustacheUsing = nil
 PedScaleUsing = nil
 
 RegisterNUICallback(
-    'HeadType',
+    "HeadType",
     function(data)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             zoom = 0.5
             offset = 0.6
             for k, v in pairs(MaleHeads) do
@@ -199,9 +196,9 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'TomPele',
+    "TomPele",
     function(data)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             zoom = 2.0
             offset = 0.2
             for k, v in pairs(MaleTorsos) do
@@ -228,16 +225,16 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'Idade',
+    "Idade",
     function(data)
-        CharacterAge = tonumber(data.change)      
+        CharacterAge = tonumber(data.change)
     end
 )
 
 RegisterNUICallback(
-    'Olhos',
-    function(data) 
-        if sex == 'mp_male' then
+    "Olhos",
+    function(data)
+        if sex == "mp_male" then
             zoom = 0.5
             offset = 0.6
             for k, v in pairs(MaleEyes) do
@@ -260,11 +257,11 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'Porte',
+    "Porte",
     function(data)
         zoom = 2.5
         offset = 0.2
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             Citizen.InvokeNative(0xA5BAE410B03E7371, pedSelected, math.floor(tonumber(data.id + 124)), true, true, true)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, HeadUsing, true, true, true)
             PorteUsing = math.floor(tonumber(data.id + 124))
@@ -277,18 +274,18 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'Dentes',
+    "Dentes",
     function(data)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             zoom = 0.5
             offset = 0.6
             for k, v in pairs(MaleTeeth) do
                 if MaleTeeth[k].id == tonumber(data.id) then
-                    RequestAnimDict('FACE_HUMAN@GEN_MALE@BASE')
-                    while not HasAnimDictLoaded('FACE_HUMAN@GEN_MALE@BASE') do
+                    RequestAnimDict("FACE_HUMAN@GEN_MALE@BASE")
+                    while not HasAnimDictLoaded("FACE_HUMAN@GEN_MALE@BASE") do
                         Citizen.Wait(100)
                     end
-                    TaskPlayAnim(pedSelected, 'FACE_HUMAN@GEN_MALE@BASE', 'Face_Dentistry_Loop', 1090519040, -4, -1, 17, 0, 0, 0, 0, 0, 0)
+                    TaskPlayAnim(pedSelected, "FACE_HUMAN@GEN_MALE@BASE", "Face_Dentistry_Loop", 1090519040, -4, -1, 17, 0, 0, 0, 0, 0, 0)
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleTeeth[k].hash, true, true, true)
                     TeethUsing = MaleTeeth[k].hash
                 end
@@ -298,11 +295,11 @@ RegisterNUICallback(
             offset = 0.5
             for k, v in pairs(FemaleTeeth) do
                 if FemaleTeeth[k].id == tonumber(data.id) then
-                    RequestAnimDict('FACE_HUMAN@GEN_MALE@BASE')
-                    while not HasAnimDictLoaded('FACE_HUMAN@GEN_MALE@BASE') do
+                    RequestAnimDict("FACE_HUMAN@GEN_MALE@BASE")
+                    while not HasAnimDictLoaded("FACE_HUMAN@GEN_MALE@BASE") do
                         Citizen.Wait(100)
                     end
-                    TaskPlayAnim(pedSelected, 'FACE_HUMAN@GEN_MALE@BASE', 'Face_Dentistry_Loop', 1090519040, -4, -1, 17, 0, 0, 0, 0, 0, 0)
+                    TaskPlayAnim(pedSelected, "FACE_HUMAN@GEN_MALE@BASE", "Face_Dentistry_Loop", 1090519040, -4, -1, 17, 0, 0, 0, 0, 0, 0)
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, FemaleTeeth[k].hash, true, true, true)
                     TeethUsing = FemaleTeeth[k].hash
                 end
@@ -312,14 +309,14 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'Cabelos',
+    "Cabelos",
     function(data)
-        if data.id == 0 then     
+        if data.id == 0 then
             HairUsing = 0
             Citizen.InvokeNative(0xD710A5007C2AC539, pedSelected, 0x864B03AE, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, pedSelected, 0, 1, 1, 1, 0) -- Actually remove the component
         else
-            if sex == 'mp_male' then
+            if sex == "mp_male" then
                 zoom = 0.5
                 offset = 0.6
                 for k, v in pairs(MaleHairs) do
@@ -343,35 +340,36 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'Sobrancelha',
+    "Sobrancelha",
     function(value)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
+            -- print(N_0xfd1ba1eef7985bb8(pedSelected, 0xD266))
             N_0x5653ab26c82938cf(pedSelected, 0xD266, value)
             HairUsing = value
-           -- print(N_0xfd1ba1eef7985bb8(pedSelected, 0xD266))
         else
+            --print(value)
             N_0x5653ab26c82938cf(pedSelected, 0x03F5, value)
             HairUsing = value
-            --print(value)
         end
     end
 )
 
-
-RegisterCommand('deleteped', function()
-    DeleteEntity(pedSelected)
-end)
-
+RegisterCommand(
+    "deleteped",
+    function()
+        DeleteEntity(pedSelected)
+    end
+)
 
 RegisterNUICallback(
-    'BarbaMenu',
+    "BarbaMenu",
     function(data)
-        if data.id == 0 then     
+        if data.id == 0 then
             HairUsing = 0
             Citizen.InvokeNative(0xD710A5007C2AC539, pedSelected, 0xF8016BCA, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, pedSelected, 0, 1, 1, 1, 0) -- Actually remove the component
         else
-            if sex == 'mp_male' then
+            if sex == "mp_male" then
                 zoom = 0.5
                 offset = 0.6
                 for k, v in pairs(MaleMustache) do
@@ -388,9 +386,9 @@ RegisterNUICallback(
 local index = nil
 
 RegisterNUICallback(
-    'FaceFeatured',
+    "FaceFeatured",
     function(data)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             zoom = 0.5
             offset = 0.6
         else
@@ -402,14 +400,13 @@ RegisterNUICallback(
         local value = tonumber(data.id)
         Citizen.InvokeNative(0x5653AB26C82938CF, ped, index, value)
         Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
-
     end
 )
 
 RegisterNUICallback(
-    'PedSize',
+    "PedSize",
     function(data)
-        if sex == 'mp_male' then
+        if sex == "mp_male" then
             zoom = 2.0
             offset = 0.3
         else
@@ -418,11 +415,9 @@ RegisterNUICallback(
         end
         local ped = pedSelected
         if data.id < 180 then
-            num = (data.id / 100 + 0.01 ) - 0.78 
-  
-        else           
-            num = (data.id / 100 ) - 0.8
-  
+            num = (data.id / 100 + 0.01) - 0.78
+        else
+            num = (data.id / 100) - 0.8
         end
         SetPedScale(ped, num)
         PedScaleUsing = num
@@ -430,10 +425,9 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    'NomePlayer',
-    function(dados)  
-                CharacterName = dados.change        
-
+    "NomePlayer",
+    function(dados)
+        CharacterName = dados.change
     end
 )
 
@@ -476,22 +470,21 @@ local faceFeatures = {
     0xC375,
     0xBB4D,
     0xB0B0,
-    0x5D16,
+    0x5D16
 }
 
 -- RegisterCommand('setmod', function(source,args)
 --     local ped = pedSelected
---    for _, index in pairs(faceFeatures) do    
---         local value = 1.0    
+--    for _, index in pairs(faceFeatures) do
+--         local value = 1.0
 --         print(ped, index, value)
 
---         Citizen.InvokeNative(0x5653AB26C82938CF, ped, index, value)                
+--         Citizen.InvokeNative(0x5653AB26C82938CF, ped, index, value)
 --         Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
---     end 
+--     end
 -- end)
 
-
-local floatIndex = nil 
+local floatIndex = nil
 RegisterNUICallback(
     "CloseCreator",
     function()
@@ -499,7 +492,7 @@ RegisterNUICallback(
             {
                 action = "hide"
             }
-        )        
+        )
         SetEntityVisible(PlayerPedId(), true)
         showroomHorse_model = nil
         if showroomHorse_entity ~= nil then
@@ -509,15 +502,15 @@ RegisterNUICallback(
 
         local ffDados = {}
 
-        for _, value in pairs(faceFeatures) do  
-            local facemod = Citizen.InvokeNative(0xFD1BA1EEF7985BB8, pedSelected, tonumber(value), Citizen.ResultAsFloat())            
+        for _, value in pairs(faceFeatures) do
+            local facemod = Citizen.InvokeNative(0xFD1BA1EEF7985BB8, pedSelected, tonumber(value), Citizen.ResultAsFloat())
             print(facemod)
             if facemod then
-                table.insert(ffDados, tonumber(string.format('%.2f', facemod)))
+                table.insert(ffDados, tonumber(string.format("%.2f", facemod)))
             else
                 table.insert(ffDados, 0.0)
             end
-        end        
+        end
 
         local modSkin = {
             HeadUsing,
@@ -526,19 +519,19 @@ RegisterNUICallback(
             LegsUsing,
             EyesUsing,
             TeethUsing,
-            MustacheUsing,
+            MustacheUsing
         }
 
         local SkinModf = {
-        ['model'] = sex,
-        ['modSkin'] = json.encode(modSkin),
-        ['bodySize'] = tonumber(PorteUsing),
-        ['pedSize'] = tonumber(PedScaleUsing),
-        ['features'] = json.encode(ffDados) }
+            ["model"] = sex,
+            ["modSkin"] = json.encode(modSkin),
+            ["bodySize"] = tonumber(PorteUsing),
+            ["pedSize"] = tonumber(PedScaleUsing),
+            ["features"] = json.encode(ffDados)
+        }
 
-      TriggerServerEvent('VP:CREATOR:saveCreation', CharacterName, CharacterAge, SkinModf)
+        TriggerServerEvent("VP:CREATOR:saveCreation", CharacterName, CharacterAge, SkinModf)
         closeAll()
-
     end
 )
 
@@ -549,7 +542,7 @@ function closeAll()
 
     vpcreator = false
     inCustomization = false
-        print('fechou')
+    print("fechou")
     SetEntityVisible(PlayerPedId(), true)
     SetEntityInvincible(PlayerPedId(), false)
     NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
@@ -562,30 +555,25 @@ end
 
 function rotation(dir)
     local playerPed = pedSelected
-    if playerPed ~= nil then           
+    if playerPed ~= nil then
         local pedRot = GetEntityHeading(playerPed) + dir
         SetEntityHeading(playerPed, pedRot % 360)
     end
 end
 
-
-
 Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(100)
-            if vpcreator then        
+            if vpcreator then
                 local playerPed = pedSelected
 
-                if  playerPed == nil then
+                if playerPed == nil then
                     playerPed = PlayerPedId()
                     camera(zoom, offset, playerPed)
                 else
                     camera(zoom, offset, playerPed)
                 end
-                
- 
-
             end
         end
     end
@@ -619,14 +607,14 @@ function createPeds()
             NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
             SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
             SetModelAsNoLongerNeeded(hash)
-            if peds[k].genrer == 'mp_female' then
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x10F5497A,true,true,true) -- PANTS
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x14511493,true,true,true) -- COAT
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0xD03D522,true,true,true) -- BOOT
+            if peds[k].genrer == "mp_female" then
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10F5497A, true, true, true) -- PANTS
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x14511493, true, true, true) -- COAT
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0xD03D522, true, true, true) -- BOOT
             else
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x10051C7,true,true,true) -- PANTS
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x12E51663,true,true,true) -- COAT
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x192C2A4B,true,true,true) -- BOOT
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10051C7, true, true, true) -- PANTS
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x12E51663, true, true, true) -- COAT
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x192C2A4B, true, true, true) -- BOOT
             end
 
             if DeletePed then
@@ -635,9 +623,6 @@ function createPeds()
         end
     end
 end
-
-
-
 
 function camera(zoom, offset, entity)
     DestroyAllCams(true)
@@ -651,7 +636,7 @@ function camera(zoom, offset, entity)
         x = math.cos(angle),
         y = math.sin(angle)
     }
---    print(theta.x)
+    --    print(theta.x)
     local pos = {
         x = coords.x + (zoomOffset * theta.x),
         y = coords.y + (zoomOffset * theta.y)
@@ -669,21 +654,20 @@ function camera(zoom, offset, entity)
         x = math.cos(angleToLook),
         y = math.sin(angleToLook)
     }
---    print(thetaToLook.x)
+    --    print(thetaToLook.x)
     local posToLook = {
         x = coords.x + (zoomOffset * thetaToLook.x),
         y = coords.y + (zoomOffset * thetaToLook.y)
     }
     --  print(posToLook.x)
 
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x-0.2, pos.y-0.5, coords.z + camOffset, 300.00,0.00,0.00, 40.00, false, 0)
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.2, pos.y - 0.5, coords.z + camOffset, 300.00, 0.00, 0.00, 40.00, false, 0)
     PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
     SetCamActive(cam, true)
     RenderScriptCams(true, true, 500, true, true)
     DisplayHud(false)
     DisplayRadar(false)
 end
-
 
 -- function camera(zoom, offset, entity)
 --     DestroyAllCams(true)
@@ -729,3 +713,14 @@ end
 --     DisplayHud(false)
 --     DisplayRadar(false)
 -- end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if GetCurrentResourceName() == resourceName then
+            for k, v in pairs(peds) do
+                DeleteEntity(v)
+            end
+        end
+    end
+)

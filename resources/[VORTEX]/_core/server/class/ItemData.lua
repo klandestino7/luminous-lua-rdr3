@@ -107,7 +107,7 @@ function triggerUse(User, itemData)
             cAPI.varyEye(User:getSource(), var)
         end
 
-        cAPI.TaskInteraction(source, 'boost')
+        cAPI.TaskInteraction(source, 'wtv')
 
         return true
     end
