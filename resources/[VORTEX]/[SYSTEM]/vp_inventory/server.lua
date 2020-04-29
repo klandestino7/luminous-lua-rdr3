@@ -217,6 +217,45 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("VP:INVENTORY:SecondarySwitchSlot")
+AddEventHandler(
+    "VP:INVENTORY:SecondarySwitchSlot",
+    function(slotFrom, slotTo, itemAmount)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+        local secondaryInventory = User:getSecondaryInventoryViewing()
+
+        if secondaryInventory == nil then
+            User:closeInventory()
+            return
+        end
+
+        slotFrom = tonumber(slotFrom)
+        slotTo = tonumber(slotTo)
+        itemAmount = tonumber(itemAmount)
+
+        if secondaryInventory:getSlots()[slotFrom] == nil then
+            return
+        end
+
+        if itemAmount == -2 then
+            itemAmount = secondaryInventory:getSlots()[slotFrom]:getItemAmount()
+        end
+
+        if itemAmount == -1 then
+            itemAmount = secondaryInventory:getSlots()[slotFrom]:getItemAmount() / 2
+        end
+
+        if itemAmount <= 0 then
+            itemAmount = 1
+        end
+
+        itemAmount = math.floor(itemAmount)
+        secondaryInventory:moveSlot(slotFrom, slotTo, itemAmount)
+    end
+)
+
 RegisterNetEvent("VP:INVENTORY:SaveWeaponAmmoOnDB")
 AddEventHandler(
     "VP:INVENTORY:SaveWeaponAmmoOnDB",

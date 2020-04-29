@@ -131,7 +131,7 @@ end)
 function anim()
 
 -- local pile = CreateObject("p_cs_woodPile01x", GetEntityCoords(PlayerPedId()), false, true, false, false, false)
--- Citizen.InvokeNative(0xF0B4F759F35CC7F5, pile , GetHashKey('FIREWOOD'), 0, 0, 0)
+-- Citizen.InvokeNative(0xF0B4F759F35CC7F5, pile , GetHashKey('FIREWOOD'), 0, 0, 512)
 
 end
 

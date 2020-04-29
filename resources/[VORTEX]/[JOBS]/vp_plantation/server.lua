@@ -71,31 +71,31 @@ AddEventHandler(
     end
 )
 
-AddEventHandler(
-    'VP:PLANTATION:Open',
-    function(chestId)
-        local _source = source
+-- AddEventHandler(
+--     'VP:PLANTATION:Open',
+--     function(chestId)
+--         local _source = source
 
-        local Chest = API.getChestFromChestId(chestId)
-        local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
+--         local Chest = API.getChestFromChestId(chestId)
+--         local User = API.getUserFromSource(_source)
+--         local Character = User:getCharacter()
 
-        local User = API.getUserFromSource(_source)
-        local primaryInventory = User:getPrimaryInventoryViewing()
-        local secondaryInventory = User:getSecondaryInventoryViewing()
+--         local User = API.getUserFromSource(_source)
+--         local primaryInventory = User:getPrimaryInventoryViewing()
+--         local secondaryInventory = User:getSecondaryInventoryViewing()
 
 
-        local chestInventory = Chest:getInventory(Character:getId())
+--         local chestInventory = Chest:getInventory(Character:getId())
 
-        if chestInventory == nil then
-            User:notify('Você não pode abrir este baú')
-            return
-        end
+--         if chestInventory == nil then
+--             User:notify('Você não pode abrir este baú')
+--             return
+--         end
 
-        User:viewInventoryAsSecondary(chestInventory)
+--         User:viewInventoryAsSecondary(chestInventory)
 
-    end
-)
+--     end
+-- )
 
 AddEventHandler(
     'playerDropped',

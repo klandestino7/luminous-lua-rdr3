@@ -68,7 +68,7 @@ Citizen.CreateThread(
             DisableControlAction(0, 0x580C4473, true) -- hud disable
             DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
 
-            DisableControlAction(0, 0x41AC83D1, true) -- loot
+            -- DisableControlAction(0, 0x41AC83D1, true) -- loot
             DisableControlAction(0, 0x399C6619, true) -- loot 2
             -- DisableControlAction(0, 0x27D1C284, false) -- loot 3
             -- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle

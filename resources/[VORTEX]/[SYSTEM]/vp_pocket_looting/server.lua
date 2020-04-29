@@ -10,6 +10,11 @@ local pocketables = {
     [`s_meteoriteshard01x`] = "raw_copper",
     [`s_pickup_goldbar01x`] = "raw_gold",
     [`s_dis_ammolite01x`] = "ammolite",
+--     [165374176] = "beterraba",
+--     [904358119] = "corn",
+--     [161801294] = "gin_bottle",
+--     [192341785] = 'moonshine_bottle'
+-- -2094368529 -- joias
 }
 
 RegisterNetEvent("VP:POCKET_LOOTING:Pocket")

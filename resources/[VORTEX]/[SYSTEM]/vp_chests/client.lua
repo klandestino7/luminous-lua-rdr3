@@ -276,7 +276,7 @@ AddEventHandler(
     end
 )
 
-Citizen.CreateThreadNow(
+Citizen.CreateThread(
     function()
         TriggerServerEvent('VP:CHESTS:AskForSync')
     end

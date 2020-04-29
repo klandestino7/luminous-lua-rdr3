@@ -14,7 +14,9 @@ Citizen.CreateThread(
                     local entity = GetIndexedItemInItemset(index, itemSet)
 
                     -- POCKETABLE ITEM
-                    if GetEntityType(entity) == 3 and GetCarriableCarryConfig(entity) == -411455723 then
+                    -- print(GetEntityModel(entity), GetEntityType(entity), GetCarriableCarryConfig(entity))
+                    local carryConfig = GetCarriableCarryConfig(entity)
+                    if GetEntityType(entity) == 3 and (carryConfig == -411455723 or carryConfig == -1953048298) then
                         if not pocketing[entity] then
                             pocketing[entity] = GetEntityModel(entity)
                         end
@@ -28,6 +30,7 @@ Citizen.CreateThread(
 
             for entity, model in pairs(pocketing) do
                 if not DoesEntityExist(entity) then
+                    print(model)
                     TriggerServerEvent("VP:POCKET_LOOTING:Pocket", model)
                     pocketing[entity] = nil
                 end
@@ -47,8 +50,15 @@ AddEventHandler(
         local ped = PlayerPedId()
         local coords = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 0.5)
 
-        local entity = CreateObject(entityModel, coords, false, true, false)
-        Citizen.InvokeNative(0xF0B4F759F35CC7F5, entity, -411455723, 0, 0, 0)
+        if not HasModelLoaded(entityModel) then
+            RequestModel(entityModel)
+            while not HasModelLoaded(entityModel) do
+                Citizen.Wait(10)
+            end
+        end
+
+        local entity = CreateObject(entityModel, coords, true, true, true)
+        Citizen.InvokeNative(0xF0B4F759F35CC7F5, entity, Citizen.InvokeNative(0x34F008A7E48C496B, entity, 3), 0, 0, 512)
         Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, true)
         PlaceObjectOnGroundProperly(entity)
     end
