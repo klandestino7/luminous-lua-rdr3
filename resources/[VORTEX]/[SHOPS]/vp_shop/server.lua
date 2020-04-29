@@ -71,7 +71,7 @@ AddEventHandler(
 
         local itemAmount = itemData[3]
 
-        Inventory:removeItem("money", itemPrice)
+        Inventory:removeItem(-1, "money", itemPrice)
         Inventory:addItem(itemId, itemAmount or 1)
 
         User:notify("- $" .. itemPrice .. ",00")

@@ -42,13 +42,13 @@ AddEventHandler( 'VP:PET:buydog', function (args)
     print(_resul)
 
     if _resul == nil then        
-        Inventory:removeItem('money' , tonumber(_price*100))
+        Inventory:removeItem(-1, 'money' , tonumber(_price*100))
         Character:setData(Character:getId(), 'charTable', 'dog', _model)     
         User:notify('Você comprou um novo animal de estimação.')        
     else
         Character:remData(Character:getId(), 'charTable', 'dog')
         Wait(500)
-                Inventory:removeItem('money' , tonumber(_price*100))
+                Inventory:removeItem(-1, 'money' , tonumber(_price*100))
         Character:setData(Character:getId(), 'charTable', 'dog', _model)    
         User:notify('Você comprou um novo animal de estimação.')   
     end

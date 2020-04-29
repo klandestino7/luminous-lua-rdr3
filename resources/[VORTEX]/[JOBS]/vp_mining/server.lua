@@ -242,7 +242,7 @@ AddEventHandler(
         local count = math.random(1, 5)
 
         if num == 1 then
-            Inventory:removeItem("generic_pedra", 1)
+            Inventory:removeItem(-1, "generic_pedra", 1)
             User:notify("Você processou [X" .. count .. "] pedras")
             Wait(1000)
             Inventory:addItem("generic_pedralavada", count)
@@ -250,7 +250,7 @@ AddEventHandler(
             return
         end
         if num == 2 then
-            Inventory:removeItem("generic_carvaobruto", 1)
+            Inventory:removeItem(-1, "generic_carvaobruto", 1)
             User:notify("Você processou [X1] de Carvão")
             Wait(1000)
             Inventory:addItem("generic_carvaorefi", count)
@@ -258,7 +258,7 @@ AddEventHandler(
             return
         end
         if num == 3 then
-            Inventory:removeItem("generic_cobrebruto", 1)
+            Inventory:removeItem(-1, "generic_cobrebruto", 1)
             User:notify("Você processou [X" .. count .. "] de cobre")
             Wait(1000)
             Inventory:addItem("generic_provision_disco_ammolite", count)
@@ -266,7 +266,7 @@ AddEventHandler(
             return
         end
         if num == 4 then
-            Inventory:removeItem("generic_ourobruto", 3)
+            Inventory:removeItem(-1, "generic_ourobruto", 3)
             User:notify("Você processou [X" .. count .. "] ouro")
             Wait(1000)
             print(count * 10)

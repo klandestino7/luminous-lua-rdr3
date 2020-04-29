@@ -9,7 +9,6 @@ local Cinematic = false
 Citizen.CreateThread(
     function()
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
-
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
         Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
@@ -17,14 +16,12 @@ Citizen.CreateThread(
 
         while true do
             Citizen.Wait(0)
-
                   
             if Cinematic then
                 N_0x69d65e89ffd72313(true)
             else
                 N_0x69d65e89ffd72313(false)
             end
-
 
             --N_0xbae08f00021bffb2(horse) -- agitates the horse
             --N_0x8bc7c1f929d07bf3(-1679307491) -- show
@@ -40,6 +37,10 @@ Citizen.CreateThread(
         end
     end
 )
+
+
+
+
 RegisterCommand(
     "cinematic",
     function(source, args)
@@ -53,8 +54,20 @@ RegisterCommand(
     end
 )
 
-
-
+RegisterNetEvent("VP:HUD:RevealMap")
+AddEventHandler(
+    "VP:HUD:RevealMap",
+    function(toggle)
+        if toggle == nil then
+            SetMinimapHideFow(false)
+        else
+            Citizen.InvokeNative(0xEB3CB3386C775D72, 0)
+            Citizen.InvokeNative(0x63E7279D04160477, toggle, 0)         
+            Citizen.InvokeNative(0xF8096DF9B87246E3, toggle)
+          --  RevealMinimapFow(toggle)
+        end
+    end
+)
 
 RegisterCommand(
     "cans",
@@ -76,6 +89,7 @@ RegisterCommand(
 
     end
 )
+
 
 -- local prompt = false
 -- local AnimalPrompt

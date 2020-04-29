@@ -30,7 +30,7 @@ AddEventHandler('VP:STORECLOTHES:buy', function(price)
 	-- end
 	User:notify('Você pagou ~pa~' .. price*100 ..'$')
 
---	Inventory:removeItem('money', price*100)
+--	Inventory:removeItem(-1, 'money', price*100)
 
 end)
 

@@ -17,7 +17,7 @@ Config.Zones = {
 					Weapon = {			
 						{				
 							imglink = "itens/weapon_revolver_lemat.png",
-							itemId = "weapon_revolver_lemat",
+							itemId = "revolver_lemat",
 							itemName = "Revolver Lemat",
 							amount = 1,
 							level = 7,
@@ -26,7 +26,7 @@ Config.Zones = {
 						},
 						{
 							imglink = "itens/weapon_revolver_cattleman.png",
-							itemId = "weapon_revolver_cattleman",
+							itemId = "revolver_cattleman",
 							itemName = "Revolver Cattleman",
 							amount = 1,
 							level = 1,
@@ -35,7 +35,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/WEAPON_REVOLVER_NAVY.png",
-							itemId = "WEAPON_REVOLVER_NAVY",
+							itemId = "REVOLVER_NAVY",
 							itemName = "Revolver Militar",
 							amount = 1,
 							level = 5,
@@ -44,7 +44,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapin_pistol_volcanic.png",
-							itemId = "weapon_pistol_volcanic",
+							itemId = "pistol_volcanic",
 							itemName = "Pistola Volcani",
 							amount = 1,
 							level = 24,
@@ -53,7 +53,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_shotgun_sawedoff.png",
-							itemId = "weapon_shotgun_sawedoff",
+							itemId = "shotgun_sawedoff",
 							itemName = "Escopeta Cano serrado",
 							amount = 1,
 							level = 5,
@@ -62,7 +62,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_repeater_carbine.png",
-							itemId = "weapon_repeater_carbine",
+							itemId = "repeater_carbine",
 							itemName = "Carabina de Repetição",
 							amount = 1,
 							level = 2,
@@ -71,7 +71,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_repeater_henry.png",
-							itemId = "weapon_repeater_henry",
+							itemId = "repeater_henry",
 							itemName = "Litchfield de Repetição",
 							amount = 1,
 							level = 17,
@@ -80,7 +80,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_sniperrifle_rollingblock.png",
-							itemId = "weapon_sniperrifle_rollingblock",
+							itemId = "sniperrifle_rollingblock",
 							itemName = "Rifle Rolling Block",
 							amount = 1,
 							level = 15,
@@ -89,7 +89,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_rifle_varmint.png",
-							itemId = "weapon_rifle_varmint",
+							itemId = "rifle_varmint",
 							itemName = "Rifle Anti-pragas",
 							amount = 1,
 							level = 7,
@@ -98,7 +98,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_rifle_boltaction.png",
-							itemId = "weapon_rifle_boltaction",
+							itemId = "rifle_boltaction",
 							itemName = "Rifle de Ferrolho",
 							amount = 1,
 							level = 9,
@@ -108,7 +108,7 @@ Config.Zones = {
 
 						{
 							imglink = "itens/weapon_thrown_throwing_knives.png",
-							itemId = "weapon_thrown_throwing_knives",
+							itemId = "thrown_throwing_knives",
 							itemName = "Faca Arremeçavel",
 							amount = 1,
 							level = 1,
@@ -117,7 +117,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_melee_cleaver.png",
-							itemId = "weapon_melee_cleaver",
+							itemId = "melee_cleaver",
 							itemName = "Machado Cutelo",
 							amount = 1,
 							level = 5,
@@ -126,7 +126,7 @@ Config.Zones = {
 						}, 
 						{
 							imglink = "itens/weapon_melee_knife.png",
-							itemId = "weapon_melee_knife",
+							itemId = "melee_knife",
 							itemName = "Faca de Caça",
 							amount = 1,
 							level = 1,
@@ -190,7 +190,7 @@ Config.Zones = {
 					Melee ={
 						{
 							imglink = "itens/weapon_melee_knife.png",
-							itemId = "weapon_melee_knife",
+							itemId = "melee_knife",
 							itemName = "Faca",
 							amount = 1,
 							level = 1,

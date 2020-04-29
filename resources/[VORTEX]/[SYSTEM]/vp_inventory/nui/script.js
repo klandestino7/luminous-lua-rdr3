@@ -96,14 +96,14 @@ window.addEventListener("message", function(event) {
                 var weight = event.data.primaryWeight
                 var maxWeight = event.data.primaryMaxWeight
                 if (maxWeight != undefined) {
-                    $('#primary #weight').text(`${weight}/${maxWeight}kg`);
+                    $('#primary #weight').text(`${parseFloat(parseFloat(weight).toFixed(1))}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
                     $('#primary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 } else {
                     var oldText = $('#primary #weight').text();
                     var maxWeight = oldText.split('/')[1];
                     maxWeight = maxWeight.replace('kg', '');
-                    $('#primary #weight').text(`${weight}/${maxWeight}kg`);
+                    $('#primary #weight').text(`${parseFloat(parseFloat(weight).toFixed(1))}/${maxWeight}kg`);
                     var percentage = 100 * (weight / maxWeight);
                     $('#primary #weight-divider').css('background-image', `linear-gradient(to right, red ${percentage}%, transparent ${percentage}%), url(images/divider.png)`);
                 }

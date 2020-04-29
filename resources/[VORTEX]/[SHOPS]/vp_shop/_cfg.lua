@@ -51,7 +51,7 @@ Config.ShopDatas = {
 Config.ShopLocations = {
 	-- x, y, z, heading(optional)
 	["Ammunation"] = {
-		{1193.196, -1866.593, 51.696}
+		{-281.99,780.92,119.52}
 	},
 	["Policia"] = {
 		{452.37, -980.07, 30.69}

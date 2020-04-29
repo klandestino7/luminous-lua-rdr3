@@ -27,7 +27,7 @@ AddEventHandler('clothes:buy', function(price)
 	end
 	User:notify('Você pagou ~pa~' .. price ..'$')
 
-	Inventory:removeItem('money', price)
+	Inventory:removeItem(-1, 'money', price)
 
 end)
 

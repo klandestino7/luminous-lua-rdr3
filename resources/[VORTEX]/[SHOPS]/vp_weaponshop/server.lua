@@ -8,26 +8,26 @@ local shopItems = {}
 
 local buyableData = {
     -- [id] = {amount, level, money, gold},
-    ["weapon_revolver_lemat"] = {1, 7, 317, 13},
-    ["weapon_revolver_cattleman"] = {1, 1, 50, 2},
-    ["WEAPON_REVOLVER_NAVY"] = {1, 5, 257, 11},
+    ["revolver_lemat"] = {1, 7, 317, 13},
+    ["revolver_cattleman"] = {1, 1, 50, 2},
+    ["REVOLVER_NAVY"] = {1, 5, 257, 11},
     -- PISTOL
-    ["weapon_pistol_volcanic"] = {1, 24, 300, 14},
+    ["pistol_volcanic"] = {1, 24, 300, 14},
     --shotgun
-    ["weapon_shotgun_sawedoff"] = {1, 5, 111, 13},
+    ["shotgun_sawedoff"] = {1, 5, 111, 13},
     -- repeater
-    ["weapon_repeater_carbine"] = {1, 2, 90, 4},
-    ["weapon_repeater_henry"] = {1, 17, 234, 10},
+    ["repeater_carbine"] = {1, 2, 90, 4},
+    ["repeater_henry"] = {1, 17, 234, 10},
     -- precision rifle 
-    ["weapon_sniperrifle_rollingblock"] = {1, 15, 500, 20},
+    ["sniperrifle_rollingblock"] = {1, 15, 500, 20},
     -- MELEE
   --  ["BOLAS"] = {1, 1, 30, 2},
-    ["weapon_thrown_throwing_knives"] = {1, 1, 2.5, 0.5},
-    ["weapon_melee_cleaver"] = {1, 5, 8, 1},  
-    ["weapon_melee_knife"] = {1, 1, 0.5, 0.1},     
+    ["thrown_throwing_knives"] = {1, 1, 2.5, 0.5},
+    ["melee_cleaver"] = {1, 5, 8, 1},  
+    ["melee_knife"] = {1, 1, 0.5, 0.1},     
     -- manual rifle
-    ["weapon_rifle_varmint"] = {1, 7, 72, 3},
-    ["weapon_rifle_boltaction"] = {1, 9, 216, 9},
+    ["rifle_varmint"] = {1, 7, 72, 3},
+    ["rifle_boltaction"] = {1, 9, 216, 9},
 
     -- Ammo
     ["ammo_revolver"] = {20, 1, 10, 2},
@@ -40,12 +40,12 @@ local buyableData = {
 RegisterNetEvent("FC:WEAPONSHOP:BuyWeapon")
 AddEventHandler(
     "FC:WEAPONSHOP:BuyWeapon",
-    function(item_id, gold)
+    function(item_id, gold, money)
 
         if not buyableData[item_id] then
             return
         end
-
+ 
         local amount = buyableData[item_id][1]
         local level = buyableData[item_id][2]
         local price_dolar = buyableData[item_id][3]
@@ -59,14 +59,13 @@ AddEventHandler(
         local ItemData = API.getItemDataFromId(tostring(item_id))
 
         local userlevel = User:getCharacter():getLevel()
-        print(userlevel, level)
         if userlevel < level then
             User:notify('Level insuficiente!')
             return
         end
 
         if gold ~= nil then   
-            if Inventory:getItemAmount("generic_gold") < tonumber(price_gold*100) then
+            if Inventory:getItemAmount("gold") < tonumber(price_gold*100) then
                 User:notify("Dinheiro insuficiente!")
                 return
             end
@@ -81,13 +80,16 @@ AddEventHandler(
             User:notify("Mochila no limite de peso!")
             return
         end
+        print(gold, money)
 
         if gold ~= nil then             
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("generic_gold", tonumber(price_gold*100))   
+            Inventory:removeItem(-1, "gold", tonumber(price_gold*100))   
+            User:notify("Comprado!")
         else
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("money", tonumber(price_dolar*100)) 
+            Inventory:removeItem(-1, "money", tonumber(price_dolar*100)) 
+            User:notify("Comprado!")
         end    
 
         User:notify(ItemData:getName() .. " comprada!")
@@ -121,7 +123,7 @@ AddEventHandler(
         end
 
         if gold ~= nil then   
-            if Inventory:getItemAmount("generic_gold") < tonumber(price_gold*100) then
+            if Inventory:getItemAmount("gold") < tonumber(price_gold*100) then
                 User:notify("Dinheiro insuficiente!")
                 return
             end
@@ -139,10 +141,10 @@ AddEventHandler(
 
         if gold ~= nil then             
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("generic_gold", tonumber(price_gold*100))   
+            Inventory:removeItem(-1, "gold", tonumber(price_gold*100))   
         else
             Inventory:addItem(item_id, amount)
-            Inventory:removeItem("money", tonumber(price_dolar*100)) 
+            Inventory:removeItem(-1, "money", tonumber(price_dolar*100)) 
         end               
 
         User:notify(ItemData:getName() .. " comprado!")

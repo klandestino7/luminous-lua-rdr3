@@ -21,6 +21,6 @@ AddEventHandler('bberry:buyvehicle', function(price, vehicle, level)
         TriggerClientEvent('Message:cancel', source)
         return
     end
-    Inventory:removeItem('money', tonumber(price*100))
+    Inventory:removeItem(-1, 'money', tonumber(price*100))
     TriggerClientEvent('spawn:vehicle', _source, vehicle)
 end)

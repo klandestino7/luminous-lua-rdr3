@@ -28,7 +28,7 @@ AddEventHandler(
 	"onResourceStart",
 	function(resourceName)
 
-		SetMinimapHideFow(true) -- remove
+	--	SetMinimapHideFow(true) -- remove
 
 		if (GetCurrentResourceName() ~= resourceName) then
 			return

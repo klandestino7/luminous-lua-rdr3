@@ -70,10 +70,11 @@ Citizen.CreateThread(
                         if dist <= 50.0 then
                             -- DrawMarker(23, vec, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 0.5, 0, 155, 253, 80, false, true, 2, false, false, false, false)
                             if dist <= 1.5 then
-                                -- if h ~= nil then
-                                -- TaskPedSlideToCoord(ped, x, y, z, h, 1000)
-                                --     TaskAchieveHeading(ped, h, 500)
-                                -- end
+                                
+                                if h ~= nil then
+                                TaskPedSlideToCoord(ped, x, y, z, h, 1000)
+                                    TaskAchieveHeading(ped, h, 500)
+                                end
 
                                 if IsControlJustPressed(1, 0x07CE1E61) then
                                     if sentFirstData == true then

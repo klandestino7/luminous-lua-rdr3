@@ -17,9 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
     $(".container").hide();
 });
 
-function buyItem(item, gold) {
-    console.log(item)
-    $.post('http://vp_weaponshop/buyItem', JSON.stringify({ itemId: item, gold: gold}));
+
+function buyItem(item, money, gold) {
+    if (money != undefined){
+        $.post('http://vp_weaponshop/buyItem', JSON.stringify({ itemId: item, money: money}));
+    }
+    if (gold != undefined){
+        $.post('http://vp_weaponshop/buyItem', JSON.stringify({ itemId: item, gold: gold}));
+    }
 }
 
 
@@ -36,8 +41,6 @@ $('.categselect').on('click', function() {
 
 window.addEventListener('message', function(event) {
     var data = event.data;
-
-    console.log(JSON.stringify(data))
 
     // lista.forEach(function(itemList, type){
     //     itemList.forEach(function(itemData, _){
@@ -57,10 +60,10 @@ window.addEventListener('message', function(event) {
         </div>
         <div class="borderr"></div>
         <div class="buttonb">
-            <button class="dollar" onclick="buyItem('` + data.items.itemId + `')">
+            <button class="dollar" onclick="buyItem('` + data.items.itemId + `', '` + data.items.money + `', '` + undefined + `')">
             <span style="color:#9e9e9e">` + data.items.money + `$</span>
             </button>
-            <button class="gold" onclick="buyItem('` + data.items.itemId + `', '` + data.items.gold + `')">
+            <button class="gold" onclick="buyItem('` + data.items.itemId + `', '` + undefined + `', '` + data.items.gold + `')">
             <span style="color:#e0a604">G` + data.items.gold + `</span>
             </button>
         </div>

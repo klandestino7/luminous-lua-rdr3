@@ -56,7 +56,7 @@ AddEventHandler(
             return
         end
 
-        Inventory:removeItem(item_id, 1)
+        Inventory:removeItem(-1, item_id, 1)
 
         tempPCapacity[_source] = nil
 
