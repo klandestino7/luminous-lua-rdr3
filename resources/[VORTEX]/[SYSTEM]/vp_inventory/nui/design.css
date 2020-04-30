@@ -358,3 +358,9 @@ Its simulated from .selected :D
 /* .ab {
     border: 1px solid green;
 } */
+
+#small-text {
+    margin-top: 2px;
+    color: rgb(245, 82, 82);
+    font-size: 10px;
+}

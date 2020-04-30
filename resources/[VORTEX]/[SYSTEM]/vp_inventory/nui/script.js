@@ -93,7 +93,7 @@ window.addEventListener("message", function(event) {
 
 
             if (event.data.primaryWeight != undefined) {
-                var weight = event.data.primaryWeight
+                var weight = event.data.primaryWeight.toFixed(1);
                 var maxWeight = event.data.primaryMaxWeight
                 if (maxWeight != undefined) {
                     $('#primary #weight').text(`${weight}/${maxWeight}kg`);
@@ -134,7 +134,7 @@ window.addEventListener("message", function(event) {
 
 
             if (event.data.secondaryWeight != undefined) {
-                var weight = event.data.secondaryWeight;
+                var weight = event.data.secondaryWeight.toFixed(1);
                 var maxWeight = event.data.secondaryMaxWeight;
                 if (maxWeight != undefined) {
                     $('#secondary #weight').text(`${weight}/${maxWeight}kg`);
@@ -427,10 +427,16 @@ $(document).ready(function() {
 });
 
 
-function elementAsDraggable(element, a, b, c) {
+function elementAsDraggable(element, a, b, c, d, e) {
     element.attr('itemId', a);
     element.attr('title', b);
     element.attr('description', c);
+
+    if (d != null) {
+        element.attr('desc_1', d);
+        element.attr('desc_2', e);
+    }
+
     element.draggable({
         appendTo: 'body',
         scroll: false,
@@ -549,15 +555,19 @@ function drawPrimary() {
             var itemName = Slot.itemName;
             var itemDescription = Slot.itemDescription;
 
+            var displayItemAmount = false;
+
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
                 if (itemStackSize != -1) {
                     if (itemId != "lasso") {
+                        // <div class="counter">${itemAmount}/${itemStackSize}</div>
+
                         $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
                         <img src="images/items/${itemId}.png">
-                        <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                        displayItemAmount = true;
                     } else {
                         $(`#primary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
@@ -566,12 +576,15 @@ function drawPrimary() {
                     `);
                     }
                 } else {
+                    // <div class="counter">${itemAmount}</div>
+
                     $(`#primary-inventory .slot-container`).append(`
                             <div class="slot" id="${slotId}" onclick="select(this)">
                                 <img src="images/items/${itemId}.png">
-                                <div class="counter">${itemAmount}</div>
                             </div>
                         `);
+                    displayItemAmount = true;
+                    itemStackSize = null;
                 }
             } else {
                 $(`#primary-inventory .slot-container`).append(`
@@ -585,7 +598,13 @@ function drawPrimary() {
             var element = $(`#primary-inventory .slot-container #${slotId}`);
 
             if (primaryCategoriesIndex != 1) {
-                elementAsDraggable(element, itemId, itemName, itemDescription);
+
+                if (displayItemAmount == false) {
+                    itemAmount = null;
+                    itemStackSize = null;
+                }
+
+                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize);
 
                 $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
                     let selfSlot = $(this).attr('id');
@@ -690,6 +709,8 @@ function drawSecondary() {
             var itemName = Slot.itemName;
             var itemDescription = Slot.itemDescription;
 
+            var displayItemAmount = false;
+
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
                 if (itemStackSize != -1) {
                     if (itemId != "lasso") {
@@ -699,6 +720,7 @@ function drawSecondary() {
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
+                    displayItemAmount = true;
                     } else {
                         $(`#secondary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
@@ -713,6 +735,8 @@ function drawSecondary() {
                             <div class="counter">${itemAmount}</div>
                         </div>
                     `);
+                    displayItemAmount = true;
+                    itemStackSize = null;
                 }
             } else {
                 $(`#secondary-inventory .slot-container`).append(`
@@ -726,7 +750,13 @@ function drawSecondary() {
             var element = $(`#secondary-inventory .slot-container #${slotId}`);
 
             if (secondaryCategoriesIndex != 1) {
-                elementAsDraggable(element, itemId, itemName, itemDescription);
+
+                if (displayItemAmount == false) {
+                    itemAmount = null;
+                    itemStackSize = null;
+                }
+
+                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize);
             }
         } else {
             $("#secondary-inventory .slot-container").append(`
@@ -812,7 +842,17 @@ function select(element) {
         $(`#${elementParentParentId} .description-description`).text('');
         $(`#${elementParentParentId} .selected`).removeClass('selected');
         $(element).addClass('selected');
-        $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+
+        if ($(element).attr('desc_1') == undefined) {
+            $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+        } else {
+            if ($(element).attr('desc_2') != undefined) {
+                $(`#${elementParentParentId} .description-title`).html($(element).attr('title') + '<span id="small-text">' + $(element).attr('desc_1') + ' de ' + $(element).attr('desc_2') + '</span>');
+            }else{
+                $(`#${elementParentParentId} .description-title`).html($(element).attr('title') + '<span id="small-text">' + $(element).attr('desc_1') + ' de ?</span>');
+            }
+        }
+
         $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
         indexSelected = $(element).attr('id');
     }

@@ -87,13 +87,13 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
     self.addXp = function(this, v)
         self.xp = self.xp + v
         self.updateLevel()
-        local xp = API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
+        API_Database.execute("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
     end
 
     self.removeXp = function(this, v)
         self.xp = self.xp - v
         self.updateLevel()
-        local xp = API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
+        API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
     end
 
     self.setWeapons = function(this, weapons)
