@@ -192,7 +192,11 @@ AddEventHandler(
 RegisterNUICallback(
     "buyItem",
     function(data)
-        TriggerServerEvent("FC:WEAPONSHOP:BuyWeapon", data.itemId, tonumber(data.gold))      
+        if data.gold ~= nil then
+            TriggerServerEvent("FC:WEAPONSHOP:BuyWeapon", data.itemId, tonumber(data.gold),nil)
+        elseif data.money ~= nil then            
+            TriggerServerEvent("FC:WEAPONSHOP:BuyWeapon", data.itemId, nil,tonumber(data.money))
+        end
     end
 )
 

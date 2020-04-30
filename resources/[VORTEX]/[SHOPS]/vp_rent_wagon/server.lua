@@ -21,7 +21,7 @@ AddEventHandler('carroca:buyvehicle', function(price, vehicle, level)
     end
     print('comprou')
 
-    Inventory:removeItem('money', tonumber(price*100))
+    Inventory:removeItem(-1, 'money', tonumber(price*100))
     TriggerClientEvent('carrocaspawn:vehicle', _source, vehicle)
 
 end)

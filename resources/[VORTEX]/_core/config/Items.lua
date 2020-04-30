@@ -1019,6 +1019,7 @@ ItemList = {
         description = 'Uma caixa com pregos e tecelã que te permitem montar uma tenda mediana.',
         stackSize = 1,
     },
+
     ['tent_small'] = {
         type = 'kit',
         name = 'Tenda Grande',
@@ -1053,22 +1054,29 @@ ItemList = {
     ['money'] = {
         type = 'valuable',
         name = 'Dólar',
-        weight = 0.001,
+        weight = 0.00001,
         description = 'Uma nota de valor, pode ser usada para comprar diversos itens. É a moeda da economia.',
         stackSize = -1,
     },
     ['blackmoney'] = {
         type = 'valuable',
         name = 'Dólar Sujo',
-        weight = 0.001,
+        weight = 0.0001,
         description = 'Uma nota de dólar falsa, facilmente percebida na luz natural do sol.',
         stackSize = -1,
     },
     ['gold'] = {
         type = 'valuable',
         name = 'Barra de Ouro',
-        weight = 0.007,
+        weight = 0.0007,
         description = 'Uma brilhante e cara barra de ouro.',
+        stackSize = -1,
+    },
+    ['map'] = {
+        type = 'document',
+        name = 'Mapa da Cidade',
+        weight = 0.007,
+        description = 'Com este mapa você consegue visualizar todos os lugares da cidade.',
         stackSize = -1,
     }
 }
