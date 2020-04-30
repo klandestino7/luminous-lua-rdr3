@@ -77,8 +77,8 @@ function createPeds()
         SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
         SetModelAsNoLongerNeeded(hash)
 
+        cAPI.SetBodyType(choosePed[k], peds[k].bodySize)
         Wait(130)
-        cAPI.SetBodyType(choosePed[k], peds[k].genrer, peds[k].bodySize)
         cAPI.SetSkin(choosePed[k], peds[k].skin)
         Wait(300)
         cAPI.SetFaceFeature(choosePed[k], json.decode(peds[k].facef))
@@ -100,6 +100,7 @@ function createPeds()
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k],0x192C2A4B,true,true,true) -- BOOT
             end
         end
+
         Citizen.CreateThread(
             function()
             while true do

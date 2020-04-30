@@ -244,8 +244,8 @@ end)
 
 
 
-RegisterNetEvent('clothes:open')
-AddEventHandler('clothes:open', function()
+RegisterNetEvent('VP:STORECLOTHES:open')
+AddEventHandler('VP:STORECLOTHES:open', function()
     inCustomization = true
     clothes = true
     hided = false

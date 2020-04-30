@@ -26,15 +26,27 @@ AddEventHandler('clothe:loadtenue', function(kek)
 end)
 
 RegisterCommand('model', function(source, args)
-    local modelo = args[1]
-    local model = GetHashKey(modelo)        
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Wait(100)               
+
+    local model = "p_haybale03x"
+    if IsModelValid(model) then
+        if not HasModelLoaded(model) then
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Citizen.Wait(10)
+            end
+        end
     end
-    SetPlayerModel(PlayerId(), model, true)
-    Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), true)
-    SetModelAsNoLongerNeeded(model)
+
+    local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
+    local object = CreateObject(model, coords, true, true, false, false, true)
+    PlaceObjectOnGroundProperly(object)
+    Wait(1000)
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PICKUP_1", 0, 0)
+    Wait(3000)
+    print('sk')
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PUT_DOWN_2_MALE_A", 0, 0)
+
+
 end)
 
 -- Citizen.CreateThread(function()

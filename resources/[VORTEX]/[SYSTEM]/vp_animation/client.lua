@@ -159,3 +159,33 @@ RegisterCommand("violao", function(source, args, rawCommand)
     local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
     Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("PROP_HUMAN_SEAT_CHAIR_GUITAR"), 100000,true,false, false, false)
 end)
+
+
+RegisterCommand("bale", function(source, args, rawCommand)
+    local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+    Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_BALE_PUT_DOWN_1_MALE_A"), 100000,true,false, false, false)
+end)
+
+
+
+RegisterCommand("bale2", function(source, args, rawCommand)
+    local model = "p_bucket03x"
+    if IsModelValid(model) then
+        if not HasModelLoaded(model) then
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Citizen.Wait(10)
+            end
+        end
+    end
+
+    local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
+    local object = CreateObject(model, coords, true, true, false, false, true)
+    PlaceObjectOnGroundProperly(object)
+
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_bucket03x_PH_L_HAND", "WORLD_HUMAN_BUCKET_PICKUP_EMPTY_MALE_A", 0, 0)
+
+    
+end)
+
+

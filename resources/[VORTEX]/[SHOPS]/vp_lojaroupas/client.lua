@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
 		local coords = GetEntityCoords(playerPed)
 			for k,v in pairs(Config.Coords) do
 					if Vdist(coords, v) < 2 then
-						DrawTxt(Config.Shoptext, 0.50, 0.95, 0.6, 0.6, true, 255, 255, 255, 255, true, 10000)
+						DrawTxt(Config.Shoptext, 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
 						if IsControlJustReleased(0, keys['ALT']) then					
 							  TriggerServerEvent("VP:STORECLOTHES:checkmoney")
 						end

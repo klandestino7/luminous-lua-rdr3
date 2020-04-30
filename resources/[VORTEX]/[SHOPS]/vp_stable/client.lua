@@ -8,28 +8,45 @@ cam = nil
 hided = false
 spawnedCamera = nil
 choosePed = {}
-pedSelected = cAPI.getHorseEnt()
+pedSelected = nil
 sex = nil
 zoom = 4.0
 offset = 0.2
+DeleteeEntity = true
+local InterP = true
 
-RegisterCommand(
-    "horsemodf",
-    function(source, args)
+
+cameraUsing = {
+    {
+        name = "Horse",
+        x=0.2,
+        y=0.0,
+        z=1.8,
+    },
+    {
+        name = "Olhos",
+        x=0.0,
+        y=-0.4,
+        z=0.65,
+    },
+}
+
+function OpenStable()
         inCustomization = true
         horsesp = true
         SetEntityHeading(cAPI.getHorseEnt(), 334)
-
+        DeleteeEntity = true
         SetNuiFocus(true, true)
+        InterP = true
 
         local hashm = GetEntityModel(cAPI.getHorseEnt())
 
         if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
-            camera(zoom, offset)
+            createCamera(PlayerPedId())
+        else    
+            createCamera(PlayerPedId())
         end
-
-        SetEntityVisible(PlayerPedId(), false)
-
+      --  SetEntityVisible(PlayerPedId(), false)
         if not alreadySentShopData then
             SendNUIMessage(
                 {
@@ -43,11 +60,86 @@ RegisterCommand(
                     action = "show"
                 }
             )
-        end
-
+        end        
         TriggerServerEvent("VP:STABLE:AskForMyHorses")
+end
+
+
+local promptGroup
+local varStringCasa = CreateVarString(10, "LITERAL_STRING", "Estabulo")
+local blip
+local prompts = {}
+local SpawnPoint = {}
+local StablePoint = {}
+local HeadingPoint
+local CamPos = {}
+Citizen.CreateThread(function()
+	while true do
+		Wait(1)		
+        local coords = GetEntityCoords(PlayerPedId())        
+        for _, prompt in pairs(prompts) do
+            if PromptIsJustPressed(prompt) then     
+                for k, v in pairs(Config.Stables) do
+                    if GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < 7 then           
+                        HeadingPoint = v.Heading
+                        StablePoint = {v.Pos.x, v.Pos.y, v.Pos.z}
+                        CamPos = {v.SpawnPoint.CamPos.x, v.SpawnPoint.CamPos.y}
+                        SpawnPoint = {x = v.SpawnPoint.Pos.x, y = v.SpawnPoint.Pos.y , z = v.SpawnPoint.Pos.z, h = v.SpawnPoint.Heading}
+                        Wait(300)
+                    end  
+                end
+                OpenStable()
+            end
+        end
+	end
+end)
+
+
+Citizen.CreateThread(
+    function()
+        for _, v in pairs(Config.Stables) do
+           -- blip = N_0x554d9d53f696d002(1664425300, v.Pos.x, v.Pos.y, v.Pos.z)
+            SetBlipSprite(blip, -145868367, 1)
+            Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Estábulo')
+            local prompt = PromptRegisterBegin()
+            PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
+            PromptSetControlAction(prompt, 0xE8342FF2)
+            PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Acessar Estábulo'))
+            PromptSetStandardMode(prompt, true)    
+            PromptSetEnabled(prompt, 1)
+            PromptSetVisible(prompt, 1)
+            PromptSetHoldMode(prompt, 1)
+            PromptSetPosition(prompt, v.Pos.x, v.Pos.y, v.Pos.z)
+            N_0x0c718001b77ca468(prompt, 3.0)
+            PromptSetGroup(prompt, promptGroup)
+            PromptRegisterEnd(prompt)
+            table.insert(prompts, prompt)
+        end
     end
 )
+
+AddEventHandler(
+    'onResourceStop',
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            for _, prompt in pairs(prompts) do
+                PromptDelete(prompt)
+                RemoveBlip(blip)
+            end
+        end
+
+    end)
+
+
+-- function deletePrompt()
+--     if prompt ~= nil then
+--         PromptSetVisible(prompt, false)
+--         PromptSetEnabled(prompt, false)
+--         PromptDelete(prompt)
+--         prompt = nil
+--         promptGroup = nil
+--     end
+-- end
 
 function rotation(dir)
     local pedRot = GetEntityHeading(cAPI.getHorseEnt()) + dir
@@ -66,16 +158,17 @@ RegisterNUICallback(
     end
 )
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
---             if inCustomization and not hided then
-
---             end
+-- AddEventHandler(
+--     'onResourceStop',
+--     function(resourceName)
+--         if resourceName == GetCurrentResourceName() then
+--             for _, prompt in pairs(prompts) do
+--                 PromptDelete(prompt)
+-- 			end		
 --         end
 --     end
 -- )
+
 
 AddEventHandler(
     "onResourceStop",
@@ -103,70 +196,6 @@ function createCam(creatorType)
     end
 end
 
-function camera(zoom, offset)
-    DestroyAllCams(true)
-    local playerPed = cAPI.getHorseEnt()
-    local coords = GetEntityCoords(playerPed)
-    local heading = 45.0
-    local zoomOffset = zoom
-    local camOffset = offset
-    local angle = heading * math.pi / 180.0
-    local theta = {
-        x = math.cos(angle),
-        y = math.sin(angle)
-    }
-    --    print(theta.x)
-    local pos = {
-        x = coords.x + (zoomOffset * theta.x),
-        y = coords.y + (zoomOffset * theta.y)
-    }
-    --   print(pos.x)
-    local angleToLook = heading - 140.0
-    if angleToLook > 360 then
-        angleToLook = angleToLook - 360
-    elseif angleToLook < 0 then
-        angleToLook = angleToLook + 360
-    end
-    --   print(angleToLook)
-    angleToLook = angleToLook * math.pi / 180.0
-    local thetaToLook = {
-        x = math.cos(angleToLook),
-        y = math.sin(angleToLook)
-    }
-    --    print(thetaToLook.x)
-    local posToLook = {
-        x = coords.x + (zoomOffset * thetaToLook.x),
-        y = coords.y + (zoomOffset * thetaToLook.y)
-    }
-    --  print(posToLook.x)
-
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.6, pos.y, coords.z + camOffset, 300.00, 0.00, 0.00, 40.00, false, 0)
-    PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
-    SetCamActive(cam, true)
-    RenderScriptCams(true, true, 500, true, true)
-    DisplayHud(false)
-    DisplayRadar(false)
-end
-
-RegisterNUICallback(
-    "CloseStable",
-    function()
-        SendNUIMessage(
-            {
-                action = "hide"
-            }
-        )
-        SetEntityVisible(PlayerPedId(), true)
-
-        showroomHorse_model = nil
-
-        if showroomHorse_entity ~= nil then
-            DeleteEntity(showroomHorse_entity)
-        end
-
-        showroomHorse_entity = nil
-    end
-)
 
 RegisterNUICallback(
     "Saddles",
@@ -385,50 +414,6 @@ HorseTailsUsing = nil
 AcsHornUsing = nil
 AcsLuggageUsing = nil
 
-function camera(zoom, offset)
-    DestroyAllCams(true)
-    local playerPed = cAPI.getHorseEnt()
-    local coords = GetEntityCoords(playerPed)
-    local heading = 45.0
-    local zoomOffset = zoom
-    local camOffset = offset
-    local angle = heading * math.pi / 180.0
-    local theta = {
-        x = math.cos(angle),
-        y = math.sin(angle)
-    }
-    --    print(theta.x)
-    local pos = {
-        x = coords.x + (zoomOffset * theta.x),
-        y = coords.y + (zoomOffset * theta.y)
-    }
-    --   print(pos.x)
-    local angleToLook = heading - 140.0
-    if angleToLook > 360 then
-        angleToLook = angleToLook - 360
-    elseif angleToLook < 0 then
-        angleToLook = angleToLook + 360
-    end
-    --   print(angleToLook)
-    angleToLook = angleToLook * math.pi / 180.0
-    local thetaToLook = {
-        x = math.cos(angleToLook),
-        y = math.sin(angleToLook)
-    }
-    --    print(thetaToLook.x)
-    local posToLook = {
-        x = coords.x + (zoomOffset * thetaToLook.x),
-        y = coords.y + (zoomOffset * thetaToLook.y)
-    }
-    --  print(posToLook.x)
-
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.6, pos.y, coords.z + camOffset + 2.0, 300.00, 0.00, 0.00, 40.00, false, 0)
-    PointCamAtCoord(cam, posToLook.x, posToLook.y + 2.0, coords.z + camOffset - 1.0)
-    SetCamActive(cam, true)
-    RenderScriptCams(true, true, 500, true, true)
-    DisplayHud(false)
-    DisplayRadar(false)
-end
 
 function closeAll()
     DestroyAllCams(true)
@@ -450,19 +435,6 @@ end
 
 --- /// ARRASTAR CAVALO
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
---             if IsControlPressed(2, 0xE8342FF2) then -- Hold ALT
---                 print("askoasko")
---                 CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt())
---                 print(CompendiumHorseBonding(PlayerPedId(), cAPI.getHorseEnt()))
---             --  TaskArrestPed(cAPI.getHorseEnt(), PlayerPedId())
---             end
---         end
---     end
--- )
 
 local alreadySentShopData = false
 
@@ -472,11 +444,11 @@ function getShopData()
     local ret = {
         {
             name = "Cavalo de Guerra",
-            ["A_C_Horse_MP_Mangy_Backup"] = {"Burrinho", 10, 20}
+            ["A_C_HORSE_MORGAN_FLAXENCHESTNUT"] = {"Burrinho", 10, 20}
         },
         {
             name = "Cavalo de Corrida",
-            ["A_C_Horse_MP_Mangy_Backup"] = {"Burrinho", 10, 20}
+            ["A_C_HORSE_TENNESSEEWALKER_REDROAN"] = {"Burrinho", 10, 20}
         }
     }
 
@@ -485,7 +457,6 @@ end
 
 local showroomHorse_entity
 local showroomHorse_model
-local showroomHorse_heading = 180
 
 RegisterNUICallback(
     "loadHorse",
@@ -511,11 +482,71 @@ RegisterNUICallback(
             end
         end
 
-        showroomHorse_entity = CreatePed(modelHash, GetEntityCoords(PlayerPedId()), showroomHorse_heading, false, 0)
+        showroomHorse_entity = CreatePed(modelHash, SpawnPoint.x, SpawnPoint.y, SpawnPoint.z-0.98, SpawnPoint.h, false, 0)
         Citizen.InvokeNative(0x283978A15512B2FE, showroomHorse_entity, true)
         Citizen.InvokeNative(0x58A850EAEE20FAA3, showroomHorse_entity)
-        -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
+        NetworkSetEntityInvisibleToNetwork(showroomHorse_entity, true)
         SetVehicleHasBeenOwnedByPlayer(showroomHorse_entity, true)
         SetModelAsNoLongerNeeded(modelHash)
+
+        interpCamera("Horse", showroomHorse_entity)
+
     end
 )
+
+RegisterNUICallback(
+    "CloseStable",
+    function()
+        SetNuiFocus(false, false)
+
+        SendNUIMessage(
+            {
+                action = "hide"
+            }
+        )
+        SetEntityVisible(PlayerPedId(), true)
+
+        showroomHorse_model = nil
+
+        if showroomHorse_entity ~= nil then
+            DeleteEntity(showroomHorse_entity)
+        end
+        DestroyAllCams(true)
+        showroomHorse_entity = nil
+        
+    end
+)
+
+function interpCamera(cameraName, entity)
+    for k,v in pairs(cameraUsing) do
+        if cameraUsing[k].name == cameraName then
+            tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+            AttachCamToEntity(tempCam, entity, cameraUsing[k].x + CamPos[1], cameraUsing[k].y + CamPos[2], cameraUsing[k].z)
+            SetCamActive(tempCam, true)
+            SetCamRot(tempCam, -30.0, 0, HeadingPoint + 50.0)
+            if InterP then
+                SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
+                InterP = false
+            end
+
+        end
+    end
+end
+
+
+function createCamera(entity)
+    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")    
+    SetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
+    SetCamRot(groundCam, -20.0, 0.0, HeadingPoint + 20)
+    SetCamActive(groundCam, true)    
+    RenderScriptCams(true, false, 1, true, true)
+    --Wait(3000)
+    -- last camera, create interpolate
+    fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+    SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
+    SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
+    SetCamActive(fixedCam, true)
+    SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
+    Wait(3900)
+    DestroyCam(groundCam)
+end

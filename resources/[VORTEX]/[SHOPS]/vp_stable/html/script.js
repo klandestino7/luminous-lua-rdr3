@@ -16,7 +16,7 @@ window.addEventListener('message', function(event) {
                                     <h6 class="grey-text">${horseCategory}</h6>
                                 </div>
                             </div>
-                            <div class="collapsible-body">
+                            <div class="collapsible-body item-bg">
                             </div>
                         </li>
                     `);
@@ -31,21 +31,25 @@ window.addEventListener('message', function(event) {
                         // priceGold = '';
                         // priceDolar = '';
 
+
+
                         $(`#page_shop .scroll-container .collapsible #${index} .collapsible-body`).append(`
+
                             <div id="${_}" onhover="loadHorse(this)" class="col s12 panel item">
+
                                 <div class="col s6 panel-col item">
-                                    <h6 class="grey-text title">${HorseName}</h6>
-                                </div>
-                                <div class="col s3 offset-s3 panel-col">
-                                    ${priceGold}
-                                    <button onclick="buy(this, true)" class="col s6 waves-effect waves-light btn-small">
-                                        <img src="img/gold.png">
+                                    <h6 class="grey-text title" style="color:white;">${HorseName}</h6>
+                                </div>          
+
+                                <div class="buy-buttons">                                       
+                                    <button class="btn-small">                                                
+                                        <img src="img/gold.png"><span class="horse-price">${priceGold}</span>
+                                    </button>                                          
+                                    <button class="btn-small">
+                                        <img src="img/money.png"><span class="horse-price">${priceDolar}</span>
                                     </button>
-                                    ${priceDolar}
-                                    <button onclick="buy(this, false)" class="col s6 waves-effect waves-light btn-small">
-                                            <img src="img/money.png">
-                                    </button>
                                 </div>
+                                
                             </div>
                         `);
 
@@ -67,7 +71,6 @@ window.addEventListener('message', function(event) {
                     </div>
                 </li>
             `);
-
             $('.collapsible').collapsible();
         }
 
@@ -81,6 +84,12 @@ window.addEventListener('message', function(event) {
     }
 });
 
+function confirm(){
+    $.post('http://vp_stable/CloseStable')
+    $('#page_myhorses .scroll-container .collapsible').html('');
+    $('#page_shop .scroll-container .collapsible').html('');
+    $("#creatormenu").fadeOut(500);
+}
 
 var currentPage = 'page_myhorses';
 

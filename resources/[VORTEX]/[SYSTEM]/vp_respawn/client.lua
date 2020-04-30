@@ -53,7 +53,7 @@ Citizen.CreateThread(
 					DisableAllControlActions(1)
 					DisableAllControlActions(2)
 					ClearTimecycleModifier()
-					DestroyAllCams(true)
+					DestroyAllCams(true)					
 				else
 					TriggerServerEvent('VP:Respawn:checkgroup')
 				end
