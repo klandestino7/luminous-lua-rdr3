@@ -7,15 +7,20 @@ API = Tunnel.getInterface("API")
 adding = true
 creator = false
 inCustomization = false
-cam = nil
+groundCam = nil
 hided = false
 spawnedCamera = nil
 choosePed = {}
 pedSelected = nil
 sex = nil
-
+InterP = false
+InterP2 = false
 zoom = 1.0
 offset = 0.5
+fixedCam = nil
+tempCam2 = nil
+tempCam = nil
+groundCam = nil
 --
 --[[ Male {}
 A_M_M_CHELONIAN_01
@@ -53,6 +58,28 @@ local cams = {
     }
 }
 
+cameraUsing = {
+    {
+        name = "Selection",
+        x=-1.0,
+        y=0.0,
+        z=0.5,
+    },
+    {
+        name = "Rosto",
+        x=-0.5,
+        y=0.0,
+        z=0.6,
+    },
+    {
+        name = "Corpo",
+        x=-1.3,
+        y=0.0,
+        z=0.4,
+    },
+}
+
+
 Citizen.CreateThread(
     function()
         RequestImap(-1699673416)
@@ -60,18 +87,32 @@ Citizen.CreateThread(
         RequestImap(183712523)
         while true do
             Citizen.Wait(0)
+            if creator then
+                for k, v in pairs(light) do
+                    DrawLightWithRange(light[k].x, light[k].y, light[k].z, 255, 255, 255, light[k].r, light[k].f)
+                end
+            end
             if creator and not inCustomization then
-                if cam == nil then
-                    createCam("selection")
+                if groundCam == nil then
+                    DisplayHud(false)
+                  --  createCam("selection")                  
+                    createPeds()
+                    DestroyAllCams(true)
+                    createCamera()
+
                 else
                     for k, v in pairs(choosePed) do
                         if IsControlJustReleased(0, 0xA65EBAB4) and GetEntityModel(choosePed[k]) == GetHashKey("mp_male") then -- male
-                            AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
+                        --   AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
+                            InterP = true
+                            interpCamera("Selection", choosePed[k])
                             PlaySoundFrontend("gender_left", "RDRO_Character_Creator_Sounds", true, 0)
                             pedSelected = choosePed[k]
                             sex = "mp_male"
                         elseif IsControlJustReleased(0, 0xDEB34313) and GetEntityModel(choosePed[k]) == GetHashKey("mp_female") then --female
-                            AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
+                        --   AttachCamToEntity(cam, choosePed[k], -3.5, 0.0, 0.5, false)
+                            InterP = true   
+                            interpCamera("Selection", choosePed[k])
                             PlaySoundFrontend("gender_right", "RDRO_Character_Creator_Sounds", true, 0)
                             pedSelected = choosePed[k]
                             sex = "mp_female"
@@ -80,6 +121,8 @@ Citizen.CreateThread(
                     if IsControlJustReleased(0, 0xC7B5340A) and pedSelected ~= nil then
                         DoScreenFadeOut(1800)
                         Wait(2000)
+                        interpCamera2("Corpo", pedSelected)
+                        InterP2 = true
                         SetEntityCoords(pedSelected, -558.56, -3781.16, 237.59)
                         SetEntityHeading(pedSelected, 87.21)
                         inCustomization = true
@@ -89,6 +132,7 @@ Citizen.CreateThread(
                     end
                 end
             end
+
             if inCustomization and not hided then
                 SetNuiFocus(true, true)
                 SendNUIMessage(
@@ -97,11 +141,6 @@ Citizen.CreateThread(
                         gender = sex
                     }
                 )
-            end
-            if creator then
-                for k, v in pairs(light) do
-                    DrawLightWithRange(light[k].x, light[k].y, light[k].z, 255, 255, 255, light[k].r, light[k].f)
-                end
             end
         end
     end
@@ -115,6 +154,7 @@ RegisterCommand(
         SetEntityVisible(PlayerPedId(), false)
         SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
         DeletePed = false
+        DoScreenFadeIn(3000)
     end
 )
 
@@ -173,9 +213,8 @@ PedScaleUsing = nil
 RegisterNUICallback(
     "HeadType",
     function(data)
-        if sex == "mp_male" then
-            zoom = 0.5
-            offset = 0.6
+        interpCamera2("Rosto", pedSelected)      
+        if sex == "mp_male" then            
             for k, v in pairs(MaleHeads) do
                 if MaleHeads[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleHeads[k].hash, true, true, true) -- FACE
@@ -183,8 +222,6 @@ RegisterNUICallback(
                 end
             end
         else
-            zoom = 0.5
-            offset = 0.5
             for k, v in pairs(FemaleHeads) do
                 if FemaleHeads[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, FemaleHeads[k].hash, true, true, true) -- FACE
@@ -198,9 +235,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "TomPele",
     function(data)
+        interpCamera2("Corpo", pedSelected)   
         if sex == "mp_male" then
-            zoom = 2.0
-            offset = 0.2
             for k, v in pairs(MaleTorsos) do
                 if MaleTorsos[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleTorsos[k].hash, true, true, true)
@@ -210,8 +246,6 @@ RegisterNUICallback(
                 end
             end
         else
-            zoom = 2.0
-            offset = 0.2
             for k, v in pairs(FemaleTorsos) do
                 if FemaleTorsos[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, FemaleTorsos[k].hash, true, true, true)
@@ -234,9 +268,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "Olhos",
     function(data)
+        interpCamera2("Rosto", pedSelected)
         if sex == "mp_male" then
-            zoom = 0.5
-            offset = 0.6
             for k, v in pairs(MaleEyes) do
                 if MaleEyes[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleEyes[k].hash, true, true, true)
@@ -244,8 +277,6 @@ RegisterNUICallback(
                 end
             end
         else
-            zoom = 0.5
-            offset = 0.5
             for k, v in pairs(FemaleEyes) do
                 if FemaleEyes[k].id == tonumber(data.id) then
                     Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, FemaleEyes[k].hash, true, true, true)
@@ -259,8 +290,7 @@ RegisterNUICallback(
 RegisterNUICallback(
     "Porte",
     function(data)
-        zoom = 2.5
-        offset = 0.2
+        interpCamera2("Corpo", pedSelected)   
         if sex == "mp_male" then
             Citizen.InvokeNative(0xA5BAE410B03E7371, pedSelected, math.floor(tonumber(data.id + 124)), true, true, true)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, HeadUsing, true, true, true)
@@ -276,9 +306,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "Dentes",
     function(data)
+        interpCamera2("Rosto", pedSelected)   
         if sex == "mp_male" then
-            zoom = 0.5
-            offset = 0.6
             for k, v in pairs(MaleTeeth) do
                 if MaleTeeth[k].id == tonumber(data.id) then
                     RequestAnimDict("FACE_HUMAN@GEN_MALE@BASE")
@@ -291,8 +320,6 @@ RegisterNUICallback(
                 end
             end
         else
-            zoom = 0.5
-            offset = 0.5
             for k, v in pairs(FemaleTeeth) do
                 if FemaleTeeth[k].id == tonumber(data.id) then
                     RequestAnimDict("FACE_HUMAN@GEN_MALE@BASE")
@@ -311,14 +338,13 @@ RegisterNUICallback(
 RegisterNUICallback(
     "Cabelos",
     function(data)
+        interpCamera2("Rosto", pedSelected)   
         if data.id == 0 then
             HairUsing = 0
             Citizen.InvokeNative(0xD710A5007C2AC539, pedSelected, 0x864B03AE, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, pedSelected, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             if sex == "mp_male" then
-                zoom = 0.5
-                offset = 0.6
                 for k, v in pairs(MaleHairs) do
                     if MaleHairs[k].id == tonumber(data.id) then
                         Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleHairs[k].hash, true, true, true)
@@ -326,8 +352,6 @@ RegisterNUICallback(
                     end
                 end
             else
-                zoom = 0.5
-                offset = 0.5
                 for k, v in pairs(FemaleHairs) do
                     if FemaleHairs[k].id == tonumber(data.id) then
                         Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, FemaleHairs[k].hash, true, true, true)
@@ -342,6 +366,7 @@ RegisterNUICallback(
 RegisterNUICallback(
     "Sobrancelha",
     function(value)
+        interpCamera2("Rosto", pedSelected)
         if sex == "mp_male" then
             -- print(N_0xfd1ba1eef7985bb8(pedSelected, 0xD266))
             N_0x5653ab26c82938cf(pedSelected, 0xD266, value)
@@ -364,14 +389,13 @@ RegisterCommand(
 RegisterNUICallback(
     "BarbaMenu",
     function(data)
+        interpCamera("Rosto", pedSelected)
         if data.id == 0 then
             HairUsing = 0
             Citizen.InvokeNative(0xD710A5007C2AC539, pedSelected, 0xF8016BCA, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, pedSelected, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             if sex == "mp_male" then
-                zoom = 0.5
-                offset = 0.6
                 for k, v in pairs(MaleMustache) do
                     if MaleMustache[k].id == tonumber(data.id) then
                         Citizen.InvokeNative(0xD3A7B003ED343FD9, pedSelected, MaleMustache[k].hash, true, true, true)
@@ -389,11 +413,9 @@ RegisterNUICallback(
     "FaceFeatured",
     function(data)
         if sex == "mp_male" then
-            zoom = 0.5
-            offset = 0.6
+            interpCamera2("Rosto", pedSelected)   
         else
-            zoom = 0.5
-            offset = 0.5
+            interpCamera2("Rosto", pedSelected)   
         end
         local ped = pedSelected
         local index = tonumber(data.facefeature)
@@ -407,11 +429,9 @@ RegisterNUICallback(
     "PedSize",
     function(data)
         if sex == "mp_male" then
-            zoom = 2.0
-            offset = 0.3
+            interpCamera2("Rosto", pedSelected)   
         else
-            zoom = 2.0
-            offset = 0.2
+            interpCamera2("Rosto", pedSelected)   
         end
         local ped = pedSelected
         if data.id < 180 then
@@ -561,34 +581,59 @@ function rotation(dir)
     end
 end
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(100)
-            if vpcreator then
-                local playerPed = pedSelected
-
-                if playerPed == nil then
-                    playerPed = PlayerPedId()
-                    camera(zoom, offset, playerPed)
-                else
-                    camera(zoom, offset, playerPed)
-                end
+function interpCamera(cameraName, entity)
+    SetCamActiveWithInterp(fixedCam, tempCam, 1200, true, true)
+    for k,v in pairs(cameraUsing) do
+        if cameraUsing[k].name == cameraName then
+            tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+            AttachCamToEntity(tempCam, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+            --AttachCamToEntity(tempCam, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+            SetCamActive(tempCam, true)
+            SetCamRot(tempCam, -4.0, 0, 270.0)
+            if InterP then
+                SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
+                InterP = false
             end
         end
     end
-)
+end
 
-function createCam(creatorType)
-    for k, v in pairs(cams) do
-        if cams[k].type == creatorType then
-            cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", cams[k].x, cams[k].y, cams[k].z, cams[k].rx, cams[k].ry, cams[k].rz, cams[k].fov, false, 0) -- CAMERA COORDS
-            SetCamActive(cam, true)
-            RenderScriptCams(true, false, 3000, true, false)
-            createPeds()
+function interpCamera2(cameraName, entity)
+    DestroyAllCams(true)
+    SetCamActiveWithInterp(tempCam, tempCam2, 1200, true, true)
+    for k,v in pairs(cameraUsing) do
+        if cameraUsing[k].name == cameraName then
+            tempCam2 = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+            AttachCamToEntity(tempCam2, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+            --AttachCamToEntity(tempCam, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+            SetCamActive(tempCam2, true)
+            SetCamRot(tempCam2, 0.0, 0, 270.0)
+            if InterP2 then
+                SetCamActiveWithInterp(tempCam2, tempCam, 1200, true, true)  
+                InterP2 = false
+            end     
         end
     end
 end
+
+function createCamera()
+    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")    
+    SetCamCoord(groundCam, -555.925,-3778.709,238.597)
+    SetCamRot(groundCam, -20.0, 0.0, 83)
+    SetCamActive(groundCam, true)    
+    RenderScriptCams(true, false, 1, true, true)
+    --Wait(3000)
+    -- last camera, create interpolate
+    fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+    SetCamCoord(fixedCam, -561.206,-3776.224,239.597)
+    SetCamRot(fixedCam, -20.0, 0, 270.0)
+    SetCamActive(fixedCam, true)
+    SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
+    Wait(3900)
+    DestroyCam(groundCam)
+    InterP = true
+end
+
 
 DeletePed = false
 
@@ -624,103 +669,15 @@ function createPeds()
     end
 end
 
-function camera(zoom, offset, entity)
-    DestroyAllCams(true)
-    playerPed = entity
-    local coords = GetEntityCoords(playerPed)
-    local heading = 150.0
-    local zoomOffset = zoom
-    local camOffset = offset
-    local angle = heading * math.pi / 180.0
-    local theta = {
-        x = math.cos(angle),
-        y = math.sin(angle)
-    }
-    --    print(theta.x)
-    local pos = {
-        x = coords.x + (zoomOffset * theta.x),
-        y = coords.y + (zoomOffset * theta.y)
-    }
-    --   print(pos.x)
-    local angleToLook = heading - 140.0
-    if angleToLook > 360 then
-        angleToLook = angleToLook - 360
-    elseif angleToLook < 0 then
-        angleToLook = angleToLook + 360
-    end
-    --   print(angleToLook)
-    angleToLook = angleToLook * math.pi / 180.0
-    local thetaToLook = {
-        x = math.cos(angleToLook),
-        y = math.sin(angleToLook)
-    }
-    --    print(thetaToLook.x)
-    local posToLook = {
-        x = coords.x + (zoomOffset * thetaToLook.x),
-        y = coords.y + (zoomOffset * thetaToLook.y)
-    }
-    --  print(posToLook.x)
 
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 0.2, pos.y - 0.5, coords.z + camOffset, 300.00, 0.00, 0.00, 40.00, false, 0)
-    PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
-    SetCamActive(cam, true)
-    RenderScriptCams(true, true, 500, true, true)
-    DisplayHud(false)
-    DisplayRadar(false)
-end
 
--- function camera(zoom, offset, entity)
---     DestroyAllCams(true)
---     playerPed = entity
---     local coords = GetEntityCoords(playerPed)
---     local heading = 90.0
---     local zoomOffset = zoom
---     local camOffset = offset
---     local angle = heading * math.pi / 180.0
---     local theta = {
---         x = math.cos(angle),
---         y = math.sin(angle)
---     }
---        print(theta.x)
---     local pos = {
---         x = coords.x + (zoomOffset * theta.x),
---         y = coords.y + (zoomOffset * theta.y)
---     }
---       print(pos.x)
---     local angleToLook = heading - 140.0
---     if angleToLook > 360 then
---         angleToLook = angleToLook - 360
---     elseif angleToLook < 0 then
---         angleToLook = angleToLook + 360
---     end
---       print(angleToLook)
---     angleToLook = angleToLook * math.pi / 180.0
---     local thetaToLook = {
---         x = math.cos(angleToLook),
---         y = math.sin(angleToLook)
---     }
---        print(thetaToLook.x)
---     local posToLook = {
---         x = coords.x + (zoomOffset * thetaToLook.x),
---         y = coords.y + (zoomOffset * thetaToLook.y)
---     }
---      print(posToLook.x)
 
---     cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x - 2, pos.y - 3, coords.z + camOffset, 300.00, 0.00, 0.00, 40.00, false, 0)
---     PointCamAtCoord(cam, posToLook.x + 2, posToLook.y+ 2 , coords.z + camOffset)
---     SetCamActive(cam, true)
---     RenderScriptCams(true, true, 500, true, true)
---     DisplayHud(false)
---     DisplayRadar(false)
--- end
 
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
         if GetCurrentResourceName() == resourceName then
-            for k, v in pairs(peds) do
-                DeleteEntity(v)
-            end
+            DeletePed = true
         end
     end
 )
