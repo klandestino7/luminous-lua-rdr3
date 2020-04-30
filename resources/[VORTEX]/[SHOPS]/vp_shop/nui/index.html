@@ -1,76 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- <script src="https://ajax.googleapis.com/ajax/lib/jquery/3.4.1/jquery.min.js"></script> -->
-    <script type="text/javascript" src="nui://game/ui/jquery.js"></script>
-    <script src="https://kit.fontawesome.com/eb73bbb7e4.js" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="design.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="script.js"></script>
 </head>
+
 
 <body>
     <div class="container">
-        <!-- <div class="shop">
-            <p class="title">❯  AMMUNATION</p>
-            <div class="menutab">
-                <div class="buttonstab">
-                    <div class="button active" data-target="all"><span class="helperName"> Todos</span><i class="fas fa-infinity"></i></div>
-                    <div class="button" data-target="weapon"><span class="helperName"> Armas</span><i class="fas fa-drumstick-bite"></i></div>
-                    <div class="button" data-target="ammo"><span class="helperName"> Munições</span><i class="fas fa-fist-raised"></i></div>
-                    <div class="button" data-target="melee"><span class="helperName"> Armas brancas</span><i class="fas fa-screwdriver"></i></div>
-                </div>
-            </div>
+        <div class="shop">
+            <img id="background-image" src="nui://vp_inventory/nui/images/bginventory.png">
+            <div class="inner-container">
 
-            <div class="items" id="all">
-                <div class="item">
-                    <img src="../../fcrp_inventory/html/img/items/weapon_assaultrifle.png">
-                    <div class="label">
-                        <p>AK-47</p>
-                        <p>Level: 1</p>
-                        <p>Preço: $250,00</p>
+                <!-- <div class="menutab">
+                    <div class="buttonstab">
+                        <div class="button active" data-target="all"><img src="nui://vp_inventory/nui/images/type_all.png"/></div>
+                        <div class="button" data-target="weapon"><img src="nui://vp_inventory/nui/images/type_all.png"/></div>
+                        <div class="button" data-target="ammo"><img src="nui://vp_inventory/nui/images/type_all.png"/></div>
+                        <div class="button" data-target="melee"><img src="nui://vp_inventory/nui/images/type_all.png"/></div>
                     </div>
-                    <div class="borderr"></div>
-                    <div class='button-container'>
-                        <div class="button-column">
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-arrow-up"></i>
-                            </button>
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                100
-                            </button>
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-arrow-down"></i>
-                            </button>
-                        </div>
-                        <div class="button">
-                            <button class="inner" onclick="buyItem('assault_rifle')">
-                                <i class="fas fa-shopping-basket"></i>
-                            </button>
-                        </div>
+                </div> -->
+                <div class="control-info-container">
+                    <span class="description-title" style="margin: 30px auto 0 auto;">Loja</span>
+                </div>
+                <div class="info">
+                    <span><img src="nui://vp_inventory/nui/images/peso.png"><span id="weight">0.0KG</span></span>
+                    <span onclick="buy(false)"><img id="p_dollar_img" src="nui://vp_inventory/nui/images/money.png"><span id="p_dollar">0.00</span></span>
+                    <span onclick="buy(true)"><img id="p_gold_img" src="nui://vp_inventory/nui/images/gold.png"><span id="p_gold">0.00</span></span>
+                </div>
+                <div class="divider" id="weight-divider"></div>
+                <div class="slot-container">
+                    <div class="slot">
+                        <img src="nui://vp_inventory/nui/images/items/generic_tobacco2.png">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div id="confirmation-container">
+                    <span id="confirm_title">Faca de Caça</span>
+                    <div class='row'>
+                        <button onclick="cancelPurchase()">cancelar</button>
+                        <button onclick="buyItem()">comprar</button>
                     </div>
                 </div>
             </div>
-
-            <div class="items" id="weapon" style="display: none;">
-
-            </div>
-            <div class="items" id="ammo" style="display: none;">
-
-            </div>
-
-            <div class="items" id="melee" style="display: none;">
-
-            </div>
-
-
-        </div> -->
+        </div>
     </div>
-    <script src="app.js"></script>
+
 </body>
 
 </html>

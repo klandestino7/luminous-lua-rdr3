@@ -11,6 +11,7 @@ server_scripts {
 }
 
 client_scripts {
+	"@_core/lib/warmenu.lua",
 	'@_core/lib/utils.lua',
 	'@_core/config/Items.lua',
 	'_cfg.lua',
@@ -19,8 +20,8 @@ client_scripts {
 
 files {
 	'nui/index.html',
-	'nui/style.css',
-	'nui/app.js',
+	'nui/design.css',
+	'nui/script.js',
 	'nui/assets/*'
 }
 

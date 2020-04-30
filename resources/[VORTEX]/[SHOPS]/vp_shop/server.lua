@@ -5,35 +5,45 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
-    ["Ammunation"] = {
-        -- Level, Price, Amount(optional)
-        ["weapon_combatpistol"] = {1, 100},
-        ["weapon_assaultrifle"] = {1, 100},
-        ["ammo_combatpistol"] = {0, 0, 20},
-        ["weapon_knife"] = {0, 0}
-    },
+    -- ["Ammunation"] = {
+    --     -- Level, Dollar, Gold, Amount(optional)
+    --     ["weapon_combatpistol"] = {1, 100},
+    --     ["weapon_assaultrifle"] = {1, 100},
+    --     ["ammo_combatpistol"] = {0, 0, 20},
+    --     ["weapon_knife"] = {0, 0}
+    -- },
     ["Policia"] = {
         group = "admin",
         -- Level, Price, Amount(optional)
-        ["weapon_combatpistol"] = {0, 0},
-        ["weapon_assaultrifle"] = {0, 0},
-        ["ammo_combatpistol"] = {0, 0, 20},
-        ["weapon_knife"] = {0, 0}
+        ["revolver_doubleaction"] = {0, 0, 0},
+        ["rifle_springfield"] = {0, 0, 0},
+        ["shotgun_pump"] = {0, 0, 0},
+        ["ammo_revolver"] = {0, 0, 0, 100},
+        ["ammo_rifle"] = {0, 0, 0, 75},
+        ["ammo_shotgun"] = {0, 0, 0, 50}
     },
-    ["Mercadinho"] = {
-        -- Level, Price, Amount(optional)
-        ["consumable_vodka"] = {1, 50}
-    },
-    ["Planeta Semente'"]  = {
-        ['tobacco_seed'] = {1, 100, 10}
+    -- ["Mercadinho"] = {
+    --     -- Level, Price, Amount(optional)
+    --     ["consumable_vodka"] = {1, 50}
+    -- },
+    -- ["Planeta Semente'"] = {
+    --     ["tobacco_seed"] = {1, 100, 10}
+    -- }
+
+    ["Geral"] = {
+        ["tobacco_seed"] = {0, 1, 1, 1},
+        ["corn_seed"] = {0, 1, 1, 1},
+        ["sugarcane_seed"] = {0, 1, 1, 1},
     }
 }
 
-RegisterNetEvent("CK:SHOP:TryToBuy")
+RegisterNetEvent("VP:SHOP:TryToBuy")
 AddEventHandler(
-    "CK:SHOP:TryToBuy",
-    function(shopId, itemId)
+    "VP:SHOP:TryToBuy",
+    function(shopId, itemId, withGold)
         local _source = source
+
+        print(shopId, itemId, withGold)
 
         if not verificationData[shopId] or not verificationData[shopId][itemId] then
             return
@@ -60,25 +70,36 @@ AddEventHandler(
             return
         end
 
-        local itemPrice = itemData[2]
-
         local Inventory = Character:getInventory()
 
-        if Inventory:getItemAmount("money") < itemPrice then
+        local currencyItem = 'money'
+        local itemPrice = itemData[2]
+
+        if withGold then
+            currencyItem = 'gold'
+            itemPrice = itemData[3]
+        end
+
+        if Inventory:getItemAmount(currencyItem) < itemPrice then
             User:notify("Você não tem dinheiro suficiente")
             return
         end
 
-        local itemAmount = itemData[3]
+        local itemAmount = itemData[4]
 
-        Inventory:removeItem("money", itemPrice)
-        Inventory:addItem(itemId, itemAmount or 1)
-
-        User:notify("- $" .. itemPrice .. ",00")
-        if itemId:find("weapon_") or itemId:find("ammo_") then
-            TriggerClientEvent("CK:SHOP:BoughtItem", _source, itemId)
+        if Inventory:addItem(itemId, itemAmount or 1) then
+            Inventory:removeItem(-1, currencyItem, itemPrice)
+            if itemPrice > 0 then
+                if not withGold then
+                    User:notify("- $" .. string.format("%.2f", itemPrice / 100))
+                else
+                    User:notify("- " .. string.format("%.2f", itemPrice / 100) .. ' ouros')
+                end
+            else
+                User:notify(itemId)
+            end
         else
-            TriggerClientEvent("CK:SHOP:BoughtItem", _source, nil)
+            User:notify("Espaço insuficiente na bolsa!")
         end
     end
 )
