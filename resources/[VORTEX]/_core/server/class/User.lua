@@ -235,7 +235,8 @@ function API.User(source, id, ipAddress)
     end
 
     self.notify = function(this, v)
-        cAPI.notify(self:getSource(), v)
+        -- cAPI.notify(self:getSource(), v)
+        TriggerClientEvent('VP:Notify', self:getSource(), v)
     end
 
     self.getWeapons = function()

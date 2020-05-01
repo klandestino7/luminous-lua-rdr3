@@ -380,7 +380,7 @@ function API.Inventory(id, capacity, slots)
         local itemData = API.getItemDataFromId(itemId)
 
         if itemData == nil then
-            return
+            return false
         end
 
         local sync = {}
@@ -459,7 +459,9 @@ function API.Inventory(id, capacity, slots)
             end
         end
 
-        return syncToViewers(self.viewersSources, sync, self:getWeight())
+        syncToViewers(self.viewersSources, sync, self:getWeight())
+
+        return true
     end
 
     self.getItemAmount = function(this, itemId)
