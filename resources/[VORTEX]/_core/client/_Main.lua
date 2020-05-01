@@ -104,67 +104,8 @@ function cAPI.getPosition()
 	return x, y, z
 end
 
-function cAPI.teleport(x, y, z, spawn)
+function cAPI.setCoords(x, y, z, spawn)
 	SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
-end
-
-function cAPI.GetCurrentTownName()
-	local pedCoords = GetEntityCoords(PlayerPedId())
-	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
-
-	if town_hash == GetHashKey("Annesburg") then
-		return "Annesburg"
-	elseif town_hash == GetHashKey("Annesburg") then
-		return "Annesburg"
-	elseif town_hash == GetHashKey("Armadillo") then
-		return "Armadillo"
-	elseif town_hash == GetHashKey("Blackwater") then
-		return "Blackwater"
-	elseif town_hash == GetHashKey("BeechersHope") then
-		return "BeechersHope"
-	elseif town_hash == GetHashKey("Braithwaite") then
-		return "Braithwaite"
-	elseif town_hash == GetHashKey("Butcher") then
-		return "Butcher"
-	elseif town_hash == GetHashKey("Caliga") then
-		return "Caliga"
-	elseif town_hash == GetHashKey("cornwall") then
-		return "Cornwall"
-	elseif town_hash == GetHashKey("Emerald") then
-		return "Emerald"
-	elseif town_hash == GetHashKey("lagras") then
-		return "lagras"
-	elseif town_hash == GetHashKey("Manzanita") then
-		return "Manzanita"
-	elseif town_hash == GetHashKey("Rhodes") then
-		return "Rhodes"
-	elseif town_hash == GetHashKey("Siska") then
-		return "Siska"
-	elseif town_hash == GetHashKey("StDenis") then
-		return "Saint Denis"
-	elseif town_hash == GetHashKey("Strawberry") then
-		return "Strawberry"
-	elseif town_hash == GetHashKey("Tumbleweed") then
-		return "Tumbleweed"
-	elseif town_hash == GetHashKey("valentine") then
-		return "Valentine"
-	elseif town_hash == GetHashKey("VANHORN") then
-		return "Vanhorn"
-	elseif town_hash == GetHashKey("Wallace") then
-		return "Wallace"
-	elseif town_hash == GetHashKey("wapiti") then
-		return "Wapiti"
-	elseif town_hash == GetHashKey("AguasdulcesFarm") then
-		return "Aguasdulces Farm"
-	elseif town_hash == GetHashKey("AguasdulcesRuins") then
-		return "Aguasdulces Ruins"
-	elseif town_hash == GetHashKey("AguasdulcesVilla") then
-		return "Aguasdulces Villa"
-	elseif town_hash == GetHashKey("Manicato") then
-		return "Manicato"
-	elseif town_hash == false then
-		return "Cidade Fantasma"
-	end
 end
 
 -- return vx,vy,vz
@@ -181,20 +122,6 @@ function cAPI.CWanted(reward)
 	return reward
 end
 
-function cAPI.getCamDirection()
-	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
-	local pitch = GetGameplayCamRelativePitch()
-	local x = -math.sin(heading * math.pi / 180.0)
-	local y = math.cos(heading * math.pi / 180.0)
-	local z = math.sin(pitch * math.pi / 180.0)
-	local len = math.sqrt(x * x + y * y + z * z)
-	if len ~= 0 then
-		x = x / len
-		y = y / len
-		z = z / len
-	end
-	return x, y, z
-end
 
 function cAPI.GetCoordsFromCam(distance)
 	local rot = GetGameplayCamRot(2)
@@ -219,15 +146,6 @@ function cAPI.Target(Distance, Ped)
 	return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
 
-function cAPI.GetEntInFrontOfPlayer(Distance, Ped)
-	local Ent = nil
-	local CoA = GetEntityCoords(Ped, 1)
-	local CoB = GetOffsetFromEntityInWorldCoords(Ped, 0.0, Distance, 0.0)
-	local RayHandle = StartShapeTestRay(CoA.x, CoA.y, CoA.z, CoB.x, CoB.y, CoB.z, -1, Ped, 0)
-	local A, B, C, D, Ent = GetShapeTestResult(RayHandle)
-	return Ent
-end
-
 function cAPI.getNearestPlayers(radius)
 	local r = {}
 	local ped = PlayerPedId()
@@ -243,18 +161,6 @@ function cAPI.getNearestPlayers(radius)
 			r[GetPlayerServerId(player)] = distance
 		end
 	end
-
-	-- for k, v in pairs(players) do
-	-- 	local player = GetPlayerFromServerId(k)
-	-- 	if v and player ~= pid and NetworkIsPlayerConnected(player) then
-	-- 		local oped = GetPlayerPed(player)
-	-- 		local x, y, z = table.unpack(GetEntityCoords(oped, true))
-	-- 		local distance = GetDistanceBetweenCoords(x, y, z, px, py, pz, true)
-	-- 		if distance <= radius then
-	-- 			r[GetPlayerServerId(player)] = distance
-	-- 		end
-	-- 	end
-	-- end
 	return r
 end
 
@@ -272,14 +178,16 @@ function cAPI.getNearestPlayer(radius)
 end
 
 local weaponModels = {
-	"weapon_kit_camera",
-	"WEAPON_KIT_BINOCULARS",
-	"weapon_melee_knife_hunter",
+	"weapon_fishingrod",
 	"weapon_moonshinejug",
+	"weapon_bow",
+	"weapon_lasso",
+	"weapon_kit_camera",
+	"weapon_kit_binoculars",
+	"weapon_melee_knife_hunter",
 	"weapon_melee_lantern_electric",
 	"weapon_melee_torch",
 	"weapon_melee_broken_sword",
-	"weapon_fishingrod",
 	"weapon_melee_hatchet",
 	"weapon_melee_cleaver",
 	"weapon_melee_ancient_hatchet",
@@ -292,25 +200,16 @@ local weaponModels = {
 	"weapon_melee_knife_john",
 	"weapon_melee_knife",
 	"weapon_melee_knife_jawbone",
-	"weapon_thrown_throwing_knives",
 	"weapon_melee_knife_miner",
 	"weapon_melee_knife_civil_war",
 	"weapon_melee_knife_bear",
 	"weapon_melee_knife_vampire",
-	"weapon_lasso",
 	"weapon_melee_machete",
-	"weapon_thrown_tomahawk",
-	"weapon_thrown_tomahawk_ancient",
 	"weapon_pistol_m1899",
 	"weapon_pistol_mauser",
 	"weapon_pistol_mauser_drunk",
 	"weapon_pistol_semiauto",
 	"weapon_pistol_volcanic",
-	"weapon_repeater_carbine",
-	"weapon_repeater_evans",
-	"weapon_repeater_henry",
-	"weapon_rifle_varmint",
-	"weapon_repeater_winchester",
 	"weapon_revolver_cattleman",
 	"weapon_revolver_cattleman_john",
 	"weapon_revolver_cattleman_mexican",
@@ -323,20 +222,26 @@ local weaponModels = {
 	"weapon_revolver_schofield",
 	"weapon_revolver_schofield_golden",
 	"weapon_revolver_schofield_calloway",
+	"weapon_repeater_winchester",
+	"weapon_repeater_carbine",
+	"weapon_repeater_evans",
 	"weapon_rifle_boltaction",
+	"weapon_rifle_springfield",
+	"weapon_rifle_varmint",
 	"weapon_sniperrifle_carcano",
 	"weapon_sniperrifle_rollingblock",
 	"weapon_sniperrifle_rollingblock_exotic",
-	"weapon_rifle_springfield",
 	"weapon_shotgun_doublebarrel",
 	"weapon_shotgun_doublebarrel_exotic",
 	"weapon_shotgun_pump",
 	"weapon_shotgun_repeating",
 	"weapon_shotgun_sawedoff",
 	"weapon_shotgun_semiauto",
-	"weapon_bow",
+	"weapon_thrown_throwing_knives",
 	"weapon_thrown_dynamite",
-	"weapon_thrown_molotov"
+	"weapon_thrown_molotov",
+	"weapon_thrown_tomahawk",
+	"weapon_thrown_tomahawk_ancient",
 }
 
 function cAPI.getWeapons()
@@ -496,6 +401,21 @@ function cAPI.toggleNoclip()
 	end
 end
 
+local function getCamDirection()
+	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
+	local pitch = GetGameplayCamRelativePitch()
+	local x = -math.sin(heading * math.pi / 180.0)
+	local y = math.cos(heading * math.pi / 180.0)
+	local z = math.sin(pitch * math.pi / 180.0)
+	local len = math.sqrt(x * x + y * y + z * z)
+	if len ~= 0 then
+		x = x / len
+		y = y / len
+		z = z / len
+	end
+	return x, y, z
+end
+
 Citizen.CreateThread(
 	function()
 		while true do
@@ -505,7 +425,7 @@ Citizen.CreateThread(
 			if noclip then
 				local ped = PlayerPedId()
 				local x, y, z = cAPI.getPosition()
-				local dx, dy, dz = cAPI.getCamDirection()
+				local dx, dy, dz = getCamDirection()
 				local speed = noclip_speed
 				SetEntityVelocity(ped, 0.0001, 0.0001, 0.0001)
 
@@ -586,8 +506,8 @@ function cAPI.teleportToWaypoint()
 		end
 		Citizen.Wait(20)
 
-		ground, z = GetGroundZFor_3dCoord(x, y, height)
-		if ground then
+		local hit, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, height)
+		if hit then
 			z = z + 1.0
 			groundFound = true
 			break
@@ -596,13 +516,12 @@ function cAPI.teleportToWaypoint()
 
 	if not groundFound then
 		z = 1200
-		GiveDelayedWeaponToPed(PlayerPedId(), 0xFBAB5776, 1, 0)
 	end
 
 	RequestCollisionAtCoord(x, y, z)
 	while not HasCollisionLoadedAroundEntity(ped) do
 		RequestCollisionAtCoord(x, y, z)
-		Citizen.Wait(1)
+		Citizen.Wait(10)
 	end
 
 	SetEntityCoordsNoOffset(ped, x, y, z, 0, 0, 1)
@@ -618,26 +537,6 @@ function cAPI.playAnim(dict, anim, speed)
 	end
 end
 
-function cAPI.createVehicle(Vmodel)
-	local veh = GetHashKey(Vmodel)
-	local ply = GetPlayerPed()
-	local coords = GetEntityCoords(ply)
-	local head = GetEntityHeading(ply)
-	Citizen.CreateThread(
-		function()
-			RequestModel(veh)
-			while not HasModelLoaded(veh) do
-				Wait(1000)
-				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
-			end
-			if HasModelLoaded(veh) then
-				local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
-				print("Model spawned Succes: " .. Vmodel)
-			end
-		end
-	)
-end
-
 function cAPI.isPlayingAnimation(dict, anim)
 	local ped = PlayerPedId()
 	return IsEntityPlayingAnim(ped, dict, anim, 3)
@@ -648,14 +547,6 @@ function cAPI.clientConnected(bool)
 		ShutdownLoadingScreenNui()
 		ShutdownLoadingScreen()
 	end
-end
-
-function cAPI.notify(_message)
-	local str = Citizen.InvokeNative(0xFA925AC00EB830B9, 10, "LITERAL_STRING", _message, Citizen.ResultAsLong())
-	SetTextScale(0.25, 0.25)
-	SetTextCentre(1)
-	Citizen.InvokeNative(0xFA233F8FE190514C, str)
-	Citizen.InvokeNative(0xE9990552DEC71600)
 end
 
 function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
@@ -743,25 +634,4 @@ function cAPI.EndFade(timer)
 	while IsScreenFadingIn() do
 		Citizen.Wait(1)
 	end
-end
-
-function cAPI.CameraWithSpawnEffect(coords)
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
-	PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
-	SetCamActive(cam, true)
-	cAPI.EndFade(500)
-	RenderScriptCams(true, false, 1, true, true)
-	Citizen.Wait(500)
-	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
-	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
-	Citizen.Wait(3900)
-	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
-	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
-	RenderScriptCams(false, true, 500, true, true)
-	SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z + 0.5)
-	Citizen.Wait(500)
-	Citizen.Wait(3000)
-	DestroyAllCams(true)
 end

@@ -13,7 +13,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             cAPI.toggleNoclip(source)
         end
     end
@@ -24,9 +24,9 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
-            cAPI.teleport(source, x, y, z)
+            cAPI.setCoords(source, x, y, z)
         end
     end
 )
@@ -36,11 +36,11 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") and args[1] then
+        if Character:hasGroupOrInheritance("admin") and args[1] then
             local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             local x, y, z = cAPI.getPosition(source)
             if tplayer then
-                cAPI.teleport(tplayer, x, y, z)
+                cAPI.setCoords(tplayer, x, y, z)
             end
         end
     end
@@ -51,11 +51,11 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") and args[1] then
+        if Character:hasGroupOrInheritance("admin") and args[1] then
             local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             print(tplayer)
             if tplayer then
-                cAPI.teleport(source, cAPI.getPosition(tplayer))
+                cAPI.setCoords(source, cAPI.getPosition(tplayer))
             end
         end
     end
@@ -66,7 +66,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local fcoords = cAPI.prompt(source, "Cordenadas:", "")
             if fcoords == "" then
                 return
@@ -75,7 +75,7 @@ RegisterCommand(
             for coord in string.gmatch(fcoords or "0,0,0", "[^,]+") do
                 table.insert(coords, parseInt(coord))
             end
-            cAPI.teleport(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
+            cAPI.setCoords(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
         end
     end
 )
@@ -85,7 +85,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             cAPI.teleportToWaypoint(source)
         end
     end
@@ -96,7 +96,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") and args[1] then
+        if Character:hasGroupOrInheritance("admin") and args[1] then
             local sourcePlayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             if args[2] ~= nil then
                 API.setBanned(sourcePlayer, args[1], "Banido por " .. table.concat(args, " ", 2))
@@ -122,7 +122,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroup("admin") and args[1] then
+        if Character:hasGroupOrInheritance("admin") and args[1] then
             if args[2] ~= nil then
                 API.setBanned(User, args[1])
             else
@@ -137,7 +137,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") and args[1] then
+        if Character:hasGroupOrInheritance("admin") and args[1] then
             local sourcePlayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             API.kick(sourcePlayer, "Você foi expulso da cidade.")
         end
@@ -149,7 +149,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
                 UserTarget:getCharacter():addXp(tonumber(args[2]))
@@ -164,7 +164,7 @@ RegisterCommand(
     function(source, args, raw)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
                 UserTarget:getCharacter():removeXp(tonumber(args[2]))
@@ -179,8 +179,8 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
-            cAPI.createVehicle(source, args[1])
+        if Character:hasGroupOrInheritance("admin") then
+            TriggerClientEvent("VP:ADMIN:CreateVehicel", source, args[1])
         end
     end
 )
@@ -190,7 +190,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
                 UserTarget:getCharacter():setLevel(tonumber(args[2]))
@@ -221,7 +221,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             cAPI.SetModel(source, args[1])
         end
     end
@@ -231,7 +231,7 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
             API.prompt(source, "Cordenadas:", string.format("%.3f", x) .. "," .. string.format("%.3f", y) .. "," .. string.format("%.3f", z))
         end
@@ -266,7 +266,7 @@ RegisterCommand(
         if #args >= 1 then
             local User = API.getUserFromSource(source)
             local Character = User:getCharacter()
-            if Character:hasGroup("admin") then
+            if Character:hasGroupOrInheritance("admin") then
                 TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
             end
         end
@@ -280,7 +280,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroup("admin") or Character:hasGroup("medic") then
+        if Character:hasGroupOrInheritance("admin") or Character:hasGroupOrInheritance("medic") then
             if args[1] ~= nil then
                 local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
                 if tplayer ~= nil then
