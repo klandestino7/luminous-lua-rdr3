@@ -16,39 +16,6 @@ local weatherTypes = {
 }
 
 local regionsWeather = {}
-local transitioning = {}
-
-RegisterNetEvent("VP:W:SetRegionWeather")
-AddEventHandler(
-    "VP:W:SetRegionWeather",
-    function(region, weather)
-        local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, GetEntityCoords(PlayerPedId()), 10)
-        if town_hash == GetHashKey(region) then
-            local weather_hash = weatherTypes[weather]
-
-            local old_weather = weather_hash
-            if regionsWeather[region] then
-                old_weather = weatherTypes[regionsWeather[region]]
-                transitioning[region] = true
-            end
-
-            regionsWeather[region] = weather
-
-            SetWeatherTypeTransition(weather_hash, old_weather, 8.4)
-            Citizen.Wait(5000)
-            SetWeatherTypeTransition(weather_hash, old_weather, 6.8)
-            Citizen.Wait(5000)
-            SetWeatherTypeTransition(weather_hash, old_weather, 5.2)
-            Citizen.Wait(5000)
-            SetWeatherTypeTransition(weather_hash, old_weather, 3.6)
-            Citizen.Wait(5000)
-            SetWeatherTypeTransition(weather_hash, old_weather, 2.0)
-            Citizen.Wait(5000)
-            SetWeatherTypeTransition(weather_hash, weather_hash, 0.0)
-            transitioning[region] = false
-        end
-    end
-)
 
 Citizen.CreateThread(
     function()
@@ -58,10 +25,15 @@ Citizen.CreateThread(
             local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(PlayerId())))
             local region = GetCurrentRegionName()
 
-            if region ~= currentRegion and regionsWeather[region] and not transitioning[region] then
-                local weather_hash = weatherTypes[regionsWeather[region]]
-                SetWeatherTypeTransition(weather_hash, weather_hash, 1.0)
+            if region ~= currentRegion then
                 currentRegion = region
+
+                local weather_hash = weatherTypes[regionsWeather[region] or Citizen.InvokeNative(0x4BEB42AEBCA732E9)]
+                local old_weather = Citizen.InvokeNative(0x4BEB42AEBCA732E9)
+
+                if weather_hash ~= old_weather then
+                    Citizen.InvokeNative(0x59174F1AFE095B5A, weather_hash, true, false, true, 15.0, false)
+                end
             end
         end
     end
@@ -114,14 +86,19 @@ function GetCurrentRegionName()
     end
 end
 
-
-AddEventHandler('onResourceStart', function(resourceName)
-    if resourceName == GetCurrentResourceName() then
-        TriggerServerEvent('VP:W:AskForSync')
+AddEventHandler(
+    "onResourceStart",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            TriggerServerEvent("VP:W:AskForSync")
+        end
     end
-end)
+)
 
-RegisterNetEvent('VP:W:Sync')
-AddEventHandler('VP:W:Sync', function(data)
-    regionsWeather = data
-end)
+RegisterNetEvent("VP:W:Sync")
+AddEventHandler(
+    "VP:W:Sync",
+    function(data)
+        regionsWeather = data
+    end
+)

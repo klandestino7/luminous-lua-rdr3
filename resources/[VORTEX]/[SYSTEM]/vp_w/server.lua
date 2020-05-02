@@ -63,9 +63,10 @@ Citizen.CreateThread(
 
                 if currentRegionWeather[region] == nil or choosen ~= currentRegionWeather[region] then
                     currentRegionWeather[region] = choosen
-                    TriggerClientEvent("VP:W:SetRegionWeather", -1, region, choosen)
                 end
             end
+
+            TriggerClientEvent("VP:W:Sync", -1,  currentRegionWeather)
         end
     end
 )
@@ -92,9 +93,11 @@ AddEventHandler(
 
                 if currentRegionWeather[region] == nil or choosen ~= currentRegionWeather[region] then
                     currentRegionWeather[region] = choosen
-                    TriggerClientEvent("VP:W:SetRegionWeather", -1, region, choosen)
                 end
             end
+
+
+            TriggerClientEvent("VP:W:Sync", _source, currentRegionWeather)
         end
     end
 )
