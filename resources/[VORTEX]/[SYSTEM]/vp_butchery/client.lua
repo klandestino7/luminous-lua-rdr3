@@ -57,7 +57,7 @@ Citizen.CreateThread(
                 local type = GetEntityType(carriedEntity)
                 -- 1 : animal
                 -- 3 : pelt
-                if carriedEntity ~= false and (type == 1 or type == 3) then
+                if carriedEntity ~= false and (type == 1 or type == 3) and not IsPedHuman(carriedEntity) then
                     lastCarriable = carriedEntity
                 end
 
@@ -74,6 +74,25 @@ Citizen.CreateThread(
                     end
                 end
             end
+        end
+    end
+)
+
+RegisterNetEvent("VP:BUTCHER:EntityAccepted")
+AddEventHandler(
+    "VP:BUTCHER:EntityAccepted",
+    function(entity)
+        if DoesEntityExist(entity) then
+            -- if GetEntityModel(entity) == entModel then
+            Citizen.InvokeNative(0x18FF3110CF47115D, entity, 2, true)
+
+            while GetEntityAlpha(entity) > 0 do
+                Citizen.Wait(1500)
+                SetEntityAlpha(entity, GetEntityAlpha(entity) - 51)
+            end
+
+            DeleteEntity(entity)
+        -- end
         end
     end
 )
