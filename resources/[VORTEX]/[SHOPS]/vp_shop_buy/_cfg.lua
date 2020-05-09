@@ -2,20 +2,20 @@ Config = {}
 
 Config.ShopDatas = {
 	-- level, dollar, gold
-	{
-		name = "Armeiro",
-		{
-			{"revolver_lemat", 0, 317, 13},
-			{"revolver_cattleman", 0, 50, 2},
-			{"revolver_navy", 0, 257, 11},
-			{"pistol_volcanic", 0, 300, 14},
-			{"shotgun_sawedoff", 0, 65, 15},
-			{"repeater_carbine", 0, 90, 4},
-			{"repeater_henry", 0, 234, 10},
-			{"sniperrifle_rollingblock", 0, 500, 20},
-			{"rifle_varmint", 0, 72, 3},
-		}
-	},
+	-- {
+	-- 	name = "Armeiro",
+	-- 	{
+	-- 		{"revolver_lemat", 0, 317, 13},
+	-- 		{"revolver_cattleman", 0, 50, 2},
+	-- 		{"revolver_navy", 0, 257, 11},
+	-- 		{"pistol_volcanic", 0, 300, 14},
+	-- 		{"shotgun_sawedoff", 0, 65, 15},
+	-- 		{"repeater_carbine", 0, 90, 4},
+	-- 		{"repeater_henry", 0, 234, 10},
+	-- 		{"sniperrifle_rollingblock", 0, 500, 20},
+	-- 		{"rifle_varmint", 0, 72, 3}
+	-- 	}
+	-- },
 	{
 		name = "Policia",
 		{
@@ -39,13 +39,13 @@ Config.ShopDatas = {
 
 Config.ShopLocations = {
 	-- x, y, z, heading(optional)
-	["Armeiro"] = {
-		{-281.99, 780.92, 119.52}, -- VALENTINE
-		-- {1322.87, -1321.48, 76.89},
-		{2715.91, -1285.65, 48.63},
-		{2946.53, 1319.66, 44.82},
-		{-5508.16, -2964.47, -0.63}
-	},
+	-- ["Armeiro"] = {
+	-- {-281.99, 780.92, 119.52}, -- VALENTINE
+	-- {1322.87, -1321.48, 76.89},
+	-- 	{2715.91, -1285.65, 48.63},
+	-- 	{2946.53, 1319.66, 44.82},
+	-- 	{-5508.16, -2964.47, -0.63}
+	-- },
 	["Policia"] = {
 		{-764.768, -1272.072, 44.041},
 		{-1813.974, -354.651, 164.649},

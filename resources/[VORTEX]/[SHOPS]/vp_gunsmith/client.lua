@@ -1,5 +1,6 @@
 local promptDatas = {}
 local props = {}
+local props_ammo = {}
 local hasPropsLoaded = false
 
 local aimMaxDistance = 3.0
@@ -57,17 +58,16 @@ function load(interiorId)
     -- b = vec3(table.unpack(gunsmith_data.point4))
 
     if gunsmith_data.rotation_2 then
-    local pitch, roll, yaw = table.unpack(gunsmith_data.rotation_2)
+        local pitch, roll, yaw = table.unpack(gunsmith_data.rotation_2)
 
-    for i = 0, #gunsmith_data.ammo_points do
-        if ammos[i + 1] and gunsmith_data.ammo_points[i + 1] then
-            local x, y, z = table.unpack(gunsmith_data.ammo_points[i + 1])
-            local d = ammos[i + 1]
-            createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(ItemList[d[1]].worldModel or d[5], x, y, z, pitch, roll, yaw))
+        for i = 0, #gunsmith_data.ammo_points do
+            if ammos[i + 1] and gunsmith_data.ammo_points[i + 1] then
+                local x, y, z = table.unpack(gunsmith_data.ammo_points[i + 1])
+                local d = ammos[i + 1]
+                createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(ItemList[d[1]].worldModel or d[5], x, y, z, pitch, roll, yaw))
+            end
         end
     end
-end
-
 
     for _, reqComponent in pairs(requestedComponents) do
         SetModelAsNoLongerNeeded(reqComponent)
@@ -118,6 +118,8 @@ function createProp(model, x, y, z, pitch, roll, yaw, weapon_hash)
         end
     end
 
+    local min, max = GetModelDimensions(model)
+
     local prop
     if weapon_hash ~= nil then
         for _, component in pairs(components) do
@@ -154,18 +156,47 @@ function createProp(model, x, y, z, pitch, roll, yaw, weapon_hash)
             prop = Citizen.InvokeNative(0x9888652B8BA77F73, GetHashKey(weapon_hash), -1, vec3(x, y, z), 0, 1065353216)
         end
     else
+        if model:find("ammo01x") then
+            x = x - max.x
+        end
+
         prop = CreateObject(model, x, y, z, true, true, true, true, true)
     end
 
-    SetModelAsNoLongerNeeded(model)
-
+    Citizen.InvokeNative(0x7DFB49BCDB73089A, prop, false)
     SetEntityRotation(prop, pitch, roll, yaw, 1, 0)
     ActivatePhysics(prop)
 
+    local propsammolenght = #props_ammo
+
     Citizen.CreateThread(
         function()
-            Citizen.Wait(500)
+            while GetEntityVelocity(prop, false) ~= vec3(0, 0, 0) do
+                Citizen.Wait(10)
+            end
+
+            Citizen.Wait(150)
+
             FreezeEntityPosition(prop, true)
+
+            if model:find("ammo01x") then
+                ammo_2 = CreateObject(model, GetOffsetFromEntityInWorldCoords(prop, max.x * 2, 0, min.z), true, true, true, true, true)
+                ammo_3 = CreateObject(model, GetOffsetFromEntityInWorldCoords(prop, max.x, 0, (max.z - min.z)), true, true, true, true, true)
+
+                Citizen.InvokeNative(0x7DFB49BCDB73089A, ammo_2, false)
+                Citizen.InvokeNative(0x7DFB49BCDB73089A, ammo_3, false)
+
+                SetEntityRotation(ammo_2, pitch, roll, yaw, 1, 0)
+                SetEntityRotation(ammo_3, pitch, roll, yaw, 1, 0)
+
+                FreezeEntityPosition(prop, ammo_2)
+                FreezeEntityPosition(prop, ammo_3)
+
+                props_ammo[propsammolenght + 1][2] = ammo_2
+                props_ammo[propsammolenght + 1][3] = ammo_3
+            end
+
+            SetModelAsNoLongerNeeded(model)
         end
     )
 
@@ -173,7 +204,11 @@ function createProp(model, x, y, z, pitch, roll, yaw, weapon_hash)
         prop = 0
     end
 
-    props[prop] = true
+    if model:find("ammo01x") then
+        props_ammo[propsammolenght + 1] = {prop}
+    else
+        props[prop] = true
+    end
     return prop
 end
 
@@ -204,6 +239,12 @@ end
 function unload()
     for prop, _ in pairs(props) do
         DeleteEntity(prop)
+    end
+
+    for _, proplist in pairs(props_ammo) do
+        for _, prop in pairs(proplist) do
+            DeleteEntity(prop)
+        end
     end
 
     hasPropsLoaded = false
@@ -237,8 +278,9 @@ Citizen.CreateThread(
 Citizen.CreateThread(
     function()
         local entityTargeted
+        local ammoIndexTargeted
         while true do
-            Citizen.Wait(10)
+            Citizen.Wait(0)
 
             local ped = PlayerPedId()
             local pedVector = GetEntityCoords(ped)
@@ -255,15 +297,30 @@ Citizen.CreateThread(
                 lastCoords = endCoords
             end
 
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, lastCoords, lastCoords + vec3(0, 0, 0.7), 252, 180, 131, 255)
+
             local foundEntityTargeted
+            local targetAsAmmo_index
 
             for prop, _ in pairs(props) do
                 local ce = GetClosestObjectOfType(lastCoords, 0.10, GetEntityModel(prop), false, 0, 0)
                 if ce ~= 0 then
                     if props[ce] then
                         foundEntityTargeted = ce
-                        PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(ce), promptDatas[ce][2])
                         break
+                    end
+                end
+            end
+
+            if foundEntityTargeted == nil then
+                for _, proplist in pairs(props_ammo) do
+                    local firstProp = proplist[1]
+                    local ce = GetClosestObjectOfType(lastCoords, 0.10, GetEntityModel(firstProp), false, 0, 0)
+                    if ce ~= 0 then
+                        if ce == firstProp or ce == proplist[2] or ce == proplist[3] then
+                            targetAsAmmo_index = _
+                            -- PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(ce), promptDatas[firstProp][2])
+                        end
                     end
                 end
             end
@@ -272,15 +329,43 @@ Citizen.CreateThread(
                 if entityTargeted ~= nil then
                     Citizen.InvokeNative(0x7DFB49BCDB73089A, entityTargeted, false)
                 end
-                Citizen.InvokeNative(0x7DFB49BCDB73089A, foundEntityTargeted, true)
+
                 entityTargeted = foundEntityTargeted
+
+                if foundEntityTargeted ~= nil then
+                    Citizen.InvokeNative(0x7DFB49BCDB73089A, foundEntityTargeted, true)
+                end
             end
 
-            if entityTargeted ~= nil then
-                local data = promptDatas[entityTargeted]
+            if targetAsAmmo_index ~= ammoIndexTargeted then
+                if ammoIndexTargeted ~= nil then
+                    for _, prop in pairs(props_ammo[ammoIndexTargeted]) do
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, prop, false)
+                    end
+                end
+
+                ammoIndexTargeted = targetAsAmmo_index
+
+                if targetAsAmmo_index ~= nil then
+                    for _, prop in pairs(props_ammo[targetAsAmmo_index]) do
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, prop, true)
+                    end
+                end
+            end
+
+            if entityTargeted ~= nil or ammoIndexTargeted ~= nil then
+                local data
+                if entityTargeted ~= nil then
+                    data = promptDatas[entityTargeted]
+                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(entityTargeted), data[2])
+                elseif ammoIndexTargeted ~= nil then
+                    data = promptDatas[props_ammo[ammoIndexTargeted][1]]
+                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(props_ammo[ammoIndexTargeted][1]), data[2])
+                end
 
                 if data == nil then
                     entityTargeted = nil
+                    ammoIndexTargeted = nil
                 else
                     local itemId = data[1]
                     local prompt_dollar = data[3]
@@ -342,157 +427,106 @@ end
 
 --- DEBBUGING
 
--- local _temp_prop
+local _temp_prop
 
--- RegisterCommand(
---     "gstest",
---     function(source, args, rawCommand)
---         if #args > 0 then
---             local lastCoords
---             local lastHeading
+RegisterCommand(
+    "gstest",
+    function(source, args, rawCommand)
+        if #args > 0 then
+            local lastCoords
+            local lastHeading
 
---             if _temp_prop ~= nil then
---                 lastCoords = GetEntityCoords(_temp_prop)
---                 lastHeading = GetEntityHeading(_temp_prop)
---                 DeleteEntity(_temp_prop)
---                 _temp_prop = nil
---             else
---                 local ped = PlayerPedId()
+            if _temp_prop ~= nil then
+                lastCoords = GetEntityCoords(_temp_prop)
+                lastHeading = GetEntityHeading(_temp_prop)
+                DeleteEntity(_temp_prop)
+                _temp_prop = nil
+            else
+                local ped = PlayerPedId()
 
---                 local pedVector = GetEntityCoords(ped)
+                local pedVector = GetEntityCoords(ped)
 
---                 local cameraRotation = GetGameplayCamRot()
---                 local cameraCoord = GetGameplayCamCoord()
---                 local direction = RotationToDirection(cameraRotation)
---                 lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
+                local cameraRotation = GetGameplayCamRot()
+                local cameraCoord = GetGameplayCamCoord()
+                local direction = RotationToDirection(cameraRotation)
+                lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
---                 local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
---                 local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+                local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
+                local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
---                 if hit == 1 then
---                     lastCoords = endCoords
---                 end
---             end
+                if hit == 1 then
+                    lastCoords = endCoords
+                end
+            end
 
---             print(IsModelValid(args[1]))
---             if not HasModelLoaded(args[1]) then
---                 RequestModel(args[1])
---                 while not HasModelLoaded(args[1]) do
---                     Citizen.Wait(10)
---                 end
---             end
+            if not HasModelLoaded(args[1]) then
+                RequestModel(args[1])
+                while not HasModelLoaded(args[1]) do
+                    Citizen.Wait(10)
+                end
+            end
 
---             _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
---             SetEntityHeading(_temp_prop, lastHeading)
---             FreezeEntityPosition(_temp_prop, true)
+            _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
+            SetEntityHeading(_temp_prop, lastHeading)
+            FreezeEntityPosition(_temp_prop, true)
+        end
+    end,
+    false
+)
 
---             print(_temp_prop)
---         end
---     end,
---     false
--- )
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(10)
+            local ped = PlayerPedId()
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(10)
---             local ped = PlayerPedId()
+            local pedVector = GetEntityCoords(ped)
 
---             local pedVector = GetEntityCoords(ped)
+                local cameraRotation = GetGameplayCamRot()
+                local cameraCoord = GetGameplayCamCoord()
+                local direction = RotationToDirection(cameraRotation)
+                local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
 
---                 local cameraRotation = GetGameplayCamRot()
---                 local cameraCoord = GetGameplayCamCoord()
---                 local direction = RotationToDirection(cameraRotation)
---                 local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
+                local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
+                local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
---                 local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
---                 local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+                if hit == 1 then
+                    aimingAt = endCoords
+                end
 
---                 if hit == 1 then
---                     aimingAt = endCoords
---                 end
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
 
---             Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
---             Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
+            if IsControlJustPressed(2, 0xF84FA74F) then
+                print(aimingAt)
+                print(GetInteriorFromEntity(ped))
+            end
 
---             if IsControlJustPressed(2, 0xF84FA74F) then
---                 print(aimingAt)
---                 print(GetInteriorFromEntity(ped))
---             end
+            if _temp_prop ~= nil then
+                SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
 
---             if _temp_prop ~= nil then
---                 SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
+                if IsControlPressed(1, 0x07CE1E61) then -- LMB
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
+                end
 
---                 if IsControlPressed(1, 0x07CE1E61) then -- LMB
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
---                 end
+                if IsControlPressed(0, 0x4AF4D473) then -- DEL
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
+                end
 
---                 if IsControlPressed(0, 0x4AF4D473) then -- DEL
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
---                 end
+                if IsControlPressed(1, 0xDFF812F9) then -- E
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
+                end
 
---                 if IsControlPressed(1, 0xDFF812F9) then -- E
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
---                 end
+                if IsControlJustPressed(1, 0xF84FA74F) then
+                    DeleteEntity(_temp_prop)
+                    _temp_prop = nil
+                end
 
---                 if IsControlJustPressed(1, 0xF84FA74F) then
---                     DeleteEntity(_temp_prop)
---                     _temp_prop = nil
---                 end
-
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
---             end
-
---             -- for prop, _ in pairs(props) do
---             --     local min, max = GetModelDimensions(GetEntityModel(prop))
---             --     draw(prop, min, max)
---             -- end
---         end
---     end
--- )
-
--- function draw(entity, min, max)
-
--- min = GetEntityCoords(entity) + min
--- max = GetEntityCoords(entity) + max
-
--- min = GetOffsetFromEntityInWorldCoords(entity, min)
--- max = GetOffsetFromEntityInWorldCoords(entity, max)
-
--- print(GetEntityCoords(entity), min, max)
--- print(GetOffsetFromEntityInWorldCoords(entity, min.x, min.y, min.z), GetOffsetFromEntityInWorldCoords(entity, max))
-
--- local min_A = vec3(min.x, min.y, min.z)
--- local min_B = vec3(min.x, max.y, min.z)
--- local min_C = vec3(max.x, max.y, min.z)
--- local min_D = vec3(max.x, min.y, min.z)
-
--- local max_A = vec3(min.x, min.y, max.z)
--- local max_B = vec3(min.x, max.y, max.z)
--- local max_C = vec3(max.x, max.y, max.z)
--- local max_D = vec3(max.x, min.y, max.z)
-
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, GetEntityCoords(PlayerPedId()), min_A, 252, 20, 131, 255)
-
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetOffsetFromEntityInWorldCoords(entity, min), GetOffsetFromEntityInWorldCoords(entity, max), 0, 255, 131, 255)
-
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,min_A, min_B, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,min_B, min_C, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,min_C, min_D, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,min_D, min_A, 0, 255, 131, 255)
-
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_A, max_B, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_B, max_C, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_C, max_D, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_D, max_A, 0, 255, 131, 255)
-
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_A, min_A, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_B, min_B, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_C, min_C, 0, 255, 131, 255)
--- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,max_D, min_D, 0, 255, 131, 255)
-
---     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,min_A, max_C, 0, 255, 131, 255)
--- end
+                DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
+                DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
+                DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
+                DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
+            end
+        end
+    end
+)
