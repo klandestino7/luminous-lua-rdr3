@@ -5,12 +5,17 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
-    -- ["Ammunation"] = {
+    -- ["Armeiro"] = {
     --     -- Level, Dollar, Gold, Amount(optional)
-    --     ["weapon_combatpistol"] = {1, 100},
-    --     ["weapon_assaultrifle"] = {1, 100},
-    --     ["ammo_combatpistol"] = {0, 0, 20},
-    --     ["weapon_knife"] = {0, 0}
+    --     ["revolver_lemat"] = {0, 317, 13},
+    --     ["revolver_cattleman"] = {0, 50, 2},
+    --     ["revolver_navy"] = {0, 257, 11},
+    --     ["pistol_volcanic"] = {0, 300, 14},
+    --     ["shotgun_sawedoff"] = {0, 65, 15},
+    --     ["repeater_carbine"] = {0, 90, 4},
+    --     ["repeater_henry"] = {0, 234, 10},
+    --     ["sniperrifle_rollingblock"] = {0, 500, 20},
+    --     ["rifle_varmint"] = {0, 72, 3}
     -- },
     ["Policia"] = {
         group = "admin",
@@ -33,7 +38,7 @@ local verificationData = {
     ["Geral"] = {
         ["tobacco_seed"] = {0, 1, 1, 1},
         ["corn_seed"] = {0, 1, 1, 1},
-        ["sugarcane_seed"] = {0, 1, 1, 1},
+        ["sugarcane_seed"] = {0, 1, 1, 1}
     }
 }
 
@@ -70,11 +75,11 @@ AddEventHandler(
 
         local Inventory = Character:getInventory()
 
-        local currencyItem = 'money'
+        local currencyItem = "money"
         local itemPrice = itemData[2]
 
         if withGold then
-            currencyItem = 'gold'
+            currencyItem = "gold"
             itemPrice = itemData[3]
         end
 
@@ -91,7 +96,7 @@ AddEventHandler(
                 if not withGold then
                     User:notify("- $" .. string.format("%.2f", itemPrice / 100))
                 else
-                    User:notify("- " .. string.format("%.2f", itemPrice / 100) .. ' ouros')
+                    User:notify("- " .. string.format("%.2f", itemPrice / 100) .. " ouros")
                 end
             else
                 User:notify(itemId)

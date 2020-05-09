@@ -1,15 +1,21 @@
 Config = {}
 
 Config.ShopDatas = {
-	-- {
-	-- 	name = "Ammunation",
-	-- 	{
-	-- 		{"bow", 1, 50, 10},
-	-- 		{"weapon_assaultrifle", 6, 10, 15},
-	-- 		{"ammo_arrow", 2, 25, 10},
-	-- 		{"weapon_knife", 7, 65, 15}
-	-- 	}
-	-- },
+	-- level, dollar, gold
+	{
+		name = "Armeiro",
+		{
+			{"revolver_lemat", 0, 317, 13},
+			{"revolver_cattleman", 0, 50, 2},
+			{"revolver_navy", 0, 257, 11},
+			{"pistol_volcanic", 0, 300, 14},
+			{"shotgun_sawedoff", 0, 65, 15},
+			{"repeater_carbine", 0, 90, 4},
+			{"repeater_henry", 0, 234, 10},
+			{"sniperrifle_rollingblock", 0, 500, 20},
+			{"rifle_varmint", 0, 72, 3},
+		}
+	},
 	{
 		name = "Policia",
 		{
@@ -18,43 +24,34 @@ Config.ShopDatas = {
 			{"shotgun_pump", 0, 0, 0},
 			{"ammo_revolver", 0, 0, 0},
 			{"ammo_rifle", 0, 0, 0},
-			{"ammo_shotgun", 0, 0, 0},
+			{"ammo_shotgun", 0, 0, 0}
 		}
 	},
-	-- {
-	-- 	name = "Mercadinho",
-	-- 	-- Sem index(key), só aparecer na aba global
-	-- 	{
-	-- 		{"consumable_vodka", 1, 50}
-	-- 	}
-	-- },
-	-- {
-	-- 	name = "PlanetaSemente",
-	-- 	{
-	-- 		{"tobacco_seed", 1, 1}
-	-- 	}
-	-- },
 	{
 		name = "Geral",
 		{
 			{"tobacco_seed", 0, 1, 1},
-			{"corn_seed", 0, 1,1},
-			{"sugarcane_seed", 0, 1, 1},
+			{"corn_seed", 0, 1, 1},
+			{"sugarcane_seed", 0, 1, 1}
 		}
 	}
 }
 
 Config.ShopLocations = {
 	-- x, y, z, heading(optional)
-	-- ["Ammunation"] = {
-	-- 	{1193.196, -1866.593, 51.696}
-	-- },
+	["Armeiro"] = {
+		{-281.99, 780.92, 119.52}, -- VALENTINE
+		-- {1322.87, -1321.48, 76.89},
+		{2715.91, -1285.65, 48.63},
+		{2946.53, 1319.66, 44.82},
+		{-5508.16, -2964.47, -0.63}
+	},
 	["Policia"] = {
-		{-764.768,-1272.072,44.041},
-		{-1813.974,-354.651,164.649},
-		{-278.365,805.207,119.380},
-		{2494.206,-1304.434,48.954},
-		{2494.392,-1312.568,48.954},
+		{-764.768, -1272.072, 44.041},
+		{-1813.974, -354.651, 164.649},
+		{-278.365, 805.207, 119.380},
+		{2494.206, -1304.434, 48.954},
+		{2494.392, -1312.568, 48.954}
 	},
 	-- ["Mercadinho"] = {
 	-- 	{373.875, 325.896, 103.566},
@@ -71,7 +68,7 @@ Config.ShopLocations = {
 	-- ["PlanetaSemente"] = {
 	-- 	{1296.121, -1279.396, 75.834}
 	-- },
-	['Geral'] = {
-		{1327.907,-1292.865,77.023},
+	["Geral"] = {
+		{1327.907, -1292.865, 77.023}
 	}
 }
