@@ -11,10 +11,15 @@ end)
 
 
 
-RegisterServerEvent('VP:PEAGLE:checkJOB')
-AddEventHandler('VP:PEAGLE:checkJOB', function()
+RegisterCommand('peagle', function()
 
-    local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);
+
+-- RegisterServerEvent('VP:PEAGLE:checkJOB')
+-- AddEventHandler('VP:PEAGLE:checkJOB', function()
+
+    local back = true
+
+    local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, true, true, true, true);
     Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)    
 
     ClearPedTasks(pigeon)
@@ -25,117 +30,105 @@ AddEventHandler('VP:PEAGLE:checkJOB', function()
     TaskSetBlockingOfNonTemporaryEvents(pigeon, 1)
     SetEntityAsMissionEntity(pigeon)
     Wait(2000)
-
-    TaskFlyToCoord(pigeon, 0, 62.92,42.51,102.15+80, 1, 0);
-    Wait(5000)
-
-    TaskFlyToCoord(pigeon, 0, 62.92,42.51,102.15+30, 1, 0);
-
-    Wait(2000)
-
-    print('voar')
-
-    TaskGoToEntity(pigeon, PlayerPedId(), -1, 1, 2.0, 0, 0)
+    TaskFlyToCoord(pigeon, 0, 62.92,42.51,102.15+30, 1, 0)    
 
     while true do
-        Citizen.Wait(100)
+        Citizen.Wait(1)
         Citizen.InvokeNative(0xA5C38736C426FCB8, pigeon, true)
-        mensagemp = false
-        local player = PlayerPedId()
-        local coords = GetEntityCoords(player)
-        local ec = GetEntityCoords(pigeon)
-        local myV = vector3(coords.x, coords.y, coords.z)
-        local dst = #(vector3(ec.x,ec.y,ec.z) - myV)
-        local ed = coords.x, coords.y, coords.z
+        mensagemp = false        
 
-        print(dst)
-        if dst < 20 then
-            print('pegar mensagem')
-            for _, prompt in pairs(prompts) do
-                if PromptHasHoldModeCompleted(prompt) then
-                    mensagemp = true
-                end
+        while true do            
+            local player = PlayerPedId()
+            local coords = GetEntityCoords(player)
+            local ec = GetEntityCoords(pigeon)
+            local myV = vector3(coords.x, coords.y, coords.z)
+            local dst = #(vector3(ec.x,ec.y,ec.z) - myV)
+            local ed = coords.x, coords.y, coords.z
+            Citizen.Wait(2)  
+            if back then
+                local playc = GetEntityCoords(PlayerPedId())
+                TaskFlyToCoord(pigeon, 0, playc.x,playc.y,playc.z, 1, 0);    
             end
-        else
-            print('nao')
+            print(dst)
+            if dst < 40 then
+                if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
+                    back = false
+                    TaskFlyToCoord(pigeon, 0, playc.x,playc.y,playc.z, 2, 0)       
+                    if dst < 2 then
+                        local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, pigeon, Citizen.InvokeNative(0x34F008A7E48C496B, pigeon, 2), 0, 0, 512)
+                        TaskPickupCarriableEntity(PlayerPedId(), carriable) 
+                        Wait(2000)
+                        break
+                    end             
+                end
+              
+            else
+                print('nao')
+            end
         end
-
-        if mensagemp then
-            TaskFlyToCoord(pigeon, 0, 62.92,42.51,102.15+80, 1, 0);
-            Citizen.Wait(10000)
-            DeleteEntity(pigeon)
-        end
-        
-
-        if IsControlJustPressed(2, 0xE8342FF2) then -- Hold ALT    
-            --   TaskGoToEntity(pigeon, PlayerPedId(), -1, 1, 2.0, 0, 0)
-            local playc = GetEntityCoords(PlayerPedId())
-            TaskFlyToCoord(pigeon, 0, playc.x,playc.y,playc.z, 2, 0);
-        end     
     end
-    
 end)
 
 
 
--- Key Controls
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-            for _, prompt in pairs(prompts) do
-                if PromptHasHoldModeCompleted(prompt) then
-                    Citizen.Wait(0)
-                    mensagemp = true
-                end
-            end
-        end
-    end
-)    
+-- -- Key Controls
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+--             for _, prompt in pairs(prompts) do
+--                 if PromptHasHoldModeCompleted(prompt) then
+--                     Citizen.Wait(0)
+--                     mensagemp = true
+--                 end
+--             end
+--         end
+--     end
+-- )    
 
 
 
 
-values = GetEntityCoords(pigeon)
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(10)
-                values = GetEntityCoords(pigeon)
-                local prompt = PromptRegisterBegin()
-                PromptSetControlAction(prompt, 0xE8342FF2)
-                PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Comprar Armas'))
-                PromptSetEnabled(prompt, 1)
-                PromptSetVisible(prompt, 1)
-                PromptSetHoldMode(prompt, 1)
-                PromptSetPosition(prompt, values[1], values[2], values[3])
-                N_0x0c718001b77ca468(prompt, 3.0)
-                -- PrompContextSetSize(prompt, 3.0)
-                PromptRegisterEnd(prompt)
-                table.insert(prompts, prompt)
-        end
-    end
-)
+-- values = GetEntityCoords(pigeon)
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(10)
+--                 values = GetEntityCoords(pigeon)
+--                 local prompt = PromptRegisterBegin()
+--                 PromptSetControlAction(prompt, 0xE8342FF2)
+--                 PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Comprar Armas'))
+--                 PromptSetEnabled(prompt, 1)
+--                 PromptSetVisible(prompt, 1)
+--                 PromptSetHoldMode(prompt, 1)
+--                 PromptSetPosition(prompt, values[1], values[2], values[3])
+--                 N_0x0c718001b77ca468(prompt, 3.0)
+--                 -- PrompContextSetSize(prompt, 3.0)
+--                 PromptRegisterEnd(prompt)
+--                 table.insert(prompts, prompt)
+--         end
+--     end
+-- -- )
     
-AddEventHandler(
-    'onResourceStop',
-    function(resourceName)
-        if resourceName == GetCurrentResourceName() then
-            for _, prompt in pairs(prompts) do
-                PromptDelete(prompt)
-            end
-        end
-    end)
+-- AddEventHandler(
+--     'onResourceStop',
+--     function(resourceName)
+--         if resourceName == GetCurrentResourceName() then
+--             for _, prompt in pairs(prompts) do
+--                 PromptDelete(prompt)
+--             end
+--         end
+--     end)
 
 
-function GetPlayers()
-    local players = {}
+-- function GetPlayers()
+--     local players = {}
 
-    for i = 0, 256 do
-        if NetworkIsPlayerActive(i) then
-            table.insert(players, i)
-        end
-    end
+--     for i = 0, 256 do
+--         if NetworkIsPlayerActive(i) then
+--             table.insert(players, i)
+--         end
+--     end
 
-    return players
-end
+--     return players
+-- end
