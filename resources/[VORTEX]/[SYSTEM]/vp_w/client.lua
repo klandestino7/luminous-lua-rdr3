@@ -1,19 +1,49 @@
-local weatherTypes = {
-    ["WINDYSNOW"] = 0x27EA2814, -- SNOW
-    ["RAINY"] = 0x995C7F44, --RAIN
-    ["FOGGY"] = 0xD61BDE01, --FOGGY
-    ["BLIZZARD"] = 0x7F622122, --SNOW BLIZZARD
-    ["WINDYRAIN"] = 0x320D0951, --RAINING CLOUDY WINDY
-    ["SFOGGY"] = 0x5974E8E5, -- LIL FOGGY
-    ["CLOUDY"] = 0x19D4F1D9, --CLOUDY
-    ["SUNNYRAIN"] = 0x54A69840, -- RAINING SUNNY
-    ["WINDYCLEAR"] = 0xB17F6111, -- WINDY CLEAR
-    ["SNOWY"] = 0xEFB6EFF6, -- SNOW NO WINDY
-    ["CLEAR"] = 0x614A1F91, --CLEAR
-    ["THUNDER"] = 0xB677829F, -- THUNDER
-    ["CLOUDYTHUNDER"] = 0x7C1C4A13, -- DARK CLOUDY THUNDER
-    ["WINDYSNOW"] = 0x2B402288 -- SNOW WINDY
-}
+-- local weatherTypes = {
+--     "highpressure",
+--     "rain",
+--     "snow",
+--     "misty",
+--     "fog",
+--     "sunny",
+--     "clouds",
+--     "overcast",
+--     "thunderstorm",
+--     "hurricane",
+--     "thunder",
+--     "shower",
+--     "blizzard",
+--     "snowlight",
+--     "whiteout",
+--     "hail",
+--     "sleet",
+--     "drizzle",
+--     "sandstorm",
+--     "overcastdark",
+--     "groundblizzard"
+-- }
+
+-- local current = CreateVarString(10, 'LITERAL_STRING', 'none')
+
+-- Citizen.CreateThread(
+--     function()
+--         local index = 1
+--         -- while true do
+--             Citizen.InvokeNative(0x59174F1AFE095B5A, GetHashKey(r[index]), true, true, true, 0.0, false)
+--             current = CreateVarString(10, 'LITERAL_STRING', r[index])
+--             index = index + 1
+--             Citizen.Wait(2500)
+--         -- end
+--     end
+-- )
+
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+--             DisplayText(current, 0.5, 0.1)
+--         end
+--     end
+-- )
 
 local regionsWeather = {}
 
@@ -28,7 +58,13 @@ Citizen.CreateThread(
             if region ~= currentRegion then
                 currentRegion = region
 
-                local weather_hash = weatherTypes[regionsWeather[region] or Citizen.InvokeNative(0x4BEB42AEBCA732E9)]
+                local weather_hash = regionsWeather[region]
+                if weather_hash then
+                    weather_hash = GetHashKey(weather_hash)
+                else
+                    weather_hash = Citizen.InvokeNative(0x4BEB42AEBCA732E9)
+                end
+
                 local old_weather = Citizen.InvokeNative(0x4BEB42AEBCA732E9)
 
                 if weather_hash ~= old_weather then
