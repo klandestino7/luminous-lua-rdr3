@@ -49,7 +49,7 @@ AddEventHandler(
                 if #DadosChar == 2  then
                     peds = {  
                         {genrer = json.decode(DadosChar[1].SkinMdf).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = json.decode(DadosChar[1].SkinMdf).modSkin, facef = json.decode(DadosChar[1].SkinMdf).features, pedsize = json.decode(DadosChar[1].SkinMdf).pedSize, bodySize = json.decode(DadosChar[1].SkinMdf).bodySize, clothes = DadosChar[1].clothes },
-                        {genrer = json.decode(DadosChar[2].SkinMdf).model, x = 1062.20, y = 1591.10, z = 369.42 - 0.98, h = 350.77, skin = json.decode(DadosChar[2].SkinMdf).modSkin, facef = json.decode(DadosChar[2].SkinMdf).features, pedsize = json.decode(DadosChar[2].SkinMdf).pedSize, bodySize = json.decode(DadosChar[2].SkinMdf).bodySize, clothes = DadosChar[2].clothes },
+                        {genrer = json.decode(DadosChar[2].SkinMdf).model, x = 1061.10, y = 1591.20,  z = 369.36 - 0.98, h = 320.77, skin = json.decode(DadosChar[2].SkinMdf).modSkin, facef = json.decode(DadosChar[2].SkinMdf).features, pedsize = json.decode(DadosChar[2].SkinMdf).pedSize, bodySize = json.decode(DadosChar[2].SkinMdf).bodySize, clothes = DadosChar[2].clothes },
                     }  
                 end 
                createPeds()                    
@@ -161,7 +161,7 @@ function createCamera()
     DisplayHud(false)
     NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), 1060.94, 1597.82, 373.29)
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 1062.48, 1592.20, 369.79, -10.00, 0.00, 168.00, 80.00, false, 0) -- CAMERA COORDS
+    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 1062.48, 1592.20, 369.79, -10.00, 0.00, 168.00, 100.00, false, 0) -- CAMERA COORDS
     PointCamAtCoord(cam, 1062.48, 1592.20, 369.79)
     SetCamActive(cam, true)
     RenderScriptCams(true, false, 1, true, true)
