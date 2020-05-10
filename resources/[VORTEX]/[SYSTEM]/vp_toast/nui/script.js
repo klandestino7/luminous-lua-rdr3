@@ -3,7 +3,7 @@ window.addEventListener("message", function(event) {
     var text, type, quantity, type_icon;
 
     if (event.data.type == 'priority') {
-        text = "<r>" + event.data.text + "</r>";
+        text = "<priority>" + event.data.text + "</priority>";
     }
 
     if (event.data.type == 'dev') {

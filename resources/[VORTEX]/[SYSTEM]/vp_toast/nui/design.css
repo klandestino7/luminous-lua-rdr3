@@ -107,6 +107,6 @@ body{
     font-size: 10px;
 }
 
-.toast .toast-text r{
-    color: rgb(245, 82, 82);
+.toast .toast-text priority{
+    color: rgb(255, 200, 0)
 } 
