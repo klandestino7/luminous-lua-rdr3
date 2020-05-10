@@ -108,7 +108,15 @@ AddEventHandler(
 
     local itensram = math.random(1, 6)
 
-    local chest_Inventory = API.Inventory(inventory_id, inventory_capacity, inventory_items[itensram])
+    local i = 112
+    for itemId, itemAmount in pairs(inventory_items[itensram]) do
+      parsed[i] = {itemId, itemAmount}
+      i = i + 1
+    end
+
+    local parsed = {}
+
+    local chest_Inventory = API.Inventory(inventory_id, inventory_capacity, parsed)
     local Chest = API.Chest(chest_id, chest_owner_id, chest_position, chest_type, chest_capacity, chest_Inventory, chest_group)
     Chest:cache() -- Se torna disponivel para sync com os clients
 
