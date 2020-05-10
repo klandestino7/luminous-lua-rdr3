@@ -234,9 +234,14 @@ function API.User(source, id, ipAddress)
         cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
     end
 
-    self.notify = function(this, v)
+    self.notify = function(this, type, text, quantity)
         -- cAPI.notify(self:getSource(), v)
-        TriggerClientEvent('VP:Notify', self:getSource(), v)
+        if type ~= nil and text == nil and quantity == nil then
+            text = type
+            type = 'dev'
+        end
+
+        TriggerClientEvent('VP:TOAST:New', self:getSource(), type, text, quantity)
     end
 
     self.getWeapons = function()

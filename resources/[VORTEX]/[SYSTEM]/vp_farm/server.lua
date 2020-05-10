@@ -21,14 +21,14 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
 
         if farmsInfo[farmAreaId][slot_id] ~= nil then
-            User:notify("Procure outro lugar para plantar!")
+            User:notify("error", "Procure outro lugar para plantar!")
             return
         end
 
         -- local type = farmAreaId
 
         if seedTryingToPlant ~= farmAreaId then
-            User:notify("Você não pode plantar esse tipo de semente aqui!")
+            User:notify("error", "Você não pode plantar esse tipo de semente aqui!")
             return
         end
 
@@ -37,7 +37,7 @@ AddEventHandler(
 
         local seedItem = farmAreaId .. "_seed"
         if Inventory:getItemAmount(seedItem) <= 0 then
-            User:notify("Você precisa de uma semente para plantar!")
+            User:notify("error", "Você precisa de uma semente para plantar!")
             return
         end
 
@@ -47,8 +47,8 @@ AddEventHandler(
         farmsInfo[farmAreaId][slot_id] = {0, time_next_water}
         -- Age, timesWatered
 
-        print("sement plantada")
-        User:notify("Semente plantada!")
+        -- User:notify("success", "Semente plantada!")
+        User:notify("item", API.getItemDataFromId(seedItem):getName(), -1)
 
         for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
             TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, 0)
@@ -177,7 +177,7 @@ AddEventHandler(
                 TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, percentToSync)
             end
         else
-            User:notify("Inventário cheio!")
+            User:notify("error", "Bolsa sem espaço")
         end
     end
 )

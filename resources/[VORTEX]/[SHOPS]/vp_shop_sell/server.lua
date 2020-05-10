@@ -54,7 +54,7 @@ AddEventHandler(
 
         if data.group then
             if not Character:hasGroupOrInheritance(data.group) then
-                User:notify("Você não tem permissao")
+                User:notify("error", "Você não tem permissao")
                 return
             end
         end
@@ -67,7 +67,7 @@ AddEventHandler(
 
         if Inventory:getItemAmount(itemId) < itemAmount then
             local idata = API.getItemDataFromId(itemId)
-            User:notify("Você precisa de no mínimo x" .. itemAmount .. "de " .. idata:getName() .. " para vender!")
+            User:notify("error", "Você precisa de no mínimo x" .. itemAmount .. "de " .. idata:getName() .. " para vender!")
             return
         end
 
@@ -82,9 +82,9 @@ AddEventHandler(
         if Inventory:removeItem(-1, itemId, itemAmount) then
             Inventory:addItem(currencyItem, itemPrice)
             if not withGold then
-                User:notify("+ $" .. string.format("%.2f", itemPrice / 100))
+                User:notify("dollar", string.format("%.2f", -(itemPrice / 100)))
             else
-                User:notify("+ G" .. string.format("%.2f", itemPrice / 100))
+                User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
             end
         end
     end

@@ -1,21 +1,24 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
-RegisterServerEvent('frp_heal:heallife')
-AddEventHandler('frp_heal:heallife', function(price)
+RegisterServerEvent("frp_heal:heallife")
+AddEventHandler(
+    "frp_heal:heallife",
+    function(price)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Inventory = User:getCharacter():getInventory()
 
-    local _source = source
-    local User = API.getUserFromSource(_source)
-    local Inventory = User:getCharacter():getInventory()
-
-	if Inventory:getItemAmount('money') < price then
-        User:notify('Dinheiro insuficiente!')
-        return
-	end
-	User:notify('Você foi curado, pagou ~pa~' .. price ..'$')
-	Inventory:removeItem(-1, 'money', price)
-	TriggerClientEvent('heal:player', _source)	
-end)
+        if Inventory:getItemAmount("money") < price then
+            User:notify("error", "Dinheiro insuficiente!")
+            return
+        end
+        User:notify("successo", "Você foi curado")
+        User:notify("dollar", -price) 
+        Inventory:removeItem(-1, "money", price)
+        TriggerClientEvent("heal:player", _source)
+    end
+)

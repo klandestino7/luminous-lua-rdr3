@@ -59,7 +59,7 @@ AddEventHandler(
 
         if data.group then
             if not Character:hasGroupOrInheritance(data.group) then
-                User:notify("Você não tem permissao")
+                User:notify("error", "Você não tem permissao")
                 return
             end
         end
@@ -69,7 +69,7 @@ AddEventHandler(
         local itemLevel = itemData[1]
 
         if Character:getLevel() < itemLevel then
-            User:notify("Você não tem level suficiente")
+            User:notify("error", "Você não tem level suficiente")
             return
         end
 
@@ -84,7 +84,11 @@ AddEventHandler(
         end
 
         if Inventory:getItemAmount(currencyItem) < itemPrice then
-            User:notify("Você não tem dinheiro suficiente")
+            if currencyItem == "money" then
+                User:notify("error", "Doláres insuficientes")
+            else
+                User:notify("error", "Ouros insuficientes")
+            end
             return
         end
 
@@ -94,15 +98,14 @@ AddEventHandler(
             Inventory:removeItem(-1, currencyItem, itemPrice)
             if itemPrice > 0 then
                 if not withGold then
-                    User:notify("- $" .. string.format("%.2f", itemPrice / 100))
+                    User:notify("dollar", string.format("%.2f", -(itemPrice / 100)))
                 else
-                    User:notify("- " .. string.format("%.2f", itemPrice / 100) .. " ouros")
+                    User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
                 end
-            else
-                User:notify(itemId)
             end
+                User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount or 1)
         else
-            User:notify("Espaço insuficiente na bolsa!")
+            User:notify("error", "Espaço insuficiente na bolsa!")
         end
     end
 )

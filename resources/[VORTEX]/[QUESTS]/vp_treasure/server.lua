@@ -9,12 +9,12 @@ local list = {}
 local bauId = {}
 
 local inventory_items = {
-  [1] = {["consumable_apple"] = 5, ["weapon_bow"] = 1, ["ammo_arrow"] = 20, ["tonic_medicine"] = 500},
-  [2] = {["consumable_apple"] = 5, ["weapon_rifle_boltaction"] = 1, ["generic_provision_rf_wood_minor"] = 5, ["generic_cobrebruto"] = 2},
-  [3] = {["weapon_revolver_cattleman"] = 5, ["weapon_bow"] = 1, ["ammo_arrow"] = 20},
-  [4] = {["weapon_melee_lantern_electric"] = 1, ["weapon_thrown_dynamite"] = 2, ["generic_gold"] = 100},
-  [5] = {["weapon_lasso"] = 5, ["weapon_shotgun_repeating"] = 1, ["money"] = 500},
-  [6] = {["weapon_rifle_springfield"] = 5, ["weapon_shotgun_repeating"] = 1, ["money"] = 500}
+  [1] = {["apple"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20, ["tonic_medicine"] = 500},
+  [2] = {["apple"] = 5, ["rifle_boltaction"] = 1, ["generic_provision_rf_wood_minor"] = 5, ["raw_copper"] = 2},
+  [3] = {["revolver_cattleman"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20},
+  [4] = {["melee_lantern_electric"] = 1, ["thrown_dynamite"] = 2, ["gold"] = 100},
+  [5] = {["lasso"] = 5, ["shotgun_repeating"] = 1, ["money"] = 500},
+  [6] = {["rifle_springfield"] = 5, ["shotgun_repeating"] = 1, ["money"] = 500}
 }
 
 local TREASURE = {

@@ -15,6 +15,8 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
             cAPI.toggleNoclip(source)
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -27,6 +29,8 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
             cAPI.setCoords(source, x, y, z)
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -42,6 +46,8 @@ RegisterCommand(
             if tplayer then
                 cAPI.setCoords(tplayer, x, y, z)
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -53,10 +59,11 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") and args[1] then
             local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
-            print(tplayer)
             if tplayer then
                 cAPI.setCoords(source, cAPI.getPosition(tplayer))
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -76,6 +83,8 @@ RegisterCommand(
                 table.insert(coords, parseInt(coord))
             end
             cAPI.setCoords(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -87,6 +96,8 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
             cAPI.teleportToWaypoint(source)
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -103,6 +114,8 @@ RegisterCommand(
             else
                 API.setBanned(sourcePlayer, args[1], "Banido")
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -128,6 +141,8 @@ RegisterCommand(
             else
                 API.setBanned(User, args[1])
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -140,6 +155,8 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") and args[1] then
             local sourcePlayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             API.kick(sourcePlayer, "Você foi expulso da cidade.")
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -155,6 +172,8 @@ RegisterCommand(
                 UserTarget:getCharacter():addXp(tonumber(args[2]))
                 TriggerClientEvent("chatMessage", source, args[2] .. " XP adicionado ao jogador " .. UserTarget:getCharacter():getName())
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -170,6 +189,8 @@ RegisterCommand(
                 UserTarget:getCharacter():removeXp(tonumber(args[2]))
                 TriggerClientEvent("chatMessage", source, args[2] .. " XP removido ao jogador " .. UserTarget:getCharacter():getName())
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -180,7 +201,9 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            TriggerClientEvent("VP:ADMIN:CreateVehicel", source, args[1])
+            TriggerClientEvent("VP:ADMIN:CreateVehicle", source, args[1])
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -195,6 +218,8 @@ RegisterCommand(
             if UserTarget ~= nil then
                 UserTarget:getCharacter():setLevel(tonumber(args[2]))
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -206,11 +231,14 @@ RegisterCommand(
         local Character = User:getCharacter()
 
         if #args < 2 and not tonumber(args[2]) then
+            User:notify("error", "sintaxe: /item id quantidade")
             return
         end
 
         if Character:hasGroupOrInheritance("admin") then
             Character:getInventory():addItem(args[1], tonumber(args[2]))
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -223,6 +251,8 @@ RegisterCommand(
 
         if Character:hasGroupOrInheritance("admin") then
             cAPI.SetModel(source, args[1])
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -234,6 +264,8 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
             API.prompt(source, "Cordenadas:", string.format("%.3f", x) .. "," .. string.format("%.3f", y) .. "," .. string.format("%.3f", z))
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -253,9 +285,11 @@ RegisterCommand(
                         UserTarget:getCharacter():removeGroup(args[3])
                     end
                 else
-                    User:notify("Usuario invalido!")
+                    User:notify("error", "Usuario invalido!")
                 end
             end
+        else
+            User:notify("error", "Você não tem permissão!")
         end
     end
 )
@@ -268,6 +302,8 @@ RegisterCommand(
             local Character = User:getCharacter()
             if Character:hasGroupOrInheritance("admin") then
                 TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
+            else
+                User:notify("error", "Você não tem permissão!")
             end
         end
     end

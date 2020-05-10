@@ -1,22 +1,23 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
-
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
 local doorGroupsIsOpen = {
-    [1] = { -- BraitWaite Mansion
+    [1] = {
+        -- BraitWaite Mansion
         [1] = false,
         [2] = false,
         [3] = false,
         [4] = false,
         [10] = false,
-        [11] = false,
+        [11] = false
     },
-    [2] = { -- Mattock House
+    [2] = {
+        -- Mattock House
         [1] = false,
-        [2] = false,
+        [2] = false
     }
 }
 
@@ -32,8 +33,8 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        if not Character:hasGroupOrInheritance('house:' .. doorGroup) then
-            User:notify('Você não tem permissão!')
+        if not Character:hasGroupOrInheritance("house:" .. doorGroup) then
+            User:notify("error", "Você não tem permissão!")
             return
         end
 

@@ -60,7 +60,7 @@ AddEventHandler(
             text = 'esta pele'
         end
 
-        User:notify('Você recebeu $' .. payment .. ' por ' .. text .. '!')
+        User:notify("dollar", payment)
         TriggerClientEvent('VP:BUTCHER:EntityAccepted', _source, entity)
     end
 )

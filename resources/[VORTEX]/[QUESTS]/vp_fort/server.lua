@@ -10,14 +10,14 @@ local data = {
         staticSecondsToReward = 7,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60,
-        staticName = 'Mercer'
+        staticName = "Mercer"
     },
     [2] = {
         staticReward = 10000,
         staticSecondsToReward = 7,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60,
-        staticName = 'Wallace'
+        staticName = "Wallace"
     }
 }
 
@@ -36,45 +36,40 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
 
         indexBeingRobbed = index
-        local Posse = API.getPosse(User:getPosseId())        
+        local Posse = API.getPosse(User:getPosseId())
         local Character = User:getCharacter()
         local userRank = Posse:getMemberRank(Character:getId())
-        local fortbando = Posse:getData(indexBeingRobbed,'bando')
+        local fortbando = Posse:getData(indexBeingRobbed, "bando")
 
         if not User:isInAPosse() then
-           -- User:notify("Você não está em um bando.")            
-            TriggerClientEvent('VP:Notify', _source, "Você não está em um bando.")
+            User:notify("Você não está em um bando.")
             return
         end
 
         if userRank >= 2 then
-            --User:notify("Somente um membro de cargo superior pode iniciar dominação.")
-            TriggerClientEvent('VP:Notify', _source, "Somente um membro de cargo superior pode iniciar dominação.")
+            User:notify("error", "Somente um membro de cargo superior pode iniciar dominação.")
             return
-        end 
+        end
 
         if Posse.id == fortbando then
-            --User:notify("Seu bando já domina este forte.")
-            TriggerClientEvent('VP:Notify', _source, "Seu bando já domina este forte.")
+            User:notify("error", "Seu bando já domina este forte.")
             return
         end
 
         if interiorIndexBeingRobbed ~= nil then
-            print("Este forte já está em dominação")
-            TriggerClientEvent('VP:Notify', _source, "Este forte já está em dominação.")
+            User:notify("error", "Este forte já está em dominação.")
             return
         end
 
         if data[index].cooldown ~= nil then
             if data[index].cooldown > os.time() then
-                print("Fomos assaltados a pouco tempo, não temos dinheiro")
-                TriggerClientEvent('VP:Notify', _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
+                User:notify("speech", "Fomos assaltados a pouco tempo, não temos dinheiro!")
                 return
             else
                 data[index].cooldown = nil
             end
         end
-        
+
         indexBeingRobbed_playerSourceWhoStarted = _source
         local numParticipants = 0
         local maxParticipants = data[index].staticMaxParticipants
@@ -94,8 +89,7 @@ AddEventHandler(
                             numParticipants = numParticipants + 1
                             print(indexBeingRobbed_seconds)
                             TriggerClientEvent("VP:FORT:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
-
-                            TriggerClientEvent('VP:Notify', -1, "O Forte ".. data[indexBeingRobbed].staticName .." está sendo disputado.")
+                            TriggerClientEvent("VP:TOAST:New", -1, "priority", "O Forte " .. data[indexBeingRobbed].staticName .. " está sendo disputado.")
                             participants[participantSource] = true
                         else
                             TriggerClientEvent("VP:FORT:StartRobberyAsBlocked", participantSource, index)
@@ -125,7 +119,7 @@ function countdownRobberyTime()
 
                     if indexBeingRobbed_seconds == 0 then
                         print("Robbery seconds is now 0")
-           --             TriggerClientEvent('VP:Notify', _source, "O tempo do roubo é de 0s")
+                        TriggerClientEvent("VP:TOAST:New", _source, "alert", "O tempo do roubo é de 0s")
                         endRobberyGiveReward()
                     end
                 end
@@ -133,8 +127,6 @@ function countdownRobberyTime()
         end
     )
 end
-
-
 
 function endRobberyGiveReward()
     print("endRobberyGiveReward")
@@ -159,11 +151,11 @@ function endRobberyGiveReward()
     end
 
     if User ~= nil then
-        local Character = User:getCharacter()                
-        local Posse = API.getPosse(User:getPosseId())        
-        if Character ~= nil then 
-            Posse:setData(indexBeingRobbed, 'bando', 'bando', Posse.id)
-            TriggerClientEvent('VP:Notify', User, "Você dominou esse forte!")
+        local Character = User:getCharacter()
+        local Posse = API.getPosse(User:getPosseId())
+        if Character ~= nil then
+            Posse:setData(indexBeingRobbed, "bando", "bando", Posse.id)
+            User:notify("success", "Você dominou esse forte!")
         end
     end
 
@@ -174,7 +166,7 @@ function endRobberyGiveReward()
     indexBeingRobbed_seconds = 0
     indexBeingRobbed_participants = {}
     robberyBeingEnded = false
-    
+
     TriggerClientEvent("VP:FORT:EndRobbery", -1)
 end
 
@@ -208,8 +200,7 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        print("Player " .. _source .. " left the robbery")
-        TriggerClientEvent('VP:Notify', _source, "O " .. Character:getName() .. " saiu da área da dominação.")
+        User:notify("alerta", "O " .. Character:getName() .. " saiu da área da dominação.")
     end
 )
 

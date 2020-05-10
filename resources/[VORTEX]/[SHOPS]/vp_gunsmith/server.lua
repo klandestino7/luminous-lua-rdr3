@@ -24,6 +24,28 @@ local verificationData = {
     ["ammo_shotgun"] = {0, 10, 2, 20}
 }
 
+-- ["revolver_lemat"] = {1, 7, 317, 13},
+-- ["revolver_cattleman"] = {1, 1, 50, 2},
+-- ["REVOLVER_NAVY"] = {1, 5, 257, 11},
+-- -- PISTOL
+-- ["pistol_volcanic"] = {1, 24, 300, 14},
+-- --shotgun
+-- ["shotgun_sawedoff"] = {1, 5, 111, 13},
+-- -- repeater
+-- ["repeater_carbine"] = {1, 2, 90, 4},
+-- ["repeater_henry"] = {1, 17, 234, 10},
+-- -- precision rifle 
+-- ["sniperrifle_rollingblock"] = {1, 15, 500, 20},
+-- -- MELEE
+-- --  ["BOLAS"] = {1, 1, 30, 2},
+-- ["thrown_throwing_knives"] = {1, 1, 2.5, 0.5},
+-- ["melee_cleaver"] = {1, 5, 8, 1},  
+-- ["melee_knife"] = {1, 1, 0.5, 0.1},     
+-- -- manual rifle
+-- ["rifle_varmint"] = {1, 7, 72, 3},
+-- ["rifle_boltaction"] = {1, 9, 216, 9},
+
+
 RegisterNetEvent("VP:GUNSMITH:TryToBuy")
 AddEventHandler(
     "VP:GUNSMITH:TryToBuy",
@@ -41,7 +63,7 @@ AddEventHandler(
         local itemLevel = itemData[1]
 
         if Character:getLevel() < itemLevel then
-            User:notify("Você não tem level suficiente")
+            User:notify("error", "Você não tem level suficiente")
             return
         end
 
@@ -56,7 +78,7 @@ AddEventHandler(
         end
 
         if Inventory:getItemAmount(currencyItem) < itemPrice then
-            User:notify("Você não tem dinheiro suficiente")
+            User:notify("error", "Você não tem dinheiro suficiente")
             return
         end
 
@@ -66,15 +88,14 @@ AddEventHandler(
             Inventory:removeItem(-1, currencyItem, itemPrice)
             if itemPrice > 0 then
                 if not withGold then
-                    User:notify("- $" .. string.format("%.2f", itemPrice / 100))
+                    User:notify("dollar", string.format("%.2f", -(itemPrice / 100)))
                 else
-                    User:notify("- " .. string.format("%.2f", itemPrice / 100) .. " ouros")
+                    User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
                 end
-            else
-                User:notify(itemId)
             end
+            User:notify('item', API.getItemDataFromId(itemId):getName(), itemAmount)
         else
-            User:notify("Espaço insuficiente na bolsa!")
+            User:notify("error", "Espaço insuficiente na bolsa!")
         end
     end
 )

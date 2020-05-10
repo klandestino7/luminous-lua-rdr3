@@ -1,12 +1,12 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
-RegisterNetEvent('VP:MUGGIN:TryToMug')
+RegisterNetEvent("VP:MUGGIN:TryToMug")
 AddEventHandler(
-    'VP:MUGGIN:TryToMug',
+    "VP:MUGGIN:TryToMug",
     function(targetSource)
         local _source = source
 
@@ -14,7 +14,6 @@ AddEventHandler(
         local targetPed = GetPlayerPed(targetSource)
 
         if #(GetEntityCoords(sourcePed) - GetEntityCoords(targetPed)) <= 5 then
-
             local User = API.getUserFromSource(_source)
             local UserTarget = API.getUserFromSource(targetSource)
 
@@ -29,7 +28,7 @@ AddEventHandler(
             for id, amount in pairs(InventoryTarget:getItems()) do
                 if InventoryTarget:removeItem(id, amount) then
                     Inventory:addItem(id, amount)
-                    User:notify('+ x' .. amount .. ' ' .. API.getItemDataFromId(id):getName())
+                    User:notify("item", API.getItemDataFromId(id):getName(), amount)
                 end
             end
 

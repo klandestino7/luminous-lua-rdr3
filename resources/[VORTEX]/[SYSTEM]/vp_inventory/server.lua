@@ -79,9 +79,9 @@ AddEventHandler(
         local ItemData = API.getItemDataFromId(data.id)
 
         if Inventory:removeItem(slotId, data.id, data.amount) then
-            User:notify(ItemData:getName() .. " dropado!")
+            User:notify("item", ItemData:getName(), -data.amount)
         else
-            User:notify("x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
+            User:notify("error", "x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
         end
     end
 )
@@ -122,7 +122,7 @@ AddEventHandler(
         end
 
         if (primaryInventory:getWeight() + (Slot:getItemData():getWeight() * itemAmount)) >= primaryInventory:getCapacity() then
-            User:notify("Baú cheio!")
+            User:notify("error", "Baú cheio!")
             return
         end
 
@@ -168,7 +168,7 @@ AddEventHandler(
         end
 
         if (secondaryInventory:getWeight() + (Slot:getItemData():getWeight() * itemAmount)) >= secondaryInventory:getCapacity() then
-            User:notify("Baú cheio!")
+            User:notify("error", "Baú cheio!")
             return
         end
 

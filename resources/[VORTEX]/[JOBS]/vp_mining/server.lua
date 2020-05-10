@@ -14,7 +14,7 @@ AddEventHandler(
         local a = Inventory:getItemAmount("pickaxe")
         local ItemData = API.getItemDataFromId("pickaxe")
         if a <= 0 then
-            User:notify("Você nao possui uma " .. ItemData:getName())
+            User:notify("error", "Você nao possui uma " .. ItemData:getName())
         else
             TriggerClientEvent("VP:MINING:StartMiningAnimation", _source)
         end
@@ -69,7 +69,7 @@ AddEventHandler(
         local mineral_item = r[where][1]
         local itemData = API.getItemDataFromId(mineral_item)
 
-        User:notify("Você achou " .. itemData:getName() .. "!")
+        User:notify("alert", "Você achou " .. itemData:getName() .. "!")
 
         if found[_source] == nil then
             found[_source] = {}
@@ -156,54 +156,54 @@ AddEventHandler(
         -- local ammolite = false
         -- local flourite = false
 
-        if Inventory:getItemAmount('stone') >= 3 then
+        if Inventory:getItemAmount("stone") >= 3 then
             stone = true
         end
 
-        if Inventory:getItemAmount('raw_coal') >= 3 then
+        if Inventory:getItemAmount("raw_coal") >= 3 then
             coal = true
         end
 
-        if Inventory:getItemAmount('raw_copper') >= 2 then
+        if Inventory:getItemAmount("raw_copper") >= 2 then
             copper = true
         end
 
-        if Inventory:getItemAmount('raw_gold') >= 1 then
+        if Inventory:getItemAmount("raw_gold") >= 1 then
             gold = true
         end
 
         if not stone and not coal and not copper and not gold then
-            User:notify('Você não tem minerais suficientes para processar!')
+            User:notify("error", "Você não tem minerais suficientes para processar!")
             return
         end
 
         TriggerClientEvent("VP:MINING:StartProcessingAnimation", _source)
 
-        User:notify('Processando...')
+        User:notify("alert", "Processando...")
 
         Citizen.Wait(20000)
 
         if stone then
-            if Inventory:getItemAmount('stone') >= 3 then
-                Inventory:removeItem(-1, 'stone', 3)
+            if Inventory:getItemAmount("stone") >= 3 then
+                Inventory:removeItem(-1, "stone", 3)
             end
         end
 
         if coal then
-            if Inventory:getItemAmount('raw_coal') >= 3 then
-                Inventory:removeItem(-1, 'raw_coal', 3)
+            if Inventory:getItemAmount("raw_coal") >= 3 then
+                Inventory:removeItem(-1, "raw_coal", 3)
             end
         end
 
         if copper then
-            if Inventory:getItemAmount('raw_copper') >= 2 then
-                Inventory:removeItem(-1, 'raw_copper', 2)
+            if Inventory:getItemAmount("raw_copper") >= 2 then
+                Inventory:removeItem(-1, "raw_copper", 2)
             end
         end
 
         if gold then
-            if Inventory:getItemAmount('raw_gold') >= 1 then
-                Inventory:removeItem(-1, 'raw_gold', 1)
+            if Inventory:getItemAmount("raw_gold") >= 1 then
+                Inventory:removeItem(-1, "raw_gold", 1)
             end
         end
     end
@@ -217,13 +217,13 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         if num == 0 or num == nil then
-            User:notify("Erro no processamento")
+            User:notify("error", "Erro no processamento")
             return
         end
         if num >= 4 or num == 0 then
             if Character:hasGroup("ourives") then
             else
-                User:notify("Você não pode processar esse minério")
+                User:notify("error", "Você não pode processar esse minério")
                 return
             end
         end
