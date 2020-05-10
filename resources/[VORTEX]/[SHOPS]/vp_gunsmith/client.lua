@@ -11,13 +11,13 @@ function load(interiorId)
         -- price_dollar, price_gold, amount
         {"revolver_lemat", 317, 13, 1, "w_revolver_lemat01"},
         {"revolver_cattleman", 50, 2, 1, "w_revolver_cattleman01"},
-        -- {"revolver_navy", 257, 11, 1, "w_revolver_lemat01"}, -- ERA PRA SER O NAVY
+        -- {"revolver_navy", 257, 11, 1, "w_revolver_schofield01"}, -- ERA PRA SER O NAVY
         {"pistol_volcanic", 300, 14, 1, "w_pistol_volcanic01"},
         {"shotgun_sawedoff", 65, 15, 1, "w_shotgun_sawed01"},
         {"repeater_carbine", 90, 4, 1, "w_repeater_carbine01"},
         {"repeater_henry", 234, 10, 1, "w_repeater_henry01"},
         {"sniperrifle_rollingblock", 500, 20, 1, "w_rifle_rollingblock01"},
-        -- {"rifle_varmint", 72, 3, 1, "w_rifle_springfield01"}, -- NÃO ESTÁ CARREGANDO
+        {"rifle_varmint", 72, 3, 1, "w_repeater_pumpaction01"}, -- NÃO ESTÁ CARREGANDO
         {"rifle_boltaction", 216, 9, 1, "w_rifle_boltaction01"}
         -- {"thrown_throwing_knives", 250, 50, 1, "w_melee_tomahawk03"},
         -- {"melee_cleaver", 8, 1, 1, "p_cleaver01x"},
@@ -207,15 +207,16 @@ function createProp(model, x, y, z, pitch, roll, yaw, weapon_hash)
         )
     end
 
-    if model:find("ammo01x") then
+    if prop ~= 0 and prop ~= false then
+        if model:find("ammo01x") then
+            if props_ammo[propsammolenght + 1] == nil then
+                props_ammo[propsammolenght + 1] = {}
+            end
 
-        if props_ammo[propsammolenght + 1] == nil then
-            props_ammo[propsammolenght + 1] = {}
+            props_ammo[propsammolenght + 1][1] = prop
+        else
+            props[prop] = true
         end
-
-        props_ammo[propsammolenght + 1][1] = prop
-    else
-        props[prop] = true
     end
 
     return prop
@@ -299,7 +300,7 @@ Citizen.CreateThread(
             local direction = RotationToDirection(cameraRotation)
             local lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
-            local rayHandle = StartShapeTestRay(cameraCoord, lastCoords, 1, ped, 0)
+            local rayHandle = StartShapeTestRay(cameraCoord, lastCoords, -1, ped, 0)
             local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
 
             if hit == 1 then
