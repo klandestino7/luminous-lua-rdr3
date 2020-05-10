@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'RDRLino';
-	/* src: url("../../vp_inventory/nui/fonts/RDRLino-Regular.ttf"); */
-	src: url("nui://vp_inventory/nui/fonts/RDRLino-Regular.ttf");
-	/* src: url("../../vp_creator/client/html/fonts/robotoslab.ttf"); */
+    /* src: url("../../vp_inventory/nui/fonts/RDRLino-Regular.ttf"); */
+    src: url("nui://vp_inventory/nui/fonts/RDRLino-Regular.ttf");
+    /* src: url("../../vp_creator/client/html/fonts/robotoslab.ttf"); */
 }
 
 * {
@@ -10,36 +10,32 @@
     overflow: hidden;
 }
 
-body{
-	/* background: black; */
-}
+/* body{
+	background: black;
+} */
 
 .toast-container {
-	position: absolute;
-	right: 0;
-	top: 50%;
-	transform: translate(0, -50%);
-    width: fit-content;
-    height: fit-content;
-	/* border: 1px solid green; */
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    /* width: fit-content;
+    height: fit-content; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* border: 1px solid green; */
 }
 
 .toast {
     width: fit-content;
     padding: 3px 6px 3px 16px;
-    /* background: black; */
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
-	/* border-style: solid;
-	border-width: 5px 5px 5px 5px;
-    border-image: url(../../vp_inventory/nui/images/toastb.png) 7 7 28 7 stretch stretch; */ 
-    animation: intro 1s 0.1s forwards;	
+    animation: intro 1s 0.1s forwards;
 }
 
 .toast .toast-text {
@@ -54,8 +50,6 @@ body{
 }
 
 .toast .toast-type {
-    /* margin: 0 3px 0 0px; */
-    /* background: orange; */
     height: 20px;
     width: 20px;
     display: flex;
@@ -64,16 +58,15 @@ body{
     align-items: center;
 }
 
-.toast .type-quantity{
-	margin: 0 0 0 -3px;
-	font-size: 14px;
+.toast .type-quantity {
+    margin: 0 0 0 -3px;
+    font-size: 14px;
 }
 
 .toast .toast-type-icon {
     margin: 0 0 0 6px;
     height: 20px;
     width: 20px;
-    /* background: orange; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -99,43 +92,37 @@ body{
 }
 
 .toast.background {
-    /* background: black; */
     background: url(assets/toast-bg.png);
     background-size: cover;
 }
 
-.toast.background span{
+.toast.background span {
     margin-right: 10px;
     font-size: 10px;
 }
 
-.toast .toast-text priority{
+.toast .toast-text priority {
     color: rgb(255, 200, 0)
-} 
-
-
-
-.end{
-    animation: ended 1s 0.1s forwards;	
 }
 
+.outro {
+    animation: outro 1s 0.1s forwards;
+}
 
 @keyframes intro {
-	0% {
-      transform: translate(400px, 0px);
-
+    0% {
+        transform: translate(200%, 0px);
     }
-	100% {
-      transform: translate(-10px, 0px);
-	}
-  }
-
-  
-@keyframes ended {
-	0% {
-      transform: translate(-10px, 0px);
+    100% {
+        transform: translate(0px, 0px);
     }
-	100% {
-    transform: translate(400px, 0px);
-	}
-  }
+}
+
+@keyframes outro {
+    0% {
+        transform: translate(0px, 0px);
+    }
+    100% {
+        transform: translate(200%, 0px);
+    }
+}

@@ -2,6 +2,13 @@ window.addEventListener("message", function(event) {
 
     var text, type, quantity, type_icon;
 
+    var duration = 5000;
+
+    if (event.data.type.includes('longer_')) {
+        duration = 12000;
+        event.data.type = event.data.type.replace('longer_', '');
+    }
+
     if (event.data.type == 'priority') {
         text = "<priority>" + event.data.text + "</priority>";
     }
@@ -76,11 +83,17 @@ window.addEventListener("message", function(event) {
     if (type_icon != undefined) {
         $(element).append(`<span class='toast-type-icon'><img src='assets/${type_icon}.png'></span>`);
     }
+
     $(element).fadeIn(1000);
 
     //$(element).addClass('end').delay(8000);
 
-    setTimeout(function(){ $(element).addClass('end') }, 8000);
+    setTimeout(function() {
+        $(element).addClass('outro');
+        setTimeout(function() {
+            $(element).remove();
+        }, 1000);
+    }, duration);
 
-  //  $(element).fadeIn(1000).delay(8000).fadeOut(1000);
+    //  $(element).fadeIn(1000).delay(8000).fadeOut(1000);
 });

@@ -11,6 +11,7 @@
 -- VP:TOAST:New -> "dollar", -10
 -- VP:TOAST:New -> "item", "Pistola Vulcan", 10
 -- VP:TOAST:New -> "item", "Pistola Vulcan", -10
+-- VP:TOAST:New -> "longer_alert", "Toast que demora mais tempo para sumir, funciona para todos",
 
 RegisterNetEvent("VP:TOAST:New")
 AddEventHandler(
@@ -33,7 +34,7 @@ AddEventHandler(
 )
 
 RegisterCommand('notifica', function()
-    TriggerEvent('VP:TOAST:New', "error", "Você tomou o estouro.")
+    TriggerEvent('VP:TOAST:New', "longer_error", "Você tomou o estouro.")
     Wait(1000)
     TriggerEvent('VP:TOAST:New', "dev", "Mensagem com intuito de ser para Devs")
     Wait(1000)
