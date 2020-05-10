@@ -605,21 +605,23 @@ end
 
 function cAPI.varyHealth(variation)
 	local ped = PlayerPedId()
-	local n = math.floor(GetEntityHealth(ped) + variation)
+	local n = math.floor(GetAttributeCoreValue(ped, 0) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, n)
+	SetEntityHealth(ped, n)
 end
 
 function cAPI.varyStamina(variation)
 	local ped = PlayerPedId()
-	local n = math.floor(GetEntityHealth(ped) + variation)
+	local n = math.floor(GetAttributeCoreValue(ped, 1) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, n)
 end
 
 function cAPI.varyEye(variation)
 	local ped = PlayerPedId()
-	local n = math.floor(GetEntityHealth(ped) + variation)
+	local n = math.floor(GetAttributeCoreValue(ped, 2) + variation)
 	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 2, n)
 end
+
 
 function cAPI.StartFade(timer)
 	DoScreenFadeOut(timer)

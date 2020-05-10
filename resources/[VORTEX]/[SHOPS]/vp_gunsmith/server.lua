@@ -20,7 +20,7 @@ local verificationData = {
     ["ammo_revolver"] = {0, 10, 2, 20},
     ["ammo_pistol"] = {0, 10, 2, 20},
     ["ammo_repeater"] = {0, 10, 2, 20},
-    ["ammo_rifler"] = {0, 10, 2, 20},
+    ["ammo_rifle"] = {0, 10, 2, 20},
     ["ammo_shotgun"] = {0, 10, 2, 20}
 }
 

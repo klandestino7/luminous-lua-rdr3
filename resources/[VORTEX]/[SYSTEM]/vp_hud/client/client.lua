@@ -11,6 +11,8 @@ Citizen.CreateThread(
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
         Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
+        N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
+
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
         -- Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
 
@@ -23,8 +25,18 @@ Citizen.CreateThread(
                 N_0x69d65e89ffd72313(false)
             end
 
+            if IsPedOnMount(PlayerPedId()) then
+            N_0x8bc7c1f929d07bf3(474191950)
+         --   ShowPlayerCores(false) -- player core
+            Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+            else
+            --    ShowPlayerCores(false) -- player core
+             ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+              N_0x4cc5f2fc1332577f(474191950)
+            end
+
             --N_0xbae08f00021bffb2(horse) -- agitates the horse
-            --N_0x8bc7c1f929d07bf3(-1679307491) -- show
+            N_0x8bc7c1f929d07bf3(-1679307491) -- show
 
             N_0x4cc5f2fc1332577f(-66088566) -- hide mpmoney
             N_0x50c803a4cd5932c5(false)
@@ -32,7 +44,7 @@ Citizen.CreateThread(
             Citizen.InvokeNative(0x50C803A4CD5932C5, true)
             Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
             cAPI.Temperatura()
-            DisplayRadar(true)
+         --   DisplayRadar(true)
 
         end
     end
@@ -42,9 +54,8 @@ Citizen.CreateThread(
 
 
 RegisterCommand(
-    "cinematic",
+    "cinema",
     function(source, args)
-
         if args[1] == '1' then
             Cinematic = true
         elseif args[1] == "2" then

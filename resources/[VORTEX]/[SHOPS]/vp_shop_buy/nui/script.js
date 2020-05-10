@@ -53,8 +53,9 @@ function draw(shopId) {
                 var itemPrice_dollar = itemData[2];
                 var itemPrice_gold = itemData[3];
                 var itemName = itemData[4];
+                var itemDescription = itemData[6];
                 var itemWeight = itemData[5];
-
+                console.log(itemLevel)
                 itemWeight = itemWeight.toFixed(1);
                 itemPrice_dollar = (itemPrice_dollar / 100).toFixed(2);
                 itemPrice_gold = (itemPrice_gold / 100).toFixed(2);
@@ -68,6 +69,7 @@ function draw(shopId) {
                 var element = $(`.slot-container #${itemId}`);
                 $(element).attr('shopId', shopId);
                 $(element).attr('name', itemName);
+                $(element).attr('descripition', itemDescription);
                 $(element).attr('weight', itemWeight);
                 $(element).attr('p_dollar', itemPrice_dollar);
                 $(element).attr('p_gold', itemPrice_gold);
@@ -108,7 +110,7 @@ function buy(gold) {
     if ($('.selected').length > 0) {
         var itemName = $('.selected').attr('name');
         $('#confirmation-container').fadeIn(250);
-        $('#confirmation-container #confirm_title').text('Comprar | ' + itemName);
+        $('#confirmation-container #confirm_title').text('Comprar ' + itemName);
         buyingWithGold = gold;
 
         $('#p_gold_img').removeClass('fhover_gold');
@@ -156,17 +158,20 @@ function buyItem() {
 // $(function() {
 function select(element) {
     if ($(element).attr('id') != undefined) {
-        $('.description-title').text('');
         $('.selected').removeClass('selected');
+        $('#name').text('');
+        $('#description').text('');
 
         $(element).addClass('selected');
 
         var item_name = $(element).attr('name');
+        var item_description = $(element).attr('description');
         var item_weight = $(element).attr('weight');
         var item_p_dollar = $(element).attr('p_dollar');
         var item_p_gold = $(element).attr('p_gold');
 
-        $('.description-title').text('Comprar | ' + item_name);
+        $('#name').text(item_name);
+        $('#description').text(item_description);
         $('#weight').text(item_weight + 'KG');
         $('#p_dollar').text(item_p_dollar);
         $('#p_gold').text(item_p_gold);
@@ -178,7 +183,8 @@ function select(element) {
 function unSelect(element) {
     if ($(element).hasClass('selected')) {
         $(element).removeClass('selected');
-        $('.description-title').text('');
+        $('#name').text('');
+        $('#description').text('');
         $('#confirmation-container').hide();
         buyingWithGold = false;
         $('#p_gold_img').removeClass('fhover_gold');

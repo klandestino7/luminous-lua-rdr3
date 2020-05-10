@@ -17,26 +17,27 @@
 }
 
 body {
-    display: flex;
-    align-content: center;
 }
 
 .container {
-    margin: auto auto;
-    width: fit-content;
     display: flex;
-    flex-direction: row;
+    height: 100%;
+    align-items: center;
+    justify-content: left;
+    margin-left:1%;
+    z-index: 999;
 }
 
 .container .shop {
     position: relative;
     width: 361px;
     height: 592px;
+    z-index: 999;
 }
 
 .container #background-image {
     width: 100%;
-    height: 70%;
+    height: 100%;
 }
 
 .container .shop .inner-container {
@@ -48,14 +49,15 @@ body {
 }
 
 .container .shop .inner-container .info {
-    margin-top: 15px;
     width: 100%;
     text-align: center;
     justify-content: center;
     align-items: center;
     display: flex;
     flex-direction: row;
+    
 }
+
 
 .container .shop .inner-container .info span {
     font-size: 12px;
@@ -83,13 +85,22 @@ body {
 }
 
 .container .shop .inner-container .divider {
-    margin: 10px auto 10px auto;
+    margin: 7px auto 7px auto;
     background-image: url(nui://vp_inventory/nui/images/divider.png);
     background-size: contain;
     background-repeat: no-repeat;
-    width: 80%;
+    background-position: center;
+    width: 100%;
     height: 2px;
     opacity: 0.3;
+}
+
+.container .shop .inner-container .bottom-container{
+    position: absolute;
+    bottom:5%;
+    width: 100%;
+    flex-direction: row;
+    z-index: 1;
 }
 
 .container .shop .inner-container .slot-container {
@@ -148,16 +159,46 @@ body {
     font-size: 16px;
 }
 
-#confirmation-container {
-    margin: 0 auto;
+#confirmation-bg{
+    top: 0;
+    left:0;
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index: -999;
+    backdrop-filter: blur(5px);
+}
+
+#confirmation-content{
+    position: fixed;
+    left:4%;
+    top:45%;
     background-image: url(nui://vp_inventory/nui/images/bginventory.png);
     background-size: cover;
     width: 250px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
+    height: auto;    
     padding: 10px;
-    margin-top: 20px;
+    z-index: 1100;    
+    transition: all 0.5s;
+}
+
+#confirmation-container {
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:1000;
+}
+
+#confirm_title{
+    font-size:1em;
+}
+
+
+
+
+.description-description span{
+    font-family: "Hapna" !important;
+    letter-spacing: 1px;
 }
 
 .row {

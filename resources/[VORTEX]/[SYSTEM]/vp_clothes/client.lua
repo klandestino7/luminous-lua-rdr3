@@ -1098,8 +1098,8 @@ RegisterNUICallback(
             ['gauntlets'] = gauntletsUsing,
             ['belts'] = beltsUsing,
             ['ponchos'] = ponchosUsing,
-            ['gunbelts'] = offhandUsing,
-            ['offhand'] = beltbuckleUsing
+            ['offhand'] = offhandUsing,
+            ['beltbuckle'] = beltbuckleUsing
         }
         if dados ~= nil then
             local pdado = #dados
