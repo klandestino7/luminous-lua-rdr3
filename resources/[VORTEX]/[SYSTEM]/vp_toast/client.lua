@@ -31,3 +31,11 @@ AddEventHandler(
         )
     end
 )
+
+RegisterCommand('notifica', function()
+    TriggerEvent('VP:TOAST:New', "error", "Você tomou o estouro.")
+    Wait(1000)
+    TriggerEvent('VP:TOAST:New', "dev", "Mensagem com intuito de ser para Devs")
+    Wait(1000)
+	TriggerEvent('VP:TOAST:New', "alert", "Você foi libertado.")
+end)

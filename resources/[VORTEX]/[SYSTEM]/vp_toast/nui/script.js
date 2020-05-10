@@ -76,6 +76,11 @@ window.addEventListener("message", function(event) {
     if (type_icon != undefined) {
         $(element).append(`<span class='toast-type-icon'><img src='assets/${type_icon}.png'></span>`);
     }
+    $(element).fadeIn(1000);
 
-    $(element).fadeIn(1000).delay(8000).fadeOut(1000);
+    //$(element).addClass('end').delay(8000);
+
+    setTimeout(function(){ $(element).addClass('end') }, 8000);
+
+  //  $(element).fadeIn(1000).delay(8000).fadeOut(1000);
 });
