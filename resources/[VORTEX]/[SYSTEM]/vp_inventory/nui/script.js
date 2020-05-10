@@ -290,6 +290,7 @@ $(document).ready(function() {
             closeInventory();
         }
 
+        
         if (event.which == 37) { // LEFT ARROW
             if ($('#primary').hasClass('focus')) {
                 if (primaryCategoriesIndex != 1) {
@@ -864,6 +865,7 @@ function unSelect(element) {
         let elementParentParentId = $(element).parent().parent().attr('id');
         $(`${elementParentParentId} .description-title`).text('');
         $(`${elementParentParentId} .description-description`).text('');
+
     }
 }
 
@@ -872,3 +874,22 @@ function closeInventory() {
     $("#secondary").hide();
     $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
 }
+
+
+        $(function() {
+            $.contextMenu({
+                selector: '.selected', 
+                callback: function(key, options) {
+                    var m = key;
+                    // colocar aqui a função de click rightc
+                },
+                items: {
+                    functionUse: {name: "Usar", icon: "use"},
+                    functionDrop: {name: "Dropar", icon: "drop"},
+                    functionSend: {name: "Enviar", icon: "send"}            
+                }
+            });
+            $('.selected').on('click', function(e){
+                // colocar aqui a função de click LEFT
+            })    
+        });
