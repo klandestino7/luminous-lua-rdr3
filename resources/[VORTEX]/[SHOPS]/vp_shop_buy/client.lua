@@ -102,7 +102,7 @@ Citizen.CreateThread(
                                 if key ~= "name" then
                                     for _, shopItemData in pairs(value) do
                                         local itemData = ItemList[shopItemData[1]]
-                                        if itemData then
+                                        if itemData then                                            
                                             shopItemData[5] = itemData.name
                                             shopItemData[6] = itemData.weight
                                         end
@@ -110,7 +110,7 @@ Citizen.CreateThread(
                                 end
                             end
                         end
-
+                        print(json.encode(temp_ConfigShopData))
                         SendNUIMessage(
                             {
                                 display = true,
