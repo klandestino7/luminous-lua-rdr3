@@ -17,9 +17,9 @@ end
 function cAPI.SetPlayerHorseHealth(value)
     local playerHorse = cAPI.GetPlayerHorse()
     if IsPedInjured(playerHorse) then
-        ResurrectPed(playerHorse) 
+        ResurrectPed(playerHorse)
     end
-    SetEntityHealth(playerHorse, 100)
+    SetEntityHealth(playerHorse, value)
 end
 
 function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
@@ -176,9 +176,9 @@ Citizen.CreateThread(
 
                     if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
                         TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
-                        cAPI.notify("alert", "Seu cavalo foi embora")
-                        Wait(20000)
-                        cAPI.DestroyHorse()
+                        -- cAPI.notify("alert", "Seu cavalo foi embora")
+                        -- Wait(20000)
+                        -- cAPI.DestroyHorse()
                     end
                 else
                     if not IsPedInjured(playerHorse) then
