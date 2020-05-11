@@ -143,7 +143,7 @@ AddEventHandler(
         local Horse = Character:setHorse(horseId)
 
         if Horse ~= nil then
-            cAPI.setHorse(User:getSource(), Horse:getModel(), Horse:getName())
+            cAPI.SetHorseInfo(User:getSource(), Horse:getModel(), Horse:getName())
         end
     end
 )

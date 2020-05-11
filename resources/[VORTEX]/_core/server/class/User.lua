@@ -140,9 +140,9 @@ function API.User(source, id, ipAddress)
             local Horse, horseComponents = self:getCharacter():getHorse()
 
             if Horse ~= nil then
-                cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
+                cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
             else
-                cAPI.setHorse(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
+                cAPI.SetHorseInfo(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
             end
 
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
@@ -231,7 +231,7 @@ function API.User(source, id, ipAddress)
 
     self.setHorse = function(this, id)
         local Horse = self:getCharacter():setHorse(id)
-        cAPI.setHorse(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
+        cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
     end
 
     self.notify = function(this, type, text, quantity)

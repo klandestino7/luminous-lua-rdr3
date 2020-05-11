@@ -1,5 +1,5 @@
-RegisterNetEvent('VP:HORSE:openChest')
-AddEventHandler('VP:HORSE:openChest', function()
+RegisterNetEvent('VP:HORSE:OpenInventory')
+AddEventHandler('VP:HORSE:OpenInventory', function()
     local _source = source
     local User = API.getUserFromSource(_source)
     local Character = User:getCharacter()

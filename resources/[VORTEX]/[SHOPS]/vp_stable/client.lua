@@ -34,12 +34,14 @@ cameraUsing = {
 function OpenStable()
         inCustomization = true
         horsesp = true
-        SetEntityHeading(cAPI.getHorseEnt(), 334)
+
+
+        SetEntityHeading(cAPI.GetPlayerHorse(), 334)
         DeleteeEntity = true
         SetNuiFocus(true, true)
         InterP = true
 
-        local hashm = GetEntityModel(cAPI.getHorseEnt())
+        local hashm = GetEntityModel(cAPI.GetPlayerHorse())
 
         if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
             createCamera(PlayerPedId())
@@ -142,8 +144,8 @@ AddEventHandler(
 -- end
 
 function rotation(dir)
-    local pedRot = GetEntityHeading(cAPI.getHorseEnt()) + dir
-    SetEntityHeading(cAPI.getHorseEnt(), pedRot % 360)
+    local pedRot = GetEntityHeading(cAPI.GetPlayerHorse()) + dir
+    SetEntityHeading(cAPI.GetPlayerHorse(), pedRot % 360)
 end
 
 RegisterNUICallback(
@@ -205,12 +207,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddlesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0xBAA7E618, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xBAA7E618, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddles[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             SaddlesUsing = ("0x" .. saddles[num])
         end
     end
@@ -224,12 +226,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddleclothsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0x17CEB41A, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x17CEB41A, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddlecloths[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             SaddleclothsUsing = ("0x" .. saddlecloths[num])
         end
     end
@@ -243,12 +245,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             StirrupsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0xDA6DADCA, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xDA6DADCA, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. stirrups[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             StirrupsUsing = ("0x" .. stirrups[num])
         end
     end
@@ -262,12 +264,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             BagsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0x80451C25, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x80451C25, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. bags[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             BagsUsing = ("0x" .. bags[num])
         end
     end
@@ -281,12 +283,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             ManesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0xAA0217AB, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xAA0217AB, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. manes[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             ManesUsing = ("0x" .. manes[num])
         end
     end
@@ -300,12 +302,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             HorseTailsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0xA63CAE10, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xA63CAE10, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. horsetails[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             HorseTailsUsing = ("0x" .. horsetails[num])
         end
     end
@@ -319,12 +321,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsHornUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0x5447332, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x5447332, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acshorn[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             AcsHornUsing = ("0x" .. acshorn[num])
         end
     end
@@ -338,12 +340,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsLuggageUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.getHorseEnt(), 0xEFB31921, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.getHorseEnt(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xEFB31921, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acsluggage[num])
-            cAPI.stablecloth(hash)
+            cAPI.SetHorseComponentEnabled(hash)
             AcsLuggageUsing = ("0x" .. acsluggage[num])
         end
     end
@@ -428,7 +430,7 @@ function closeAll()
     inCustomization = false
 
     choosePed = {}
-    local ped = cAPI.getHorseEnt()
+    local ped = cAPI.GetPlayerHorse()
     --  SetEntityVisible(ped, true)
     --  NetworkSetEntityInvisibleToNetwork(ped, false)
 end

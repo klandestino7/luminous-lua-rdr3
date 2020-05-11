@@ -197,7 +197,7 @@ Citizen.CreateThread(
 						PromptSetActiveGroupThisFrame(promptGroup, horseGroupName)
 						if PromptHasHoldModeCompleted(prompt) then
 							Citizen.Wait(1000)
-							cAPI.fleeHorse()							
+							cAPI.DestroyHorse()						
 						end				
 					elseif not WarMenu.IsMenuOpened('horses') then
 						PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Comprar Cavalo'))

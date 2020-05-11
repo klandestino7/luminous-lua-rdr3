@@ -1,42 +1,28 @@
 local horseModel
-local horseEntity
 local horseName
-local horsePrompt
 local horseComponents = {}
 
-cAPI.Horse = {}
-local Horse = cAPI.Horse
+local isHorseActive = false
 
-function Horse.Text(text)
-    print(text)
+local prompt_inventory
+
+function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
+    horseModel = horse_model
+    horseName = horse_name
+    horseComponents = horse_components
 end
 
-function cAPI.setHorse(model, name, components)
-    horseModel = model
-    horseName = name
-    horseComponents = components
+-- function cAPI.spawnHorse()
+function cAPI.InitiateHorse()
+    cAPI.DestroyHorse()
 
-end
+    isHorseActive = true
 
-function cAPI.clearHorse()
-    if horseEntity ~= nil then
-        SetVehicleHasBeenOwnedByPlayer(horseEntity, false)
-    end
-    horseModel = nil
-    horseEntity = nil
-    horseName = nil
-    horsePrompt = nil
-    horseComponents = {}
-end
-
-function cAPI.getHorseEnt()
-    return horseEntity
-end
-
-function cAPI.spawnHorse()
     local ped = PlayerPedId()
     local pCoords = GetEntityCoords(ped)
+
     local modelHash = GetHashKey(horseModel)
+
     if not HasModelLoaded(modelHash) then
         RequestModel(modelHash)
         while not HasModelLoaded(modelHash) do
@@ -59,36 +45,42 @@ function cAPI.spawnHorse()
         end
     end
 
-    horseEntity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), 1, 0)
+    local entity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), true, true)
+    SetModelAsNoLongerNeeded(modelHash)
 
-    if modelHash == 'A_C_Horse_MP_Mangy_Backup' then
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x106961A8, true, true, true) --sela
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, 0x508B80B9, true, true, true) --blanket
+    _SetPlayerHorse(entity)
+
+    local playerHorse = cAPI.GetPlayerHorse()
+
+    if horseModel == "A_C_Horse_MP_Mangy_Backup" then
+        _SetPedComponentEnabled(playerHorse, 0x106961A8) --sela
+        _SetPedComponentEnabled(playerHorse, 0x508B80B9) --blanket
     end
 
-    SetModelAsNoLongerNeeded(modelHash)
-    -- SetRandomOutfitVariation(horseEntity, true)
-    -- ^^
-    Citizen.InvokeNative(0x283978A15512B2FE, horseEntity, true)
+    Citizen.InvokeNative(0x283978A15512B2FE, playerHorse, true)
 
-    -- Citizen.InvokeNative(0x58A850EAEE20FAA3, horseEntity) -- PlaceObjectOnGroundProperly
+    -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
+    SetPedNameDebug(playerHorse, horseModel)
+    SetPedPromptName(playerHorse, horseName)
 
-    -- BlipAddForEntity(-1230993421, horseEntity)
-    -- ^^
-    Citizen.InvokeNative(0x23F74C2FDA6E7C61, -1230993421, horseEntity)
+    prompt_inventory = PromptRegisterBegin()
+    PromptSetControlAction(prompt_inventory, 0xE8342FF2) -- L:ALT
+    PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Inventário"))
+    PromptSetEnabled(prompt_inventory, 1)
+    PromptSetVisible(prompt_inventory, 1)
+    PromptSetHoldMode(prompt_inventory, 1)
 
-    SetVehicleHasBeenOwnedByPlayer(horseEntity, true)
-    SetPedNameDebug(horseEntity, horseModel)
-    SetPedPromptName(horseEntity, horseName)
-
+    PromptSetGroup(prompt_inventory, PromptGetGroupIdForTargetEntity(playerHorse))
+    PromptRegisterEnd(prompt_inventory)
 
     if horseComponents ~= nil then
-        print(#horseComponents)        
         for _, componentHash in pairs(horseComponents) do
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, horseEntity, tonumber(componentHash), true, true, true)
+            _SetPedComponentEnabled(playerHorse, tonumber(componentHash))
         end
     end
-    
+
+    TaskGoToEntity(playerHorse, ped, -1, 7.2, 2.0, 0, 0)
+
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMaxValue", 10);
@@ -115,7 +107,15 @@ function cAPI.spawnHorse()
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
 end
 
-function cAPI.stablecloth(hash)
+function cAPI.DestroyHorse()
+    if cAPI.GetPlayerHorse() ~= 0 then
+        DeleteEntity(cAPI.GetPlayerHorse())
+        _SetPlayerHorse(0)
+    end
+    isHorseActive = false
+end
+
+function cAPI.SetHorseComponentEnabled(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
         Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
@@ -134,66 +134,79 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if horseEntity ~= nil then
-                if DoesEntityExist(horseEntity) then
-                    local ped = PlayerPedId()
-                    local pCoords = GetEntityCoords(ped)
-
-                    local dist = #(pCoords - GetEntityCoords(horseEntity))
-                    if dist <= 100 then
-                        if IsControlJustPressed(0, 0xC1989F95) then -- I
-                            if dist <= 1.5 then
-                                TriggerServerEvent("VP:HORSE:openChest")
-                            end
+            if isHorseActive then
+                if PromptHasHoldModeCompleted(prompt_inventory) then
+                    PromptSetEnabled(prompt_inventory, false)
+                    Citizen.CreateThread(
+                        function()
+                            Citizen.Wait(250)
+                            PromptSetEnabled(prompt_inventory, true)
                         end
-                        if IsControlJustPressed(2, 0x24978A28) then
-                            TaskGoToEntity(horseEntity, ped, -1, 7.2, 2.0, 0, 0)
-                        end
-                    else
-                        horseEntity = nil
-                    end
+                    )
 
-                    if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
-                        if horseEntity ~= nil then
-                            TaskAnimalFlee(horseEntity, PlayerPedId() , -1)
-                            Wait(20000)
-                            cAPI.fleeHorse()
-                        end       
-                    end
-
-                else
-                    horseEntity = nil
+                    TriggerServerEvent("VP:HORSE:OpenInventory")
                 end
-            else
-                if IsControlJustPressed(1, 0x24978A28) then -- Segurar H
-                    if horseModel and horseName then
-                        if horseEntity == nil then
-                            cAPI.spawnHorse()
-                            TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
-                        else
-                            TaskGoToEntity(horseEntity, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
-                        end
-                    else
-                        -- print('Cavalo invalido! Relogue')
+
+                if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
+                    TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
+                    cAPI.notify("alert", "Seu cavalo foi embora")
+                    Wait(20000)
+                    cAPI.DestroyHorse()
+                end
+            end
+
+            if IsControlJustPressed(1, 0x24978A28) then -- Segurar H
+                if isHorseActive then
+                    local playerHorse = cAPI.GetPlayerHorse()
+                    if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
+                        TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
                     end
-                end   
+                else
+                    cAPI.InitiateHorse()
+                end
             end
         end
     end
 )
 
-function cAPI.fleeHorse()
-    DeletePed(horseEntity)
-end
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(1000)
+            local playerHorse = cAPI.GetPlayerHorse()
+
+            local active = false
+
+            if playerHorse ~= 0 and not IsPedInjured(playerHorse) then -- and DoesEntityExist(playerHorse) then
+                active = true
+            end
+
+            isHorseActive = active
+
+            if not PromptIsValid(prompt_inventory) then
+                prompt_inventory = nil
+            end
+        end
+    end
+)
 
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
-        if GetCurrentResourceName() ~= resourceName then
-            return
-        end
-
-        if horsePrompt ~= nil then
+        if GetCurrentResourceName() == resourceName then
+            cAPI.DestroyHorse()
         end
     end
 )
+
+function _SetPlayerHorse(horseEntity)
+    Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), horseEntity)
+end
+
+function cAPI.GetPlayerHorse()
+    return Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+end
+
+function _SetPedComponentEnabled(ped, component)
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, component, true, true, true)
+end

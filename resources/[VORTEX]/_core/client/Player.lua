@@ -12,7 +12,7 @@ function cAPI.Initialize(model, clothing, lastPosition)
     cAPI.SetFaceFeature(PlayerPedId(), json.decode(model.features))
     Wait(30)
     cAPI.SetPedSize(PlayerPedId(), model.pedSize)
-    
+
     cAPI.replaceWeapons({})
     cAPI.SetCloth(clothing)
     Citizen.CreateThread(
@@ -28,4 +28,13 @@ end
 
 function cAPI.setAsInitialized(bool)
     initializedPlayer = bool
+end
+
+function cAPI.notify(type, text, quantity)
+    if type ~= nil and text == nil and quantity == nil then
+        text = type
+        type = "dev"
+    end
+
+    TriggerEvent("VP:TOAST:New", type, text, quantity)
 end
