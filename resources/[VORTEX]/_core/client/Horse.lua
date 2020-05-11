@@ -1,10 +1,26 @@
+
+
 local horseModel
 local horseName
 local horseComponents = {}
 
 local isHorseActive = false
+local isHorseActivationBlocked = false
+local horseActivationSeconds
 
 local prompt_inventory
+
+function cAPI.GetPlayerHorse()
+    return Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+end
+
+function cAPI.SetPlayerHorseHealth(value)
+    local playerHorse = cAPI.GetPlayerHorse()
+    if IsPedInjured(playerHorse) then
+        ResurrectPed(playerHorse) 
+    end
+    SetEntityHealth(playerHorse, 100)
+end
 
 function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
     horseModel = horse_model
@@ -113,6 +129,8 @@ function cAPI.DestroyHorse()
         _SetPlayerHorse(0)
     end
     isHorseActive = false
+    isHorseActivationBlocked = false
+    horseActivationSeconds = nil
 end
 
 function cAPI.SetHorseComponentEnabled(hash)
@@ -135,34 +153,55 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             if isHorseActive then
-                if PromptHasHoldModeCompleted(prompt_inventory) then
-                    PromptSetEnabled(prompt_inventory, false)
-                    Citizen.CreateThread(
-                        function()
-                            Citizen.Wait(250)
-                            PromptSetEnabled(prompt_inventory, true)
-                        end
-                    )
+                local playerHorse = cAPI.GetPlayerHorse()
 
-                    TriggerServerEvent("VP:HORSE:OpenInventory")
-                end
+                if not isHorseActivationBlocked then
+                    if IsPedInjured(playerHorse) then
+                        cAPI.notify("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
+                        isHorseActivationBlocked = true
+                        horseActivationSeconds = 120
+                    end
 
-                if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
-                    TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
-                    cAPI.notify("alert", "Seu cavalo foi embora")
-                    Wait(20000)
-                    cAPI.DestroyHorse()
+                    if PromptHasHoldModeCompleted(prompt_inventory) then
+                        PromptSetEnabled(prompt_inventory, false)
+                        Citizen.CreateThread(
+                            function()
+                                Citizen.Wait(250)
+                                PromptSetEnabled(prompt_inventory, true)
+                            end
+                        )
+
+                        TriggerServerEvent("VP:HORSE:OpenInventory")
+                    end
+
+                    if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
+                        TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
+                        cAPI.notify("alert", "Seu cavalo foi embora")
+                        Wait(20000)
+                        cAPI.DestroyHorse()
+                    end
+                else
+                    if not IsPedInjured(playerHorse) then
+                        isHorseActivationBlocked = false
+                        horseActivationSeconds = nil
+                    end
                 end
             end
 
             if IsControlJustPressed(1, 0x24978A28) then -- Segurar H
-                if isHorseActive then
+                if isHorseActive and not isHorseActivationBlocked then
                     local playerHorse = cAPI.GetPlayerHorse()
                     if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
                         TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
+                    -- else
+                    --     cAPI.notify("error", "Seu cavalo já está vindo")
                     end
                 else
-                    cAPI.InitiateHorse()
+                    if not isHorseActivationBlocked then
+                        cAPI.InitiateHorse()
+                    else
+                        cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
+                    end
                 end
             end
         end
@@ -186,6 +225,13 @@ Citizen.CreateThread(
             if not PromptIsValid(prompt_inventory) then
                 prompt_inventory = nil
             end
+
+            if isHorseActivationBlocked then
+                horseActivationSeconds = horseActivationSeconds - 1
+                if horseActivationSeconds <= 0 then
+                    cAPI.DestroyHorse()
+                end
+            end
         end
     end
 )
@@ -201,10 +247,6 @@ AddEventHandler(
 
 function _SetPlayerHorse(horseEntity)
     Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), horseEntity)
-end
-
-function cAPI.GetPlayerHorse()
-    return Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
 end
 
 function _SetPedComponentEnabled(ped, component)

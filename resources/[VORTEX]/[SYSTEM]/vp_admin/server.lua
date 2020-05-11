@@ -330,6 +330,27 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "revivehorse",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            if args[1] ~= nil then
+                local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
+                if tplayer ~= nil then
+                    cAPI.SetPlayerHorseHealth(tplayer, 100)
+                end
+            else
+                cAPI.SetPlayerHorseHealth(_source, 100)
+            end
+        end
+    end
+)
+
+
+RegisterCommand(
     "outfit",
     function(source, args, rawCommand)
         local _source = source
