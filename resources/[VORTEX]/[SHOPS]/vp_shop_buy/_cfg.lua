@@ -17,7 +17,7 @@ Config.ShopDatas = {
 	-- 	}
 	-- },
 	{
-		name = "Policia",
+		name = "Arsenal",
 		{
 			{"revolver_doubleaction", 0, 0, 0},
 			{"rifle_springfield", 0, 0, 0},
@@ -46,7 +46,7 @@ Config.ShopLocations = {
 	-- 	{2946.53, 1319.66, 44.82},
 	-- 	{-5508.16, -2964.47, -0.63}
 	-- },
-	["Policia"] = {
+	["Arsenal"] = {
 		{-764.768, -1272.072, 44.041},
 		{-1813.974, -354.651, 164.649},
 		{-278.365, 805.207, 119.380},

@@ -8,6 +8,8 @@ local closestShopId
 local closestShopVector
 
 local prompt
+local prompt_group
+local prompt_group_name
 
 local sentFirstData = false
 
@@ -49,24 +51,7 @@ Citizen.CreateThread(
             end
 
             if foundShopId ~= nil then
-                if foundShopId ~= closestShopId then
-                    PromptDelete(prompt)
-                    prompt = nil
-
-                    prompt = PromptRegisterBegin()
-                    PromptSetControlAction(prompt, 0xDFF812F9)
-                    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Loja | " .. foundShopId))
-                    PromptSetEnabled(prompt, 1)
-                    PromptSetVisible(prompt, 1)
-                    PromptSetStandardMode(prompt, 1)
-                    PromptSetPosition(prompt, foundShopVector)
-                    N_0x0c718001b77ca468(prompt, 1.5)
-                    -- PrompContextSetSize(prompt, 3.0)
-                    PromptRegisterEnd(prompt)
-                end
-            else
-                PromptDelete(prompt)
-                prompt = nil
+                prompt_group_name = CreateVarString(10, "LITERAL_STRING", foundShopId)
             end
 
             closestShopId = foundShopId
@@ -77,56 +62,73 @@ Citizen.CreateThread(
 
 Citizen.CreateThread(
     function()
+        initPrompt()
         while true do
             Citizen.Wait(0)
 
             if closestShopId ~= nil then
                 local ped = PlayerPedId()
-                -- local pCoords = GetEntityCoords(ped)
+                local pCoords = GetEntityCoords(ped)
 
-                -- if #(pCoords - closestShopVector) <= 1.5 then
-                -- if IsControlJustPressed(0, 0xDFF812F9) then
-                if PromptIsJustPressed(prompt) then
-                    if sentFirstData == true then
-                        SendNUIMessage(
-                            {
-                                display = true,
-                                shopId = closestShopId
-                            }
-                        )
-                    else
-                        local temp_ConfigShopData = Config.ShopDatas
+                if #(pCoords - closestShopVector) <= 1.5 then
+                    -- if IsControlJustPressed(0, 0xDFF812F9) then
+                    PromptSetActiveGroupThisFrame(prompt_group, prompt_group_name)
 
-                        for _, shopData in pairs(temp_ConfigShopData) do
-                            for key, value in pairs(shopData) do
-                                if key ~= "name" then
-                                    for _, shopItemData in pairs(value) do
-                                        local itemData = ItemList[shopItemData[1]]
-                                        if itemData then                                            
-                                            shopItemData[5] = itemData.name
-                                            shopItemData[6] = itemData.weight
+                    if PromptIsJustPressed(prompt) then
+                        if sentFirstData == true then
+                            SendNUIMessage(
+                                {
+                                    display = true,
+                                    shopId = closestShopId
+                                }
+                            )
+                        else
+                            local temp_ConfigShopData = Config.ShopDatas
+
+                            for _, shopData in pairs(temp_ConfigShopData) do
+                                for key, value in pairs(shopData) do
+                                    if key ~= "name" then
+                                        for _, shopItemData in pairs(value) do
+                                            local itemData = ItemList[shopItemData[1]]
+                                            if itemData then
+                                                shopItemData[5] = itemData.name
+                                                shopItemData[6] = itemData.weight
+                                                shopItemData[7] = itemData.description
+                                            end
                                         end
                                     end
                                 end
                             end
+                            SendNUIMessage(
+                                {
+                                    display = true,
+                                    shopId = closestShopId,
+                                    firstTimeData = temp_ConfigShopData
+                                }
+                            )
+                            sentFirstData = true
                         end
-                        print(json.encode(temp_ConfigShopData))
-                        SendNUIMessage(
-                            {
-                                display = true,
-                                shopId = closestShopId,
-                                firstTimeData = temp_ConfigShopData
-                            }
-                        )
-                        sentFirstData = true
+                        SetNuiFocus(true, true)
                     end
-                    SetNuiFocus(true, true)
                 end
-            -- end
             end
         end
     end
 )
+
+function initPrompt()
+    prompt = PromptRegisterBegin()
+    prompt_group = GetRandomIntInRange(0, 0xffffff)
+    PromptSetControlAction(prompt, 0xDFF812F9)
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Abrir"))
+    PromptSetEnabled(prompt, 1)
+    PromptSetVisible(prompt, 1)
+    PromptSetStandardMode(prompt, 1)
+    -- PromptSetPosition(prompt, foundShopVector)
+    -- N_0x0c718001b77ca468(prompt, 1.5)
+    PromptSetGroup(prompt, prompt_group)
+    PromptRegisterEnd(prompt)
+end
 
 RegisterNUICallback(
     "buyItem",

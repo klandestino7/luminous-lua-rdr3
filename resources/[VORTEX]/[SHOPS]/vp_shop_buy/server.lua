@@ -17,7 +17,7 @@ local verificationData = {
     --     ["sniperrifle_rollingblock"] = {0, 500, 20},
     --     ["rifle_varmint"] = {0, 72, 3}
     -- },
-    ["Policia"] = {
+    ["Arsenal"] = {
         group = "admin",
         -- Level, Price, Amount(optional)
         ["revolver_doubleaction"] = {0, 0, 0},

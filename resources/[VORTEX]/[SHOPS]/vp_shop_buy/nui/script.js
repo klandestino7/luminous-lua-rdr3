@@ -40,6 +40,8 @@ function draw(shopId) {
 
     $('.slot-container').html('');
 
+    $('.title').text(shopId);
+
     var renderedItems = 0;
 
     for (const [shopSubType, shopItemList] of Object.entries(shops[shopId])) {
@@ -53,15 +55,15 @@ function draw(shopId) {
                 var itemPrice_dollar = itemData[2];
                 var itemPrice_gold = itemData[3];
                 var itemName = itemData[4];
-                var itemDescription = itemData[6];
                 var itemWeight = itemData[5];
-                console.log(itemLevel)
+                var itemDescription = itemData[6];
+
                 itemWeight = itemWeight.toFixed(1);
                 itemPrice_dollar = (itemPrice_dollar / 100).toFixed(2);
                 itemPrice_gold = (itemPrice_gold / 100).toFixed(2);
 
                 $('.slot-container').append(`
-                    <div class="slot" id="${itemId}" onclick="select(this)" ondblclick="buyItem('${shopId}', '${itemId}')">
+                    <div class="slot" id="${itemId}" onclick="select(this)">
                         <img src="nui://vp_inventory/nui/images/items/${itemId}.png">
                     </div>
                 `);
@@ -69,7 +71,7 @@ function draw(shopId) {
                 var element = $(`.slot-container #${itemId}`);
                 $(element).attr('shopId', shopId);
                 $(element).attr('name', itemName);
-                $(element).attr('descripition', itemDescription);
+                $(element).attr('description', itemDescription);
                 $(element).attr('weight', itemWeight);
                 $(element).attr('p_dollar', itemPrice_dollar);
                 $(element).attr('p_gold', itemPrice_gold);
@@ -170,12 +172,12 @@ function select(element) {
         var item_p_dollar = $(element).attr('p_dollar');
         var item_p_gold = $(element).attr('p_gold');
 
-        $('#name').text(item_name);
-        $('#description').text(item_description);
         $('#weight').text(item_weight + 'KG');
         $('#p_dollar').text(item_p_dollar);
         $('#p_gold').text(item_p_gold);
 
+        $('.description-title').text(item_name);
+        $('.description-description').text(item_description);
         $('#confirmation-container #confirm_title').text(item_name);
     }
 }
@@ -183,10 +185,11 @@ function select(element) {
 function unSelect(element) {
     if ($(element).hasClass('selected')) {
         $(element).removeClass('selected');
-        $('#name').text('');
-        $('#description').text('');
-        $('#confirmation-container').hide();
         buyingWithGold = false;
+        $('#name').text('');
+        $('.description-title').text('');
+        $('.description-description').text('');
+        $('#confirmation-container').hide();
         $('#p_gold_img').removeClass('fhover_gold');
         $('#p_dollar_img').removeClass('fhover_dollar');
     }
