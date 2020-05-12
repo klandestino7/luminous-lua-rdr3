@@ -290,7 +290,7 @@ $(document).ready(function() {
             closeInventory();
         }
 
-        
+
         if (event.which == 37) { // LEFT ARROW
             if ($('#primary').hasClass('focus')) {
                 if (primaryCategoriesIndex != 1) {
@@ -721,7 +721,7 @@ function drawSecondary() {
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
-                    displayItemAmount = true;
+                        displayItemAmount = true;
                     } else {
                         $(`#secondary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
@@ -839,18 +839,19 @@ function select(element) {
 
     if (($(element).attr('itemId') != undefined)) {
         let elementParentParentId = $(element).parent().parent().attr('id');
+        $(`#${elementParentParentId} .description-amount`).text('');
         $(`#${elementParentParentId} .description-title`).text('');
         $(`#${elementParentParentId} .description-description`).text('');
         $(`#${elementParentParentId} .selected`).removeClass('selected');
         $(element).addClass('selected');
 
-        if ($(element).attr('desc_1') == undefined) {
-            $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
-        } else {
+        $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
+
+        if ($(element).attr('desc_1') != undefined) {
             if ($(element).attr('desc_2') != undefined) {
-                $(`#${elementParentParentId} .description-title`).html($(element).attr('title') + '<span id="small-text">' + $(element).attr('desc_1') + ' de ' + $(element).attr('desc_2') + '</span>');
-            }else{
-                $(`#${elementParentParentId} .description-title`).html($(element).attr('title') + '<span id="small-text">' + $(element).attr('desc_1') + ' de ?</span>');
+                $(`#${elementParentParentId} .description-amount`).html(`${$(element).attr("desc_1")} de ${$(element).attr("desc_2")}`);
+            } else {
+                $(`#${elementParentParentId} .description-amount`).html(`${$(element).attr("desc_1")}`);
             }
         }
 
@@ -876,20 +877,20 @@ function closeInventory() {
 }
 
 
-        $(function() {
-            $.contextMenu({
-                selector: '.selected', 
-                callback: function(key, options) {
-                    var m = key;
-                    // colocar aqui a função de click rightc
-                },
-                items: {
-                    functionUse: {name: "Usar", icon: "use"},
-                    functionDrop: {name: "Dropar", icon: "drop"},
-                    functionSend: {name: "Enviar", icon: "send"}            
-                }
-            });
-            $('.selected').on('click', function(e){
-                // colocar aqui a função de click LEFT
-            })    
-        });
+$(function() {
+    $.contextMenu({
+        selector: '.selected',
+        callback: function(key, options) {
+            var m = key;
+            // colocar aqui a função de click rightc
+        },
+        items: {
+            functionUse: { name: "Usar", icon: "use" },
+            functionDrop: { name: "Dropar", icon: "drop" },
+            functionSend: { name: "Enviar", icon: "send" }
+        }
+    });
+    $('.selected').on('click', function(e) {
+        // colocar aqui a função de click LEFT
+    })
+});
