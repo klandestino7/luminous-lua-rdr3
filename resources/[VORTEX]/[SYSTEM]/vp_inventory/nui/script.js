@@ -531,6 +531,7 @@ function drawHotbar() {
 }
 
 function drawPrimary() {
+    $(`#primary-inventory .description-amount`).text('');
     $(`#primary-inventory .description-title`).text('');
     $(`#primary-inventory .description-description`).text('');
 
@@ -687,6 +688,7 @@ function drawPrimary() {
 }
 
 function drawSecondary() {
+    $(`#secondary-inventory .description-amount`).text('');
     $(`#secondary-inventory .description-title`).text('');
     $(`#secondary-inventory .description-description`).text('');
 
@@ -864,6 +866,7 @@ function unSelect(element) {
     if ($(element).hasClass('selected')) {
         $(element).removeClass('selected');
         let elementParentParentId = $(element).parent().parent().attr('id');
+        $(`${elementParentParentId} .description-amount`).text('');
         $(`${elementParentParentId} .description-title`).text('');
         $(`${elementParentParentId} .description-description`).text('');
 
