@@ -277,6 +277,15 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         self.Inventory:deleteInventory()
     end
 
+    self.setDeath = function(this, value)
+        API_Database.execute("FCRP/SetPlayerDeath", {charid = self:getId(), is_dead = value})
+    end
+
+    self.getDeath = function(this)
+        local row = API_Database.query("FCRP/GetPlayerDeath", {charid = self:getId()})
+        return table.unpack(row).is_dead
+    end
+    
     self.savePosition = function(this, x, y, z)
         local encoded = json.encode({x, y, z})
         self:setData(self:getId(), "charTable", "position", encoded)

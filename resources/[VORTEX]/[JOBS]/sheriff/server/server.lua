@@ -23,7 +23,12 @@ RegisterServerEvent('VP:SHERIFF:checkjob')
 AddEventHandler('VP:SHERIFF:checkjob', function()
 	local _source = source
 	local User = API.getUserFromSource(_source)
-	local Character = User:getCharacter()	
+	local Character = User:getCharacter()
+	
+	if Character == nil then
+		return
+	end
+
 	local police = Character:hasGroup('police')		
 	local sheriff = Character:hasGroup('sheriff')		
 

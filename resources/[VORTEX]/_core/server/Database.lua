@@ -173,6 +173,9 @@ API_Database.prepare('FCRP/SetSkinData', 'UPDATE characters SET SkinMdf = @value
 
 API_Database.prepare('FCRP/SetCWeaponData', 'UPDATE characters SET weapons = @weapons WHERE charid = @charid')
 
+API_Database.prepare('FCRP/SetPlayerDeath', 'UPDATE characters SET is_dead = @is_dead WHERE charid = @charid')
+API_Database.prepare('FCRP/GetPlayerDeath', 'SELECT is_dead from characters WHERE charid = @charid')
+
 -------- FORT DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCFort', 'UPDATE fort SET bando = @bando WHERE id = @id')
 API_Database.prepare('FCRP/GetCFort', 'SELECT bando from fort WHERE id = @id')

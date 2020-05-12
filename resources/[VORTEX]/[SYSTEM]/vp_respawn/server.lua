@@ -14,6 +14,36 @@ AddEventHandler('VP:Respawn:_Dead', function()
 end)
 
 
+RegisterServerEvent('VP:RESPAWN:onPlayerDeath')
+AddEventHandler('VP:RESPAWN:onPlayerDeath', function(data)
+    local _source = source
+    local User = API.getUserFromSource(_source)
+    local Character = User:getCharacter()
+
+    if data ~= nil then
+        Character:setDeath(1)
+    else
+        Character:setDeath(0)
+    end
+
+    Wait(1500)
+
+    print(Character:getDeath())
+end)
+
+RegisterServerEvent('VP:RESPAWN:CheckDeath')
+AddEventHandler('VP:RESPAWN:CheckDeath', function()
+    local _source = source
+    local User = API.getUserFromSource(_source)
+    local Character = User:getCharacter()
+
+    if Character:getDeath() == 1 then
+        TriggerClientEvent('VP:RESPAWN:PlayerDead', _source)
+    end
+
+end)
+
+
 RegisterServerEvent('VP:Respawn:checkgroup')
 AddEventHandler('VP:Respawn:checkgroup', function()
     local _source = source

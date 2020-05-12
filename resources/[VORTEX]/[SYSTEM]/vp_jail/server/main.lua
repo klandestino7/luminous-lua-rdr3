@@ -60,10 +60,14 @@ AddEventHandler('VP:JAIL:checkJail', function()
 	local _source = source
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()
+
+	if Character == nil then
+		return
+	end
+	
 	local nome = Character:getName()
 	local check = Character:getJail(Character:getId())
 
-	print(check)
 	
 	if check ~= '' then		
 		TriggerClientEvent('VP:JAIL:jail', _source, tonumber(check[1].jail_time))

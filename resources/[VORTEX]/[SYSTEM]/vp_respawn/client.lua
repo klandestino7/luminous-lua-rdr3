@@ -34,6 +34,11 @@ AddEventHandler('VP:RESPAWN:revive', function()
 	clearDeath()
 end)
 
+RegisterNetEvent('VP:RESPAWN:PlayerDead')
+AddEventHandler('VP:RESPAWN:PlayerDead', function()
+	Citizen.InvokeNative(0x697157CED63F18D4, PlayerPedId(), 500000, false, true, true)	
+end)
+
 Citizen.CreateThread(
 	function()
 		while true do
@@ -88,6 +93,7 @@ function clearDeath()
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
+	TriggerServerEvent('VP:RESPAWN:onPlayerDeath')
 end
 
 function respawn()
