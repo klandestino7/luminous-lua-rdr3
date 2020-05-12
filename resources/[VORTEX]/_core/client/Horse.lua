@@ -1,5 +1,3 @@
-
-
 local horseModel
 local horseName
 local horseComponents = {}
@@ -7,6 +5,7 @@ local horseComponents = {}
 local isHorseActive = false
 local isHorseActivationBlocked = false
 local horseActivationSeconds
+local isHorseInWrithe = false
 
 local prompt_inventory
 
@@ -17,9 +16,11 @@ end
 function cAPI.SetPlayerHorseHealth(value)
     local playerHorse = cAPI.GetPlayerHorse()
     if IsPedInjured(playerHorse) then
-        ResurrectPed(playerHorse)
+        -- ResurrectPed(playerHorse)
+        local horseCoords = GetEntityCoords(playerHorse)
+        DeleteEntity(playerHorse)
+        cAPI.InitiateHorse(horseCoords)
     end
-    SetEntityHealth(playerHorse, value)
 end
 
 function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
@@ -29,7 +30,7 @@ function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
 end
 
 -- function cAPI.spawnHorse()
-function cAPI.InitiateHorse()
+function cAPI.InitiateHorse(atCoords)
     cAPI.DestroyHorse()
 
     isHorseActive = true
@@ -46,22 +47,30 @@ function cAPI.InitiateHorse()
         end
     end
 
-    local x, y, z = table.unpack(pCoords)
-    local bool, nodePosition = GetClosestVehicleNode(x, y, z, 1, 3.0, 0.0)
+    local spawnPosition
 
-    local index = 0
-    while index <= 25 do
-        local _bool, _nodePosition = GetNthClosestVehicleNode(x, y, z, index, 1, 3.0, 2.5)
-        if _bool == true or _bool == 1 then
-            bool = _bool
-            nodePosition = _nodePosition
-            index = index + 3
-        else
-            break
+    if atCoords == nil then
+        local x, y, z = table.unpack(pCoords)
+        local bool, nodePosition = GetClosestVehicleNode(x, y, z, 1, 3.0, 0.0)
+
+        local index = 0
+        while index <= 25 do
+            local _bool, _nodePosition = GetNthClosestVehicleNode(x, y, z, index, 1, 3.0, 2.5)
+            if _bool == true or _bool == 1 then
+                bool = _bool
+                nodePosition = _nodePosition
+                index = index + 3
+            else
+                break
+            end
         end
+
+        spawnPosition = nodePosition
+    else
+        spawnPosition = atCoords
     end
 
-    local entity = CreatePed(modelHash, nodePosition, GetEntityHeading(ped), true, true)
+    local entity = CreatePed(modelHash, spawnPosition, GetEntityHeading(ped), true, true)
     SetModelAsNoLongerNeeded(modelHash)
 
     _SetPlayerHorse(entity)
@@ -176,9 +185,9 @@ Citizen.CreateThread(
 
                     if IsControlJustPressed(0, 0x4216AF06) then -- Mandar cavalo Fugir
                         TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
-                        -- cAPI.notify("alert", "Seu cavalo foi embora")
-                        -- Wait(20000)
-                        -- cAPI.DestroyHorse()
+                    -- cAPI.notify("alert", "Seu cavalo foi embora")
+                    -- Wait(20000)
+                    -- cAPI.DestroyHorse()
                     end
                 else
                     if not IsPedInjured(playerHorse) then
@@ -216,7 +225,7 @@ Citizen.CreateThread(
 
             local active = false
 
-            if playerHorse ~= 0 and not IsPedInjured(playerHorse) then -- and DoesEntityExist(playerHorse) then
+            if playerHorse ~= 0 and not IsPedInjured(playerHorse) and DoesEntityExist(playerHorse) then -- and DoesEntityExist(playerHorse) then
                 active = true
             end
 
@@ -230,6 +239,17 @@ Citizen.CreateThread(
                 horseActivationSeconds = horseActivationSeconds - 1
                 if horseActivationSeconds <= 0 then
                     cAPI.DestroyHorse()
+                end
+            end
+
+            if isHorseInWrithe then
+                if not IsPedInWrithe(playerHorse) then
+                    isHorseInWrithe = false
+                end
+            else
+                if IsPedInWrithe(playerHorse) then
+                    cAPI.notify("alert", "Seu cavalo foi ferido, reanime-o")
+                    isHorseInWrithe = true
                 end
             end
         end
