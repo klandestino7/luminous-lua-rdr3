@@ -93,7 +93,8 @@ Citizen.CreateThread(
                     local minGroup = doorStates[doorHash][3]
 
                     if minGroup ~= nil then
-                        if not User:hasGroupOrInheritance(minGroup) then
+                        local Character = User:getCharacter()
+                        if not Character:hasGroupOrInheritance(minGroup) then
                             User:notify("error", "Você não pode abrir esta porta")
                             return
                         end

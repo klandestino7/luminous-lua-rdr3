@@ -58,9 +58,14 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") and args[1] then
-            local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
-            if tplayer then
-                cAPI.setCoords(source, cAPI.getPosition(tplayer))
+            local User = API.getUserFromUserId(parseInt(args[1]))
+            if User ~= nil then
+                local tplayer = User:getSource()
+                if tplayer then
+                    cAPI.setCoords(source, cAPI.getPosition(tplayer))
+                end
+            else
+                User:notify("error", "Usuário não encontrado!")
             end
         else
             User:notify("error", "Você não tem permissão!")
@@ -348,7 +353,6 @@ RegisterCommand(
         end
     end
 )
-
 
 RegisterCommand(
     "outfit",
