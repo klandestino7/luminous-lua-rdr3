@@ -26,9 +26,6 @@ AddEventHandler('VP:RESPAWN:onPlayerDeath', function(data)
         Character:setDeath(0)
     end
 
-    Wait(1500)
-
-    print(Character:getDeath())
 end)
 
 RegisterServerEvent('VP:RESPAWN:CheckDeath')
@@ -45,14 +42,16 @@ end)
 
 
 RegisterServerEvent('VP:Respawn:checkgroup')
-AddEventHandler('VP:Respawn:checkgroup', function()
+AddEventHandler('VP:Respawn:checkgroup', function(spawn)
     local _source = source
     local User = API.getUserFromSource(_source)
     local Character = User:getCharacter()
 
-  --  if (Character:hasGroup("vip1") or Character:hasGroup("vip2") or Character:hasGroup("vip3")) then
-   --     TriggerClientEvent('FRP_respawn:respawnvip', _source)
-    --else
-        TriggerClientEvent('FRP_respawn:respawn', _source)
-   --end
+    
+   if (Character:hasGroup("vip1") or Character:hasGroup("vip2") or Character:hasGroup("vip3")) then
+        TriggerClientEvent('FRP_respawn:respawnvip', _source)
+    else
+        TriggerClientEvent('FRP_respawn:respawn', _source, spawn)
+   end
+
 end)

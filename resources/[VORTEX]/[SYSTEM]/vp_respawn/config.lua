@@ -1,5 +1,5 @@
 Config = {}
-Config.RespawnTime = 30000
+Config.RespawnTime = 10000
 Config.LocaleDead = "~e~INCONSCIENTE"
 Config.LocaleTimer = "Respawn disponível em"
 Config.Timecycle = "CrossLine01" --Set the timecycle effect for a death

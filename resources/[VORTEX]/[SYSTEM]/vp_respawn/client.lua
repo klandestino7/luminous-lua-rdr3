@@ -1,9 +1,17 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 local respawned = false
 local firstjoin = true
 local pressed = false
-
+local PressDeath = false
 local isDead = false
 local deathEndingTime
+local isInjure = false
+local up = false
 
 Citizen.CreateThread(
 	function()
@@ -13,6 +21,7 @@ Citizen.CreateThread(
 			if IsPlayerDead(player) and isDead == false then
 				Citizen.Wait(0) -- DO NOT REMOVE
 				isDead = true				
+				up = true
 				deathEndingTime = GetGameTimer() + Config.RespawnTime	
 				--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 			end
@@ -30,6 +39,7 @@ RegisterNetEvent('VP:RESPAWN:revive')
 AddEventHandler('VP:RESPAWN:revive', function()
 	NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 	isDead = false
+	isInjure = false
 	DestroyAllCams(true)
 	clearDeath()
 end)
@@ -38,6 +48,12 @@ RegisterNetEvent('VP:RESPAWN:PlayerDead')
 AddEventHandler('VP:RESPAWN:PlayerDead', function()
 	Citizen.InvokeNative(0x697157CED63F18D4, PlayerPedId(), 500000, false, true, true)	
 end)
+
+local Locations = {
+    [1] = vector3(-285.262,806.542,119.576),  -- VALENTINE
+	[2] = vector3(-1806.069,-426.045,158.973), -- STRAWBERRY
+	[3] = vector3(2725.834,-1224.180,50.367), -- SAINT DENNIS
+}
 
 Citizen.CreateThread(
 	function()
@@ -48,25 +64,64 @@ Citizen.CreateThread(
 			--	Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
 			--	Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
 			--	Citizen.InvokeNative(0x405224591DF02025, 0.50, 0.475, 1.0, 0.22, 1, 1, 1, 100, true, true)
-	
-				DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.90, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
 				if deathEndingTime > GetGameTimer() then					
+					DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.90, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
 					DrawTxt(Config.LocaleDead, 0.50, 0.84, 0.8, 0.8, true, 255, 255, 255, 255, true)
 					DrawTxt(Config.LocaleTimer, 0.50, 0.895, 0.4, 0.4, true, 255, 255, 255, 255, true)
 					DrawTxt('' .. tonumber(string.format('%.0f', (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.92, 0.5, 0.5, true, 255, 255, 255, 255, true)
 					DisableAllControlActions(0)
 					DisableAllControlActions(1)
 					DisableAllControlActions(2)
-					ClearTimecycleModifier()
-					DestroyAllCams(true)					
-				else
-					TriggerServerEvent('VP:Respawn:checkgroup')
-				end
+					DestroyAllCams(true)			
 					DisplayHud(false)
-					DisplayRadar(false)
-					SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)			
+					DisplayRadar(false)	
+				else				
+					isInjure = true		
+				end					
+					--SetPedToRagdollWithFall(PlayerPedId(), Config.RespawnTime, Config.RespawnTime,0 , -0.440, -0.890, 0, 2, 0,0,0,0,0,0)
+					--SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)			
 					DestroyAllCams(true)
 			end
+
+			if isInjure then				
+				Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
+				Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
+				DisableControlAction(0, 0x8FFC75D6, true) -- sprint
+				DisableControlAction(0, 0xD9D0E1C0, true) -- jump
+				DisplayHud(true)
+				DisplayRadar(true)
+				if up then
+					NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)		
+					SetEntityHealth(PlayerPedId(), 1)
+					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
+					up = false
+					local AliveTime = math.random(13, 18) * 60000		
+					Wait(AliveTime)
+					isInjure = false
+					SetEntityHealth(PlayerPedId(), 0)
+					PressDeath = true
+					cAPI.notify("alert", "Segure ALT para Renacer")
+				end
+				if PressDeath then
+					local closestIndex
+					local lowestDist
+					local ped = PlayerPedId()
+					local coords = GetEntityCoords(ped)
+					if IsControlJustPressed(0, 0xE8342FF2) then
+						for index, vector in pairs(Locations) do
+							local dst = #(vector - coords)						
+							if lowestDist == nil or dst < lowestDist then
+								lowestDist = dst
+								closestIndex = index
+								PressDeath = false			
+								isInjure = false								
+							end    
+						end						
+						TriggerServerEvent('VP:Respawn:checkgroup', closestIndex)
+					end
+				end
+			end			
 		end
 	end
 )
@@ -75,53 +130,45 @@ RegisterNetEvent('FRP_respawn:respawnvip')
 AddEventHandler(
 	'FRP_respawn:respawnvip',
 	function()		
-		respawnvip()
+		clearDeath()
+		SendNUIMessage(
+			{
+				type = 1,
+				showMap = true
+			}
+		)
+		SetNuiFocus(true, true)
+		-- remove all items
+		TriggerServerEvent('VP:Respawn:_Dead')
 	end
 )
 
 RegisterNetEvent('FRP_respawn:respawn')
 AddEventHandler(
 	'FRP_respawn:respawn',
-	function()		
-		respawn()
+	function(spawn)		
+		clearDeath()	
+		TriggerServerEvent('VP:Respawn:_Dead')
+		DoScreenFadeOut(500)
+
+		print(Locations[spawn])
+
+		NetworkResurrectLocalPlayer(Locations[spawn], 59.95, true, true, false)
+		SetEntityCoordsNoOffset(ped, Locations[spawn], false, false, false, true)
+		SetEntityCoords(ped, Locations[spawn])
+		
+		DoScreenFadeIn(500)
 	end
 )
 
 function clearDeath()
+	isInjure = false
 	isDead = false
 	deathEndingTime = nil
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
 	TriggerServerEvent('VP:RESPAWN:onPlayerDeath')
-end
-
-function respawn()
-	clearDeath()	
-	TriggerServerEvent('VP:Respawn:_Dead')
-	local coords = {x =-283.42 , y =798.98, z=118.92 }
-	DoScreenFadeOut(500)
-	
-	NetworkResurrectLocalPlayer(coords.x, coords.y, coords.z, 59.95, true, true, false)
-	SetEntityCoordsNoOffset(ped, coords.x, coords.y, coords.z, false, false, false, true)
-	SetEntityCoords(ped, coords.x, coords.y, coords.z)
-	
-	DoScreenFadeIn(500)
-end
-
-
-
-function respawnvip()
-	clearDeath()
-	SendNUIMessage(
-		{
-			type = 1,
-			showMap = true
-		}
-	)
-	SetNuiFocus(true, true)
-	-- remove all items
-	TriggerServerEvent('VP:Respawn:_Dead')
 end
 
 
