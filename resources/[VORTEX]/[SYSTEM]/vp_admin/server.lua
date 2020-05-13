@@ -354,6 +354,70 @@ RegisterCommand(
     end
 )
 
+-- RegisterCommand(
+--     "idfromsource",
+--     function(source, args, rawCommand)
+--         local _source = source
+--         local User = API.getUserFromSource(source)
+--         local Character = User:getCharacter()
+
+--         if Character:hasGroupOrInheritance("admin") then
+--             if args[1] ~= nil and tonumber(args[1]) then
+--                 local tplayer = API.getUserFromSource(tonumber(args[1]))
+--                 if tplayer ~= nil then
+--                     User:notify("success", "IDFromSource: source: " .. source .. " id: " .. User:getId())
+--                 else
+--                     User:notify("error", "Source não encontrada")
+--                 end
+--             else
+--                 User:notify("success", "IDFromSource: source: " .. source .. " id: " .. User:getId())
+--             end
+--         end
+--     end
+-- )
+
+local sourcesUsingGamerTags = {}
+RegisterNetEvent("VP:ADMIN:TryToGetGamerTagsInfo")
+AddEventHandler(
+    "VP:ADMIN:TryToGetGamerTagsInfo",
+    function()
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            TriggerClientEvent("VP:ADMIN:ReceiveGamerTagsInfo", _source, API.getSources())
+            sourcesUsingGamerTags[_source] = true
+        end
+    end
+)
+
+AddEventHandler(
+    "playerDropped",
+    function(reason)
+        local _source = source
+        if sourcesUsingGamerTags[_source] then
+            sourcesUsingGamerTags[_source] = nil
+        end
+    end
+)
+
+RegisterNetEvent("API:playerSpawned") -- Use this one !!!!!!!!!!!!!!!!!
+AddEventHandler(
+    "API:playerSpawned",
+    function(source, user_id, isFirstSpawn)
+        if isFirstSpawn then
+            local User = API.getUserFromSource(source)
+            if User ~= nil then
+                local user_id = User:getId()
+                for sourceUsingGt, _ in pairs(sourcesUsingGamerTags) do
+                    TriggerClientEvent("VP:ADMIN:ReceiveGamerTagInfo", sourceUsingGt, source, user_id)
+                end
+            end
+        end
+    end
+)
+
 RegisterCommand(
     "outfit",
     function(source, args, rawCommand)

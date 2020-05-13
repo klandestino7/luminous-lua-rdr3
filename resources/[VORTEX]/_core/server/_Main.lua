@@ -68,6 +68,10 @@ function API.getUsers()
     return API.users
 end
 
+function API.getSources()
+    return API.sources
+end
+
 function API.setBanned(this, userid, reason)
     if userid ~= nil then
         print(userid, reason)

@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
 	"VP:ADMIN:SpawnPed",
@@ -44,64 +50,186 @@ AddEventHandler(
 	end
 )
 
-Citizen.CreateThread(
-	function()
-		SetMinimapHideFow(true)
-		ActivateInteriorEntitySet(GetInteriorAtCoords(2534.19, -1313.42, 48.57), "new_theater_int_curtainBlocker", 0)
-		-- DeactivateInteriorEntitySet(GetInteriorAtCoords(2534.19, -1313.42, 48.57), "new_theater_int_curtainBlocker", 1)
-	end
-)
+local showGamerTags = false
+local gamerTags = {}
+local gamerTagsInfo
 
 RegisterCommand(
-	"teste",
-	function(source, args)
-		-- local model = "p_bucket03x"
+	"gt",
+	function(source, args, rawCommand)
+		if showGamerTags then
+			showGamerTags = false
 
-		-- RequestModel("p_shotglass01x")
-		-- RequestModel("p_bottlejd01x")
+			for _, gamerTagId in pairs(gamerTags) do
+				-- RemoveMpGamerTag(gamerTagId)
 
-		-- Citizen.Wait(100)
+				Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 0)
+				--_SET_MP_GAMER_TAG_VISIBILITY
+			end
 
-		-- local fVar5 = Citizen.InvokeNative(_0xB93EA7184BAA85C3, 0.0, 1)
-		-- local uLocal_42 = CreateScenarioAtPoint(-1208105393, GetObjectOffsetFromCoords(Citizen.InvokeNative(0xA8452DD321607029, 0.0, 1)), fVar5, 0.235327, 1.850775, 0, (fVar5 - 180.0), 0, 0, 0)
-		-- Citizen.InvokeNative(0xD3A0DA8F91612C6E, uLocal_42, (fVar5 - 180.0), 1)
-		-- Citizen.InvokeNative(0xA7479FB665361EDB, uLocal_42, 0)
-		-- Citizen.InvokeNative(0xE69FDA40AAC3EFC0, uLocal_42, 0)
-
-		-- -- local  = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
-		-- local iLocal_53 = CreateObject("p_shotglass01x", Citizen.InvokeNative(0xA8452DD321607029, 1), true, true, false, false, true)
-		-- if (Citizen.InvokeNative(_0x3BBDD6143FF16F98, PlayerPedId(), iLocal_53, "p_bottleBeer01x_PH_R_HAND", "WORLD_HUMAN_BARCUSTOMER_BEER", "WORLD_HUMAN_BARCUSTOMER_HAS_BEER_MALE_A", 1)) then
-		-- end
-
-		-- Citizen.InvokeNative(0xD65FDC686A031C83, PlayerPedId(), 1999132356, 3.0)
-		-- Citizen.InvokeNative(0x6D07B371E9439019, PlayerPedId())
-
-		RequestAnimDict("MECH_RANSACK@SHELF@FALLBACK@LH@105CM@PICKUP")
-
-		TaskPlayAnim(PlayerPedId(), "MECH_RANSACK@SHELF@FALLBACK@LH@105CM@PICKUP", "enter_lf", 4.0, -2.0, -1, 24, 0, 0, 0, 0, 0, 0)
+			gamerTags = {}
+		else
+			TriggerServerEvent("VP:ADMIN:TryToGetGamerTagsInfo")
+		end
 	end
 )
+
+
+RegisterNetEvent("VP:ADMIN:ReceiveGamerTagsInfo")
+AddEventHandler(
+	"VP:ADMIN:ReceiveGamerTagsInfo",
+	function(gtInfo)
+		gamerTagsInfo = gtInfo
+		showGamerTags = true
+	end
+)
+
+RegisterNetEvent("VP:ADMIN:ReceiveGamerTagInfo")
+AddEventHandler(
+	"VP:ADMIN:ReceiveGamerTagInfo",
+	function(s, uid)
+		gamerTagsInfo[s] = uid
+	end
+)
+
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(1000)
+
+			if showGamerTags then
+				for gamerId, gamerTagId in pairs(gamerTags) do
+					if IsMpGamerTagActive(gamerTagId) then
+						local ped = gamerId
+
+						if gamerId <= 32 then -- IT'S A PLAYER
+							ped = GetPlayerPed(gamerId)
+						end
+
+
+						if ped == 0 or not DoesEntityExist(ped) then
+							-- RemoveMpGamerTag(gamerTagId)
+
+							Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 0)
+							--_SET_MP_GAMER_TAG_VISIBILITY
+
+							gamerTags[gamerId] = nil
+						end
+					end
+				end
+
+				for i = 0, 32 do
+					if NetworkIsPlayerActive(i) then
+						if not gamerTags[i] then
+							local gamerTagId = Citizen.InvokeNative(0xE961BF23EAB76B12, GetPlayerPed(i), GetPlayerName(i))
+							-- _CREATE_ENTITY_MP_GAMER_TAG
+
+							-- local gamerTagId = CreateMpGamerTag(i, GetPlayerName(i), false, false, "", 0)
+
+							SetMpGamerTagBigText(gamerTagId, '' .. (gamerTagsInfo[GetPlayerServerId(i)] or 's:' .. GetPlayerServerId(i)))
+
+							Citizen.InvokeNative(0x25B9C78A25105C35, gamerTagId, GetHashKey("GENERIC_PLAYER"))
+							-- _SET_MP_GAMER_TAG_TYPE
+
+							Citizen.InvokeNative(0x84BD27DDF9575816, gamerTagId, GetHashKey("COLOR_ORANGE"))
+							-- _SET_MP_GAMER_TAG_COLOUR
+
+							-- Citizen.InvokeNative(0x5F57522BC1EB9D9D, gamerTagId, GetHashKey("DEADEYE"))
+							-- _SET_MP_GAMER_TAG_ICON
+
+							-- Citizen.InvokeNative(0x95384C6CE1526EFF, gamerTagId, GetHashKey("SPEAKER"))
+							-- _SET_MP_GAMER_TAG_SECONDARY_ICON
+
+							Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 4)
+							--_SET_MP_GAMER_TAG_VISIBILITY
+
+							gamerTags[i] = gamerTagId
+						end
+
+						local playerHorse = cAPI.GetPlayerHorse(i)
+						if playerHorse ~= nil and playerHorse ~= 0 then
+							if not gamerTags[playerHorse] then
+								local gamerTagId_horse = Citizen.InvokeNative(0xE961BF23EAB76B12, playerHorse, "")
+
+								SetMpGamerTagBigText(gamerTagId_horse, "" .. i)
+
+								Citizen.InvokeNative(0x25B9C78A25105C35, gamerTagId_horse, GetHashKey("MINIGAMES"))
+								-- _SET_MP_GAMER_TAG_TYPE
+
+								Citizen.InvokeNative(0x84BD27DDF9575816, gamerTagId_horse, GetHashKey("COLOR_ORANGE"))
+								-- _SET_MP_GAMER_TAG_COLOUR
+
+								Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId_horse, 4)
+								--_SET_MP_GAMER_TAG_VISIBILITY
+
+								Citizen.InvokeNative(0x5F57522BC1EB9D9D, gamerTagId_horse, GetHashKey("PLAYER_HORSE"))
+
+								gamerTags[playerHorse] = gamerTagId_horse
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+)
+
+-- Citizen.CreateThread(
+-- 	function()
+-- 		while true do
+-- 			Citizen.Wait(0)
+-- 			if showGamerTags then
+-- 				if #gamerTags > 0 then
+
+-- 					for playerId, gamerTagId in pairs(gamerTags) do
+-- 						if IsMpGamerTagActive(gamerTagId) and NetworkIsPlayerActive(playerId) then
+
+-- 						end
+-- 					end
+-- 				end
+-- 			else
+-- 				Citizen.Wait(1000)
+-- 			end
+-- 		end
+-- 	end
+-- )
 
 RegisterNetEvent("VP:ADMIN:CreateVehicle")
 AddEventHandler(
 	"VP:ADMIN:CreateVehicle",
-	function(vModel)
-		local veh = GetHashKey(Vmodel)
-		local ply = GetPlayerPed()
-		local coords = GetEntityCoords(ply)
-		local head = GetEntityHeading(ply)
-		Citizen.CreateThread(
-			function()
+	function(model)
+		local veh = GetHashKey(model)
+
+		print(IsModelValid(model))
+		if IsModelValid(model) then
+			if not HasModelLoaded(model) then
 				RequestModel(veh)
 				while not HasModelLoaded(veh) do
-					Wait(1000)
-					print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
-				end
-				if HasModelLoaded(veh) then
-					local car = CreateVehicle(veh, coords.x - 2, coords.y, coords.z, head, true, true, false, true)
-					print("Model spawned Succes: " .. Vmodel)
+					Wait(10)
 				end
 			end
-		)
+
+			local ped = PlayerPedId()
+			local loc = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 2.0)
+
+			CreateVehicle(model, loc, GetEntityHeading(ped), true, true, false, true)
+			print("Spawned vehicle: " .. model)
+		end
+	end
+)
+
+AddEventHandler(
+	"onResourceStop",
+	function(resourceName)
+		if resourceName == GetCurrentResourceName() then
+			for _, gamerTagId in pairs(gamerTags) do
+				if IsMpGamerTagActive(gamerTagId) then
+					-- RemoveMpGamerTag(gamerTagId)
+
+				Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 0)
+				--_SET_MP_GAMER_TAG_VISIBILITY
+				end
+			end
+		end
 	end
 )
