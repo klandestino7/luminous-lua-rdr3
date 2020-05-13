@@ -74,7 +74,6 @@ RegisterCommand(
 	end
 )
 
-
 RegisterNetEvent("VP:ADMIN:ReceiveGamerTagsInfo")
 AddEventHandler(
 	"VP:ADMIN:ReceiveGamerTagsInfo",
@@ -106,7 +105,6 @@ Citizen.CreateThread(
 							ped = GetPlayerPed(gamerId)
 						end
 
-
 						if ped == 0 or not DoesEntityExist(ped) then
 							-- RemoveMpGamerTag(gamerTagId)
 
@@ -121,12 +119,13 @@ Citizen.CreateThread(
 				for i = 0, 32 do
 					if NetworkIsPlayerActive(i) then
 						if not gamerTags[i] then
-							local gamerTagId = Citizen.InvokeNative(0xE961BF23EAB76B12, GetPlayerPed(i), GetPlayerName(i))
+							local gamerTagId = Citizen.InvokeNative(0xE961BF23EAB76B12, GetPlayerPed(i), '' .. (gamerTagsInfo[GetPlayerServerId(i)] or "s:" .. GetPlayerServerId(i)))
 							-- _CREATE_ENTITY_MP_GAMER_TAG
 
 							-- local gamerTagId = CreateMpGamerTag(i, GetPlayerName(i), false, false, "", 0)
 
-							SetMpGamerTagBigText(gamerTagId, '' .. (gamerTagsInfo[GetPlayerServerId(i)] or 's:' .. GetPlayerServerId(i)))
+							Citizen.InvokeNative(0x1EA716E0628A6F44, gamerTagId, GetPlayerName(i))
+							-- _SET_MP_GAMER_TAG_POSSE_NAME
 
 							Citizen.InvokeNative(0x25B9C78A25105C35, gamerTagId, GetHashKey("GENERIC_PLAYER"))
 							-- _SET_MP_GAMER_TAG_TYPE
@@ -142,6 +141,8 @@ Citizen.CreateThread(
 
 							Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 4)
 							--_SET_MP_GAMER_TAG_VISIBILITY
+
+							SetMpGamerTagBigText(gamerTagId, '')
 
 							gamerTags[i] = gamerTagId
 						end
@@ -226,7 +227,7 @@ AddEventHandler(
 				if IsMpGamerTagActive(gamerTagId) then
 					-- RemoveMpGamerTag(gamerTagId)
 
-				Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 0)
+					Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 0)
 				--_SET_MP_GAMER_TAG_VISIBILITY
 				end
 			end
