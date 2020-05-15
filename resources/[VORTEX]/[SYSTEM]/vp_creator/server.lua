@@ -21,5 +21,7 @@ AddEventHandler('VP:CREATOR:saveCreation', function(characterName, Age, SkinMdf)
         Character:setData(Character:getId(), "charTable", "position", encoded)       
         User:setCharacter(Character:getId()) -- Will draw itself
 
+        Wait(5000)
+        TriggerClientEvent('VP:CREATOR:FirstSpawn', _source)
     end
 end)
