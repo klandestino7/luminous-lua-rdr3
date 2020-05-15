@@ -1078,5 +1078,13 @@ ItemList = {
         weight = 0.007,
         description = 'Com este mapa você consegue visualizar todos os lugares da cidade.',
         stackSize = -1,
+    },
+    ['notepad'] = {
+        type = 'document',
+        name = 'Papel',
+        weight = 0.007,
+        description = 'Com este papel você consegue escrever anotações ou uma carta.',
+        stackSize = -1,
     }
+    
 }

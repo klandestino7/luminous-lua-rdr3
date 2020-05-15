@@ -24,7 +24,7 @@ body {
 
 #notifications {
 	transition: all 0.5s;
-	bottom: 30px;
+	top: 100px;
 	right: 50px;
 	color: rgba(255,255,255,0.7);
 	max-width: 450px;
