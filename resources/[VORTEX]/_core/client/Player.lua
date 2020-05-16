@@ -40,7 +40,6 @@ function cAPI.notify(type, text, quantity)
     TriggerEvent("VP:TOAST:New", type, text, quantity)
 end
 
-
 -- ///////////// DEATH SYSTEM 
 
 local isPlayerDead = false
@@ -87,7 +86,6 @@ function PlayerKilledByPlayer(killerServerId, killerClientId, killerWeapon)
         killerServerId = killerServerId,
         killerClientId = killerClientId
     } 
-    print(json.encode(data))
     TriggerEvent('VP:onPlayerDeath', data)
     TriggerServerEvent('VP:RESPAWN:onPlayerDeath', data)
 end
@@ -95,11 +93,12 @@ end
 function PlayerKilled()
     local playerPed = PlayerPedId()
     local victimCoords = GetEntityCoords(PlayerPedId())
+
     local data = {
         killedByPlayer = false,
         deathCause     = GetPedCauseOfDeath(playerPed)
     }
-    print(json.encode(data))
+
     TriggerEvent('VP:onPlayerDeath', data)
     TriggerServerEvent('VP:RESPAWN:onPlayerDeath', data)
 end

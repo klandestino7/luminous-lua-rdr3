@@ -77,7 +77,7 @@ function cAPI.InitiateHorse(atCoords)
 
     local playerHorse = cAPI.GetPlayerHorse()
     
-    if horseModel == GetHashKey("A_C_Horse_MP_Mangy_Backup") then
+    if horseModel == GetHashKey("A_C_Horse_Turkoman_Gold") then
         _SetPedComponentEnabled(playerHorse, 0x106961A8) --sela
         _SetPedComponentEnabled(playerHorse, 0x508B80B9) --blanket
     end

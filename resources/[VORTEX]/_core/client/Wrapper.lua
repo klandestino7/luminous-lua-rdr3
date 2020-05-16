@@ -65,5 +65,6 @@ function cAPI.PlaySkyCameraAnimationAtCoords(coords)
 	SetEntityCoords(PlayerPedId(), coords[1], coords[2], coords[3] + 0.5)
 	Citizen.Wait(500)
 	Citizen.Wait(3000)
+
 	DestroyAllCams(true)
 end

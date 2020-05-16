@@ -47,6 +47,11 @@ Citizen.CreateThread(function()
 					end
 				end
 			end		
+
+			if IsControlJustPressed(0, 0x760A9C6F) then -- Hold F6
+				TriggerEvent('VP:SHERIFF:cuffcheck')
+			end
+			
 			if IsControlJustPressed(0, 0x3C0A40F2) then -- Hold F6
 				WarMenu.OpenMenu('OfficerMenu')
 			end
@@ -56,7 +61,23 @@ end)
 
 RegisterCommand('checkpolice', function()
 	TriggerServerEvent('VP:SHERIFF:checkjob')
-	WarMenu.OpenMenu('OfficerMenu')
+	print('ois')
+	
+    local model2 = GetHashKey(tonumber(0xA5074E9))
+    if not HasModelLoaded(model2) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+    end
+
+	Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3F7F3587, 0)
+	Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
+
+	Wait(1000)
+
+	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x929677D, true, true, true)
+	Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
+	
+	--WarMenu.OpenMenu('OfficerMenu')
+
 end)
 
 RegisterNetEvent('VP:SHERIFF:PoliceCheck')

@@ -58,15 +58,34 @@ RegisterCommand("bandana", function(source, args, rawCommand)
     while not HasAnimDictLoaded("mech_inventory@equip_facemask@fallbacks") do
         Citizen.Wait(100)
     end
+
+
     TaskPlayAnim(PlayerPedId(), "mech_inventory@equip_facemask@fallbacks", "bandana_enter_r", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
 end)
+
+local Bandana = false
 
 RegisterCommand("bandana2", function(source, args, rawCommand)
     RequestAnimDict("mech_inventory@clothing@bandana")
     while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
         Citizen.Wait(100)
     end
-    TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
+
+    if not Bandana then  
+        TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+        Wait(2000)
+        print('colocou')
+        Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), 879715242)
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
+        Bandana = true        
+    else
+        TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+        Wait(2000)
+        print('tirou')
+        Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), -972364774)
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false) 
+        Bandana = false
+    end
 end)
 
 
@@ -169,7 +188,7 @@ end)
 
 
 RegisterCommand("bale2", function(source, args, rawCommand)
-    local model = "p_bucket03x"
+    local model = "p_haybale03x"
     if IsModelValid(model) then
         if not HasModelLoaded(model) then
             RequestModel(model)
@@ -183,7 +202,7 @@ RegisterCommand("bale2", function(source, args, rawCommand)
     local object = CreateObject(model, coords, true, true, false, false, true)
     PlaceObjectOnGroundProperly(object)
 
-    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_bucket03x_PH_L_HAND", "WORLD_HUMAN_BUCKET_PICKUP_EMPTY_MALE_A", 0, 0)
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_COTTONBALE_PICKUP_2", 0, 0)
 
     
 end)

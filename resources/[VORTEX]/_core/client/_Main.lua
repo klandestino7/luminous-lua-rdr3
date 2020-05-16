@@ -66,8 +66,11 @@ Citizen.CreateThread(
             end            
 
             DisableControlAction(0, 0x580C4473, true) -- hud disable
-            DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
-
+			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
+			
+			DisableControlAction(0, 0xE2B557A3, true)  -- emote wheel
+			DisableControlAction(0, 0x8B3FA65E, true)  -- emote wheel horse
+						
             -- DisableControlAction(0, 0x41AC83D1, true) -- loot
             DisableControlAction(0, 0x399C6619, true) -- loot 2
             -- DisableControlAction(0, 0x27D1C284, false) -- loot 3
@@ -79,8 +82,17 @@ Citizen.CreateThread(
 			DisableControlAction(0, 0x295175BF, true) -- DESATIVAR SOLTAR DA CORDA
 			
 			
+
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
             --// horse control
-            if IsPedOnMount(PlayerPedId()) then
+			if IsPedOnMount(PlayerPedId()) then
                 if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then		
                 --    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
                     TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
@@ -88,13 +100,13 @@ Citizen.CreateThread(
                 end
 
                 if IsControlJustPressed(0, 0xE16B9AAD) then
-                    print('parou')
                     TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
                 end
-            end
+            end			
         end
     end
 )
+
 
 Citizen.CreateThread(
 	function()

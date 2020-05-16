@@ -18,9 +18,9 @@ client_scripts {
 	"client/Player.lua",
 	"client/Wrapper.lua",
 	"client/Area.lua",
-	-- "client/DebuggingControls.lua",
+	--"client/DebuggingControls.lua",
 	---------------------
-	"shared/DoorStateContainer.lua"
+	--"shared/DoorStateContainer.lua"
 }
 
 server_scripts {

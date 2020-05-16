@@ -132,7 +132,7 @@ RegisterNUICallback(
         cAPI.StartFade(500)
         Citizen.Wait(500)
         DeletePed = true
-        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false) 
     end
 )
 
@@ -149,6 +149,7 @@ RegisterNUICallback(
     "deleteCharacter",
     function(id)
         TriggerServerEvent("VP:IDENTITY:deleteCharacter", id)
+        TriggerEvent('VP:NOTIFY:Simple', 'Personagem deletado.')
     end
 )
 
