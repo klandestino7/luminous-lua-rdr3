@@ -64,6 +64,21 @@ function API.getUserIdFromCharId(charid)
     return nil
 end
 
+function API.getUsersByGroup(group)
+    local ret = {}
+
+    for user_id, User in pairs(API.getUsers()) do
+        local Character = User:getCharacter()
+        if Character ~= nil then
+            if Character:hasGroupOrInheritance(group) then
+                table.insert(ret, User)
+            end
+        end
+    end
+
+    return ret
+end
+
 function API.getUsers()
     return API.users
 end
@@ -108,7 +123,7 @@ function API.dropPlayer(source, reason)
         API.users[user_id] = nil
         API.sources[source] = nil
         API.identifiers[steamID] = nil
-        print(GetPlayerName(source) .. ' (' .. User:getIpAddress() .. ') desconectou (motivo = ' .. reason .. ')')
+        print(GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") desconectou (motivo = " .. reason .. ")")
     --    User:saveCharacter()
     end
 end
