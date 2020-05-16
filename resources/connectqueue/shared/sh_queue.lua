@@ -489,6 +489,11 @@ local function playerConnect(name, setKickReason, deferrals)
         -- prevent joining
         done(Config.Language.iderr)
         CancelEvent()
+
+        if name == nil then
+            name = 'nil'
+        end
+
         Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
         return
     end
