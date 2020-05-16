@@ -46,9 +46,3 @@ Citizen.CreateThread(
         end
     end
 )
-
-function cAPI.varyHealth(variation)
-    local ped = PlayerPedId()
-    local n = math.floor(GetEntityHealth(ped)+variation)
-	SetEntityHealth(ped,n)
-end

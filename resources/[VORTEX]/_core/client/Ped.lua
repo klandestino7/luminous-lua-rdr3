@@ -58,7 +58,7 @@ local faceFeatures = {
     0xC375,
     0xBB4D,
     0xB0B0,
-    0x5D16,
+    0x5D16
 }
 
 local Tableff = {}
@@ -67,14 +67,14 @@ function cAPI.SetFaceFeature(pedenti, ff)
     local ped = pedenti
     for index, hash in pairs(faceFeatures) do
         local value = ff[index]
-        Citizen.InvokeNative(0x5653AB26C82938CF, ped, tonumber(hash), value)                
+        Citizen.InvokeNative(0x5653AB26C82938CF, ped, tonumber(hash), value)
         Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
-    end   
+    end
 end
 
 function cAPI.SetBodyType(pedenti, data)
     local ped = pedenti
-    if IsPedMale(ped) then    
+    if IsPedMale(ped) then
         Citizen.InvokeNative(0xA5BAE410B03E7371, ped, tonumber(data), true, true, true)
     else
         Citizen.InvokeNative(0xA5BAE410B03E7371, ped, tonumber(data), true, true, true)
@@ -96,10 +96,11 @@ function cAPI.SetCloth(hash)
             local modelHash = tonumber(v)
             cAPI.LoadModel(modelHash)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), modelHash, true, true, true)
+            SetModelAsNoLongerNeeded(modelHash)
         end
     else
         -- Load default clothing
-        print('default')
+        print("default")
         if IsPedMale(PlayerPedId()) then
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x1B164391, true, true, true)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x10B87936, true, true, true)
@@ -114,36 +115,45 @@ function cAPI.SetCloth(hash)
     end
 end
 
+function cAPI.TaskAnimalInteraction(interaction)
+    local ped = PlayerPedId()
+
+    local interactions = {
+        -- interactionId      interactionAnimation    propId
+        ["injection"] = {"INTERACT_INJECTION", "p_cs_syringe01x"}
+    }
+
+    if interactions[interaction] then
+        local playerHorse = cAPI.GetPlayerHorse()
+        if playerHorse ~= nil and playerHorse ~= 0 then
+            local v = interactions[interaction]
+            TaskAnimalInteraction(ped, playerHorse, GetHashKey(v[1]), v[2] ~= nil and GetHashKey(v[2]) or 0, 0)
+        end
+    end
+end
+
 function cAPI.TaskInteraction(interaction)
     local ped = PlayerPedId()
     local hasWeaponInHead = GetCurrentPedWeapon(ped, 0)
-
-    local model_Hash
-    local propname_Hash
-    local propEntity
-    local propId_Hash
-    local itemInteractionState_Hash
 
     local unk1 = 1 -- 1 or 3
     local unk2 = 0 -- always
     local unk3 = -1.0
 
-    if interaction == "boost" then
-        TaskItemInteraction(PlayerPedId(), nil, GetHashKey("USE_TONIC_SATCHEL_UNARMED_QUICK"), 1, 0, 0)
-    end
+    local interactions = {
+        -- interactionId       propId              promptName     propSlot            interactionAnimation
+        ["drink_tonic"] = {"p_cs_bottleslim01x", -1199896558, "PrimaryItem", "USE_TONIC_SATCHEL_UNARMED_QUICK"},
+        ["injection"] = {"p_cs_syringe01x", -1199896558, "PrimaryItem", "USE_STIMULANT_INJECTION_QUICK_LEFT_HAND"}
+    }
 
-    if interaction == "wtv" then
-        -- model_Hash = GetHashKey('s_inv_syringe01x')
-        model_Hash = GetHashKey("p_matchstick01x")
-        propName_Hash = -1199896558
+    if interactions[interaction] then
+        local v = interactions[interaction]
 
-        propEntity = CreateObject(model_Hash, GetEntityCoords(ped), false, true, false, false, true)
+        local propEntity = 0
+        if v[1] ~= nil then
+            propEntity = CreateObject(GetHashKey(v[1]), GetEntityCoords(ped), false, true, false, false, true)
+        end
 
-        propId_Hash = GetHashKey("PrimaryItem")
-        itemInteractionState_Hash = GetHashKey("USE_STIMULANT_INJECTION_QUICK_LEFT_HAND") -- or 0x6AA3DCA2C6F5EB6D
-    end
-
-    if itemInteractionState_Hash ~= nil then
-        TaskItemInteraction_2(ped, propName_Hash, propEntity, propId_Hash, itemInteractionState_Hash, unk1, unk2, unk3)
+        TaskItemInteraction_2(ped, GetHashKey(v[1]), propEntity, GetHashKey(v[3]), GetHashKey(v[4]), unk1, unk2, unk3)
     end
 end

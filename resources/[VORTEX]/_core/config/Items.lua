@@ -483,54 +483,74 @@ ItemList = {
         description = 'Um legume recém colhido, serve de alimento para humanos e animais.',
         stackSize = 5,
     },
-    ['medicine'] = {
-        type = 'boost',
-        name = 'Tônico de Vida (Usado)',
+     ---------------------------------------------
+    ["tonic_health"] = {
+        type = 'tonic',
+        name = 'Tônico de Vida',
         weight = 0.4,
         varOnUse = 25,
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
-        stackSize = 5,
+        stackSize = 1,
     },
-    ['tonic'] = {
-        type = 'boost',
-        name = 'Tônico de Vida (Médio)',
-        weight = 0.5,
-        varOnUse = 50,
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
-        stackSize = 5,
-    },
-    ['potent_medicine'] = {
-        type = 'boost',
-        name = 'Tônico de Vida (Grande)',
-        weight = 0.6,
-        varOnUse = 100,
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
-        stackSize = 5,
-    },
-    ['special_tonic'] = {
-        type = 'boost',
-        name = 'Tônico de Energia (Usado)',
-        weight = 0.5,
+    ["tonic_stamina"] = {
+        type = 'tonic',
+        name = 'Tônico de Energia',
+        weight = 0.4,
         varOnUse = 25,
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
-        stackSize = 5,
+        stackSize = 1,
     },
-    ['special_medicine'] = {
+     ---------------------------------------------
+    ["boost_health"] = {
         type = 'boost',
-        name = 'Tônico de Energia (Médio)',
-        weight = 0.9,
-        varOnUse = 50,
-        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
-        stackSize = 5,
+        name = 'Tônico de Vida',
+        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+        weight = 0.4,
+        stackSize = 1,
     },
-    ['special_horse_stimulant_crafted'] = {
+    ["boost_stamina"] = {
         type = 'boost',
-        name = 'Tônico de Energia (grande)',
-        weight = 1.0,
-        varOnUse = 100,
+        name = 'Tônico de Energia',
+        weight = 0.4,
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
-        stackSize = 5,
+        stackSize = 1,
     },
+    ---------------------------------------------
+    ---------------------------------------------
+    ["horse_tonic_health"] = {
+        type = 'tonic',
+        name = 'Tônico de Vida para Cavalo',
+        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+        weight = 0.4,
+        stackSize = 1,
+        addHealth = 25,
+    },
+    ["horse_tonic_stamina"] = {
+        type = 'tonic',
+        name = 'Tônico de Energia para Cavalo',
+        weight = 0.4,
+        varOnUse = 25,
+        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
+        stackSize = 1,
+    },
+     ---------------------------------------------
+    ["horse_boost_health"] = {
+        type = 'tonic',
+        name = 'Tônico de Vida para Cavalo',
+        weight = 0.4,
+        varOnUse = 25,
+        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+        stackSize = 1,
+    },
+    ["horse_boost_stamina"] = {
+        type = 'tonic',
+        name = 'Tônico de Energia para Cavalo',
+        weight = 0.4,
+        varOnUse = 25,
+        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
+        stackSize = 1,
+    },
+     ---------------------------------------------
     ['ginseng_elixier'] = {
         type = 'beverage',
         name = 'Cerveja',
@@ -701,6 +721,13 @@ ItemList = {
         name = 'Chave Misteriosa',
         weight = 0.5,
         description = '????????',
+        stackSize = 1,
+    },
+    ['pigeonpost'] = {
+        type = 'kit',
+        name = 'Pombo-Correio',
+        weight = 2.5,
+        description = 'Entrega mensagems a longas distâncias',
         stackSize = 1,
     },
     ['tobacco_seed'] = {

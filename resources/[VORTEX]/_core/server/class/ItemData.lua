@@ -95,21 +95,49 @@ function triggerUse(User, itemData)
         return true
     end
 
-    if itemType == "boost" then
-        local var = itemData.varOnUse
+    if itemType == "tonic" or itemType == "boost" then
+        if itemId:find("tonic") then
+            cAPI.TaskInteraction(source, "drink_tonic")
+            User:closeInventory()
 
-        if itemId == "tonic_medicine" or itemId == "tonic" or itemId == "tonic_potent_medicine" then
-            cAPI.varyHealth(User:getSource(), var)
+            if itemId:find("health") then
+                cAPI.VaryPlayerHealth(source, 25, 60)
+            elseif itemId:find("stamina") then
+                cAPI.VaryPlayerStamina(source, 25, 60)
+            end
+            return true
         end
 
-        if itemId == "special_tonic" or itemId == "tonic_special_medicine" or itemId == "tonic_special_horse_stimulant_crafted" then
-            cAPI.varyStamina(User:getSource(), var)
-            cAPI.varyEye(User:getSource(), var)
+        if itemId:find("boost") then
+            if itemId:find("horse") then
+                if cAPI.IsPlayerMountedOnOwnHorse(source) then
+                    cAPI.TaskAnimalInteraction(source, "injection")
+                    User:closeInventory()
+
+
+                    if itemId:find("health") then
+                        cAPI.VaryPlayerHorseHealth(source, 25)
+                    elseif itemId:find("stamina") then
+                        cAPI.VaryPlayerHorseStamina(source, 25)
+                    end
+                    return true
+                else
+                    return false
+                end
+            else
+                cAPI.TaskInteraction(source, "injection")
+                User:closeInventory()
+
+                if itemId:find("health") then
+                    cAPI.VaryPlayerHealth(User:getSource(), 25)
+                elseif itemId:find("stamina") then
+                    cAPI.VaryPlayerStamina(User:getSource(), 25)
+                end
+                return true
+            end
         end
 
-        cAPI.TaskInteraction(source, 'wtv')
-
-        return true
+        return false
     end
 
     if itemId == "chest_small" then
@@ -120,10 +148,14 @@ function triggerUse(User, itemData)
         return true
     end
 
-    if itemId:find('_seed') then
-        TriggerClientEvent('VP:FARM:StartPlacingSeed', source,  itemId:sub(0, itemId:find("_") - 1))
+    if itemId:find("_seed") then
+        TriggerClientEvent("VP:FARM:StartPlacingSeed", source, itemId:sub(0, itemId:find("_") - 1))
         User:closeInventory()
         return false
+    end
+
+    if itemId == "pigeonpost" then
+        TriggerClientEvent("VP:PIGEONPOST:Init", source)
     end
 
     return false
@@ -143,7 +175,7 @@ local melee = {
     "melee_knife_jawbone",
     "melee_knife_hunter",
     "melee_knife_miner",
-    "melee_machete",
+    "melee_machete"
 }
 
 local throwable = {
@@ -158,7 +190,7 @@ local throwable = {
     "melee_hatchet_double_bit",
     "melee_hatchet_double_bit_rusted",
     "melee_hatchet_hunter",
-    "melee_hatchet_hunter_rusted",
+    "melee_hatchet_hunter_rusted"
 }
 
 function isMelee(itemId)

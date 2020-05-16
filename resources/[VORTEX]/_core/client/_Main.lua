@@ -27,12 +27,12 @@ AddEventHandler(
 AddEventHandler(
 	"onResourceStart",
 	function(resourceName)
-
-	--	SetMinimapHideFow(true) -- remove
+		--	SetMinimapHideFow(true) -- remove
 
 		if (GetCurrentResourceName() ~= resourceName) then
 			return
 		end
+
 		TriggerServerEvent("API:addReconnectPlayer")
 	end
 )
@@ -45,55 +45,54 @@ AddEventHandler(
 -- )
 
 Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-            Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
-            NetworkSetFriendlyFireOption(true)
+	function()
+		while true do
+			Citizen.Wait(0)
+			Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
+			NetworkSetFriendlyFireOption(true)
 
-            SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
+			SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
 
-            local ped = PlayerPedId()
+			local ped = PlayerPedId()
 
-            if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
-                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-                 Citizen.Wait(2000)
-            elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then                 
-                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-                Citizen.Wait(1000)
-            else
-                SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
-            end            
+			if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+				Citizen.Wait(2000)
+			elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+				Citizen.Wait(1000)
+			else
+				SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
+			end
 
-            DisableControlAction(0, 0x580C4473, true) -- hud disable
-            DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
+			DisableControlAction(0, 0x580C4473, true) -- hud disable
+			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
 
-            -- DisableControlAction(0, 0x41AC83D1, true) -- loot
-            DisableControlAction(0, 0x399C6619, true) -- loot 2
-            -- DisableControlAction(0, 0x27D1C284, false) -- loot 3
-            -- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
-            -- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
-            DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
-            --   DisableControlAction(0, 0xD2CC4644, true) -- soltar corda
-            DisableControlAction(0, 0x6E9734E8, true) -- DESATIVAR DESISTIR
+			-- DisableControlAction(0, 0x41AC83D1, true) -- loot
+			DisableControlAction(0, 0x399C6619, true) -- loot 2
+			-- DisableControlAction(0, 0x27D1C284, false) -- loot 3
+			-- DisableControlAction(0, 0x14DB6C5E, true) -- loot vehicle
+			-- DisableControlAction(0, 0xC23D7B9E, false) -- loot ammo
+			DisableControlAction(0, 0xFF8109D8, true) -- loot Alive
+			--   DisableControlAction(0, 0xD2CC4644, true) -- soltar corda
+			DisableControlAction(0, 0x6E9734E8, true) -- DESATIVAR DESISTIR
 			DisableControlAction(0, 0x295175BF, true) -- DESATIVAR SOLTAR DA CORDA
-			
-			
-            --// horse control
-            if IsPedOnMount(PlayerPedId()) then
-                if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then		
-                --    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
-                    TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
-                 --  TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0) -- freiar
-                end
 
-                if IsControlJustPressed(0, 0xE16B9AAD) then
-                    print('parou')
-                    TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
-                end
-            end
-        end
-    end
+			--// horse control
+			if IsPedOnMount(PlayerPedId()) then
+				if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then
+					--    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
+					TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
+				--  TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0) -- freiar
+				end
+
+				if IsControlJustPressed(0, 0xE16B9AAD) then
+					print("parou")
+					TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
+				end
+			end
+		end
+	end
 )
 
 Citizen.CreateThread(
@@ -136,7 +135,6 @@ function cAPI.CWanted(reward)
 	end
 	return reward
 end
-
 
 function cAPI.GetCoordsFromCam(distance)
 	local rot = GetGameplayCamRot(2)
@@ -256,7 +254,7 @@ local weaponModels = {
 	"weapon_thrown_dynamite",
 	"weapon_thrown_molotov",
 	"weapon_thrown_tomahawk",
-	"weapon_thrown_tomahawk_ancient",
+	"weapon_thrown_tomahawk_ancient"
 }
 
 function cAPI.getWeapons()
@@ -477,67 +475,58 @@ function cAPI.teleportToWaypoint()
 
 	local x, y, z = table.unpack(GetWaypointCoords())
 
-	local ground
-	local groundFound = false
-	local groundCheckHeights = {
-		0.0,
-		50.0,
-		100.0,
-		150.0,
-		200.0,
-		250.0,
-		300.0,
-		350.0,
-		400.0,
-		450.0,
-		500.0,
-		550.0,
-		600.0,
-		650.0,
-		700.0,
-		750.0,
-		800.0,
-		850.0,
-		900.0,
-		950.0,
-		1000.0,
-		1050.0,
-		1100.0
-	}
+	-- local ground
+	-- local groundFound = false
+	-- local groundCheckHeights = {
+	-- 	0.0,
+	-- 	50.0,
+	-- 	100.0,
+	-- 	150.0,
+	-- 	200.0,
+	-- 	250.0,
+	-- 	300.0,
+	-- 	350.0,
+	-- 	400.0,
+	-- 	450.0,
+	-- 	500.0,
+	-- 	550.0,
+	-- 	600.0,
+	-- 	650.0,
+	-- 	700.0,
+	-- 	750.0,
+	-- 	800.0,
+	-- 	850.0,
+	-- 	900.0,
+	-- 	950.0,
+	-- 	1000.0,
+	-- 	1050.0,
+	-- 	1100.0
+	-- }
 
 	local ped = PlayerPedId()
-	local veh = GetVehiclePedIsUsing(ped)
-	if IsPedInAnyVehicle(ped) then
-		ped = veh
-	end
 
-	for i, height in ipairs(groundCheckHeights) do
-		SetEntityCoordsNoOffset(ped, x, y, height, 0, 0, 1)
-
-		RequestCollisionAtCoord(x, y, z)
-		while not HasCollisionLoadedAroundEntity(ped) do
-			RequestCollisionAtCoord(x, y, z)
-			Citizen.Wait(1)
-		end
-		Citizen.Wait(20)
-
-		local hit, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, height)
-		if hit then
-			z = z + 1.0
-			groundFound = true
-			break
-		end
-	end
-
-	if not groundFound then
-		z = 1200
-	end
+	-- for i, height in ipairs(groundCheckHeights) do
+	-- SetEntityCoordsNoOffset(ped, x, y, height, 0, 0, 1)
 
 	RequestCollisionAtCoord(x, y, z)
-	while not HasCollisionLoadedAroundEntity(ped) do
+	local retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord9(x, y, z)
+
+	if retVal == false then
 		RequestCollisionAtCoord(x, y, z)
-		Citizen.Wait(10)
+		local tries = 10
+		while retVal == false and tries > 0 do
+			Citizen.Wait(100)
+			retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord9(x, y, z)
+			tries = tries - 1
+		end
+
+		z = (groundZ or 2000.0) + 1.0
 	end
+	-- end
+
+	-- if not groundFound then
+	-- 	z = 1200
+	-- end
 
 	SetEntityCoordsNoOffset(ped, x, y, z, 0, 0, 1)
 end
@@ -607,36 +596,66 @@ end
 
 function cAPI.LoadModel(hash)
 	local waiting = 0
-	while not HasModelLoaded(hash) do
-		waiting = waiting + 100
-		Citizen.Wait(100)
-		if waiting > 100 then
+
+	if IsModelValid(hash) then
+		if not HasModelLoaded(hash) then
 			RequestModel(hash)
-			break
+			while not HasModelLoaded(hash) do
+				Citizen.Wait(10)
+			end
+
+			return true
 		end
 	end
-	return true
+
+	return false
 end
 
-function cAPI.varyHealth(variation)
-	local ped = PlayerPedId()
-	local n = math.floor(GetAttributeCoreValue(ped, 0) + variation)
-	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, n)
-	SetEntityHealth(ped, n)
+function cAPI.VaryPlayerHealth(value, secondsTillFillUp)
+	Citizen.CreateThread(
+		function()
+
+			if secondsTillFillUp == nil then
+				secondsTillFillUp = 1
+			end
+
+			valuePerTick = value / secondsTillFillUp
+			while secondsTillFillUp > 0 do
+				local ped = PlayerPedId()
+
+				Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, GetAttributeCoreValue(ped, 0) + valuePerTick) -- SetAttributeCoreValue
+				SetEntityHealth(ped, GetEntityHealth(ped) + valuePerTick)
+
+				secondsTillFillUp = secondsTillFillUp - 1
+				Citizen.Wait(1000)
+			end
+		end
+	)
 end
 
-function cAPI.varyStamina(variation)
+function cAPI.VaryPlayerStamina(value, secondsTillFillUp)
+	Citizen.CreateThread(
+		function()
+			if secondsTillFillUp == nil then
+				secondsTillFillUp = 1
+			end
+			
+			valuePerTick = value / secondsTillFillUp
+			while secondsTillFillUp > 0 do
+				local ped = PlayerPedId()
+
+				Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, GetAttributeCoreValue(ped, 1) + valuePerTick) -- SetAttributeCoreValue
+				Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, Citizen.InvokeNative(0x775A1CA7893AA8B5, ped) + valuePerTick)
+
+				secondsTillFillUp = secondsTillFillUp - 1
+				Citizen.Wait(1000)
+			end
+		end
+	)
+
 	local ped = PlayerPedId()
 	local n = math.floor(GetAttributeCoreValue(ped, 1) + variation)
-	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, n)
 end
-
-function cAPI.varyEye(variation)
-	local ped = PlayerPedId()
-	local n = math.floor(GetAttributeCoreValue(ped, 2) + variation)
-	Citizen.InvokeNative(0xC6258F41D86676E0, ped, 2, n)
-end
-
 
 function cAPI.StartFade(timer)
 	DoScreenFadeOut(timer)

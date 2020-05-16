@@ -18,7 +18,7 @@ function API.varyHunger(variation)
 
         local overflow = hunger - 100
         if overflow > 0 then
-            cAPI.varyHealth(_source, -overflow * 8)
+            cAPI.VaryPlayerHealth(_source, -overflow * 8)
         end
 
         if hunger < 0 then
@@ -54,7 +54,7 @@ function API.varyThirst(variation)
 
         local overflow = thirst - 100
         if overflow > 0 then
-            cAPI.varyHealth(_source, -overflow * 8)
+            cAPI.VaryPlayerHealth(_source, -overflow * 8)
         end
 
         if thirst < 0 then

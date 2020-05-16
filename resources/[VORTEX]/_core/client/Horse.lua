@@ -15,12 +15,66 @@ end
 
 function cAPI.SetPlayerHorseHealth(value)
     local playerHorse = cAPI.GetPlayerHorse()
-    if IsPedInjured(playerHorse) then
+    if IsPedInjured(playerHorse) or IsPedInWrithe(playerHorse) then
         -- ResurrectPed(playerHorse)
         local horseCoords = GetEntityCoords(playerHorse)
         DeleteEntity(playerHorse)
         cAPI.InitiateHorse(horseCoords)
     end
+end
+
+function cAPI.VaryPlayerHorseHealth(value, secondsTillFillUp)
+    local playerHorse = cAPI.GetPlayerHorse()
+    if playerHorse ~= nil and playerHorse ~= 0 then
+        Citizen.CreateThread(
+            function()
+                if secondsTillFillUp == nil then
+                    secondsTillFillUp = 1
+                end
+
+                valuePerTick = value / secondsTillFillUp
+                while secondsTillFillUp > 0 do
+                    Citizen.InvokeNative(0xC6258F41D86676E0, playerHorse, 0, GetAttributeCoreValue(playerHorse, 0) + valuePerTick) -- SetAttributeCoreValue
+                    SetEntityHealth(playerHorse, GetEntityHealth(playerHorse) + valuePerTick)
+
+                    secondsTillFillUp = secondsTillFillUp - 1
+                    Citizen.Wait(1000)
+                end
+            end
+        )
+    end
+end
+
+function cAPI.VaryPlayerHorseStamina(value, secondsTillFillUp)
+    local playerHorse = cAPI.GetPlayerHorse()
+    if playerHorse ~= nil and playerHorse ~= 0 then
+        Citizen.CreateThread(
+            function()
+                if secondsTillFillUp == nil then
+                    secondsTillFillUp = 1
+                end
+
+                valuePerTick = value / secondsTillFillUp
+                while secondsTillFillUp > 0 do
+                    Citizen.InvokeNative(0xC6258F41D86676E0, playerHorse, 1, GetAttributeCoreValue(playerHorse, 1) + valuePerTick) -- SetAttributeCoreValue
+                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, playerHorse, valuePerTick) -- _CHARGE_PED_STAMINA
+
+                    secondsTillFillUp = secondsTillFillUp - 1
+                    Citizen.Wait(1000)
+                end
+            end
+        )
+    end
+end
+
+function cAPI.IsPlayerMountedOnOwnHorse()
+    local mount = GetMount(PlayerPedId())
+
+    if mount == cAPI.GetPlayerHorse() then
+        return true
+    end
+
+    return false
 end
 
 function cAPI.SetHorseInfo(horse_model, horse_name, horse_components)
@@ -76,7 +130,7 @@ function cAPI.InitiateHorse(atCoords)
     _SetPlayerHorse(entity)
 
     local playerHorse = cAPI.GetPlayerHorse()
-    
+
     if horseModel == GetHashKey("A_C_Horse_MP_Mangy_Backup") then
         _SetPedComponentEnabled(playerHorse, 0x106961A8) --sela
         _SetPedComponentEnabled(playerHorse, 0x508B80B9) --blanket
@@ -105,6 +159,8 @@ function cAPI.InitiateHorse(atCoords)
     end
 
     TaskGoToEntity(playerHorse, ped, -1, 7.2, 2.0, 0, 0)
+
+    SetPedConfigFlag(playerHorse, 297, true) -- Enable_Horse_Leadin
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
@@ -250,6 +306,10 @@ Citizen.CreateThread(
                 if IsPedInWrithe(playerHorse) then
                     cAPI.notify("alert", "Seu cavalo foi ferido, reanime-o")
                     isHorseInWrithe = true
+                else
+                    if #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse)) > 500.0 then
+                        cAPI.DestroyHorse()
+                    end
                 end
             end
         end
