@@ -54,7 +54,7 @@ server_scripts {
 	"server/manager/PosseManager.lua",
 	"server/manager/AreaManager.lua",
 	---------------------
-	-- "shared/DoorStateContainer.lua"
+	"shared/DoorStateContainer.lua"
 }
 
 files {

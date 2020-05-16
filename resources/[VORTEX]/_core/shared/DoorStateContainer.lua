@@ -3,16 +3,22 @@ local CLIENT = not SERVER
 
 -- doorHash { doorState | doorPair | doorMinGroup }
 local doorStates = {
+    -- HOUSE:1
     [1595076728] = {false, 1439227364},
     [1439227364] = {false, 1595076728},
     [530930529] = {false, 1299101427},
     [1299101427] = {false, 530930529},
     [764233269] = {false},
     [2504431014] = {false},
-    -----------------------------------
+    -- HOUSE:2
     [1282705079] = {false},
     [1511858696] = {false},
+    -- HOUSE:3
+    [3929468747] = {false},
+    -- HOUSE:4
+    -- [1377231573] = {false},
     -----------------------------------
+    -- OFFICER/JAIL
     [1207903970] = {false},
     [902070893] = {false},
     [831345624] = {false},
@@ -33,7 +39,7 @@ local doorStates = {
 Citizen.CreateThread(
     function()
         if SERVER then
-            function setControllabeDoorsForGroup(group, doorHashArray)
+            function setControllableDoorsForGroup(group, doorHashArray)
                 for _, doorHash in pairs(doorHashArray) do
                     if doorStates[doorHash] then
                         doorStates[doorHash][3] = group
@@ -41,7 +47,7 @@ Citizen.CreateThread(
                 end
             end
 
-            setControllabeDoorsForGroup(
+            setControllableDoorsForGroup(
                 "house:1",
                 {
                     1595076728,
@@ -53,7 +59,7 @@ Citizen.CreateThread(
                 }
             )
 
-            setControllabeDoorsForGroup(
+            setControllableDoorsForGroup(
                 "house:2",
                 {
                     1282705079,
@@ -61,8 +67,22 @@ Citizen.CreateThread(
                 }
             )
 
-            setControllabeDoorsForGroup(
-                "police",
+            setControllableDoorsForGroup(
+                "house:3",
+                {
+                    3929468747
+                }
+            )
+
+            -- setControllableDoorsForGroup(
+            --     "house:4",
+            --     {
+            --         1377231573
+            --     }
+            -- )
+
+            setControllableDoorsForGroup(
+                "sheriff",
                 {
                     1207903970,
                     902070893,
@@ -83,18 +103,16 @@ Citizen.CreateThread(
                 "VP:DOORSTATECONTAINER:TryToToggleDoorState",
                 function(doorHash)
                     local _source = source
-                    local User = API.getUserFromUserId(_source)
+                    local User = API.getUserFromSource(_source)
 
                     if not doorStates[doorHash] then
                         User:notify("error", "ERROR PORTA REGISTRADA???")
                         return
                     end
 
-                    local minGroup = doorStates[doorHash][3]
-
-                    if minGroup ~= nil then
+                    if doorStates[doorHash][3] ~= nil then
                         local Character = User:getCharacter()
-                        if not Character:hasGroupOrInheritance(minGroup) then
+                        if Character == nil or not Character:hasGroupOrInheritance(doorStates[doorHash][3]) then
                             User:notify("error", "Você não pode abrir esta porta")
                             return
                         end
@@ -116,7 +134,7 @@ Citizen.CreateThread(
                 "API:playerSpawned",
                 function(source, user_id, isFirstSpawn)
                     if isFirstSpawn then
-                        local _temp = doorStates
+                        local _temp = deepcopy(doorStates)
                         for _, v in pairs(_temp) do
                             v[3] = nil
                         end
@@ -130,7 +148,7 @@ Citizen.CreateThread(
                 function()
                     Citizen.Wait(2000)
 
-                    local _temp = doorStates
+                    local _temp = deepcopy(doorStates)
                     for _, v in pairs(_temp) do
                         v[3] = nil
                     end
@@ -171,8 +189,6 @@ Citizen.CreateThread(
             Citizen.CreateThread(
                 function()
                     while true do
-                        Citizen.Wait(1000)
-
                         local ped = PlayerPedId()
                         local pCoords = GetEntityCoords(ped)
 
@@ -198,6 +214,8 @@ Citizen.CreateThread(
                         if dist == nil then
                             closestDoorHash = nil
                         end
+
+                        Citizen.Wait(1000)
                     end
                 end
             )
@@ -267,7 +285,7 @@ Citizen.CreateThread(
                 prompt_group_open = GetRandomIntInRange(0, 0xffffff)
 
                 prompt_open = PromptRegisterBegin()
-                PromptSetControlAction(prompt_open, 0x7F8D09B8)
+                PromptSetControlAction(prompt_open, 0xDFF812F9)
                 PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", "Abrir"))
                 PromptSetEnabled(prompt_open, true)
                 PromptSetVisible(prompt_open, true)
@@ -278,7 +296,7 @@ Citizen.CreateThread(
                 prompt_group_close = GetRandomIntInRange(0, 0xffffff)
 
                 prompt_close = PromptRegisterBegin()
-                PromptSetControlAction(prompt_close, 0x7F8D09B8)
+                PromptSetControlAction(prompt_close, 0xDFF812F9)
                 PromptSetText(prompt_close, CreateVarString(10, "LITERAL_STRING", "Fechar"))
                 PromptSetEnabled(prompt_close, true)
                 PromptSetVisible(prompt_close, true)
