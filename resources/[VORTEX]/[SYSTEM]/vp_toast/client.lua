@@ -13,6 +13,7 @@
 -- VP:TOAST:New -> "item", "Pistola Vulcan", -10
 -- VP:TOAST:New -> "longer_alert", "Toast que demora mais tempo para sumir, funciona para todos",
 
+
 RegisterNetEvent("VP:TOAST:New")
 AddEventHandler(
     "VP:TOAST:New",

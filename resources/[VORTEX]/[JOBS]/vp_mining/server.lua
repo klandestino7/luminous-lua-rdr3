@@ -168,9 +168,11 @@ AddEventHandler(
             copper = true
         end
 
-        if Inventory:getItemAmount("raw_gold") >= 1 then
-            gold = true
-        end
+        -- if Inventory:getItemAmount("raw_gold") >= 1 then
+        --     if Character:hasGroup('miner') then
+        --         gold = true
+        --     end
+        -- end
 
         if not stone and not coal and not copper and not gold then
             User:notify("error", "Você não tem minerais suficientes para processar!")
@@ -201,11 +203,11 @@ AddEventHandler(
             end
         end
 
-        if gold then
-            if Inventory:getItemAmount("raw_gold") >= 1 then
-                Inventory:removeItem(-1, "raw_gold", 1)
-            end
-        end
+        -- if gold then
+        --     if Inventory:getItemAmount("raw_gold") >= 1 then
+        --         Inventory:removeItem(-1, "raw_gold", 1)
+        --     end
+        -- end
     end
 )
 
@@ -265,14 +267,14 @@ AddEventHandler(
             User:notify("Você recebeu [X" .. count .. "] de Barra de Cobre")
             return
         end
-        if num == 4 then
-            Inventory:removeItem(-1, "generic_ourobruto", 3)
-            User:notify("Você processou [X" .. count .. "] ouro")
-            Wait(1000)
-            print(count * 10)
-            Inventory:addItem("generic_gold", count * 10)
-            User:notify("Você recebeu [X" .. count .. "] de Ouro")
-            return
-        end
+        -- if num == 4 then
+        --     Inventory:removeItem(-1, "generic_ourobruto", 3)
+        --     User:notify("Você processou [X" .. count .. "] ouro")
+        --     Wait(1000)
+        --     print(count * 10)
+        --     Inventory:addItem("generic_gold", count * 10)
+        --     User:notify("Você recebeu [X" .. count .. "] de Ouro")
+        --     return
+        -- end
     end
 )

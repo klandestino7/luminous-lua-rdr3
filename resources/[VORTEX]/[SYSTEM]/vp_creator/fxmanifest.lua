@@ -8,7 +8,8 @@ client_scripts{
     "@_core/lib/utils.lua",
     'config/mp_male.lua',
 	'config/mp_female.lua',
-    'client/client.lua'
+    'client/client.lua',
+    'client/spawn.lua'
 }
 
 server_scripts{

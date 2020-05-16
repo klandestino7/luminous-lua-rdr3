@@ -24,6 +24,31 @@ AddEventHandler('clothe:loadtenue', function(kek)
     SetPedOutfitPreset(PlayerPedId(), kek) 
     ---TriggerServerEvent("redemrp_skin:createSkin", kek) -- save on db work
 end)
+local Bandana = false
+
+RegisterCommand('BANDANA21', function(source, args)   
+    print(Bandana)
+    if not Bandana then  
+        print('colocou')
+        Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), 879715242)
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 1, 0, 1, 1, false)
+        Bandana = true
+    else
+        print('tirou')
+        Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), -972364774)
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 1, 0, 1, 1, false)    
+        Bandana = false
+    end
+end)
+
+RegisterCommand('off', function(source, args)
+    SetNuiFocus(false,false)
+
+end)
+
+RegisterCommand('testar', function(source, args)
+    SetTimecycleModifier('Dutch_moonPos')
+end)
 
 RegisterCommand('model', function(source, args)
 
@@ -211,14 +236,3 @@ end)
 --     end
 --     return
 -- end)
-
-RegisterCommand('weapon', function(source,args)
-
-    local modelw = args[1]
-    if modelw == nil then
-        print("Please set the specific name for weapon")
-    else
-        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0);
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey(modelw), 500, true, 0);
-    end
-end)

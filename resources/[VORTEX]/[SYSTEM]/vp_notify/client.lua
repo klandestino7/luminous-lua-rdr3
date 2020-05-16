@@ -1,13 +1,52 @@
-RegisterNetEvent("Distress")
-AddEventHandler("Distress",function(css,mensagem)
-	SendNUIMessage({ css = css, mensagem = mensagem })
+RegisterNetEvent("VP:NOTIFY:Toast")
+AddEventHandler("VP:NOTIFY:Toast",function(icon,title,mensagem)
+	--SendNUIMessage({ css = css, mensagem = mensagem })	
+	if icon == "alert" then
+		exports['vp_notify']:DisplayLeftNotification(title,
+		mensagem,
+		'HUD_TOASTS',
+		'toast_mp_status_change',
+		10000)	
+	end
+
+	if icon == "verify" then
+		exports['vp_notify']:DisplayLeftNotification(title,
+		mensagem,
+		'generic_textures',
+		'tick',
+		10000)	
+	end
+
+	if icon == "locked" then
+		exports['vp_notify']:DisplayLeftNotification(title,
+		mensagem,
+		'menu_textures',
+		'stamp_locked_rank',
+		10000)	
+	end
+
+	if icon == "star" then
+		exports['vp_notify']:DisplayLeftNotification(title,
+		mensagem,
+		'generic_textures',
+		'star',
+		10000)	
+	end	
+	
+	if icon == "horse" then
+		exports['vp_notify']:DisplayLeftNotification(title,
+		mensagem,
+		'HUD_TOASTS',
+		'toast_horse_bond',
+		10000)	
+	end
 end)
 
-RegisterNetEvent("VP:Notify")
-AddEventHandler("VP:Notify",function(mensagem)
-	SendNUIMessage({ css = 'sucesso', mensagem = mensagem })
+RegisterNetEvent("VP:NOTIFY:Simple")
+AddEventHandler("VP:NOTIFY:Simple",function(mensagem)
+--	SendNUIMessage({ css = 'sucesso', mensagem = mensagem })
+	exports['vp_notify']:DisplayNotification(mensagem,10000)	
 end)
-
 
 RegisterCommand('enviar', function()
 	local player = (GetEntityCoords(PlayerPedId()))
@@ -16,13 +55,12 @@ RegisterCommand('enviar', function()
 --	local zonenome = tostring(nome.zonehash)
 --	local num = GetZoneAtCoords(player.x, player.y, player.z)
 --	local ruas = street .. " Nº" .. num .. ", " .. nome[zonehash]
-	TriggerEvent('Distress', 'sucesso', 'Assalto a Joalheria')
+	TriggerEvent('VP:NOTIFY:Simple', 'Aqui está muito frio.')
+	Wait(10000)
+	TriggerEvent('VP:NOTIFY:Toast','star', 'Roubo', 'Assalto a Joalheria')
 --	TriggerEvent('blipALERTRED', player)
 
-	--PlaySound(-1, "Team_Vehicle_Destroyed", "DLC_LOW2_Sumo_Soundset", 0, 0, 1);
 end)
-
-
 
 RegisterNetEvent('blipALERTRED')
 AddEventHandler('blipALERTRED', function(targetCoords)

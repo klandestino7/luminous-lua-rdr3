@@ -7,15 +7,14 @@ RegisterServerEvent("_chat:messageEntered")
 RegisterServerEvent("chat:clear")
 RegisterServerEvent("__cfx_internal:commandFallback")
 
+-- /////////////////////// COMENTAR ISSO
 AddEventHandler(
     "_chat:messageEntered",
     function(author, color, message)
         if not message or not author then
             return
         end
-
         TriggerEvent("chatMessage", source, author, message)
-
         if not WasEventCanceled() then
             TriggerClientEvent("chatMessage", -1, author, {255, 255, 255}, message)
         end
@@ -23,7 +22,7 @@ AddEventHandler(
         print(author .. "^7: " .. message .. "^7")
     end
 )
-
+-- /////////////////////// COMENTAR ISSO
 AddEventHandler(
     "__cfx_internal:commandFallback",
     function(command)
@@ -33,6 +32,7 @@ AddEventHandler(
 
         if not WasEventCanceled() then
             TriggerClientEvent("chatMessage", -1, name, {255, 255, 255}, "/" .. command)
+        -- TriggerClientEvent('chatMessage', -1, name, { 255, 255, 255 }, '/' .. command)
         end
 
         CancelEvent()

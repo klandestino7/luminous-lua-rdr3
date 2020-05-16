@@ -9,6 +9,7 @@ files {
     'html/index.html',
     'html/index.css',
     'html/revolver.png',
+    'html/inputgray.png',
     'html/config.default.js',
     'html/config.js',
     'html/App.js',

@@ -1,20 +1,42 @@
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface("API")
-cAPI = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 
 local Cinematic = false
+
+
+RegisterCommand('horsecl', function()
+
+    local playerHorse = cAPI.GetPlayerHorse()
+    -- playerHorse = 228907
+    local p = PlayerId()
+
+    Citizen.InvokeNative(0xD2CB0FB0FDCB473D, p, 0)
+
+    local z = Citizen.InvokeNative(0x8FBF9EDB378CCB8C, p, playerHorse)
+    local w = Citizen.InvokeNative(0x227B06324234FB09, p, playerHorse)
+
+    local main_horse = Citizen.InvokeNative(0x46FA0AE18F4C7FA9, p)
+    local temp_horse = Citizen.InvokeNative(0xD3F7445CEA2E5035, p)
+    Citizen.InvokeNative(0x75415EE0CB583760, playerHorse, 7, 950)
+
+    print(cAPI.GetPlayerHorse(), playerHorse, main_horse, temp_horse, DoesEntityExist(playerHorse))
+
+end)
+
 
 Citizen.CreateThread(
     function()
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
-        Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
-        Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
-        N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
-
-        Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
-        -- Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
+     --   Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
+       Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
+        --N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
+    
+       -- Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
+        Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
 
         while true do
             Citizen.Wait(0)
@@ -26,33 +48,39 @@ Citizen.CreateThread(
             end
 
             if IsPedOnMount(PlayerPedId()) then
-            N_0x8bc7c1f929d07bf3(474191950)
-         --   ShowPlayerCores(false) -- player core
-            Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+                N_0x8bc7c1f929d07bf3(474191950)
+            --   ShowPlayerCores(false) -- player core
+                Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
             else
             --    ShowPlayerCores(false) -- player core
              ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
-              N_0x4cc5f2fc1332577f(474191950)
+                N_0x4cc5f2fc1332577f(474191950)
             end
 
             --N_0xbae08f00021bffb2(horse) -- agitates the horse
-            N_0x8bc7c1f929d07bf3(-1679307491) -- show
-
-            N_0x4cc5f2fc1332577f(-66088566) -- hide mpmoney
-            N_0x50c803a4cd5932c5(false)
-            N_0xd4ee21b7cc7fd350(false)
-            Citizen.InvokeNative(0x50C803A4CD5932C5, true)
-            Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
+         -- N_0x8bc7c1f929d07bf3(2106452847) -- show
+ 
+        --    N_0x50c803a4cd5932c5(false)
+       --     N_0xd4ee21b7cc7fd350(false)
+        --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
+        --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
             cAPI.Temperatura()
-         --   DisplayRadar(true)
-
+            DisplayRadar(true)
+            Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
         end
     end
 )
 
 
+RegisterCommand(
+    "jump",
+    function(source, args)
+        Wait(2000)
+        TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
+    end
+)
 
-
+script_re@public_hanging@criminal_male
 RegisterCommand(
     "cinema",
     function(source, args)

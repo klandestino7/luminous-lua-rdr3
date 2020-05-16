@@ -99,7 +99,7 @@ Citizen.CreateThread(
                     createPeds()
                     DestroyAllCams(true)
                     createCamera()
-
+                    TriggerEvent('VP:NOTIFY:Simple', 'Utilize as setas do seu teclado e aperte enter para escolher um personagem.')
                 else
                     for k, v in pairs(choosePed) do
                         if IsControlJustReleased(0, 0xA65EBAB4) and GetEntityModel(choosePed[k]) == GetHashKey("mp_male") then -- male
@@ -549,9 +549,9 @@ RegisterNUICallback(
             ["pedSize"] = tonumber(PedScaleUsing),
             ["features"] = json.encode(ffDados)
         }
-
         TriggerServerEvent("VP:CREATOR:saveCreation", CharacterName, CharacterAge, SkinModf)
         closeAll()
+        cAPI.StartFade(500)
     end
 )
 
@@ -569,6 +569,7 @@ function closeAll()
 
     choosePed = {}
     local ped = pedSelected
+
     --  SetEntityVisible(ped, true)
     --  NetworkSetEntityInvisibleToNetwork(ped, false)
 end
