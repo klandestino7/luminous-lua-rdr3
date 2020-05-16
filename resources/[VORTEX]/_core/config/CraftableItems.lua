@@ -1,31 +1,31 @@
 CraftableItems = {
-    ['weapon_fishingrod'] = {
-        craftingDesc = "LOREM IPSUR",
+    ['fishingrod'] = {
+        craftingDesc = "dadadad",
         craftingParts = {
-            ['generic_corda'] = 2,
-            ['generic_provision_rf_wood_stick'] = 5,
+            ['apple'] = 2,
+            ['ammo_pistol'] = 5,
         }
     },
-    ['weapon_shotgun_pump'] = {
-        craftingDesc = "LOREM IPSUR",
+    ['shotgun_pump'] = {
+        craftingDesc = "LOdaddREM IPSUR",
         craftingParts = {
-            ['generic_metalbruto'] = 10,
-            ['generic_provision_coal'] = 10,
+            ['apple'] = 10,
+            ['gold'] = 10,
         }
     },
-    ['kit_camp_simple'] = {
-        craftingDesc = "LOREM IPSUR",
+    ['sulfur'] = {
+        craftingDesc = "adadadR",
         craftingParts = {
-            ['generic_pedra'] = 5,
-            ['generic_provision_rf_wood_minor'] = 2,
+            ['apple'] = 5,
+            ['gold'] = 2,
         }
     },
 
-    ['kit_camp_simple'] = {
-        craftingDesc = "LOREM IPSUR",
+    ['pickaxe'] = {
+        craftingDesc = "Ladda",
         craftingParts = {
-            ['generic_pedra'] = 5,
-            ['generic_provision_rf_wood_minor'] = 2,
+            ['apple'] = 5,
+            ['gold'] = 2,
         }
     },
 

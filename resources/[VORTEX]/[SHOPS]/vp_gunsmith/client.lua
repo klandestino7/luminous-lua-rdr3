@@ -226,7 +226,7 @@ function createPrompt(name, itemId, dollar, gold, entitytarget)
     local group = PromptGetGroupIdForTargetEntity(entitytarget)
 
     local prompt_dollar = PromptRegisterBegin()
-    PromptSetControlAction(prompt_dollar, 0xF84FA74F)
+    PromptSetControlAction(prompt_dollar, 0x07CE1E61) -- LMB
     PromptSetText(prompt_dollar, CreateVarString(10, "LITERAL_STRING", "$" .. dollar))
     PromptSetEnabled(prompt_dollar, 1)
     PromptSetVisible(prompt_dollar, 1)
@@ -235,7 +235,7 @@ function createPrompt(name, itemId, dollar, gold, entitytarget)
     PromptRegisterEnd(prompt_dollar)
 
     local prompt_gold = PromptRegisterBegin()
-    PromptSetControlAction(prompt_gold, 0x07CE1E61)
+    PromptSetControlAction(prompt_gold, 0xF84FA74F) -- RMB
     PromptSetText(prompt_gold, CreateVarString(10, "LITERAL_STRING", "~t4~G" .. gold))
     PromptSetEnabled(prompt_gold, 1)
     PromptSetVisible(prompt_gold, 1)
@@ -247,6 +247,9 @@ function createPrompt(name, itemId, dollar, gold, entitytarget)
 end
 
 function unload()
+
+    -- local hasPlayerInsideGunsmith =
+
     for prop, _ in pairs(props) do
         DeleteEntity(prop)
     end

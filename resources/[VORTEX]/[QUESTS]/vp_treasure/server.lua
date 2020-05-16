@@ -108,10 +108,16 @@ AddEventHandler(
 
     local itensram = math.random(1, 6)
 
-    local i = 112
+    local parsed = {}
+
     for itemId, itemAmount in pairs(inventory_items[itensram]) do
+      local i = math.random(112, 128)
+      local tries = 16
+      while parsed[i] ~= nil and tries > 0 do
+          i = math.random(112, 128)
+          tries = tries - 1
+      end
       parsed[i] = {itemId, itemAmount}
-      i = i + 1
     end
 
     local parsed = {}

@@ -118,27 +118,3 @@ function GetAnimalCarcassQuality(Ped)
     local ret = Citizen.InvokeNative(0x88EFFED5FE8B0B4A, Ped)
     return ret ~= false and ret or 0
 end
-
--- // 0x79443D56C8DF45EE
--- Ped _GET_CARRIER(Entity entity)
-
--- // 0x7BCC6087D130312A
--- int _GET_PED_QUALITY(Ped ped) ?
-
--- // 0x7528720101A807A5
--- void _SET_PED_CARCASS_QUALITY(Ped Ped)
-
--- // 0xDACE03C65C6666DB
--- void _SET_0x6CFC373008A1EDAF -- related
-
--- // 0xCE6B874286D640BB
--- void SET_0x7BCC6087D130312A -- related
-
--- // 0x88EFFED5FE8B0B4A
--- int _GET_PED_CARCASS_QUALITY(Ped ped)
-
--- // 0xA911EE21EDF69DAF
--- BOOL IS_PED_CARRYING(Ped ped)
-
--- ENTITY::_0x9A100F1CF4546629(iParam0) || ENTITY::_0xC346A546612C49A9(iParam0))
--- WAS_PED_SKINNED || IS_PED_BEING_SKINNED

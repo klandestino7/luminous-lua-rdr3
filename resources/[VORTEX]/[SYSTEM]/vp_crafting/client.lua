@@ -1,8 +1,8 @@
 -- local wasOpenedBefore = false
 
-RegisterNetEvent('VP:CRAFTING:OpenMenu')
+RegisterNetEvent("VP:CRAFTING:OpenMenu")
 AddEventHandler(
-    'VP:CRAFTING:OpenMenu',
+    "VP:CRAFTING:OpenMenu",
     function(ownedParts)
         local craftingItems = CraftableItems
         local parsedItemNames = {}
@@ -40,20 +40,22 @@ AddEventHandler(
 
         -- if not wasOpenedBefore then
         for id, values in pairs(craftingItems) do
-            parsedItemNames[id] = ItemList[id].name
-            local canCraft = true
-            for idCPart, amountNeeded in pairs(values.craftingParts) do              
-                parsedItemNames[idCPart] = ItemList[idCPart].name
-                if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
-                    canCraft = false
+            if ItemList[id] then
+                parsedItemNames[id] = ItemList[id].name
+                local canCraft = true
+                for idCPart, amountNeeded in pairs(values.craftingParts) do
+                    parsedItemNames[idCPart] = ItemList[idCPart].name
+                    if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
+                        canCraft = false
+                    end
                 end
+                craftingItems[id].canCraft = canCraft
             end
-            craftingItems[id].canCraft = canCraft
         end
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
-                action = 'open',
+                action = "open",
                 craftingItems = craftingItems,
                 ownedParts = ownedParts,
                 parsedItemNames = parsedItemNames
@@ -64,9 +66,9 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent('VP:CRAFTING:SyncOnCraft')
+RegisterNetEvent("VP:CRAFTING:SyncOnCraft")
 AddEventHandler(
-    'VP:CRAFTING:SyncOnCraft',
+    "VP:CRAFTING:SyncOnCraft",
     function(updatedOwnedItems)
         local updatedCraftingStatus = {}
 
@@ -83,7 +85,7 @@ AddEventHandler(
 
         SendNUIMessage(
             {
-                action = 'update',
+                action = "update",
                 updatedOwnedItems = updatedOwnedItems,
                 updatedCraftingStatus = updatedCraftingStatus
             }
@@ -91,34 +93,33 @@ AddEventHandler(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-            if IsControlJustPressed(0, 0x4CC0E2FE) then
-                TriggerServerEvent('VP:CRAFTING:Open')
-              
-            end
-        end
-    end
-)
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+--             if IsControlJustPressed(0, 0xF84FA74F) then
+--                 TriggerServerEvent("VP:CRAFTING:Open")
+--             end
+--         end
+--     end
+-- )
 
 RegisterNUICallback(
-    'craft',
+    "craft",
     function(data)
-        TriggerServerEvent('VP:CRAFTING:Craft', data.id)
+        TriggerServerEvent("VP:CRAFTING:Craft", data.id)
     end
 )
 
 RegisterNUICallback(
-    'close',
+    "close",
     function()
         SetNuiFocus(false, false)
     end
 )
 
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -126,7 +127,7 @@ AddEventHandler(
         SetNuiFocus(false, false)
         SendNUIMessage(
             {
-                action = 'close'
+                action = "close"
             }
         )
     end

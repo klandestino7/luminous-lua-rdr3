@@ -19,6 +19,5 @@ ui_page 'nui/index.html'
 
 files {
 	'nui/*',
-	'nui/img/*',
-	'nui/fonts/*',
+	'nui/assets/*',
 }

@@ -119,7 +119,7 @@ Citizen.CreateThread(
 				for i = 0, 32 do
 					if NetworkIsPlayerActive(i) then
 						if not gamerTags[i] then
-							local gamerTagId = Citizen.InvokeNative(0xE961BF23EAB76B12, GetPlayerPed(i), '' .. (gamerTagsInfo[GetPlayerServerId(i)] or "s:" .. GetPlayerServerId(i)))
+							local gamerTagId = Citizen.InvokeNative(0xE961BF23EAB76B12, GetPlayerPed(i), "" .. (gamerTagsInfo[GetPlayerServerId(i)] or "s:" .. GetPlayerServerId(i)))
 							-- _CREATE_ENTITY_MP_GAMER_TAG
 
 							-- local gamerTagId = CreateMpGamerTag(i, GetPlayerName(i), false, false, "", 0)
@@ -142,7 +142,7 @@ Citizen.CreateThread(
 							Citizen.InvokeNative(0x93171DDDAB274EB8, gamerTagId, 4)
 							--_SET_MP_GAMER_TAG_VISIBILITY
 
-							SetMpGamerTagBigText(gamerTagId, '')
+							SetMpGamerTagBigText(gamerTagId, "")
 
 							gamerTags[i] = gamerTagId
 						end
@@ -234,3 +234,80 @@ AddEventHandler(
 		end
 	end
 )
+
+RegisterCommand(
+	"teste",
+	function(source, args, rawCommand)
+		-- print("ies")
+
+		local mount = GetMount(PlayerPedId())
+		-- mount = 325123
+
+		print()
+		-- 92442
+		-- 315933
+
+		-- TaskAnimalInteraction(PlayerPedId(), 92442, -224471938, 0, 0) -- FEED HORSE
+		-- TaskAnimalInteraction(PlayerPedId(), 92442, -1355254781, GetHashKey("p_cs_syringe01x"), 0) -- INJECT HORSE
+		-- TaskAnimalInteraction(PlayerPedId(), 92442, 1968415774, 0, 0) -- HORSE POMADE
+		TaskAnimalInteraction(PlayerPedId(), mount, GetHashKey("INTERACTION_TUCKMEDIUMPELT"), 0, 0) -- BRUSH HORSE
+
+		-- local carried = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
+		-- print(carried)
+
+		-- 0xF49F14462F0AE27C
+		-- Entity _GET_MOUNT_OWNED_BY_PLAYER(Player player)
+
+		-- 0xB9D5BDDA88E1BB66
+		-- BOOL _IS_THIS_MODEL_A_CART(Hash model)
+
+		-- 0xB9050A97594C8832
+		-- Entity _GET_VEHICLE_OWNED_BY_PLAYER(Player player)
+
+		-- 0xD0E02AA618020D17
+		-- _SET_PLAYER_OWNS_VEHICLE(Player player)
+
+		-- 0x838C216C2B05A009
+		-- _SET_PED_OWNS_VEHICLE(Ped ped)
+
+		-- 0xB729679356A889AE
+		-- _GET_VEHICLE_OWNER(Vehicle vehicle)
+
+		-- print(carried)
+		-- ResurrectPed(288517)
+		-- FreezeEntityPosition(288517, true)
+
+		-- UnlockSetUnlocked(GetHashKey("SP_WEAPON_DUALWIELD"), true)
+		-- UnlockSetVisible(GetHashKey("SP_WEAPON_DUALWIELD"), true)
+		-- Citizen.InvokeNative(0x8F4F050054005C27, PlayerId(), 16)
+		-- Citizen.InvokeNative(0xFB6E111908502871, 15)
+
+		-- UNLOCK__ROLE__EAGLE_EYE_PLUS_EFFECT
+		-- SetPedConfigFlag(PlayerPedId(), 556, true)
+		-- SetPedConfigFlag(PlayerPedId(), 263, true)
+	end
+)
+
+-- 0xCE285A4413B00B7F
+-- UNLOCK::_UNLOCK_SET_UNLOCKED(joaat("SP_WEAPON_DUALWIELD"), true);
+-- UNLOCK::_UNLOCK_SET_VISIBLE(joaat("SP_WEAPON_DUALWIELD"), true);
+
+-- // 0x6BCF5F3D8FFE988D
+-- void _SET_IS_LOOTED(Entity, BOOL)
+-- SET_ENTITY_GATHERED
+
+-- // 0x8DE41E9902E85756
+-- BOOL _GET_IS_LOOTED(Entity)
+-- _IS_ENTITY_GATHERED
+
+-- // 0xDACE03C65C6666DB
+-- void _SET_0x6CFC373008A1EDAF -- related
+-- void _SET_PED_CORPSE_*
+-- ROTTEN?
+
+-- // 0x90403E8107B60E81
+-- int  GET_NUM_COMPONENTS_IN_ENTITY
+-- // 0x77BA37622E22023B
+-- Hash GET_PED_COMPONENT_AT_INDEX
+
+-- SKINNING_DAMAGE_POOR_QUALITY_LEGENDARY
