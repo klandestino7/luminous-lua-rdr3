@@ -14,6 +14,10 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         return self.Inventory
     end
 
+    self.getGroups = function()
+        return self.groups
+    end
+
     self.addGroup = function(this, group)
         self:setData(self.id, "groups", group, true)
         self.groups[group] = true

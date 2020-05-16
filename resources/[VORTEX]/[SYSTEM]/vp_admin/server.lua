@@ -300,6 +300,33 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "groups",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("admin") then
+            if #args > 0 then
+                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
+                if UserTarget ~= nil then
+                    local TargetCharacter = UserTarget:getCharacter()
+                    for group, _ in pairs(TargetCharacter:getGroups()) do
+                        User:notify('longer_dev', group)
+                    end
+                else
+                    User:notify("error", "Usuario invalido!")
+                end
+            else
+                for group, _ in pairs(Character:getGroups()) do
+                    User:notify('longer_dev', group)
+                end
+            end
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
+RegisterCommand(
     "spawnped",
     function(source, args, rawCommand)
         if #args >= 1 then

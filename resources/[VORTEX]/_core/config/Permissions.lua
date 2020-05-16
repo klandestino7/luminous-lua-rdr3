@@ -23,10 +23,10 @@ Config_Permissions = {
         type = "police"
     },
     ----------
-    ["house:1"] = {
-        type = "house_rent"
-    },
-    ["house:2"] = {
-        type = "house_rent"
-    }
+    -- ["house:1"] = {
+    --     type = "house_rent"
+    -- },
+    -- ["house:2"] = {
+    --     type = "house_rent"
+    -- }
 }
