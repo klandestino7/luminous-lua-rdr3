@@ -13,13 +13,83 @@ local deathEndingTime
 local isInjure = false
 local up = false
 local deathCause = nil
-local damageBone = nil
+local damageBone = {}
+local LoopCause = false
+local InstaCause = nil
+local InstaDeath = false
 
 local prompt
 local promptGroup
 local promptGroupName
 
-local causes = {
+local InstaDeathCauses = {
+	"WEAPON_EXPLOSION",
+	"WEAPON_FIRE",
+	"WEAPON_THROWN_MOLOTOV",
+	"WEAPON_THROWN_DYNAMITE",
+	"weapon_moonshinejug",
+	"weapon_bow",
+	"weapon_melee_knife_hunter",
+	"weapon_melee_lantern_electric",
+	"weapon_melee_torch",
+	"weapon_melee_broken_sword",
+	"weapon_melee_hatchet",
+	"weapon_melee_cleaver",
+	"weapon_melee_ancient_hatchet",
+	"weapon_melee_hatchet_viking",
+	"weapon_melee_hatchet_hewing",
+	"weapon_melee_hatchet_double_bit",
+	"weapon_melee_hatchet_double_bit_rusted",
+	"weapon_melee_hatchet_hunter",
+	"weapon_melee_hatchet_hunter_rusted",
+	"weapon_melee_knife_john",
+	"weapon_melee_knife",
+	"weapon_melee_knife_jawbone",
+	"weapon_melee_knife_miner",
+	"weapon_melee_knife_civil_war",
+	"weapon_melee_knife_bear",
+	"weapon_melee_knife_vampire",
+	"weapon_melee_machete",
+	"weapon_pistol_m1899",
+	"weapon_pistol_mauser",
+	"weapon_pistol_mauser_drunk",
+	"weapon_pistol_semiauto",
+	"weapon_pistol_volcanic",
+	"weapon_revolver_cattleman",
+	"weapon_revolver_cattleman_john",
+	"weapon_revolver_cattleman_mexican",
+	"weapon_revolver_cattleman_pig",
+	"weapon_revolver_doubleaction",
+	"weapon_revolver_doubleaction_exotic",
+	"weapon_revolver_doubleaction_gambler",
+	"weapon_revolver_doubleaction_micah",
+	"weapon_revolver_lemat",
+	"weapon_revolver_schofield",
+	"weapon_revolver_schofield_golden",
+	"weapon_revolver_schofield_calloway",
+	"weapon_repeater_winchester",
+	"weapon_repeater_carbine",
+	"weapon_repeater_evans",
+	"weapon_rifle_boltaction",
+	"weapon_rifle_springfield",
+	"weapon_rifle_varmint",
+	"weapon_sniperrifle_carcano",
+	"weapon_sniperrifle_rollingblock",
+	"weapon_sniperrifle_rollingblock_exotic",
+	"weapon_shotgun_doublebarrel",
+	"weapon_shotgun_doublebarrel_exotic",
+	"weapon_shotgun_pump",
+	"weapon_shotgun_repeating",
+	"weapon_shotgun_sawedoff",
+	"weapon_shotgun_semiauto",
+	"weapon_thrown_throwing_knives",
+	"weapon_thrown_dynamite",
+	"weapon_thrown_molotov",
+	"weapon_thrown_tomahawk",
+	"weapon_thrown_tomahawk_ancient"
+}
+
+local DeathCauses = {
 	"WEAPON_HORSE",
 	"WEAPON_DEER",
 	"WEAPON_FIRE",
@@ -35,103 +105,208 @@ local causes = {
 	"WEAPON_BLEEDING",
 	"WEAPON_DROWNING",
 	"WEAPON_DROWNING_IN_VEHICLE",
-	"WEAPON_LASSO_REINFORCED",
-	"WEAPON_LASSO",
-	"WEAPON_MACHINERY"
+	"WEAPON_MACHINERY",
+	"weapon_moonshinejug",
+	"weapon_bow",
+	"weapon_melee_knife_hunter",
+	"weapon_melee_lantern_electric",
+	"weapon_melee_torch",
+	"weapon_melee_broken_sword",
+	"weapon_melee_hatchet",
+	"weapon_melee_cleaver",
+	"weapon_melee_ancient_hatchet",
+	"weapon_melee_hatchet_viking",
+	"weapon_melee_hatchet_hewing",
+	"weapon_melee_hatchet_double_bit",
+	"weapon_melee_hatchet_double_bit_rusted",
+	"weapon_melee_hatchet_hunter",
+	"weapon_melee_hatchet_hunter_rusted",
+	"weapon_melee_knife_john",
+	"weapon_melee_knife",
+	"weapon_melee_knife_jawbone",
+	"weapon_melee_knife_miner",
+	"weapon_melee_knife_civil_war",
+	"weapon_melee_knife_bear",
+	"weapon_melee_knife_vampire",
+	"weapon_melee_machete",
+	"weapon_pistol_m1899",
+	"weapon_pistol_mauser",
+	"weapon_pistol_mauser_drunk",
+	"weapon_pistol_semiauto",
+	"weapon_pistol_volcanic",
+	"weapon_revolver_cattleman",
+	"weapon_revolver_cattleman_john",
+	"weapon_revolver_cattleman_mexican",
+	"weapon_revolver_cattleman_pig",
+	"weapon_revolver_doubleaction",
+	"weapon_revolver_doubleaction_exotic",
+	"weapon_revolver_doubleaction_gambler",
+	"weapon_revolver_doubleaction_micah",
+	"weapon_revolver_lemat",
+	"weapon_revolver_schofield",
+	"weapon_revolver_schofield_golden",
+	"weapon_revolver_schofield_calloway",
+	"weapon_repeater_winchester",
+	"weapon_repeater_carbine",
+	"weapon_repeater_evans",
+	"weapon_rifle_boltaction",
+	"weapon_rifle_springfield",
+	"weapon_rifle_varmint",
+	"weapon_sniperrifle_carcano",
+	"weapon_sniperrifle_rollingblock",
+	"weapon_sniperrifle_rollingblock_exotic",
+	"weapon_shotgun_doublebarrel",
+	"weapon_shotgun_doublebarrel_exotic",
+	"weapon_shotgun_pump",
+	"weapon_shotgun_repeating",
+	"weapon_shotgun_sawedoff",
+	"weapon_shotgun_semiauto",
+	"weapon_thrown_throwing_knives",
+	"weapon_thrown_dynamite",
+	"weapon_thrown_molotov",
+	"weapon_thrown_tomahawk",
+	"weapon_thrown_tomahawk_ancient"
 }
 
-local bones = {
-	21030, --'skel_head',
-	14283, --'skel_neck0',
-	14284, --'skel_neck1',
-	14285, --'skel_neck2', -- -842959696
-	14410, --'skel_spine0',
-	14411, --'skel_spine1',
-	14412, --'skel_spine2',
-	14413, --'skel_spine3',
-	14414, --'skel_spine4',
-	14415, --'skel_spine5',
-	14416, --'skel_spine6',
-	11569, --'SKEL_Spine_Root',
-	46065 --'skel_r_upperarm',
+
+local vitalBones = {
+	'cabeça',
+	'pescoço',
+	'coluna'
 }
 
 local allbones = {
-	["skel_head"] = {bone_index = 144, bone_id = 21030},
-	["skel_l_calf"] = {bone_index = 3, bone_id = 55120},
-	["skel_l_clavicle"] = {bone_index = 192, bone_id = 30226},
-	["SKEL_L_Finger00"] = {bone_index = 225, bone_id = 41403},
-	["SKEL_L_Finger01"] = {bone_index = 226, bone_id = 41404},
-	["SKEL_L_Finger02"] = {bone_index = 227, bone_id = 41405},
-	["SKEL_L_Finger10"] = {bone_index = 218, bone_id = 41323},
-	["SKEL_L_Finger11"] = {bone_index = 219, bone_id = 41324},
-	["SKEL_L_Finger12"] = {bone_index = 220, bone_id = 41325},
-	["SKEL_L_Finger13"] = {bone_index = 221, bone_id = 41326},
-	["SKEL_L_Finger20"] = {bone_index = 211, bone_id = 41307},
-	["SKEL_L_Finger21"] = {bone_index = 212, bone_id = 41308},
-	["SKEL_L_Finger22"] = {bone_index = 213, bone_id = 41309},
-	["SKEL_L_Finger23"] = {bone_index = 214, bone_id = 41310},
-	["SKEL_L_Finger30"] = {bone_index = 204, bone_id = 41355},
-	["SKEL_L_Finger31"] = {bone_index = 205, bone_id = 41356},
-	["SKEL_L_Finger32"] = {bone_index = 206, bone_id = 41357},
-	["SKEL_L_Finger33"] = {bone_index = 207, bone_id = 41358},
-	["SKEL_L_Finger40"] = {bone_index = 196, bone_id = 41339},
-	["SKEL_L_Finger41"] = {bone_index = 197, bone_id = 41340},
-	["SKEL_L_Finger42"] = {bone_index = 198, bone_id = 41341},
-	["SKEL_L_Finger43"] = {bone_index = 199, bone_id = 41342},
-	["skel_l_foot"] = {bone_index = 4, bone_id = 45454},
-	["skel_l_forearm"] = {bone_index = 194, bone_id = 53675},
-	["skel_l_hand"] = {bone_index = 195, bone_id = 34606},
-	["skel_l_thigh"] = {bone_index = 2, bone_id = 65478},
-	["SKEL_L_Toe0"] = {bone_index = 5, bone_id = 53081},
-	["SKEL_L_Toe10"] = {bone_index = 7, bone_id = 11440},
-	["SKEL_L_Toe20"] = {bone_index = 6, bone_id = 11456},
-	["skel_l_upperarm"] = {bone_index = 193, bone_id = 37873},
-	["skel_neck0"] = {bone_index = 138, bone_id = 14283},
-	["SKEL_Neck1"] = {bone_index = 142, bone_id = 14284},
-	["SKEL_Neck2"] = {bone_index = 143, bone_id = 14285},
-	["skel_pelvis"] = {bone_index = 1, bone_id = 56200},
-	["SKEL_Penis00"] = {bone_index = 83, bone_id = 10208},
-	["SKEL_Penis01"] = {bone_index = 84, bone_id = 10209},
-	["SKEL_Penis_Trans"] = {bone_index = 82, bone_id = 39035},
-	["skel_r_calf"] = {bone_index = 34, bone_id = 43312},
-	["skel_r_clavicle"] = {bone_index = 290, bone_id = 54802},
-	["SKEL_R_Finger00"] = {bone_index = 294, bone_id = 16827},
-	["SKEL_R_Finger01"] = {bone_index = 295, bone_id = 16828},
-	["SKEL_R_Finger02"] = {bone_index = 296, bone_id = 16829},
-	["SKEL_R_Finger10"] = {bone_index = 299, bone_id = 16747},
-	["SKEL_R_Finger11"] = {bone_index = 300, bone_id = 16748},
-	["SKEL_R_Finger12"] = {bone_index = 301, bone_id = 16749},
-	["SKEL_R_Finger13"] = {bone_index = 302, bone_id = 16750},
-	["SKEL_R_Finger20"] = {bone_index = 306, bone_id = 16731},
-	["SKEL_R_Finger21"] = {bone_index = 307, bone_id = 16732},
-	["SKEL_R_Finger22"] = {bone_index = 308, bone_id = 16733},
-	["SKEL_R_Finger23"] = {bone_index = 309, bone_id = 16734},
-	["SKEL_R_Finger30"] = {bone_index = 313, bone_id = 16779},
-	["SKEL_R_Finger31"] = {bone_index = 314, bone_id = 16780},
-	["SKEL_R_Finger32"] = {bone_index = 315, bone_id = 16781},
-	["SKEL_R_Finger33"] = {bone_index = 316, bone_id = 16782},
-	["SKEL_R_Finger40"] = {bone_index = 320, bone_id = 16763},
-	["SKEL_R_Finger41"] = {bone_index = 321, bone_id = 16764},
-	["SKEL_R_Finger42"] = {bone_index = 322, bone_id = 16765},
-	["SKEL_R_Finger43"] = {bone_index = 323, bone_id = 16766},
-	["skel_r_foot"] = {bone_index = 35, bone_id = 33646},
-	["skel_r_forearm"] = {bone_index = 292, bone_id = 54187},
-	["skel_r_hand"] = {bone_index = 293, bone_id = 22798},
-	["skel_r_thigh"] = {bone_index = 33, bone_id = 6884},
-	["SKEL_R_Toe0"] = {bone_index = 36, bone_id = 41273},
-	["SKEL_R_Toe10"] = {bone_index = 37, bone_id = 18013},
-	["SKEL_R_Toe20"] = {bone_index = 38, bone_id = 18029},
-	["skel_r_upperarm"] = {bone_index = 291, bone_id = 46065},
-	["skel_spine0"] = {bone_index = 131, bone_id = 14410},
-	["skel_spine1"] = {bone_index = 132, bone_id = 14411},
-	["skel_spine2"] = {bone_index = 133, bone_id = 14412},
-	["SKEL_Spine3"] = {bone_index = 134, bone_id = 14413},
-	["skel_spine4"] = {bone_index = 135, bone_id = 14414},
-	["SKEL_Spine5"] = {bone_index = 136, bone_id = 14415},
-	["SKEL_Spine6"] = {bone_index = 137, bone_id = 14416},
-	["SKEL_Spine_Root"] = {bone_index = 130, bone_id = 11569}
+	['cabeça'] = {
+		21030,
+	},
+	['pescoço'] = {
+		14283,
+		14284,
+		14285,
+	},
+	['coluna'] = {	
+		14410,
+		14411,
+		14412,
+		14413,
+		14414,
+		14415,
+		14416,
+		11569,
+		56200,
+	},
+	['maoesquerda'] = {
+		41403,
+		41404,
+		41405,
+		41323,
+		41324,
+		41325,
+		41326,
+		41307,
+		41308,
+		41309,
+		41310,
+		41355,
+		41356,
+		41357,
+		41358,
+		41339,
+		41340,
+		41341,
+		41342,
+		34606
+	},
+	['maodireita'] = {
+		16827,
+		16828,
+		16829,
+		16747,
+		16748,
+		16749,
+		16750,
+		16731,
+		16732,
+		16733,
+		16734,
+		16779,
+		16780,
+		16781,
+		16782,
+		16763,
+		16764,
+		16765,
+		16766,
+		22798
+	},
+	['braçodireito'] = {
+		54187,	
+		46065
+	},
+	['braçoesquerdo'] = {
+		53675,
+		37873
+	},
+	['pernadireita'] = {
+		6884,
+		43312,	
+		54802
+	},
+	['pedireito'] = {
+		33646,
+		41273,
+		18013,
+		18029
+	},
+	['peesquerdo'] = {
+		45454,
+		53081,
+		11440,
+		11456
+	},	
+	['pernaesquerda'] = {
+		65478,
+		55120,
+		30226
+	},
+	['genitaria'] = {
+		10208,
+		10209,
+		39035
+	}
 }
+
+Citizen.CreateThread(
+	function()
+		local lastHealth = GetEntityHealth(PlayerPedId())
+		while true do
+			Citizen.Wait(100)		
+			if lastHealth ~= GetEntityHealth(PlayerPedId()) then
+
+				local retVal, boneIndex = GetPedLastDamageBone(PlayerPedId())
+				if boneIndex ~= 0 then
+					table.insert(damageBone, boneIndex)
+				end
+
+				lastHealth = GetEntityHealth(PlayerPedId())
+				print(json.encode(damageBone))
+
+				for _, key in pairs(DeathCauses) do							
+					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
+						deathCause = key
+						print('death ' .. deathCause)
+					end
+				end
+
+				for _, key in pairs(InstaDeathCauses) do
+					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
+						InstaCause = key
+						print('insta ' .. InstaCause)
+					end					
+				end
+			end
+		end
+end)
 
 Citizen.CreateThread(
 	function()
@@ -142,7 +317,7 @@ Citizen.CreateThread(
 				Citizen.Wait(0) -- DO NOT REMOVE
 				isDead = true
 				deathEndingTime = GetGameTimer() + Config.RespawnTime
-			--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+				--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 			end
 		end
 	end
@@ -189,60 +364,61 @@ Citizen.CreateThread(
 	function()
 		while true do
 			Citizen.Wait(0)
-			if isDead then
-				if not isCaused then
-					for _, k in pairs(causes) do
-						if GetHashKey(k) == GetPedCauseOfDeath(PlayerPedId()) then
-							deathCause = k
-						end
-					end
-					local retVal, boneIndex = GetPedLastDamageBone(PlayerPedId())
-					for _, k in pairs(bones) do
-						if k == boneIndex then
-							damageBone = k
-						end
-					end
-					isCaused = true
-				end
+			if isDead then			
 				if deathEndingTime > GetGameTimer() then
-					if damageBone ~= nil then
+					if not LoopCause then						
+						for BodyPart, v in pairs(allbones) do
+							for _, bonesId in pairs(v) do
+								for _, DamagedBone in pairs(damageBone) do
+									if bonesId == DamagedBone then
+										for _, vital in pairs(vitalBones) do
+											if BodyPart == vital then
+												if deathCause == InstaCause then
+													InstaDeath = true
+												else												
+													InstaDeath = false										
+												end			
+											else
+												if deathCause == InstaCause then
+													InstaDeath = true
+												else												
+													InstaDeath = false										
+												end	
+											end
+										end					
+									end
+								end
+							end
+						end
+						LoopCause = true
+					end
+					if InstaDeath then
 						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
 						DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
 						DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
+						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)			
 					else
-						if deathCause == (GetHashKey("WEAPON_EXPLOSION") or GetHashKey("WEAPON_FIRE") or GetHashKey("WEAPON_THROWN_MOLOTOV") or GetHashKey("WEAPON_THROWN_DYNAMITE")) then
-							DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-							DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
-							DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-							DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
-						else
-							DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-							DrawTxt(Config.LocaleDead, 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
-							DrawTxt("Levantando em", 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-							DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
-						end
+						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+						DrawTxt(Config.LocaleDead, 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+						DrawTxt("Levantando em", 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)	
 					end
 					DisableAllControlActions(0)
 					DisableAllControlActions(1)
 					DisableAllControlActions(2)
+					Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
+					Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
 					DestroyAllCams(true)
 					DisplayHud(false)
 					DisplayRadar(false)
 				else
-					if damageBone ~= nil then
+					if InstaDeath then
 						isInjure = true
 						PressDeath = true
 						up = false
-					else
-						if deathCause == (GetHashKey("WEAPON_EXPLOSION") or GetHashKey("WEAPON_FIRE") or GetHashKey("WEAPON_THROWN_MOLOTOV") or GetHashKey("WEAPON_THROWN_DYNAMITE")) then
-							isInjure = true
-							PressDeath = true
-							up = false
-						else
-							isInjure = true
-							up = true
-						end
+					else						
+						isInjure = true
+						up = true						
 					end
 				end
 				--SetPedToRagdollWithFall(PlayerPedId(), Config.RespawnTime, Config.RespawnTime,0 , -0.440, -0.890, 0, 2, 0,0,0,0,0,0)
@@ -253,8 +429,6 @@ Citizen.CreateThread(
 			if isInjure then
 				Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
 				Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
-				DisableControlAction(0, 0x8FFC75D6, true) -- sprint
-				DisableControlAction(0, 0xD9D0E1C0, true) -- jump
 				DisplayHud(true)
 				DisplayRadar(true)
 				if up then
@@ -262,23 +436,16 @@ Citizen.CreateThread(
 					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)
 					SetEntityHealth(PlayerPedId(), 1)
 					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
-					up = false
-					local AliveTime = math.random(13, 18) * 60000
-					Wait(AliveTime)
-					isInjure = false
-					SetEntityHealth(PlayerPedId(), 0)
-					PressDeath = true
+					LoopCause = false
+					Uptime()
 				end
 				if PressDeath then
 					local closestIndex
 					local lowestDist
 					local ped = PlayerPedId()
 					local coords = GetEntityCoords(ped)
-
 					initRespawnPrompt()
-
 					PromptSetActiveGroupThisFrame(promptGroup, promptGroupName)
-
 					if PromptHasHoldModeCompleted(prompt) then
 						PromptDelete(prompt)
 						prompt = nil
@@ -301,10 +468,31 @@ Citizen.CreateThread(
 	end
 )
 
+
+function Uptime()
+	local AliveTime = math.random(13, 18) * 60000
+	local UpTime = GetGameTimer() + AliveTime
+	while true do
+	Citizen.Wait(0)
+		if UpTime < GetGameTimer() then		
+			SetEntityHealth(PlayerPedId(), 0)
+			PressDeath = true
+			break
+		else
+			if isInjure then
+				up = true
+			else
+				break
+			end
+			DisableControlAction(0, 0x8FFC75D6, true) -- sprint
+			DisableControlAction(0, 0xD9D0E1C0, true) -- jump
+		end
+	end
+end
+
 function initRespawnPrompt()
 	if prompt == nil then
 		promptGroupName = CreateVarString(10, "LITERAL_STRING", "Você está morto.")
-
 		prompt = PromptRegisterBegin()
 		promptGroup = GetRandomIntInRange(0, 0xE8342FF2)
 		PromptSetControlAction(prompt, 0xCEFD9220)
@@ -341,9 +529,7 @@ AddEventHandler(
 		clearDeath()
 		TriggerServerEvent("VP:Respawn:_Dead")
 		DoScreenFadeOut(500)
-
 		print(Locations[spawn])
-
 		NetworkResurrectLocalPlayer(Locations[spawn], 59.95, true, true, false)
 		SetEntityCoordsNoOffset(ped, Locations[spawn], false, false, false, true)
 		SetEntityCoords(ped, Locations[spawn])
@@ -355,8 +541,14 @@ AddEventHandler(
 function clearDeath()
 	isInjure = false
 	isDead = false
+	LoopCause = false	
 	deathEndingTime = nil
-	damageBone = nil
+	up = false	
+	UpTime = nil
+	InstaDeath = false
+	InstaCause = nil
+	deathCause = nil
+	damageBone = {}
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
@@ -428,7 +620,6 @@ AddEventHandler(
 --=============================================================-- DRAW TEXT SECTION--=============================================================--
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
 	local str = CreateVarString(10, "LITERAL_STRING", str)
-
 	--Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
 	SetTextScale(w, h)
 	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))

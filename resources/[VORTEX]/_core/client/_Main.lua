@@ -593,7 +593,7 @@ function cAPI.Temperatura()
 		else
 			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 0, 0)
 		end
-		if temperatura > 40 then
+		if temperatura > 42 then
 			Wait(5000)
 			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
 			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
