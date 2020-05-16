@@ -7,6 +7,8 @@ RegisterServerEvent('_chat:messageEntered')
 RegisterServerEvent('chat:clear')
 RegisterServerEvent('__cfx_internal:commandFallback')
 
+
+-- /////////////////////// COMENTAR ISSO
 AddEventHandler('_chat:messageEntered', function(author, color, message)
     if not message or not author then
         return
@@ -20,6 +22,7 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
 
     print(author .. '^7: ' .. message .. '^7')
 end)
+-- /////////////////////// COMENTAR ISSO
 
 AddEventHandler('__cfx_internal:commandFallback', function(command)
     local name = GetPlayerName(source)
@@ -27,7 +30,7 @@ AddEventHandler('__cfx_internal:commandFallback', function(command)
     TriggerEvent('chatMessage', source, name, '/' .. command)
 
     if not WasEventCanceled() then
-        TriggerClientEvent('chatMessage', -1, name, { 255, 255, 255 }, '/' .. command) 
+       -- TriggerClientEvent('chatMessage', -1, name, { 255, 255, 255 }, '/' .. command) 
     end
 
     CancelEvent()
