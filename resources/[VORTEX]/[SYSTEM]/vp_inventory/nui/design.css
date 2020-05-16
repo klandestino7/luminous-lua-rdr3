@@ -226,8 +226,8 @@ Its simulated from .selected :D
 }*/
 
 .container .inventory .inventory-container .slot-container .slot img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 60%;
+    max-height: 60%;
 }
 
 .container .inventory .inventory-container .slot-container .selected {
