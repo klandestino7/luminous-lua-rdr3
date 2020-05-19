@@ -11,16 +11,12 @@ client_scripts {
 	"config/CraftableItems.lua",
 	---------------------
 	"client/_Main.lua",
-	"client/Horse.lua",
 	"client/BasicNeeds.lua",
 	"client/LoadIPL.lua",
 	"client/Ped.lua",
 	"client/Player.lua",
 	"client/Wrapper.lua",
 	"client/Area.lua",
-	--"client/DebuggingControls.lua",
-	---------------------
-	--"shared/DoorStateContainer.lua"
 }
 
 server_scripts {
@@ -53,8 +49,6 @@ server_scripts {
 	"server/manager/HorseManager.lua",
 	"server/manager/PosseManager.lua",
 	"server/manager/AreaManager.lua",
-	---------------------
-	"shared/DoorStateContainer.lua"
 }
 
 files {
