@@ -8,7 +8,6 @@ body {
 	background-color: transparent !important;
 }
 
-
 @font-face {
     font-family: 'crock';
     font-style: normal;
@@ -20,7 +19,6 @@ body {
     font-style: normal;
     src: url('robotoslab.ttf') format('truetype')
 }
-
 
 #notifications {
 	transition: all 0.5s;
@@ -56,14 +54,14 @@ body {
 	align-items: center;
 }
 
-.timer{
+/* .timer{
 	background-image: url('timer.png');
 	background-size: 90% 100%;
 	background-repeat: no-repeat;
 	width: 20px;
 	height: 50px;
 	animation: fadeout 11s 0.1s forwards;	
-}
+} */
 
 .title{
 	background: rgba(255,0,0,0.4);
