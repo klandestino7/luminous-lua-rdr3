@@ -310,14 +310,14 @@ RegisterCommand(
                 if UserTarget ~= nil then
                     local TargetCharacter = UserTarget:getCharacter()
                     for group, _ in pairs(TargetCharacter:getGroups()) do
-                        User:notify('longer_dev', group)
+                        User:notify("longer_dev", group)
                     end
                 else
                     User:notify("error", "Usuario invalido!")
                 end
             else
                 for group, _ in pairs(Character:getGroups()) do
-                    User:notify('longer_dev', group)
+                    User:notify("longer_dev", group)
                 end
             end
         else
@@ -334,6 +334,21 @@ RegisterCommand(
             local Character = User:getCharacter()
             if Character:hasGroupOrInheritance("admin") then
                 TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
+            else
+                User:notify("error", "Você não tem permissão!")
+            end
+        end
+    end
+)
+
+RegisterCommand(
+    "spawnprop",
+    function(source, args, rawCommand)
+        if #args >= 1 then
+            local User = API.getUserFromSource(source)
+            local Character = User:getCharacter()
+            if Character:hasGroupOrInheritance("admin") then
+                TriggerClientEvent("VP:ADMIN:SpawnObject", source, args[1])
             else
                 User:notify("error", "Você não tem permissão!")
             end
@@ -372,11 +387,24 @@ RegisterCommand(
             if args[1] ~= nil then
                 local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
                 if tplayer ~= nil then
-                    cAPI.SetPlayerHorseHealth(tplayer, 100)
+                    cAPI.VaryPlayerHorseHealth(tplayer, 100)
                 end
             else
-                cAPI.SetPlayerHorseHealth(_source, 100)
+                cAPI.VaryPlayerHorseHealth(_source, 100)
             end
+        end
+    end
+)
+
+RegisterCommand(
+    "deltarget",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            TriggerClientEvent("VP:ADMIN:DestroyTargetEntity", _source)
         end
     end
 )

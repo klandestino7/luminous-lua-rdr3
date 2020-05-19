@@ -29,6 +29,29 @@ AddEventHandler(
 	end
 )
 
+RegisterNetEvent("VP:ADMIN:SpawnObject")
+AddEventHandler(
+	"VP:ADMIN:SpawnObject",
+	function(model)
+		local modelHash = GetHashKey(model)
+		if not IsModelValid(modelHash) then
+			print("model is not valid")
+			return
+		end
+
+		if not HasModelLoaded(modelHash) then
+			RequestModel(modelHash)
+			while not HasModelLoaded(modelHash) do
+				Citizen.Wait(10)
+			end
+		end
+
+		local obj = CreateObject(modelHash, GetEntityCoords(PlayerPedId()), 1, 1, 1)
+
+		SetModelAsNoLongerNeeded(pedModelHash)
+	end
+)
+
 RegisterCommand(
 	"weapon",
 	function(source, args)
@@ -219,6 +242,29 @@ AddEventHandler(
 	end
 )
 
+RegisterNetEvent("VP:ADMIN:DestroyTargetEntity")
+AddEventHandler(
+	"VP:ADMIN:DestroyTargetEntity",
+	function()
+		print("a")
+		local ped = PlayerPedId()
+		local pedVector = GetEntityCoords(ped)
+
+		local cameraRotation = GetGameplayCamRot()
+		local cameraCoord = GetGameplayCamCoord()
+		local direction = RotationToDirection(cameraRotation)
+		local lastCoords = vec3(cameraCoord.x + direction.x * 10.0, cameraCoord.y + direction.y * 10.0, cameraCoord.z + direction.z * 10.0)
+
+		local rayHandle = StartShapeTestRay(cameraCoord, lastCoords, -1, ped, 0)
+		local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
+
+		if hit == 1 and entityHit ~= 0 then
+			SetEntityAsMissionEntity(entityHit, true, true)
+			DeleteEntity(entityHit)
+		end
+	end
+)
+
 AddEventHandler(
 	"onResourceStop",
 	function(resourceName)
@@ -238,55 +284,67 @@ AddEventHandler(
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
-		-- print("ies")
+		local coords = GetEntityCoords(PlayerPedId())
+		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
+		coords = vec3(coords.xy, groundZ)
 
-		local mount = GetMount(PlayerPedId())
-		-- mount = 325123
+		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
+		-- if IsModelValid(objHash) then
+		-- 	if not HasModelLoaded(objHash) then
+		-- 		RequestModel(objHash)
+		-- 		while not HasModelLoaded(objHash) do
+		-- 			Citizen.Wait(10)
+		-- 		end
+		-- 	end
+		-- end
 
-		print()
-		-- 92442
-		-- 315933
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_HUMAN_BALE_PICKUP_1"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
 
-		-- TaskAnimalInteraction(PlayerPedId(), 92442, -224471938, 0, 0) -- FEED HORSE
-		-- TaskAnimalInteraction(PlayerPedId(), 92442, -1355254781, GetHashKey("p_cs_syringe01x"), 0) -- INJECT HORSE
-		-- TaskAnimalInteraction(PlayerPedId(), 92442, 1968415774, 0, 0) -- HORSE POMADE
-		TaskAnimalInteraction(PlayerPedId(), mount, GetHashKey("INTERACTION_TUCKMEDIUMPELT"), 0, 0) -- BRUSH HORSE
+		-- -- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, false)
 
-		-- local carried = Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
-		-- print(carried)
+		-- Wait(250)
 
-		-- 0xF49F14462F0AE27C
-		-- Entity _GET_MOUNT_OWNED_BY_PLAYER(Player player)
-
-		-- 0xB9D5BDDA88E1BB66
-		-- BOOL _IS_THIS_MODEL_A_CART(Hash model)
-
-		-- 0xB9050A97594C8832
-		-- Entity _GET_VEHICLE_OWNED_BY_PLAYER(Player player)
-
-		-- 0xD0E02AA618020D17
-		-- _SET_PLAYER_OWNS_VEHICLE(Player player)
-
-		-- 0x838C216C2B05A009
-		-- _SET_PED_OWNS_VEHICLE(Ped ped)
-
-		-- 0xB729679356A889AE
-		-- _GET_VEHICLE_OWNER(Vehicle vehicle)
-
-		-- print(carried)
-		-- ResurrectPed(288517)
-		-- FreezeEntityPosition(288517, true)
-
-		-- UnlockSetUnlocked(GetHashKey("SP_WEAPON_DUALWIELD"), true)
-		-- UnlockSetVisible(GetHashKey("SP_WEAPON_DUALWIELD"), true)
-		-- Citizen.InvokeNative(0x8F4F050054005C27, PlayerId(), 16)
-		-- Citizen.InvokeNative(0xFB6E111908502871, 15)
-
-		-- UNLOCK__ROLE__EAGLE_EYE_PLUS_EFFECT
-		-- SetPedConfigFlag(PlayerPedId(), 556, true)
-		-- SetPedConfigFlag(PlayerPedId(), 263, true)
+		-- local a = Citizen.InvokeNative(0x345EC3B7EBDE1CB5, coords, 1.0 ,  1 )
+		-- local b = Citizen.InvokeNative(0x91CB5E431F579BA1, scenario)
+		-- local c = Citizen.InvokeNative(0xA92450B5AE687AAF, scenario)
+		-- local d = Citizen.InvokeNative(0xDF7993356F52359A, PlayerPedId())
+		-- local e = Citizen.InvokeNative(0x2D0571BB55879DA2, PlayerPedId())
+		-- print(" ", scenario)
+		-- print(a)
+		-- print(b)
+		-- print(c)
+		-- print(d)
+		-- print(e)
+		-- local ff
+		-- print(GetPedNearbyPeds(PlayerPedId(), f, -1, -1))
+		-- print(ff)
 	end
 )
+
+-- ? // 0xD04241BBF6D03A5E
+-- ? Scenario _GET_SCENARIO_POINT_*
+
+-- ? // _0x345EC3B7EBDE1CB5
+-- ? int _GET_SCENARIO_POINT_CLOSE_TO_COORDS(float posX, float posY, float posZ, float ?radius, int p4)
+
+-- // 0xDF7993356F52359A
+-- int _GET_SCENARIO_POINT_PED_IS_USING(Ped ped, BOOL p1)
+
+-- ? // 0x6718F40313A2B5A6
+-- ? float _GET_SCENARIO_POINT_PHASE(int scenario)
+
+-- // 0xA92450B5AE687AAF
+-- Hash GET_SCENARIO_POINT_TYPE(int scenario)
+
+-- // 0x2D0571BB55879DA2
+-- int _GET_SCENARIO_POINT_TYPE_PED_IS_USING(Ped)
+
+-- // 0x19A6BE7D9C6884D3
+-- BOOL _REQUEST_SCENARIO_TYPE(Hash scenarioType)
+
+-- // 0x9427C94D2E4094A4
+-- BOOL _HAS_SCENARIO_TYPE_LOADED(Hash scenarioType)
 
 -- 0xCE285A4413B00B7F
 -- UNLOCK::_UNLOCK_SET_UNLOCKED(joaat("SP_WEAPON_DUALWIELD"), true);
@@ -311,3 +369,17 @@ RegisterCommand(
 -- Hash GET_PED_COMPONENT_AT_INDEX
 
 -- SKINNING_DAMAGE_POOR_QUALITY_LEGENDARY
+
+function RotationToDirection(rotation)
+	local adjustedRotation = {
+		x = (math.pi / 180) * rotation.x,
+		y = (math.pi / 180) * rotation.y,
+		z = (math.pi / 180) * rotation.z
+	}
+	local direction = {
+		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		z = math.sin(adjustedRotation.x)
+	}
+	return direction
+end
