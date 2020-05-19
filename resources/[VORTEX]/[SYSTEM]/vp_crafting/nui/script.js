@@ -17,7 +17,7 @@ window.addEventListener("message", function(event) {
 
             $('#playerInventory .containinv').append(`
                 <div class="slot" id="craftable_${i}" onclick="select(this)">
-                    <div class="item" style="background-image: url('./img/items/${i}.png')">
+                    <div class="item" style="background-image: url('nui://vp_inventory/nui/images/items/${i}.png')">
                         <div class="item-name">
                             ${parsedItemNames[i]}
                         </div>
@@ -36,7 +36,6 @@ window.addEventListener("message", function(event) {
         $('.ui').hide();
         $('#otherInventory .itemselected').html("<div class='imageitem'></div><p class='invtitle'>Selecione um item <br/></p> <p class='invdesc'>Selecione um item da esquerda que deseje craftar e verá abaixo os itens necessários para craftar. </p> ");
         $('#otherInventory .containinv').html('');
-
     }
 
     if (event.data.action == 'update') {
@@ -80,7 +79,7 @@ function showCraftingParts(id) {
     $.each(craftingItems[id].craftingParts, function(i, amount) {
                 $('#otherInventory .itemselected').html(`
                 <div class="imageitem">
-                    <img class="imgitem" src="img/items/${id}.png">                    
+                    <img class="imgitem" src="nui://vp_inventory/nui/images/items/${id}.png">                    
                 </div>  
                 <p class="invtitle">${parsedItemNames[id]}</p>
                 <p class="invdesc">${craftingItems[id].craftingDesc}</p>
@@ -88,7 +87,7 @@ function showCraftingParts(id) {
 
                 $('#otherInventory .containinv').append(`
                 <div class="slot" id="part_${i}">
-                <div class="item" style="background-image: url('img/items/${i}.png')">
+                <div class="item" style="background-image: url('nui://vp_inventory/nui/images/items/${i}.png')">
                 <div class="item-count">
                     <div class="item-count-bg">
                         ${ownedParts[i] != null ? ownedParts[i] == 0 ? `<red>0</red>`: ownedParts[i] : `<red>0</red>`}/${amount}

@@ -14,6 +14,7 @@ Citizen.CreateThread(
                         type = "nextHotbarSlot"
                     }
                 )
+                Wait(500)
             end
         end
     end

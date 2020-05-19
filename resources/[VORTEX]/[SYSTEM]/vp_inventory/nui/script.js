@@ -13,6 +13,9 @@ var hotbarSlotSelected = 5;
 
 // Criar uma descrição para os items em _core/config/Items.lua
 
+document.addEventListener("DOMContentLoaded", function(event) {
+    $('.hotbar').hide();
+});
 
 
 window.addEventListener("message", function(event) {
@@ -36,7 +39,7 @@ window.addEventListener("message", function(event) {
             $("#secondary #background-image").css('opacity', '0.98');
         }
 
-        if (event.data.type == 'nextHotbarSlot') {
+        if (event.data.type == 'nextHotbarSlot' || event.data.type == 'previousHotbarSlot') {
 
             if (hotbarSlotSelected != undefined) {
                 hotbarSlotSelected = hotbarSlotSelected + 1;
@@ -46,6 +49,12 @@ window.addEventListener("message", function(event) {
             } else {
                 hotbarSlotSelected = 1;
             }
+
+            // if ($('.hotbar').css('display') == "none") {
+            $('.hotbar').fadeIn(500).delay(5000).fadeOut(500);
+            // } else {
+            //     $('.hotbar').dequeue().delay(5000).fadeOut(500);
+            // }
 
             $('.hotbar-slot-selected').removeClass("hotbar-slot-selected");
 
@@ -57,20 +66,16 @@ window.addEventListener("message", function(event) {
             $.post('http://vp_inventory/interactWithHotbarSlot', JSON.stringify({
                 itemId: itemId,
             }));
-        } else {
-            // $('.container:hidden').css('display', 'flex');
-
-            $(".helper").html("");
         }
 
-        if (event.data.ToggleHotbar) {
-            if (event.data.val == true) {
-                $('.hotbar').css('opacity', '1');
+        // if (event.data.ToggleHotbar) {
+        //     if (event.data.val == true) {
+        //         $('.hotbar').show();
 
-            } else {
-                $('.hotbar').css('opacity', '0');
-            }
-        }
+        //     } else {
+        //         $('.hotbar').hide();
+        //     }
+        // }
 
         if (event.data.primarySlots) {
             // var clearedRecent = false;
@@ -478,7 +483,7 @@ function slotsAsFakeDroppable() {
 }
 
 function drawHotbar() {
-    $(".hotbar").css('opacity', '1');
+    // $(".hotbar").css('opacity', '1');
 
     for (var slotId = 129; slotId <= 132; slotId++) {
         var Slot = primaryItemList[slotId];
