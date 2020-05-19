@@ -14,8 +14,8 @@ AddEventHandler('VP:MEDIC:revivecheck', function()
   local player, distance = GetClosestPlayer()
 
   if distance ~= -1 and distance <= 3.0 then
-    TriggerServerEvent('VP:MEDIC:revivecallback', GetPlayerPed(player))
-    TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Curou o (' .. GetPlayerName(player) .. ')')
+    TriggerServerEvent('VP:MEDIC:revivecallback', GetPlayerServerId(player))
+   -- TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Curou o (' .. GetPlayerName(player) .. ')')
   else
     TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
   end
@@ -28,11 +28,16 @@ AddEventHandler('VP:MEDIC:heal', function(healType, quiet)
 	SetEntityHealth(playerPed, maxHealth)
 end)
 
+RegisterNetEvent('VP:MEDIC:ReceiveStatus')
+AddEventHandler('VP:MEDIC:ReceiveStatus', function(data)
+print('chegouu'.. json.encode(data))
+
+end)
+
 Citizen.CreateThread(
 	function()
 		while true do
 			Citizen.Wait(100) -- DO NOT REMOVE
-
 			local playerdst = cAPI.getNearestPlayer(3)
 			local whoplayer = cAPI.getNearestPlayers(3)
 			--if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT      
