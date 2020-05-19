@@ -31,7 +31,6 @@ AddEventHandler(
         TriggerEvent("chatMessage", source, name, "/" .. command)
 
         if not WasEventCanceled() then
-            TriggerClientEvent("chatMessage", -1, name, {255, 255, 255}, "/" .. command)
         -- TriggerClientEvent('chatMessage', -1, name, { 255, 255, 255 }, '/' .. command)
         end
 

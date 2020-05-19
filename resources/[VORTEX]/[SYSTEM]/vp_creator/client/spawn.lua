@@ -54,23 +54,25 @@ Citizen.CreateThread(
                 local pcoords = GetEntityCoords(PlayerPedId())                
                 local dst = #(coords - pcoords)	   
                 if dst < 5 then
-                    print('maoi')
                     RemovePedFromGroup(ped, GetPedGroupIndex(PlayerPedId()))
                     Wait(100)
                     DisableAllControlActions(0)                  
                     NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
                     SetEntityInvincible(PlayerPedId(), false)  
-                    SetCinematicModeActive(0)
+                    SetCinematicModeActive(0)                    
                     FirstSpawn = false
                     N_0x69d65e89ffd72313(false)    
                     Wait(2000)
                     TaskLeaveVehicle(PlayerPedId(), car, 0, 0) 
-                    Wait(3000)      
+                    Wait(3000)
+                         
                     TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), -848.584,-1252.746,43.559, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
-                    TriggerEvent('VP:NOTIFY:Simple', 'Você perdeu todas as suas roupas, tem uma loja de roupa do outro lado da rua, que ~pa~tal ir lá se trocar?')
+                    
+                    TriggerEvent('VP:NOTIFY:Simple', 'Você perdeu todas as suas roupas, tem uma loja de roupa do outro lado da rua, que tal ir lá se trocar?', 10000)
                     TriggerMusicEvent("MC_MUSIC_STOP")                    
                     Wait(10000)
-                    TriggerEvent('VP:NOTIFY:Simple', 'Digite /guiainiciante ver o ~pa~Jornal Guia de Iniciante.')
+
+                    TriggerEvent('VP:NOTIFY:Simple', 'Digite /guiainiciante ver o Jornal Guia de Iniciante.', 10000)
                     DeleteVehicle(car)
                     DeleteEntity(ped)
                 else               
@@ -99,6 +101,7 @@ AddEventHandler(
 				if HasModelLoaded(veh) then
                     car = CreateVehicle(veh, coords, 264.0, true, true, false, true)
                   --  SetEntityCollision(car, true, true)
+                  NetworkSetEntityInvisibleToNetwork(car, true)
 				end
 			end
 		)
@@ -110,13 +113,13 @@ AddEventHandler(
 	"VP:CREATOR:StartNotify",
     function()
     Wait(5000)
-	TriggerEvent('VP:NOTIFY:Simple', 'Saudações, caubói. Seja muito bem-vindo ao  ~o~Faroeste Roleplay~q~, sinta-se livre para explorar as mais variadas regiões e descobrir os mistérios que esse novo mundo lhe aguarda. ')
+	TriggerEvent('VP:NOTIFY:Simple', 'Saudações, caubói. Seja muito bem-vindo ao  Faroeste Roleplay, sinta-se livre para explorar as mais variadas regiões e descobrir os mistérios que esse novo mundo lhe aguarda. ', 12000)
     Wait(15000)
-    TriggerEvent('VP:NOTIFY:Simple', 'Leia o ~o~mural de regras~q~ para ficar por dentro de tudo o que é permitido no servidor, e para que assim evite dúvidas ou problemas futuros. ')
+    TriggerEvent('VP:NOTIFY:Simple', 'Leia o mural de regras~ para ficar por dentro de tudo o que é permitido no servidor, e para que assim evite dúvidas ou problemas futuros. ', 10000)
     Wait(15000)
-    TriggerEvent('VP:NOTIFY:Simple', 'Tome cuidado ao andejar pelo anoitecer no faroeste, somente os verdadeiramente aventureiros ficam depois do escurecer... dizem que é um mundo totalmente diferente sob a luz da Lua.')
-    Wait(15000)
-    TriggerEvent('VP:NOTIFY:Simple', 'Aqui é Blackwater, a primeira cidade na qual você vai conhecer. Nela você poderá encontrar diversas lojas de departamento, como a ~v~loja de roupas~v~, ~v~cabeleireiro~v~, ~v~departamento de polícia~v~, entre outros. Mas lembre-se de que há um mundo imenso para você explorar!')
+    TriggerEvent('VP:NOTIFY:Simple', 'Tome cuidado ao andejar pelo anoitecer no faroeste, somente os verdadeiramente aventureiros ficam depois do escurecer... dizem que é um mundo totalmente diferente sob a luz da Lua.', 12000)
+    Wait(18000)
+    TriggerEvent('VP:NOTIFY:Simple', 'Aqui é Blackwater, a primeira cidade na qual você vai conhecer. Nela você poderá encontrar diversas lojas de departamento, como a loja de roupas, cabeleireiro, departamento de polícia, entre outros. Mas lembre-se de que há um mundo imenso para você explorar!', 18000)
 end)
 
 RegisterNetEvent("VP:CREATOR:CreatePedOnVehicle")
@@ -139,12 +142,12 @@ AddEventHandler(
 		ped = CreatePed(pedModelHash, coords, GetEntityHeading(PlayerPedId()), 1, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+        NetworkSetEntityInvisibleToNetwork(ped, true)
         SetEntityAsMissionEntity(ped)
         SetModelAsNoLongerNeeded(pedModelHash)
         SetPedAsGroupMember(ped, GetPedGroupIndex(PlayerPedId()))
         SetPedIntoVehicle(ped, car, -1)   
         TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), -746.465,-1294.942,43.244, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
-        print(GetPedGroupIndex(ped), GetPedGroupIndex(ped))
 	end
 )
 
