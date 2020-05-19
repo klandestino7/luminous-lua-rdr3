@@ -7,8 +7,15 @@ spawnedCamera = nil
 choosePed = {}
 pedSelected = PlayerPedId()
 sex = nil
-zoom = 2.5
-offset = 0.2
+
+InterP = false
+CamActive = false
+zoom = 1.0
+offset = 0.5
+fixedCam = nil
+tempCam2 = nil
+tempCam = nil
+groundCam = nil
 
 local adding2 = true
 local adding = true
@@ -99,6 +106,29 @@ local mustache_m = {}
 
 local skirts_f = {}
 --
+
+
+cameraUsing = {
+    {
+        name = "Pernas",
+        x=-1.0,
+        y=0.0,
+        z=0.5,
+    },
+    {
+        name = "Rosto",
+        x=-0.5,
+        y=0.0,
+        z=0.6,
+    },
+    {
+        name = "Corpo",
+        x=-1.3,
+        y=0.0,
+        z=0.4,
+    },
+}
+
 
 Citizen.CreateThread(function()
     while adding do
@@ -236,10 +266,15 @@ Citizen.CreateThread(function()
 end)
 
 RegisterCommand("clothe", function(source, args)
+
+
+ 
     inCustomization = true
    clothes = true
    hided = false
+   CamActive = false
    SetEntityHeading(PlayerPedId(), 334) 
+  
 end)
 
 
@@ -249,7 +284,10 @@ AddEventHandler('VP:STORECLOTHES:open', function()
     inCustomization = true
     clothes = true
     hided = false
-    SetEntityHeading(PlayerPedId(), 334) 
+    CamActive = false
+    SetEntityHeading(PlayerPedId(), 334)          
+
+                    createCamera()
 end)
 
 function rotation(dir)
@@ -281,8 +319,11 @@ Citizen.CreateThread(
                     sex = 'mp_female'
                 else    
                     sex = 'mp_male'
+                end      
+                if not CamActive then        
+                    createCamera()  
+                    CamActive = true
                 end
-                camera(zoom, offset)
                 SendNUIMessage(
                     {
                         action = 'showCreate',
@@ -320,66 +361,43 @@ AddEventHandler(
     end
 )
 
-function createCam(creatorType)
-    for k, v in pairs(cams) do
-        if cams[k].type == creatorType then
-            cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', cams[k].x, cams[k].y, cams[k].z, cams[k].rx, cams[k].ry, cams[k].rz, cams[k].fov, false, 0) -- CAMERA COORDS
-            SetCamActive(cam, true)
-            RenderScriptCams(true, false, 3000, true, false)
-            createPeds()
-        end
-    end
+-- function interpCamera(cameraName, entity)
+--     SetCamActiveWithInterp(fixedCam, tempCam, 1200, true, true)
+--     for k,v in pairs(cameraUsing) do
+--         if cameraUsing[k].name == cameraName then
+--             tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+--             AttachCamToEntity(tempCam, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+--             AttachCamToEntity(tempCam, entity, cameraUsing[k].x, cameraUsing[k].y, cameraUsing[k].z)
+--             SetCamActive(tempCam, true)            
+--             SetCamRot(tempCam, -10.0, 0, GetEntityHeading(PlayerPedId()) + 300)
+--             if InterP then    
+--                 SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
+--                 InterP = false
+--             end  
+--         end
+--     end
+-- end
+
+function createCamera()
+    TriggerEvent('VP:NOTIFY:Simple', 'Utilize as teclas A e D para rotacionar o personagem, e as setas do teclado para selecionar as opções.', 10000)
+    local coords = GetEntityCoords(PlayerPedId())
+    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", coords.x - 2.0, coords.y + 3.5, coords.z + 5.2)    
+    SetCamCoord(groundCam, coords.x - 2.0, coords.y - 1.5, coords.z + 0.2)
+    SetCamRot(groundCam, -10.0, 0.0, GetEntityHeading(PlayerPedId())+ 253)
+    SetCamActive(groundCam, true)    
+    RenderScriptCams(true, false, 1, true, true)
+    --Wait(3000)
+    -- last camera, create interpolate
+    fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
+    SetCamCoord(fixedCam, coords.x - 2.0, coords.y - 0.5, coords.z + 0.5)
+    SetCamRot(fixedCam, -15.0, 0, GetEntityHeading(PlayerPedId()) + 300)
+    SetCamActive(fixedCam, true)
+    SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
+    Wait(3900)
+    DestroyCam(groundCam)
+   -- InterP = true
 end
 
-
-function camera(zoom, offset)
-    DestroyAllCams(true)
-        local playerPed = PlayerPedId()
-        local coords    = GetEntityCoords(playerPed)
-        local heading = 45.0
-        local zoomOffset = zoom
-        local camOffset = offset
-        local angle = heading * math.pi / 180.0
-        local theta = {
-            x = math.cos(angle),
-            y = math.sin(angle)
-        }
-    --    print(theta.x)
-        local pos = {
-            x = coords.x + (zoomOffset * theta.x),
-            y = coords.y + (zoomOffset * theta.y)
-        }
-     --   print(pos.x)
-        local angleToLook = heading - 140.0
-        if angleToLook > 360 then
-            angleToLook = angleToLook - 360
-        elseif angleToLook < 0 then
-            angleToLook = angleToLook + 360
-        end
-     --   print(angleToLook)
-        angleToLook = angleToLook * math.pi / 180.0
-        local thetaToLook = {
-            x = math.cos(angleToLook),
-            y = math.sin(angleToLook)
-        }
-    --    print(thetaToLook.x)
-        local posToLook = {
-            x = coords.x + (zoomOffset * thetaToLook.x),
-            y = coords.y + (zoomOffset * thetaToLook.y)
-        }
-      --  print(posToLook.x)
-
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", pos.x-0.6, pos.y, coords.z + camOffset, 300.00,0.00,0.00, 40.00, false, 0)
-        PointCamAtCoord(cam, posToLook.x, posToLook.y, coords.z + camOffset)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, true, 500, true, true)
-        DisplayHud(false)
-        DisplayRadar(false)
-
-    
-
-
-    end
 
 function createPeds()
     for k, v in pairs(peds) do
@@ -447,8 +465,6 @@ beltbuckleUsing = nil
 RegisterNUICallback(
     'Chapeu',
     function(data)        
-        zoom = 1.5
-        offset = 0.5
         if tonumber(data.id) == 0 then
             num = 0
             HatUsing = num
@@ -473,8 +489,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Camisa',
     function(data)
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             ShirtsUsing = num
@@ -499,8 +513,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Colete',
     function(data)
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0    
             VestsUsing = num
@@ -525,8 +537,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Calca',
     function(data)
-        zoom = 2.1
-        offset = -0.5
         if tonumber(data.id) == 0 then
             num = 0
             PantsUsing = num
@@ -551,8 +561,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Sapato',
     function(data)
-        zoom = 1.5
-        offset = -0.7
         if tonumber(data.id) == 0 then
             num = 0
             BootsUsing = num            
@@ -577,8 +585,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Mascara',
     function(data)   
-        zoom = 1.5
-        offset = 0.5
         if tonumber(data.id) == 0 then
             num = 0
             MasksUsing = num           
@@ -603,8 +609,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Casaco',
     function(data)
-        zoom = 2.2
-        offset = 0.1
         if tonumber(data.id) == 0 then
             num = 0
             CoatsUsing = num
@@ -629,8 +633,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Saia',
     function(data)       
-        zoom = 2.1
-        offset = -0.4
         if tonumber(data.id) == 0 then
             num = 0
             SkirtsUsing = num
@@ -676,8 +678,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Luva',
     function(data)
-        zoom = 2.0
-        offset = -0.3
         if tonumber(data.id) == 0 then
             num = 0
             GlovesUsing = num
@@ -702,8 +702,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Bandana',
     function(data)   
-        zoom = 1.5
-        offset = 0.5
         if tonumber(data.id) == 0 then
             num = 0
             NeckwearUsing = num
@@ -728,8 +726,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Coldre',
     function(data)
-        zoom = 2.0
-        offset = -0.3
         if tonumber(data.id) == 0 then
             num = 0
             GunbeltsUsing = num
@@ -754,8 +750,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Beltbuckle',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             beltbuckleUsing = num
@@ -780,8 +774,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Offhand',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             offhandUsing = num
@@ -806,8 +798,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Ponchos',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             ponchosUsing = num
@@ -832,8 +822,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Belts',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             beltsUsing = num
@@ -858,8 +846,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Gauntlets',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             gauntletsUsing = num
@@ -884,8 +870,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Suspenders',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             suspendersUsing = num
@@ -910,8 +894,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Bracelets',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             braceletsUsing = num
@@ -936,8 +918,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Neckties',
     function(data)        
-        zoom = 2.0
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             necktiesUsing = num
@@ -962,8 +942,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Access',
     function(data)        
-        zoom = 2.5
-        offset = 0.2
         if tonumber(data.id) == 0 then
             num = 0
             accessUsing = num
@@ -988,8 +966,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Eyewear',
     function(data)        
-        zoom = 1.5
-        offset = 0.5
         if tonumber(data.id) == 0 then
             num = 0
             eyewearUsing = num
@@ -1014,8 +990,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Chaps',
     function(data)        
-        zoom = 2.1
-        offset = -0.5
         if tonumber(data.id) == 0 then
             num = 0
             chapsUsing = num
@@ -1040,8 +1014,6 @@ RegisterNUICallback(
 RegisterNUICallback(
     'Spurs',
     function(data)        
-        zoom = 1.5
-        offset = -0.7
         if tonumber(data.id) == 0 then
             num = 0
             spursUsing = num

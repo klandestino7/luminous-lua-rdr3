@@ -68,8 +68,8 @@ Citizen.CreateThread(
 			DisableControlAction(0, 0x580C4473, true) -- hud disable
 			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
 
-			DisableControlAction(0, 0xE2B557A3, true) -- emote wheel
-			DisableControlAction(0, 0x8B3FA65E, true) -- emote wheel horse
+		--	DisableControlAction(0, 0xE2B557A3, true) -- emote wheel
+		--	DisableControlAction(0, 0x8B3FA65E, true) -- emote wheel horse
 
 			-- DisableControlAction(0, 0x41AC83D1, true) -- loot
 			DisableControlAction(0, 0x399C6619, true) -- loot 2
@@ -197,6 +197,60 @@ function cAPI.getNearestPlayer(radius)
 		end
 	end
 	return p
+end
+
+
+
+
+function cAPI.isNearPlayer()
+	local player, distance = GetClosestPlayer()
+	if distance ~= -1 and distance <= 2.0 then
+	    return player, distance
+	else
+	    return false
+	end
+	return false
+end
+
+function cAPI.GetPlayers()
+    local players = {}
+
+    for _,player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+
+        if DoesEntityExist(ped) then
+            table.insert(players, player)
+        end
+    end
+    return players
+end
+
+function cAPI.GetClosestPlayer()
+    local players, closestDistance, closestPlayer = GetPlayers(), -1, -1
+    
+    local coords, usePlayerPed = coords, false
+    local playerPed, playerId = PlayerPedId(), PlayerId()
+
+    if coords then
+        coords = vector3(coords.x, coords.y, coords.z)
+    else
+        usePlayerPed = true
+        coords = GetEntityCoords(playerPed)
+    end
+    for i=1, #players, 1 do
+        local target = GetPlayerPed(players[i])
+
+        if not usePlayerPed or (usePlayerPed and players[i] ~= playerId) then
+            local targetCoords = GetEntityCoords(target)
+            local distance = #(coords - targetCoords)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = players[i]
+                closestDistance = distance
+            end
+        end
+    end
+    return closestPlayer, closestDistance
 end
 
 local weaponModels = {
@@ -414,11 +468,11 @@ function cAPI.toggleNoclip()
 	noclip = not noclip
 	if noclip then
 		SetEntityInvincible(PlayerPedId(), true)
-		SetEntityVisible(PlayerPedId(), false, false)
+		SetEntityVisible(PlayerPedId(), false)
 		NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
 	else
 		SetEntityInvincible(PlayerPedId(), false)
-		SetEntityVisible(PlayerPedId(), true, false)
+		SetEntityVisible(PlayerPedId(), true)
 		NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
 	end
 end
@@ -468,7 +522,7 @@ Citizen.CreateThread(
 				elseif IsControlPressed(0, 0xDB096B85) then -- CTRL
 					noclip_speed = 0.2
 				else
-					noclip_speed = 1.0
+					noclip_speed = 0.001
 				end
 
 				SetEntityCoordsNoOffset(ped, x, y, z, true, true, true)
@@ -518,14 +572,14 @@ function cAPI.teleportToWaypoint()
 	-- SetEntityCoordsNoOffset(ped, x, y, height, 0, 0, 1)
 
 	RequestCollisionAtCoord(x, y, z)
-	local retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord9(x, y, z)
+	local retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x, y, z)
 
 	if retVal == false then
 		RequestCollisionAtCoord(x, y, z)
 		local tries = 10
 		while retVal == false and tries > 0 do
 			Citizen.Wait(100)
-			retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord9(x, y, z)
+			retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x, y, z)
 			tries = tries - 1
 		end
 
@@ -593,7 +647,7 @@ function cAPI.Temperatura()
 		else
 			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 0, 0)
 		end
-		if temperatura > 40 then
+		if temperatura > 42 then
 			Wait(5000)
 			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
 			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)

@@ -186,6 +186,48 @@ RegisterCommand("bale", function(source, args, rawCommand)
 end)
 
 
+RegisterCommand('whiskey', function(source, args)
+    local propEntity = CreateObject(GetHashKey('p_bottleJD01x'), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
+
+    local task = TaskItemInteraction_2(PlayerPedId(), -1199896558, propEntity, GetHashKey('ID_PH_R_HAND'), GetHashKey('EAT_STEW_BOWL_TABLE_BASE'), 1, 0, -1.0)
+    local istask = Citizen.InvokeNative(0x6AA3DCA2C6F5EB6D,PlayerPedId())
+    print(istask)
+
+end)
+
+RegisterCommand('champs', function(source, args)
+    local propEntity = CreateObject(GetHashKey('p_glass001x'), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
+
+    TaskItemInteraction_2(PlayerPedId(), -1199896558, propEntity, GetHashKey('p_glass001x_PH_R_HAND'), GetHashKey('DRINK_CHAMPAGNE_HOLD'), 1, 0, -1.0)
+end)
+RegisterCommand('beer', function(source, args)
+    local propEntity = CreateObject(GetHashKey('p_bottleBeer01a'), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
+
+    local task = TaskItemInteraction_2(PlayerPedId(), -1199896558, propEntity, GetHashKey('p_bottleBeer01x_PH_R_HAND'), GetHashKey('DRINK_BOTTLE@Bottle_Cylinder_D1-55_H18_Neck_A8_B1-8_TABLE_HOLD'), 1, 0, -1.0)
+end)
+
+RegisterCommand('coffee', function(source, args)
+    local propEntity = CreateObject(GetHashKey('p_mugCoffee01x'), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
+
+    local task = TaskItemInteraction_2(PlayerPedId(), -1199896558, propEntity, GetHashKey('p_mugCoffee01x_ph_r_hand'), GetHashKey('DRINK_COFFEE_HOLD'), 1, 0, -1.0)
+
+end)
+
+RegisterCommand('stew', function(source, args)
+local bowl = CreateObject("p_bowl04x_stew", GetEntityCoords(PlayerPedId()), true, true, false, false, true)
+local spoon = CreateObject("p_spoon01x", GetEntityCoords(PlayerPedId()), true, true, false, false, true)
+
+Citizen.InvokeNative(0x669655FFB29EF1A9, bowl, 0, "Stew_Fill", 1.0)
+Citizen.InvokeNative(0xCAAF2BCCFEF37F77, bowl, 20)
+
+Citizen.InvokeNative(0xCAAF2BCCFEF37F77, spoon, 82)
+
+TaskItemInteraction_2(PlayerPedId(), 599184882, bowl, GetHashKey("p_bowl04x_stew_ph_l_hand"), -583731576, 1, 0, -1.0)
+TaskItemInteraction_2(PlayerPedId(), 599184882, spoon, GetHashKey("p_spoon01x_ph_r_hand"), -583731576, 1, 0, -1.0)
+
+Citizen.InvokeNative(0xB35370D5353995CB, PlayerPedId(), -583731576, 1.0)
+end)
+
 
 RegisterCommand("bale2", function(source, args, rawCommand)
     local model = "p_haybale03x"
