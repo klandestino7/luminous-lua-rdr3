@@ -31,11 +31,11 @@ end)
 Citizen.CreateThread(
     function()
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
-     --   Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
+       Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
        Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
-        --N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
+        N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
     
-       -- Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
+        Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
         Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
 
         while true do
@@ -65,22 +65,88 @@ Citizen.CreateThread(
         --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
         --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
             cAPI.Temperatura()
+            Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)
-            Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
+            DisplayHud(true)
+           -- Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
         end
     end
 )
 
+--[[
+["1"] = 0xE6F612E4,
+["2"] = 0x1CE6D9EB,
+["3"] = 0x4F49CC4C,
+["4"] = 0x8F9F9E58,
+["5"] = 0xAB62E997,
+["6"] = 0xA1FDE2A6,
+["7"] = 0xB03A913B,
+["8"] = 0x42385422,
+
+    ["F1"] = 0xA8E3F467,
+    ["F4"] = 0x1F6D95E5,
+    ["F6"] = 0x3C0A40F2,
+]]
+
+Citizen.CreateThread(
+    function()
+        while true do            
+            Citizen.Wait(0)
+           -- print(GetHashKey('INPUT_SELECT_NEXT_WHEEL'))
+            EnableControlAction(0, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
+            EnableControlAction(0, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
+            EnableControlAction(0, 0x3C0A40F2, true)
+
+            EnableControlAction(1, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
+            EnableControlAction(1, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
+            EnableControlAction(1, 0x3C0A40F2, true)
+
+            EnableControlAction(2, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
+            EnableControlAction(2, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
+            EnableControlAction(2, 0x3C0A40F2, true)
+
+            if IsControlJustPressed(0, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
+                print('1')
+            end
+            if IsControlJustPressed(1, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
+                print('2')
+            end
+            if IsControlJustPressed(2, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
+                print('3')
+            end
+
+            if IsControlJustPressed(0, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
+                print('1')
+            end
+            if IsControlJustPressed(1, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
+                print('2')
+            end
+            if IsControlJustPressed(2, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
+                print('3')
+            end
+
+            if IsControlJustPressed(0, 0x3C0A40F2) then
+                print('1')
+            end
+            if IsControlJustPressed(1, 0x3C0A40F2) then
+                print('2')
+            end
+            if IsControlJustPressed(2, 0x3C0A40F2) then
+                print('3')
+            end
+        end
+end)
 
 RegisterCommand(
-    "jump",
+    "testb",
     function(source, args)
-        Wait(2000)
-        TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
+        local a = Citizen.InvokeNative(0x935A30AA88FB1014, PlayerPedId(), Citizen.ResultAsVector())
+        local b = Citizen.InvokeNative(0x6BFBDC46139C45AB, GetEntityCoords(PlayerPedId()))
+        print(a,b)
     end
 )
 
-script_re@public_hanging@criminal_male
+
 RegisterCommand(
     "cinema",
     function(source, args)
@@ -112,9 +178,9 @@ RegisterCommand(
     "cans",
     function(source, args)
 
-        Citizen.InvokeNative(0xF6A7C08DF2E28B28, PlayerPedId(), 2, 1.0, true) -- bost        
+        Citizen.InvokeNative(0xF6A7C08DF2E28B28, PlayerPedId(), 0, 1.0, true) -- bost        
 
-        Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 2, 100)
+      --  Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)
 
         Citizen.InvokeNative(0xF0FE8E790BFEB5BB, PlayerPedId(), 5)
 
@@ -122,7 +188,7 @@ RegisterCommand(
 
         Wait(100)
         
-        SetDeadeyeAbilityLocked(PlayerPedId(), 5, false)
+        SetDeadeyeAbilityLocked(PlayerPedId(), 0, false)
 
         print(GetAttributeCoreValue(PlayerPedId(), 2))
 

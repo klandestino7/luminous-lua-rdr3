@@ -342,6 +342,20 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "meuid",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character ~= nil then   
+            TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, " ^2*" .. GetPlayerName(source) .. ": Meu ID " .. User:getId() ) 
+        end
+  
+    end
+)
+
+RegisterCommand(
     "revive",
     function(source, args, rawCommand)
         local _source = source
