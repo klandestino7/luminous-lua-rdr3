@@ -503,48 +503,31 @@ ItemList = {
      ---------------------------------------------
     ["boost_health"] = {
         type = 'boost',
-        name = 'Tônico de Vida',
+        name = 'Boost de Vida',
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
         weight = 0.4,
         stackSize = 1,
     },
     ["boost_stamina"] = {
         type = 'boost',
-        name = 'Tônico de Energia',
+        name = 'Boost de Energia',
         weight = 0.4,
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
         stackSize = 1,
     },
     ---------------------------------------------
     ---------------------------------------------
-    ["horse_tonic_health"] = {
-        type = 'tonic',
-        name = 'Tônico de Vida para Cavalo',
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
-        weight = 0.4,
-        stackSize = 1,
-        addHealth = 25,
-    },
-    ["horse_tonic_stamina"] = {
-        type = 'tonic',
-        name = 'Tônico de Energia para Cavalo',
-        weight = 0.4,
-        varOnUse = 25,
-        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
-        stackSize = 1,
-    },
-     ---------------------------------------------
     ["horse_boost_health"] = {
-        type = 'tonic',
-        name = 'Tônico de Vida para Cavalo',
+        type = 'boost',
+        name = 'Boost de Vida para Cavalo',
         weight = 0.4,
         varOnUse = 25,
         description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
         stackSize = 1,
     },
     ["horse_boost_stamina"] = {
-        type = 'tonic',
-        name = 'Tônico de Energia para Cavalo',
+        type = 'boost',
+        name = 'Boost de Energia para Cavalo',
         weight = 0.4,
         varOnUse = 25,
         description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',

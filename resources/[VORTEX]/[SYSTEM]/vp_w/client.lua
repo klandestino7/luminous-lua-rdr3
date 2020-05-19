@@ -45,6 +45,8 @@
 --     end
 -- )
 
+local DEBUGALWAYSCLEAR = true
+
 local regionsWeather = {}
 
 Citizen.CreateThread(
@@ -59,10 +61,15 @@ Citizen.CreateThread(
                 currentRegion = region
 
                 local weather_hash = regionsWeather[region]
-                if weather_hash then
-                    weather_hash = GetHashKey(weather_hash)
+
+                if not DEBUGALWAYSCLEAR then
+                    if weather_hash then
+                        weather_hash = GetHashKey(weather_hash)
+                    else
+                        weather_hash = Citizen.InvokeNative(0x4BEB42AEBCA732E9)
+                    end
                 else
-                    weather_hash = Citizen.InvokeNative(0x4BEB42AEBCA732E9)
+                    weather_hash = GetHashKey("sunny")
                 end
 
                 local old_weather = Citizen.InvokeNative(0x4BEB42AEBCA732E9)

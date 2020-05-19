@@ -141,9 +141,10 @@ function cAPI.TaskInteraction(interaction)
     local unk3 = -1.0
 
     local interactions = {
+        -- p_cs_bottleslim01x
         -- interactionId       propId              promptName     propSlot            interactionAnimation
-        ["drink_tonic"] = {"p_cs_bottleslim01x", -1199896558, "PrimaryItem", "USE_TONIC_SATCHEL_UNARMED_QUICK"},
-        ["injection"] = {"p_cs_syringe01x", -1199896558, "PrimaryItem", "USE_STIMULANT_INJECTION_QUICK_LEFT_HAND"}
+        ["drink_tonic"] = {"s_inv_antidote01x", -1199896558, "PrimaryItem", "USE_TONIC_SATCHEL_UNARMED_QUICK"},
+        ["injection"] = {"s_immunitybooster01x", -1199896558, "PrimaryItem", "USE_STIMULANT_INJECTION_QUICK_LEFT_HAND"}
     }
 
     if interactions[interaction] then
@@ -154,6 +155,6 @@ function cAPI.TaskInteraction(interaction)
             propEntity = CreateObject(GetHashKey(v[1]), GetEntityCoords(ped), false, true, false, false, true)
         end
 
-        TaskItemInteraction_2(ped, GetHashKey(v[1]), propEntity, GetHashKey(v[3]), GetHashKey(v[4]), unk1, unk2, unk3)
+        TaskItemInteraction_2(ped, GetHashKey(v[2]), propEntity, GetHashKey(v[3]), GetHashKey(v[4]), unk1, unk2, unk3)
     end
 end
