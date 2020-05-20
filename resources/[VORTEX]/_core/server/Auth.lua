@@ -15,7 +15,7 @@ function connectUser(source, user_id)
     cAPI._clientConnected(source, true)
 
     print(GetPlayerName(source) .. ' (' .. User:getIpAddress() .. ') entrou (user_id = ' .. user_id .. ', source = ' .. source .. ')')
-    TriggerEvent('VP:IDENTITY:charList', User)
+    TriggerEvent('VP:IDENTITY:DisplayCharSelection', User)
     return User
 end
 

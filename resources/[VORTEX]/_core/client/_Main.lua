@@ -68,8 +68,8 @@ Citizen.CreateThread(
 			DisableControlAction(0, 0x580C4473, true) -- hud disable
 			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
 
-		--	DisableControlAction(0, 0xE2B557A3, true) -- emote wheel
-		--	DisableControlAction(0, 0x8B3FA65E, true) -- emote wheel horse
+			--	DisableControlAction(0, 0xE2B557A3, true) -- emote wheel
+			--	DisableControlAction(0, 0x8B3FA65E, true) -- emote wheel horse
 
 			-- DisableControlAction(0, 0x41AC83D1, true) -- loot
 			DisableControlAction(0, 0x399C6619, true) -- loot 2
@@ -80,26 +80,6 @@ Citizen.CreateThread(
 			--   DisableControlAction(0, 0xD2CC4644, true) -- soltar corda
 			DisableControlAction(0, 0x6E9734E8, true) -- DESATIVAR DESISTIR
 			DisableControlAction(0, 0x295175BF, true) -- DESATIVAR SOLTAR DA CORDA
-		end
-	end
-)
-
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(0)
-			--// horse control
-			if IsPedOnMount(PlayerPedId()) then
-				if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then
-					--    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
-					TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
-				--  TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0) -- freiar
-				end
-
-				if IsControlJustPressed(0, 0xE16B9AAD) then
-					TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
-				end
-			end
 		end
 	end
 )
@@ -127,9 +107,7 @@ function cAPI.getPosition()
 	return x, y, z
 end
 
-function cAPI.setCoords(x, y, z, spawn)
-	SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
-end
+
 
 -- return vx,vy,vz
 function cAPI.getSpeed()
@@ -197,60 +175,6 @@ function cAPI.getNearestPlayer(radius)
 		end
 	end
 	return p
-end
-
-
-
-
-function cAPI.isNearPlayer()
-	local player, distance = GetClosestPlayer()
-	if distance ~= -1 and distance <= 2.0 then
-	    return player, distance
-	else
-	    return false
-	end
-	return false
-end
-
-function cAPI.GetPlayers()
-    local players = {}
-
-    for _,player in ipairs(GetActivePlayers()) do
-        local ped = GetPlayerPed(player)
-
-        if DoesEntityExist(ped) then
-            table.insert(players, player)
-        end
-    end
-    return players
-end
-
-function cAPI.GetClosestPlayer()
-    local players, closestDistance, closestPlayer = GetPlayers(), -1, -1
-    
-    local coords, usePlayerPed = coords, false
-    local playerPed, playerId = PlayerPedId(), PlayerId()
-
-    if coords then
-        coords = vector3(coords.x, coords.y, coords.z)
-    else
-        usePlayerPed = true
-        coords = GetEntityCoords(playerPed)
-    end
-    for i=1, #players, 1 do
-        local target = GetPlayerPed(players[i])
-
-        if not usePlayerPed or (usePlayerPed and players[i] ~= playerId) then
-            local targetCoords = GetEntityCoords(target)
-            local distance = #(coords - targetCoords)
-
-            if closestDistance == -1 or closestDistance > distance then
-                closestPlayer = players[i]
-                closestDistance = distance
-            end
-        end
-    end
-    return closestPlayer, closestDistance
 end
 
 local weaponModels = {
@@ -531,69 +455,6 @@ Citizen.CreateThread(
 	end
 )
 
-function cAPI.teleportToWaypoint()
-	if not IsWaypointActive() then
-		return
-	end
-
-	local x, y, z = table.unpack(GetWaypointCoords())
-
-	-- local ground
-	-- local groundFound = false
-	-- local groundCheckHeights = {
-	-- 	0.0,
-	-- 	50.0,
-	-- 	100.0,
-	-- 	150.0,
-	-- 	200.0,
-	-- 	250.0,
-	-- 	300.0,
-	-- 	350.0,
-	-- 	400.0,
-	-- 	450.0,
-	-- 	500.0,
-	-- 	550.0,
-	-- 	600.0,
-	-- 	650.0,
-	-- 	700.0,
-	-- 	750.0,
-	-- 	800.0,
-	-- 	850.0,
-	-- 	900.0,
-	-- 	950.0,
-	-- 	1000.0,
-	-- 	1050.0,
-	-- 	1100.0
-	-- }
-
-	local ped = PlayerPedId()
-
-	-- for i, height in ipairs(groundCheckHeights) do
-	-- SetEntityCoordsNoOffset(ped, x, y, height, 0, 0, 1)
-
-	RequestCollisionAtCoord(x, y, z)
-	local retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x, y, z)
-
-	if retVal == false then
-		RequestCollisionAtCoord(x, y, z)
-		local tries = 10
-		while retVal == false and tries > 0 do
-			Citizen.Wait(100)
-			retVal, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x, y, z)
-			tries = tries - 1
-		end
-
-		z = (groundZ or 2000.0) + 1.0
-	end
-	-- end
-
-	-- if not groundFound then
-	-- 	z = 1200
-	-- end
-
-	SetEntityCoordsNoOffset(ped, x, y, z, 0, 0, 1)
-end
-
 function cAPI.playAnim(dict, anim, speed)
 	if not IsEntityPlayingAnim(PlayerPedId(), dict, anim) then
 		RequestAnimDict(dict)
@@ -613,47 +474,6 @@ function cAPI.clientConnected(bool)
 	if bool then
 		ShutdownLoadingScreenNui()
 		ShutdownLoadingScreen()
-	end
-end
-
-function cAPI.DrawText(str, x, y, w, h, enableShadow, r, g, b, a, centre, font)
-	local str = CreateVarString(10, "LITERAL_STRING", str)
-	SetTextScale(w, h)
-	SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
-	SetTextCentre(centre)
-	if enableShadow then
-		SetTextDropshadow(1, 0, 0, 0, 255)
-	end
-	Citizen.InvokeNative(0xADA9255D, font)
-	DisplayText(str, x, y)
-end
-
-function cAPI.Temperatura()
-	local _source = source
-	local ent = GetPlayerPed(_source)
-	local pp = GetEntityCoords(ent)
-	local temperatura = GetTemperatureAtCoords(tonumber(pp.x), tonumber(pp.y), tonumber(pp.z))
-	local vida = GetEntityHealth(PlayerPedId())
-	if vida <= 5 then
-		-- print('chegou')
-	else
-		if temperatura < -5 then
-			Wait(5000)
-			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 1, -1)
-			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-			Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)
-			print("está muito frio")
-		else
-			Citizen.InvokeNative(0xCB9401F918CB0F75, PlayerPedId(), "Cold_Stamina", 0, 0)
-		end
-		if temperatura > 42 then
-			Wait(5000)
-			local pl = Citizen.InvokeNative(0x217E9DC48139933D)
-			local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
-			Citizen.InvokeNative(0x697157CED63F18D4, ped, 5, false, true, true)
-			print("está muito calor")
-		end
 	end
 end
 

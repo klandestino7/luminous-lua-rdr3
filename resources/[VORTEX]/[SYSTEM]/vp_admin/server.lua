@@ -28,7 +28,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
             local x, y, z = cAPI.getPosition(source)
-            cAPI.setCoords(source, x, y, z)
+            cAPI.SetPlayerPosition(source, x, y, z)
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -44,7 +44,7 @@ RegisterCommand(
             local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
             local x, y, z = cAPI.getPosition(source)
             if tplayer then
-                cAPI.setCoords(tplayer, x, y, z)
+                cAPI.SetPlayerPosition(tplayer, x, y, z)
             end
         else
             User:notify("error", "Você não tem permissão!")
@@ -62,7 +62,7 @@ RegisterCommand(
             if User ~= nil then
                 local tplayer = User:getSource()
                 if tplayer then
-                    cAPI.setCoords(source, cAPI.getPosition(tplayer))
+                    cAPI.SetPlayerPosition(source, cAPI.getPosition(tplayer))
                 end
             else
                 User:notify("error", "Usuário não encontrado!")
@@ -87,7 +87,7 @@ RegisterCommand(
             for coord in string.gmatch(fcoords or "0,0,0", "[^,]+") do
                 table.insert(coords, parseInt(coord))
             end
-            cAPI.setCoords(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
+            cAPI.SetPlayerPosition(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -100,7 +100,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
-            cAPI.teleportToWaypoint(source)
+            cAPI.TeleportPlayerToWaypoint(source)
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -255,7 +255,7 @@ RegisterCommand(
         local Character = User:getCharacter()
 
         if Character:hasGroupOrInheritance("admin") then
-            cAPI.SetModel(source, args[1])
+            cAPI.SetPedModel(source, args[1])
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -418,6 +418,27 @@ RegisterCommand(
 
         if Character:hasGroupOrInheritance("admin") then
             TriggerClientEvent("VP:ADMIN:DestroyTargetEntity", _source)
+        end
+    end
+)
+
+RegisterCommand(
+    "admtoast",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            if #args > 0 then
+
+                local m  = ""
+
+                for i = 0, #args do 
+                    m = m + " " + args[i]
+                end
+
+                TriggerClientEvent("VP:TOAST:New", -1, "longer_speech", m)
+            end
         end
     end
 )

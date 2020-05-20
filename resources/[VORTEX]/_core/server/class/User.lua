@@ -235,7 +235,7 @@ function API.User(source, id, ipAddress)
     end
 
     self.notify = function(this, type, text, quantity)
-        -- cAPI.notify(self:getSource(), v)
+        -- cAPI.Toast(self:getSource(), v)
         if type ~= nil and text == nil and quantity == nil then
             text = type
             type = 'dev'

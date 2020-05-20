@@ -11,12 +11,12 @@ function ActionDrink()
                     NativeSetHorseStaminaCore(v + 1)
 
                     if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                        cAPI.notify("alert", "Cavalo parou de beber porque a animação acabou")
+                        cAPI.Toast("alert", "Cavalo parou de beber porque a animação acabou")
                         break
                     end
 
                     if v == 100 then
-                        cAPI.notify("alert", "Cavalo parou de beber porque o core está cheio")
+                        cAPI.Toast("alert", "Cavalo parou de beber porque o core está cheio")
                         ClearPedTasks(playerHorse)
                         break
                     end
@@ -56,7 +56,7 @@ function HasWaterNearHorseHead()
 
     -- if math.abs(w.z) < 1.5 then
     if IsPedSwimming(playerHorse) then
-        cAPI.notify("error", "Fundo demais")
+        cAPI.Toast("error", "Fundo demais")
         return false
     end
 

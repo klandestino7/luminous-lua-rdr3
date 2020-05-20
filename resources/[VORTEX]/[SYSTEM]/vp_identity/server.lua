@@ -4,26 +4,26 @@ local Proxy = module('_core', 'lib/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
-RegisterServerEvent('VP:IDENTITY:charList')
+RegisterServerEvent('VP:IDENTITY:DisplayCharSelection')
 AddEventHandler(
-    'VP:IDENTITY:charList',
+    'VP:IDENTITY:DisplayCharSelection',
     function(User)
         if User == nil then
             return
         end
      
-        TriggerClientEvent('VP:IDENTITY:charList', User:getSource(), User:getCharacters())
+        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters())
     end
 )
 
-RegisterServerEvent('VP:IDENTITY:charListWithUser')
+RegisterServerEvent('VP:IDENTITY:DisplayCharSelectionWithUser')
 AddEventHandler(
-    'VP:IDENTITY:charListWithUser',
+    'VP:IDENTITY:DisplayCharSelectionWithUser',
     function(User)
         if User == nil then
             return
         end
-        TriggerClientEvent('VP:IDENTITY:charList', User:getSource(), User:getCharacters())
+        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters())
     end
 )
 
@@ -44,6 +44,6 @@ AddEventHandler(
         local _source = source
         local User = API.getUserFromSource(_source)
         User:deleteCharacter(cid)
-        TriggerEvent('VP:IDENTITY:charList', source, _source)
+        TriggerEvent('VP:IDENTITY:DisplayCharSelection', source, _source)
     end
 )

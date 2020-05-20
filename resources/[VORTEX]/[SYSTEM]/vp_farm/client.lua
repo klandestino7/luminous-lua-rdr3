@@ -118,7 +118,7 @@ AddEventHandler(
                     local object = CreateObject(model, spotsToDraw[farmAreaId][spotId], false, true, false, false, true)
                     drawnObjects[farmAreaId][spotId] = object
 
-                    SetModelAsNoLongerNeeded(model)
+                    -- SetModelAsNoLongerNeeded(model)
                 end
             end
         else
@@ -151,7 +151,7 @@ AddEventHandler(
 
         tempPlacementObject = CreateObject(model, GetEntityCoords(PlayerPedId()), false, true, false)
 
-        SetModelAsNoLongerNeeded(model)
+        -- SetModelAsNoLongerNeeded(model)
     end
 )
 
@@ -212,7 +212,7 @@ function renderSpots(areaId)
     end
 
     for _, model in pairs(loadedModels) do
-        SetModelAsNoLongerNeeded(model)
+        -- SetModelAsNoLongerNeeded(model)
     end
 
     loadedModels = nil

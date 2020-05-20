@@ -518,7 +518,7 @@ RegisterNUICallback(
         Citizen.InvokeNative(0x58A850EAEE20FAA3, showroomHorse_entity)
         NetworkSetEntityInvisibleToNetwork(showroomHorse_entity, true)
         SetVehicleHasBeenOwnedByPlayer(showroomHorse_entity, true)
-        SetModelAsNoLongerNeeded(modelHash)
+        -- SetModelAsNoLongerNeeded(modelHash)
 
         interpCamera("Horse", showroomHorse_entity)
 

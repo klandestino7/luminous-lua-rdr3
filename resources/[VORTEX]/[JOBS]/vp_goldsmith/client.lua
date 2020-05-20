@@ -50,7 +50,7 @@ Citizen.CreateThread(
                         local obj = CreateObject(942176598, ve, true, true, false, true, true)
                         PlaceObjectOnGroundProperly(obj)
                         FreezeEntityPosition(obj, true)
-                        SetModelAsNoLongerNeeded(942176598)
+                        -- SetModelAsNoLongerNeeded(942176598)
         
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
                     end

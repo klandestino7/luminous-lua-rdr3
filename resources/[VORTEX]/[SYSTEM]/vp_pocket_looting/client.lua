@@ -30,7 +30,6 @@ Citizen.CreateThread(
 
             for entity, model in pairs(pocketing) do
                 if not DoesEntityExist(entity) then
-                    print(model)
                     TriggerServerEvent("VP:POCKET_LOOTING:Pocket", model)
                     pocketing[entity] = nil
                 end

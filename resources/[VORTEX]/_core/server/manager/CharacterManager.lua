@@ -5,6 +5,7 @@ function API.getNameById(id)
     end
     return "?"
 end
+
 --------------------------
 -- Save Server Position --
 --------------------------
@@ -17,18 +18,11 @@ AddEventHandler(
     function(x, y, z)
         local _source = source
         local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
-        if Character ~= nil then
-            Character:savePosition(x, y, z)
+        if User ~= nil then
+            local Character = User:getCharacter()
+            if Character ~= nil then
+                Character:savePosition(x, y, z)
+            end
         end
-        -- serverPositions[source] = newpos
     end
 )
-
--- function API.unloadPosForPlayer(source)
--- 	serverPositions[source] = {0.0,0.0,0.0}
--- end
-
--- function API.getPlayerPos(source)
---     return table.unpack(serverPositions[source])
--- end

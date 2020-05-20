@@ -289,19 +289,19 @@ Citizen.CreateThread(
 				end
 
 				lastHealth = GetEntityHealth(PlayerPedId())
-				print(json.encode(damageBone))
+				-- print(json.encode(damageBone))
 
 				for _, key in pairs(DeathCauses) do							
 					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
 						deathCause = key
-						print('death ' .. deathCause)
+						-- print('death ' .. deathCause)
 					end
 				end
 
 				for _, key in pairs(InstaDeathCauses) do
 					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
 						InstaCause = key
-						print('insta ' .. InstaCause)
+						-- print('insta ' .. InstaCause)
 					end					
 				end
 			end
@@ -435,7 +435,7 @@ Citizen.CreateThread(
 					NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)
 					SetEntityHealth(PlayerPedId(), 1)
-					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
+					cAPI.Toast("alert", "Você está ferido, procure por ajuda médica")
 					LoopCause = false
 					Uptime()
 				end
@@ -529,7 +529,7 @@ AddEventHandler(
 		clearDeath()
 		TriggerServerEvent("VP:Respawn:_Dead")
 		DoScreenFadeOut(500)
-		print(Locations[spawn])
+		-- print(Locations[spawn])
 		NetworkResurrectLocalPlayer(Locations[spawn], 59.95, true, true, false)
 		SetEntityCoordsNoOffset(ped, Locations[spawn], false, false, false, true)
 		SetEntityCoords(ped, Locations[spawn])

@@ -50,7 +50,7 @@ Citizen.CreateThread(
                         local obj = CreateObject(942176598, ve, true, true, false, true, true)
                         PlaceObjectOnGroundProperly(obj)
                         FreezeEntityPosition(obj, true)
-                        SetModelAsNoLongerNeeded(942176598)
+                        -- SetModelAsNoLongerNeeded(942176598)
         
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
                     end
@@ -75,7 +75,7 @@ Citizen.CreateThread(
                         local obj = CreateObject(942176598, ve, true, true, false, true, true)
                         PlaceObjectOnGroundProperly(obj)
                         FreezeEntityPosition(obj, true)
-                        SetModelAsNoLongerNeeded(942176598)
+                        -- SetModelAsNoLongerNeeded(942176598)
         
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
                     end
@@ -203,7 +203,7 @@ AddEventHandler(
             for i = 0, rand - 1 do
                 local obj = CreateObject(prop, s, true, true, true, true, true)
                 ApplyForceToEntityCenterOfMass(obj, 1, 0, 0, 0, 0, 1, 1, 1)
-                SetModelAsNoLongerNeeded(prop)
+                -- SetModelAsNoLongerNeeded(prop)
 
                 local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, Citizen.InvokeNative(0x34F008A7E48C496B, obj, 3), 0, 0, 512)
 

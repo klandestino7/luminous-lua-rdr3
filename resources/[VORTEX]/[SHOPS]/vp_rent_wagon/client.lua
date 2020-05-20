@@ -81,7 +81,7 @@ function SpawnVehicle(Vmodel,ply)
         end
         local car = CreateVehicle(veh,tonumber(coords.x+10),tonumber(coords.y+5),coords.z-2.5,head,true,true,false,true)
 			print("Model spawned Succes: "..Vmodel)
-			SetModelAsNoLongerNeeded(veh)
+			-- SetModelAsNoLongerNeeded(veh)
 			SetPedIntoVehicle(PlayerPedId(), car, -1)
 		
     end)

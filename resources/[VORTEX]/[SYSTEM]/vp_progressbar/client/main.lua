@@ -131,7 +131,7 @@ Citizen.CreateThread(function()
 
                 isProp = true
 
-                SetModelAsNoLongerNeeded(toHash)
+                -- SetModelAsNoLongerNeeded(toHash)
             end
 
             DisableActions(GetPlayerPed(-1))
