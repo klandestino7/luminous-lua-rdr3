@@ -13,80 +13,18 @@ local deathEndingTime
 local isInjure = false
 local up = false
 local deathCause = nil
-local damageBone = {}
+local damageBone = {0}
 local LoopCause = false
 local InstaCause = nil
 local InstaDeath = false
-
-local prompt
+local BodyPartDamage = {0}
+local prompts = {}
 local promptGroup
-local promptGroupName
 
 local InstaDeathCauses = {
 	"WEAPON_EXPLOSION",
 	"WEAPON_FIRE",
-	"WEAPON_THROWN_MOLOTOV",
-	"WEAPON_THROWN_DYNAMITE",
-	"weapon_moonshinejug",
-	"weapon_bow",
-	"weapon_melee_knife_hunter",
-	"weapon_melee_lantern_electric",
-	"weapon_melee_torch",
-	"weapon_melee_broken_sword",
-	"weapon_melee_hatchet",
-	"weapon_melee_cleaver",
-	"weapon_melee_ancient_hatchet",
-	"weapon_melee_hatchet_viking",
-	"weapon_melee_hatchet_hewing",
-	"weapon_melee_hatchet_double_bit",
-	"weapon_melee_hatchet_double_bit_rusted",
-	"weapon_melee_hatchet_hunter",
-	"weapon_melee_hatchet_hunter_rusted",
-	"weapon_melee_knife_john",
-	"weapon_melee_knife",
-	"weapon_melee_knife_jawbone",
-	"weapon_melee_knife_miner",
-	"weapon_melee_knife_civil_war",
-	"weapon_melee_knife_bear",
-	"weapon_melee_knife_vampire",
-	"weapon_melee_machete",
-	"weapon_pistol_m1899",
-	"weapon_pistol_mauser",
-	"weapon_pistol_mauser_drunk",
-	"weapon_pistol_semiauto",
-	"weapon_pistol_volcanic",
-	"weapon_revolver_cattleman",
-	"weapon_revolver_cattleman_john",
-	"weapon_revolver_cattleman_mexican",
-	"weapon_revolver_cattleman_pig",
-	"weapon_revolver_doubleaction",
-	"weapon_revolver_doubleaction_exotic",
-	"weapon_revolver_doubleaction_gambler",
-	"weapon_revolver_doubleaction_micah",
-	"weapon_revolver_lemat",
-	"weapon_revolver_schofield",
-	"weapon_revolver_schofield_golden",
-	"weapon_revolver_schofield_calloway",
-	"weapon_repeater_winchester",
-	"weapon_repeater_carbine",
-	"weapon_repeater_evans",
-	"weapon_rifle_boltaction",
-	"weapon_rifle_springfield",
-	"weapon_rifle_varmint",
-	"weapon_sniperrifle_carcano",
-	"weapon_sniperrifle_rollingblock",
-	"weapon_sniperrifle_rollingblock_exotic",
-	"weapon_shotgun_doublebarrel",
-	"weapon_shotgun_doublebarrel_exotic",
-	"weapon_shotgun_pump",
-	"weapon_shotgun_repeating",
-	"weapon_shotgun_sawedoff",
-	"weapon_shotgun_semiauto",
-	"weapon_thrown_throwing_knives",
-	"weapon_thrown_dynamite",
-	"weapon_thrown_molotov",
-	"weapon_thrown_tomahawk",
-	"weapon_thrown_tomahawk_ancient"
+
 }
 
 local DeathCauses = {
@@ -94,8 +32,6 @@ local DeathCauses = {
 	"WEAPON_DEER",
 	"WEAPON_FIRE",
 	"WEAPON_MOONSHINEJUG_MP",
-	"WEAPON_THROWN_MOLOTOV",
-	"WEAPON_THROWN_DYNAMITE",
 	"WEAPON_EXPLOSION",
 	"WEAPON_FALL", -- -842959696
 	"WEAPON_POISON",
@@ -304,6 +240,18 @@ Citizen.CreateThread(
 						print('insta ' .. InstaCause)
 					end					
 				end
+
+
+				for key, value in pairs(allbones) do	
+					for _, index in pairs(value) do 
+						for _, dam in pairs(damageBone)	do
+							if dam == index then
+								table.insert(BodyPartDamage, key)
+							end
+						end	
+					end
+				end
+
 			end
 		end
 end)
@@ -339,8 +287,6 @@ AddEventHandler(
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 		isDead = false
 		isInjure = false
-		PressDeath = false
-		up = false
 		DestroyAllCams(true)
 		clearDeath()
 	end
@@ -360,33 +306,44 @@ local Locations = {
 	[3] = vector3(2725.834, -1224.180, 50.367) -- SAINT DENNIS
 }
 
+local prompts = {}
+local promptGroup
+
 Citizen.CreateThread(
 	function()
 		while true do
 			Citizen.Wait(0)
-			if isDead then			
+			if isDead then
 				if deathEndingTime > GetGameTimer() then
 					if not LoopCause then						
-						for BodyPart, v in pairs(allbones) do
+						for BodyPart, v in pairs(allbones) do			
 							for _, bonesId in pairs(v) do
-								for _, DamagedBone in pairs(damageBone) do
-									if bonesId == DamagedBone then
-										for _, vital in pairs(vitalBones) do
-											if BodyPart == vital then
+								for _, BD in pairs(damageBone) do	
+									for _, vital in pairs(vitalBones) do										
+										for kBody, DamBody in pairs(BodyPartDamage) do		
+											if DamBody == vital then									
 												if deathCause == InstaCause then
+													--print('insta1')
 													InstaDeath = true
-												else												
-													InstaDeath = false										
+													LoopCause = true
+												else						
+												--	print('noinsta1')		
+													InstaDeath = false
+													LoopCause = true									
 												end			
 											else
 												if deathCause == InstaCause then
+												--	print('insta2')
 													InstaDeath = true
-												else												
-													InstaDeath = false										
+													LoopCause = true
+												else			
+												--	print('noinsta2')							
+													InstaDeath = false		
+													LoopCause = true								
 												end	
 											end
-										end					
-									end
+										end
+									end	
 								end
 							end
 						end
@@ -425,8 +382,8 @@ Citizen.CreateThread(
 				--SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)
 				DestroyAllCams(true)
 			end
-
 			if isInjure then
+				isDead = false
 				Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
 				Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
 				DisplayHud(true)
@@ -437,6 +394,7 @@ Citizen.CreateThread(
 					SetEntityHealth(PlayerPedId(), 1)
 					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
 					LoopCause = false
+					isDead = false
 					Uptime()
 				end
 				if PressDeath then
@@ -445,28 +403,41 @@ Citizen.CreateThread(
 					local ped = PlayerPedId()
 					local coords = GetEntityCoords(ped)
 					initRespawnPrompt()
-					PromptSetActiveGroupThisFrame(promptGroup, promptGroupName)
-					if PromptHasHoldModeCompleted(prompt) then
-						PromptDelete(prompt)
-						prompt = nil
-						promptGroup = nil
-						promptGroupName = nil
-						for index, vector in pairs(Locations) do
-							local dst = #(vector - coords)
-							if lowestDist == nil or dst < lowestDist then
-								lowestDist = dst
-								closestIndex = index
-								PressDeath = false
-								isInjure = false
+					for _, prompt in pairs(prompts) do
+						if PromptHasHoldModeCompleted(prompt) then						
+							for index, vector in pairs(Locations) do
+								local dst = #(vector - coords)
+								if lowestDist == nil or dst < lowestDist then
+									lowestDist = dst
+									closestIndex = index
+									PressDeath = false
+									isInjure = false
+								end
 							end
+							TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
 						end
-						TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
 					end
 				end
 			end
 		end
 	end
 )
+
+function initRespawnPrompt()
+	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Você está morto.')
+	local prompt = PromptRegisterBegin()
+	PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
+	PromptSetControlAction(prompt, 0xE8342FF2)
+	PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Renascer'))
+	PromptSetStandardMode(prompt, true)    
+	PromptSetEnabled(prompt, 1)
+	PromptSetVisible(prompt, 1)
+	PromptSetHoldMode(prompt, 1)
+	N_0x0c718001b77ca468(prompt, 3.0)
+	PromptSetGroup(prompt, promptGroup)
+	PromptRegisterEnd(prompt)
+	table.insert(prompts, prompt)
+end
 
 
 function Uptime()
@@ -479,6 +450,11 @@ function Uptime()
 			PressDeath = true
 			break
 		else
+			if isDead then
+				isInjure = true				
+				PressDeath = true				
+				isDead = false
+			end
 			if isInjure then
 				up = true
 			else
@@ -487,21 +463,6 @@ function Uptime()
 			DisableControlAction(0, 0x8FFC75D6, true) -- sprint
 			DisableControlAction(0, 0xD9D0E1C0, true) -- jump
 		end
-	end
-end
-
-function initRespawnPrompt()
-	if prompt == nil then
-		promptGroupName = CreateVarString(10, "LITERAL_STRING", "Você está morto.")
-		prompt = PromptRegisterBegin()
-		promptGroup = GetRandomIntInRange(0, 0xE8342FF2)
-		PromptSetControlAction(prompt, 0xCEFD9220)
-		PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Renascer"))
-		PromptSetEnabled(prompt, 1)
-		PromptSetVisible(prompt, 1)
-		PromptSetHoldMode(prompt, 1)
-		PromptSetGroup(prompt, promptGroup)
-		PromptRegisterEnd(prompt)
 	end
 end
 
@@ -519,6 +480,33 @@ AddEventHandler(
 		SetNuiFocus(true, true)
 		-- remove all items
 		TriggerServerEvent("VP:Respawn:_Dead")
+	end
+)
+
+RegisterCommand('testemo', function()
+
+
+	
+end)
+
+
+RegisterNetEvent("VP:RESPAWN:CheckDeath")
+AddEventHandler(
+	"VP:RESPAWN:CheckDeath",
+	function()
+
+	local data = {
+		deathCause,
+		InstaDeath,
+		BodyPartDamage
+	}			
+
+
+	local player, distance = GetClosestPlayer()
+	if distance ~= -1 and distance <= 3.0 then
+		TriggerServerEvent('VP:MEDIC:StatusDeath', GetPlayerServerId(player), data)
+	end
+
 	end
 )
 
@@ -548,11 +536,15 @@ function clearDeath()
 	InstaDeath = false
 	InstaCause = nil
 	deathCause = nil
-	damageBone = {}
+	damageBone = {0}
+	BodyPartDamage = {0}
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
 	TriggerServerEvent("VP:RESPAWN:onPlayerDeath")
+	for _, prompt in pairs(prompts) do
+		PromptDelete(prompt)
+	end
 end
 
 RegisterNUICallback(
@@ -639,9 +631,61 @@ AddEventHandler(
 	"onResourceStop",
 	function(resourceName)
 		if resourceName == GetCurrentResourceName() then
-			if prompt ~= nil then
+			for _, prompt in pairs(prompts) do
 				PromptDelete(prompt)
 			end
 		end
 	end
 )
+
+function isNearPlayer()
+	local player, distance = GetClosestPlayer()
+	if distance ~= -1 and distance <= 2.0 then
+	    return player, distance
+	else
+	    return false
+	end
+	return false
+end
+
+
+function GetPlayers()
+    local players = {}
+
+    for _,player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+
+        if DoesEntityExist(ped) then
+            table.insert(players, player)
+        end
+    end
+    return players
+end
+
+function GetClosestPlayer()
+    local players, closestDistance, closestPlayer = GetPlayers(), -1, -1
+    
+    local coords, usePlayerPed = coords, false
+    local playerPed, playerId = PlayerPedId(), PlayerId()
+
+    if coords then
+        coords = vector3(coords.x, coords.y, coords.z)
+    else
+        usePlayerPed = true
+        coords = GetEntityCoords(playerPed)
+    end
+    for i=1, #players, 1 do
+        local target = GetPlayerPed(players[i])
+
+        if not usePlayerPed or (usePlayerPed and players[i] ~= playerId) then
+            local targetCoords = GetEntityCoords(target)
+            local distance = #(coords - targetCoords)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = players[i]
+                closestDistance = distance
+            end
+        end
+    end
+    return closestPlayer, closestDistance
+end
