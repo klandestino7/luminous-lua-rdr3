@@ -413,7 +413,7 @@ function createPeds()
             Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
            -- NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
             SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
-            SetModelAsNoLongerNeeded(hash)
+            -- SetModelAsNoLongerNeeded(hash)
         end
     end
 end

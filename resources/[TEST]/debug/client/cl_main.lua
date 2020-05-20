@@ -493,7 +493,7 @@ RegisterCommand("swap", function(source, args, rawCommand)
                 Citizen.Wait(2500)
                 Citizen.InvokeNative(0x824E1C26A14CB817 , coords.x, coords.y, coords.z, 10.0, args[1], args[2])
                 print("Removed swap of " .. args[1] .. " for " .. args[2])
-                SetModelAsNoLongerNeeded(args[2])
+                -- SetModelAsNoLongerNeeded(args[2])
             else
                 print("Model not valid")
             end
@@ -613,7 +613,7 @@ RegisterCommand('spawn', function(source, args, rawCommand)
         SetEntityVisible(entity, true)
         SetEntityAlpha(entity, 255, false)
         Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
-        SetModelAsNoLongerNeeded(modelHash)
+        -- SetModelAsNoLongerNeeded(modelHash)
         GetEntityCoords(entity)
         if Config.TrackEntities == 1 then
             entitiesToDraw[entity] = true

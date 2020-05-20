@@ -44,7 +44,7 @@ while true do
             SetPedOutfitPreset(pedsSpawned, 2, false)
             FreezeEntityPosition(pedsSpawned, true)
             PlaceObjectOnGroundProperly(pedsSpawned, true)       
-            SetModelAsNoLongerNeeded(model)
+            -- SetModelAsNoLongerNeeded(model)
         end
     end  
 

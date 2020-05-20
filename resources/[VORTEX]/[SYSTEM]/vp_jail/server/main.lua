@@ -112,11 +112,11 @@ function unjail(target)
 
 --	TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('unjailed', GetPlayerName(target)) }, color = { 147, 196, 109 } })
 
-	cAPI.setModel(User:getSource(), json.decode(Character:getModel()))
+	cAPI.SetPedModel(User:getSource(), json.decode(Character:getModel()))
 	Wait(1000)
 	cAPI.setDados(User:getSource(), Character:getCharTable())
 	Wait(500)                
-	cAPI.setClothes(User:getSource(), Character:getClothes())
+	cAPI.SetPedClothinges(User:getSource(), Character:getClothes())
 
 	TriggerClientEvent('VP:JAIL:unjail', target)
 

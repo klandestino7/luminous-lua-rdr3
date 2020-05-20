@@ -76,7 +76,7 @@ function InitiateHorse(atCoords)
     end
 
     local entity = CreatePed(modelHash, spawnPosition, GetEntityHeading(ped), true, true)
-    -- SetModelAsNoLongerNeeded(modelHash)
+    -- -- SetModelAsNoLongerNeeded(modelHash)
 
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
@@ -228,24 +228,22 @@ end
 --     end
 -- end
 
-
 function WhistleHorse()
     if isHorseActive and not isHorseActivationBlocked then
         if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
             TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
         else
-            -- cAPI.notify("error", "Seu cavalo já está vindo")
+            -- cAPI.Toast("error", "Seu cavalo já está vindo")
         end
     else
         if not isHorseActivationBlocked then
-            InitiateHorse()
             -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
+            InitiateHorse()
         else
-            cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
+            cAPI.Toast("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
     end
 end
-
 
 Citizen.CreateThread(
     function()
@@ -257,7 +255,7 @@ Citizen.CreateThread(
             if isHorseActive then
                 if not isHorseActivationBlocked then
                     if IsPedInjured(playerHorse) then
-                        cAPI.notify("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
+                        cAPI.Toast("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
                         isHorseActivationBlocked = true
                         horseActivationSeconds = 120
                     end
@@ -343,7 +341,21 @@ Citizen.CreateThread(
                 end
             end
 
-            drawBoundingBox()
+            if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then
+                if IsPedOnMount(PlayerPedId()) then
+                    --    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
+                    TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
+                --  TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0) -- freiar
+                end
+            end
+
+            if IsControlJustPressed(0, 0xE16B9AAD) then
+                if IsPedOnMount(PlayerPedId()) then
+                    TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
+                end
+            end
+
+            -- drawBoundingBox()
         end
     end
 )
@@ -378,7 +390,7 @@ Citizen.CreateThread(
                 end
             else
                 if IsPedInWrithe(playerHorse) then
-                    cAPI.notify("alert", "Seu cavalo foi ferido, reanime-o")
+                    cAPI.Toast("alert", "Seu cavalo foi ferido, reanime-o")
                     isHorseInWrithe = true
                 else
                     if #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse)) > 500.0 then

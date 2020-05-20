@@ -70,7 +70,7 @@ function load(interiorId)
     end
 
     for _, reqComponent in pairs(requestedComponents) do
-        SetModelAsNoLongerNeeded(reqComponent)
+        -- SetModelAsNoLongerNeeded(reqComponent)
     end
 
     requestedComponents = {}
@@ -202,7 +202,7 @@ function createProp(model, x, y, z, pitch, roll, yaw, weapon_hash)
                     props_ammo[propsammolenght + 1][3] = ammo_3
                 end
 
-                SetModelAsNoLongerNeeded(model)
+                -- SetModelAsNoLongerNeeded(model)
             end
         )
     end

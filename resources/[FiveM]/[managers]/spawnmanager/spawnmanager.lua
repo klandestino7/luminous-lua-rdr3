@@ -261,7 +261,7 @@ function spawnPlayer(spawnIdx, cb)
             SetPlayerModel(PlayerId(), spawn.model)
 
             -- release the player model
-            SetModelAsNoLongerNeeded(spawn.model)
+            -- SetModelAsNoLongerNeeded(spawn.model)
             
             -- RDR3 player model bits
             if N_0x283978a15512b2fe then

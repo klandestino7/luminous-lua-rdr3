@@ -317,7 +317,7 @@ function setupModelo(modelo)
       RequestModel(modelo)
       Wait(50)
     end
-    SetModelAsNoLongerNeeded(modelo)
+    -- SetModelAsNoLongerNeeded(modelo)
   end
 
 function guardasinfo(inputPed)

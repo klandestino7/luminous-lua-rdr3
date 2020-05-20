@@ -144,7 +144,7 @@ AddEventHandler(
         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
         NetworkSetEntityInvisibleToNetwork(ped, true)
         SetEntityAsMissionEntity(ped)
-        SetModelAsNoLongerNeeded(pedModelHash)
+        -- SetModelAsNoLongerNeeded(pedModelHash)
         SetPedAsGroupMember(ped, GetPedGroupIndex(PlayerPedId()))
         SetPedIntoVehicle(ped, car, -1)   
         TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), -746.465,-1294.942,43.244, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)

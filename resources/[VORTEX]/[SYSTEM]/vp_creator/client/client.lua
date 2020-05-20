@@ -659,7 +659,7 @@ function createPeds()
             Citizen.InvokeNative(0x58A850EAEE20FAA3, choosePed[k])
             NetworkSetEntityInvisibleToNetwork(choosePed[k], true)
             SetVehicleHasBeenOwnedByPlayer(choosePed[k], true)
-            SetModelAsNoLongerNeeded(hash)
+            -- SetModelAsNoLongerNeeded(hash)
             if peds[k].genrer == "mp_female" then
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10F5497A, true, true, true) -- PANTS
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x14511493, true, true, true) -- COAT
