@@ -8,6 +8,15 @@ cAPI = Tunnel.getInterface("API")
 ------------ADMIN COMMANDS----------
 ------------------------------------
 
+
+RegisterCommand('loadsk', function(source)
+    local User = API.getUserFromSource(source)
+    local Character = User:getCharacter()
+    local model = json.decode(Character:getModel())
+    local clothes = Character:getClothes()
+    TriggerClientEvent('VP:ADMIN:Model', source, model, clothes)
+end)
+
 RegisterCommand(
     "nc",
     function(source, args, rawCommand)
@@ -254,11 +263,16 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroupOrInheritance("admin") then
-            cAPI.SetModel(source, args[1])
+        if args[2] ~= nil then
+               cAPI.SetModel(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
         else
-            User:notify("error", "Você não tem permissão!")
+            if Character:hasGroupOrInheritance("admin") then
+                cAPI.SetModel(source, args[2])
+            else
+                User:notify("error", "Você não tem permissão!")
+            end
         end
+
     end
 )
 RegisterCommand(
