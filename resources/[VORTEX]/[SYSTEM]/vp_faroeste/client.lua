@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 local keys = {
     ["S"] = 0xD27782E3,
         ["W"] = 0x8FD015D8,
@@ -19,10 +25,10 @@ RegisterCommand('dv', function()
     end
 end)
 
-RegisterNetEvent('clothe:loadtenue')
-AddEventHandler('clothe:loadtenue', function(kek) 
-    SetPedOutfitPreset(PlayerPedId(), kek) 
-    ---TriggerServerEvent("redemrp_skin:createSkin", kek) -- save on db work
+RegisterNetEvent('VP:FAROESTE:loadtenue')
+AddEventHandler('VP:FAROESTE:loadtenue', function(kek) 
+
+    SetPedOutfitPreset(PlayerPedId(), kek)
 end)
 local Bandana = false
 
@@ -43,11 +49,12 @@ end)
 
 RegisterCommand('off', function(source, args)
     SetNuiFocus(false,false)
+    cAPI.EndFade(500)
 
 end)
 
 RegisterCommand('testar', function(source, args)
-    SetTimecycleModifier('Dutch_moonPos')
+     RemoveAllPedWeapons(PlayerPedId(), 1, 1)
 end)
 
 RegisterCommand('model', function(source, args)
@@ -73,6 +80,41 @@ RegisterCommand('model', function(source, args)
 
 
 end)
+
+
+RegisterCommand(
+    "kit1",
+    function(source, args)        
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_REVOLVER_CATTLEMAN'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_RIFLE_SPRINGFIELD'), 500, true, 0)
+        Wait(1000)
+      --  Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_MOLOTOV'), 500, true, 0)
+
+    end
+)
+
+RegisterCommand(
+    "kit2",
+    function(source, args)        
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_BOW'), 500, true, 0)
+        SetPedAmmoByType(ped, GetHashKey('ammo_arrow_fire'), 200)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_KNIFE_JAWBONE'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_TOMAHAWK_ANCIENT'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_HATCHET_VIKING'), 500, true, 0) 
+    end
+)
+
+
 
 -- Citizen.CreateThread(function()
 --     local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);

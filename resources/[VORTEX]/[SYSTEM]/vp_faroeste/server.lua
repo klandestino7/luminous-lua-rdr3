@@ -4,6 +4,6 @@ RegisterCommand("outfit", function(source, args)
  local kek = tonumber(args[2])
  local _source = source
     
- TriggerClientEvent('clothe:loadtenue', player, kek) 
- 
+ TriggerClientEvent('VP:FAROESTE:loadtenue', player, kek)
 end)
+
