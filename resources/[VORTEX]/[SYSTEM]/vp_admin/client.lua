@@ -4,6 +4,29 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
+
+
+
+RegisterNetEvent("VP:ADMIN:Model")
+AddEventHandler(
+	"VP:ADMIN:Model",
+	function(model, clothes)
+
+		cAPI.SetModel(model.model)
+		Wait(130)
+		cAPI.SetBodyType(PlayerPedId(), model.bodySize)
+		cAPI.SetSkin(PlayerPedId(), model.modSkin)
+		Wait(300)
+		cAPI.SetFaceFeature(PlayerPedId(), json.decode(model.features))
+		Wait(30)
+		cAPI.SetPedSize(PlayerPedId(), model.pedSize)
+
+		cAPI.SetCloth(clothes)
+
+	end
+)
+
+
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
 	"VP:ADMIN:SpawnPed",
