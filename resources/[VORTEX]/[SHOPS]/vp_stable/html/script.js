@@ -122,10 +122,9 @@ $(".button-right").on('click', function() {
 
     var titleElement = $(this).parent().parent().find('.grey-text');
     var text = titleElement.text();
-    var component = text.split(' ')[0];
+  //  var component = text.split(' ')[0];
     titleElement.text(component + ' ' + nValue + '/' + max);
-
-    $.post('http://vp_stable/changeComponent', JSON.stringify({ component: component, value: nValue }));
+    $.post('http://vp_stable/'+component, JSON.stringify({ id: nValue }));
 });
 
 $(".button-left").on('click', function() {
@@ -148,10 +147,9 @@ $(".button-left").on('click', function() {
 
     var titleElement = $(this).parent().parent().find('.grey-text');
     var text = titleElement.text();
-    var component = text.split(' ')[0];
+  //  var component = text.split(' ')[0];
     titleElement.text(component + ' ' + nValue + '/' + max);
-
-    $.post('http://vp_stable/changeComponent', JSON.stringify({ component: component, value: nValue }));
+    $.post('http://vp_stable/'+component, JSON.stringify({ id: nValue }));
 });
 
 $(".input-number").on("change paste keyup", function() {

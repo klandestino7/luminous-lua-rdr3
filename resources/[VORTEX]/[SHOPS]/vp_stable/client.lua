@@ -14,7 +14,7 @@ zoom = 4.0
 offset = 0.2
 DeleteeEntity = true
 local InterP = true
-
+local adding = true
 
 cameraUsing = {
     {
@@ -31,17 +31,58 @@ cameraUsing = {
     },
 }
 
+local saddlecloths = {}
+local acshorn = {}
+local bags = {}
+local horsetails = {}
+local manes = {}
+local saddles = {}
+local stirrups = {}
+local acsluggage = {}
+
+Citizen.CreateThread(function()
+    while adding do
+        Citizen.Wait(0)
+        for i, v in ipairs(HorseComp) do
+            if v.category == "Saddlecloths" then
+                table.insert(saddlecloths, v.Hash)
+            elseif v.category == "AcsHorn" then
+                table.insert(acshorn, v.Hash)
+            elseif v.category == "Bags" then
+                table.insert(bags, v.Hash)
+            elseif v.category == "HorseTails" then
+                table.insert(horsetails, v.Hash)
+            elseif v.category == "Manes" then
+                table.insert(manes, v.Hash)
+            elseif v.category == "Saddles" then
+                table.insert(saddles, v.Hash)
+            elseif v.category == "Stirrups" then
+                table.insert(stirrups, v.Hash)
+            elseif v.category == "AcsLuggage" then
+                table.insert(acsluggage, v.Hash)
+            end
+        end
+        adding = false
+    end
+end)
+
+
+RegisterCommand('estabulo', function()
+
+    OpenStable()
+end)
+
 function OpenStable()
         inCustomization = true
         horsesp = true
 
 
-        SetEntityHeading(cAPI.GetPlayerHorse(), 334)
+        SetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 334)
         DeleteeEntity = true
         SetNuiFocus(true, true)
         InterP = true
 
-        local hashm = GetEntityModel(cAPI.GetPlayerHorse())
+        local hashm = GetEntityModel(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()))
 
         if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
             createCamera(PlayerPedId())
@@ -64,6 +105,8 @@ function OpenStable()
             )
         end        
         TriggerServerEvent("VP:STABLE:AskForMyHorses")
+
+
 end
 
 
@@ -144,8 +187,8 @@ AddEventHandler(
 -- end
 
 function rotation(dir)
-    local pedRot = GetEntityHeading(cAPI.GetPlayerHorse()) + dir
-    SetEntityHeading(cAPI.GetPlayerHorse(), pedRot % 360)
+    local pedRot = GetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())) + dir
+    SetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), pedRot % 360)
 end
 
 RegisterNUICallback(
@@ -207,12 +250,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddlesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xBAA7E618, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xBAA7E618, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddles[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             SaddlesUsing = ("0x" .. saddles[num])
         end
     end
@@ -226,12 +269,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddleclothsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x17CEB41A, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x17CEB41A, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddlecloths[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             SaddleclothsUsing = ("0x" .. saddlecloths[num])
         end
     end
@@ -245,12 +288,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             StirrupsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xDA6DADCA, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xDA6DADCA, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. stirrups[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             StirrupsUsing = ("0x" .. stirrups[num])
         end
     end
@@ -264,12 +307,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             BagsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x80451C25, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x80451C25, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. bags[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             BagsUsing = ("0x" .. bags[num])
         end
     end
@@ -283,12 +326,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             ManesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xAA0217AB, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xAA0217AB, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. manes[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             ManesUsing = ("0x" .. manes[num])
         end
     end
@@ -302,12 +345,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             HorseTailsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xA63CAE10, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xA63CAE10, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. horsetails[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             HorseTailsUsing = ("0x" .. horsetails[num])
         end
     end
@@ -321,12 +364,12 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsHornUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0x5447332, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x5447332, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acshorn[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             AcsHornUsing = ("0x" .. acshorn[num])
         end
     end
@@ -340,18 +383,26 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsLuggageUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, cAPI.GetPlayerHorse(), 0xEFB31921, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, cAPI.GetPlayerHorse(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xEFB31921, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acsluggage[num])
-            cAPI.SetHorseComponentEnabled(hash)
+            setcloth(hash)
             AcsLuggageUsing = ("0x" .. acsluggage[num])
         end
     end
 )
 
 myHorses = {}
+
+function setcloth(hash)
+    local model2 = GetHashKey(tonumber(hash))
+    if not HasModelLoaded(model2) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+    end
+    Citizen.InvokeNative(0xD3A7B003ED343FD9 , GetMount(PlayerPedId()),  tonumber(hash), true, true, true)
+end
 
 RegisterNUICallback(
     "selectHorse",
@@ -430,7 +481,7 @@ function closeAll()
     inCustomization = false
 
     choosePed = {}
-    local ped = cAPI.GetPlayerHorse()
+    local ped = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
     --  SetEntityVisible(ped, true)
     --  NetworkSetEntityInvisibleToNetwork(ped, false)
 end
@@ -443,7 +494,7 @@ local alreadySentShopData = false
 function getShopData()
     alreadySentShopData = true
 
-    local ret = {
+    local ret = { --[[
         {
             name = "Cavalos de Equitação",
             ["A_C_HORSE_MORGAN_FLAXENCHESTNUT"] = {"Burrinho", 5, 17},
@@ -480,7 +531,7 @@ function getShopData()
             name = "Cavalos de Prestígio",
             ["A_C_Horse_Turkoman_Gold"] = {"Turkoman (Dourado Fulgente)", 470, 950},
 
-        } 
+        } ]]
     }
 
     return ret
@@ -554,7 +605,7 @@ function interpCamera(cameraName, entity)
             tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
             AttachCamToEntity(tempCam, entity, cameraUsing[k].x + CamPos[1], cameraUsing[k].y + CamPos[2], cameraUsing[k].z)
             SetCamActive(tempCam, true)
-            SetCamRot(tempCam, -30.0, 0, HeadingPoint + 50.0)
+            SetCamRot(tempCam, -30.0, 0, GetEntityHeading(PlayerPedId()) + 50.0)
             if InterP then
                 SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
                 InterP = false
@@ -567,15 +618,17 @@ end
 
 function createCamera(entity)
     groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")    
-    SetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
-    SetCamRot(groundCam, -20.0, 0.0, HeadingPoint + 20)
+    local coords = GetEntityCoords(PlayerPedId())
+    SetCamCoord(groundCam, coords.x + 0.5, coords.y - 3.6, coords.z)
+   -- SetCamCoord(groundSetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )Cam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
+    SetCamRot(groundCam, -20.0, 0.0, GetEntityHeading(PlayerPedId()) + 20)
     SetCamActive(groundCam, true)    
     RenderScriptCams(true, false, 1, true, true)
     --Wait(3000)
     -- last camera, create interpolate
     fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-    SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
-    SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
+  --  SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
+ --   SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
     SetCamActive(fixedCam, true)
     SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
     Wait(3900)
