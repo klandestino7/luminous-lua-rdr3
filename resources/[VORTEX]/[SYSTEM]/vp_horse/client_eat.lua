@@ -8,22 +8,46 @@ function ActionEat()
 
         -- OPENSEQUENCETASK ??????? do it in js
 
-        local horseRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
+        -- local horseRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
 
-        TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_PICKUPPLANT"), GetHashKey("s_horsnack_carrot01x"), 0)
+        -- TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_PICKUPPLANT"), GetHashKey("s_horsnack_carrot01x"), 0)
 
-        eating = true
+        -- eating = true
+
+        -- Citizen.CreateThread(
+        --     function()
+        --         Wait(3500)
+        --         TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_FOOD"), GetHashKey("s_horsnack_carrot01x"), 1)
+
+        --         Wait(2000)
+        --         eating = false
+
+        --         local v = NativeGetHorseStaminaCore()
+        --         NativeSetHorseStaminaCore(v + 70)
+        --     end
+        -- )
+
+        TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_GRAZING"), 20000, true, false, false, false)
 
         Citizen.CreateThread(
             function()
-                Wait(3500)
-                TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_FOOD"), GetHashKey("s_horsnack_carrot01x"), 1)
+                while true do
+                    Wait(250)
 
-                Wait(2000)
-                eating = false
+                    local v = NativeGetHorseStaminaCore()
+                    NativeSetHorseStaminaCore(v + 1)
 
-                local v = NativeGetHorseStaminaCore()
-                NativeSetHorseStaminaCore(v + 70)
+                    if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
+                        cAPI.Toast("alert", "Cavalo parou de comer porque a animação acabou")
+                        break
+                    end
+
+                    if v == 100 then
+                        cAPI.Toast("alert", "Cavalo parou de comer porque o core está cheio")
+                        ClearPedTasks(playerHorse)
+                        break
+                    end
+                end
             end
         )
     end
