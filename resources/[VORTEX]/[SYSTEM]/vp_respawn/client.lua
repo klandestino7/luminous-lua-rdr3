@@ -231,7 +231,7 @@ Citizen.CreateThread(
 										table.insert(BodyPartDamage, BodyPartName)
 									end
 									for _,VitalPart in pairs(vitalBones) do																				
-										if BodyInsta == BodyPartName then	
+										if VitalPart == BodyPartName then	
 											VitalPartDamage = true
 										end							
 									end
@@ -303,11 +303,39 @@ AddEventHandler(
 	end
 )
 
-RegisterCommand('getDam', function()
-	for _, BodyInsta in pairs(BodyPartDamage) do
-			print(BodyInsta)
-	end
+RegisterNetEvent("VP:RESPAWN:Treatment")
+AddEventHandler(
+	"VP:RESPAWN:Treatment",
+	function()
 
+		cAPI.VaryPlayerHealth(5, 5)
+		isDead = false
+		isInjure = false
+		DestroyAllCams(true)
+		clearDeath()
+
+	end
+)
+
+
+RegisterNetEvent("VP:RESPAWN:PlayerUp")
+AddEventHandler(
+	"VP:RESPAWN:PlayerUp",
+	function()
+		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+		isDead = false		
+		DestroyAllCams(true)
+		Uptime()		
+	end
+)
+
+
+RegisterCommand('getDam', function()
+	cAPI.VaryPlayerHealth(5, 60)
+	isDead = false
+	isInjure = false
+	DestroyAllCams(true)
+	clearDeath()
 end)
 
 RegisterNetEvent("VP:RESPAWN:PlayerDead")
@@ -454,6 +482,7 @@ function Uptime()
 	end
 end
 
+
 RegisterNetEvent("FRP_respawn:respawnvip")
 AddEventHandler(
 	"FRP_respawn:respawnvip",
@@ -471,12 +500,6 @@ AddEventHandler(
 	end
 )
 
-RegisterCommand('testemo', function()
-
-
-	
-end)
-
 
 RegisterNetEvent("VP:RESPAWN:CheckDeath")
 AddEventHandler(
@@ -486,9 +509,9 @@ AddEventHandler(
 	local data = {
 		deathCause,
 		InstaDeath,
+		VitalPartDamage,
 		BodyPartDamage
-	}			
-
+	}
 
 	local player, distance = GetClosestPlayer()
 	if distance ~= -1 and distance <= 3.0 then
@@ -522,6 +545,7 @@ function clearDeath()
 	up = false	
 	UpTime = nil
 	InstaDeath = false
+	VitalPartDamage = false
 	InstaCause = nil
 	deathCause = nil
 	damageBone = {0}
@@ -635,7 +659,6 @@ function isNearPlayer()
 	end
 	return false
 end
-
 
 function GetPlayers()
     local players = {}

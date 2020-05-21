@@ -9,6 +9,30 @@ cAPI = Tunnel.getInterface("API")
 ---------------------------
 -- Variables
 
+RegisterNetEvent('VP:MEDIC:checkdeath')
+AddEventHandler('VP:MEDIC:checkdeath', function()
+  local player, distance = GetClosestPlayer()
+
+  if distance ~= -1 and distance <= 3.0 then
+    TriggerServerEvent('VP:MEDIC:checkcallback', GetPlayerServerId(player))
+   -- TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Curou o (' .. GetPlayerName(player) .. ')')
+  else
+    TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
+  end
+end)
+
+RegisterNetEvent('VP:MEDIC:TreatmentCheck')
+AddEventHandler('VP:MEDIC:TreatmentCheck', function()
+  local player, distance = GetClosestPlayer()
+
+  if distance ~= -1 and distance <= 3.0 then
+    TriggerServerEvent('VP:MEDIC:TreatmentCallback', GetPlayerServerId(player))
+   -- TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Curou o (' .. GetPlayerName(player) .. ')')
+  else
+    TriggerEvent('chatMessage', 'SISTEMA', {255, 255, 255}, 'Ninguem por perto')
+  end
+end)
+
 RegisterNetEvent('VP:MEDIC:revivecheck')
 AddEventHandler('VP:MEDIC:revivecheck', function()
   local player, distance = GetClosestPlayer()
@@ -21,37 +45,42 @@ AddEventHandler('VP:MEDIC:revivecheck', function()
   end
 end)
 
-RegisterNetEvent('VP:MEDIC:heal')
-AddEventHandler('VP:MEDIC:heal', function(healType, quiet)
-	local playerPed = PlayerPedId()
-	local maxHealth = GetEntityMaxHealth(playerPed)
-	SetEntityHealth(playerPed, maxHealth)
+-- RegisterNetEvent('VP:MEDIC:ReceiveStatus')
+-- AddEventHandler('VP:MEDIC:ReceiveStatus', function(data)     
+-- 	if data.InstaDeath ~= nil then		
+-- 		if data.InstaDeath == true then
+-- 			print('este player está em coma.')
+-- 		end
+-- 		print(data.InstaDeath)
+-- 	end
+
+-- 	if data.deathCause ~= nil then
+-- 		print(data.deathCause)
+-- 	end
+
+-- 	if data.VitalPartDamage ~= nil then
+-- 		if data.VitalPartDamage == true then
+-- 			print('está gravemente ferido.')
+-- 		end
+-- 		print(data.VitalPartDamage)
+-- 	end
+
+-- 	if data.BodyPartDamage ~= nil then		
+-- 		print('Foi atingido em ' .. json.encode(data.BodyPartDamage))
+-- 		print(data.BodyPartDamage)
+-- 	end
+-- end)
+
+RegisterNetEvent('VP:MEDIC:revive')
+AddEventHandler('VP:MEDIC:revive', function(data)
+
+    -- PUT HERE ANIMATION
+
+    print('playanim')
+
 end)
 
-RegisterNetEvent('VP:MEDIC:ReceiveStatus')
-AddEventHandler('VP:MEDIC:ReceiveStatus', function(data)
-print('chegouu'.. json.encode(data))
 
-end)
-
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(100) -- DO NOT REMOVE
-			local playerdst = cAPI.getNearestPlayer(3)
-			local whoplayer = cAPI.getNearestPlayers(3)
-			--if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT      
-		--		print(playerdst, whoplayer)
-			--end		
-
-			-- if IsPlayerDead(player) and isDead == false then
-			-- 	Citizen.Wait(0) -- DO NOT REMOVE
-			-- 	isDead = true				
-			-- 	deathEndingTime = GetGameTimer() + Config.RespawnTime	
-			-- end
-		end
-	end
-)
 
 function isNearPlayer()
 	local player, distance = GetClosestPlayer()
@@ -62,7 +91,6 @@ function isNearPlayer()
 	end
 	return false
 end
-
 
 function GetPlayers()
     local players = {}

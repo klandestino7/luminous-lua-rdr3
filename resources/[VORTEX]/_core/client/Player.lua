@@ -193,6 +193,68 @@ function cAPI.SetPlayerPosition(x, y, z)
 	SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
 end
 
+
+function cAPI.VaryPlayerHealth(value, secondsTillFillUp)
+	Citizen.CreateThread(
+		function()
+			if secondsTillFillUp == nil then
+				secondsTillFillUp = 1
+			end
+
+			local ped = PlayerPedId()
+
+			if secondsTillFillUp == 1 then
+				Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 0, 1.0, true)
+			end
+
+            valuePerTick = value / secondsTillFillUp
+			while secondsTillFillUp > 0 do
+				Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, GetAttributeCoreValue(ped, 0) + valuePerTick) -- SetAttributeCoreValue
+				SetEntityHealth(ped, GetEntityHealth(ped) + valuePerTick)
+
+				secondsTillFillUp = secondsTillFillUp - 1
+				Citizen.Wait(1000)
+
+				if secondsTillFillUp <= 0 then
+					Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 0, 0.0, false)
+				end
+			end
+		end
+	)
+end
+
+function cAPI.VaryPlayerStamina(value, secondsTillFillUp)
+	Citizen.CreateThread(
+		function()
+			if secondsTillFillUp == nil then
+				secondsTillFillUp = 1
+			end
+
+			local ped = PlayerPedId()
+
+			if secondsTillFillUp == 1 then
+				Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 1, 1.0, true)
+			end
+
+			valuePerTick = value / secondsTillFillUp
+			while secondsTillFillUp > 0 do
+				Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, GetAttributeCoreValue(ped, 1) + valuePerTick) -- SetAttributeCoreValue
+				Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, Citizen.InvokeNative(0x775A1CA7893AA8B5, ped) + valuePerTick)
+
+				secondsTillFillUp = secondsTillFillUp - 1
+				Citizen.Wait(1000)
+
+				if secondsTillFillUp <= 0 then
+					Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 1, 0.0, false)
+				end
+			end
+		end
+	)
+
+	local ped = PlayerPedId()
+	local n = math.floor(GetAttributeCoreValue(ped, 1) + variation)
+end
+
 function cAPI.VaryPlayerHorseHealth(value, secondsTillVary, goldenEffect)
     local playerHorse = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
     if playerHorse ~= nil and playerHorse ~= 0 then
