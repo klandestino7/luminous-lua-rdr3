@@ -12,19 +12,21 @@ local isDead = false
 local deathEndingTime
 local isInjure = false
 local up = false
+
 local deathCause = nil
 local damageBone = {0}
 local LoopCause = false
 local InstaCause = nil
 local InstaDeath = false
+local VitalPartDamage = false
 local BodyPartDamage = {0}
+
 local prompts = {}
 local promptGroup
 
 local InstaDeathCauses = {
 	"WEAPON_EXPLOSION",
 	"WEAPON_FIRE",
-
 }
 
 local DeathCauses = {
@@ -218,40 +220,49 @@ Citizen.CreateThread(
 		while true do
 			Citizen.Wait(100)		
 			if lastHealth ~= GetEntityHealth(PlayerPedId()) then
-
 				local retVal, boneIndex = GetPedLastDamageBone(PlayerPedId())
 				if boneIndex ~= 0 then
 					table.insert(damageBone, boneIndex)
+					for BodyPartName,v in pairs(allbones) do	
+						for _,IndexBodyPart in pairs(v) do
+							 if IndexBodyPart == boneIndex then
+								for _, BodyInsta in pairs(BodyPartDamage) do		
+									if BodyInsta ~= BodyPartName then			
+										table.insert(BodyPartDamage, BodyPartName)
+									end
+									for _,VitalPart in pairs(vitalBones) do																				
+										if BodyInsta == BodyPartName then	
+											VitalPartDamage = true
+										end							
+									end
+								end
+							 end
+						end
+					end
 				end
-
-				lastHealth = GetEntityHealth(PlayerPedId())
-				-- print(json.encode(damageBone))
 
 				for _, key in pairs(DeathCauses) do							
 					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
 						deathCause = key
-						-- print('death ' .. deathCause)
-					end
-				end
-
-				for _, key in pairs(InstaDeathCauses) do
-					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
-						InstaCause = key
-						-- print('insta ' .. InstaCause)
-					end					
-				end
-
-
-				for key, value in pairs(allbones) do	
-					for _, index in pairs(value) do 
-						for _, dam in pairs(damageBone)	do
-							if dam == index then
-								table.insert(BodyPartDamage, key)
+						print('death ' .. deathCause)
+						if GetPedCauseOfDeath(PlayerPedId()) == GetHashKey("WEAPON_EXPLOSION") and GetPedCauseOfDeath(PlayerPedId()) == GetHashKey("WEAPON_EXPLOSION") then
+							InstaDeath = true
+							print('InstaCause TRUE1')	
+						else
+							if GetPedCauseOfDeath(PlayerPedId()) ~= GetHashKey("WEAPON_UNARMED") and GetPedCauseOfDeath(PlayerPedId()) ~= GetHashKey("WEAPON_FALL") then
+								if VitalPartDamage then									
+									InstaDeath = true
+									print('InstaCause TRUE2')
+								end
+							else
+								InstaDeath = false
+								print('InstaCause FALSE3')
 							end
 						end	
 					end
 				end
 
+				lastHealth = GetEntityHealth(PlayerPedId())
 			end
 		end
 end)
@@ -292,6 +303,13 @@ AddEventHandler(
 	end
 )
 
+RegisterCommand('getDam', function()
+	for _, BodyInsta in pairs(BodyPartDamage) do
+			print(BodyInsta)
+	end
+
+end)
+
 RegisterNetEvent("VP:RESPAWN:PlayerDead")
 AddEventHandler(
 	"VP:RESPAWN:PlayerDead",
@@ -315,40 +333,7 @@ Citizen.CreateThread(
 			Citizen.Wait(0)
 			if isDead then
 				if deathEndingTime > GetGameTimer() then
-					if not LoopCause then						
-						for BodyPart, v in pairs(allbones) do			
-							for _, bonesId in pairs(v) do
-								for _, BD in pairs(damageBone) do	
-									for _, vital in pairs(vitalBones) do										
-										for kBody, DamBody in pairs(BodyPartDamage) do		
-											if DamBody == vital then									
-												if deathCause == InstaCause then
-													--print('insta1')
-													InstaDeath = true
-													LoopCause = true
-												else						
-												--	print('noinsta1')		
-													InstaDeath = false
-													LoopCause = true									
-												end			
-											else
-												if deathCause == InstaCause then
-												--	print('insta2')
-													InstaDeath = true
-													LoopCause = true
-												else			
-												--	print('noinsta2')							
-													InstaDeath = false		
-													LoopCause = true								
-												end	
-											end
-										end
-									end	
-								end
-							end
-						end
-						LoopCause = true
-					end
+					
 					if InstaDeath then
 						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
 						DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
@@ -373,13 +358,16 @@ Citizen.CreateThread(
 						isInjure = true
 						PressDeath = true
 						up = false
-					else						
+					else	
 						isInjure = true
 						up = true						
 					end
+
 				end
+
 				--SetPedToRagdollWithFall(PlayerPedId(), Config.RespawnTime, Config.RespawnTime,0 , -0.440, -0.890, 0, 2, 0,0,0,0,0,0)
 				--SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)
+
 				DestroyAllCams(true)
 			end
 			if isInjure then
