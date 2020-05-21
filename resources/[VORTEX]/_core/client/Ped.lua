@@ -93,7 +93,7 @@ function cAPI.SetSkin(ped, componentArray)
     for _, componentHash in pairs(componentArray) do
         componentHash = tonumber(componentHash)
 
-         -- Doesn't need to be requested !!!!!!
+        -- Doesn't need to be requested !!!!!!
 
         NativeSetPedComponentEnabled(ped, componentHash, true, true)
     end
@@ -190,6 +190,11 @@ function NativeSetPedFaceFeature(ped, index, value)
 end
 
 function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
+    -- local categoryHash = NativeGetPedComponentCategory(componentHash)
+    -- print(componentHash, categoryHash, NativeGetMetapedType(ped))
+
+    -- NativeFixMeshIssues(ped, categoryHash)
+
     Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, componentHash, immediately, isMp, true)
     -- NativeUpdatePedVariation(ped)
 end
@@ -204,4 +209,12 @@ end
 
 function NativeIsPedComponentEquipped(ped, componentHash)
     return Citizen.InvokeNative(0xFB4891BD7578CDC1, ped, componentHash)
+end
+
+function NativeGetPedComponentCategory(componentHash)
+    return Citizen.InvokeNative(0x5FF9A878C3D115B8, componentHash, NativeGetMetapedType(ped), true)
+end
+
+function NativeGetMetapedType(ped)
+    return Citizen.InvokeNative(0xEC9A1261BF0CE510, ped)
 end
