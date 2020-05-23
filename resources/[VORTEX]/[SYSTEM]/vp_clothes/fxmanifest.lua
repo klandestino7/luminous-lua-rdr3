@@ -1,28 +1,28 @@
-fx_version 'adamant'
-games {'rdr3'}
+fx_version "adamant"
+games {"rdr3"}
+
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
-client_script {
-	'config/mp_male.lua',
+
+client_scripts{
+    "@_core/lib/utils.lua",
+    'config/mp_male.lua',
 	'config/mp_female.lua',
-	'client.lua'
+    'client/client.lua'
 }
 
-server_script {
-	'@_core/lib/utils.lua',
-	'server.lua'
-}
+server_scripts{
+    "@_core/lib/utils.lua",
+    'server.lua'}
 
-ui_page 'html/index.html'
 
-files {
-	'html/*',
-	'html/css/*',
-	'html/fonts/*',
-	'html/js/*',
-	'html/assets/*',
-	'html/assets/barbercolors/*',
-	'html/assets/eyecolors/*',
-	'html/assets/haircolors/*',
-	'html/assets/skincolors/*'
-}
+ui_page('client/html/index.html')
+
+files({
+    'client/html/img/*',
+    'client/html/fonts/*',
+    'client/html/*',
+    'client/html/webfonts/*',
+    'client/html/css/*',
+    'server.lua'
+})
