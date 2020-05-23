@@ -26,13 +26,10 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     end
 
     self.addGroup = function(this, group)
-        print("addGroup", self:hasGroup(group))
         if not self:hasGroup(group) then
             local bit = config_file_GROUPS[group:lower()]
-            print("addGroup", bit)
 
             if bit ~= nil then
-                print("addGroup", self.role, self.role + bit)
                 self.role = self.role + bit
                 API_Database.execute("UPDATE:character_data_role", {charid = self:getId(), role = self.role})
             end
@@ -81,31 +78,26 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         return self.level
     end
 
-    self.getXp = function()
+    self.getExp = function()
         return self.xp
     end
 
-    self.updateLevel = function()
+    self.varyExp = function(this, variation)
+        self.xp = self:getExp() + variation
+
         for level, info in pairs(LevelSystem) do
             local savedLevel = level + 1
             if self.xp < LevelSystem[level].xp then
                 self.level = level - 1
-                API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self.level})
+
+                Citizen.CreateThread(function()
+                    API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self:getLevel()})
+                end
                 break
             end
         end
-    end
 
-    self.addXp = function(this, v)
-        self.xp = self.xp + v
-        self.updateLevel()
-        API_Database.execute("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
-    end
-
-    self.removeXp = function(this, v)
-        self.xp = self.xp - v
-        self.updateLevel()
-        API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
+        API_Database.execute("FCRP/UpdateXP", {charid = self:getId(), xp = self:getExp()})
     end
 
     self.getModel = function()

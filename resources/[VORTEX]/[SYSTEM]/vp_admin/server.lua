@@ -185,7 +185,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") then
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
-                UserTarget:getCharacter():addXp(tonumber(args[2]))
+                UserTarget:getCharacter():varyExp(tonumber(args[2]))
                 TriggerClientEvent("chatMessage", source, args[2] .. " XP adicionado ao jogador " .. UserTarget:getCharacter():getName())
             end
         else
@@ -202,7 +202,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") then
             local UserTarget = API.getUserFromUserId(tonumber(args[1]))
             if UserTarget ~= nil then
-                UserTarget:getCharacter():removeXp(tonumber(args[2]))
+                UserTarget:getCharacter():varyExp(-(tonumber(args[2])))
                 TriggerClientEvent("chatMessage", source, args[2] .. " XP removido ao jogador " .. UserTarget:getCharacter():getName())
             end
         else
