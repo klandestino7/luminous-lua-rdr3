@@ -27,6 +27,10 @@ function NativeSetPlayerHorse(horseEntity)
     Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), horseEntity)
 end
 
+function SetPlayerHorse(horseEntity)
+    playerHorse = horseEntity
+end
+
 function NativeSetPedComponentEnabled(ped, component)
     Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, component, true, true, true)
 end
@@ -239,8 +243,8 @@ function WhistleHorse()
         end
     else
         if not isHorseActivationBlocked then
-            InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
             -- InitiateHorse()
+            InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
         else
             cAPI.Toast("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
@@ -249,8 +253,6 @@ end
 
 Citizen.CreateThread(
     function()
-       
-
         -- print(GetHashKey("BASE"))
         -- print(GetHashKey("CUSTOM"))
         -- print(GetHashKey("COMPONENT"))
@@ -303,71 +305,9 @@ Citizen.CreateThread(
                     local mount = GetMount(PlayerPedId())
 
                     if CanHorseDrink() then
-                        if mount == playerHorse then
-                            TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
-                            Citizen.CreateThread(
-                                function()
-                                    while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
-                                        Wait(100)
-                                    end
-                                    ActionDrink()
-                                end
-                            )
-                        else
-                            local horsePosition = GetEntityCoords(playerHorse)
-
-                            if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
-                                ActionDrink()
-
-                                local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
-                                if horserRider ~= 0 then
-                                    TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
-                                    Citizen.CreateThread(
-                                        function()
-                                            while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
-                                                Wait(100)
-                                            end
-                                            ActionDrink()
-                                        end
-                                    )
-                                else
-                                    ActionDrink()
-                                end
-                            end
-                        end
+                        HandleDrink()
                     elseif CanHorseEat() then
-                        if mount == playerHorse then
-                            TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
-                            Citizen.CreateThread(
-                                function()
-                                    while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
-                                        Wait(100)
-                                    end
-                                    ActionEat()
-                                end
-                            )
-                        else
-                            local horsePosition = GetEntityCoords(playerHorse)
-
-                            if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
-                                ActionEat()
-
-                                local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
-                                if horserRider ~= 0 then
-                                    TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
-                                    Citizen.CreateThread(
-                                        function()
-                                            while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
-                                                Wait(100)
-                                            end
-                                            ActionEat()
-                                        end
-                                    )
-                                else
-                                    ActionEat()
-                                end
-                            end
-                        end
+                        HandleEat()
                     else
                         if IsControlJustPressed(1, 0x24978A28) then -- H, Histle
                             if mount == 0 or mount ~= playerHorse then
@@ -442,7 +382,7 @@ Citizen.CreateThread(
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
-        if GetCurrentResourceName() == resourceName then
+        if GetCurrentResourceName() == resourceName or resourceName == "_core" then
             DestroyHorse()
         end
     end

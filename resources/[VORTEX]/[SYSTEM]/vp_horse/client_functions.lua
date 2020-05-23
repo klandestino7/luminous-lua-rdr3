@@ -70,6 +70,10 @@ function NativeGetPlayerHorse()
     return Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
 end
 
+function GetPlayerHorse()
+    return playerHorse
+end
+
 function DrawLine(v1, v2, r, g, b, a)
     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,v1, v2, r,g,b,a)
 end

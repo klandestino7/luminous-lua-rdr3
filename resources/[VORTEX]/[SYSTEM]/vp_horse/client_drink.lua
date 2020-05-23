@@ -1,6 +1,40 @@
+function HandleDrink()
+    if mount == playerHorse then
+        TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
+        Citizen.CreateThread(
+            function()
+                while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
+                    Wait(100)
+                end
+                ActionDrink()
+            end
+        )
+    else
+        local horsePosition = GetEntityCoords(playerHorse)
+
+        if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
+            ActionDrink()
+
+            local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
+            if horserRider ~= 0 then
+                TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
+                Citizen.CreateThread(
+                    function()
+                        while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
+                            Wait(100)
+                        end
+                        ActionDrink()
+                    end
+                )
+            else
+                ActionDrink()
+            end
+        end
+    end
+end
+
 function ActionDrink()
     if CanHorseDrink() then
-
         -- WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC
 
         TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_DRINK_GROUND"), 20000, true, false, false, false)

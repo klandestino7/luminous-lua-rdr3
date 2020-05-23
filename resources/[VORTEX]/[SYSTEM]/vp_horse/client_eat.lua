@@ -1,5 +1,40 @@
 local eating = false
 
+function HandleEat()
+    if mount == playerHorse then
+        TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
+        Citizen.CreateThread(
+            function()
+                while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
+                    Wait(100)
+                end
+                ActionEat()
+            end
+        )
+    else
+        local horsePosition = GetEntityCoords(playerHorse)
+
+        if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
+            ActionEat()
+
+            local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
+            if horserRider ~= 0 then
+                TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
+                Citizen.CreateThread(
+                    function()
+                        while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
+                            Wait(100)
+                        end
+                        ActionEat()
+                    end
+                )
+            else
+                ActionEat()
+            end
+        end
+    end
+end
+
 function ActionEat()
     if CanHorseEat() then
         -- TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_HORSE_GRAZING_CAMP"), 10000, true, false, false, false)
