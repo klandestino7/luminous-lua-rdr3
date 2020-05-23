@@ -36,7 +36,7 @@ Citizen.CreateThread(
         N_0x4cc5f2fc1332577f(2106452847) -- remove wheell itens
     
         Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
-        Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
+       -- Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
 
         while true do
             Citizen.Wait(0)
