@@ -8,8 +8,10 @@ local horseModel
 local horseName
 local horseComponents = {}
 
+-- ! REMOVE
 horseModel = "A_C_Horse_Turkoman_Gold"
 horseName = "Meu Cavalo"
+-- ! REMOVE
 
 local isHorseActive = false
 
@@ -237,8 +239,8 @@ function WhistleHorse()
         end
     else
         if not isHorseActivationBlocked then
-            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
-            InitiateHorse()
+            InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
+            -- InitiateHorse()
         else
             cAPI.Toast("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
@@ -247,6 +249,12 @@ end
 
 Citizen.CreateThread(
     function()
+       
+
+        -- print(GetHashKey("BASE"))
+        -- print(GetHashKey("CUSTOM"))
+        -- print(GetHashKey("COMPONENT"))
+
         while true do
             Citizen.Wait(0)
 
@@ -309,7 +317,7 @@ Citizen.CreateThread(
                             local horsePosition = GetEntityCoords(playerHorse)
 
                             if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
-                                ActionEat()
+                                ActionDrink()
 
                                 local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
                                 if horserRider ~= 0 then
@@ -329,7 +337,36 @@ Citizen.CreateThread(
                         end
                     elseif CanHorseEat() then
                         if mount == playerHorse then
-                            ActionEat()
+                            TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
+                            Citizen.CreateThread(
+                                function()
+                                    while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
+                                        Wait(100)
+                                    end
+                                    ActionEat()
+                                end
+                            )
+                        else
+                            local horsePosition = GetEntityCoords(playerHorse)
+
+                            if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
+                                ActionEat()
+
+                                local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
+                                if horserRider ~= 0 then
+                                    TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
+                                    Citizen.CreateThread(
+                                        function()
+                                            while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
+                                                Wait(100)
+                                            end
+                                            ActionEat()
+                                        end
+                                    )
+                                else
+                                    ActionEat()
+                                end
+                            end
                         end
                     else
                         if IsControlJustPressed(1, 0x24978A28) then -- H, Histle

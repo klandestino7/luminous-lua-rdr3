@@ -1,6 +1,9 @@
 function ActionDrink()
     if CanHorseDrink() then
-        TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC"), 20000, true, false, false, false)
+
+        -- WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC
+
+        TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_DRINK_GROUND"), 20000, true, false, false, false)
 
         Citizen.CreateThread(
             function()

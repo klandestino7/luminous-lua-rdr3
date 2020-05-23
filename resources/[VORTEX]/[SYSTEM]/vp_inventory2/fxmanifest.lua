@@ -24,7 +24,9 @@ files {
     'nui/design.css',
     'nui/script.js',
     'nui/*',
-    'nui/assets/*'
+    'nui/assets/*',
+    'nui/assets/item_assets/*',
+    'nui/jquery/*',
 }
 
 exports {

@@ -266,7 +266,7 @@ Citizen.CreateThread(
                                 aimingAtSpotId = spotId
                             end
 
-                            if tempPlacementObject ~= nil then
+                            -- if tempPlacementObject ~= nil then
                                 if spotsData[areaId] == nil or spotsData[areaId][spotId] == nil then
                                     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 153, 153, 153, 255)
                                 else
@@ -274,7 +274,7 @@ Citizen.CreateThread(
                                     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, spotVector, spotVector + upVector, 230, 122, 122, 255)
                                 -- end
                                 end
-                            end
+                            -- end
                         end
                     end
                 end
@@ -283,7 +283,8 @@ Citizen.CreateThread(
                     if spotsData[insideFarmAreaId] ~= nil and spotsData[insideFarmAreaId][aimingAtSpotId] ~= nil then
                         local growPercentage = spotsData[insideFarmAreaId][aimingAtSpotId][1]
                         if growPercentage < 99 then
-                            DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
+                            -- DisplayText("Crescimento " .. growPercentage .. "%", 0.5, 0.5)
+                            -- PromptSetActiveGroupThisFrame(1, CreateVarString(10, "LITERAL_STRING", growPercentage.. "%"))
                         else
                             -- if growPercentage <= 100 then
                                 DisplayText("Pronto para colher", 0.5, 0.5)
@@ -291,7 +292,55 @@ Citizen.CreateThread(
                         end
                         if tempPlacementObject == nil and IsControlJustPressed(1, 0xF84FA74F) then
                             if growPercentage < 99 then
-                                TriggerServerEvent("VP:FARM:TryToWaterCrop", insideFarmAreaId, aimingAtSpotId)
+
+                                local offset = GetObjectOffsetFromCoords(placeFakeEntityAt, 180.0, 0.5, 0.0, 0.0)
+                                local hasCollision, groundZ, normal = GetGroundZAndNormalFor_3dCoord(offset.x, offset.y, offset.z)
+
+                                if hasCollision then
+                                    offset = vec3(offset.xy, groundZ)
+                                end
+
+                                if NativeFindClosestActiveScenarioPointOfType(offset,GetHashKey("WORLD_PLAYER_CHORES_BUCKET_PICKUP_FULL"), 1.0) == 0 then
+                                local scenario_pickup = NativeCreateScenarioPoint(GetHashKey("WORLD_PLAYER_CHORES_BUCKET_PICKUP_FULL"), offset)
+
+                                Citizen.CreateThread(function()
+                                    local canPour = false
+                                    local isPouring = false
+                                    local scenario_pour 
+                                    while true do
+                                        Citizen.Wait(0)
+                                        
+                                        if canPour == false then
+                                            if  NativeGetScenarioPointPedIsUsing(ped) == scenario_pickup then
+                                                scenario_pour = NativeCreateScenarioPoint(GetHashKey("WORLD_PLAYER_CHORES_BUCKET_POUR_LOW"), placeFakeEntityAt)
+                                                canPour = true
+                                            end
+                                        else
+                                        if isPouring == false then
+                                            if  NativeGetScenarioPointPedIsUsing(ped) == scenario_pour then
+                                                isPouring = true
+                                            end
+                                        else
+                                            if  NativeGetScenarioPointPedIsUsing(ped) ~= scenario_pour then
+                                                    ClearPedTasks(ped)
+                                                    SetCurrentPedWeapon(ped, GetHashKey('weapon_unarmed'), true)
+                                                    TriggerServerEvent("VP:FARM:TryToWaterCrop", insideFarmAreaId, aimingAtSpotId)
+                                                break
+                                            end
+                                        end
+                                    end
+                                    end
+                                end)
+
+                                Citizen.CreateThread(function()
+                                    Citizen.Wait(60000)
+                                    if NativeDoesScenarioPointExist(scenario) or  NativeDoesScenarioPointExist(scenario2) then
+                                        NativeDeleteScenarioPoint(scenario)
+                                        NativeDeleteScenarioPoint(scenario2)
+                                    end
+                                end)
+
+                            end
                             else
                                 -- if growPercentage <= 100 then
                                     TriggerServerEvent("VP:FARM:TryToHarvestCrop", insideFarmAreaId, aimingAtSpotId)
@@ -312,10 +361,18 @@ Citizen.CreateThread(
                 if tempPlacementObject ~= nil then
                     if IsControlJustPressed(1, 0x07CE1E61) then -- LMB
                         if aimingAtSpotId ~= nil and (spotsData[insideFarmAreaId] == nil or spotsData[insideFarmAreaId][aimingAtSpotId] == nil) then
-                            TriggerServerEvent("VP:FARM:TryToPlantSeed", tempPlacementSeedType, insideFarmAreaId, aimingAtSpotId)
                             SetEntityAsMissionEntity(tempPlacementObject, true, true)
                             DeleteObject(tempPlacementObject)
                             tempPlacementObject = nil
+
+                            TaskStartScenarioAtPosition(ped, GetHashKey("WORLD_HUMAN_FARMER_WEEDING"), placeFakeEntityAt, GetEntityHeading(ped), 0, 1, 0, 0, 0)
+
+                            Citizen.Wait(5000)
+
+                            ClearPedTasks(ped)
+                            SetCurrentPedWeapon(ped, GetHashKey('weapon_unarmed'), true)
+
+                            TriggerServerEvent("VP:FARM:TryToPlantSeed", tempPlacementSeedType, insideFarmAreaId, aimingAtSpotId)
                         end
                     else
                         if IsControlJustPressed(1, 0xF84FA74F) then -- RMB
@@ -477,10 +534,47 @@ AddEventHandler(
     end
 )
 
+
+
+-- function spawnBuckets()
+
+-- end
+
+-- local ownedScenarios = {}
+
+
+function NativeCreateScenarioPoint(scenarioType , position)
+    local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenarioType, position, 180.0, 0.0, 0.0, 0)
+    -- table.insert(ownedScenarios, scenario)
+    return scenario
+end
+
+function NativeDeleteScenarioPoint(scenario)
+    Citizen.InvokeNative(0x81948DFE4F5A0283, scenario)
+end
+
+function NativeDoesScenarioPointExist(scenario)
+    return Citizen.InvokeNative(0x841475AC96E794D1 , scenario)
+end
+
+function NativeGetPedUsingScenarioPoint(scenario)
+    return Citizen.InvokeNative(0x5BA659955369B0E2, scenario)
+end
+
+function NativeGetScenarioPointPedIsUsing(ped)
+    return Citizen.InvokeNative(0xDF7993356F52359A, ped)
+end
+
+function NativeFindClosestActiveScenarioPointOfType(position, type, distance)
+    return Citizen.InvokeNative(0xF533D68FF970D190 , position, type, distance, 0, 0, Citizen.ResultAsInteger())
+end
 -- AddEventHandler(
 --     "onResourceStart",
 --     function(resourceName)
 --         if resourceName == GetCurrentResourceName() then
+--             for _, scenario in pairs(ownedScenarios) do
+--                 NativeDeleteScenarioPoint(scenario)
+--             end
 --         end
 --     end
 -- )

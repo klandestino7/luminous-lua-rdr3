@@ -21,21 +21,6 @@ Citizen.CreateThread(
                 message2 = ItemPoolHash
             }
         )
-
-        Wait(100)
-
-        InventoryItemPool[10] = {joaat("shotgun_doublebarrel"), 0, 0}
-
-        SendNUIMessage(
-            {
-                messageType = "drawContainer",
-                message = "inventory",
-                message2 = InventoryItemPool
-            }
-        )
-
-        SetNuiFocus(true, true)
-
     end
 )
 

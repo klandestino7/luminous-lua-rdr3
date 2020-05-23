@@ -172,7 +172,7 @@ end
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
-        if resourceName == GetCurrentResourceName() then
+        if resourceName == GetCurrentResourceName() or resourceName == "_core" then
             Destroy()
         end
     end
