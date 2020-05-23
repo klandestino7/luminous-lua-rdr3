@@ -307,7 +307,6 @@ RegisterNetEvent("VP:RESPAWN:Treatment")
 AddEventHandler(
 	"VP:RESPAWN:Treatment",
 	function()
-
 		cAPI.VaryPlayerHealth(5, 5)
 		isDead = false
 		isInjure = false
@@ -317,7 +316,6 @@ AddEventHandler(
 	end
 )
 
-
 RegisterNetEvent("VP:RESPAWN:PlayerUp")
 AddEventHandler(
 	"VP:RESPAWN:PlayerUp",
@@ -325,10 +323,10 @@ AddEventHandler(
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 		isDead = false		
 		DestroyAllCams(true)
-		Uptime()		
+		Uptime()
+		SetEntityHealth(PlayerPedId(), 2)
 	end
 )
-
 
 RegisterCommand('getDam', function()
 	cAPI.VaryPlayerHealth(5, 60)
