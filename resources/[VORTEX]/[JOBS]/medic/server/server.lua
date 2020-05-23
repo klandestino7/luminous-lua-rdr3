@@ -6,7 +6,7 @@ cAPI = Tunnel.getInterface("API")
 
 local ReviveEnable = false
 local target = nil
-
+local sort = nil
 RegisterCommand(
     "checar",
     function(source, args, rawCommand)
@@ -16,6 +16,7 @@ RegisterCommand(
 		local medic = Character:hasGroupOrInheritance("medic")
 		local Inventory = User:getCharacter():getInventory()
 
+		sort = math.random(1,2)
         if medic then
 			TriggerClientEvent('VP:MEDIC:checkdeath', _source)
 			ReviveEnable = false
@@ -32,10 +33,14 @@ RegisterCommand(
 		local medic = Character:hasGroupOrInheritance("medic")
 		local Inventory = User:getCharacter():getInventory()
 
+		sort = math.random(1,2)
+
 		if medic then
-			if ReviveEnable then
+			--if ReviveEnable then
 				TriggerClientEvent('VP:MEDIC:revivecheck', _source)
-			end
+		--	else
+   			--	TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Esta pessoa já está morta.', 5000)
+			--end
 		end
     end
 )
@@ -52,6 +57,7 @@ RegisterCommand(
 		if medic then
 			TriggerClientEvent('VP:MEDIC:TreatmentCheck', _source)
 		end
+		
     end
 )
 
@@ -63,11 +69,13 @@ end)
 RegisterServerEvent('VP:MEDIC:TreatmentCallback')
 AddEventHandler('VP:MEDIC:TreatmentCallback', function(target)
 	TriggerClientEvent('VP:RESPAWN:Treatment', target)
+	ReviveEnable = false
 end)
 
 RegisterServerEvent('VP:MEDIC:revivecallback')
 AddEventHandler('VP:MEDIC:revivecallback', function(target)
-	TriggerClientEvent('VP:RESPAWN:revive', target)
+	TriggerEvent('VP:MEDIC:revive', source, target)
+	ReviveEnable = false
 end)
 
 RegisterServerEvent('VP:MEDIC:StatusDeath')
@@ -77,52 +85,48 @@ end)
 
 RegisterServerEvent('VP:MEDIC:ReceiveStatus')
 AddEventHandler('VP:MEDIC:ReceiveStatus', function(target, data)
-	local sort = math.random(1,5)
-	if data.InstaDeath ~= nil then
-		if data.InstaDeath then
-			if sort == 1 then
-				ReviveEnable = true			
-				print('Com sorte o médico realizou operação com sucesso.')
-				-- função de reviver 
-			else
-				ReviveEnable = false			
-				print('este player está sem batimentos.')
-				-- animação de reviver 
-				return
-			end
+	if data[2] ~= nil then
+		if data[2] then					
+			TriggerClientEvent('VP:NOTIFY:Simple', target, 'Esta pessoa está sem batimentos.', 5000)
+			ReviveEnable = false
+			return
 		else
-			print('O médico realizou operação com sucesso.')
+			TriggerClientEvent('VP:NOTIFY:Simple', target, 'Esta pessoa está com batimentos.', 5000)
 			ReviveEnable = true	
 		end
 	else
-		print('não identificado. CombatLog')
+		TriggerClientEvent('VP:NOTIFY:Simple', target, 'Não identificado a causa da morte. Possível Combatlog', 5000)
 		ReviveEnable = false
-	end
-	
+	end	
 	--TriggerClientEvent('VP:MEDIC:ReceiveStatus', target, data)
-
 end)
 
 
 RegisterServerEvent('VP:MEDIC:revive')
-AddEventHandler('VP:MEDIC:revive', function(target)	
+AddEventHandler('VP:MEDIC:revive', function(source, target)	
 	local _source = source
-	local User = API.getUserFromSource(source)
+	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()
-	local Inventory = User:getCharacter():getInventory()
+	local Inventory = User:getCharacter():getInventory()	
+	print(sort)
+	if sort == 1 and ReviveEnable == false then
+		ReviveEnable = true
+		print('na sorte')
+	end
 
 	if ReviveEnable then
 		TriggerClientEvent('VP:MEDIC:revive', _source)
 		Wait(10000)
 		TriggerClientEvent('VP:RESPAWN:PlayerUp', target)
-		User:addXp(10)
+		Character:addXp(10)
 		Inventory:addItem('money', 5)	
+		TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Reanimado com sucesso.', 5000)
 		print('Reanimado com sucesso.')
 	else
 		TriggerClientEvent('VP:MEDIC:revive', _source)
 		Wait(10000)
-		TriggerClientEvent('VP:RESPAWN:PlayerUp', target)
-		print('Infelizmente faleceu.')
+	--	TriggerClientEvent('VP:RESPAWN:PlayerUp', target)
+		TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Infelizmente faleceu.', 5000)
 	end
 end)
 

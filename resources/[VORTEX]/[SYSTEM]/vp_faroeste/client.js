@@ -1,19 +1,28 @@
-function showNotification(text, duration) {
-    // int32 x4
-    const struct1 = new DataView(new ArrayBuffer(4 * 4));
-    struct1.setInt32(0, duration, true); // duration
-   
-    const string = CreateVarString(10, "LITERAL_STRING", text);
-   
-    // int32 (weird padding) + int32 + uint64
-    const struct2 = new DataView(new ArrayBuffer(100));
-    struct2.setBigInt64(8, BigInt(string), true);
-    struct2.setBigInt64(16, BigInt(string), true);
-    console.log('in')
-   
-    Citizen.invokeNative("0xC927890AA64E9661", struct1, struct2, 1, 1);
-  }
-  
-  showNotification('ab', 10000);
+exports('js_get_ped_component_at_index', () => {
 
-  
+  const arrayBuffer = new ArrayBuffer(256 * 4);
+  const dataView = new DataView(arrayBuffer);
+
+  dataView.setUint32(0, 127, true);
+
+  const arrayBuffer2 = new ArrayBuffer(256 * 4);
+  const dataView2 = new DataView(arrayBuffer2);
+
+  dataView2.setUint32(0, 127, true);
+
+  const r = Citizen.invokeNative("0x77BA37622E22023B", PlayerPedId(), 1, false, dataView, dataView2, Citizen.returnResultAnyway());
+  const arrayOut = new Int32Array(arrayBuffer);
+  const arrayOut2 = new Int32Array(arrayBuffer2);
+
+  console.log(arrayOut);
+  console.log(arrayOut2);
+
+  console.log(r);
+
+  // console.log(arrayOut[0]);
+  // console.log(arrayOut[2]);
+  // console.log(arrayOut[4]);
+
+  // return new Vector3(arrayOut[0], arrayOut[2], arrayOut[4]);
+  // return [arrayOut[0], arrayOut[2], arrayOut[4]];
+});

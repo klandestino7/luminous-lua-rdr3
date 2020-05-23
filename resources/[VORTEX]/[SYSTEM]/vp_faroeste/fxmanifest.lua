@@ -12,3 +12,7 @@ client_script {
 server_scripts {
     "server.lua"
 }
+
+exports {
+	'js_get_ped_component_at_index'
+}

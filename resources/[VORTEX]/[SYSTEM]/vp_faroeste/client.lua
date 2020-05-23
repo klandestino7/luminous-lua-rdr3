@@ -54,11 +54,12 @@ RegisterCommand('off', function(source, args)
 end)
 
 RegisterCommand('testar', function(source, args)
-     RemoveAllPedWeapons(PlayerPedId(), 1, 1)
+
+    exports["vp_faroeste"]:js_get_ped_component_at_index()
+
 end)
 
 RegisterCommand('model', function(source, args)
-
     local model = "p_haybale03x"
     if IsModelValid(model) then
         if not HasModelLoaded(model) then
@@ -77,8 +78,6 @@ RegisterCommand('model', function(source, args)
     Wait(3000)
     print('sk')
     Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PUT_DOWN_2_MALE_A", 0, 0)
-
-
 end)
 
 

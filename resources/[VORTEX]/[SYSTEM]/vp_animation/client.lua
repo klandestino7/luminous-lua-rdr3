@@ -27,8 +27,37 @@ Citizen.CreateThread(function()
       if IsControlPressed(1, 0x26E9DC00) then -- Z
         Citizen.InvokeNative(0xAE99FB955581844A, PlayerPedId(), 1000, 1000, 0, 0, 0, 0)
       end
+
+    if IsControlPressed(1, 0x4CC0E2FE) then
+        RequestAnimDict("mech_loco_m@generic@reaction@pointing@unarmed@stand")
+        while not HasAnimDictLoaded("mech_loco_m@generic@reaction@pointing@unarmed@stand") do
+            Citizen.Wait(100)
+        end
+        TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
+    end
+
+    --   if IsControlPressed(1, 0x4CC0E2FE) then -- B
+    --     print("apertou")
+    --     RequestAnimDict("script_hideout@six_point_cabin@rob_discuss")
+    --     while not HasAnimDictLoaded("script_hideout@six_point_cabin@rob_discuss") do
+    --         Citizen.Wait(100)
+    --     end
+    --     TaskPlayAnim(PlayerPedId(), "script_hideout@six_point_cabin@rob_discuss", "conversation_1_1_pedc", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
+    --   end
+
     end
 end)
+
+RegisterCommand("clipset", function(source, args, rawCommand)
+    N_0x03ddbf2d73799f9e("CLIPSET@MECH_GRAPPLE@UNARMED@_MALE@_AMBIENT@_HEALTHY@MOUNTED@INTIMIDATION@LOCO@ATTACKER")
+    local retval, clipset =N_0x85b8f04555ab49b8("CLIPSET@MECH_GRAPPLE@UNARMED@_MALE@_AMBIENT@_HEALTHY@MOUNTED@INTIMIDATION@LOCO@ATTACKER")
+    
+    print(clipset)
+    
+end)
+
+
+
 
 Citizen.CreateThread(function()
     local ply = PlayerPedId()
@@ -38,13 +67,7 @@ Citizen.CreateThread(function()
             if IsControlJustPressed(0, 0xD8F73058) then --[U]
                 ClearPedTasks(ply)
             end
-            if IsControlPressed(0, 0xF3830D8E) then
-                RequestAnimDict("mech_loco_m@generic@reaction@pointing@unarmed@stand")
-                while not HasAnimDictLoaded("mech_loco_m@generic@reaction@pointing@unarmed@stand") do
-                    Citizen.Wait(100)
-                end
-                TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
-            end
+            
         end
     end)
     

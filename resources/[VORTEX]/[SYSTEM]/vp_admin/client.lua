@@ -7,17 +7,26 @@ API = Tunnel.getInterface("API")
 RegisterNetEvent("VP:ADMIN:Model")
 AddEventHandler(
 	"VP:ADMIN:Model",
-	function(model, clothes)
-		cAPI.SetModel(model.model)
-		Wait(130)
-		cAPI.SetBodyType(PlayerPedId(), model.bodySize)
-		cAPI.SetSkin(PlayerPedId(), model.modSkin)
-		Wait(300)
-		cAPI.SetFaceFeature(PlayerPedId(), json.decode(model.features))
-		Wait(30)
-		cAPI.SetPedSize(PlayerPedId(), model.pedSize)
+	function(pedInfo, clothes)	
 
-		cAPI.SetCloth(clothes)
+		local pModel = GetHashKey(pedInfo.model)
+		local pBodySize = tonumber(pedInfo.bodySize)
+		local pSkin = json.decode(pedInfo.modSkin)
+		local pFaceFeatures = json.decode(pedInfo.features)
+		local pScale = tonumber(pedInfo.pedSize)
+		local pClothing = json.decode(clothes)
+
+
+		cAPI.SetPlayerPed(pModel)
+		Wait(130)
+		cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
+		cAPI.SetSkin(PlayerPedId(), pSkin)
+		Wait(300)
+		cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
+		Wait(30)
+		cAPI.SetPedScale(PlayerPedId(), pScale)
+		cAPI.SetPedClothing(PlayerPedId(), pClothing)
+
 	end
 )
 
