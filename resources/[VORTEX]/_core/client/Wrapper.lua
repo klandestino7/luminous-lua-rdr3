@@ -50,21 +50,28 @@ end
 -- end
 
 function cAPI.PlaySkyCameraAnimationAtCoords(coords)
-	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
-	PointCamAtCoord(cam, coords[1], coords[2], coords[3] + 200)
+	local vecPosition = vec3(coords[1], coords[2], coords[3])
+
+	RequestCollisionAtCoord(vecPosition)
+
+	local cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+	PointCamAtCoord(cam, vecPosition.xy, vecPosition.z + 200)
 	SetCamActive(cam, true)
+
 	cAPI.EndFade(500)
-	cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam3, coords[1], coords[2], coords[3] + 200)
+
+	local cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vecPosition.xy, vecPosition.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+	PointCamAtCoord(cam3, vecPosition.xy, vecPosition.z + 200)
 	SetCamActiveWithInterp(cam3, cam, 3900, true, true)
 	Citizen.Wait(3900)
 	cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords[1], coords[2], coords[3] + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-	PointCamAtCoord(cam2, coords[1], coords[2], coords[3] + 2)
+	PointCamAtCoord(cam2, vecPosition.xy, vecPosition.z + 2)
 	SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
 	RenderScriptCams(false, true, 500, true, true)
-	SetEntityCoords(PlayerPedId(), coords[1], coords[2], coords[3] + 0.5)
-	Citizen.Wait(500)
-	Citizen.Wait(3000)
+
+	SetEntityCoords(PlayerPedId(), vecPosition)
+
+	Citizen.Wait(3700)
 
 	DestroyAllCams(true)
 end

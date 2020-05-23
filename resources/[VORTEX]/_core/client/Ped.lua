@@ -15,7 +15,7 @@ function cAPI.SetPlayerPed(model)
 
     -- SetModelAsNoLongerNeeded(model)
 
-    Wait(200)
+    -- Citizen.Wait(200)
 end
 
 function cAPI.SetPedScale(ped, num)
