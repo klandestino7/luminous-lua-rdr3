@@ -25,8 +25,6 @@ window.addEventListener("message", function(event) {
         $("#secondary").hide();
     } else {
 
-        // $(".container").fadeIn();
-
         if (event.data.type == 'clearPrimary') {
             primaryItemList = [];
             $("#primary-inventory").css('opacity', '1');
@@ -50,11 +48,7 @@ window.addEventListener("message", function(event) {
                 hotbarSlotSelected = 1;
             }
 
-            // if ($('.hotbar').css('display') == "none") {
             $('.hotbar').fadeIn(500).delay(5000).fadeOut(500);
-            // } else {
-            //     $('.hotbar').dequeue().delay(5000).fadeOut(500);
-            // }
 
             $('.hotbar-slot-selected').removeClass("hotbar-slot-selected");
 
@@ -68,25 +62,8 @@ window.addEventListener("message", function(event) {
             }));
         }
 
-        // if (event.data.ToggleHotbar) {
-        //     if (event.data.val == true) {
-        //         $('.hotbar').show();
-
-        //     } else {
-        //         $('.hotbar').hide();
-        //     }
-        // }
-
         if (event.data.primarySlots) {
-            // var clearedRecent = false;
             $.each(event.data.primarySlots, function(slotId, Slot) {
-
-                // if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
-                //     clearedRecent = true;
-                //     for (var i = 1; i < 16; i++) {
-                //         delete primaryItemList[1];
-                //     }
-                // }
 
                 if (Slot[2] > 0) {
                     primaryItemList[slotId] = Slot;
@@ -119,15 +96,7 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.secondarySlots) {
-            // var clearedRecent = false;
             $.each(event.data.secondarySlots, function(slotId, Slot) {
-
-                // if (clearedRecent == false && (slotId >= 1 && slotId <= 16)) {
-                //     clearedRecent = true;
-                //     for (var i = 1; i < 16; i++) {
-                //         delete secondaryItemList[1];
-                //     }
-                // }
 
                 if (Slot[2] > 0) {
                     secondaryItemList[slotId] = Slot;
@@ -136,7 +105,6 @@ window.addEventListener("message", function(event) {
                 }
 
             });
-
 
             if (event.data.secondaryWeight != undefined) {
                 var weight = event.data.secondaryWeight.toFixed(1);
@@ -241,29 +209,6 @@ function nextCategory() {
     $(categoryElement).addClass('enabled');
     $(`#${parentInventoryId} .control-info-container #selected-category`).text($(categoryElement).attr('data-name'));
 }
-
-// function dev() {
-//     nextCategory();
-//     $('.container:hidden').css('display', 'flex');
-
-//     $("#primary-inventory .slot-container").append(`
-//         <div class="slot" id="consumable_apple" onclick="select(this)">
-//             <img src="images/items/consumable_apple.png">
-//             <div class="counter">1</div>
-//         </div>
-//     `);
-
-//     fitsSelectedCategory('consumable_apple', true)
-
-//     $("#primary-inventory .slot-container").append(`
-//         <div class="slot" id="consumable_carrot" onclick="select(this)">
-//             <img src="images/items/consumable_carrot.png">
-//             <div class="counter">1</div>
-//         </div>
-//     `);
-//     fitsSelectedCategory('consumable_carrot', true)
-//     select(document.getElementById('consumable_apple'))
-// }
 
 $(document).ready(function() {
 
@@ -384,7 +329,6 @@ $(document).ready(function() {
 
 
             $(ui.helper).remove();
-            // let valueCount = $('.count').value;
             let selfSlot = $(this).attr('id');
             let draggableSlot = $(ui.draggable).attr('id');
 
@@ -470,7 +414,8 @@ function elementAsDraggable(element, a, b, c, d, e) {
             select($(this));
         },
         stop: function(event, ui) {
-            unSelect($(this));
+            select($(this));
+            // unSelect($(this));
         },
     });
 }
@@ -483,7 +428,6 @@ function slotsAsFakeDroppable() {
 }
 
 function drawHotbar() {
-    // $(".hotbar").css('opacity', '1');
 
     for (var slotId = 129; slotId <= 132; slotId++) {
         var Slot = primaryItemList[slotId];
@@ -541,6 +485,8 @@ function drawPrimary() {
     $(`#primary-inventory .description-description`).text('');
 
     $(`#primary-inventory .slot-container`).html('');
+
+    $('.hotbar').fadeIn(500);
     var money = 0;
 
     for (var slotId = (primaryCategoriesIndex * 16) - 15; slotId < (primaryCategoriesIndex * 16) + 1; slotId++) {
@@ -874,11 +820,11 @@ function unSelect(element) {
         $(`${elementParentParentId} .description-amount`).text('');
         $(`${elementParentParentId} .description-title`).text('');
         $(`${elementParentParentId} .description-description`).text('');
-
     }
 }
 
 function closeInventory() {
+    $('.hotbar').fadeOut(500);
     $('.selected').removeClass('selected');
     $("#secondary").hide();
     $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));

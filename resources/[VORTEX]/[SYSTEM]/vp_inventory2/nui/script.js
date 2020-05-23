@@ -1,7 +1,13 @@
 var ItemPool = [];
 var ItemPoolHash = [];
 
-var actionPressed = "NONE";
+var actions = {
+    ALL: 'all',
+    HALF: 'half',
+    SINGLE: 'single',
+}
+
+var actionPressed = actions.ALL;
 
 var container_options = {
     "inventory": {
@@ -132,7 +138,8 @@ function drawContainer(containerType, containerItemPool) {
         for (i = 1; i < 129; i++) {
 
 
-            var parentElement = $(`<div class="slot" id="${i}"></div>`).appendTo(pathAppendTo);
+            var slotElement = $(`<div class="slot" id="${i}"></div>`).appendTo(pathAppendTo);
+            var innerSlotElement = $(`<div class="inner-slot"></div>`).appendTo(slotElement);
 
             if (containerItemPool[i] != null) {
 
@@ -154,65 +161,56 @@ function drawContainer(containerType, containerItemPool) {
 
                     html =
                         `
-                        <div class="inner-slot">
                             <img src="${getIMGPath(itemId)}">
                             <div class="display-ammo">
                                 <span>${weapon_ammoInClip}/${weapon_ammoInWeapon}</span>
                                 <img/>
                             </div>
-                        </div>
                     `;
 
-                    var element = $(html).appendTo(parentElement);
+                    $(html).appendTo(innerSlotElement);
 
-
-                    element.data('itemAmount', 1);
-                    element.data('weapon_ammoInClip', weapon_ammoInClip);
-                    element.data('weapon_ammoInWeapon', weapon_ammoInWeapon);
+                    innerSlotElement.data('itemAmount', 1);
+                    innerSlotElement.data('weapon_ammoInClip', weapon_ammoInClip);
+                    innerSlotElement.data('weapon_ammoInWeapon', weapon_ammoInWeapon);
 
                 } else if (itemType == 'weapon_melee' || itemType == 'weapon_thrown') {
                     html =
                         `
-                        <div class="inner-slot">
                             <img src="${getIMGPath(itemId)}">
-                        </div>
                     `;
 
-                    var element = $(html).appendTo(parentElement);
+                    $(html).appendTo(innerSlotElement);
 
-                    element.data('itemAmount', 1);
+                    innerSlotElement.data('itemAmount', 1);
                 } else if (itemType == 'ammo') {
 
                     var itemAmount = atSlot[1];
 
                     html =
                         `
-                        <div class="inner-slot">
                             <img src="${getIMGPath(itemId)}">
                             ${itemAmount}
-                        </div>
                     `;
 
-                    var element = $(html).appendTo(parentElement);
+                    $(html).appendTo(innerSlotElement);
 
-                    element.data('itemAmount', itemAmount);
+                    innerSlotElement.data('itemAmount', itemAmount);
                 } else {
                     var itemAmount = atSlot[1];
 
                     html =
                         `
-                        <div class="inner-slot">
                             <img src="${getIMGPath(itemId)}">
                             ${itemAmount}
-                        </div>
                     `;
 
-                    var element = $(html).appendTo(parentElement);
+                    $(html).appendTo(innerSlotElement);
 
-                    element.data('itemAmount', itemAmount);
+                    innerSlotElement.data('itemAmount', itemAmount);
                 }
 
-                element.data('itemIdHash', itemIdHash);
+                innerSlotElement.data('itemIdHash', itemIdHash);
 
                 // $(`.container-inventory .right .mid-container .slot:nth-child(${slot - 1})`);
             }
@@ -307,6 +305,66 @@ function drawContainer(containerType, containerItemPool) {
     ContainerOptionVisibility(containerType, container_options[containerType].visibility);
 }
 
+function computeDrop(event, ui) {
+
+    var inner_slot_from = ui.draggable;
+    var inner_slot_to = $(this).find('.inner-slot');
+
+    var slot_from = $(inner_slot_from).parent();
+    var slot_to = $(inner_slot_to).parent();
+
+    var slotId_from = parseInt(slot_from.attr('id'));
+    var slotId_to = parseInt(slot_to.attr('id'));
+
+    var containerType_from = getContainerTypeFromElement(inner_slot_from);
+    var containerType_to = getContainerTypeFromElement(inner_slot_to);
+
+    var itemIdHash_from = $(inner_slot_from).data("itemIdHash");
+    var itemIdHash_to = $(inner_slot_to).data("itemIdHash");
+
+    var itemType_from = getItemTypeFromItemIdHash(itemIdHash_from);
+    var itemType_to = getItemTypeFromItemIdHash(itemIdHash_to);
+
+    var is_from_null = (itemType_from == null);
+    var is_to_null = (itemIdHash_to == null);
+
+    console.log(is_from_null, is_to_null);
+
+    if (containerType_to == 'inventory') {
+
+        if (containerType_from == 'inventory') {
+
+            if (is_to_null) {
+
+                switch (actionPressed) {
+                    case actions.ALL:
+                        $(inner_slot_to).swapWith(inner_slot_from);
+                        break;
+                    case actions.HALF:
+                        var lAmount = $(inner_slot_from).data('itemAmount');
+                        $(inner_slot_from).data('itemAmount', lAmount / 2);
+                        var clone = $(inner_slot_from).clone();
+
+                        clone.appendTo(slot_to);
+                        break;
+                    case actions.SINGLE:
+                        var lAmount = $(inner_slot_from).data('itemAmount');
+                        $(inner_slot_from).data('itemAmount', lAmount - 1);
+                        var clone = $(inner_slot_from).clone();
+                        $(clone).data('itemAmount', 1);
+
+                        clone.appendTo(slot_to);
+                        break;
+                }
+            } else {
+                $(inner_slot_to).swapWith(inner_slot_from);
+                asDraggable($(slot_from).find('.inner-slot'));
+                asDraggable($(slot_to).find('.inner-slot'));
+            }
+        }
+    }
+}
+
 function computeSwap(inner_slot_from, inner_slot_to) {
 
 
@@ -360,14 +418,15 @@ function asDroppable(selector) {
         accept: '.inner-slot',
         addClasses: false,
         // drop: computeSwap()
+        drop: computeDrop,
     });
 }
 
 function asDraggable(selector) {
-    $(selector + " .inner-slot").draggable({
+    $(selector).draggable({
         containment: 'body',
         hoverClass: 'droppable-hovered',
-        accept: '.inner-slot',
+        // accept: '.inner-slot',
         scroll: false,
         addClasse: false,
         revert: true,
@@ -381,7 +440,7 @@ function asSwappable_container_inventory() {
     var selector = ".container-inventory .right .mid"
 
     asDroppable(selector);
-    asDraggable(selector);
+    asDraggable(".container-inventory .right .mid .inner-slot");
 }
 
 function asSwappable_container_hotbar() {
@@ -389,7 +448,7 @@ function asSwappable_container_hotbar() {
     var selector = ".container-hotbar";
 
     asDroppable(selector);
-    asDraggable(selector);
+    asDraggable(".container-hotbar .inner-slot");
 
     // Hotbar slot #1 e #2 só vai aceitar items do tipo weapon
 
@@ -473,17 +532,26 @@ $(document).ready(function() {
 
     $(document).keyup(function(event) {
         if (event.which == shortcutPressed) {
-            actionPressed = "NONE";
+            actionPressed = actions.ALL;
         }
     });
 
     $(document).keydown(function(event) {
         if (event.which == 16) { // L-SHIFT
-            actionPressed = 'HALF'
+            actionPressed = actions.HALF;
         }
 
         if (event.which == 17) { // L-CTRL
-            actionPressed = 'SINGLE'
+            actionPressed = actions.SINGLE;
         }
     });
 });
+
+jQuery.fn.swapWith = function(to) {
+    return this.each(function() {
+        var copy_to = $(to).clone();
+        var copy_from = $(this).clone();
+        $(to).replaceWith(copy_from);
+        $(this).replaceWith(copy_to);
+    });
+};

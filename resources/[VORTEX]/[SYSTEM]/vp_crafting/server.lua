@@ -4,18 +4,32 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
--- RegisterNetEvent("VP:CRAFTING:Open")
--- AddEventHandler(
---     "VP:CRAFTING:Open",
---     function()
---         local _source = source
+RegisterNetEvent("VP:CRAFTING:Open")
+AddEventHandler(
+    "VP:CRAFTING:Open",
+    function()
+        local _source = source
 
---         local User = API.getUserFromSource(_source)
---         local Inventory = User:getCharacter():getInventory()
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
 
---         TriggerClientEvent("VP:CRAFTING:OpenMenu", _source, Inventory:getItems())
---     end
--- )
+        if Character == nil then
+            return
+        end
+
+        local Inventory = Character:getInventory()
+
+        local ownedItems = Inventory:getItemsAndAmount()
+
+        -- local parsedItems = {}
+
+        -- for _, v in pairs(slots) do
+        --     parsedItems[v[1]] = v[2]
+        -- end
+
+        TriggerClientEvent("VP:CRAFTING:OpenMenu", _source, ownedItems)
+    end
+)
 
 RegisterNetEvent("VP:CRAFTING:Craft")
 AddEventHandler(

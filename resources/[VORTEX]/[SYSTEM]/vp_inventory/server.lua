@@ -63,9 +63,9 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("VP:INVENTORY:dropItem")
+RegisterNetEvent("VP:INVENTORY:Drop")
 AddEventHandler(
-    "VP:INVENTORY:dropItem",
+    "VP:INVENTORY:Drop",
     function(slotId)
         local _source = source
 
@@ -79,7 +79,8 @@ AddEventHandler(
         local ItemData = API.getItemDataFromId(data.id)
 
         if Inventory:removeItem(slotId, data.id, data.amount) then
-            User:notify("item", ItemData:getName(), -data.amount)
+            User:notify("item", ItemData:getName(), -(data.amount))
+            TriggerClientEvent("VP:INVENTORY:DROP:Create", data.id)
         else
             User:notify("error", "x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
         end

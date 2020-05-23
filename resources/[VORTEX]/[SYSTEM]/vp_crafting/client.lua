@@ -10,10 +10,13 @@ local prompt
 RegisterNetEvent("VP:CRAFTING:OpenMenu")
 AddEventHandler(
     "VP:CRAFTING:OpenMenu",
-    function(ownedParts)
+    function(playerItems)
+
+        print(ownedParts)
+
         local parsedItemNames = {}
 
-        local craftingItems = Config
+        local craftingItems = deepcopy(Config)
 
         ----------------------------- DATA FORMAT
         -- ownedParts
@@ -48,17 +51,32 @@ AddEventHandler(
 
         -- if not wasOpenedBefore then
 
-        for id, values in pairs(Config) do
-            if ItemList[id] then
-                parsedItemNames[id] = ItemList[id].name
-                local canCraft = true
-                for idCPart, amountNeeded in pairs(values) do
-                    parsedItemNames[idCPart] = ItemList[idCPart].name
-                --     if ownedParts[idCPart] == nil or ownedParts[idCPart] < amountNeeded then
-                --         canCraft = false
-                    -- end
+
+        local ItemNamePool = {}
+
+        for itemId, neededForCrafting in pairs(Config) do
+
+            if  ItemList[itemId] then
+
+                local craftable = true
+
+                if ItemNamePool[itemId] == nil then
+                    ItemNamePool[itemId] = ItemList[itemId].name
                 end
-                craftingItems[id].canCraft = canCraft
+
+                for craftingItem, min in pairs(neededForCrafting) do
+
+                    if ItemNamePool[craftingItem] == nil then
+                        print('hasnt been added to name pool', craftingItem)
+                        ItemNamePool[craftingItem] = ItemList[craftingItem].name
+                    end
+
+                    if playerItems[craftingItem] == nil or playerItems[craftingItem] < min then
+                        craftable = false
+                    end
+                end
+
+                craftingItems[itemId].canCraft = craftable
             end
         end
         
@@ -67,8 +85,8 @@ AddEventHandler(
             {
                 action = "open",
                 craftingItems = craftingItems,
-                -- ownedParts = ownedParts,
-                parsedItemNames = parsedItemNames
+                ownedParts = playerItems,
+                parsedItemNames = ItemNamePool
             }
         )
         -- wasOpenedBefore = true
@@ -113,8 +131,8 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             if IsControlJustPressed(0, 0xF84FA74F) then
-                -- TriggerServerEvent("VP:CRAFTING:Open")
-                TriggerEvent("VP:CRAFTING:OpenMenu")
+                TriggerServerEvent("VP:CRAFTING:Open")
+                -- TriggerEvent("VP:CRAFTING:OpenMenu")
             end
 
             -- if IsPlayerFreeAiming(PlayerId()) then

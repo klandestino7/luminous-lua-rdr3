@@ -74,6 +74,16 @@ function API.Inventory(id, capacity, slots)
         return self.slots
     end
 
+    self.getItemsAndAmount = function()
+        local r = {}
+
+        for _, Slot in pairs(self:getSlots()) do
+            r[Slot:getItemId()] = Slot:getItemAmount()
+        end
+
+        return r
+    end
+
     self.moveSlot = function(this, slotId, slotIdTo, amount)
         amount = math.floor(math.abs(amount))
 

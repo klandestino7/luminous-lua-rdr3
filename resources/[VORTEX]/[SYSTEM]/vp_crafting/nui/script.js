@@ -76,8 +76,9 @@ function showCraftingParts(id) {
     id = id.replace('craftable_', '');
 
     var numberSlots = 6;
-    $.each(craftingItems[id].craftingParts, function(i, amount) {
-                $('#otherInventory .itemselected').html(`
+    $.each(craftingItems[id], function(i, amount) {
+                if (i != 'canCraft') {
+                    $('#otherInventory .itemselected').html(`
                 <div class="imageitem">
                     <img class="imgitem" src="nui://vp_inventory/nui/images/items/${id}.png">                    
                 </div>  
@@ -85,7 +86,7 @@ function showCraftingParts(id) {
                 <p class="invdesc">${craftingItems[id].craftingDesc}</p>
             `);
 
-                $('#otherInventory .containinv').append(`
+                    $('#otherInventory .containinv').append(`
                 <div class="slot" id="part_${i}">
                 <div class="item" style="background-image: url('nui://vp_inventory/nui/images/items/${i}.png')">
                 <div class="item-count">
@@ -102,6 +103,7 @@ function showCraftingParts(id) {
              </div>
         `);
         numberSlots--;
+        }
     });
 
     while (numberSlots > 0) {
