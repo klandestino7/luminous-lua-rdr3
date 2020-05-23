@@ -266,10 +266,10 @@ RegisterCommand(
         local Character = User:getCharacter()
 
         if args[2] ~= nil then
-            cAPI.SetPedModel(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
+            cAPI.SetPlayerPed(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
         else
             if Character:hasGroupOrInheritance("admin") then
-                cAPI.SetPedModel(source, args[2])
+                cAPI.SetPlayerPed(source, args[2])
             else
                 User:notify("error", "Você não tem permissão!")
             end
