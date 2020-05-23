@@ -247,24 +247,42 @@ function createPrompt(name, itemId, dollar, gold, entitytarget)
 end
 
 function unload()
-
     -- local hasPlayerInsideGunsmith =
 
-    for prop, _ in pairs(props) do
-        DeleteEntity(prop)
+    local keepWithDeletion = true
+
+    if lastInterior ~= nil then
+        for _, player in pairs(GetActivePlayers()) do
+            local playerPed = GetPlayerPed(player)
+            if playerPed ~= 0 then
+                if GetInteriorFromEntity(playerPed) == lastInterior then
+                    keepWithDeletion = false
+                    break
+                end
+            end
+        end
     end
 
-    for _, proplist in pairs(props_ammo) do
-        for _, prop in pairs(proplist) do
+    if keepWithDeletion then
+        for prop, _ in pairs(props) do
             DeleteEntity(prop)
+        end
+
+        for _, proplist in pairs(props_ammo) do
+            for _, prop in pairs(proplist) do
+                DeleteEntity(prop)
+            end
         end
     end
 
     hasPropsLoaded = false
 
+
     -- DEBBUGIN
     -- DeleteEntity(_temp_prop)
 end
+
+local lastInterior
 
 Citizen.CreateThread(
     function()
@@ -277,11 +295,13 @@ Citizen.CreateThread(
                 if Config.Gunsmith_datas[interiorPedIsIn] then
                     if hasPropsLoaded == false then
                         load(interiorPedIsIn)
+                        lastInterior = interiorPedIsIn
                     end
                 end
             else
                 if hasPropsLoaded == true then
                     unload()
+                    lastInterior = nil
                 end
             end
         end
