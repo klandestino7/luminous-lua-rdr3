@@ -164,6 +164,7 @@ API_Database.prepare('FCRP/GetUserIdByCharId', 'SELECT user_id from characters W
 API_Database.prepare('FCRP/GetCharNameByCharId', 'SELECT characterName from characters WHERE charid = @charid')
 API_Database.prepare('FCRP/UpdateLevel', 'UPDATE characters SET level = @level WHERE charid = @charid')
 API_Database.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE charid = @charid')
+API_Database.prepare('UPDATE:character_data_role', 'UPDATE characters SET groups = @role WHERE charid = @charid')
 -------- CHARACTER DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
 API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
@@ -230,3 +231,8 @@ API_Database.prepare('UPDATE:crop_update_slot', 'UPDATE farms SET crop_percent_g
 API_Database.prepare('UPDATE:crop_remove_slot', 'DELETE FROM farms WHERE crop_id = @crop_id AND slot_id = @slot_id')
 API_Database.prepare('INSERT:crop_insert_slot', 'INSERT INTO farms(crop_id, slot_id, crop_percent_grown, crop_min_time_water) VALUES (@crop_id, @slot_id, 0, @crop_min_time_water)')
 API_Database.prepare('SELECT:get_crop_slots', 'SELECT slot_id, crop_percent_grown, crop_min_time_water FROM farms WHERE crop_id = @crop_id')
+
+------------ HOUSE RENT QUERIES --------------
+API_Database.prepare('INSERT:house_rent', 'INSERT INTO house_id(house_id, house_next_payment) VALUES (@house_id, @house_next_payment)')
+API_Database.prepare('SELECT:house_rent', 'SELECT house_next_payment from house_id WHERE house_id = @house_id')
+API_Database.prepare('DELETE:house_rent', 'DELETE FROM house_rent WHERE house_id = @house_id')

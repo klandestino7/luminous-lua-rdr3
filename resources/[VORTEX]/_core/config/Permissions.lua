@@ -1,32 +1,15 @@
-Config_Permissions = {
-    ["admin"] = {
-        type = "staff",
-        inheritance = "moderator"
-    },
-    ["moderator"] = {
-        type = "staff",
-        inheritance = "helper"
-    },
-    ["helper"] = {
-        type = "staff"
-    },
-    ----------
-    ["chief"] = {
-        type = "police",
-        inheritance = "soldier"
-    },
-    ["soldier"] = {
-        type = "police",
-        inheritance = "recruit"
-    },
-    ["recruit"] = {
-        type = "police"
-    },
-    ----------
-    -- ["house:1"] = {
-    --     type = "house_rent"
-    -- },
-    -- ["house:2"] = {
-    --     type = "house_rent"
-    -- }
+config_file_GROUPS = {
+ -- ["none"]      = 0,      -- 0
+    ["admin"]     = 1 << 0, -- 1
+    ["moderator"] = 1 << 1, -- 2
+    ["sheriff"]   = 1 << 2, -- 8
+    ["trooper"]   = 1 << 3, -- 16vc
+    -- ["house:1"]
+    -- ["house:2"]
+    -- ["house:3"]
+}
+
+config_file_INHERITANCE = {
+    ["admin"] = "moderator",
+    ["sheriff"] = "tropper",
 }

@@ -68,7 +68,7 @@ function API.User(source, id, ipAddress)
         if #rows > 0 then
             local charId = rows[1].id
 
-            Character = API.Character(charId, characterName, 1, 0, {}, age, API.Inventory("char:" .. charId, nil, nil))
+            Character = API.Character(charId, characterName, 1, 0, 0, age, API.Inventory("char:" .. charId, nil, nil))
             --    Character:createHorse("A_C_Donkey_01", "Burrinho")
             -- Character:setData(charId, "charTable", "hunger", 0)
             -- Character:setData(charId, "charTable", "thirst", 0)
@@ -111,7 +111,8 @@ function API.User(source, id, ipAddress)
 
                 Inventory = API.Inventory("char:" .. id, tonumber(inv_query[1].inv_capacity), slots)
             end
-            self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, json.decode(charRow[1].groups), charRow[1].age, Inventory)
+            
+            self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, tonumber(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
             -- print(#Inventory:getItems(), Inventory:getItems())

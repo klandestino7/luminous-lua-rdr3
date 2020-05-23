@@ -1,59 +1,67 @@
-function API.Character(id, charName, level, xp, groups, charAge, inventory)
+function API.Character(id, charName, level, xp, role, charAge, inventory)
     local self = {}
 
     self.id = id
     self.charName = charName
     self.level = level or 1
     self.xp = xp or 0
-    self.groups = groups or {}
     self.charAge = charAge
     self.Inventory = inventory or API.Inventory("char:" .. self.id, nil, nil)
     self.Horse = nil
+
+    self.role = role or 0
 
     self.getInventory = function()
         return self.Inventory
     end
 
-    self.getGroups = function()
-        return self.groups
+    self.hasGroup = function(this, group)
+        local bit = config_file_GROUPS[group:lower()]
+
+        if bit ~= nil then
+            return (self.role & bit) ~= 0
+        end
+
+        return false
     end
 
     self.addGroup = function(this, group)
-        self:setData(self.id, "groups", group, true)
-        self.groups[group] = true
+        print("addGroup", self:hasGroup(group))
+        if not self:hasGroup(group) then
+            local bit = config_file_GROUPS[group:lower()]
+            print("addGroup", bit)
+
+            if bit ~= nil then
+                print("addGroup", self.role, self.role + bit)
+                self.role = self.role + bit
+                API_Database.execute("UPDATE:character_data_role", {charid = self:getId(), role = self.role})
+            end
+        end
     end
 
     self.removeGroup = function(this, group)
-        self:remData(self.id, "groups", group)
-        self.groups[group] = nil
-    end
+        if self:hasGroup(group) then
+            local bit = config_file_GROUPS[group:lower()]
 
-    self.hasGroup = function(this, group)
-        return self.groups[group] ~= nil
+            if bit ~= nil then
+                self.role = self.role - bit
+                API_Database.execute("UPDATE:character_data_role", {charid = self:getId(), role = self.role})
+            end
+        end
     end
 
     self.hasGroupOrInheritance = function(this, group)
-        if self.groups[group] then
+        if self:hasGroup(group) then
             return true
         else
-            for tempGroup, _ in pairs(self.groups) do
-                if Config_Permissions[tempGroup] then
-                    local foundInheritanceGroup = Config_Permissions[tempGroup].inheritance
-                    if foundInheritanceGroup == group then
-                        return true
-                    else
-                        while true do
-                            Citizen.Wait(0)
-                            foundInheritanceGroup = Config_Permissions[foundInheritanceGroup].inheritance
-                            if foundInheritanceGroup == nil then
-                                return false
-                            else
-                                if foundInheritanceGroup == group then
-                                    return true
-                                end
-                            end
-                        end
-                    end
+            local lastParent = group
+
+            while lastParent ~= nil do
+                local inheritance = config_file_INHERITANCE[lastParent]
+                lastParent = inheritance
+
+                if lastParent ~= nil and self:hasGroup(inheritance) then
+                    return true
                 end
             end
         end
@@ -100,10 +108,6 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         API_Database.query("FCRP/UpdateXP", {charid = self:getId(), xp = self.xp})
     end
 
-    self.setWeapons = function(this, weapons)
-        API_Database.execute("FCRP/SetCWeaponData", {charid = self:getId(), weapons = json.encode(weapons)})
-    end
-
     self.getModel = function()
         return self:getData(self.id, "SkinMdf", nil)
     end
@@ -136,13 +140,11 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         API_Database.query("FCRP/SetCData", {target = targetName, key = key, value = value, charid = cid})
     end
 
-    self.setSkinData = function(this, cid, value)    
-
+    self.setSkinData = function(this, cid, value)
         API_Database.execute("FCRP/SetSkinData", {value = value, charid = cid})
-  --      API_Database.query("FCRP/SetSkinData", {key = key, value = value, charid = cid})
+        --      API_Database.query("FCRP/SetSkinData", {key = key, value = value, charid = cid})
     end
 
-    
     self.getData = function(this, cid, targetName, key)
         if key == nil then
             key = "all"
@@ -225,7 +227,7 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         local horseRows = API_Database.query("FCRP/GetHorse", {id = id})
         if #horseRows > 0 then
             -- local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
-            local inv_query = API_Database.query('SELECT:inv_select_slots_and_capacity', {inv_id = 'horse' .. id})
+            local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "horse" .. id})
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
@@ -289,7 +291,7 @@ function API.Character(id, charName, level, xp, groups, charAge, inventory)
         local row = API_Database.query("FCRP/GetPlayerDeath", {charid = self:getId()})
         return table.unpack(row).is_dead
     end
-    
+
     self.savePosition = function(this, x, y, z)
         local encoded = json.encode({x, y, z})
         self:setData(self:getId(), "charTable", "position", encoded)
