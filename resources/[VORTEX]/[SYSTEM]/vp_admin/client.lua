@@ -4,14 +4,10 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
-
-
-
 RegisterNetEvent("VP:ADMIN:Model")
 AddEventHandler(
 	"VP:ADMIN:Model",
 	function(model, clothes)
-
 		cAPI.SetModel(model.model)
 		Wait(130)
 		cAPI.SetBodyType(PlayerPedId(), model.bodySize)
@@ -22,10 +18,8 @@ AddEventHandler(
 		cAPI.SetPedSize(PlayerPedId(), model.pedSize)
 
 		cAPI.SetCloth(clothes)
-
 	end
 )
-
 
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
@@ -307,7 +301,7 @@ AddEventHandler(
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
-		local coords = GetEntityCoords(PlayerPedId())
+		local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 0.0, 0.0)
 		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
 		coords = vec3(coords.xy, groundZ)
 
@@ -321,27 +315,40 @@ RegisterCommand(
 		-- 	end
 		-- end
 
-		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_HUMAN_BALE_PICKUP_1"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		-- WB_HERB_ALASKAN_GINSENG
+
+		-- local obj = CreateObject("s_oleander01x", coords, 1, 1, 1)
+
+		-- local scenario_type = GetHashKey("WB_HERB_ALASKAN_GINSENG")
+
+		-- -- // 0x19A6BE7D9C6884D3
+		-- -- void _REQUEST_SCENARIO_TYPE(Hash scenarioType, int p1, Hash p2, Hash p3)
+		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
+		-- while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
+		-- 	print("scenario not loaded")
+		-- 	Wait(10)
+		-- end
+		-- -- func_1963
+
+		-- -- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, herb_scenario, coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		-- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, scenario_type, obj, GetEntityHeading(obj), 0.0, 0, 0)
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
 
-		-- -- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, false)
+		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, false)
 
 		-- Wait(250)
 
-		-- local a = Citizen.InvokeNative(0x345EC3B7EBDE1CB5, coords, 1.0 ,  1 )
-		-- local b = Citizen.InvokeNative(0x91CB5E431F579BA1, scenario)
-		-- local c = Citizen.InvokeNative(0xA92450B5AE687AAF, scenario)
-		-- local d = Citizen.InvokeNative(0xDF7993356F52359A, PlayerPedId())
-		-- local e = Citizen.InvokeNative(0x2D0571BB55879DA2, PlayerPedId())
-		-- print(" ", scenario)
-		-- print(a)
-		-- print(b)
-		-- print(c)
-		-- print(d)
-		-- print(e)
-		-- local ff
-		-- print(GetPedNearbyPeds(PlayerPedId(), f, -1, -1))
-		-- print(ff)
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_FLOURISH_TABLE_SMASH"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		-- local scenario2 = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_PLAYER_CHORES_SACK_PUT_DOWN_1"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+
+		-- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_STERNGUY_IDLES"), 0, true, 0, 0, 0)
+		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 15, 0, 0)
+		-- if (Citizen.InvokeNative(0x9427C94D2E4094A4, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 0)) then
+		local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey('"WB_HERB_ALASKAN_GINSENG"'), coords, 0.0, 2.0, 0, 1)
+		Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
+		TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
+		print(scenario)
+		-- end
 	end
 )
 
