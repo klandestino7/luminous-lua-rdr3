@@ -4,28 +4,24 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local houses = {
+    ["house:1"] = {2000, 100},
+    ["house:2"] = {2000, 100},
+    ["house:3"] = {2000, 100}
+}
+
 RegisterNetEvent("VP:HOUSING:TryToBuyHouse")
 AddEventHandler(
     "VP:HOUSING:TryToBuyHouse",
     function(houseId, withGold)
         local _source = source
 
-        local price_dollar
-        local price_gold
-
-        if houseId == "house:1" then
-            price_dollar = 2000
-            price_gold = 100
-        elseif houseId == "house:2" then
-            price_dollar = 2000
-            price_gold = 100
-        elseif houseId == "house:3" then
-            price_dollar = 2000
-            price_gold = 100
-        -- elseif houseId == "house:4" then
-        --     price_dollar = 2000
-        --     price_gold = 100
+        if not houses[houseId] then
+            return
         end
+
+        local price_dollar = houses[houseId][1]
+        local price_gold = houses[houseId][2]
 
         if price_dollar == nil or price_gold == nil then
             return
@@ -69,10 +65,25 @@ AddEventHandler(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(60000 * 60) -- 1 Hora
-        end
-    end
-)
+-- Citizen.CreateThread(
+--     function()
+-- local date = os.date("*t")
+
+-- local time_sum_sevendays = os.time(date) + (7 * 24 * 60 * 60)
+
+-- local date_sum_sevendays = os.date("*t", time_sum_sevendays)
+
+-- print(json.encode(date))
+-- print(json.encode(date_sum_sevendays))
+-- print(os.time(date_sum_sevendays))
+
+--         while true do
+--             Citizen.Wait(1000 * 60 * 60) -- 1 Hora
+--         end
+--     end
+-- )
+
+-- function checkRentsBeenPaid()
+--     for houseId, _ in pairs(houses) do
+--     end
+-- end
