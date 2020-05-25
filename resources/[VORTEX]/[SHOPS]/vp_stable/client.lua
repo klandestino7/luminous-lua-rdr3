@@ -19,16 +19,16 @@ local adding = true
 cameraUsing = {
     {
         name = "Horse",
-        x=0.2,
-        y=0.0,
-        z=1.8,
+        x = 0.2,
+        y = 0.0,
+        z = 1.8
     },
     {
         name = "Olhos",
-        x=0.0,
-        y=-0.4,
-        z=0.65,
-    },
+        x = 0.0,
+        y = -0.4,
+        z = 0.65
+    }
 }
 
 local saddlecloths = {}
@@ -40,75 +40,76 @@ local saddles = {}
 local stirrups = {}
 local acsluggage = {}
 
-Citizen.CreateThread(function()
-    while adding do
-        Citizen.Wait(0)
-        for i, v in ipairs(HorseComp) do
-            if v.category == "Saddlecloths" then
-                table.insert(saddlecloths, v.Hash)
-            elseif v.category == "AcsHorn" then
-                table.insert(acshorn, v.Hash)
-            elseif v.category == "Bags" then
-                table.insert(bags, v.Hash)
-            elseif v.category == "HorseTails" then
-                table.insert(horsetails, v.Hash)
-            elseif v.category == "Manes" then
-                table.insert(manes, v.Hash)
-            elseif v.category == "Saddles" then
-                table.insert(saddles, v.Hash)
-            elseif v.category == "Stirrups" then
-                table.insert(stirrups, v.Hash)
-            elseif v.category == "AcsLuggage" then
-                table.insert(acsluggage, v.Hash)
+Citizen.CreateThread(
+    function()
+        while adding do
+            Citizen.Wait(0)
+            for i, v in ipairs(HorseComp) do
+                if v.category == "Saddlecloths" then
+                    table.insert(saddlecloths, v.Hash)
+                elseif v.category == "AcsHorn" then
+                    table.insert(acshorn, v.Hash)
+                elseif v.category == "Bags" then
+                    table.insert(bags, v.Hash)
+                elseif v.category == "HorseTails" then
+                    table.insert(horsetails, v.Hash)
+                elseif v.category == "Manes" then
+                    table.insert(manes, v.Hash)
+                elseif v.category == "Saddles" then
+                    table.insert(saddles, v.Hash)
+                elseif v.category == "Stirrups" then
+                    table.insert(stirrups, v.Hash)
+                elseif v.category == "AcsLuggage" then
+                    table.insert(acsluggage, v.Hash)
+                end
             end
+            adding = false
         end
-        adding = false
     end
-end)
+)
 
-
-RegisterCommand('estabulo', function()
-
-    OpenStable()
-end)
+RegisterCommand(
+    "estabulo",
+    function()
+        OpenStable()
+    end
+)
 
 function OpenStable()
-        inCustomization = true
-        horsesp = true
+    inCustomization = true
+    horsesp = true
 
+    local playerHorse = cAPI.GetPlayerHorse()
 
-        SetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 334)
-        DeleteeEntity = true
-        SetNuiFocus(true, true)
-        InterP = true
+    SetEntityHeading(playerHorse, 334)
+    DeleteeEntity = true
+    SetNuiFocus(true, true)
+    InterP = true
 
-        local hashm = GetEntityModel(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()))
+    local hashm = GetEntityModel(playerHorse)
 
-        if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
-            createCamera(PlayerPedId())
-        else    
-            createCamera(PlayerPedId())
-        end
-      --  SetEntityVisible(PlayerPedId(), false)
-        if not alreadySentShopData then
-            SendNUIMessage(
-                {
-                    action = "show",
-                    shopData = getShopData()
-                }
-            )
-        else
-            SendNUIMessage(
-                {
-                    action = "show"
-                }
-            )
-        end        
-        TriggerServerEvent("VP:STABLE:AskForMyHorses")
-
-
+    if hashm ~= nil and IsPedOnMount(PlayerPedId()) then
+        createCamera(PlayerPedId())
+    else
+        createCamera(PlayerPedId())
+    end
+    --  SetEntityVisible(PlayerPedId(), false)
+    if not alreadySentShopData then
+        SendNUIMessage(
+            {
+                action = "show",
+                shopData = getShopData()
+            }
+        )
+    else
+        SendNUIMessage(
+            {
+                action = "show"
+            }
+        )
+    end
+    TriggerServerEvent("VP:STABLE:AskForMyHorses")
 end
-
 
 local promptGroup
 local varStringCasa = CreateVarString(10, "LITERAL_STRING", "Estabulo")
@@ -118,39 +119,40 @@ local SpawnPoint = {}
 local StablePoint = {}
 local HeadingPoint
 local CamPos = {}
-Citizen.CreateThread(function()
-	while true do
-		Wait(1)		
-        local coords = GetEntityCoords(PlayerPedId())        
-        for _, prompt in pairs(prompts) do
-            if PromptIsJustPressed(prompt) then     
-                for k, v in pairs(Config.Stables) do
-                    if GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < 7 then           
-                        HeadingPoint = v.Heading
-                        StablePoint = {v.Pos.x, v.Pos.y, v.Pos.z}
-                        CamPos = {v.SpawnPoint.CamPos.x, v.SpawnPoint.CamPos.y}
-                        SpawnPoint = {x = v.SpawnPoint.Pos.x, y = v.SpawnPoint.Pos.y , z = v.SpawnPoint.Pos.z, h = v.SpawnPoint.Heading}
-                        Wait(300)
-                    end  
+Citizen.CreateThread(
+    function()
+        while true do
+            Wait(1)
+            local coords = GetEntityCoords(PlayerPedId())
+            for _, prompt in pairs(prompts) do
+                if PromptIsJustPressed(prompt) then
+                    for k, v in pairs(Config.Stables) do
+                        if GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < 7 then
+                            HeadingPoint = v.Heading
+                            StablePoint = {v.Pos.x, v.Pos.y, v.Pos.z}
+                            CamPos = {v.SpawnPoint.CamPos.x, v.SpawnPoint.CamPos.y}
+                            SpawnPoint = {x = v.SpawnPoint.Pos.x, y = v.SpawnPoint.Pos.y, z = v.SpawnPoint.Pos.z, h = v.SpawnPoint.Heading}
+                            Wait(300)
+                        end
+                    end
+                    OpenStable()
                 end
-                OpenStable()
             end
         end
-	end
-end)
-
+    end
+)
 
 Citizen.CreateThread(
     function()
         for _, v in pairs(Config.Stables) do
-           -- blip = N_0x554d9d53f696d002(1664425300, v.Pos.x, v.Pos.y, v.Pos.z)
+            -- blip = N_0x554d9d53f696d002(1664425300, v.Pos.x, v.Pos.y, v.Pos.z)
             SetBlipSprite(blip, -145868367, 1)
-            Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Estábulo')
+            Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Estábulo")
             local prompt = PromptRegisterBegin()
             PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
             PromptSetControlAction(prompt, 0xE8342FF2)
-            PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Acessar Estábulo'))
-            PromptSetStandardMode(prompt, true)    
+            PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Acessar Estábulo"))
+            PromptSetStandardMode(prompt, true)
             PromptSetEnabled(prompt, 1)
             PromptSetVisible(prompt, 1)
             PromptSetHoldMode(prompt, 1)
@@ -164,7 +166,7 @@ Citizen.CreateThread(
 )
 
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if resourceName == GetCurrentResourceName() then
             for _, prompt in pairs(prompts) do
@@ -172,9 +174,8 @@ AddEventHandler(
                 RemoveBlip(blip)
             end
         end
-
-    end)
-
+    end
+)
 
 -- function deletePrompt()
 --     if prompt ~= nil then
@@ -187,8 +188,9 @@ AddEventHandler(
 -- end
 
 function rotation(dir)
-    local pedRot = GetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())) + dir
-    SetEntityHeading(Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), pedRot % 360)
+    local playerHorse = cAPI.GetPlayerHorse()
+    local pedRot = GetEntityHeading(playerHorse) + dir
+    SetEntityHeading(playerHorse, pedRot % 360)
 end
 
 RegisterNUICallback(
@@ -209,11 +211,10 @@ RegisterNUICallback(
 --         if resourceName == GetCurrentResourceName() then
 --             for _, prompt in pairs(prompts) do
 --                 PromptDelete(prompt)
--- 			end		
+-- 			end
 --         end
 --     end
 -- )
-
 
 AddEventHandler(
     "onResourceStop",
@@ -241,7 +242,6 @@ function createCam(creatorType)
     end
 end
 
-
 RegisterNUICallback(
     "Saddles",
     function(data)
@@ -250,8 +250,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddlesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xBAA7E618, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xBAA7E618, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddles[num])
@@ -269,8 +270,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             SaddleclothsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x17CEB41A, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x17CEB41A, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. saddlecloths[num])
@@ -288,8 +290,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             StirrupsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xDA6DADCA, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xDA6DADCA, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. stirrups[num])
@@ -307,8 +310,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             BagsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x80451C25, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x80451C25, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. bags[num])
@@ -326,8 +330,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             ManesUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xAA0217AB, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xAA0217AB, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. manes[num])
@@ -345,8 +350,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             HorseTailsUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xA63CAE10, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xA63CAE10, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. horsetails[num])
@@ -364,8 +370,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsHornUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0x5447332, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x5447332, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acshorn[num])
@@ -383,8 +390,9 @@ RegisterNUICallback(
         if tonumber(data.id) == 0 then
             num = nil
             AcsLuggageUsing = num
-            Citizen.InvokeNative(0xD710A5007C2AC539, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0xEFB31921, 0) -- HAT REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()), 0, 1, 1, 1, 0) -- Actually remove the component
+            local playerHorse = cAPI.GetPlayerHorse()
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xEFB31921, 0) -- HAT REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
             hash = ("0x" .. acsluggage[num])
@@ -401,7 +409,7 @@ function setcloth(hash)
     if not HasModelLoaded(model2) then
         Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
     end
-    Citizen.InvokeNative(0xD3A7B003ED343FD9 , GetMount(PlayerPedId()),  tonumber(hash), true, true, true)
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, GetMount(PlayerPedId()), tonumber(hash), true, true, true)
 end
 
 RegisterNUICallback(
@@ -467,7 +475,6 @@ HorseTailsUsing = nil
 AcsHornUsing = nil
 AcsLuggageUsing = nil
 
-
 function closeAll()
     DestroyAllCams(true)
     SetNuiFocus(false, false)
@@ -481,58 +488,21 @@ function closeAll()
     inCustomization = false
 
     choosePed = {}
-    local ped = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+
+    local playerHorse = cAPI.GetPlayerHorse()
+    local ped = playerHorse
     --  SetEntityVisible(ped, true)
     --  NetworkSetEntityInvisibleToNetwork(ped, false)
 end
 
 --- /// ARRASTAR CAVALO
 
-
 local alreadySentShopData = false
 
 function getShopData()
     alreadySentShopData = true
 
-    local ret = { --[[
-        {
-            name = "Cavalos de Equitação",
-            ["A_C_HORSE_MORGAN_FLAXENCHESTNUT"] = {"Burrinho", 5, 17},
-            ["A_C_Horse_KentuckySaddle_Grey"] = {"Kentucky Saddle (Cinza)", 20, 50},
-            ["A_C_Horse_Morgan_Palomino"] = {"Morgan", 21, 55},
-
-        },
-        {
-            name = "Cavalos de Corrida",
-            ["A_C_Horse_Thoroughbred_DappleGrey"] = {"Thoroughbred", 47, 130},
-            ["A_C_Horse_Nokota_ReverseDappleRoan"] = {"Nokota, o ágil.", 135, 450},
-            ["A_C_Horse_AmericanStandardbred_Buckskin"] = {"Standardbred Americano", 47, 130},
-
-        },
-        {
-            name = "Cavalos de Guerra",
-            ["A_C_Horse_Andalusian_DarkBay"] = {"Andalusian (Preto Cintilante)", 50, 140},
-            ["A_C_Horse_Andalusian_Perlino"] = {"Andalusian (Celeste)", 50, 140},
-        },
-        {
-            name = "Cavalos de Carga",
-            ["A_C_Horse_AmericanPaint_Overo"] = {"American Paint (Cor-de-pinto)", 47, 130},
-            ["A_C_Horse_AmericanPaint_Tobiano"] = {"American Paint (Tobiano)", 50, 140},
-            ["A_C_Horse_Appaloosa_Blanket"] = {"Appaloosa", 73, 200},    
-        },
-        {
-            name = "Cavalos Frontline (Tanques)",
-            ["A_C_Horse_Belgian_BlondChestnut"] = {"Belga (Castanho-Claro)", 30, 120},
-            ["A_C_Horse_Belgian_MealyChestnut"] = {"Belga (Loiro)", 30, 120},
-            ["A_C_Horse_Shire_LightGrey"] = {"Shire (Branco Acizentado)", 35, 130},
-            ["A_C_Horse_SuffolkPunch_RedChestnut"] = {"Suffolk Punch (Castanho Avermelhado)", 55, 150},
-        },
-        {
-            name = "Cavalos de Prestígio",
-            ["A_C_Horse_Turkoman_Gold"] = {"Turkoman (Dourado Fulgente)", 470, 950},
-
-        } ]]
-    }
+    local ret = {}
 
     return ret
 end
@@ -564,7 +534,7 @@ RegisterNUICallback(
             end
         end
 
-        showroomHorse_entity = CreatePed(modelHash, SpawnPoint.x, SpawnPoint.y, SpawnPoint.z-0.98, SpawnPoint.h, false, 0)
+        showroomHorse_entity = CreatePed(modelHash, SpawnPoint.x, SpawnPoint.y, SpawnPoint.z - 0.98, SpawnPoint.h, false, 0)
         Citizen.InvokeNative(0x283978A15512B2FE, showroomHorse_entity, true)
         Citizen.InvokeNative(0x58A850EAEE20FAA3, showroomHorse_entity)
         NetworkSetEntityInvisibleToNetwork(showroomHorse_entity, true)
@@ -572,7 +542,6 @@ RegisterNUICallback(
         -- SetModelAsNoLongerNeeded(modelHash)
 
         interpCamera("Horse", showroomHorse_entity)
-
     end
 )
 
@@ -595,12 +564,11 @@ RegisterNUICallback(
         end
         DestroyAllCams(true)
         showroomHorse_entity = nil
-        
     end
 )
 
 function interpCamera(cameraName, entity)
-    for k,v in pairs(cameraUsing) do
+    for k, v in pairs(cameraUsing) do
         if cameraUsing[k].name == cameraName then
             tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
             AttachCamToEntity(tempCam, entity, cameraUsing[k].x + CamPos[1], cameraUsing[k].y + CamPos[2], cameraUsing[k].z)
@@ -610,25 +578,23 @@ function interpCamera(cameraName, entity)
                 SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
                 InterP = false
             end
-
         end
     end
 end
 
-
 function createCamera(entity)
-    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")    
+    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
     local coords = GetEntityCoords(PlayerPedId())
     SetCamCoord(groundCam, coords.x + 0.5, coords.y - 3.6, coords.z)
-   -- SetCamCoord(groundSetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )Cam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
+    -- SetCamCoord(groundSetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )Cam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
     SetCamRot(groundCam, -20.0, 0.0, GetEntityHeading(PlayerPedId()) + 20)
-    SetCamActive(groundCam, true)    
+    SetCamActive(groundCam, true)
     RenderScriptCams(true, false, 1, true, true)
     --Wait(3000)
     -- last camera, create interpolate
     fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-  --  SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
- --   SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
+    --  SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
+    --   SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
     SetCamActive(fixedCam, true)
     SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
     Wait(3900)

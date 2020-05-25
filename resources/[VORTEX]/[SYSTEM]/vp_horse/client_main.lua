@@ -10,18 +10,12 @@ local horseComponents = {}
 
 -- ! REMOVE
 horseModel = "A_C_Horse_Turkoman_Gold"
-horseName = "Meu Cavalo"
+horseName = "Burrinho"
 -- ! REMOVE
 
-local isHorseActive = false
-
-local isHorseActivationBlocked = false
-local horseActivationSeconds
-local isHorseInWrithe = false
-
 local prompt_inventory
-
-playerHorse = 0
+local prompt_feed
+local prompt_brush
 
 function NativeSetPlayerHorse(horseEntity)
     Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), horseEntity)
@@ -42,9 +36,7 @@ function SetHorseInfo(horse_model, horse_name, horse_components)
 end
 
 function InitiateHorse(atCoords)
-    DestroyHorse()
-
-    isHorseActive = true
+    cAPI.DestroyPlayerHorse()
 
     local ped = PlayerPedId()
     local pCoords = GetEntityCoords(ped)
@@ -86,38 +78,38 @@ function InitiateHorse(atCoords)
 
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
-    NativeSetPlayerHorse(entity)
+    cAPI.SetPlayerHorse(entity)
 
     if horseModel == GetHashKey("A_C_Horse_Turkoman_Gold") then
-        NativeSetPedComponentEnabled(playerHorse, 0x106961A8) --sela
-        NativeSetPedComponentEnabled(playerHorse, 0x508B80B9) --blanket
+        NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
+        NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
     end
 
-    Citizen.InvokeNative(0x283978A15512B2FE, playerHorse, true)
+    Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
     -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
-    SetPedNameDebug(playerHorse, horseModel)
-    SetPedPromptName(playerHorse, horseName)
+    SetPedNameDebug(entity, horseModel)
+    SetPedPromptName(entity, horseName)
 
-    prompt_inventory = PromptRegisterBegin()
-    PromptSetControlAction(prompt_inventory, 0xE8342FF2) -- L:ALT
-    PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Inventário"))
-    PromptSetEnabled(prompt_inventory, 1)
-    PromptSetVisible(prompt_inventory, 1)
-    PromptSetHoldMode(prompt_inventory, 1)
+    if prompt_inventory == nil then
+        InitiatePrompts()
+    end
 
-    PromptSetGroup(prompt_inventory, PromptGetGroupIdForTargetEntity(playerHorse))
-    PromptRegisterEnd(prompt_inventory)
+    local prompt_group = PromptGetGroupIdForTargetEntity(entity)
+
+    PromptSetGroup(prompt_inventory, prompt_group)
+    PromptSetGroup(prompt_feed, prompt_group)
+    PromptSetGroup(prompt_brush, prompt_group)
 
     if horseComponents ~= nil then
         for _, componentHash in pairs(horseComponents) do
-            NativeSetPedComponentEnabled(playerHorse, tonumber(componentHash))
+            NativeSetPedComponentEnabled(entity, tonumber(componentHash))
         end
     end
 
-    TaskGoToEntity(playerHorse, ped, -1, 7.2, 2.0, 0, 0)
+    TaskGoToEntity(entity, ped, -1, 7.2, 2.0, 0, 0)
 
-    SetPedConfigFlag(playerHorse, 297, true) -- Enable_Horse_Leadin
+    SetPedConfigFlag(entity, 297, true) -- Enable_Horse_Leadin
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
@@ -145,16 +137,6 @@ function InitiateHorse(atCoords)
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
 end
 
-function DestroyHorse()
-    if NativeGetPlayerHorse() ~= 0 then
-        DeleteEntity(NativeGetPlayerHorse())
-        NativeSetPlayerHorse(0)
-    end
-    isHorseActive = false
-    isHorseActivationBlocked = false
-    horseActivationSeconds = nil
-end
-
 function SetHorseComponentEnabled(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
@@ -164,7 +146,8 @@ function SetHorseComponentEnabled(hash)
 end
 
 function drawBoundingBox()
-    if playerHorse ~= 0 then
+    if cAPI.IsPlayerHorseActive() then
+        local playerHorse = cAPI.GetPlayerHorse()
         local min, max = GetModelDimensions(GetEntityModel(playerHorse))
 
         local horseCoords = GetEntityCoords(playerHorse)
@@ -192,6 +175,7 @@ function drawBoundingBox()
 end
 
 function raycastDrinkable()
+    local playerHorse = cAPI.GetPlayerHorse()
     local boneIndex = GetEntityBoneIndexByName(playerHorse, "skel_head")
     local bonePosition = GetWorldPositionOfEntityBone(playerHorse, boneIndex)
     local groundCoords = vec3(bonePosition.xy, A.z)
@@ -205,6 +189,7 @@ function raycastDrinkable()
 end
 
 function raycastEatable()
+    local playerHorse = cAPI.GetPlayerHorse()
     local min, max = GetModelDimensions(GetEntityModel(playerHorse))
 
     local horseCoords = GetEntityCoords(playerHorse)
@@ -235,20 +220,50 @@ end
 -- end
 
 function WhistleHorse()
-    if isHorseActive and not isHorseActivationBlocked then
+    if cAPI.IsPlayerHorseActive() and not cAPI.IsPlayerHorseActivationBlocked() then
+        local playerHorse = cAPI.GetPlayerHorse()
         if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
             TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
         else
             -- cAPI.Toast("error", "Seu cavalo já está vindo")
         end
     else
-        if not isHorseActivationBlocked then
+        if not cAPI.IsPlayerHorseActivationBlocked() then
             -- InitiateHorse()
             InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
         else
             cAPI.Toast("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
     end
+end
+
+function InitiatePrompts()
+    prompt_inventory = PromptRegisterBegin()
+    PromptSetControlAction(prompt_inventory, 0x5966D52A)
+    PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Abrir Aforje"))
+    PromptSetEnabled(prompt_inventory, 1)
+    PromptSetVisible(prompt_inventory, 1)
+    PromptSetStandardMode(prompt_inventory, 1)
+    -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_inventory, 1.5)
+    PromptRegisterEnd(prompt_inventory)
+
+    prompt_feed = PromptRegisterBegin()
+    PromptSetControlAction(prompt_feed, 0xB4E465B4)
+    PromptSetText(prompt_feed, CreateVarString(10, "LITERAL_STRING", "Alimentar"))
+    PromptSetEnabled(prompt_feed, 1)
+    PromptSetVisible(prompt_feed, 1)
+    PromptSetStandardMode(prompt_feed, 1)
+    -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_feed, 1.5)
+    PromptRegisterEnd(prompt_feed)
+
+    prompt_brush = PromptRegisterBegin()
+    PromptSetControlAction(prompt_brush, 0x9959A6F0)
+    PromptSetText(prompt_brush, CreateVarString(10, "LITERAL_STRING", "Escovar"))
+    PromptSetEnabled(prompt_brush, 1)
+    PromptSetVisible(prompt_brush, 1)
+    PromptSetStandardMode(prompt_brush, 1)
+    -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_brush, 1.5)
+    PromptRegisterEnd(prompt_brush)
 end
 
 Citizen.CreateThread(
@@ -260,44 +275,16 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
-            playerHorse = NativeGetPlayerHorse()
+            if PromptIsJustPressed(prompt_inventory) then
+                TriggerServerEvent("VP:HORSE:OpenInventory")
+            end
 
-            if isHorseActive then
-                if not isHorseActivationBlocked then
-                    if IsPedInjured(playerHorse) then
-                        cAPI.Toast("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
-                        isHorseActivationBlocked = true
-                        horseActivationSeconds = 120
-                    end
+            if PromptIsJustPressed(prompt_feed) then
+                TaskAnimalInteraction(PlayerPedId(), cAPI.GetPlayerHorse(), GetHashKey("INTERACTION_FOOD"), GetHashKey("s_horsnack_carrot01x"), 1)
+            end
 
-                    if PromptHasHoldModeCompleted(prompt_inventory) then
-                        PromptSetEnabled(prompt_inventory, false)
-                        Citizen.CreateThread(
-                            function()
-                                Citizen.Wait(250)
-                                PromptSetEnabled(prompt_inventory, true)
-                            end
-                        )
-
-                        TriggerServerEvent("VP:HORSE:OpenInventory")
-                    end
-
-                    -- Flee
-                    if IsControlJustPressed(0, 0x4216AF06) then -- F
-                        TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
-                        Citizen.CreateThread(
-                            function()
-                                Citizen.Wait(10000)
-                                DestroyHorse()
-                            end
-                        )
-                    end
-                else
-                    if not IsPedInjured(playerHorse) then
-                        isHorseActivationBlocked = false
-                        horseActivationSeconds = nil
-                    end
-                end
+            if PromptIsJustPressed(prompt_brush) then
+                TaskAnimalInteraction(PlayerPedId(), cAPI.GetPlayerHorse(), GetHashKey("INTERACTION_BRUSH"), GetHashKey("p_brushhorse01x"), 1)
             end
 
             if IsControlJustPressed(0, 0xE7EB9185) or IsControlJustPressed(1, 0x24978A28) then -- H, HistleHorseBack - H, Histle
@@ -310,6 +297,7 @@ Citizen.CreateThread(
                         HandleEat()
                     else
                         if IsControlJustPressed(1, 0x24978A28) then -- H, Histle
+                            local playerHorse = cAPI.GetPlayerHorse()
                             if mount == 0 or mount ~= playerHorse then
                                 WhistleHorse()
                             end
@@ -319,16 +307,18 @@ Citizen.CreateThread(
             end
 
             if IsControlJustPressed(0, 0x7D5B3717) then --and IsControlJustPressed(0, 0xE4D2CE1D) then
-                if IsPedOnMount(PlayerPedId()) then
-                    --    TaskHorseAction(GetMount(PlayerPedId()), 2, 0, 0) -- dropar
-                    TaskHorseAction(GetMount(PlayerPedId()), 5, 0, 0) -- empinar
-                --  TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0) -- freiar
+                local mount = GetMount(PlayerPedId())
+                if mount ~= 0 then
+                    -- TaskHorseActionmount, 2, 0, 0) -- dropar
+                    TaskHorseAction(mount, 5, 0, 0) -- empinar
+                    -- TaskHorseAction(mount, 3, 0, 0) -- freiar
                 end
             end
 
             if IsControlJustPressed(0, 0xE16B9AAD) then
-                if IsPedOnMount(PlayerPedId()) then
-                    TaskHorseAction(GetMount(PlayerPedId()), 3, 0, 0)
+                local mount = GetMount(PlayerPedId())
+                if mount ~= 0 then
+                    TaskHorseAction(mount, 3, 0, 0) -- Freiada brusca
                 end
             end
 
@@ -337,53 +327,11 @@ Citizen.CreateThread(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(1000)
-
-            local active = false
-
-            if playerHorse ~= 0 and not IsPedInjured(playerHorse) and DoesEntityExist(playerHorse) then -- and DoesEntityExist(playerHorse) then
-                active = true
-            end
-
-            isHorseActive = active
-
-            if not PromptIsValid(prompt_inventory) then
-                prompt_inventory = nil
-            end
-
-            if isHorseActivationBlocked then
-                horseActivationSeconds = horseActivationSeconds - 1
-                if horseActivationSeconds <= 0 then
-                    DestroyHorse()
-                end
-            end
-
-            if isHorseInWrithe then
-                if not IsPedInWrithe(playerHorse) then
-                    isHorseInWrithe = false
-                end
-            else
-                if IsPedInWrithe(playerHorse) then
-                    cAPI.Toast("alert", "Seu cavalo foi ferido, reanime-o")
-                    isHorseInWrithe = true
-                else
-                    if #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse)) > 500.0 then
-                        DestroyHorse()
-                    end
-                end
-            end
-        end
-    end
-)
-
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
         if GetCurrentResourceName() == resourceName or resourceName == "_core" then
-            DestroyHorse()
+            cAPI.DestroyPlayerHorse()
         end
     end
 )

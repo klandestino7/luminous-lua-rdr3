@@ -1,6 +1,8 @@
 local eating = false
 
 function HandleEat()
+    local playerHorse = cAPI.GetPlayerHorse()
+    
     if mount == playerHorse then
         TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
         Citizen.CreateThread(
@@ -62,6 +64,7 @@ function ActionEat()
         --     end
         -- )
 
+        local playerHorse = cAPI.GetPlayerHorse()
         TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_GRAZING"), 20000, true, false, false, false)
 
         Citizen.CreateThread(
@@ -93,6 +96,7 @@ function CanHorseEat()
 end
 
 function HasVegetationNearHorseHead()
+    local playerHorse = cAPI.GetPlayerHorse()
     local min, max = GetModelDimensions(GetEntityModel(playerHorse))
 
     local horseCoords = GetEntityCoords(playerHorse)

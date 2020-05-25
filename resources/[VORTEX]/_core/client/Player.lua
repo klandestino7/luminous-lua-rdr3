@@ -185,7 +185,7 @@ end
 function cAPI.IsPlayerMountedOnOwnHorse()
     local mount = GetMount(PlayerPedId())
 
-    if mount ~= 0 and mount == Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger()) then
+    if mount ~= 0 and mount == cAPI.GetPlayerHorse() then
         return true
     end
 
@@ -258,7 +258,7 @@ function cAPI.VaryPlayerStamina(value, secondsTillFillUp)
 end
 
 function cAPI.VaryPlayerHorseHealth(value, secondsTillVary, goldenEffect)
-    local playerHorse = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+    local playerHorse = cAPI.GetPlayerHorse()
     if playerHorse ~= nil and playerHorse ~= 0 then
         Citizen.CreateThread(
             function()
@@ -287,7 +287,7 @@ function cAPI.VaryPlayerHorseHealth(value, secondsTillVary, goldenEffect)
 end
 
 function cAPI.VaryPlayerHorseStamina(value, secondsTillVary, goldenEffect)
-    local playerHorse = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+    local playerHorse = cAPI.GetPlayerHorse()
     if playerHorse ~= nil and playerHorse ~= 0 then
         Citizen.CreateThread(
             function()
@@ -314,4 +314,118 @@ function cAPI.VaryPlayerHorseStamina(value, secondsTillVary, goldenEffect)
             end
         )
     end
+end
+
+local playerHorse
+local isHorseActivationBlocked = false
+local horseActivationSeconds
+local isHorseInWrithe = false
+
+function cAPI.SetPlayerHorse(horse)
+    playerHorse = horse
+end
+
+function cAPI.GetPlayerHorse()
+    return playerHorse
+end
+
+function cAPI.IsPlayerHorseActive()
+    return playerHorse ~= 0
+end
+
+function cAPI.IsPlayerHorseActivationBlocked()
+    return isHorseActivationBlocked
+end
+
+Citizen.CreateThread(
+    function()
+        -- print(GetHashKey("BASE"))
+        -- print(GetHashKey("CUSTOM"))
+        -- print(GetHashKey("COMPONENT"))
+
+        while true do
+            Citizen.Wait(0)
+
+            if cAPI.IsPlayerHorseActive() then
+                if not isHorseActivationBlocked then
+                    if IsPedInjured(playerHorse) then
+                        cAPI.Toast("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
+                        isHorseActivationBlocked = true
+                        horseActivationSeconds = 120
+                    end
+
+                    if PromptHasHoldModeCompleted(prompt_inventory) then
+                        PromptSetEnabled(prompt_inventory, false)
+                        Citizen.CreateThread(
+                            function()
+                                Citizen.Wait(250)
+                                PromptSetEnabled(prompt_inventory, true)
+                            end
+                        )
+
+                        TriggerServerEvent("VP:HORSE:OpenInventory")
+                    end
+
+                    -- Flee
+                    if IsControlJustPressed(0, 0x4216AF06) then -- F
+                        TaskAnimalFlee(playerHorse, PlayerPedId(), -1)
+                        Citizen.CreateThread(
+                            function()
+                                Citizen.Wait(10000)
+                                cAPI.DestroyPlayerHorse()
+                            end
+                        )
+                    end
+                else
+                    if not IsPedInjured(playerHorse) then
+                        isHorseActivationBlocked = false
+                        horseActivationSeconds = nil
+                    end
+                end
+            end
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(1000)
+
+            if playerHorse ~= 0 and not DoesEntityExist(playerHorse) then -- and DoesEntityExist(playerHorse) then
+                cAPI.DestroyPlayerHorse()
+            end
+
+            if isHorseActivationBlocked then
+                horseActivationSeconds = horseActivationSeconds - 1
+                if horseActivationSeconds <= 0 then
+                    cAPI.DestroyPlayerHorse()
+                end
+            end
+
+            if isHorseInWrithe then
+                if not IsPedInWrithe(playerHorse) then
+                    isHorseInWrithe = false
+                end
+            else
+                if IsPedInWrithe(playerHorse) then
+                    cAPI.Toast("alert", "Seu cavalo foi ferido, reanime-o")
+                    isHorseInWrithe = true
+                else
+                    if #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse)) > 500.0 then
+                        cAPI.DestroyPlayerHorse()
+                    end
+                end
+            end
+        end
+    end
+)
+
+function cAPI.DestroyPlayerHorse()
+    if cAPI.GetPlayerHorse() ~= 0 then
+        DeleteEntity(cAPI.GetPlayerHorse())
+        cAPI.SetPlayerHorse(0)
+    end
+    isHorseActivationBlocked = false
+    horseActivationSeconds = nil
 end

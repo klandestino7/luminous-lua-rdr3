@@ -1,7 +1,8 @@
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(200)
+            Citizen.Wait(250)
+            local playerHorse = cAPI.GetPlayerHorse()
             if playerHorse ~= 0 then
                 local horseCoords = GetEntityCoords(playerHorse)
                 -- print(NativeGetHorseStaminaCore(), IsPointOnRoad(horseCoords, 0))

@@ -1,4 +1,5 @@
 function HandleDrink()
+    local playerHorse = cAPI.GetPlayerHorse()
     if mount == playerHorse then
         TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
         Citizen.CreateThread(
@@ -37,6 +38,7 @@ function ActionDrink()
     if CanHorseDrink() then
         -- WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC
 
+        local playerHorse = cAPI.GetPlayerHorse()
         TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_DRINK_GROUND"), 20000, true, false, false, false)
 
         Citizen.CreateThread(
@@ -68,6 +70,7 @@ function CanHorseDrink()
 end
 
 function HasWaterNearHorseHead()
+    local playerHorse = cAPI.GetPlayerHorse()
     local min, max = GetModelDimensions(GetEntityModel(playerHorse))
 
     local horseCoords = GetEntityCoords(playerHorse)

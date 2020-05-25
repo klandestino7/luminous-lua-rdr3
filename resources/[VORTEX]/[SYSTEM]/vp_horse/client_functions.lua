@@ -1,5 +1,5 @@
 function VaryPlayerHorseHealth(value, makeSound, secondsTillVary)
-    local playerHorse = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+    local playerHorse = cAPI.GetPlayerHorse()
     if playerHorse ~= nil and playerHorse ~= 0 then
         Citizen.CreateThread(
             function()
@@ -28,7 +28,7 @@ function VaryPlayerHorseHealth(value, makeSound, secondsTillVary)
 end
 
 function VaryPlayerHorseStamina(value, makeSound, secondsTillVary)
-    -- local playerHorse = Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
+    -- local playerHorse = cAPI.GetPlayerHorse()
     -- if playerHorse ~= nil and playerHorse ~= 0 then
     -- Citizen.InvokeNative(0xC3D4B754C0E86B9E , playerHorse, -1000.0)
     -- print('core ', Citizen.InvokeNative(0x775A1CA7893AA8B5 , playerHorse, Citizen.ResultAsFloat()))
@@ -41,23 +41,23 @@ function NativeSetAttributeOverpowerAmount(ped, coreIndex, value, makeSound)
 end
 
 function NativeGetPlayerHorseMaxStamina()
-    return Citizen.InvokeNative(0xCB42AFE2B613EE55, playerHorse)
+    return Citizen.InvokeNative(0xCB42AFE2B613EE55, cAPI.GetPlayerHorse())
 end
 
 function NativeGetPlayerHorseStamina()
-    return Citizen.InvokeNative(0x775A1CA7893AA8B5, playerHorse)
+    return Citizen.InvokeNative(0x775A1CA7893AA8B5,  cAPI.GetPlayerHorse())
 end
 
 function NativeGetHorseHealthCore()
-    return GetAttributeCoreValue(playerHorse, 0)
+    return GetAttributeCoreValue(cAPI.GetPlayerHorse(), 0)
 end
 
 function NativeGetHorseStaminaCore()
-    return GetAttributeCoreValue(playerHorse, 1)
+    return GetAttributeCoreValue(cAPI.GetPlayerHorse(), 1)
 end
 
 function NativeSetHorseStaminaCore(value)
-    Citizen.InvokeNative(0xC6258F41D86676E0, playerHorse, 1, value)
+    Citizen.InvokeNative(0xC6258F41D86676E0, cAPI.GetPlayerHorse(), 1, value)
 end
 
 function NativeChargePlayerHorseStamina(value)
@@ -68,10 +68,6 @@ end
 
 function NativeGetPlayerHorse()
     return Citizen.InvokeNative(0xB48050D326E9A2F3, PlayerId(), Citizen.ResultAsInteger())
-end
-
-function GetPlayerHorse()
-    return playerHorse
 end
 
 function DrawLine(v1, v2, r, g, b, a)
