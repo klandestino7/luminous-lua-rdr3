@@ -457,6 +457,20 @@ RegisterCommand(
     end
 )
 
+RegisterCommand(
+    "tpall",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            cAPI.SetPlayerPosition(-1, cAPI.getPosition(_source))
+        end
+    end
+)
+
+
 -- RegisterCommand(
 --     "idfromsource",
 --     function(source, args, rawCommand)
