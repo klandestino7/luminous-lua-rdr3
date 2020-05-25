@@ -90,9 +90,11 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
             if self.xp < LevelSystem[level].xp then
                 self.level = level - 1
 
-                Citizen.CreateThread(function()
-                    API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self:getLevel()})
-                end
+                Citizen.CreateThread(
+                    function()
+                        API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self:getLevel()})
+                    end
+                )
                 break
             end
         end
