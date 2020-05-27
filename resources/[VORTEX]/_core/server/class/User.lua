@@ -105,13 +105,13 @@ function API.User(source, id, ipAddress)
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
 
-                for k,v in pairs(slots) do
+                for k, v in pairs(slots) do
                     slots[k] = json.decode(v)
                 end
 
                 Inventory = API.Inventory("char:" .. id, tonumber(inv_query[1].inv_capacity), slots)
             end
-            
+
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, tonumber(charRow[1].groups), charRow[1].age, Inventory)
 
             -- Enviar informaçoes da Hotbar
@@ -141,9 +141,9 @@ function API.User(source, id, ipAddress)
             local Horse, horseComponents = self:getCharacter():getHorse()
 
             if Horse ~= nil then
-                cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
+                TriggerClientEvent("VP:HORSE:SetHorseInfo", self:getSource(), Horse:getModel(), Horse:getName(), horseComponents)
             else
-                cAPI.SetHorseInfo(self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
+                TriggerClientEvent("VP:HORSE:SetHorseInfo", self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
             end
 
             local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
@@ -239,10 +239,10 @@ function API.User(source, id, ipAddress)
         -- cAPI.Toast(self:getSource(), v)
         if type ~= nil and text == nil and quantity == nil then
             text = type
-            type = 'dev'
+            type = "dev"
         end
 
-        TriggerClientEvent('VP:TOAST:New', self:getSource(), type, text, quantity)
+        TriggerClientEvent("VP:TOAST:New", self:getSource(), type, text, quantity)
     end
 
     self.getWeapons = function()
