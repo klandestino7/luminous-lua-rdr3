@@ -1,4 +1,4 @@
-local eating = false
+local isEating = false
 
 function HandleEat()
     local playerHorse = cAPI.GetPlayerHorse()
@@ -66,6 +66,7 @@ function ActionEat()
 
         local playerHorse = cAPI.GetPlayerHorse()
         TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_GRAZING"), 20000, true, false, false, false)
+        isEating = true
 
         Citizen.CreateThread(
             function()
@@ -75,24 +76,30 @@ function ActionEat()
                     local v = NativeGetHorseStaminaCore()
                     NativeSetHorseStaminaCore(v + 1)
 
-                    if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                        cAPI.Toast("alert", "Cavalo parou de comer porque a animação acabou")
+                    if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 or v >= 100 then
                         break
                     end
 
-                    if v == 100 then
-                        cAPI.Toast("alert", "Cavalo parou de comer porque o core está cheio")
-                        ClearPedTasks(playerHorse)
-                        break
-                    end
+                    -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
+                    --     cAPI.Toast("alert", "Cavalo parou de comer porque a animação acabou")
+                    --     break
+                    -- end
+
+                    -- if v == 100 then
+                    --     cAPI.Toast("alert", "Cavalo parou de comer porque o core está cheio")
+                    --     break
+                    -- end
                 end
+
+                ClearPedTasks(playerHorse)
+                isEating = false
             end
         )
     end
 end
 
 function CanHorseEat()
-    return HasVegetationNearHorseHead() and NativeGetHorseStaminaCore() < 100 and eating == false
+    return HasVegetationNearHorseHead() and NativeGetHorseStaminaCore() < 100 and isEating == false
 end
 
 function HasVegetationNearHorseHead()
