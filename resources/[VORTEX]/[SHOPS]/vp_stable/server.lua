@@ -60,8 +60,6 @@ AddEventHandler(
     end
 )
 
-
-
 RegisterNetEvent("VP:STABLE:BuyHorse")
 AddEventHandler(
     "VP:STABLE:BuyHorse",
@@ -70,13 +68,19 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Horse = Character:getHorse()
-
-
        -- Character:setHorse(id)
-
-
         Character:createHorse(data, name)
+    end
+)
 
+RegisterNetEvent("VP:STABLE:SelectHorseWithId")
+AddEventHandler(
+    "VP:STABLE:SelectHorseWithId",
+    function(id)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
 
+        Character:setHorse(id)       
     end
 )

@@ -117,18 +117,13 @@ window.addEventListener('message', function(event) {
                         </div>
                     </div>
                     <div class="collapsible-body col s12 panel item" id="${HorseID}">
-                        <div class="col s6 panel-col item">
+                        <div class="col s6 panel-col item" onclick="SelectHorse(${HorseID})">
                             <h6 class="grey-text title">Escolher</h6>
-                        </div>
-                        <div class="col s1 offset-s4 panel-col">
-                            <button class="button-left col s4 waves-effect waves-light btn">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
                         </div>
                     </div>
                 </li> 
             `);
-
+            
             $(`#page_myhorses .scroll-container .collapsible #${HorseID}`).hover(function() {  
                 $( this ).click(function() {                    
                     console.log('clicou') 
@@ -247,4 +242,9 @@ function buyHorse(Modelhor, price, isGold) {
     } else {
         $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Dollar: price }));    
     }    
+}
+
+
+function SelectHorse(IdHorse) {    
+    $.post('http://vp_stable/selectHorse', JSON.stringify({ horseID: IdHorse }))    
 }

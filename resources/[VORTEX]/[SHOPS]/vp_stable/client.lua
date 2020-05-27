@@ -417,7 +417,7 @@ end
 RegisterNUICallback(
     "selectHorse",
     function(data)
-        TriggerServerEvent("VP:STABLE:SelectHorseWithId", tonumber(data.horseId))
+        TriggerServerEvent("VP:STABLE:SelectHorseWithId", tonumber(data.horseID))
     end
 )
 
@@ -433,14 +433,6 @@ AddEventHandler(
     end
 )
 
-
-RegisterNetEvent("VP:STABLE:SelectHORSE")
-AddEventHandler(
-    "VP:STABLE:SelectHORSE",
-    function(data)
-        TriggerServerEvent("VP:STABLE:SelectHorseWithId", data.id)
-    end
-)
 
 SaddlesUsing = nil
 SaddleclothsUsing = nil
@@ -582,7 +574,7 @@ RegisterNUICallback(
         SetVehicleHasBeenOwnedByPlayer(MyHorse_entity, true)
 
         local componentsHorse = json.decode(data.HorseComp)
-        
+
         if componentsHorse ~= '[]' then
             for _, Key in pairs(componentsHorse) do
                 local model2 = GetHashKey(tonumber(Key))
