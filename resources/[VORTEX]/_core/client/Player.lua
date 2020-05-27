@@ -337,6 +337,15 @@ function cAPI.IsPlayerHorseActivationBlocked()
     return isHorseActivationBlocked
 end
 
+function cAPI.DestroyPlayerHorse()
+    if cAPI.GetPlayerHorse() ~= 0 then
+        DeleteEntity(cAPI.GetPlayerHorse())
+        cAPI.SetPlayerHorse(0)
+    end
+    isHorseActivationBlocked = false
+    horseActivationSeconds = nil
+end
+
 Citizen.CreateThread(
     function()
         -- print(GetHashKey("BASE"))
@@ -421,11 +430,3 @@ Citizen.CreateThread(
     end
 )
 
-function cAPI.DestroyPlayerHorse()
-    if cAPI.GetPlayerHorse() ~= 0 then
-        DeleteEntity(cAPI.GetPlayerHorse())
-        cAPI.SetPlayerHorse(0)
-    end
-    isHorseActivationBlocked = false
-    horseActivationSeconds = nil
-end
