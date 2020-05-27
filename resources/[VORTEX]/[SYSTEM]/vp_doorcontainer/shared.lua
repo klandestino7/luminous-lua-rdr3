@@ -29,8 +29,22 @@ local doorStates = {
     [2515591150] = {false},
     [3365520707] = {false},
     [2167775834] = {false},
-    [2514996158] = {false}
+    [2514996158] = {false},
+    [2810801921] = {false},
+    [3410720590] = {false, 3821185084}, 
+    [3821185084] = {false, 3410720590}, 
+    [1878514758] = {false},
+    [1147152658] = {false},
+    [1514359658] = {false},
+    [1821044729] = {false},
+    [1508776842] = {false},
+    [295355979] = {false},
+    [193903155] = {false},
+    [395506985] = {false},
+    [1988748538] = {false},
     -----------------------------------
+    -- SHERIFF
+    [349074475] = {false}
 }
 
 -- TALVEZ MUDAR O SISTEMA PARA O CLIENT SÓ PEDIR O SYNC
@@ -39,6 +53,12 @@ local doorStates = {
 Citizen.CreateThread(
     function()
         if SERVER then
+            local Tunnel = module("_core", "lib/Tunnel")
+            local Proxy = module("_core", "lib/Proxy")
+
+            API = Proxy.getInterface("API")
+            cAPI = Tunnel.getInterface("API")
+
             function setControllableDoorsForGroup(group, doorHashArray)
                 for _, doorHash in pairs(doorHashArray) do
                     if doorStates[doorHash] then
@@ -82,7 +102,7 @@ Citizen.CreateThread(
             -- )
 
             setControllableDoorsForGroup(
-                "sheriff",
+                "trooper",
                 {
                     1207903970,
                     902070893,
@@ -94,7 +114,26 @@ Citizen.CreateThread(
                     2515591150,
                     3365520707,
                     2167775834,
-                    2514996158
+                    2514996158,
+                    2810801921,
+                    3410720590,
+                    3821185084,
+                    1878514758,
+                    1147152658,
+                    1514359658,
+                    1821044729,
+                    1508776842,
+                    295355979,
+                    193903155,
+                    395506985,
+                    1988748538
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "sheriff",
+                {
+                    349074475
                 }
             )
 
@@ -244,7 +283,11 @@ Citizen.CreateThread(
                             local dist = #(pCoords - GetEntityCoords(doorEntity))
 
                             if dist <= 1.7 then
-                                if HasEntityClearLosToEntityInFront(ped, doorEntity, 0) then
+                                local playingUnlockAnimation = IsEntityPlayingAnim(ped, "script_common@jail_cell@unlock@key", "action", 3)
+
+                                -- drawHandle(doorEntity)
+
+                                if HasEntityClearLosToEntityInFront(ped, doorEntity, 0) and not playingUnlockAnimation then
                                     local doorState = doorStates[closestDoorHash][1]
 
                                     if doorState == true then
@@ -252,26 +295,30 @@ Citizen.CreateThread(
 
                                         if PromptHasHoldModeCompleted(prompt_close) then
                                             PromptSetEnabled(prompt_close, false)
-                                            TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                             Citizen.CreateThread(
                                                 function()
                                                     Citizen.Wait(250)
                                                     PromptSetEnabled(prompt_close, true)
                                                 end
                                             )
+
+                                            unlockAnimation()
+                                            TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                         end
                                     else
                                         PromptSetActiveGroupThisFrame(prompt_group_open, prompt_group_name)
 
                                         if PromptHasHoldModeCompleted(prompt_open) then
                                             PromptSetEnabled(prompt_open, false)
-                                            TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                             Citizen.CreateThread(
                                                 function()
                                                     Citizen.Wait(250)
                                                     PromptSetEnabled(prompt_open, true)
                                                 end
                                             )
+
+                                            unlockAnimation()
+                                            TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                         end
                                     end
                                 end
@@ -305,6 +352,46 @@ Citizen.CreateThread(
                 PromptRegisterEnd(prompt_close)
             end
 
+            function unlockAnimation()
+
+                local dict = "script_common@jail_cell@unlock@key"
+                if not HasAnimDictLoaded(dict) then
+                    RequestAnimDict(dict)
+                    while not HasAnimDictLoaded(dict) do
+                        Citizen.Wait(10)
+                    end
+                end
+
+                local ped = PlayerPedId()
+
+                local prop = CreateObject("P_KEY02X", GetEntityCoords(ped) + vec3(0, 0, 0.2), true, true, true)
+                local boneIndex = GetEntityBoneIndexByName(ped, "SKEL_R_Finger12")
+
+                TaskPlayAnim(ped, "script_common@jail_cell@unlock@key", "action", 8.0, -8.0, 2500, 31, 0, true, 0, false, 0, false)
+                Wait(750)
+                AttachEntityToEntity(prop, ped, boneIndex, 0.02, 0.0120, -0.00850, 0.024, -160.0, 200.0, true, true, false, true, 1, true)
+
+                while IsEntityPlayingAnim(ped, "script_common@jail_cell@unlock@key", "action", 3) do
+                    Wait(100)
+                end
+
+                DeleteObject(prop)
+            end
+
+            function GetDoorEntity(doorHash)
+                return Citizen.InvokeNative(0xF7424890E4A094C0, doorHash)
+            end
+
+            function RegisterDoorSomething(doorHash)
+                Citizen.InvokeNative(0xD99229FE93B46286, doorHash, 1, 1, 0, 0, 0, 0)
+            end
+
+            -- function drawHandle(entity)
+            --     local offset = GetOffsetFromEntityInWorldCoords(entity, 1.05, 0.0, 1.0)
+            --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(entity), offset, 255, 0, 0, 255)
+            --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(PlayerPedId()), offset, 255, 0, 0, 255)
+            -- end
+
             AddEventHandler(
                 "onResourceStop",
                 function(resourceName)
@@ -317,11 +404,3 @@ Citizen.CreateThread(
         end
     end
 )
-
-function GetDoorEntity(doorHash)
-    return Citizen.InvokeNative(0xF7424890E4A094C0, doorHash)
-end
-
-function RegisterDoorSomething(doorHash)
-    Citizen.InvokeNative(0xD99229FE93B46286, doorHash, 1, 1, 0, 0, 0, 0)
-end
