@@ -17,6 +17,7 @@ AddEventHandler(
             return
         end
 
+        print(components)
         Horse:setComponents(components)
         cAPI.setHorseComponents(_source, components)
     end
@@ -54,8 +55,28 @@ AddEventHandler(
         for k,v in pairs(horses) do
             print(k,v)
         end
-
         TriggerClientEvent("VP:STABLE:ReceiveHorsesData", _source, horses)
         -- TriggerClientEvent("VP:STABLE:callhorse", _source)
+    end
+)
+
+
+
+RegisterNetEvent("VP:STABLE:BuyHorse")
+AddEventHandler(
+    "VP:STABLE:BuyHorse",
+    function(data, name)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+        local Horse = Character:getHorse()
+
+
+       -- Character:setHorse(id)
+
+
+        Character:createHorse(data, name)
+
+
     end
 )

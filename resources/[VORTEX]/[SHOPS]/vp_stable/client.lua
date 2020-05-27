@@ -16,6 +16,8 @@ DeleteeEntity = true
 local InterP = true
 local adding = true
 
+local MyHorse_entity
+
 cameraUsing = {
     {
         name = "Horse",
@@ -79,7 +81,7 @@ function OpenStable()
     inCustomization = true
     horsesp = true
 
-    local playerHorse = cAPI.GetPlayerHorse()
+    local playerHorse = MyHorse_entity
 
     SetEntityHeading(playerHorse, 334)
     DeleteeEntity = true
@@ -188,7 +190,7 @@ AddEventHandler(
 -- end
 
 function rotation(dir)
-    local playerHorse = cAPI.GetPlayerHorse()
+    local playerHorse = MyHorse_entity
     local pedRot = GetEntityHeading(playerHorse) + dir
     SetEntityHeading(playerHorse, pedRot % 360)
 end
@@ -248,9 +250,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             SaddlesUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xBAA7E618, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -268,9 +270,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             SaddleclothsUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x17CEB41A, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -288,9 +290,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             StirrupsUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xDA6DADCA, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -308,9 +310,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             BagsUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x80451C25, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -328,9 +330,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             ManesUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xAA0217AB, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -348,10 +350,10 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             HorseTailsUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
-            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xA63CAE10, 0) -- HAT REMOVE
+            local playerHorse = MyHorse_entity
+            Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x17CEB41A, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
             local num = tonumber(data.id)
@@ -368,9 +370,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             AcsHornUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0x5447332, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -388,9 +390,9 @@ RegisterNUICallback(
         zoom = 4.0
         offset = 0.2
         if tonumber(data.id) == 0 then
-            num = nil
+            num = 0
             AcsLuggageUsing = num
-            local playerHorse = cAPI.GetPlayerHorse()
+            local playerHorse = MyHorse_entity
             Citizen.InvokeNative(0xD710A5007C2AC539, playerHorse, 0xEFB31921, 0) -- HAT REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, playerHorse, 0, 1, 1, 1, 0) -- Actually remove the component
         else
@@ -409,7 +411,7 @@ function setcloth(hash)
     if not HasModelLoaded(model2) then
         Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
     end
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, GetMount(PlayerPedId()), tonumber(hash), true, true, true)
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, MyHorse_entity, tonumber(hash), true, true, true)
 end
 
 RegisterNUICallback(
@@ -422,47 +424,21 @@ RegisterNUICallback(
 RegisterNetEvent("VP:STABLE:ReceiveHorsesData")
 AddEventHandler(
     "VP:STABLE:ReceiveHorsesData",
-    function(data)
+    function(dataHorses)
         SendNUIMessage(
             {
-                myHorsesData = data
+                myHorsesData = dataHorses
             }
         )
     end
 )
+
 
 RegisterNetEvent("VP:STABLE:SelectHORSE")
 AddEventHandler(
     "VP:STABLE:SelectHORSE",
     function(data)
         TriggerServerEvent("VP:STABLE:SelectHorseWithId", data.id)
-    end
-)
-
-RegisterNUICallback(
-    "Confirm",
-    function()
-        local dados = {
-            -- ['saddles'] = SaddlesUsing,
-            -- ['saddlescloths'] = SaddleclothsUsing,
-            -- ['stirrups'] = StirrupsUsing,
-            -- ['bags'] = BagsUsing,
-            -- ['manes'] = ManesUsing,
-            -- ['horsetails'] = HorseTailsUsing,
-            -- ['acshorn'] = AcsHornUsing,
-            -- ['ascluggage'] = AcsLuggageUsing
-            SaddlesUsing,
-            SaddleclothsUsing,
-            StirrupsUsing,
-            BagsUsing,
-            ManesUsing,
-            HorseTailsUsing,
-            AcsHornUsing,
-            AcsLuggageUsing
-        }
-        TriggerServerEvent("VP:STABLE:UpdateHorseComponents", dados)
-        SetEntityVisible(PlayerPedId(), true)
-        closeAll()
     end
 )
 
@@ -475,40 +451,61 @@ HorseTailsUsing = nil
 AcsHornUsing = nil
 AcsLuggageUsing = nil
 
-function closeAll()
-    DestroyAllCams(true)
-    SetNuiFocus(false, false)
-    DisplayHud(true)
-    SendNUIMessage(
-        {
-            action = "hide"
-        }
-    )
-    horsesp = false
-    inCustomization = false
-
-    choosePed = {}
-
-    local playerHorse = cAPI.GetPlayerHorse()
-    local ped = playerHorse
-    --  SetEntityVisible(ped, true)
-    --  NetworkSetEntityInvisibleToNetwork(ped, false)
-end
-
 --- /// ARRASTAR CAVALO
 
 local alreadySentShopData = false
 
+
+
 function getShopData()
     alreadySentShopData = true
 
-    local ret = {}
+    local ret = {
+        {
+            name = "Cavalos de Equitação",
+            ["A_C_HORSE_MORGAN_FLAXENCHESTNUT"] = {"Burrinho", 5, 17},
+            ["A_C_Horse_KentuckySaddle_Grey"] = {"Kentucky Saddle (Cinza)", 20, 50},
+            ["A_C_Horse_Morgan_Palomino"] = {"Morgan", 21, 55},
+
+        },
+        {
+            name = "Cavalos de Corrida",
+            ["A_C_Horse_Thoroughbred_DappleGrey"] = {"Thoroughbred", 47, 130},
+            ["A_C_Horse_Nokota_ReverseDappleRoan"] = {"Nokota, o ágil.", 135, 450},
+            ["A_C_Horse_AmericanStandardbred_Buckskin"] = {"Standardbred Americano", 47, 130},
+
+        },
+        {
+            name = "Cavalos de Guerra",
+            ["A_C_Horse_Andalusian_DarkBay"] = {"Andalusian (Preto Cintilante)", 50, 140},
+            ["A_C_Horse_Andalusian_Perlino"] = {"Andalusian (Celeste)", 50, 140},
+        },
+        {
+            name = "Cavalos de Carga",
+            ["A_C_Horse_AmericanPaint_Overo"] = {"American Paint (Cor-de-pinto)", 47, 130},
+            ["A_C_Horse_AmericanPaint_Tobiano"] = {"American Paint (Tobiano)", 50, 140},
+            ["A_C_Horse_Appaloosa_Blanket"] = {"Appaloosa", 73, 200},    
+        },
+        {
+            name = "Cavalos Frontline (Tanques)",
+            ["A_C_Horse_Belgian_BlondChestnut"] = {"Belga (Castanho-Claro)", 30, 120},
+            ["A_C_Horse_Belgian_MealyChestnut"] = {"Belga (Loiro)", 30, 120},
+            ["A_C_Horse_Shire_LightGrey"] = {"Shire (Branco Acizentado)", 35, 130},
+            ["A_C_Horse_SuffolkPunch_RedChestnut"] = {"Suffolk Punch (Castanho Avermelhado)", 55, 150},
+        },
+        {
+            name = "Cavalos de Prestígio",
+            ["A_C_Horse_Turkoman_Gold"] = {"Turkoman (Dourado Fulgente)", 470, 950},
+
+        } 
+    }
 
     return ret
 end
 
 local showroomHorse_entity
 local showroomHorse_model
+
 
 RegisterNUICallback(
     "loadHorse",
@@ -521,6 +518,10 @@ RegisterNUICallback(
 
         if showroomHorse_entity ~= nil then
             DeleteEntity(showroomHorse_entity)
+        end
+
+        if MyHorse_entity ~= nil then
+            DeleteEntity(MyHorse_entity)
         end
 
         showroomHorse_model = horseModel
@@ -545,6 +546,81 @@ RegisterNUICallback(
     end
 )
 
+
+RegisterNUICallback(
+    "loadMyHorse",
+    function(data)
+        local horseModel = data.horseModel
+
+        if showroomHorse_model == horseModel then
+            return
+        end
+
+        if showroomHorse_entity ~= nil then
+            DeleteEntity(showroomHorse_entity)
+        end
+
+        if MyHorse_entity ~= nil then
+            DeleteEntity(MyHorse_entity)
+        end
+
+        showroomHorse_model = horseModel
+
+        local modelHash = GetHashKey(showroomHorse_model)
+
+        if not HasModelLoaded(modelHash) then
+            RequestModel(modelHash)
+            while not HasModelLoaded(modelHash) do
+                Citizen.Wait(10)
+            end
+        end
+
+        MyHorse_entity = CreatePed(modelHash, SpawnPoint.x, SpawnPoint.y, SpawnPoint.z - 0.98, SpawnPoint.h, false, 0)
+        Citizen.InvokeNative(0x283978A15512B2FE, MyHorse_entity, true)
+        Citizen.InvokeNative(0x58A850EAEE20FAA3, MyHorse_entity)
+        NetworkSetEntityInvisibleToNetwork(MyHorse_entity, true)
+        SetVehicleHasBeenOwnedByPlayer(MyHorse_entity, true)
+
+        local componentsHorse = json.decode(data.HorseComp)
+        
+        if componentsHorse ~= '[]' then
+            for _, Key in pairs(componentsHorse) do
+                local model2 = GetHashKey(tonumber(Key))
+                if not HasModelLoaded(model2) then
+                    Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+                end
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, MyHorse_entity, tonumber(Key), true, true, true)
+            end
+        end
+
+        -- SetModelAsNoLongerNeeded(modelHash)
+
+        interpCamera("Horse", MyHorse_entity)
+    end
+)
+
+
+RegisterNUICallback(
+    "BuyHorse",
+    function()
+        TriggerEvent('VP:STABLE:BuyHorse')
+    end
+)
+
+RegisterNetEvent("VP:STABLE:BuyHorse")
+AddEventHandler(
+    "VP:STABLE:BuyHorse",
+    function()
+        print('openPrompt')
+        local name = "CavaloRuim"
+        local data = "A_C_Horse_AmericanStandardbred_Buckskin"
+
+        TriggerServerEvent('VP:STABLE:BuyHorse', data, name)
+    end
+)
+
+
+
 RegisterNUICallback(
     "CloseStable",
     function()
@@ -562,10 +638,46 @@ RegisterNUICallback(
         if showroomHorse_entity ~= nil then
             DeleteEntity(showroomHorse_entity)
         end
+
+        if MyHorse_entity ~= nil then
+            DeleteEntity(MyHorse_entity)
+        end
+
         DestroyAllCams(true)
         showroomHorse_entity = nil
+        CloseStable()
     end
 )
+
+
+function CloseStable()
+        local dados = {
+            -- ['saddles'] = SaddlesUsing,
+            -- ['saddlescloths'] = SaddleclothsUsing,
+            -- ['stirrups'] = StirrupsUsing,
+            -- ['bags'] = BagsUsing,
+            -- ['manes'] = ManesUsing,
+            -- ['horsetails'] = HorseTailsUsing,
+            -- ['acshorn'] = AcsHornUsing,
+            -- ['ascluggage'] = AcsLuggageUsing
+            SaddlesUsing,
+            SaddleclothsUsing,
+            StirrupsUsing,
+            BagsUsing,
+            ManesUsing,
+            HorseTailsUsing,
+            AcsHornUsing,
+            AcsLuggageUsing
+        }
+        local DadosEncoded = json.encode(dados)
+
+        if DadosEncoded ~= "[]" then            
+            TriggerServerEvent("VP:STABLE:UpdateHorseComponents", dados) 
+        end
+
+       
+end
+
 
 function interpCamera(cameraName, entity)
     for k, v in pairs(cameraUsing) do
@@ -573,7 +685,7 @@ function interpCamera(cameraName, entity)
             tempCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
             AttachCamToEntity(tempCam, entity, cameraUsing[k].x + CamPos[1], cameraUsing[k].y + CamPos[2], cameraUsing[k].z)
             SetCamActive(tempCam, true)
-            SetCamRot(tempCam, -30.0, 0, GetEntityHeading(PlayerPedId()) + 50.0)
+            SetCamRot(tempCam, -30.0, 0, HeadingPoint + 50.0)
             if InterP then
                 SetCamActiveWithInterp(tempCam, fixedCam, 1200, true, true)
                 InterP = false
@@ -584,17 +696,15 @@ end
 
 function createCamera(entity)
     groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-    local coords = GetEntityCoords(PlayerPedId())
-    SetCamCoord(groundCam, coords.x + 0.5, coords.y - 3.6, coords.z)
-    -- SetCamCoord(groundSetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )Cam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
-    SetCamRot(groundCam, -20.0, 0.0, GetEntityHeading(PlayerPedId()) + 20)
+    SetCamCoord(groundCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] )
+    SetCamRot(groundCam, -20.0, 0.0, HeadingPoint + 20)
     SetCamActive(groundCam, true)
     RenderScriptCams(true, false, 1, true, true)
     --Wait(3000)
     -- last camera, create interpolate
     fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-    --  SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
-    --   SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
+    SetCamCoord(fixedCam, StablePoint[1] + 0.5, StablePoint[2] - 3.6, StablePoint[3] +1.8)
+    SetCamRot(fixedCam, -20.0, 0, HeadingPoint + 50.0)
     SetCamActive(fixedCam, true)
     SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
     Wait(3900)

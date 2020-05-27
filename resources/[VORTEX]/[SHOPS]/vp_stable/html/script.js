@@ -1,8 +1,10 @@
 $('#creatormenu').fadeOut(0);
 
+
 window.addEventListener('message', function(event) {
     if (event.data.action == "show") {
         $("#creatormenu").fadeIn(500);
+       
 
         if (event.data.shopData) {
             for (const [index, table] of Object.entries(event.data.shopData)) {
@@ -24,14 +26,15 @@ window.addEventListener('message', function(event) {
 
                 for (const [_, horseData] of Object.entries(table)) {
                     if (_ != 'name') {
+                        var Modelhorse
                         var HorseName = horseData[0];
                         var priceGold = horseData[1];
                         var priceDolar = horseData[2];
+                        var BuyModel = null;
 
                         // priceGold = '';
                         // priceDolar = '';
-
-
+                     
 
                         $(`#page_shop .scroll-container .collapsible #${index} .collapsible-body`).append(`
 
@@ -42,10 +45,10 @@ window.addEventListener('message', function(event) {
                                 </div>          
 
                                 <div class="buy-buttons">                                       
-                                    <button class="btn-small">                                                
+                                    <button class="btn-small"  onclick="buyHorse(${BuyModel}, ${priceGold}, true)">                                                
                                         <img src="img/gold.png"><span class="horse-price">${priceGold}</span>
                                     </button>                                          
-                                    <button class="btn-small">
+                                    <button class="btn-small"  onclick="buyHorse(${BuyModel}, ${priceDolar}, false)">
                                         <img src="img/money.png"><span class="horse-price">${priceDolar}</span>
                                     </button>
                                 </div>
@@ -53,14 +56,28 @@ window.addEventListener('message', function(event) {
                             </div>
                         `);
 
-                        $(`#page_shop .scroll-container .collapsible #${index} .collapsible-body #${_}`).hover(function() {
-                            $.post('http://vp_stable/loadHorse', JSON.stringify({ horseModel: $(this).attr('id') }));
+                        $(`#page_shop .scroll-container .collapsible #${index} .collapsible-body #${_}`).hover(function() {                       
+                            $( this ).click(function() {                        
+                             
+
+                                $(Modelhorse).addClass("selected");
+                                $('.selected').removeClass("selected"); 
+
+                                Modelhorse = $(this).attr('id');                       
+                                $(this).addClass('selected');
+
+                                $.post('http://vp_stable/loadHorse', JSON.stringify({ horseModel: $(this).attr('id') }));
+                            });                       
+                            
                         }, function() {});
+
+
                     }
                 }
 
             }
 
+            
             $('#page_myhorses .scroll-container .collapsible').html('');
             $('#page_myhorses .scroll-container .collapsible').append(`
                 <li>
@@ -78,10 +95,56 @@ window.addEventListener('message', function(event) {
             $("#creatormenu").fadeOut(500);
         }
 
-        if (event.data.myHorsesData) {
-            $.event.data.shopData.forEach(element => {});
+        
+    }
+    if (event.data.myHorsesData) {            
+
+        $('#page_myhorses .scroll-container .collapsible').html('');
+
+        for (const [ind, tab] of Object.entries(event.data.myHorsesData)) {
+        
+            var HorseName = tab.name;
+            var HorseID = tab.id;
+            var HorseIdModel = tab.model;
+            var componentsh = tab.components;
+            var selectedh = tab.selected;         
+
+            $('#page_myhorses .scroll-container .collapsible').append(`
+                <li>
+                    <div id="heads" class="collapsible-header col s12 panel" style="background-color: transparent; border: 0;">
+                        <div class="col s12 panel-title">
+                            <h6 class="grey-text">${HorseName}</h6>
+                        </div>
+                    </div>
+                    <div class="collapsible-body col s12 panel item" id="${HorseID}">
+                        <div class="col s6 panel-col item">
+                            <h6 class="grey-text title">Escolher</h6>
+                        </div>
+                        <div class="col s1 offset-s4 panel-col">
+                            <button class="button-left col s4 waves-effect waves-light btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li> 
+            `);
+
+            $(`#page_myhorses .scroll-container .collapsible #${HorseID}`).hover(function() {  
+                $( this ).click(function() {                    
+                    console.log('clicou') 
+                    var HorseSEID
+                    $(HorseID).addClass("selected");
+                    $('.selected').removeClass("selected"); 
+
+                    HorseSEID = $(HorseID).attr('id');             
+                    $(HorseID).addClass('selected');
+
+                    $.post('http://vp_stable/loadMyHorse', JSON.stringify({ horseModel: HorseIdModel, HorseComp: componentsh}));
+                });                         
+            }, function() {});
         }
     }
+
 });
 
 function confirm(){
@@ -170,15 +233,18 @@ $(".input-number").on("change paste keyup", function() {
     }
 
     var titleElement = $(this).parent().parent().find('.grey-text');
-    var text = titleElement.text();
+    var text = titleElement.text();    
     var component = text.split(' ')[0];
+    
     titleElement.text(component + ' ' + value + '/' + max);
+
 });
 
-function buy(element, isGold) {
-    if (isGold) {
-        // console.log(`Buy Gold ${$(element).parent().parent().attr('id')}`);
+function buyHorse(Modelhor, price, isGold) {    
+
+    if (isGold) {        
+        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Gold: price }));
     } else {
-        // console.log(`Buy Dollar ${$(element).parent().parent().attr('id')}`);
-    }
+        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Dollar: price }));    
+    }    
 }
