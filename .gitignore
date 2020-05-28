@@ -9,3 +9,4 @@ citizen/*
 *.crt
 *.key
 resources/debug
+cfx-rdr-spanser-debug

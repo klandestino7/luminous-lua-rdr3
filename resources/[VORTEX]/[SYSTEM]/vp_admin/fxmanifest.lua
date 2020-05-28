@@ -4,10 +4,15 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_scripts {
 	'@_core/lib/utils.lua',
-	'client.lua'
+	'client.lua',
+	'client_js.js',
 }
 
 server_scripts {
 	'@_core/lib/utils.lua',
 	'server.lua'
+}
+
+exports {
+	'js_teste_native',
 }

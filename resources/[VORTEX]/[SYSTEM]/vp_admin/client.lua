@@ -311,8 +311,8 @@ RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
 		local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 0.0, 0.0)
-		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
-		coords = vec3(coords.xy, groundZ)
+		-- local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
+		-- coords = vec3(coords.xy, groundZ)
 
 		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
 		-- if IsModelValid(objHash) then
@@ -353,11 +353,15 @@ RegisterCommand(
 		-- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_STERNGUY_IDLES"), 0, true, 0, 0, 0)
 		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 15, 0, 0)
 		-- if (Citizen.InvokeNative(0x9427C94D2E4094A4, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 0)) then
-		local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey('"WB_HERB_ALASKAN_GINSENG"'), coords, 0.0, 2.0, 0, 1)
-		Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
-		TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
-		print(scenario)
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_HUMAN_SIT_GROUND"), coords, 0.0, 2.0, 0, 1)
+		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
+		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
+		-- print(scenario)
 		-- end
+
+		-- print(Citizen.InvokeNative(0x841475AC96E794D1,32512))
+
+		-- exports['vp_admin']:js_teste_native();
 	end
 )
 
