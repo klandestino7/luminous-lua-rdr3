@@ -89,10 +89,14 @@ Citizen.CreateThread(
         -- initiateCameraAtHouseId("house:1")
 
         local availableHouses = {
-            ["house:1"] = {"Mansão Braithwaite", 20.0, 1.0, vec3(1011.094, -1772.385, 47.592), 34.0},
-            ["house:2"] = {"Chalé Renegado", 20.0, 1.0, vec3(1370.606, -874.264, 70.132), 25.0},
-            ["house:3"] = {"Recanto Dormente", 20.0, 1.0, vec3(1135.113, -979.852, 69.398), 25.0},
-            -- ["house:4"] = {"Crackolandia", 20, 1.0, vec3(2497.916,-420.914,44.371), 20.0},
+            -- ["house:1"] = {"Mansão Braithwaite", 20.0, 1.0, vec3(1011.094, -1772.385, 47.592), 34.0},
+            ["house:1"] = {"Chalé Renegado", 20.0, 1.0, vec3(1370.606, -874.264, 70.132), 25.0},
+            ["house:2"] = {"Recanto Dormente", 20.0, 1.0, vec3(1135.113, -979.852, 69.398), 25.0},
+            ["house:3"] = {"Renascença Espaçosa", 20, 1.0, vec3(-1680.596, -338.923, 174.025), 20.0},
+            ["house:4"] = {"Refúgio Ensolarado", 20, 1.0, vec3(-1412.024, -2672.382, 42.239), 20.0},
+            ["house:5"] = {"Posto Manzanita", 20, 1.0, vec3(-1978.603, -1667.799, 118.181), 20.0},
+            ["house:6"] = {"A Vista da Baía", 20, 1.0, vec3(-690.097, 1044.061, 135.004), 20.0},
+            ["house:7"] = {"Aconchego Rochoso", 20, 1.0, vec3(900.425, 261.278, 116.005), 20.0}
         }
 
         while true do

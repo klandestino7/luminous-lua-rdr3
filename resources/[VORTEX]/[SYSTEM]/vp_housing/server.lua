@@ -7,7 +7,11 @@ cAPI = Tunnel.getInterface("API")
 local houses = {
     ["house:1"] = {2000, 100},
     ["house:2"] = {2000, 100},
-    ["house:3"] = {2000, 100}
+    ["house:3"] = {2000, 100},
+    ["house:4"] = {2000, 100},
+    ["house:5"] = {2000, 100},
+    ["house:6"] = {2000, 100},
+    ["house:7"] = {2000, 100},
 }
 
 RegisterNetEvent("VP:HOUSING:TryToBuyHouse")

@@ -3,20 +3,29 @@ local CLIENT = not SERVER
 
 -- doorHash { doorState | doorPair | doorMinGroup }
 local doorStates = {
+    -- MANSÃO
+    -- [1595076728] = {false, 1439227364},
+    -- [1439227364] = {false, 1595076728},
+    -- [530930529] = {false, 1299101427},
+    -- [1299101427] = {false, 530930529},
+    -- [764233269] = {false},
+    -- [2504431014] = {false},
     -- HOUSE:1
-    [1595076728] = {false, 1439227364},
-    [1439227364] = {false, 1595076728},
-    [530930529] = {false, 1299101427},
-    [1299101427] = {false, 530930529},
-    [764233269] = {false},
-    [2504431014] = {false},
-    -- HOUSE:2
     [1282705079] = {false},
     [1511858696] = {false},
-    -- HOUSE:3
+    -- HOUSE:2
     [3929468747] = {false},
+    -- HOUSE:3
+    [2847752952] = {false, 1963415953},
+    [1963415953] = {false, 2847752952},
     -- HOUSE:4
-    -- [1377231573] = {false},
+    [52014802] = {false},
+    -- HOUSE:5
+    [3268076220] = {false},
+    -- HOUSE:6
+    [1434140379] = {false},
+    -- HOUSE:7
+    [1934463007] = {false},
     -----------------------------------
     -- OFFICER/JAIL
     [1207903970] = {false},
@@ -31,8 +40,8 @@ local doorStates = {
     [2167775834] = {false},
     [2514996158] = {false},
     [2810801921] = {false},
-    [3410720590] = {false, 3821185084}, 
-    [3821185084] = {false, 3410720590}, 
+    [3410720590] = {false, 3821185084},
+    [3821185084] = {false, 3410720590},
     [1878514758] = {false},
     [1147152658] = {false},
     [1514359658] = {false},
@@ -67,20 +76,20 @@ Citizen.CreateThread(
                 end
             end
 
-            setControllableDoorsForGroup(
-                "house:1",
-                {
-                    1595076728,
-                    1439227364,
-                    530930529,
-                    1299101427,
-                    764233269,
-                    2504431014
-                }
-            )
+            -- setControllableDoorsForGroup(
+            --     "house:1",
+            --     {
+            --         1595076728,
+            --         1439227364,
+            --         530930529,
+            --         1299101427,
+            --         764233269,
+            --         2504431014
+            --     }
+            -- )
 
             setControllableDoorsForGroup(
-                "house:2",
+                "house:1",
                 {
                     1282705079,
                     1511858696
@@ -88,9 +97,45 @@ Citizen.CreateThread(
             )
 
             setControllableDoorsForGroup(
-                "house:3",
+                "house:2",
                 {
                     3929468747
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "house:3",
+                {
+                    2847752952,
+                    1963415953
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "house:4",
+                {
+                    52014802
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "house:5",
+                {
+                    3268076220
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "house:6",
+                {
+                    1434140379
+                }
+            )
+
+            setControllableDoorsForGroup(
+                "house:7",
+                {
+                    1934463007
                 }
             )
 
@@ -353,7 +398,6 @@ Citizen.CreateThread(
             end
 
             function unlockAnimation()
-
                 local dict = "script_common@jail_cell@unlock@key"
                 if not HasAnimDictLoaded(dict) then
                     RequestAnimDict(dict)
