@@ -1,0 +1,6 @@
+CraftablePool = {
+    ['w_bow'] ={
+          
+    },
+}
+

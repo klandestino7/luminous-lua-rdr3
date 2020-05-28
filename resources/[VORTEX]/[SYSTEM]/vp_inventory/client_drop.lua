@@ -7,6 +7,7 @@ local prompt_group
 
 function CreateDroppedItemAt(itemId, itemAmount, x, y, z)
     local worldModel = ItemList[itemId].worldModel or "p_bag01x"
+    -- p_bag01x
 
     if not HasModelLoaded(worldModel) then
         RequestModel(worldModel)
@@ -17,8 +18,23 @@ function CreateDroppedItemAt(itemId, itemAmount, x, y, z)
 
     local prop = CreateObject(worldModel, x, y, z, 1, 1, 1)
     PlaceObjectOnGroundProperly(prop)
-    SetObjectTargettable(prop, true)
-    CreatePromptPickupAtEntity(prop)
+    -- SetObjectTargettable(prop, true)
+    -- CreatePromptPickupAtEntity(prop)
+
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 0))
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 1))
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 2))
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 3))
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 4))
+    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 5))
+
+    local carryconfig
+    -- carryconfig =  Citizen.InvokeNative(0x34F008A7E48C496B, prop, 3)
+    carryconfig = GetHashKey("USABLE_ITEM")
+    -- carryconfig = -411455723
+
+    Citizen.InvokeNative(0xF0B4F759F35CC7F5, prop, carryconfig, 0, 0, 512)
+    Citizen.InvokeNative(0x7DFB49BCDB73089A, prop, true)
 
     DecorSetString(prop, "dropped_item_itemid", itemId)
     DecorSetInt(prop, "dropped_item_itemamount", itemAmount)
@@ -46,28 +62,28 @@ function CreatePromptPickupAtEntity(entity)
     print(prompt_pickup, prompt_group)
 end
 
-Citizen.CreateThread(
-    function()
-        DecorRegister("dropped_item_itemid", 4)
-        DecorRegister("dropped_item_itemamount", 3)
+-- Citizen.CreateThread(
+--     function()
+--         DecorRegister("dropped_item_itemid", 4)
+--         DecorRegister("dropped_item_itemamount", 3)
 
-        CreateDroppedItemAt("raw_gold", 1, GetEntityCoords(PlayerPedId()))
-    end
-)
+--         CreateDroppedItemAt("raw_gold", 1, GetEntityCoords(PlayerPedId()))
+--     end
+-- )
 
 -- local closeToOneOrMoreDroppedItem = false
 
 local endc
 
-Citizen.CreateThread(
-    function()
+-- Citizen.CreateThread(
+--     function()
         -- CreatePromptPickup()
 
-        while true do
-            Citizen.Wait(1000)
+        -- while true do
+        --     Citizen.Wait(1000)
 
-            local ped = PlayerPedId()
-            local pPosition = GetEntityCoords(ped)
+        --     local ped = PlayerPedId()
+        --     local pPosition = GetEntityCoords(ped)
 
             -- closeToOneOrMoreDroppedItem = false
             -- for _, v in pairs(PropDroppedItemPool) do
@@ -77,23 +93,23 @@ Citizen.CreateThread(
             --         break
             --     end
             -- end
-        end
-    end
-)
+--         end
+--     end
+-- )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
 
             -- local ped = PlayerPedId()
             -- local pPosition = GetEntityCoords(ped)
 
-            local entity = GetTargettingEntity()
+            -- local entity = GetTargettingEntity()
 
-            if entity ~= 0 then
-                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pPosition, GetEntityCoords(entity), 255, 0, 255, 255)
-            end
+            -- if entity ~= 0 then
+            --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pPosition, GetEntityCoords(entity), 255, 0, 255, 255)
+            -- end
 
 
             -- if closeToOneOrMoreDroppedItem then
@@ -126,9 +142,9 @@ Citizen.CreateThread(
             -- end
 
             -- PromptSetActiveGroupThisFrame(lgroup, CreateVarString(10, "LITERAL_STRING", "itemName"))
-        end
-    end
-)
+--         end
+--     end
+-- )
 
 function GetTargettingEntity()
     local ped = PlayerPedId()

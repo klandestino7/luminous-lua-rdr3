@@ -8,6 +8,8 @@ client_scripts {
     'client_joaat.js',
     'client_main.lua',
     'client_inventory.lua',
+    'shops/_cfg_shops.lua',
+    'shops/client_main.lua',
     -- 'client_endurance.lua',
     -- 'client_drink.lua',
 }
@@ -26,7 +28,7 @@ files {
     'nui/*',
     'nui/assets/*',
     'nui/assets/item_assets/*',
-    'nui/jquery/*',
+    'nui/assets/fonts/*',
 }
 
 exports {
