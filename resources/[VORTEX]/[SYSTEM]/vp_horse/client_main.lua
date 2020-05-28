@@ -85,7 +85,7 @@ function InitiateHorse(atCoords)
 
     cAPI.SetPlayerHorse(entity)
 
-    if horseModel == GetHashKey("A_C_Horse_Turkoman_Gold") then
+    if horseModel == GetHashKey("A_C_HORSE_MORGAN_FLAXENCHESTNUT") then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
         NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
     end

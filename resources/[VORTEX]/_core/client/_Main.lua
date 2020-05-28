@@ -107,8 +107,6 @@ function cAPI.getPosition()
 	return x, y, z
 end
 
-
-
 -- return vx,vy,vz
 function cAPI.getSpeed()
 	local vx, vy, vz = table.unpack(GetEntityVelocity(PlayerPedId()))

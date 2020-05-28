@@ -99,9 +99,7 @@ AddEventHandler(
                     Wait(1000)                    
 				end
 				if HasModelLoaded(veh) then
-                    car = CreateVehicle(veh, coords, 264.0, true, true, false, true)
-                  --  SetEntityCollision(car, true, true)
-                  NetworkSetEntityInvisibleToNetwork(car, true)
+                    car = CreateVehicle(veh, coords, 264.0, false, true, false, true)
 				end
 			end
 		)
@@ -139,10 +137,9 @@ AddEventHandler(
 			end
         end
 
-		ped = CreatePed(pedModelHash, coords, GetEntityHeading(PlayerPedId()), 1, 0)
+		ped = CreatePed(pedModelHash, coords, GetEntityHeading(PlayerPedId()), false, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
-        NetworkSetEntityInvisibleToNetwork(ped, true)
         SetEntityAsMissionEntity(ped)
         -- SetModelAsNoLongerNeeded(pedModelHash)
         SetPedAsGroupMember(ped, GetPedGroupIndex(PlayerPedId()))

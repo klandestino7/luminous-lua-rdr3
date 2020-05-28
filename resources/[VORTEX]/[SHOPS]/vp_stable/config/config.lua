@@ -10,6 +10,16 @@ Config.Stables = {
 			CamPos = {x=1, y=-3, z=0},
 			Heading = 182.3
         }
+	},
+	BlackWater = {
+		Pos = {x=-873.167, y=-1366.040, z=43.531},
+		Name = 'Estábulo',
+        Heading = 266.84,
+		SpawnPoint = {
+			Pos = {x=-864.373, y=-1361.485, z=43.702},
+			CamPos = {x=-1.2, y=-3, z=0},
+			Heading = 181.91
+        }
     },
 	Saint_Denis = {
 		Pos = {x=2503.153, y=-1442.725, z=46.312},
@@ -22,3 +32,6 @@ Config.Stables = {
         }
     },
 }
+
+
+

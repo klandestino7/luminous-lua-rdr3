@@ -26,11 +26,10 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
             cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
 
             cAPI.SetSkin(PlayerPedId(), pSkin)
-            -- Wait(300
+             Wait(100)
             cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
-            -- Wait(30)
+             Wait(30)
             cAPI.SetPedScale(PlayerPedId(), pScale)
-
             cAPI.SetPedClothing(PlayerPedId(), pClothing)
         end
     )

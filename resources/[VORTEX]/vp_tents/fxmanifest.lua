@@ -1,11 +1,12 @@
 
 client_script {
+    "@_core/lib/utils.lua",
     'config/Tents.lua',
     'client/client.lua'
 }
 server_script {
+    "@_core/lib/utils.lua",
     'server/server.lua',
-    '@mysql-async/lib/MySQL.lua'
 }
 
 fx_version "adamant"

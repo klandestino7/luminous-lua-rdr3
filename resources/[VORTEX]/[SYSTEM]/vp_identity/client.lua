@@ -136,6 +136,8 @@ RegisterNUICallback(
         Citizen.Wait(500)
         Destroy()
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+        Wait(1800)
+        cAPI.EndFade(500)
     end
 )
 
