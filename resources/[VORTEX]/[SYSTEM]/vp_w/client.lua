@@ -45,7 +45,7 @@
 --     end
 -- )
 
-local DEBUGALWAYSCLEAR = true
+local DEBUGALWAYSCLEAR = false
 
 local regionsWeather = {}
 
