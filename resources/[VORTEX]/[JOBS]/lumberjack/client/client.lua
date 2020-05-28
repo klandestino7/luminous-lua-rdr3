@@ -1,149 +1,109 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-cAPI = Proxy.getInterface('API')
-API = Tunnel.getInterface('API')
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
-local prompts = {}
+Citizen.CreateThread(
+    function()
+        local aimMaxDistance = 7
 
-TreeHashes = {
-4065794,
-8489218,
-6723074,
-1897986,
-46857,
-85265,
-175637,
-236309,
-247063,
-68631, 
-77336,
-370203,
-290589,
-246045,
-304414, 
-215582,
-308255,
-197149, 
-103448,
-165665,
-126498, 
-109345,
-285987,
-337441, 
-29221, 
-341282, 
-322340, 
-144166, 
-219171,
-213285,
-213023, 
-369703, 
-71460, 
-183849, 
-345127, 
-174120,
-290599,
-235561,
-152359, 
-290599, 
-132395, 
-229929, 
-349227, 
-35371, 
-45101,
-334382,
-110383,
-334382,
-338989,
-45101,
-334382,
-199729,
-45101,
-168754,
-338989,
-102704,
-244016,
-325171,
-191794,
-244016,
-47156,
-325171,
-63278,
-335413,
-211765,
-252722,
-56630,
-}
+        while true do
+            Citizen.Wait(0)
 
+            local ped = PlayerPedId()
 
-local Anim = false
+            local pedVector = GetEntityCoords(ped)
 
+            local cameraRotation = GetGameplayCamRot()
+            local cameraCoord = GetGameplayCamCoord()
+            local direction = RotationToDirection(cameraRotation)
+            local aimingAtVector = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
---             for _, prompt in pairs(prompts) do
---                 if Citizen.InvokeNative(0xE0F65F0640EF0617, prompt) then
---                     Citizen.Wait(0)            
---                         print('kdksks')
---                     -- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_HUMAN_PICKAXE_WALL'), 20000, true, false, false, false)           
---                 end
---             end
---         end
---     end
--- )    
+            local rayHandle = StartShapeTestRay(pedVector, aimingAtVector, 256, ped, 0)
+            local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
 
-Citizen.CreateThread(function()
-	while true do
-    local Ped = PlayerPedId()
-    local Entity, farCoordsX, farCoordsY, farCoordsZ = cAPI.Target(6.0, Ped)
+            local isATree = false
 
-    local EntityType = GetEntityType(Entity)
-
-    local EntityModel = GetEntityModel(Entity)
-
-    --print(EntityModel)
-    
-    for _, tree in pairs(TreeHashes) do
-        if Entity == tree or EntityType == 3 then
-            if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT					
-                if not Anim then
-                    anim() 
-                    Anim = true
-                    Wait(20000)
-                    Anim = false
-                end    
+            if hit == 1 then
+                aimingAtVector = endCoords
+                isATree = drawBox(entityHit)
             end
-        else
-            for _, prompt in pairs(prompts) do
-                PromptDelete(prompt)
+
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,pedVector, aimingAtVector, 255, 0, 0, 255)
+
+            if isATree and IsControlJustPressed(0, 0xDFF812F9) then
+                local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("EA_WORLD_HUMAN_TREE_CHOP_NEW"), GetEntityCoords(entityHit) + (GetEntityForwardVector(entityHit) * 1.3), GetEntityHeading(entityHit) + 170, 2.0, -1.0, 1)
+                TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
             end
-         --   Anim = false
+
+            -- ForceSonarBlipsThisFrame()
+            -- TriggerSonarBlip(348490638, GetEntityCoords(PlayerPedId()))
         end
     end
+)
 
-    Citizen.Wait(0)
-	end
-end)
+function drawBox(entity)
+    local min, max = GetModelDimensions(GetEntityModel(entity))
 
-function anim()
+    local minPos = GetOffsetFromEntityInWorldCoords(entity, min)
+    local lowA = GetOffsetFromEntityInWorldCoords(entity, min.x, max.y, min.z)
+    local lowB = GetOffsetFromEntityInWorldCoords(entity, max.x, min.y, min.z)
+    local lowC = GetOffsetFromEntityInWorldCoords(entity, max.x, max.y, min.z)
 
--- local pile = CreateObject("p_cs_woodPile01x", GetEntityCoords(PlayerPedId()), false, true, false, false, false)
--- Citizen.InvokeNative(0xF0B4F759F35CC7F5, pile , GetHashKey('FIREWOOD'), 0, 0, 512)
+    local maxPos = GetOffsetFromEntityInWorldCoords(entity, max)
+    local highA = GetOffsetFromEntityInWorldCoords(entity, max.x, min.y, max.z)
+    local highB = GetOffsetFromEntityInWorldCoords(entity, min.x, max.y, max.z)
+    local highC = GetOffsetFromEntityInWorldCoords(entity, min.x, min.y, max.z)
 
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,minPos, lowA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,minPos, lowB, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, lowA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, lowB, 255, 0, 0, 255)
+
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,maxPos, highA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,maxPos, highB, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,highC, highA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,highC, highB, 255, 0, 0, 255)
+
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,minPos, maxPos, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowA, highA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowB, highB, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, highC, 255, 0, 0, 255)
+
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,minPos, highC, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowA, highB, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowB, highA, 255, 0, 0, 255)
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, maxPos, 255, 0, 0, 255)
+
+    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(entity), GetEntityCoords(entity) + (GetEntityForwardVector(entity) * 1.3), 255, 255, 0, 255)
+
+    -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowA, lowB, 255, 0, 0, 255)
+    -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, minPos, 255, 0, 0, 255)
+    return max.z > 4.0
+end
+
+function RotationToDirection(rotation)
+    local adjustedRotation = {
+        x = (math.pi / 180) * rotation.x,
+        y = (math.pi / 180) * rotation.y,
+        z = (math.pi / 180) * rotation.z
+    }
+    local direction = {
+        x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+        y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+        z = math.sin(adjustedRotation.x)
+    }
+    return direction
 end
 
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if resourceName == GetCurrentResourceName() then
-            for _, prompt in pairs(prompts) do
-                PromptDelete(prompt)
-            end
+        -- for _, prompt in pairs(prompts) do
+        --     PromptDelete(prompt)
+        -- end
         end
-    end)
-
-
-
+    end
+)
