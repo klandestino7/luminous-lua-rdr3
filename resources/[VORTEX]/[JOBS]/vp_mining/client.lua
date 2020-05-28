@@ -125,6 +125,7 @@ Citizen.CreateThread(
                         drawPrompt()
                         if PromptIsJustPressed(prompt) then
                             TriggerServerEvent("VP:MINING:TryToStartMining")
+                            Wait(1000)
                         end
                     end
                 end
@@ -138,6 +139,7 @@ Citizen.CreateThread(
                     drawPrompt()
                     if PromptIsJustPressed(prompt) then
                         TriggerServerEvent("VP:MINING:TryToStartRefining")
+                        Wait(1000)
                     end
                 end
             end
