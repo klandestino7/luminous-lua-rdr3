@@ -83,7 +83,7 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
         let innerSlot = $(`<div class="slot-inner" i></div>`).appendTo(backgroundSlot);
 
-        innerSlot.append(`<span class="counter">${slot}</span>`);
+        // innerSlot.append(`<span class="counter">${slot}</span>`);
 
         // HOT FIX, CONSERTAR OS SLOTS NÃO ESTAREM CORRETOS!!
 

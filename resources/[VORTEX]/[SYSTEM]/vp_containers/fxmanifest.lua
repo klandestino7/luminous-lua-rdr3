@@ -6,6 +6,8 @@ client_scripts {
     "@_core/lib/utils.lua",
     '_cfg_items.lua',
     'client_joaat.js',
+    'client_item_functions.lua',
+    'client_container_functions.lua',
     'client_main.lua',
     'client_inventory.lua',
     'shops/_cfg_shops.lua',

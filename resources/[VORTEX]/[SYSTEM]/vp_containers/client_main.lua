@@ -42,8 +42,18 @@ Citizen.CreateThread(
                     draw("shop")
                 end
                 draw("inventory")
+                -- draw('extra')
+                -- draw('trade-player')
+                -- draw('trade-trader')
+                -- draw('crafting')
+                -- draw("shop")
 
-                print('validindex', ContainerGetFirstValidIndexForItem('inventory', 'w_lasso'))
+
+                -- ContainerTryToAddItem("inventory", {"w_lasso"})
+
+                -- Wait(2000)
+
+                -- ContainerTryToRemoveItem("inventory", "w_lasso", 1)
             end
         end
     end
@@ -55,7 +65,7 @@ Containers["inventory"] = {
     containerItemPool = {},
     containerActivePage = 1,
     containerNumIndices = 9 * 3,
-    containerTitle = "Inventário",
+    containerTitle = "Inventory",
     containerIsOpen = false,
     containerHasPages = true,
     containerMaxWeight = 20.0
@@ -65,6 +75,15 @@ Containers["hotbar"] = {
     containerItemPool = {},
     containerActivePage = 1,
     containerNumIndices = 4
+}
+
+Containers["extra"] = {
+    containerItemPool = {},
+    containerActivePage = 1,
+    containerNumIndices = 9 * 3,
+    containerTitle = "Extra",
+    containerIsOpen = false,
+    containerHasPages = true,
 }
 
 Containers["crafting"] = {
@@ -79,9 +98,26 @@ Containers["shop"] = {
     containerItemPool = {},
     containerActivePage = 1,
     containerNumIndices = 5 * 3,
-    containerTitle = "Loja",
+    containerTitle = "Shop",
     containerIsOpen = false
 }
+
+Containers["trade-player"] = {
+    containerItemPool = {},
+    containerActivePage = 1,
+    containerNumIndices = 4 * 2,
+    containerTitle = "You",
+    containerIsOpen = false
+}
+
+Containers["trade-trader"] = {
+    containerItemPool = {},
+    containerActivePage = 1,
+    containerNumIndices = 4 * 2,
+    containerTitle = "key_value",
+    containerIsOpen = false
+}
+
 
 function draw(container)
     Containers[container].containerIsOpen = true
@@ -107,15 +143,7 @@ function draw(container)
 
     -- Atualizar as armas da hotbar quando atualizar ela !!
     if container == "hotbar" then
-        cAPI.replaceWeapons({})
-        for _, v in pairs(Containers["hotbar"].containerItemPool) do
-            local itemId = ItemPoolHash[v[1]]
-            local itemAmmoInClip = v[2] or 1
-            local itemAmmoInWeapon = v[3] or 1
-            local weaponModel = itemId:gsub("w_", "weapon_")
-            -- local weaponHash = GetHashKey(weaponModel)
-            cAPI.giveWeapon(weaponModel, itemAmmoInClip + itemAmmoInWeapon, false)
-        end
+        ContainerHotbarOnDraw()
     else
         SetNuiFocus(true, true)
     end
@@ -153,8 +181,6 @@ RegisterNUICallback(
         local slot_from = tonumber(cb.slot_from)
         local slot_to = tonumber(cb.slot_to)
 
-        print(slot_from, slot_to)
-
         local itemContainerData_from = Containers[container_from].containerItemPool[slot_from]
         local itemContainerData_to = Containers[container_to].containerItemPool[slot_to]
 
@@ -166,8 +192,8 @@ RegisterNUICallback(
             return
         end
 
-        local itemType_from = GetItemType(itemHash_from)
-        local itemType_to = GetItemType(itemHash_to)
+        local itemType_from = ItemGetType(itemHash_from)
+        local itemType_to = ItemGetType(itemHash_to)
 
         -- O item que a gente está tentando mover existe, então
         -- continua a execuçao do codigo
@@ -186,7 +212,6 @@ RegisterNUICallback(
                 --[[
                         Não há nenhum item no slot onde eu quero colocar o item
                     ]]
-                print("yes")
                 switchContainerSlots({"inventory", slot_to}, {"hotbar", slot_from})
             --[[
                             Verificar caso esteja trocando com outra arma, fazer a troca completa
@@ -210,8 +235,8 @@ RegisterNUICallback(
                         switchContainerSlots({"hotbar", slot_to}, {"inventory", slot_from})
                     elseif itemType_from == "ammo" then -- Dropou munição em cima de uma arma na hotbar, para recarregar
                         if itemType_to == "weapon" then
-                            local itemId_from = GetItemIdFromHash(itemHash_from)
-                            local itemId_to = GetItemIdFromHash(itemHash_to)
+                            local itemId_from = ItemGetIdFromHash(itemHash_from)
+                            local itemId_to = ItemGetIdFromHash(itemHash_to)
                             local weaponModel = itemId_to:gsub("w_", "weapon_")
 
                             if doesWeaponAcceptsAmmo(weaponModel, itemId_from) then
@@ -248,23 +273,7 @@ RegisterNUICallback(
     end
 )
 
-AddEventHandler(
-    "onResourceStop",
-    function(resourceName)
-        if resourceName == GetCurrentResourceName() then
-            SetNuiFocus(false, false)
-            SendNUIMessage(
-                {
-                    messageType = "hide"
-                }
-            )
-        end
-    end
-)
-
 function switchContainerSlots(st1, st2)
-    print("switching", json.encode(st1), json.encode(st2))
-
     local copy1 = Containers[st1[1]].containerItemPool[st1[2]]
 
     Containers[st1[1]].containerItemPool[st1[2]] = Containers[st2[1]].containerItemPool[st2[2]]
@@ -280,7 +289,7 @@ function FakeLoadInventoryItems()
         [82] = {
             joaat("w_shotgun_doublebarrel"),
             0,
-            0
+            1
         },
         [83] = {
             joaat("a_shotgun"),
@@ -309,229 +318,6 @@ function FakeLoadInventoryItems()
     draw("hotbar")
 end
 
--- SHARED
-
-function ContainerIsItemValidForIndex(container, item, index)
-    --[[
-        Item é nulo, então é valido para qualquer slot
-    ]]
-    if IsThrownInvalidException(item) then
-        return true
-    end
-
-    local itemType = GetItemType(item)
-
-    if Containers[container].containerHasPages then
-        local numIndices = Containers[container].containerNumIndices
-
-        -- Mantimentos
-        if (index >= 1) and (index <= numIndices * 1) then
-            if itemType == "generic" or itemType == "consumable" then
-                return true
-            end
-            return false
-        end
-        -- Tonicos
-        if (index >= (numIndices * 1)) and (index < (numIndices * 2) - 1) then
-            if itemType == "tonic" or itemType == "boost" then
-                return true
-            end
-            return false
-        end
-        -- Mantimentos
-        if (index >= (numIndices * 2)) and (index < (numIndices * 3) - 1) then
-            if itemType == "food" or itemType == "beverage" then
-                return true
-            end
-            return false
-        end
-        -- Equipamentos
-        if (index >= (numIndices * 3)) and (index < (numIndices * 4) - 1) then
-            if itemType == "weapon" or itemType == "weapon_melee" or itemType == "weapon_thrown" or itemType == "ammo" then
-                return true
-            end
-            return false
-        end
-        -- Kits
-        if (index >= (numIndices * 4)) and (index < (numIndices * 5) - 1) then
-            if itemType == "kit" then
-                return true
-            end
-            return false
-        end
-        -- Alto Valor
-        if (index >= (numIndices * 5)) and (index < (numIndices * 6) - 1) then
-            if itemType == "valuable" or itemType == "boost" then
-                return true
-            end
-            return false
-        end
-        -- Documentos
-        if (index >= (numIndices * 6)) and (index < (numIndices * 7) - 1) then
-            if itemType == "document" or itemType == "map" then
-                return true
-            end
-            return false
-        end
-
-        return false
-    end
-
-    if container == "hotbar" then
-        if index == 1 or index == 2 then
-            if itemType == "weapon" then
-                return true
-            end
-        end
-        if index == 3 or index == 4 then
-            if itemType == "melee" or itemType == "throwable" then
-                return true
-            end
-        end
-        if index == 5 then
-            return false
-        end
-        return false
-    end
-
-    if container == "crafting" then
-        -- Crafting Output
-        if index == 10 then
-            return false
-        end
-    end
-
-    if container == "trade-trader" then
-        return false
-    end
-
-    return false
-end
-
-function ContainerGetFirstValidIndexForItem(container, item)
-    local itemType = GetItemType(item)
-
-    if not tonumber(item) then
-        item = GetItemHashFromId(item)
-    end
-
-    print(container, item, itemType)
-
-    local containerItemPool = Containers[container].containerItemPool
-    local numIndices = Containers[container].containerNumIndices
-
-    local function loopthrough(s, e)
-        print('looping', s, e, item)
-        for i = s, e do
-            if containerItemPool[i] == nil or containerItemPool[i][1] == item then
-                return i
-            end
-        end
-        return nil
-    end
-
-    if itemType == "generic" or itemType == "consumable" then
-        return loopthrough(1, numIndices)
-    end
-    -- Tonicos
-    if itemType == "tonic" or itemType == "boost" then
-        return loopthrough((numIndices * 1) + 1, (numIndices * 2))
-    end
-    -- Mantimentos
-    if itemType == "food" or itemType == "beverage" then
-        return loopthrough((numIndices * 2) + 1, (numIndices * 3))
-    end
-    -- Equipamentos
-    if itemType == "weapon" or itemType == "weapon_melee" or itemType == "weapon_thrown" or itemType == "ammo" then
-        return loopthrough((numIndices * 3) + 1, (numIndices * 4))
-    end
-    -- Kits
-    if itemType == "kit" then
-        return loopthrough((numIndices * 4) + 1, (numIndices * 5))
-    end
-    -- Alto Valor
-    if itemType == "valuable" or itemType == "boost" then
-        return loopthrough((numIndices * 5) + 1, (numIndices * 6))
-    end
-    -- Documentos
-    if itemType == "document" or itemType == "map" then
-        return loopthrough((numIndices * 6) + 1, (numIndices * 7))
-    end
-
-    return nil
-end
-
--- function ContainerGetValidIndicesForItem(container, item)
-
---     local itemType = GetItemType(item)
-
---     if itemType ==
--- end
-
-function ContainerIsValid(container)
-    return Containers[container] ~= nil
-end
-
-function ContainerGetItemAtIndex(container, index)
-    return Containers[container].containerItemPool[index]
-end
-
-function ContainerGetItemHashAtIndex(container, index)
-    local ret
-
-    if ContainerIsValid(container) then
-        if ContainerGetItemAtIndex(container, index) ~= nil then
-            ret = ContainerGetItemAtIndex(container, index)[1]
-        else
-            ret = "invalid item"
-        end
-    else
-        ret = "invalid container"
-    end
-
-    return ret
-end
-
-function ContainerSetItemPool(container, itempool)
-    Containers[container].containerItemPool = itempool
-end
-
-function ContainerSetTitle(container, title)
-    Containers[container].containerTitle = title
-end
-
-function GetItemData(item)
-    local d
-    if tonumber(item) then
-        -- item is a itemHash
-        d = ItemPool[ItemPoolHash[item]]
-    else
-        -- item is a itemId
-        d = ItemPool[item]
-    end
-    return d or {}
-end
-
-function GetItemHashFromId(itemId)
-    return ItemPoolHash[joaat(itemId)] ~= nil and joaat(itemId) or "invalid item id"
-end
-
-function GetItemIdFromHash(itemHash)
-    return ItemPoolHash[itemHash] or "invalid item hash"
-end
-
-function GetItemName(item)
-    return GetItemData(item).name or "invalid item name"
-end
-
-function GetItemType(item)
-    return GetItemData(item).type or "invalid item type"
-end
-
-function GetItemMaxStackSize(item)
-    return GetItemData(item).maxStackSize or "invalid item type"
-end
-
 function IsThrownInvalidException(v)
     if tonumber(v) == nil and v:find("invalid") then
         return true
@@ -540,6 +326,31 @@ function IsThrownInvalidException(v)
     return false
 end
 
----------
--- SERVER
----------
+function ContainerHotbarOnDraw()
+    -- cAPI.replaceWeapons({})
+    for _, v in pairs(Containers["hotbar"].containerItemPool) do
+        local itemId = ItemPoolHash[v[1]]
+        local itemAmmoInClip = v[2] or 1
+        local itemAmmoInWeapon = v[3] or 1
+        local weaponModel = itemId:gsub("w_", "weapon_")
+        local weaponHash = GetHashKey(weaponModel)
+
+        -- print("gave weapon", weaponModel)
+
+        GiveWeaponToPed(PlayerPedId(), weaponHash, itemAmmoInWeapon, false, false)
+    end
+end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() or resourceName == "_core" then
+            SetNuiFocus(false, false)
+            SendNUIMessage(
+                {
+                    messageType = "hide"
+                }
+            )
+        end
+    end
+)
