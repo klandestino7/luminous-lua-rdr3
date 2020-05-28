@@ -17,7 +17,7 @@ local InterP = true
 local adding = true
 
 local MyHorse_entity
-
+local IdMyHorse
 cameraUsing = {
     {
         name = "Horse",
@@ -121,6 +121,8 @@ local SpawnPoint = {}
 local StablePoint = {}
 local HeadingPoint
 local CamPos = {}
+
+
 Citizen.CreateThread(
     function()
         while true do
@@ -417,6 +419,7 @@ end
 RegisterNUICallback(
     "selectHorse",
     function(data)
+        print(data.horseID)
         TriggerServerEvent("VP:STABLE:SelectHorseWithId", tonumber(data.horseID))
     end
 )
@@ -508,13 +511,17 @@ RegisterNUICallback(
             return
         end
 
+
         if showroomHorse_entity ~= nil then
             DeleteEntity(showroomHorse_entity)
+            showroomHorse_entity = nil
         end
 
         if MyHorse_entity ~= nil then
             DeleteEntity(MyHorse_entity)
+            MyHorse_entity = nil
         end
+
 
         showroomHorse_model = horseModel
 
@@ -543,17 +550,19 @@ RegisterNUICallback(
     "loadMyHorse",
     function(data)
         local horseModel = data.horseModel
-
+        IdMyHorse = data.IdHorse
         if showroomHorse_model == horseModel then
             return
         end
 
         if showroomHorse_entity ~= nil then
             DeleteEntity(showroomHorse_entity)
+            showroomHorse_entity = nil
         end
 
         if MyHorse_entity ~= nil then
             DeleteEntity(MyHorse_entity)
+            MyHorse_entity = nil
         end
 
         showroomHorse_model = horseModel
@@ -594,20 +603,15 @@ RegisterNUICallback(
 
 RegisterNUICallback(
     "BuyHorse",
-    function()
-        TriggerEvent('VP:STABLE:BuyHorse')
-    end
-)
+    function(data)
+        local HorseName = cAPI.prompt("Nome do Cavalo:", "")
+        
+        if HorseName == "" then
+            return
+        end
+        SetNuiFocus(true, true)
 
-RegisterNetEvent("VP:STABLE:BuyHorse")
-AddEventHandler(
-    "VP:STABLE:BuyHorse",
-    function()
-        print('openPrompt')
-        local name = "CavaloRuim"
-        local data = "A_C_Horse_AmericanStandardbred_Buckskin"
-
-        TriggerServerEvent('VP:STABLE:BuyHorse', data, name)
+        TriggerServerEvent('VP:STABLE:BuyHorse', data, HorseName)
     end
 )
 
@@ -664,12 +668,33 @@ function CloseStable()
         local DadosEncoded = json.encode(dados)
 
         if DadosEncoded ~= "[]" then            
-            TriggerServerEvent("VP:STABLE:UpdateHorseComponents", dados) 
+            TriggerServerEvent("VP:STABLE:UpdateHorseComponents", dados, IdMyHorse ) 
         end
 
        
 end
 
+
+Citizen.CreateThread(
+    function()
+       while true do
+        Citizen.Wait(100)
+            if MyHorse_entity ~= nil then
+                SendNUIMessage(
+                    {
+                        EnableCustom = "true"
+                    }
+                )
+            else
+                SendNUIMessage(
+                    {
+                        EnableCustom = "false"
+                    }
+                )
+            end
+       end
+    end
+)
 
 function interpCamera(cameraName, entity)
     for k, v in pairs(cameraUsing) do

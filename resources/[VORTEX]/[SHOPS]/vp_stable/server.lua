@@ -7,17 +7,16 @@ cAPI = Tunnel.getInterface("API")
 RegisterNetEvent("VP:STABLE:UpdateHorseComponents")
 AddEventHandler(
     "VP:STABLE:UpdateHorseComponents",
-    function(components)
+    function(components, idhorse)
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
+
+        User:setHorse(idhorse)
+        Character:setHorse(idhorse)
+
         local Horse = Character:getHorse()
 
-        if Horse == nil then
-            return
-        end
-
-        print(components)
         Horse:setComponents(components)
         cAPI.setHorseComponents(_source, components)
     end
@@ -53,8 +52,8 @@ AddEventHandler(
         end
 
         for k,v in pairs(horses) do
-            print(k,v)
-        end
+           -- print(k,v)
+        end        
         TriggerClientEvent("VP:STABLE:ReceiveHorsesData", _source, horses)
         -- TriggerClientEvent("VP:STABLE:callhorse", _source)
     end
@@ -64,12 +63,33 @@ RegisterNetEvent("VP:STABLE:BuyHorse")
 AddEventHandler(
     "VP:STABLE:BuyHorse",
     function(data, name)
+
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-        local Horse = Character:getHorse()
-       -- Character:setHorse(id)
-        Character:createHorse(data, name)
+        local Horses = Character:getHorses()
+        local Inventory = Character:getInventory()
+
+        if #Horses >= 1 then
+            TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Limite de estabulo alcançado!', 5000)
+            return
+        end
+
+        if data.IsGold then
+            if Inventory:getItemAmount("gold") < data.Gold*100 then
+                TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Gold insuficiente!', 5000)
+                return
+            end
+            Inventory:removeItem(-1, "gold", data.Gold*100)
+        else
+            if Inventory:getItemAmount("money") < data.Dollar*100 then
+                TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Dollar insuficiente!', 5000)
+                return
+            end
+            Inventory:removeItem(-1, "money", data.Dollar*100)
+        end
+
+        Character:createHorse(data.ModelH, tostring(name))
     end
 )
 
@@ -81,6 +101,10 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        Character:setHorse(id)       
+        User:setHorse(id)
+        Character:setHorse(id)
+        local Horse = Character:getHorse()
+        
+        TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo selecionado', 5000)
     end
 )

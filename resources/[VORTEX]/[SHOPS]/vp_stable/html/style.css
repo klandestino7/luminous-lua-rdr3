@@ -403,6 +403,14 @@ h6 {
     padding: 3px 3px !important;
 }
 
+.button-left{
+	height:46px !important;
+}
+
+.button-right{
+	height:46px !important;
+}
+
 .item:hover{
     background-image: url('img/toastred.png');
     background-size: 100% 100%;
@@ -713,6 +721,7 @@ input[type='radio']:checked+label::after {
 
 .disabled {
     opacity: 0.2;
+    pointer-events: none;
 }
 
 .form-check {

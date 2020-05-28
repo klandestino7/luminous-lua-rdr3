@@ -26,7 +26,7 @@ window.addEventListener('message', function(event) {
 
                 for (const [_, horseData] of Object.entries(table)) {
                     if (_ != 'name') {
-                        var Modelhorse
+                        let Modelhorse
                         var HorseName = horseData[0];
                         var priceGold = horseData[1];
                         var priceDolar = horseData[2];
@@ -45,10 +45,10 @@ window.addEventListener('message', function(event) {
                                 </div>          
 
                                 <div class="buy-buttons">                                       
-                                    <button class="btn-small"  onclick="buyHorse(${BuyModel}, ${priceGold}, true)">                                                
+                                    <button class="btn-small"  onclick="buyHorse('${_}', ${priceGold}, true)">                                                
                                         <img src="img/gold.png"><span class="horse-price">${priceGold}</span>
                                     </button>                                          
-                                    <button class="btn-small"  onclick="buyHorse(${BuyModel}, ${priceDolar}, false)">
+                                    <button class="btn-small"  onclick="buyHorse('${_}', ${priceDolar}, false)">
                                         <img src="img/money.png"><span class="horse-price">${priceDolar}</span>
                                     </button>
                                 </div>
@@ -94,20 +94,27 @@ window.addEventListener('message', function(event) {
         if (event.data.action == "hide") {
             $("#creatormenu").fadeOut(500);
         }
-
-        
     }
-    if (event.data.myHorsesData) {            
+
+    
+    if (event.data.EnableCustom == "true") {
+        $('#button-customization').removeClass("disabled");
+    } else {
+        $('#button-customization').addClass("disabled");
+    }
+    
+
+    if (event.data.myHorsesData) {
 
         $('#page_myhorses .scroll-container .collapsible').html('');
 
         for (const [ind, tab] of Object.entries(event.data.myHorsesData)) {
         
-            var HorseName = tab.name;
-            var HorseID = tab.id;
-            var HorseIdModel = tab.model;
-            var componentsh = tab.components;
-            var selectedh = tab.selected;         
+            let HorseName = tab.name;
+            let HorseID = tab.id;
+            let HorseIdModel = tab.model;
+            let componentsh = tab.components;
+            let selectedh = tab.selected;         
 
             $('#page_myhorses .scroll-container .collapsible').append(`
                 <li>
@@ -127,14 +134,14 @@ window.addEventListener('message', function(event) {
             $(`#page_myhorses .scroll-container .collapsible #${HorseID}`).hover(function() {  
                 $( this ).click(function() {                    
                     console.log('clicou') 
-                    var HorseSEID
+                    let HorseSEID
                     $(HorseID).addClass("selected");
                     $('.selected').removeClass("selected"); 
 
                     HorseSEID = $(HorseID).attr('id');             
                     $(HorseID).addClass('selected');
 
-                    $.post('http://vp_stable/loadMyHorse', JSON.stringify({ horseModel: HorseIdModel, HorseComp: componentsh}));
+                    $.post('http://vp_stable/loadMyHorse', JSON.stringify({ IdHorse: HorseID, horseModel: HorseIdModel, HorseComp: componentsh}));
                 });                         
             }, function() {});
         }
@@ -144,6 +151,8 @@ window.addEventListener('message', function(event) {
 
 function confirm(){
     $.post('http://vp_stable/CloseStable')
+
+    $('#button-customization').addClass("disabled");
     $('#page_myhorses .scroll-container .collapsible').html('');
     $('#page_shop .scroll-container .collapsible').html('');
     $("#creatormenu").fadeOut(500);
@@ -236,11 +245,10 @@ $(".input-number").on("change paste keyup", function() {
 });
 
 function buyHorse(Modelhor, price, isGold) {    
-
     if (isGold) {        
-        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Gold: price }));
+        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Gold: price, IsGold: isGold }));
     } else {
-        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Dollar: price }));    
+        $.post('http://vp_stable/BuyHorse', JSON.stringify({ ModelH: Modelhor, Dollar: price, IsGold: isGold }));    
     }    
 }
 
