@@ -5,6 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 client_scripts {
     "@_core/lib/utils.lua",
     '_cfg_items.lua',
+    '_cfg_craftables.lua',
     'client_joaat.js',
     'client_item_functions.lua',
     'client_container_functions.lua',
@@ -12,8 +13,6 @@ client_scripts {
     'client_inventory.lua',
     'shops/_cfg_shops.lua',
     'shops/client_main.lua',
-    -- 'client_endurance.lua',
-    -- 'client_drink.lua',
 }
 
 -- server_scripts {

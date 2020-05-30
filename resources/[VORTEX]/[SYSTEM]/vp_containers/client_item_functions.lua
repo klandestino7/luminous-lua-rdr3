@@ -30,6 +30,10 @@ function ItemGetMaxStackSize(item)
     return ItemGetData(item).maxStackSize or "invalid item type"
 end
 
+function ItemGetWeight(item)
+    return ItemGetData(item).weight or 1.0
+end
+
 function ItemIdOrHashToHash(item)
     if not tonumber(item) then
         item = ItemGetHashFromId(item)
@@ -41,3 +45,13 @@ function ItemIdOrHashToHash(item)
         return 'invalid item'
     end
 end 
+
+function ItemIsStackable(item)
+    local itemType = ItemGetType(item)
+
+    if itemType == 'weapon' or itemType == 'weapon_melee' or itemType == 'weapon_thrown' then
+        return false
+    end
+
+    return true
+end

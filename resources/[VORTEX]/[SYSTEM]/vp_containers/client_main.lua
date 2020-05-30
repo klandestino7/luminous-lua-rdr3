@@ -45,15 +45,14 @@ Citizen.CreateThread(
                 -- draw('extra')
                 -- draw('trade-player')
                 -- draw('trade-trader')
-                -- draw('crafting')
-                -- draw("shop")
+                draw("crafting")
+            -- draw("shop")
 
+            -- ContainerTryToAddItem("inventory", {"w_lasso"})
 
-                -- ContainerTryToAddItem("inventory", {"w_lasso"})
+            -- Wait(2000)
 
-                -- Wait(2000)
-
-                -- ContainerTryToRemoveItem("inventory", "w_lasso", 1)
+            -- ContainerTryToRemoveItem("inventory", "w_lasso", 1)
             end
         end
     end
@@ -68,7 +67,8 @@ Containers["inventory"] = {
     containerTitle = "Inventory",
     containerIsOpen = false,
     containerHasPages = true,
-    containerMaxWeight = 20.0
+    containerDirtIndices = {}
+    -- containerMaxWeight = 20.0
 }
 
 Containers["hotbar"] = {
@@ -83,7 +83,7 @@ Containers["extra"] = {
     containerNumIndices = 9 * 3,
     containerTitle = "Extra",
     containerIsOpen = false,
-    containerHasPages = true,
+    containerHasPages = true
 }
 
 Containers["crafting"] = {
@@ -92,6 +92,7 @@ Containers["crafting"] = {
     containerNumIndices = 3 * 3,
     containerTitle = "Crafting",
     containerIsOpen = false
+    -- containerExtraCraftingGroup = 0,
 }
 
 Containers["shop"] = {
@@ -118,9 +119,59 @@ Containers["trade-trader"] = {
     containerIsOpen = false
 }
 
-
 function draw(container)
     Containers[container].containerIsOpen = true
+
+    -- Atualizar as armas da hotbar quando atualizar ela !!
+    if container == "hotbar" then
+        ContainerHotbarOnDraw()
+    else
+        if container == "inventory" then
+            ContainerSetTitle("inventory", "Inventário " .. ContainerGetWeight(container) .. "/" .. ContainerGetMaxWeight(container))
+        end
+
+        if container == "crafting" then
+            Containers[container].containerItemPool[10] = nil
+
+            local craftingItemPool = ContainerGetItemPool(container)
+
+            local outputItemHash
+            local outputItemAmount
+
+            for cid, v in pairs(CraftablePool) do
+                local numInputs = 0
+
+                --[[
+                        Numero de items no crafting é igual ao necessario
+                        para craftar o item nessa iteraçao!
+                    ]]
+                local drawOutput = true
+                for cinput, camount in pairs(v.input) do
+                    numInputs = numInputs + 1
+                    if ContainerGetAmountOfItem(container, cinput) < camount then
+                        drawOutput = false
+                        break
+                    end
+                end
+
+                if #craftingItemPool == numInputs and drawOutput then
+                    --[[
+                            Nosso possivel crafting foi achado, break o loop
+                            e continua a função na NUI
+                        ]]
+                    outputItemHash = ItemGetHashFromId(v.output[1])
+                    outputItemAmount = v.output[2]
+                    print("outputss", outputItemHash, outputItemAmount)
+
+                    Containers[container].containerItemPool[10] = {outputItemHash, outputItemAmount}
+
+                    break
+                end
+            end
+
+            print("output", json.encode(Containers[container].containerItemPool[10]))
+        end
+    end
 
     local cData = Containers[container]
     local message = {
@@ -138,15 +189,14 @@ function draw(container)
     if cData.containerMaxWeight then
         message.containerMaxWeight = cData.containerMaxWeight
     end
-
     SendNUIMessage(message)
 
-    -- Atualizar as armas da hotbar quando atualizar ela !!
-    if container == "hotbar" then
-        ContainerHotbarOnDraw()
-    else
+    if container ~= "hotbar" then
         SetNuiFocus(true, true)
     end
+end
+
+function drawCraftingOutput(itemHash, itemAmount)
 end
 
 function stopdrawing(container)
@@ -178,6 +228,8 @@ RegisterNUICallback(
         local container_from = cb.container_from
         local container_to = cb.container_to
 
+        local dragType = cb.dragType
+
         local slot_from = tonumber(cb.slot_from)
         local slot_to = tonumber(cb.slot_to)
 
@@ -187,10 +239,19 @@ RegisterNUICallback(
         local itemHash_from = ContainerGetItemHashAtIndex(container_from, slot_from)
         local itemHash_to = ContainerGetItemHashAtIndex(container_to, slot_to)
 
-        if not ContainerIsItemValidForIndex(container_to, itemHash_from, slot_to) or not ContainerIsItemValidForIndex(container_from, itemHash_to, slot_from) then
+        if IsThrownInvalidException(itemHash_from) then
+            --[[
+                O item que a gente tá mexendo é invalido por algum motivo :shrug:
+                atualizar o container
+            ]]
             draw(container_from)
             return
         end
+
+        -- if  ContainerIsItemValidForIndex(container_to, itemHash_from, slot_to) or not ContainerIsItemValidForIndex(container_from, itemHash_to, slot_from) then
+        --     draw(container_from)
+        --     return
+        -- end
 
         local itemType_from = ItemGetType(itemHash_from)
         local itemType_to = ItemGetType(itemHash_to)
@@ -200,45 +261,161 @@ RegisterNUICallback(
         -- if IsThrownInvalidException(itemHash_from) == false then
         if container_to == "inventory" then
             if container_from == "inventory" then -- Troca de slots do inventario para o inventario
-                switchContainerSlots({"inventory", slot_to}, {"inventory", slot_from})
+                if not ContainerIsItemValidForIndex(container_to, itemHash_from, slot_to) or not ContainerIsItemValidForIndex(container_from, itemHash_to, slot_from) then
+                    draw(container_from)
+                    return
+                end
 
-                TriggerServerEvent("VP:CONTAINERS:INVENTORY:TryToSwitchSlot", slot_from, slot_to)
+                print("invald", IsThrownInvalidException(itemHash_to))
+
+                local amountAtIndex_from = Containers["inventory"].containerItemPool[slot_from][2]
+
+                --[[
+                    Verifica se o slot que a gente que mover o item para está desocupado,
+                    se estiver, verifica se ele é um item divisivel e com quantidade maior que 1
+                    entao faz as funçoes necessarias
+                ]]
+                if IsThrownInvalidException(itemHash_to) and ItemIsStackable(itemHash_from) and amountAtIndex_from > 1 then
+                    print(dragType)
+                    if dragType == 17 then -- SINGLE
+                        --[[
+                            Tira 1 do nosso item e cria um novo item com quantidade 1 no slot desejado
+                        ]]
+                        Containers["inventory"].containerItemPool[slot_from][2] = amountAtIndex_from - 1
+                        local copy = deepcopy(Containers["inventory"].containerItemPool[slot_from])
+                        copy[2] = 1
+                        Containers["inventory"].containerItemPool[slot_to] = copy
+                    elseif dragType == 16 then -- HALF
+                        --[[
+                            Divide a quantidade do nosso item pela metade, sendo o primeiro numero o maior
+                            e o segundo o menor, caso ele seja impar
+                        ]]
+                        print((amountAtIndex_from / 2), math.ceil((amountAtIndex_from / 2)), math.floor((amountAtIndex_from / 2)))
+                        Containers["inventory"].containerItemPool[slot_from][2] = math.ceil(amountAtIndex_from / 2)
+                        local copy = deepcopy(Containers["inventory"].containerItemPool[slot_from])
+                        copy[2] = math.floor((amountAtIndex_from / 2))
+                        Containers["inventory"].containerItemPool[slot_to] = copy
+                    else
+                        switchContainerSlots({"inventory", slot_to}, {"inventory", slot_from})
+                    end
+                else
+                    --[[
+                        Slot que o nosso item foi movido não está vago, então
+                        a gente verifica se os items são iguais, se forem a gente adiciona ao valor atual
+                        caso não seja, a gente só substitui o item
+                    ]]
+                    if itemHash_from == itemHash_to then
+                        if ItemIsStackable(itemHash_from) then
+                            local itemMaxStackSize = ItemGetMaxStackSize(itemHash_from)
+
+                            local itemAmount_from = Containers["inventory"].containerItemPool[slot_from][2]
+                            local itemAmount_to = Containers["inventory"].containerItemPool[slot_to][2]
+
+                            if itemAmount_from + itemAmount_to > itemMaxStackSize then
+                                switchContainerSlots({"inventory", slot_to}, {"inventory", slot_from})
+                            else
+                                Containers["inventory"].containerItemPool[slot_from] = nil
+                                Containers["inventory"].containerItemPool[slot_to][2] = itemAmount_to + itemAmount_from
+                            end
+                        else
+                            switchContainerSlots({"inventory", slot_to}, {"inventory", slot_from})
+                        end
+                    else
+                        --[[
+                            O item não é igual ao outro, então só troca de slot um com o outro
+                        ]]
+                        switchContainerSlots({"inventory", slot_to}, {"inventory", slot_from})
+                    end
+                end
+
+            -- TriggerServerEvent("VP:CONTAINERS:INVENTORY:TryToSwitchSlot", slot_from, slot_to)
             end
 
             --[[
                     Tirando item da hotbar para enviar para o inventario
                 ]]
             if container_from == "hotbar" then
+                if not ContainerIsItemValidForIndex(container_to, itemHash_from, slot_to) or not ContainerIsItemValidForIndex(container_from, itemHash_to, slot_from) then
+                    draw(container_from)
+                    return
+                end
+
                 --[[
-                        Não há nenhum item no slot onde eu quero colocar o item
-                    ]]
+                    Não há nenhum item no slot onde eu quero colocar o item
+                ]]
                 switchContainerSlots({"inventory", slot_to}, {"hotbar", slot_from})
             --[[
-                            Verificar caso esteja trocando com outra arma, fazer a troca completa
-                        ]]
+                    Verificar caso esteja trocando com outra arma, fazer a troca completa
+                ]]
             end
 
             if container_from == "shop" then
+                --[[
+                    A loja não precisa de verificação de se nosso item está
+                    sendo movido para o slot correto ou não, então se o item
+                    for devidamente comprado, comprindo os requerimentos de 
+                    espaço necessario, ele será adicionado ao inventário
+                ]]
                 -- TriggerServerEvent "TryToBuyItem"
-                Containers["inventory"].containerItemPool[slot_to] = Containers["shop"].containerItemPool[slot_from]
+                -- Containers["inventory"].containerItemPool[slot_to] = Containers["shop"].containerItemPool[slot_from]
+                local shopItem = Containers["shop"].containerItemPool[slot_from]
+                local shopItemHash = shopItem[1]
+                local shopItemAmount = shopItem[2]
+                local shopItemPriceDolar = shopItem[3]
+                local shopItemPriceGold = shopItem[4]
+
+                if ContainerTryToAddItem(container_to, {shopItemHash, shopItemAmount}) then
+                    print("comprou")
+                else
+                    print("Ocorreu um erro durante a compra!")
+                end
+            end
+
+            if container_from == "hotbar" then
             end
         end
 
         if container_to == "hotbar" then
             if container_from == "inventory" then
-                if IsThrownInvalidException(itemHash_to) then -- Slot da hotbar estava vazio, adiciona o item no slot caso seja uma arma
-                    if ContainerIsItemValidForIndex("hotbar", itemHash_from, slot_to) then
-                        switchContainerSlots({"hotbar", slot_to}, {"inventory", slot_from})
+                --[[
+                    A gente está movendo nosso item do inventário para a hotbar,
+                    se o slot estiver vazio e nosso item for valido para esse
+                    slot da hotbar, ele será adicionado
+                ]]
+                if IsThrownInvalidException(itemHash_to) then
+                    --[[
+                        O item não é valido para esse slot, retorna
+                    ]]
+                    if not ContainerIsItemValidForIndex(container_to, itemHash_from, slot_to) or not ContainerIsItemValidForIndex(container_from, itemHash_to, slot_from) then
+                        draw(container_from)
+                        return
                     end
+
+                    switchContainerSlots({"hotbar", slot_to}, {"inventory", slot_from})
                 else
+                    --[[
+                        O slot target não está vazio, faz as verificaçoes necessarias
+                    ]]
+                    --[[
+                        Nosso item é valido para esse slot, faz a troca
+                    ]]
                     if ContainerIsItemValidForIndex("hotbar", itemHash_from, slot_to) then -- Trocou uma arma de lugar com a outra na hotbar para o inventario
                         switchContainerSlots({"hotbar", slot_to}, {"inventory", slot_from})
                     elseif itemType_from == "ammo" then -- Dropou munição em cima de uma arma na hotbar, para recarregar
+                        --[[
+                            O tipo do nosso item é `ammo` então ele adiciona a munição de uma arma já equipada
+                            a gente retira da quantidade do nosso item e adiciona à arma equipada
+                            PARAR DE USAR ISSO???
+                        ]]
                         if itemType_to == "weapon" then
                             local itemId_from = ItemGetIdFromHash(itemHash_from)
                             local itemId_to = ItemGetIdFromHash(itemHash_to)
                             local weaponModel = itemId_to:gsub("w_", "weapon_")
 
+                            --[[
+                                Verifica se a arma no slot target aceita a munição que
+                                o nosso item é
+                            ]]
                             if doesWeaponAcceptsAmmo(weaponModel, itemId_from) then
                                 local weaponHash = GetHashKey(weaponModel)
 
@@ -253,6 +430,18 @@ RegisterNUICallback(
                 end
             end
         end
+
+        if container_to == "crafting" then
+            if container_from == "inventory" then
+                if slot_to ~= 10 then
+                    --[[
+                        Se o slot não for o output, continua
+                    ]]
+                    switchContainerSlots({"crafting", slot_to}, {"inventory", slot_from})
+                end
+            end
+        end
+
         -- end
 
         draw(container_from)
@@ -266,8 +455,14 @@ RegisterNUICallback(
         SetNuiFocus(false, false)
 
         for container, d in pairs(Containers) do
-            if container ~= "hotbar" then
-                Containers[container].containerIsOpen = false
+            -- if container ~= "hotbar" then
+            Containers[container].containerIsOpen = false
+            -- end
+            if container == "crafting" then
+                if #ContainerGetItemPool("crafting") > 0 then
+                    local requestInventoryUpdate = true
+                    Containers["crafting"].containerItemPool = {}
+                end
             end
         end
     end

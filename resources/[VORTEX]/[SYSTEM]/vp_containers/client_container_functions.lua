@@ -103,45 +103,54 @@ function ContainerGetValidIndicesForItem(container, item)
     local containerItemPool = Containers[container].containerItemPool
     local numIndices = Containers[container].containerNumIndices
 
-    local function loopthrough(s, e)
-        local r = {}
-        for i = s, e do
+    local r = {}
+
+    if Containers[container].containerHasPages then
+        local function loopthrough(s, e)
+            for i = s, e do
+                if containerItemPool[i] == nil or containerItemPool[i][1] == item then
+                    table.insert(r, i)
+                end
+            end
+            return r
+        end
+
+        if itemType == "generic" or itemType == "consumable" then
+            return loopthrough(1, numIndices)
+        end
+        -- Tonicos
+        if itemType == "tonic" or itemType == "boost" then
+            return loopthrough((numIndices * 1) + 1, (numIndices * 2))
+        end
+        -- Mantimentos
+        if itemType == "food" or itemType == "beverage" then
+            return loopthrough((numIndices * 2) + 1, (numIndices * 3))
+        end
+        -- Equipamentos
+        if itemType == "weapon" or itemType == "weapon_melee" or itemType == "weapon_thrown" or itemType == "ammo" then
+            return loopthrough((numIndices * 3) + 1, (numIndices * 4))
+        end
+        -- Kits
+        if itemType == "kit" then
+            return loopthrough((numIndices * 4) + 1, (numIndices * 5))
+        end
+        -- Alto Valor
+        if itemType == "valuable" or itemType == "boost" then
+            return loopthrough((numIndices * 5) + 1, (numIndices * 6))
+        end
+        -- Documentos
+        if itemType == "document" or itemType == "map" then
+            return loopthrough((numIndices * 6) + 1, (numIndices * 7))
+        end
+    else
+        for i = 1, numIndices do
             if containerItemPool[i] == nil or containerItemPool[i][1] == item then
                 table.insert(r, i)
             end
         end
-        return r
     end
 
-    if itemType == "generic" or itemType == "consumable" then
-        return loopthrough(1, numIndices)
-    end
-    -- Tonicos
-    if itemType == "tonic" or itemType == "boost" then
-        return loopthrough((numIndices * 1) + 1, (numIndices * 2))
-    end
-    -- Mantimentos
-    if itemType == "food" or itemType == "beverage" then
-        return loopthrough((numIndices * 2) + 1, (numIndices * 3))
-    end
-    -- Equipamentos
-    if itemType == "weapon" or itemType == "weapon_melee" or itemType == "weapon_thrown" or itemType == "ammo" then
-        return loopthrough((numIndices * 3) + 1, (numIndices * 4))
-    end
-    -- Kits
-    if itemType == "kit" then
-        return loopthrough((numIndices * 4) + 1, (numIndices * 5))
-    end
-    -- Alto Valor
-    if itemType == "valuable" or itemType == "boost" then
-        return loopthrough((numIndices * 5) + 1, (numIndices * 6))
-    end
-    -- Documentos
-    if itemType == "document" or itemType == "map" then
-        return loopthrough((numIndices * 6) + 1, (numIndices * 7))
-    end
-
-    return {}
+    return r
 end
 
 -- function ContainerGetValidIndicesForItem(container, item)
@@ -175,6 +184,37 @@ function ContainerGetItemHashAtIndex(container, index)
     return ret
 end
 
+function ContainerGetWeight(container)
+    local total = 0
+
+    if not Containers[container] then
+        return total
+    end
+
+    for _, itemData in pairs(Containers[container].containerItemPool) do
+        local itemHash = itemData[1]
+        local itemAmount = itemData[2]
+
+        local itemTotalWeight = ItemGetWeight(itemHash)
+
+        --[[
+            Verifica se o item é stackavel, então faz a computaçao
+            do peso nativo do item e a quantidade dele no container
+        ]]
+        if ItemIsStackable(itemHash) then
+            itemTotalWeight = itemTotalWeight * itemAmount
+        end
+
+        total = total + itemTotalWeight
+    end
+
+    return total
+end
+
+function ContainerGetMaxWeight(container)
+    return Containers[container].containerMaxWeight or 20.0
+end
+
 function ContainerSetItemPool(container, itempool)
     Containers[container].containerItemPool = itempool
 end
@@ -184,18 +224,31 @@ function ContainerSetTitle(container, title)
 end
 
 function ContainerGetAmountOfItem(container, item)
+    item = ItemIdOrHashToHash(item)
+
     local indices = ContainerGetValidIndicesForItem(container, item)
 
     local amount = 0
 
-    if #indices > 0 then
-        for _, index in pairs(indices) do
-            if Containers[container].containerItemPool[index] ~= nil then
-                local amountAtIndex = Containers[container].containerItemPool[index][2] or 1
-                amount = amount + amountAtIndex
+    local isStackable = ItemIsStackable(item)
+
+    -- if #indices > 0 then
+    for _, index in pairs(indices) do
+        if Containers[container].containerItemPool[index] ~= nil then
+            local amountAtIndex = 1
+
+            --[[
+                        Verifica se o item é stackavel, então faz a computaçao
+                        da quantidade do item no container
+                    ]]
+            if isStackable then
+                amountAtIndex = Containers[container].containerItemPool[index][2]
             end
+
+            amount = amount + amountAtIndex
         end
     end
+    -- end
 
     return amount
 end
@@ -205,37 +258,74 @@ function ContainerTryToRemoveItem(container, item, amount)
 
     local indices = ContainerGetValidIndicesForItem(container, item)
 
-    local initialamount = amount
+    local initialAmountToRemove = amount
 
     if #indices > 0 then
         for _, index in pairs(indices) do
             if Containers[container].containerItemPool[index] ~= nil then
-                local amountAtIndex = Containers[container].containerItemPool[index][2] or 1
+                if ItemIsStackable(itemHashAtIndex) then
+                    amountAtIndex = Containers[container].containerItemPool[index][2]
+                else
+                    amountAtIndex = 1
+                end
 
                 if amountAtIndex > amount then
+                    --[[
+                        Quantidade do mesmo item nesse index/slot é maior que o necessario
+                        , remove só a quantidade que a gente quer
+                    ]]
                     Containers[container].containerItemPool[index][2] = amountAtIndex - amount
                     amount = 0
                 else
+                    --[[
+                        A quantidade nesse index/slot é menor ou igual ao necessario,
+                        remove toda ela!
+                    ]]
                     Containers[container].containerItemPool[index] = nil
                     amount = amount - amountAtIndex
                 end
 
                 if amount <= 0 then
+                    --[[
+                        Removemos a quantidade necessaria, não tem necessidade de continuar o loop
+                    ]]
                     break
                 end
             end
         end
     end
 
-    if amount < initialamount then
+    if amount < initialAmountToRemove then
+        --[[
+            Alguma quantidade de item foi removida, atualiza o container
+        ]]
         draw(container)
     end
+
+    if amount <= 0 then
+        --[[
+            Conseguimos remove a quantidade exate dos items que queriamos,
+            então retorna true
+        ]]
+        return true
+    else
+        --[[
+            Alguns items foram removidos mas não a quantidade que a gente queria,
+            retorna false
+        ]]
+        return false
+    end
+end
+
+function ContainerGetItemPool(container)
+    return Containers[container].containerItemPool or {}
 end
 
 function ContainerCanAddItem(container, itemdata)
     return ContainerTryToAddItem(container, itemdata, false)
 end
 
+-- itemdata = {item, itemAmount, ...}
 function ContainerTryToAddItem(container, itemdata, actuallyadd)
     actuallyadd = actuallyadd or true
 
@@ -243,6 +333,15 @@ function ContainerTryToAddItem(container, itemdata, actuallyadd)
 
     local item = itemdata[1]
     local amount = itemdata[2] or 1
+
+    local containerWeight = ContainerGetWeight(container)
+    local containerMaxWeight = ContainerGetMaxWeight(container)
+
+    local itemWeight = ItemGetWeight(item)
+
+    if (containerWeight + (itemWeight * amount)) > containerMaxWeight then
+        return false
+    end
 
     local indices = ContainerGetValidIndicesForItem(container, item)
 

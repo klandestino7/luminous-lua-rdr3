@@ -2,8 +2,8 @@
 --     ["Mercadinho"] = {
 --         vec3(1054.163,91.976,94.305),
 --         {
---             {"w_shotgun_doublebarrel", 0.7, 0.5},
---             {"w_lasso", 0.3, 0.7}
+--             {"w_shotgun_doublebarrel", 1, 0.7, 0.5},
+--             {"w_lasso", 1, 0.3, 0.7}
 --         }
 --     }
 -- }

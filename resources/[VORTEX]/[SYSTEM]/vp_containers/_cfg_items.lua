@@ -25,7 +25,7 @@ ItemPool = {
         name = "Muniçao de Shotgun",
         desc = "Descrição breve.",
         weight = 1.0,
-        maxStackSize = 1
+        maxStackSize = 60
     },
     ["dollar"] = {
         type = "valuable",

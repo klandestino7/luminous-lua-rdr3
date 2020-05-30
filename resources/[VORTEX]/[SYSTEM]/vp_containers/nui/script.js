@@ -2,6 +2,8 @@ ItemPool = {}
 
 ItemPoolHash = {}
 
+var dragType;
+
 document.addEventListener("DOMContentLoaded", function(event) {
     // $('body').hide();
     // fakeItemPool();
@@ -70,26 +72,16 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
     for (let slot = FirstActiveSlot; slot < FirstActiveSlot + NumSlots; slot++) {
 
-        // console.log(`${slotContainer_path} .slot:nth-child(${slot - 1})`);
-        // let backgroundSlot = $(`${slotContainer_path} .slot:nth-child(${slot - 1})`);
-
-        // if (backgroundSlot != undefined) {
-        //     $(backgroundSlot).attr('id', slot);
-        //     console.log(backgroundSlot.data('container'));
-        //     // console.log('already existed');
-        // } else {
-        let  backgroundSlot = $(`<div class="slot" id="${slot}" data-container="${container}"></div>`).appendTo(slotContainer_path);
-        // }
+        let backgroundSlot = $(`<div class="slot" id="${slot}" data-container="${container}"></div>`).appendTo(slotContainer_path);
 
         let innerSlot = $(`<div class="slot-inner" i></div>`).appendTo(backgroundSlot);
 
-        // innerSlot.append(`<span class="counter">${slot}</span>`);
 
         // HOT FIX, CONSERTAR OS SLOTS NÃO ESTAREM CORRETOS!!
 
         let _slot = slot;
 
-        if (container != 'inventory'){
+        if (container != 'inventory' && container != 'shop') {
             _slot = _slot - 1;
         }
 
@@ -99,47 +91,104 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
             let receivedData = containerItemPool[_slot];
             let itemHash = receivedData[0];
-            let itemAmount = receivedData[1];
             let itemId = ItemPoolHash[itemHash];
             let itemData = ItemPool[itemId];
             let itemType = itemData.type;
 
-            innerSlot.data('itemName', itemData.name);
-            innerSlot.data('itemDescription', itemData.desc);
+           
 
-            let display_img = `assets/item_assets/${itemId}.png`;
-            let display_counter;
+            let display_counter = '';
 
-            switch (itemType) {
-                case 'generic':
-                    display_counter = itemAmount;
+            switch (container) {
+                case 'shop':
+                    // if (receivedData[1] > 1) {
+                    display_counter = receivedData[1] + 'x';
+                    // }
+                    let itemPriceDollar = receivedData[2];
+                    let itemPriceGold = receivedData[3];
+
+                    $(`
+                    <div class="container" id="tooltip">
+                        <div class="row">
+                            <span class="itemAmount">
+                                ${display_counter}
+                            </span>
+                            <span class="itemName">
+                                ${itemData.name}
+                            </span>
+                        </div>
+                        <span class="itemDescription">
+                            <div class="row" style="justify-content: space-evenly">
+                                <span>$ ${itemPriceDollar}</span>
+                                <span>G ${itemPriceGold}</span>
+                            </div>
+                        </span>
+                    </div>
+                    `).appendTo(innerSlot);
+
                     break;
-                case 'weapon':
-                    let itemAmmoInClip = receivedData[2];
-                    let itemAmmoInWeapon = receivedData[2];
-                    display_counter = `${itemAmmoInClip}/${itemAmmoInWeapon}`;
-                    break;
-                case 'valuable':
-                case 'ammo':
-                    let itemMaxStackSize = itemData.maxStackSize
-                    display_counter = `${itemAmount} de ${itemMaxStackSize}`;
+                default:
+                    if (container != 'crafting' && _slot != 10) {
+                        /*
+                            Slot não é o output do crafting, portanto irá mostra a quantidade
+                        */
+                        switch (itemType) {
+                            case 'generic':
+                                display_counter = receivedData[1] + "x";
+                                break;
+                            case 'weapon':
+                                let itemAmmoInClip = receivedData[1];
+                                let itemAmmoInWeapon = receivedData[2];
+
+                                display_counter = `${itemAmmoInClip}/${itemAmmoInWeapon}`;
+                                break;
+                            case 'valuable':
+                            case 'ammo':
+                                let itemMaxStackSize = itemData.maxStackSize;
+
+                                display_counter = `${receivedData[1]} de ${itemMaxStackSize}`;
+                                break;
+                        }
+                    } else {
+                        innerSlot =  $('#crafting #10 .slot-inner');
+                        innerSlot.html('');
+                    }
+
+                    $(`
+                    <div class="container" id="tooltip">
+                        <div class="row">
+                            <span class="itemAmount">
+                                ${display_counter != undefined ? display_counter : ""}
+                            </span>
+                            <span class="itemName">
+                                ${itemData.name}
+                             </span>
+                        </div>
+                        <span class="itemDescription">
+                            <span>${itemData.desc}</span>
+                        </span>
+                    </div>
+                    `).appendTo(innerSlot);
+
+                    // if (display_counter) {
+                        // innerSlot.append(`<span class="counter">${display_counter}</span>`);
+                    // }
+
+
                     break;
             }
 
-            // $(`
-            //         <span class="tooltiptext">${itemAmount != null ? "x" + itemAmount + " ": ""}${itemData.name}</span>
-            //     `).appendTo(innerSlot);
-
+            let display_img = `assets/item_assets/${itemId}.png`;
 
             if (display_img) {
                 innerSlot.append(`<img src="${display_img}">`)
             }
-            if (display_counter) {
-                // innerSlot.append(`<span class="counter">${display_counter}</span>`);
-                innerSlot.data('itemCounter', display_counter);
-            }
+
+            innerSlot.append(`<span class="counter">${slot}</span>`);
         }
     }
+
+
 
     // Cria o ultimo slot da hotbar, que não é interagivel!
     if (container == 'hotbar') {
@@ -154,7 +203,6 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
     asDroppable();
     asDraggable();
-    asHoverable();
     // DEBUG_asHoverable(container);
 }
 
@@ -163,12 +211,14 @@ function asDroppable() {
         hoverClass: 'droppable-active',
         addClasses: false,
         drop: function(event, ui) {
-            if ($(ui.draggable).data('itemName')) {
+            console.log($(ui.draggable).children().length);
+            if ($(ui.draggable).children().length > 0) {
                 $.post('http://vp_containers/container_dropdraggable', JSON.stringify({
                     container_from: $(ui.draggable).parent().data("container"),
                     container_to: $(this).parent().data("container"),
                     slot_from: $(ui.draggable).parent().attr('id'),
                     slot_to: $(this).parent().attr('id'),
+                    dragType: dragType,
                 }));
 
                 $(ui.helper).remove();
@@ -195,24 +245,6 @@ function asDraggable() {
             carrying = false;
             // $(ui.helper).remove();
         },
-    });
-}
-
-function asHoverable() {
-    $(".slot-inner").mouseenter(function() {
-        if (carrying == false) {
-            $(this).addClass("droppable-active");
-            let containerElement = $(this).parent().parent().parent();
-            $(containerElement).find('#hover-title').text($(this).data('itemName'));
-            $(containerElement).find('#hover-description').text($(this).data('itemDescription'));
-            $(containerElement).find('#hover-counter').text($(this).data('itemCounter'));
-        }
-    }).mouseleave(function() {
-        $(this).removeClass("droppable-active");
-        let containerElement = $(this).parent().parent().parent();
-        $(containerElement).find('#hover-title').text('');
-        $(containerElement).find('#hover-description').text('');
-        $(containerElement).find('#hover-counter').text('');
     });
 }
 
@@ -275,10 +307,29 @@ function fakeEvent() {
         ],
     }
 
+    var s = {
+        1: [
+            15106516, // w_shotgun_doublebarrel
+            10, // inClip
+            10, // inWeapon
+        ],
+        3: [
+            51515156, // w_lasso
+            20,
+            30
+        ],
+        4: [
+            45465465, // w_molotov
+            40,
+            50,
+        ],
+    }
+
+
     drawContainer('inventory', p, 9 * 3, 1);
     drawContainer('hotbar', h, 4, 1);
     drawContainer('extra', {}, 9 * 3, 1);
-    drawContainer('shop', {}, 3 * 5, 1);
+    drawContainer('shop', s, 3 * 5, 1);
     drawContainer('crafting', {}, 3 * 3, 1);
     drawContainer('trade-player', {}, 4 * 2, 1);
     drawContainer('trade-trader', {}, 4 * 2, 1);
@@ -297,7 +348,7 @@ function fakeItemPool() {
         "w_lasso": {
             type: "weapon_melee",
             name: "Lasso",
-            desc: "Lorem Ip.",
+            desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
             weight: 1.0,
             maxStackSize: 1
         },
@@ -340,3 +391,24 @@ function fakeItemPool() {
         74444466: "gold",
     }
 }
+
+
+$(document).ready(function() {
+
+    $(document).keyup(function(event) {
+        if (event.which == dragType) {
+            dragType = null;
+        }
+
+    });
+
+    $(document).keydown(function(event) {
+        if (event.which == 16) { // dragType HALF
+            dragType = 16;
+        }
+
+        if (event.which == 17) { // dragType SINGLE
+            dragType = 17;
+        }
+    });
+});

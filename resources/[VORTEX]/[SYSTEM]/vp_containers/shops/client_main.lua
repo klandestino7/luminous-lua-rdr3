@@ -4,11 +4,12 @@ Citizen.CreateThread(
 
 
         ShopPool = {
+            -- itemHash, itemAmount, itemPriceDollar, itemPriceGold
             ["Mercadinho"] = {
                 vec3(1054.163,91.976,94.305),
                 {
-                    {joaat("w_shotgun_doublebarrel"), 0.7, 0.5},
-                    {joaat("w_lasso"), 0.3, 0.7}
+                    [46] = {joaat("w_shotgun_doublebarrel"), 1, 0.7, 0.5},
+                    [47] = {joaat("w_lasso"), 1, 0.3, 0.7}
                 }
             }
         }
