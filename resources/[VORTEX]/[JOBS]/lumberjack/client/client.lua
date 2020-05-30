@@ -80,7 +80,8 @@ function drawBox(entity)
 
     -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowA, lowB, 255, 0, 0, 255)
     -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,lowC, minPos, 255, 0, 0, 255)
-    return max.z > 4.0
+    -- return max.z > 4.0
+    return true
 end
 
 function RotationToDirection(rotation)

@@ -7,15 +7,13 @@ API = Tunnel.getInterface("API")
 RegisterNetEvent("VP:ADMIN:Model")
 AddEventHandler(
 	"VP:ADMIN:Model",
-	function(pedInfo, clothes)	
-
+	function(pedInfo, clothes)
 		local pModel = GetHashKey(pedInfo.model)
 		local pBodySize = tonumber(pedInfo.bodySize)
 		local pSkin = json.decode(pedInfo.modSkin)
 		local pFaceFeatures = json.decode(pedInfo.features)
 		local pScale = tonumber(pedInfo.pedSize)
 		local pClothing = json.decode(clothes)
-
 
 		cAPI.SetPlayerPed(pModel)
 		Wait(130)
@@ -26,7 +24,6 @@ AddEventHandler(
 		Wait(30)
 		cAPI.SetPedScale(PlayerPedId(), pScale)
 		cAPI.SetPedClothing(PlayerPedId(), pClothing)
-
 	end
 )
 
@@ -353,7 +350,11 @@ RegisterCommand(
 		-- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_STERNGUY_IDLES"), 0, true, 0, 0, 0)
 		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 15, 0, 0)
 		-- if (Citizen.InvokeNative(0x9427C94D2E4094A4, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 0)) then
-		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_HUMAN_SIT_GROUND"), coords, 0.0, 2.0, 0, 1)
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, -2032888040, coords, 0.0, 2.0, 0, 1)
+		-- print(scenario)
+		-- print(Citizen.InvokeNative(0x841475AC96E794D1, 1926127072))
+		-- print(GetEntityCoords(1926127072))
+		-- print(IsModelValid(1926127072))
 		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
 		-- print(scenario)
@@ -362,6 +363,89 @@ RegisterCommand(
 		-- print(Citizen.InvokeNative(0x841475AC96E794D1,32512))
 
 		-- exports['vp_admin']:js_teste_native();
+
+		Citizen.InvokeNative(0x51345AE20F22C261, PlayerId(), 0, 0, 0)
+		-- print(Citizen.InvokeNative(0xAB3773E7AA1E9DCC, PlayerId(), Citizen.ResultAsFloat()))
+	end
+)
+
+-- EVENT_PED_WHISTLE
+-- case 1327216456:
+-- func_157(iParam0);
+
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(10)
+
+			local size = GetNumberOfEvents(0)
+
+			if size > 0 then
+				for i = 0, size - 1 do
+					local eventAtIndex = GetEventAtIndex(0, i)
+
+					if eventAtIndex == 1327216456 then
+						print("EVENT_PED_WHISTLE", PlayerPedId(), i)
+						exports["vp_admin"]:js_teste_native(0, i, 2)
+					-- [bit 0] = Ped who is whistling
+					end
+
+					if eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
+						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
+						exports["vp_admin"]:js_teste_native(0, i, 10)
+						Wait(1000)
+					end
+
+					-- EVENT_PLAYER_ANIMAL_INTERACTION
+					if eventAtIndex == -1246119244 then
+						print("EVENT_PED_ANIMAL_INTERACTION", PlayerPedId(), i)
+						exports["vp_admin"]:js_teste_native(0, i, 3)
+					-- [bit 0] Ped -- Mostly the animal being interacted
+					-- [bit 2] Ped -- Mostly the one who is interacting
+					-- [bit 4] Interaction
+					-- print(GetHashKey("INTERACTION_POSITIVELONG"), GetHashKey("INTERACTION_POSITIVESHORT"), GetHashKey("INTERACTION_CANCEL"), GetHashKey("INTERACTION_COMPLETE"))
+					end
+
+					if eventAtIndex == -2091944374 then
+						print("EVENT_PLAYER_LOOT_PED")
+						exports["vp_admin"]:js_teste_native(0, i, 26)
+					-- 24 Player
+					-- 25 Lotter
+					end
+					if eventAtIndex == -1511724297 then
+						print("EVENT_PLAYER_LOOT_RANSACK")
+						print("dunoo2")
+					end
+					-- if eventAtIndex == -1312424871 then
+					-- 	print('dunoo3')
+					-- end
+					-- if eventAtIndex == -369170747then
+					-- 	print('dunoo4')
+					-- end
+				end
+			end
+
+			size = GetNumberOfEvents(2)
+
+			if size > 0 then
+				for i = 0, size - 1 do
+					local eventAtIndex = GetEventAtIndex(2, i)
+					-- if eventAtIndex == -45008988 then
+					-- 	print("enter")
+					-- end
+					if eventAtIndex == -456923784 then
+						print("openchest / left scenario")
+						-- bit 1 scenarioid/type
+						-- bit2 ped
+						SetEventFlagForDeletion(2, i, 1)
+						exports["vp_admin"]:js_teste_native(2, i, 2)
+					end
+					if eventAtIndex == -843555838 then
+						print("wha")
+					end
+				end
+			end
+		end
 	end
 )
 

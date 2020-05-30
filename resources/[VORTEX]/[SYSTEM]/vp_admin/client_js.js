@@ -1,12 +1,13 @@
-// exports('js_teste_native', () => {
+exports('js_teste_native', (group, i, size) => {
 
-//     const arrayBuffer = new ArrayBuffer(256 * 4);
-//     const dataView = new DataView(arrayBuffer);
-//     dataView.setUint32(0, 31);
+    let buffer = new ArrayBuffer(256 * 2);
+    let view = new DataView(buffer);
+    // dataView.setInt32(0, 3);
+    // dataView.setInt32(3, );
 
-//     const coords = GetEntityCoords(PlayerPedId());
-//     Citizen.invokeNative("0x345EC3B7EBDE1CB5", coords[0], coords[1], coords[2], 50.0, dataView, 4, Citizen.returnResultAnyway());
-//     const arrayOut = new Int32Array(arrayBuffer);
+    Citizen.invokeNative("0x57EC5FA4D4D6AFCA", group, i, view, size, Citizen.returnResultAnyway());
+    let out = new Int32Array(buffer);
 
-//     console.log(arrayOut);
-// });
+    console.log(out);
+    // console.log(JSON.stringify(out));
+});
