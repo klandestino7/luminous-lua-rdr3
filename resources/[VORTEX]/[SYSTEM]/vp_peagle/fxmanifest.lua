@@ -11,3 +11,12 @@ server_scripts {
     'server/server.lua'   
 }
 
+ui_page {
+    'html/ui.html',
+}
+
+files {
+    'html/*',
+    'html/css/*',
+    'html/js/*',
+}

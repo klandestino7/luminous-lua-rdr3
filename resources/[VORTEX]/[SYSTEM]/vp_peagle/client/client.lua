@@ -1,67 +1,24 @@
 local pigeons = {}
 
-RegisterNetEvent("VP:PIGEONPOST:Init")
+
+
+RegisterNetEvent("VP:PEAGLE:GetCoords")
 AddEventHandler(
-    "VP:PIGEONPOST:Init",
-    function()
-        local ped = PlayerPedId()
-        local sCoords = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 0.7)
+    "VP:PEAGLE:GetCoords",
+    function(tplayer,Mensagem)
+    local ped = PlayerPedId()
+    local Coords = GetEntityCoords(ped)
+    TriggerServerEvent("VP:PEAGLE:ReceiveCoords", Coords, tplayer, Mensagem)
+end)
 
-        local pigeon = CreatePed("A_C_Pigeon", sCoords, GetEntityHeading(ped), true, true, true, true)
-        Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
 
-        ClearPedTasks(pigeon)
-        ClearPedSecondaryTask(pigeon)
-        ClearPedTasksImmediately(pigeon)
-        SetPedFleeAttributes(pigeon, 0, 0)
-        TaskWanderStandard(pigeon, 1, 0)
-        TaskSetBlockingOfNonTemporaryEvents(pigeon, 1)
 
-        table.insert(pigeons, pigeon)
-    end
-)
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(1000)
-            if #pigeons > 0 then
-                local ped = PlayerPedId()
-                local sCoords = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 0.7)
-                for _, pigeon in pairs(pigeons) do
-                    if not IsEntityInAir(pigeon, 0) then
-                        TaskGoStraightToCoord(pigeon, sCoords, 10.0, 5000, 180.0, 1.0)
-                    else
-                        
-                    end
-                end
-            end
-        end
-    end
-)
-
-RegisterCommand(
-    "checkplayers",
-    function()
-        local players = {}
-        ptable = GetPlayers()
-        for _, i in ipairs(ptable) do
-            table.insert(players, GetPlayerServerId(i) .. GetPlayerName(i))
-        end
-
-        print(table.concat(players))
-    end
-)
-
-RegisterCommand(
-    "peagle",
-    function()
-        -- RegisterServerEvent('VP:PEAGLE:checkJOB')
-        -- AddEventHandler('VP:PEAGLE:checkJOB', function()
-
+RegisterNetEvent('VP:PEAGLE:ReceiveMenssage')
+AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
         local back = true
 
-        local pigeon = CreatePed("A_C_Pigeon", GetEntityCoords(PlayerPedId()), 92.0, true, true, true, true)
+        local pigeon = CreatePed("A_C_Pigeon", PlayerCoords, 92.0, true, true, true, true)
         Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
 
         ClearPedTasks(pigeon)
@@ -72,7 +29,7 @@ RegisterCommand(
         TaskSetBlockingOfNonTemporaryEvents(pigeon, 1)
         SetEntityAsMissionEntity(pigeon)
         Wait(2000)
-        TaskFlyToCoord(pigeon, 0, 62.92, 42.51, 102.15 + 30, 1, 0)
+        TaskFlyToCoord(pigeon, 0, 62.92, 42.51, 102.15 + 10, 1, 0)
 
         while true do
             Citizen.Wait(1)
@@ -87,29 +44,48 @@ RegisterCommand(
                 local dst = #(vector3(ec.x, ec.y, ec.z) - myV)
                 local ed = coords.x, coords.y, coords.z
                 Citizen.Wait(2)
+                local playc = GetEntityCoords(PlayerPedId())
+
                 if back then
-                    local playc = GetEntityCoords(PlayerPedId())
                     TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
-                end
-                print(dst)
-                if dst < 40 then
+                end                
+
+                if dst < 60 then
+                    
+                    print(dst)
+                    
                     if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
                         back = false
-                        TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 2, 0)
-                        if dst < 2 then
+                        TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 2, 0)       
+                        
+                        if dst < 4 then
                             local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, pigeon, Citizen.InvokeNative(0x34F008A7E48C496B, pigeon, 2), 0, 0, 512)
-                            TaskPickupCarriableEntity(PlayerPedId(), carriable)
-                            Wait(2000)
-                            break
+                            TaskPickupCarriableEntity(PlayerPedId(), carriable)  
+                            openGuiRead(text)
                         end
                     end
-                else
-                    print("nao")
                 end
             end
         end
     end
 )
+
+
+
+function openGuiRead(text)
+    local veh = GetVehiclePedIsUsing(PlayerPedId())
+    if GetPedInVehicleSeat(veh, -1) ~= PlayerPedId() then
+          SetPlayerControl(PlayerId(), 0, 0)
+          isUiOpen = true
+          Citizen.Trace("OPENING")
+          SendNUIMessage({
+              action = 'openNotepadRead',
+              TextRead = text,
+          })
+          SetNuiFocus(true, true)
+    end  
+  end
+
 
 -- -- Key Controls
 -- Citizen.CreateThread(
