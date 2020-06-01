@@ -3,10 +3,12 @@ local pocketing = {}
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(100)
+            Citizen.Wait(0)
 
             local itemSet = CreateItemset(true)
-            FindAllAttachedCarriableEntities(PlayerPedId(), itemSet)
+            -- FindAllAttachedCarriableEntities(PlayerPedId(), itemSet)
+
+            FindAllAttachedCarriableEntities(9782024, itemSet)
             local size = GetItemsetSize(itemSet)
 
             if size > 0 then
@@ -30,7 +32,7 @@ Citizen.CreateThread(
 
             for entity, model in pairs(pocketing) do
                 if not DoesEntityExist(entity) then
-                    TriggerServerEvent("VP:POCKET_LOOTING:Pocket", model)
+                    TriggerServerEvent("VP:LOOTING:TryToLoot", model)
                     pocketing[entity] = nil
                 end
             end
@@ -42,9 +44,9 @@ function GetCarriableCarryConfig(carriable)
     return Citizen.InvokeNative(0x0FD25587BB306C86, carriable)
 end
 
-RegisterNetEvent("VP:POCKET_LOOTING:ItemDenied")
+RegisterNetEvent("VP:LOOTING:LooteableDenied")
 AddEventHandler(
-    "VP:POCKET_LOOTING:ItemDenied",
+    "VP:LOOTING:LooteableDenied",
     function(entityModel)
         local ped = PlayerPedId()
         local coords = GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 0.5)
