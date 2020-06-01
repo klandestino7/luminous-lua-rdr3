@@ -9,8 +9,6 @@ local nearRefiningSpotIndex
 local prompt
 local promptGroup
 local varString
-local holdModeOn = false
-local isMining = false
 local carriables = {}
 
 Citizen.CreateThread(
@@ -46,12 +44,11 @@ Citizen.CreateThread(
                             end
                         end
 
-                        
                         local obj = CreateObject(942176598, ve, true, true, false, true, true)
                         PlaceObjectOnGroundProperly(obj)
                         FreezeEntityPosition(obj, true)
                         -- SetModelAsNoLongerNeeded(942176598)
-        
+
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
                     end
                 end
@@ -71,12 +68,12 @@ Citizen.CreateThread(
                                 Citizen.Wait(10)
                             end
                         end
-                        
+
                         local obj = CreateObject(942176598, ve, true, true, false, true, true)
                         PlaceObjectOnGroundProperly(obj)
                         FreezeEntityPosition(obj, true)
                         -- SetModelAsNoLongerNeeded(942176598)
-        
+
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
                     end
                 end
@@ -100,10 +97,9 @@ Citizen.CreateThread(
 
 Citizen.CreateThread(
     function()
-        ClearPedTasksImmediately(PlayerPedId())
         while true do
             Citizen.Wait(0)
-            if nearMiningSpotIndex ~= nil and isMining == false then
+            if nearMiningSpotIndex ~= nil then
                 local d = Config.Locations[nearMiningSpotIndex]
                 local v = vec3(d[1], d[2], d[3])
 
@@ -123,7 +119,7 @@ Citizen.CreateThread(
                 if carriableCloseToPrompt == false then
                     if #(pedVector - v) <= 1.5 then
                         drawPrompt()
-                        if PromptIsJustPressed(prompt) then
+                        if PromptIsJustPressed(prompt) and GetScriptTaskStatus(ped, 0x3B3A458F, 0) ~= 1 then
                             TriggerServerEvent("VP:MINING:TryToStartMining")
                             Wait(1000)
                         end
@@ -207,11 +203,12 @@ AddEventHandler(
                 ApplyForceToEntityCenterOfMass(obj, 1, 0, 0, 0, 0, 1, 1, 1)
                 -- SetModelAsNoLongerNeeded(prop)
 
-                local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, Citizen.InvokeNative(0x34F008A7E48C496B, obj, 3), 0, 0, 512)
+                Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, Citizen.InvokeNative(0x34F008A7E48C496B, obj, 3), 0, 0, 512)
 
-                Citizen.InvokeNative(0x7DFB49BCDB73089A, carriable, true)
+                Citizen.InvokeNative(0x7DFB49BCDB73089A, obj, true)
+                Citizen.InvokeNative(0xAEE6C800E124CFE1, obj, "Oi")
 
-                table.insert(carriables, carriable)
+                table.insert(carriables, obj)
             end
         end
     end
@@ -221,14 +218,46 @@ RegisterNetEvent("VP:MINING:StartMiningAnimation")
 AddEventHandler(
     "VP:MINING:StartMiningAnimation",
     function()
-        isMining = true
-        TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_PICKAXE_WALL"), 20000, true, false, false, false)
-        -- exports['progressBars']:startUI(2000, 'Minerando')
-        Wait(20000)
-        ClearPedTasksImmediately(PlayerPedId())
-        isMining = false
+        TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, 0, -1.0, false)
 
-        TriggerServerEvent("VP:MINING:CollectMineral")
+        local timeout = 2000
+        while GetScriptTaskStatus(PlayerPedId(), 0x3B3A458F, 0) ~= 1 do
+            Citizen.Wait(100)
+            timeout = timeout - 100
+        end
+
+        if timeout > 0 then
+            local running = true
+
+            Citizen.CreateThread(
+                function()
+                    Citizen.Wait(20000)
+                    if running then
+                        print("ended")
+                        running = false
+
+                        SetCurrentPedWeapon(PlayerPedId(), GetHashKey("WEAPON_UNARMED"), true)
+                        ClearPedTasks(PlayerPedId())
+                        TriggerServerEvent("VP:MINING:CollectMineral")
+                    end
+                end
+            )
+
+            Citizen.CreateThread(
+                function()
+                    while running do
+                        Citizen.Wait(100)
+
+                        if GetScriptTaskStatus(PlayerPedId(), 0x3B3A458F, 0) ~= 1 then
+                            print("stoped scenario")
+                            ClearPedTasks(PlayerPedId())
+                            running = false
+                            break
+                        end
+                    end
+                end
+            )
+        end
     end
 )
 
@@ -244,18 +273,10 @@ AddEventHandler(
     end
 )
 
-function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
-    local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
-    SetTextScale(w, h)
-    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
-    SetTextCentre(centre)
-    if enableShadow then
-        SetTextDropshadow(1, 0, 0, 0, 255)
-    end
-    Citizen.InvokeNative(0xADA9255D, 10)
-    DisplayText(str, x, y)
-end
-
 function CreateVarString(p0, p1, variadic)
     return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
+end
+
+function NativeFindClosestActiveScenarioPointOfType(position, type, radius)
+    return Citizen.InvokeNative(0xF533D68FF970D190, position, type, radius, 0, 0, Citizen.ResultAsInteger())
 end
