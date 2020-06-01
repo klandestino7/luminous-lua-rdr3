@@ -566,6 +566,13 @@ ItemList = {
         description = 'Uma simples garrafa de plástico preenchida com água.',
         stackSize = 7,
     },
+    ['meat'] = {
+        type = 'generic',
+        name = 'Carne Animal',
+        weight = 1.0,
+        description = 'Carne obtida após esfolar o animal',
+        stackSize = 6,
+    },
     ['metalbruto'] = {
         type = 'generic',
         name = 'Minério de Metal',
