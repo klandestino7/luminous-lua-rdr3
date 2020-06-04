@@ -499,7 +499,7 @@ function drawPrimary() {
             var ammoInClip = Slot[3];
             var ammoInWeapon = Slot[4];
 
-            if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
+            if (itemId == 'money' || itemId == 'gold') {
                 itemAmount = itemAmount / 100;
                 itemAmount = itemAmount.toFixed(2);
             }
@@ -655,7 +655,7 @@ function drawSecondary() {
             var ammoInClip = Slot[3];
             var ammoInWeapon = Slot[4];
 
-            if (itemId == 'money' || itemId == 'gold' || itemId == 'blackmoney') {
+            if (itemId == 'money' || itemId == 'gold') {
                 itemAmount = itemAmount / 100;
                 itemAmount = itemAmount.toFixed(2);
             }
