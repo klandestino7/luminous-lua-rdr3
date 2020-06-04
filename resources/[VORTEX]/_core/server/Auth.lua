@@ -14,43 +14,43 @@ function connectUser(source, user_id)
     API.identifiers[steamID] = GetPlayerIdentifiers(source)
     cAPI._clientConnected(source, true)
 
-    print(GetPlayerName(source) .. ' (' .. User:getIpAddress() .. ') entrou (user_id = ' .. user_id .. ', source = ' .. source .. ')')
-    TriggerEvent('VP:IDENTITY:DisplayCharSelection', User)
+    print(GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
+    TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
     return User
 end
 
 AddEventHandler(
-    'playerConnecting',
+    "playerConnecting",
     function(playerName, kickReason, deferrals)
         deferrals.defer()
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
 
         if ids[1] == nil then
-            deferrals.done('Abra a Steam.')
+            deferrals.done("Abra a Steam.")
             CancelEvent()
             return
         end
 
         if LoginCooldown[ids[1]] == nil then
-            deferrals.update('Verificando sua whitelist...')
+            deferrals.update("Verificando sua whitelist...")
             if API.isWhitelisted(ids[1]) then
                 local user_id = API.getUserIdByIdentifiers(ids, playerName)
                 if user_id then
-                    deferrals.update('Checando lista de banimentos...')
+                    deferrals.update("Checando lista de banimentos...")
                     if API.isBanned(user_id) == 0 then
                         if API.users[user_id] == nil then
-                            deferrals.update('Tudo encontrado, carregando seus dados...')
+                            deferrals.update("Tudo encontrado, carregando seus dados...")
                             API.onFirstSpawn[user_id] = true
-                            TriggerEvent('API:playerJoin', user_id, source, playerName)
+                            TriggerEvent("API:playerJoin", user_id, source, playerName)
                             deferrals.done()
                         end
                     else
-                        deferrals.done('Você está banido do servidor.')
+                        deferrals.done("Você está banido do servidor.")
                         CancelEvent()
                     end
                 else
-                    deferrals.done('Erro de identificação.')
+                    deferrals.done("Erro de identificação.")
                     CancelEvent()
                 end
             else
@@ -61,19 +61,19 @@ AddEventHandler(
                         LoginCooldown[ids[1]] = nil
                     end
                 )
-                print(playerName .. ' (' .. ids[1] .. ') tentou conectar sem whitelist')
-                deferrals.done('Sem permissão para entrar. HEX: ' .. ids[1] .. ' | discord.gg/nf4Qbdm')
+                print(playerName .. " (" .. ids[1] .. ") tentou conectar sem whitelist")
+                deferrals.done("Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
                 CancelEvent()
             end
         else
-            deferrals.done('Aguarde um minuto e você logo conseguira entrar.')
+            deferrals.done("Aguarde um minuto e você logo conseguira entrar.")
             CancelEvent()
         end
     end
 )
 
 AddEventHandler(
-    'playerDropped',
+    "playerDropped",
     function(reason)
         local _source = source
         --[[ local User = API.getUserFromSource(_source)
@@ -88,15 +88,15 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent('pre_playerSpawned')
+RegisterNetEvent("pre_playerSpawned")
 AddEventHandler(
-    'pre_playerSpawned',
+    "pre_playerSpawned",
     function()
         local _source = source
         local user_id = API.getUserIdByIdentifiers(GetPlayerIdentifiers(_source), GetPlayerName(_source))
         if user_id then
             local isFirstSpawn = API.onFirstSpawn[user_id]
-            TriggerEvent('API:playerSpawned', _source, user_id, isFirstSpawn)
+            TriggerEvent("API:playerSpawned", _source, user_id, isFirstSpawn)
             if onFirstSpawn then
                 API.onFirstSpawn[user_id] = nil
             end
@@ -104,20 +104,20 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent('API:playerSpawned') -- Use this one !!!!!!!!!!!!!!!!!
+RegisterNetEvent("API:playerSpawned") -- Use this one !!!!!!!!!!!!!!!!!
 AddEventHandler(
-    'API:playerSpawned',
+    "API:playerSpawned",
     function(source, user_id, isFirstSpawn)
         if isFirstSpawn then
             connectUser(source, user_id)
-            -- API.onFirstSpawn[user_id] = nil
+        -- API.onFirstSpawn[user_id] = nil
         end
     end
 )
 
-RegisterNetEvent('API:addReconnectPlayer')
+RegisterNetEvent("API:addReconnectPlayer")
 AddEventHandler(
-    'API:addReconnectPlayer',
+    "API:addReconnectPlayer",
     function()
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
@@ -127,3 +127,21 @@ AddEventHandler(
         end
     end
 )
+
+RegisterNetEvent("API:OnUserSelectCharacter")
+-- AddEventHandler(
+--     "API:OnUserSelectCharacter",
+--     function(User, characterId)
+
+--     end
+-- )
+
+RegisterNetEvent('API:pre_OnUserCharacterInitialization')
+AddEventHandler('API:pre_OnUserCharacterInitialization', function()
+    local _source = source
+    local User = API.getUserFromSource(_source)
+    local Character = User:getCharacter()
+    TriggerEvent('API:OnUserCharacterInitialiation', User, Character:getId())
+end)
+
+RegisterNetEvent('API:OnUserCharacterInitialiation')

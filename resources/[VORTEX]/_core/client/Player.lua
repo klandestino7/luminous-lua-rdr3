@@ -36,15 +36,18 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
 
     TriggerEvent("ToogleBackCharacter")
     initializedPlayer = true
+
     Wait(1500)
+
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
+    TriggerServerEvent('API:pre_OnUserCharacterInitialization')
 end
 
 function cAPI.PlayerAsInitialized(bool)
     initializedPlayer = bool
 end
 
-function cAPI.Toast(type, text, quantity)
+function cAPI.notify(type, text, quantity)
     if type ~= nil and text == nil and quantity == nil then
         text = type
         type = "dev"
@@ -357,7 +360,7 @@ Citizen.CreateThread(
             if cAPI.IsPlayerHorseActive() then
                 if not isHorseActivationBlocked then
                     if IsPedInjured(playerHorse) then
-                        cAPI.Toast("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
+                        cAPI.notify("error", "Seu cavalo foi ferido, você não poderá chama-lo nos proximos 2 minutos")
                         isHorseActivationBlocked = true
                         horseActivationSeconds = 120
                     end
@@ -417,7 +420,7 @@ Citizen.CreateThread(
                 end
             else
                 if IsPedInWrithe(playerHorse) then
-                    cAPI.Toast("alert", "Seu cavalo foi ferido, reanime-o")
+                    cAPI.notify("alert", "Seu cavalo foi ferido, reanime-o")
                     isHorseInWrithe = true
                 else
                     if #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse)) > 500.0 then
