@@ -69,6 +69,45 @@ function load(interiorId)
         end
     end
 
+    if gunsmith_data.point3 then
+        local melee = {
+            -- price_dollar, price_gold, amount
+            {"revolver_lemat", 317, 13, 1, "w_revolver_lemat01"},
+            {"revolver_cattleman", 50, 2, 1, "w_revolver_cattleman01"},
+            -- {"revolver_navy", 257, 11, 1, "w_revolver_schofield01"}, -- ERA PRA SER O NAVY
+            {"pistol_volcanic", 300, 14, 1, "w_pistol_volcanic01"},
+            {"shotgun_sawedoff", 65, 15, 1, "w_shotgun_sawed01"},
+            {"repeater_carbine", 90, 4, 1, "w_repeater_carbine01"},
+            {"repeater_henry", 234, 10, 1, "w_repeater_henry01"},
+            {"sniperrifle_rollingblock", 500, 20, 1, "w_rifle_rollingblock01"},
+            {"rifle_varmint", 72, 3, 1, "w_repeater_pumpaction01"}, -- NÃO ESTÁ CARREGANDO
+            {"rifle_boltaction", 216, 9, 1, "w_rifle_boltaction01"}
+            -- {"thrown_throwing_knives", 250, 50, 1, "w_melee_tomahawk03"},
+            -- {"melee_cleaver", 8, 1, 1, "p_cleaver01x"},
+            -- {"melee_knife", 5, 1, 1, "w_melee_knife02"},
+        }
+
+        local a = vec3(table.unpack(gunsmith_data.point3))
+        local b = vec3(table.unpack(gunsmith_data.point4))
+
+        local pitch, roll, yaw = table.unpack(gunsmith_data.rotation_2)
+
+        local d = math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)) / (#melee - 1)
+        local fi = math.atan2(b.y - a.y, b.x - a.x)
+
+        for i = 0, #weapons do
+            local x = a.x + i * d * math.cos(fi)
+            local y = a.y + i * d * math.sin(fi)
+            local z = a.z
+            -- local _, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, a.z)
+
+            if melee[i + 1] then
+                local d = melee[i + 1]
+                createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(d[5], x, y, z, pitch, roll, yaw, "weapon_" .. d[1]))
+            end
+        end
+    end
+
     for _, reqComponent in pairs(requestedComponents) do
         -- SetModelAsNoLongerNeeded(reqComponent)
     end
@@ -277,7 +316,6 @@ function unload()
 
     hasPropsLoaded = false
 
-
     -- DEBBUGIN
     -- DeleteEntity(_temp_prop)
 end
@@ -458,7 +496,28 @@ function RotationToDirection(rotation)
     return direction
 end
 
---- DEBBUGING
+-- - DEBBUGING
+
+-- function TxtAtWorldCoord(x, y, z, txt, size, font, alpha)
+--     alpha = alpha or 255
+--     local s, sx, sy = GetScreenCoordFromWorldCoord(x, y, z)
+--     if (sx > 0 and sx < 1) or (sy > 0 and sy < 1) then
+--         local s, sx, sy = GetHudScreenPositionFromWorldPosition(x, y, z)
+--         DrawTxt(txt, sx, sy, size, true, 255, 255, 255, alpha, true, font) -- Font 2 has some symbol conversions ex. @ becomes the rockstar logo
+--     end
+-- end
+
+-- function DrawTxt(str, x, y, size, enableShadow, r, g, b, a, centre, font)
+--     local str = CreateVarString(10, "LITERAL_STRING", str)
+--     SetTextScale(1, size)
+--     SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
+--     SetTextCentre(centre)
+--     if enableShadow then
+--         SetTextDropshadow(1, 0, 0, 0, 255)
+--     end
+--     SetTextFontForCurrentCommand(font)
+--     DisplayText(str, x, y)
+-- end
 
 -- local _temp_prop
 
@@ -515,17 +574,17 @@ end
 
 --             local pedVector = GetEntityCoords(ped)
 
---                 local cameraRotation = GetGameplayCamRot()
---                 local cameraCoord = GetGameplayCamCoord()
---                 local direction = RotationToDirection(cameraRotation)
---                 local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
+--             local cameraRotation = GetGameplayCamRot()
+--             local cameraCoord = GetGameplayCamCoord()
+--             local direction = RotationToDirection(cameraRotation)
+--             local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
 
---                 local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
---                 local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+--             local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
+--             local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
---                 if hit == 1 then
---                     aimingAt = endCoords
---                 end
+--             if hit == 1 then
+--                 aimingAt = endCoords
+--             end
 
 --             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
 --             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
@@ -555,11 +614,138 @@ end
 --                     _temp_prop = nil
 --                 end
 
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
---                 DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.7, "" .. GetEntityCoords(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.6, "" .. GetEntityPitch(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.5, "" .. GetEntityRoll(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.4, "" .. GetEntityHeading(_temp_prop), 0.6, 2)
+
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
 --             end
 --         end
 --     end
 -- )
+
+-- local lastGunsmithInterior
+
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+
+--             local ped = PlayerPedId()
+--             local pedinterior = GetInteriorFromEntity(ped)
+
+--             if lastGunsmithInterior == nil then
+--             else
+--                 if pedinterior ~= lastGunsmithInterior then
+--                     if not IsAnyoneInsideInterior(lastGunsmithInterior) then
+--                         DeleteAllProps()
+--                     end
+--                 end
+--             end
+--         end
+--     end
+-- )
+
+-- function IsAnyoneInsideInterior(interior)
+--     for _, index in pairs(GetActivePlayers()) do
+--         local ped = GetPlayerPed(index)
+--         local pedinterior = GetInteriorFromEntity(ped)
+
+--         if pedinterior == interior then
+--             return true
+--         end
+--     end
+
+--     return false
+-- end
+
+-- function DeleteAllProps()
+--     for _, prop in pairs(props) do
+--         DeleteEntity(prop)
+--     end
+--     propts = {}
+-- end
+
+-- function CreateProps(interior)
+--     CreateWeaponsProps(interior)
+--     CreateMeleeProps(interior)
+--     CreateAmmoProps(interior)
+-- end
+
+-- function CreateWeaponsProps(interior)
+
+--     local pointA = Config[interior].pointA
+--     local pointB = Config[interior].pointB
+
+--     local d = math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y)) / (#weapons - 1)
+--     local fi = math.atan2(pointB.y - pointA.y, pointB.x - pointA.x)
+
+--     for i = 0, 6 - 1  do
+--         local x = pointA.x + i * d * math.cos(fi)
+--         local y = pointA.y + i * d * math.sin(fi)
+--         local z = pointA.z
+--         -- local _, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, pointA.z)
+
+--         local indexlua = i + 1
+--         if Config['stock'][indexlua] then
+--             local v =  Config['stock'][indexlua]
+
+--             -- local weaponHash = v[1] 
+--             local weaponModel = v[2]
+--         end
+--     end
+-- end
+
+-- function LoadWeaponComponentsModel(weaponModel)
+--     for _, component in pairs(components) do
+--         if component:find('w_') or IsModelValid(weaponModel .. '_' .. component) then
+
+--             if IsModelValid(weaponModel .. '_' .. component) then
+--                 component = weaponModel .. '_' .. component
+--             end
+
+--             local componentHash = GetHashKey(component)
+
+--             if not HasModelLoaded(componentHash) then
+--                 RequestModel(componentHash)
+--                 while not HasModelLoaded(componentHash) do
+--                     Citizen.Wait(0)
+--                 end
+--             end
+--         end
+--     end
+-- end
+
+-- local components = {
+--     "barrel1",
+--     "barrel2",
+--     "barrel01",
+--     "barrel02",
+--     "grip1",
+--     "grip2",
+--     "grip3",
+--     "grip4",
+--     "grip5",
+--     "sight1",
+--     "sight2",
+--     "clip",
+--     "clip1",
+--     "wrap1",
+--     "mag1",
+--     "mag2",
+--     "mag3",
+--     "w_rifle_scopeinner01",
+--     "w_rifle_scope04",
+--     "w_rifle_scope03",
+--     "w_rifle_scope02",
+--     "w_rifle_cs_strap01",
+--     "w_sight_rear02",
+--     "w_sight_rear01",
+--     "w_repeater_cloth_strap01",
+--     "w_repeater_strap01",
+--     "w_rifle_boltaction03_grip1"
+-- }
