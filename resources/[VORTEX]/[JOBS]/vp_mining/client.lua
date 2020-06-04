@@ -170,18 +170,14 @@ AddEventHandler(
     "VP:MINING:DropMineral",
     function(mineral_item)
         local prop
-        if mineral_item == "stone" then
-            prop = "s_meteoriteshard01x"
+        if mineral_item == "raw_iron" then
+            prop = "p_iron01x"
         elseif mineral_item == "raw_coal" then
             prop = "s_meteoriteshard01x"
         elseif mineral_item == "raw_copper" then
             prop = "s_meteoriteshard01x"
         elseif mineral_item == "raw_gold" then
             prop = "s_pickup_goldbar01x"
-        elseif mineral_item == "ammolite" then
-            prop = "s_dis_ammolite01x"
-        elseif mineral_item == "flourite" then
-            prop = "s_dis_flourite01x"
         end
 
         if prop ~= nil then
