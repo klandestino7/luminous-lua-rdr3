@@ -1,9 +1,12 @@
-local herbsScenarios = {}
 local pop = {}
 
 local numPopOnCooldown = 0
 
 local minRadius = 50
+
+local herbs = {
+    [''] = {},
+}
 
 Citizen.CreateThread(
     function()
@@ -24,50 +27,23 @@ Citizen.CreateThread(
                     newPosition = GetRandomPositionInRadius()
                 end
 
-                local carrotModel = "wildcarrot_p"
-                if not HasModelLoaded(carrotModel) then
-                    RequestModel(carrotModel)
-                    while not HasModelLoaded(carrotModel) do
-                        Citizen.Wait(10)
-                    end
-                end
-
-                local obj = CreateObject(carrotModel, newPosition, 0, 0, 0)
-
-                table.insert(pop, obj)
-
-            -- WB_HORSE_HERB_WILD_CARROTS
-
-            -- Citizen.InvokeNative(0x19A6BE7D9C6884D3, GetHashKey("WB_ORCHID_SPIDER"), 15, 0, 0)
-
-            -- while not Citizen.InvokeNative(0x9427C94D2E4094A4, GetHashKey("WB_ORCHID_SPIDER")) do
-            --     Wait(10)
-            -- end
-
-            -- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WB_HORSE_HERB_WILD_CARROTS"), coords, 0.0, 0.0, 0, 0)
-
-            -- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, obj, GetHashKey("WB_HORSE_HERB_WILD_CARROTS"), 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0)
-
-            -- print(scenario, "created", GetEntityCoords(PlayerPedId()), Citizen.InvokeNative(0xA8452DD321607029, scenario, true, Citizen.ResultAsVector()))
-
-            -- Wait(1000)
-            -- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
-
-            -- table.insert(herbsScenarios, scenario)
+                local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("LEVDES_SPAWN_PLANT_BLACKBERRY"), newPosition, 0.0, 0.0, 0, 0)
+                table.insert(pop, scenario)
             end
+
             local pPosition = GetEntityCoords(PlayerPedId())
 
-            for _, object in pairs(pop) do
-                if #(pPosition - GetEntityCoords(object)) > minRadius then
+            for _, scenario in pairs(pop) do
+                local scenarioPosition = NativeGetScenarioCoords(scenario)
+                if #(pPosition - scenarioPosition) > minRadius then
                     pop[_] = nil
-                    DeleteEntity(object)
+                    NativeDeleteScenarioPoint(scenario)
                     numPopOnCooldown = numPopOnCooldown + 1
                 end
             end
         end
     end
 )
-
 
 function GetRandomPositionInRadius()
     local r = math.random(0, minRadius)
@@ -97,22 +73,27 @@ Citizen.CreateThread(
 
             local pPosition = GetEntityCoords(PlayerPedId())
 
-            for _, object in pairs(pop) do
-                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pPosition, GetEntityCoords(object),255, 0, 0, 255)
+            for _, scenario in pairs(pop) do
+                Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFF, pPosition,  NativeGetScenarioCoords(scenario),255, 0, 0, 255)
             end
         end
     end
 )
 
 function DestroyHerbs()
-    -- for _, herbScenario in pairs(herbsScenarios) do
-    --     -- DeleteEntity(herb)
-    --     -- Citizen.InvokeNative(0x81948DFE4F5A0283, herbScenario)
-    -- end
-
-    for _, object in pairs(pop) do
-        DeleteEntity(object)
+    for _, scenario in pairs(pop) do
+        NativeDeleteScenarioPoint(scenario)
     end
+
+    pop = {}
+end
+
+function NativeDeleteScenarioPoint(scenario)
+    Citizen.InvokeNative(0x81948DFE4F5A0283, scenario)
+end
+
+function NativeGetScenarioCoords(scenario)
+    return Citizen.InvokeNative(0xA8452DD321607029, scenario, true, Citizen.ResultAsVector())
 end
 
 AddEventHandler(
@@ -123,3 +104,195 @@ AddEventHandler(
         end
     end
 )
+
+-- native1
+
+-- Vector3 func_942(
+
+--      case 0:
+-- 					{439.5967, 2229.392, 247.7823},
+-- 					{437.5952, 2230.451, 247.1912},
+-- 					{443.6063, 2232.555, 246.9815},
+-- 					{446.3529, 2233.312, 248.1365},
+-- 					{489.7523, 2221.281, 246.77},
+-- 					{491.7072, 2224.953, 247.0337},
+-- 					{496.0803, 2230.18, 246.6552},
+-- 					{501.8292, 2231.86, 246.4456},
+-- 					{507.5135, 2229.17, 246.6667},
+-- 					{504.4138, 2228.695, 246.6577},
+-- 					{491.521, 2227.262, 245.9543},
+-- 					{491.3042, 2220.875, 246.1703},
+-- 					{489.358, 2225.238, 246.0243},
+-- 					{489.7828, 2219.772, 246.4641},
+-- 					{491.1532, 2222.795, 246.6907},
+-- 					{863.2647, 1858.295, 261.7855},
+-- 					{624.7574, 1654.934, 186.8128},
+-- 					{821.7154, 1836.738, 259.1483},
+-- 					{823.3138, 1837.349, 259.0204},
+-- 		case 1:
+-- 					{906.1078, 1532.26, 250.3782},
+-- 					{963.3765, 1470.184, 278.3124},
+-- 					{1008.946, 1448.669, 276.3778},
+-- 					{1011.835, 1448.662, 277.0002},
+-- 					{963.5499, 1464.853, 278.7187},
+-- 					{798.5596, 1515.226, 203.1745},
+-- 					{842.3685, 1495.427, 215.3428},
+-- 					{798.8973, 1510.841, 203.8575},
+-- 					{826.0523, 1530.07, 213.2006},
+-- 					{799.0901, 1480.321, 201.4258},
+-- 					{785.6824, 1534.38, 202.2242},
+-- 					{798.9106, 1510.99, 204.6075},
+-- 					{796.2554, 1511.729, 203.8481},
+-- 					{795.1889, 1509.517, 204.728},
+-- 					{797.8439, 1510.24, 204.0581},
+-- 					{799.4191, 1510.809, 204.1076},
+-- 		case 2:
+-- 					{800.9693, 1490.164, 202.6117},
+-- 					{981.9986, 1451.214, 277.6985},
+-- 					{1009.445, 1449, 276.9004},
+-- 					{1011.9, 1448.716, 277.0044},
+-- 					{985.3459, 1413.564, 302.2119},
+-- 		case 3:
+-- 					{978.554, 1452.875, 277.6204},
+-- 					{982.0422, 1451.217, 277.7214},
+-- 					{1009.476, 1449.066, 277.126},
+-- 					{1011.855, 1448.648, 276.9999},
+-- 					{1602.3, 1452.2, 144.6288},
+-- 					{1584.673, 1460.016, 145.623},
+-- 		case 4:
+-- 					{821.4563, 1504.68, 209.7595},
+-- 					{806.6331, 1526.522, 206.1285},
+-- 					{785.5429, 1520.004, 202.9169},
+-- 					{781.5246, 1509.407, 202.403},
+-- 					{816.905, 1516.555, 207.5162},
+-- 					{788.2299, 1511.374, 203.3987},
+-- 					{792.9269, 1495.842, 202.8977},
+-- 					{823.4616, 1492.46, 208.8057},
+-- 					{805.3946, 1507.427, 204.0737},
+-- 					{811.2616, 1498.931, 205.4363},
+-- 					{786.2513, 1502.52, 203.2913},
+-- 					{771.5179, 1510.121, 200.7596},
+-- 					{803.5911, 1510.584, 203.8578},
+-- 					{805.7191, 1535.304, 207.4555},
+-- 					{774.4613, 1523.539, 201.5119},
+-- 					{809.7031, 1482.741, 203.6002},
+-- 					{805.2379, 1512.836, 203.9213},
+-- 					{827.6705, 1504.101, 210.8653},
+-- 					{877.332, 1465.219, 225.5493},
+-- 					{797.4094, 1519.819, 203.68},
+-- 					{770.2219, 1500.261, 200.1602},
+-- 					{756.5444, 1509.755, 199.0755},
+-- 					{753.6171, 1545.847, 197.2491},
+-- 					{782.3867, 1512.912, 202.7233},
+-- 					{799.0577, 1509.299, 205.8577},
+-- 					{804.0156, 1455.037, 203.6181},
+-- 					{769.3256, 1592.012, 208.7162},
+-- 					{748.7814, 1518.466, 202.8899},
+-- 					{849.307, 1516.355, 222.4637},
+-- 					{798.9699, 1509.326, 237.3577},
+
+-- 		case 5:
+-- 					{998.4043, 1478.48, 280.5224},
+-- 					{1002.648, 1467.409, 277.2791},
+-- 					{981.0096, 1455.876, 277.3744},
+-- 					{973.0919, 1449.023, 278.2278},
+-- 					{985.2153, 1466.841, 277.4808},
+-- 					{981.0239, 1456.004, 277.394},
+-- 					{968.7357, 1461.76, 279.4203},
+-- 					{964.1266, 1461.792, 278.9102},
+
+-- 		case 6:
+-- 					{1000.296, 1476.971, 278.757},
+-- 					{1004.073, 1467.519, 277.4429},
+-- 					{982.1084, 1455.809, 278.2282},
+-- 					{973.6355, 1447.614, 278.5336},
+-- 					{983.4549, 1467.979, 277.0614},
+-- 					{976.766, 1453.375, 277.6383},
+-- 					{968.688, 1460.557, 279.329},
+-- 					{964.0668, 1469.177, 278.1995},
+-- 					{798.9866, 1509.429, 211.1075},
+
+-- 		case 7:
+-- 					{991.642, 1451.628, 277.4586},
+-- 					{992.2947, 1452.153, 277.1874},
+-- 					{1009.481, 1449.153, 277.0401},
+-- 					{1011.863, 1448.651, 276.9446},
+-- 					{984.413, 1456.207, 277.5496},
+-- 					{987.0106, 1454.391, 277.5387},
+-- 					{987.8787, 1452.012, 277.3024},
+
+-- 		case 8:
+-- 					{855.9385, 1856.891, 259.72},
+-- 					{861.9072, 1859.452, 261.0202},
+-- 					{855.4708, 1856.789, 259.8612},
+-- 					{861.8713, 1859.414, 260.9564},
+-- 					{1067.241, 1672.338, 375.3809},
+-- 					{873.4074, 1788.713, 303.9468},
+-- 					{884.8112, 1799.424, 301.0668},
+-- 					{867.1108, 1802.698, 299.3835},
+
+-- 		case 9:
+-- 					{994.7864, 1673.21, 362.3523},
+-- 					{1000.667, 1670.95, 362.4702},
+-- 					{995.0222, 1673.089, 362.7333},
+-- 					{1000.674, 1671.023, 362.2303},
+-- 					{1009.204, 1449.337, 276.4265},
+-- 					{1054.914, 1651.047, 377.6006},
+-- 					{1062.972, 1631.367, 374.2169},
+-- 					{1041.743, 1637.176, 376.8541},
+-- 					{1006.367, 1454.088, 276.8042},
+-- 					{1004.055, 1440.394, 279.5542},
+
+--      case 10: WB_HERB_ENGLISH_MACE_SINGLE
+--                  {860.5, 1803.012, 298.4085},
+--                  {868.0638, 1807.586, 299.1068},
+--                  {866.0574, 1801.371, 299.5695},
+--                  {869.6763, 1804.551, 299.79},
+
+--      case 11: WB_HERB_ALASKAN_GINSENG
+--                  {1045.484, 1639.905, 376.6894},
+--                  {1041.235, 1636.253, 376.228},
+--                  {1042.975, 1638.743, 376.6396},
+--                  {1047.66, 1632.514, 375.2769},
+
+-- 		case 12:
+-- 					{821.2521, 1838.054, 258.9441},
+-- 					{1003.744, 1468.406, 277.4821},
+-- 					{937.7249, 1726.498, 346.2177},
+-- 					{598.1144, 2169.776, 223.924},
+-- 					{601.1649, 2161.519, 223.2615},
+-- 					{800.5005, 1513.766, 204.1788},
+-- 					{795.7394, 1511.756, 203.8575},
+-- 					{792.4367, 1506.656, 203.7262},
+-- 					{796.4488, 1506.465, 203.8454},
+-- 					{804.2932, 1860.506, 249.1387},
+-- 					{762.1212, 1916.848, 242.893},
+-- 					{758.9731, 1917.039, 242.1243},
+-- 					{754.7438, 1919.388, 241.1487},
+-- 					{792.4128, 1520.563, 203.5976},
+
+-- 		case 13:
+-- 					{984.9924, 1460.254, 277.1479},
+-- 					{1004.736, 1468.076, 277.6282},
+-- 					{993.8121, 1441.766, 278.338},
+-- 					{973.8138, 1446.609, 278.863},
+-- 					{982.6616, 1471.065, 277.2853},
+-- 					{983.9697, 1448.176, 277.5677},
+-- 					{968.2413, 1460.024, 279.2401},
+-- 					{960.2293, 1469.465, 277.9205},
+-- 					{798.9156, 1504.075, 203.5869},
+
+-- LEVDES_SPAWN_PLANT_CREEPINGTHYME
+-- LEVDES_SPAWN_PLANT_BAYBOLETE
+-- LEVDES_SPAWN_PLANT_CHANTERELLES
+-- LEVDES_SPAWN_PLANT_REDRASPBERRY
+-- LEVDES_SPAWN_PLANT_WINTERGREENBERRY
+-- LEVDES_SPAWN_PLANT_BLACKBERRY
+-- LEVDES_SPAWN_PLANT_WILDMINT
+-- LEVDES_SPAWN_PLANT_OREGANO
+-- LEVDES_SPAWN_PLANT_CROWSGARLIC
+-- LEVDES_SPAWN_PLANT_PARASOLMUSHROOM
+-- LEVDES_SPAWN_PLANT_RAMSHEAD
+-- LEVDES_SPAWN_PLANT_EVERGREENHUCKLEBERRY
+-- LEVDES_SPAWN_WILD_TOBACCO_PICKUP
+-- LEVDES_SPAWN_MILKWEED_PICKUP
