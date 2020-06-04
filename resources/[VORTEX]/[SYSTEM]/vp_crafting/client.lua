@@ -77,12 +77,8 @@ AddEventHandler(
 
                 craftingItems[itemId].canCraft = craftable
             end
-<<<<<<< HEAD
         end
 
-=======
-        end        
->>>>>>> a6fae5dee86199371c6cee64a60d572ed5239881
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
