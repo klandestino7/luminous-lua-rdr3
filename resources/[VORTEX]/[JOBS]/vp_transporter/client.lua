@@ -126,12 +126,12 @@ Citizen.CreateThread(
 
                             local vehicle = CreateVehicle(GetHashKey("wagonWork01x"), closestPickupSpotVehicleSpawnCoords, closestPickupSpotVehicleSpawnHeading, 1, 1)
                             DecorSetInt(vehicle, "job_transport_vehicle_num_cargo", 1)
-                            cAPI.Toast("success", "Uma carroça te espera lá fora")
+                            cAPI.notify("success", "Uma carroça te espera lá fora")
 
                             print(vehicle)
                         else
                             cooldown = 5
-                            cAPI.Toast("error", "Já tem uma carroça lá fora")
+                            cAPI.notify("error", "Já tem uma carroça lá fora")
                         end
                     end
                 end
@@ -160,13 +160,13 @@ Citizen.CreateThread(
                         if PromptIsJustPressed(prompt_deliver) then
                             local lV = DecorGetInt(vehPedIsIn, "job_transport_vehicle_num_cargo")
                             if lV + 1 <= #deliverySpots then
-                                -- cAPI.Toast("success", "Entregue")
+                                -- cAPI.notify("success", "Entregue")
                                 DecorSetBool(vehPedIsIn, "job_transport_vehicle_num_cargo", lV + 1)
-                                cAPI.Toast("speech", "Carga entregue, vá até a proxima loja")
+                                cAPI.notify("speech", "Carga entregue, vá até a proxima loja")
                             else
                                 DecorRemove(vehPedIsIn, "job_transport_vehicle_num_cargo")
                                 -- SetVehicleBodyHealth(vehPedIsIn, 0.0)
-                                cAPI.Toast("speech", "Todas as cargas foram entregues")
+                                cAPI.notify("speech", "Todas as cargas foram entregues")
                             end
                         end
                     else
