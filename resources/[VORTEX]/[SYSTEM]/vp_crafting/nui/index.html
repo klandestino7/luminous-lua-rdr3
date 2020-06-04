@@ -4,9 +4,6 @@
 <head>
     <title>NOWAY</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/lib/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/lib/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,32 +12,29 @@
         <div class="inventory">
             <h2 class='title'>Crafting Table</h2>
             <div id="playerInventory" class="craftitem">
-
-                <div class="containinv">
-                    <!-- <div class="slot disabled">
-                        <div id="item-1" class="item" style="background-image: url('img/items/weapon_pistol_semiauto.png')">
-
-                            <div class="item-name">
-                                Cantil
-                            </div>
+                <div class="containinv"> 
+                    <div class="slot">
+                        <div id="item-1" class="item" style="background-image: url('../../vp_inventory/nui/images/items/pistol_semiauto.png')">
+                            
+                        </div>
+                        <div class="item-name">
+                            Cantil
                         </div>
                         <div class="item-name-bg">
-                        </div>
-                    </div> -->
-
+                        </div> 
+                    </div>
                 </div>
             </div>
             <div id="otherInventory" class="craftinv">
                 <div class="itemselected">
                     <div class="imageitem">
-                       <!-- <img class="imgitem" src="img/items/weapon_pistol_semiauto.png"> -->
+                       <!-- <img class="imgitem" src="../../vp_inventory/nui/images/items/pistol_semiauto.png"> -->
                     </div>
                     <p class="invtitle">Selecione um item <br/></p>
                     <p class="invdesc">Selecione um item da esquerda que deseje craftar e verá abaixo os itens necessários para craftar. </p> 
                 </div>
-
                 <div class="containinv">
-                    <!-- <div class="slot ">
+                    <div class="slot ">
                         <div id="item-1" class="item">
                             <div class="item-count">
                                 <div class="item-count-bg">
@@ -61,14 +55,10 @@
                             <div class="item-name">
                             </div>
                         </div>
-                        <div class="item-name-bg">
-                        </div>
-                    </div> -->
-
+                    </div>                    
                     <div class="craftbutton" onclick="craft()">
                         <button type="button">Criar</button>
                     </div>
-
                 </div>
             </div>
         </div>
