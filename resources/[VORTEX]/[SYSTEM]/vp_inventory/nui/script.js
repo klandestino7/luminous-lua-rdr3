@@ -633,7 +633,8 @@ function drawPrimary() {
                         itemAmount: itemAmount,
                     }));
                 }
-            }
+            },
+
         });
     }
 }
@@ -837,14 +838,23 @@ $(function() {
         callback: function(key, options) {
             var m = key;
             // colocar aqui a função de click rightc
+            console.log($(key).attr('id'));
+            $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
         },
         items: {
             functionUse: { name: "Usar", icon: "use" },
-            functionDrop: { name: "Dropar", icon: "drop" },
+            functionDrop: {
+                name: "Dropar",
+                icon: "drop",
+                callback: function(key, opt) {
+                    
+                }
+            },
             functionSend: { name: "Enviar", icon: "send" }
         }
     });
     $('.selected').on('click', function(e) {
         // colocar aqui a função de click LEFT
+        console.log('ye');
     })
 });

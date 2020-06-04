@@ -3,6 +3,8 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local droppedItems = {}
+
 RegisterNetEvent("VP:INVENTORY:OpenPersonal")
 AddEventHandler(
     "VP:INVENTORY:OpenPersonal",
@@ -83,6 +85,58 @@ AddEventHandler(
             TriggerClientEvent("VP:INVENTORY:DROP:Create", data.id)
         else
             User:notify("error", "x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
+        end
+    end
+)
+
+RegisterNetEvent("VP:INVENTORY:SendToPlayer")
+AddEventHandler(
+    "VP:INVENTORY:SendToPlayer",
+    function(slotId, playerTarget)
+        local _source = source
+
+        local UserTarget = API.getUserFromSource(playerTarget)
+
+        if UserTarget == nil then
+            return
+        end
+
+        local CharacterTarget = User:Character()
+
+        if CharacterTarget == nil then
+            return
+        end
+
+        local InventoryTarget = CharacterTarget:getInventory()
+
+        local User = API.getUserFromSource(_source)
+        local Inventory = User:getPrimaryInventoryViewing()
+
+        if Inventory == nil then
+            return
+        end
+
+        local Slot = Inventory:getSlots()[slotId]
+
+        if Slot == nil then
+            return
+        end
+
+        local itemAtSlot = Slot:getItemId()
+        local amountAtSlot = Slot:getItemAmount()
+
+        local ItemData = API.getItemDataFromId(itemAtSlot)
+
+        if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
+            if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
+                Inventory:removeItem(-1, itemAtSlot, amountAtSlot)
+                User:notify("item", ItemData:getName(), -(amountAtSlot))
+                UserTarget:notify("item", ItemData:getName(), amountAtSlot)
+            else
+                User:notify("error", "Bolsa da pesssoa está sem espaço!")
+            end
+        else
+            User:notify("error", "Você não tem x" .. ItemData:getName())
         end
     end
 )

@@ -20,6 +20,8 @@ Citizen.CreateThread(
     end
 )
 
+local sendingSlotId
+
 local whereWeaponIsAtSlot = {}
 local isReloadingOrShooting = false
 
@@ -73,6 +75,116 @@ Citizen.CreateThread(
         end
     end
 )
+
+local currentlyTryingToSendItem = false
+
+function startLookingForAPlayerToSend(slotId)
+
+    if currentlyTryingToSendItem then
+        return
+    end
+
+   
+
+    currentlyTryingToSendItem = true
+    Citizen.CreateThread(
+        function()
+            local lastAimedPed
+            local lastAimedPlayerIndex
+            local lastAimedPlayerIndexName
+
+            function RotationToDirection(rotation)
+                local adjustedRotation = {
+                    x = (math.pi / 180) * rotation.x,
+                    y = (math.pi / 180) * rotation.y,
+                    z = (math.pi / 180) * rotation.z
+                }
+                local direction = {
+                    x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+                    y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+                    z = math.sin(adjustedRotation.x)
+                }
+                return direction
+            end
+
+            local prompt_group = GetRandomIntInRange(0, 0xffffff)
+
+            local prompt_send = PromptRegisterBegin()
+            PromptSetControlAction(prompt_send, 0x07CE1E61)
+            PromptSetText(prompt_send, CreateVarString(10, "LITERAL_STRING", "Enviar"))
+            PromptSetEnabled(prompt_send, true)
+            PromptSetVisible(prompt_send, true)
+            PromptSetHoldMode(prompt_send, true)
+            PromptSetGroup(prompt_send, prompt_group)
+            PromptRegisterEnd(prompt_send)
+
+            local prompt_cancel = PromptRegisterBegin()
+            PromptSetControlAction(prompt_cancel, 0xF84FA74F)
+            PromptSetText(prompt_cancel, CreateVarString(10, "LITERAL_STRING", "Cancelar"))
+            PromptSetEnabled(prompt_cancel, true)
+            PromptSetVisible(prompt_cancel, true)
+            PromptSetHoldMode(prompt_cancel, true)
+            PromptSetGroup(prompt_cancel, prompt_group)
+            PromptRegisterEnd(prompt_cancel)
+
+            while true do
+                Citizen.Wait(0)
+
+                local closeToAPlayer= false
+                local pPosition = GetEntityCoords(PlayerPedId())
+                for _, index in pairs(GetActivePlayers()) do
+                    local playerPed = GetPlayerPed(index)
+                    if #(GetEntityCoords(playerPed) - pPosition) <= 10.0 then
+                        closeToAPlayer = true
+                        break
+                    end
+                end
+
+                if closeToAPlayer == false then
+                    PromptDelete(prompt_send)
+                    PromptDelete(prompt_cancel)
+                    break
+                end
+
+                local cameraRotation = GetGameplayCamRot()
+                local cameraCoord = GetGameplayCamCoord()
+                local direction = RotationToDirection(cameraRotation)
+                local aimingAtVector = vec3(cameraCoord.x + direction.x * 5.0, cameraCoord.y + direction.y * 5.0, cameraCoord.z + direction.z * 5.0)
+
+                local rayHandle = StartShapeTestRay(cameraCoord, aimingAtVector, 12, PlayerPedId(), 0)
+                local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
+
+                -- print(hit, endCoords, entityHit)
+
+                if hit == 1 then
+                    if (lastAimedPed == nil or lastAimedPed ~= entityHit) and IsPedAPlayer(lastAimedPed) then
+                        lastAimedPed = entityHit
+
+                        lastAimedPlayerIndex = NetworkGetPlayerIndexFromPed(lastAimedPed)
+                        lastAimedPlayerIndexName = GetPlayerName(lastAimedPlayerIndex) or 'NPC'
+                    else
+                        if lastAimedPed ~= nil then
+                            PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", lastAimedPlayerIndexName))
+
+                            if PromptHasHoldModeCompleted(prompt_send) then
+                                PromptDelete(prompt_send)
+                                PromptDelete(prompt_cancel)
+                                TriggerServerEvent('VP:INVENTORY:SendToPlayer', slotId, GetPlayerServerId(lastAimedPlayerIndex))
+                                break
+                            end
+
+                            if PromptHasHoldModeCompleted(prompt_cancel) then
+                                PromptDelete(prompt_send)
+                                PromptDelete(prompt_cancel)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
 
 RegisterNetEvent("VP:INVENTORY:ToggleHotbar")
 AddEventHandler(
@@ -221,9 +333,20 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
+    "startsendingslot",
+    function()
+        local slotId = cb.slotId
+        startLookingForAPlayerToSend()
+    end
+)
+
+RegisterNUICallback(
     "NUIFocusOff",
     function()
         closeInv()
+
+        Wait(100)
+        startLookingForAPlayerToSend()
     end
 )
 
