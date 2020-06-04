@@ -1,9 +1,8 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
-
-API = Tunnel.getInterface('API')
-cAPI = Proxy.getInterface('API')
+API = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
 
 local prompt
 
@@ -11,7 +10,6 @@ RegisterNetEvent("VP:CRAFTING:OpenMenu")
 AddEventHandler(
     "VP:CRAFTING:OpenMenu",
     function(playerItems)
-
         print(ownedParts)
 
         local parsedItemNames = {}
@@ -51,13 +49,10 @@ AddEventHandler(
 
         -- if not wasOpenedBefore then
 
-
         local ItemNamePool = {}
 
         for itemId, neededForCrafting in pairs(Config) do
-
-            if  ItemList[itemId] then
-
+            if ItemList[itemId] then
                 local craftable = true
 
                 if ItemNamePool[itemId] == nil then
@@ -65,9 +60,8 @@ AddEventHandler(
                 end
 
                 for craftingItem, min in pairs(neededForCrafting) do
-
                     if ItemNamePool[craftingItem] == nil then
-                        print('hasnt been added to name pool', craftingItem)
+                        print("hasnt been added to name pool", craftingItem)
                         ItemNamePool[craftingItem] = ItemList[craftingItem].name
                     end
 
@@ -79,7 +73,7 @@ AddEventHandler(
                 craftingItems[itemId].canCraft = craftable
             end
         end
-        
+
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
@@ -121,32 +115,26 @@ AddEventHandler(
     end
 )
 
-
 local freeAimingPromptGroup = GetRandomIntInRange(0, 0xffffff)
-local freeAimingPromptGroupName = CreateVarString(10, 'LITERAL_STRING', "Ações")
+local freeAimingPromptGroupName = CreateVarString(10, "LITERAL_STRING", "Ações")
 
 Citizen.CreateThread(
     function()
         -- initiatePrompt()
         while true do
             Citizen.Wait(0)
-            if IsControlJustPressed(0, 0xF84FA74F) then
-                TriggerServerEvent("VP:CRAFTING:Open")
-                -- TriggerEvent("VP:CRAFTING:OpenMenu")
+            if IsControlJustPressed(0, 0x5966D52A) then
+                if not NativePromptIsControlActionActive(0x5966D52A) then
+                    TriggerServerEvent("VP:CRAFTING:Open")
+                end
             end
-
-            -- if IsPlayerFreeAiming(PlayerId()) then
-            -- if IsControlPressed(0, 0xC13A6564) or IsControlPressed(0, 0x8B3FA65E) then
-            --     print('yes')
-            --     PromptSetActiveGroupThisFrame(freeAimingPromptGroup, freeAimingPromptGroupName)
-            -- end
-
-            -- if PromptIsJustPressed(prompt) then
-            --     TriggerServerEvent("VP:CRAFTING:Open")
-            -- end
         end
     end
 )
+
+function NativePromptIsControlActionActive(control)
+    return Citizen.InvokeNative(0x1BE19185B8AFE299, control)
+end
 
 RegisterNUICallback(
     "craft",
@@ -161,18 +149,6 @@ RegisterNUICallback(
         SetNuiFocus(false, false)
     end
 )
-
-function initiatePrompt()
-    prompt = PromptRegisterBegin()
-    PromptSetControlAction(prompt, 0xDFF812F9)
-    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Crafting"))
-    PromptSetEnabled(prompt, 1)
-    PromptSetVisible(prompt, 1)
-    PromptSetStandardMode(prompt, 1)
-    PromptSetGroup(prompt, freeAimingPromptGroup)
-    PromptRegisterEnd(prompt)
-end
-
 
 AddEventHandler(
     "onResourceStop",

@@ -42,7 +42,9 @@ AddEventHandler(
 
         local ItemData = API.getItemDataFromId(id)
 
-        if Inventory:getWeight() + ItemData:getWeight() > Inventory:getCapacity() then
+        print(Inventory:getWeight(), ItemData:getWeight())
+
+        if (Inventory:getWeight() + ItemData:getWeight()) > Inventory:getCapacity() then
             User:notify("error", "Bolsa sem espaço")
             return
         end
