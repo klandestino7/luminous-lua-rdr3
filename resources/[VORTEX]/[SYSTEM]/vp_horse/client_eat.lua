@@ -81,12 +81,12 @@ function ActionEat()
                     end
 
                     -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                    --     cAPI.Toast("alert", "Cavalo parou de comer porque a animação acabou")
+                    --     cAPI.notify("alert", "Cavalo parou de comer porque a animação acabou")
                     --     break
                     -- end
 
                     -- if v == 100 then
-                    --     cAPI.Toast("alert", "Cavalo parou de comer porque o core está cheio")
+                    --     cAPI.notify("alert", "Cavalo parou de comer porque o core está cheio")
                     --     break
                     -- end
                 end

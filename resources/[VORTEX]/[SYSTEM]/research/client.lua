@@ -11,6 +11,9 @@ RegisterCommand(
 		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
 		coords = vec3(coords.xy, groundZ)
 
+		-- TaskSwapFishingBait(PlayerPedId(), "p_baitWorm01x", 1)
+		-- Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
+
 		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
 		-- if IsModelValid(objHash) then
 		-- 	if not HasModelLoaded(objHash) then
@@ -23,24 +26,54 @@ RegisterCommand(
 
 		-- WB_HERB_ALASKAN_GINSENG
 
-		-- local obj = CreateObject("s_oleander01x", coords, 1, 1, 1)
+		-- S_INDIANTOBACCO01X
+		-- WB_HERB_INDIAN_TOBACCO
 
-		-- local scenario_type = GetHashKey("WB_HERB_ALASKAN_GINSENG")
+		-- 		WB_HERB_AMERICAN_GINSENG, 6
+		-- WB_HERB_BLACK_CURRANT, 6
+		-- WB_HERB_BURDOCK_ROOT, 6
+		-- WB_HERB_BURDOCK_ROOT_SINGLE, 2
+		-- WB_HERB_DESERT_SAGE, 6
+		-- WB_HERB_ENGLISH_MACE, 6
+		-- WB_HERB_ENGLISH_MACE_SINGLE, 2
+		-- WB_HERB_GOLDEN_CURRANT, 6
+		-- WB_HERB_HUMMINGBIRD_SAGE, 6
+		-- WB_HERB_INDIAN_TOBACCO, 6
+		-- WB_HERB_MILKWEED, 6
+		-- WB_HERB_MILKWEED_SINGLE, 2
+		-- WB_HERB_OLEANDER_SAGE, 6
+		-- WB_HERB_OLEANDER_SAGE_SINGLE, 2
+		-- WB_HERB_PRAIRIE_POPPY, 6
+
+		-- 		S_INV_WILDCARROT01BX, 4
+		-- S_INV_WILDCARROT01CX, 4
+		-- S_INV_WILDCARROT01DX, 4
+		-- S_INV_WILDCARROT01X, 4
+
+		-- local obj = CreateObject("S_INDIANTOBACCO01X", coords, 1, 1, 1)
+
+		-- Wait(1000)
+
+		local scenario_type = 0xB5800B30
+
+		print(scenario_type)
 
 		-- -- // 0x19A6BE7D9C6884D3
 		-- -- void _REQUEST_SCENARIO_TYPE(Hash scenarioType, int p1, Hash p2, Hash p3)
-		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
-		-- while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
-		-- 	print("scenario not loaded")
-		-- 	Wait(10)
-		-- end
+		Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
+		while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
+			print("scenario not loaded")
+			Wait(10)
+		end
 		-- -- func_1963
 
-		-- -- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, herb_scenario, coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenario_type, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
 		-- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, scenario_type, obj, GetEntityHeading(obj), 0.0, 0, 0)
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
 
-		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, false)
+		Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
+
+		print(scenario)
 
 		-- Wait(250)
 
@@ -62,55 +95,58 @@ RegisterCommand(
 		--
 		-- local ojb = CreateObject("P_CABINET13X", coords, true, true, true)
 
-		local wb = GetHashKey(args[1])
-		-- wb = GetHashKey("RANSACK_ATTACHED_P_CABINET13X")
+		-- local wb = GetHashKey(args[1])
+		-- wb = GetHashKey("HERB_CREEPING_THYME")
 
-		-- WB_HERB_AMERICAN_GINSENG
+		-- -- WB_HERB_AMERICAN_GINSENG
 		-- if not Citizen.InvokeNative(0x9427C94D2E4094A4, wb, 0) then
 		-- 	Citizen.InvokeNative(0x19A6BE7D9C6884D3, wb, 15, 0, 0)
+		-- 	print("requested")
 		-- end
-		-- print(Citizen.InvokeNative(0x9427C94D2E4094A4, wb, 0))
-		local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, wb, coords, 0.0, 0.0, 0, 1)
-		-- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, ojb, wb, 0.0, -0.25, 0.0, 0, 0, 0, 0)
-		-- Citizen.InvokeNative(0x5A40040BB5AE3EA2, scenario)
-		-- Citizen.InvokeNative(0xC47D9080A9A8856A, scenario, 230.0)
-		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
-		-- print(scenario)
-		-- print(Citizen.InvokeNative(0xF533D68FF970D190, coords, wb, 500.0, 0, false))
-		-- Wait(1000)
-		-- print(Citizen.InvokeNative(0x7467165EE97D3C68, scenario), ojb)
-		-- SetEntityCoords(obj, coords, 0, 0, 0, 0)
-		-- SetEntityCoords(PlayerPedId(), GetEntityCoords(obj), 0, 0, 0, 0)
+		-- -- print(Citizen.InvokeNative(0x9427C94D2E4094A4, wb, 0))
+		-- Citizen.InvokeNative(0xD00E50E673802D71, wb, true)
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, wb, coords, 0.0, 0.0, 0, 1)
+		-- -- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, ojb, wb, 0.0, -0.25, 0.0, 0, 0, 0, 0)
 
-		-- Wait(2000)
+		-- print(scenario)
 
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
-
-		-- local itemset = CreateItemset(true)
-		-- Citizen.InvokeNative(0x9C8F42A5D1859DC1, coords)
-		-- Citizen.InvokeNative(0xB8E213D02F37947D, coords, itemset, wb, 0, 0, 0, 0)
-
-		-- print(GetItemsetSize(itemset))
-
-		-- print(Citizen.InvokeNative(0xA8452DD321607029, scenario, true, Citizen.ResultAsVector()))
-		-- print(Citizen.InvokeNative(0xA8452DD321607029, scenario, true, Citizen.ResultAsVector()))
-		-- print(Citizen.InvokeNative(0xF533D68FF970D190 , coords, wb, 500.0, 0, false))
-		-- 0x2056AB38DF06825C
-		-- print(Citizen.InvokeNative(0x841475AC96E794D1, 1926127072))
-		-- print(GetEntityCoords(1926127072))
-		-- print(IsModelValid(1926127072))
-		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
-		-- print(scenario)
-		-- end
-
-		-- print(Citizen.InvokeNative(0x841475AC96E794D1,32512))
-
-		-- exports['vp_admin']:js_teste_native();
-
-		Citizen.InvokeNative(0x51345AE20F22C261, PlayerId(), 0, 0, 0)
-		-- print(Citizen.InvokeNative(0xAB3773E7AA1E9DCC, PlayerId(), Citizen.ResultAsFloat()))
 	end
 )
+
+RegisterCommand(
+	"hook",
+	function(source, args, rawCommand)
+		-- local fish = tonumber(args[1])
+		-- local w = Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(),fish)
+		-- Citizen.InvokeNative(0x517D01BF27B682D1, PlayerPedId(), 0.0, 0.0, 0.0, 1.0 * 0.01745329, 2)
+		-- Citizen.InvokeNative(0x9050DF2C53801208, PlayerPedId(), (3.141593 * 0.5))
+		-- Citizen.InvokeNative(0xF3735ACD11ACD501, PlayerPedId(), -1.0)
+		Citizen.InvokeNative(0x1F298C7BD30D1240, PlayerPedId())
+		print("hooked", w)
+	end
+)
+
+
+-- local group = GetRandomIntInRange(0, 0xffffff)
+-- local prompt
+
+-- function initiatePrompt()
+-- 	print('cretaed')
+--     prompt = PromptRegisterBegin()
+--     PromptSetControlAction(prompt,0xE8342FF2)
+--     PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Crafting"))
+--     PromptSetEnabled(prompt, 1)
+--     PromptSetVisible(prompt, 1)
+--     PromptSetStandardMode(prompt, 1)
+-- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt, 0)
+-- 	PromptSetAttribute(prompt, 10, true)
+-- 	PromptSetAttribute(prompt, 11, true)
+-- 	PromptSetAttribute(prompt, 18, true)
+-- 	PromptSetTag(prompt, "CTX_REEL")
+-- 	PromptSetGroup(prompt, group)
+--     PromptRegisterEnd(prompt)
+-- end
 
 -- EVENT_PED_WHISTLE
 -- case 1327216456:
@@ -139,15 +175,17 @@ RegisterCommand(
 Citizen.CreateThread(
 	function()
 		print("PLAYERPED: " .. PlayerPedId())
-		print("Scenario exists? ", Citizen.InvokeNative(0x841475AC96E794D1, 138242))
-		print("Entity exists?", DoesEntityExist(4948228))
 
 		print(" ")
 
-		-- SetEntityCoords(PlayerPedId(), GetEntityCoords(4948228))
+		-- local obj = CreateObject("p_cs_woodPile01x", GetEntityCoords(PlayerPedId()), 1, 1, 1)
+
+		-- Citizen.InvokeNative(0xF0B4F759F35CC7F5, obj, GetHashKey("FIREWOOD"), 0, 0, 0)
+		-- Citizen.InvokeNative(0x18FF3110CF47115D, obj, 2, true)
+		-- Citizen.InvokeNative(0x18FF3110CF47115D, obj, 4, true)
 
 		while true do
-			Citizen.Wait(10)
+			Citizen.Wait(0)
 
 			local size = GetNumberOfEvents(0)
 
@@ -155,11 +193,14 @@ Citizen.CreateThread(
 				for i = 0, size - 1 do
 					local eventAtIndex = GetEventAtIndex(0, i)
 
+					-- print(eventAtIndex)
+
 					if eventAtIndex == 1327216456 then
 						-- [bit 0] = Ped who is whistling
 						print("EVENT_PED_WHISTLE", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 2)
-						exports["research"]:DataViewNativeGetEventData(0, i, 2)
+						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
+						TriggerEvent('VP:EVENTS:PedWhistle', view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
 						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 10)
@@ -215,7 +256,7 @@ Citizen.CreateThread(
 						local pedGathered = view["2"]
 						local bool_unk = view["4"]
 
-						TriggerEvent('VP:EVENTS:PedFinishedGatheringPed', ped, pedGathered, bool_unk)
+						TriggerEvent("VP:EVENTS:PedFinishedGatheringPed", ped, pedGathered, bool_unk)
 					elseif eventAtIndex == 218595333 then
 						print("Horse broken")
 					end
@@ -251,7 +292,9 @@ Citizen.CreateThread(
 	end
 )
 
-RegisterNetEvent('VP:EVENTS:PedFinishedGatheringPed')
+RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
+
+RegisterNetEvent("VP:EVENTS:PedWhistle")
 
 -- 0x14169FA823679E41
 

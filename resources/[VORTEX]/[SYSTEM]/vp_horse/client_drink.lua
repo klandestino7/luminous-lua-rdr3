@@ -57,12 +57,12 @@ function ActionDrink()
                     end
 
                     -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                    --     cAPI.Toast("alert", "Cavalo parou de beber porque a animação acabou")
+                    --     cAPI.notify("alert", "Cavalo parou de beber porque a animação acabou")
                     --     break
                     -- end
 
                     -- if v == 100 then
-                    --     cAPI.Toast("alert", "Cavalo parou de beber porque o core está cheio")
+                    --     cAPI.notify("alert", "Cavalo parou de beber porque o core está cheio")
                     --     break
                     -- end
                 end
@@ -99,15 +99,16 @@ function HasWaterNearHorseHead()
         return false
     end
 
-    -- local w = bonePosition - waterPosition
+    -- local w = waterPosition - groundCoords
 
     -- print(w)
 
-    -- if math.abs(w.z) < 1.5 then
-    if IsPedSwimming(playerHorse) then
-        cAPI.Toast("error", "Fundo demais")
-        return false
-    end
+    -- if math.abs(w.z) < 1.0 then
+        if IsPedSwimming(playerHorse) then
+            cAPI.notify("error", "Fundo demais")
+            return false
+        end
+    -- end
 
     return true
 end
