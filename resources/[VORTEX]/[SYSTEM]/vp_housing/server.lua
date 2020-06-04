@@ -6,13 +6,14 @@ cAPI = Tunnel.getInterface("API")
 dbABI = Proxy.getInterface('API_DB')
 
 local houses = {
-    ["house:1"] = {2000, 100},
-    ["house:2"] = {2000, 100},
-    ["house:3"] = {2000, 100},
-    ["house:4"] = {2000, 100},
-    ["house:5"] = {2000, 100},
-    ["house:6"] = {2000, 100},
-    ["house:7"] = {2000, 100}
+    -- price_dollar, price_gold
+    ["house:1"] = {200000, 10000},
+    ["house:2"] = {200000, 10000},
+    ["house:3"] = {200000, 10000},
+    ["house:4"] = {200000, 10000},
+    ["house:5"] = {200000, 10000},
+    ["house:6"] = {200000, 10000},
+    ["house:7"] = {200000, 10000}
 }
 
 RegisterNetEvent("VP:HOUSING:TryToBuyHouse")
@@ -82,28 +83,34 @@ AddEventHandler(
 
 Citizen.CreateThread(
     function()
-        local date = os.date("*t")
-
-        local time_sum_sevendays = os.time(date) + (7 * 24 * 60 * 60)
-
-        local date_sum_sevendays = os.date("*t", time_sum_sevendays)
-
-        local sum_to_time = os.time(date_sum_sevendays)
-
-        print(json.encode(date))
-        print(json.encode(date_sum_sevendays))
-        print(sum_to_time)
-
         while true do
             Citizen.Wait(1000 * 60 * 60) -- 1 Hora
 
-            for houseId, _ in pairs(houses) do
-                if HasRentBeenPaid() then
-                    for _, Users in pairs(API.getUsersByGroup(houseId)) do
-                        
+            for house_id, _ in pairs(houses) do
+                if IsRentExpired(house_id) then
+                    for _, User in pairs(API.getUsersByGroup(house_id)) do
+                        User:removeGroup(house_id)                        
                     end
                 end
             end
         end
     end
 )
+
+function IsRentExpired(house_id)
+    local rows = dbABI.query('SELECT:house_rent', {house_id = house_id})
+
+    if #rows > 0 then
+
+        local date = os.date("*t")
+        local time = os.time(date)
+
+        local house_next_payment = tonumber(rows[1].house_next_payment)
+
+        if house_next_payment > time then
+            return true
+        end
+    end
+
+    return false
+end
