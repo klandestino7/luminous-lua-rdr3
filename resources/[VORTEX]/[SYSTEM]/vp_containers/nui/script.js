@@ -72,10 +72,16 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
     for (let slot = FirstActiveSlot; slot < FirstActiveSlot + NumSlots; slot++) {
 
+        
+        if (container == 'crafting' && slot == 10){
+            $('#crafting .row #10').remove();
+            console.log('appending outside slot-container');
+            slotContainer_path = `#${container} .row`;
+        }
+
         let backgroundSlot = $(`<div class="slot" id="${slot}" data-container="${container}"></div>`).appendTo(slotContainer_path);
 
         let innerSlot = $(`<div class="slot-inner" i></div>`).appendTo(backgroundSlot);
-
 
         // HOT FIX, CONSERTAR OS SLOTS NÃO ESTAREM CORRETOS!!
 
@@ -95,7 +101,6 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
             let itemData = ItemPool[itemId];
             let itemType = itemData.type;
 
-           
 
             let display_counter = '';
 
@@ -128,32 +133,26 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
 
                     break;
                 default:
-                    if (container != 'crafting' && _slot != 10) {
-                        /*
-                            Slot não é o output do crafting, portanto irá mostra a quantidade
-                        */
-                        switch (itemType) {
-                            case 'generic':
-                                display_counter = receivedData[1] + "x";
-                                break;
-                            case 'weapon':
-                                let itemAmmoInClip = receivedData[1];
-                                let itemAmmoInWeapon = receivedData[2];
+                    /*
+                        Slot não é o output do crafting, portanto irá mostra a quantidade
+                    */
+                    switch (itemType) {
+                        case 'generic':
+                            display_counter = receivedData[1] + "x";
+                            break;
+                        case 'weapon':
+                            let itemAmmoInClip = receivedData[1];
+                            let itemAmmoInWeapon = receivedData[2];
 
-                                display_counter = `${itemAmmoInClip}/${itemAmmoInWeapon}`;
-                                break;
-                            case 'valuable':
-                            case 'ammo':
-                                let itemMaxStackSize = itemData.maxStackSize;
+                            display_counter = `${itemAmmoInClip}/${itemAmmoInWeapon}`;
+                            break;
+                        case 'valuable':
+                        case 'ammo':
+                            let itemMaxStackSize = itemData.maxStackSize;
 
-                                display_counter = `${receivedData[1]} de ${itemMaxStackSize}`;
-                                break;
-                        }
-                    } else {
-                        innerSlot =  $('#crafting #10 .slot-inner');
-                        innerSlot.html('');
+                            display_counter = `${receivedData[1]} de ${itemMaxStackSize}`;
+                            break;
                     }
-
                     $(`
                     <div class="container" id="tooltip">
                         <div class="row">
@@ -171,7 +170,7 @@ function drawContainer(container, containerItemPool, NumSlots, ActivePage, conta
                     `).appendTo(innerSlot);
 
                     // if (display_counter) {
-                        // innerSlot.append(`<span class="counter">${display_counter}</span>`);
+                    // innerSlot.append(`<span class="counter">${display_counter}</span>`);
                     // }
 
 

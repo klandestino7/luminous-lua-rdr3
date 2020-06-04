@@ -67,7 +67,6 @@ Containers["inventory"] = {
     containerTitle = "Inventory",
     containerIsOpen = false,
     containerHasPages = true,
-    containerDirtIndices = {}
     -- containerMaxWeight = 20.0
 }
 
@@ -89,7 +88,7 @@ Containers["extra"] = {
 Containers["crafting"] = {
     containerItemPool = {},
     containerActivePage = 1,
-    containerNumIndices = 3 * 3,
+    containerNumIndices = (3 * 3) + 1,
     containerTitle = "Crafting",
     containerIsOpen = false
     -- containerExtraCraftingGroup = 0,
@@ -131,45 +130,7 @@ function draw(container)
         end
 
         if container == "crafting" then
-            Containers[container].containerItemPool[10] = nil
-
-            local craftingItemPool = ContainerGetItemPool(container)
-
-            local outputItemHash
-            local outputItemAmount
-
-            for cid, v in pairs(CraftablePool) do
-                local numInputs = 0
-
-                --[[
-                        Numero de items no crafting é igual ao necessario
-                        para craftar o item nessa iteraçao!
-                    ]]
-                local drawOutput = true
-                for cinput, camount in pairs(v.input) do
-                    numInputs = numInputs + 1
-                    if ContainerGetAmountOfItem(container, cinput) < camount then
-                        drawOutput = false
-                        break
-                    end
-                end
-
-                if #craftingItemPool == numInputs and drawOutput then
-                    --[[
-                            Nosso possivel crafting foi achado, break o loop
-                            e continua a função na NUI
-                        ]]
-                    outputItemHash = ItemGetHashFromId(v.output[1])
-                    outputItemAmount = v.output[2]
-                    print("outputss", outputItemHash, outputItemAmount)
-
-                    Containers[container].containerItemPool[10] = {outputItemHash, outputItemAmount}
-
-                    break
-                end
-            end
-
-            print("output", json.encode(Containers[container].containerItemPool[10]))
+            ContainerCraftingComputeOutput()
         end
     end
 
@@ -371,7 +332,8 @@ RegisterNUICallback(
                 end
             end
 
-            if container_from == "hotbar" then
+            if container_from == "crafting" then
+                switchContainerSlots({"crafting", slot_from}, {"inventory", slot_to})
             end
         end
 
@@ -433,11 +395,24 @@ RegisterNUICallback(
 
         if container_to == "crafting" then
             if container_from == "inventory" then
+                print("to craft", slot_to)
+
                 if slot_to ~= 10 then
                     --[[
                         Se o slot não for o output, continua
                     ]]
                     switchContainerSlots({"crafting", slot_to}, {"inventory", slot_from})
+                end
+            end
+
+            if container_from == "crafting" then
+                --[[
+                    Poder mover do crafting para o crafting
+                    mas não pode mover do output para o crafting
+                    e vice-versa
+                ]]
+                if slot_from ~= 10 and slot_from ~= 10 then
+                    switchContainerSlots({"crafting", slot_to}, {"crafting", slot_from})
                 end
             end
         end
@@ -549,3 +524,57 @@ AddEventHandler(
         end
     end
 )
+
+function ContainerCraftingComputeOutput()
+    local container = "crafting"
+    Containers[container].containerItemPool[10] = nil
+
+    local craftingItemPool = ContainerGetItemPool(container)
+
+    local outputItemHash
+    local outputItemAmount
+
+    for cid, v in pairs(CraftablePool) do
+        local numInputs = 0
+
+        --[[
+                        Numero de items no crafting é igual ao necessario
+                        para craftar o item nessa iteraçao!
+                    ]]
+        local drawOutput = true
+        for cinput, camount in pairs(v.input) do
+            numInputs = numInputs + 1
+            print('Getting amount of item', cinput, 'min', camount)
+            print('got', ContainerGetAmountOfItem(container, cinput))
+            if ContainerGetAmountOfItem(container, cinput) < camount then
+                drawOutput = false
+                break
+            end
+        end
+
+        print(drawOutput,#craftingItemPool, numInputs)
+        if getTableSize(craftingItemPool) == numInputs and drawOutput then
+            --[[
+                            Nosso possivel crafting foi achado, break o loop
+                            e continua a função na NUI
+                        ]]
+            outputItemHash = ItemGetHashFromId(v.output[1])
+            outputItemAmount = v.output[2]
+
+            print('Output do crafting achado!' , outputItemHash, outputItemAmount)
+
+            Containers[container].containerItemPool[10] = {outputItemHash, outputItemAmount}
+
+            break
+        end
+    end
+end
+
+
+function getTableSize(t)
+    local count = 0
+    for _, __ in pairs(t) do
+        count = count + 1
+    end
+    return count
+end
