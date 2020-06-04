@@ -406,7 +406,7 @@ Citizen.CreateThread(
 					NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)
 					SetEntityHealth(PlayerPedId(), 1)
-					cAPI.Toast("alert", "Você está ferido, procure por ajuda médica")
+					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
 					LoopCause = false
 					isDead = false
 					Uptime()
