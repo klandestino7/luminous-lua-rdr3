@@ -9,14 +9,16 @@ local horseName
 local horseComponents = {}
 
 -- ! REMOVE
-horseModel = "A_C_Horse_Turkoman_Gold"
-horseName = "Burrinho"
+-- horseModel = "A_C_Horse_Turkoman_Gold"
+-- horseName = "Burrinho"
 -- ! REMOVE
 
 local prompt_inventory
 local prompt_eat
 local prompt_brush
 local prompt_drink
+
+-- AUDIO::PLAY_SOUND_FRONTEND("Core_Fill_Up", "Consumption_Sounds", true, 0);
 
 function NativeSetPlayerHorse(horseEntity)
     Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), horseEntity)
@@ -40,7 +42,6 @@ RegisterNetEvent("VP:HORSE:SetHorseInfo")
 AddEventHandler("VP:HORSE:SetHorseInfo", SetHorseInfo)
 
 function InitiateHorse(atCoords)
-
     cAPI.DestroyPlayerHorse()
 
     local ped = PlayerPedId()
@@ -225,27 +226,32 @@ end
 --     end
 -- end
 
+
+AddEventHandler('VP:EVENTS:PedWhistle', function(ped, whistleType)
+    if ped == PlayerPedId() then
+        WhistleHorse()
+    end
+end)
+
 function WhistleHorse()
     if cAPI.IsPlayerHorseActive() and not cAPI.IsPlayerHorseActivationBlocked() then
         local playerHorse = cAPI.GetPlayerHorse()
         if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
             TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
         else
-            -- cAPI.Toast("error", "Seu cavalo já está vindo")
+            -- cAPI.notify("error", "Seu cavalo já está vindo")
         end
     else
         if not cAPI.IsPlayerHorseActivationBlocked() then
             -- InitiateHorse()
             InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
         else
-            cAPI.Toast("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
+            cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
     end
 end
 
 function InitiatePrompts()
-    Wait(100)
-
     prompt_inventory = PromptRegisterBegin()
     PromptSetControlAction(prompt_inventory, 0x5966D52A)
     PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Abrir Aforje"))
@@ -254,8 +260,6 @@ function InitiatePrompts()
     PromptSetStandardMode(prompt_inventory, 1)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_inventory, 1.5)
     PromptRegisterEnd(prompt_inventory)
-
-    Wait(100)
 
     prompt_eat = PromptRegisterBegin()
     PromptSetControlAction(prompt_eat, 0xB4E465B4)
@@ -266,8 +270,6 @@ function InitiatePrompts()
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_eat, 1.5)
     PromptRegisterEnd(prompt_eat)
 
-    Wait(100)
-
     prompt_drink = PromptRegisterBegin()
     PromptSetControlAction(prompt_drink, 0x24978A28)
     PromptSetText(prompt_drink, CreateVarString(10, "LITERAL_STRING", "Mandar Beber"))
@@ -276,8 +278,6 @@ function InitiatePrompts()
     PromptSetStandardMode(prompt_drink, 1)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_drink, 1.5)
     PromptRegisterEnd(prompt_drink)
-
-    Wait(100)
 
     prompt_brush = PromptRegisterBegin()
     PromptSetControlAction(prompt_brush, 0x9959A6F0)
@@ -347,12 +347,9 @@ Citizen.CreateThread(
                 --     elseif CanHorseEat() then
                 --         HandleEat()
                 --     else
-                if IsControlJustPressed(1, 0x24978A28) then -- H, Histle
-                    local playerHorse = cAPI.GetPlayerHorse()
-                    if mount == 0 or mount ~= playerHorse then
-                        WhistleHorse()
-                    end
-                end
+                -- if IsControlJustPressed(0, 0x24978A28) then -- H, Histle
+                    WhistleHorse()
+                -- -- end
             --     end
             -- end
             end
