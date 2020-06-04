@@ -34,6 +34,8 @@ Citizen.CreateThread(
 
             if isATree and IsControlJustPressed(0, 0xDFF812F9) then
                 local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("EA_WORLD_HUMAN_TREE_CHOP_NEW"), GetEntityCoords(entityHit) + (GetEntityForwardVector(entityHit) * 1.3), GetEntityHeading(entityHit) + 170, 2.0, -1.0, 1)
+                local axe = Citizen.InvokeNative(0x295514F198EFD0CA, scenario, 'PRIMARYITEM')
+                -- uParam0->f_101 = TASK::_0x05A0100EA714DB68(Global_34, joaat("PRIMARYITEM"));
                 TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
             end
 
