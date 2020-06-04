@@ -27,12 +27,10 @@ local r = {}
 Citizen.CreateThread(
     function()
         r = {
-            {"stone", 0.3, 5},
+            {"raw_iron", 0.3, 5},
             {"raw_coal", 0.3, 5},
             {"raw_copper", 0.3, 5},
             {"raw_gold", 0.1, 2},
-            {"ammolite", 0.01, 1},
-            {"flourite", 0.01, 1}
         }
 
         weightTotal = 0
@@ -149,15 +147,13 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Inventory = User:getCharacter():getInventory()
 
-        local stone = false
+        local iron = false
         local coal = false
         local copper = false
         local gold = false
-        -- local ammolite = false
-        -- local flourite = false
 
-        if Inventory:getItemAmount("stone") >= 3 then
-            stone = true
+        if Inventory:getItemAmount("raw_iron") >= 3 then
+            iron = true
         end
 
         if Inventory:getItemAmount("raw_coal") >= 3 then
@@ -168,13 +164,7 @@ AddEventHandler(
             copper = true
         end
 
-        -- if Inventory:getItemAmount("raw_gold") >= 1 then
-        --     if Character:hasGroup('miner') then
-        --         gold = true
-        --     end
-        -- end
-
-        if not stone and not coal and not copper and not gold then
+        if not iron and not coal and not copper and not gold then
             User:notify("error", "Você não tem minerais suficientes para processar!")
             return
         end
@@ -185,9 +175,9 @@ AddEventHandler(
 
         Citizen.Wait(20000)
 
-        if stone then
-            if Inventory:getItemAmount("stone") >= 3 then
-                Inventory:removeItem(-1, "stone", 3)
+        if iron then
+            if Inventory:getItemAmount("raw_iron") >= 3 then
+                Inventory:removeItem(-1, "raw_iron", 3)
             end
         end
 
@@ -202,79 +192,5 @@ AddEventHandler(
                 Inventory:removeItem(-1, "raw_copper", 2)
             end
         end
-
-        -- if gold then
-        --     if Inventory:getItemAmount("raw_gold") >= 1 then
-        --         Inventory:removeItem(-1, "raw_gold", 1)
-        --     end
-        -- end
-    end
-)
-
-RegisterServerEvent("VP:MINING:checknum")
-AddEventHandler(
-    "VP:MINING:checknum",
-    function(source, num)
-        local _source = source
-        local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
-        if num == 0 or num == nil then
-            User:notify("error", "Erro no processamento")
-            return
-        end
-        if num >= 4 or num == 0 then
-            if Character:hasGroup("ourives") then
-            else
-                User:notify("error", "Você não pode processar esse minério")
-                return
-            end
-        end
-        TriggerClientEvent("VP:MINING:processanim", _source, num)
-    end
-)
-
-RegisterServerEvent("VP:MINING:processitem")
-AddEventHandler(
-    "VP:MINING:processitem",
-    function(num)
-        local _source = source
-        local User = API.getUserFromSource(_source)
-        local Inventory = User:getCharacter():getInventory()
-        local Character = User:getCharacter()
-        local count = math.random(1, 5)
-
-        if num == 1 then
-            Inventory:removeItem(-1, "generic_pedra", 1)
-            User:notify("Você processou [X" .. count .. "] pedras")
-            Wait(1000)
-            Inventory:addItem("generic_pedralavada", count)
-            User:notify("Você recebeu [X" .. count .. "] de Pedra Lavada")
-            return
-        end
-        if num == 2 then
-            Inventory:removeItem(-1, "generic_carvaobruto", 1)
-            User:notify("Você processou [X1] de Carvão")
-            Wait(1000)
-            Inventory:addItem("generic_carvaorefi", count)
-            User:notify("Você recebeu [X" .. count .. "] de Carvão Refinado")
-            return
-        end
-        if num == 3 then
-            Inventory:removeItem(-1, "generic_cobrebruto", 1)
-            User:notify("Você processou [X" .. count .. "] de cobre")
-            Wait(1000)
-            Inventory:addItem("generic_provision_disco_ammolite", count)
-            User:notify("Você recebeu [X" .. count .. "] de Barra de Cobre")
-            return
-        end
-        -- if num == 4 then
-        --     Inventory:removeItem(-1, "generic_ourobruto", 3)
-        --     User:notify("Você processou [X" .. count .. "] ouro")
-        --     Wait(1000)
-        --     print(count * 10)
-        --     Inventory:addItem("generic_gold", count * 10)
-        --     User:notify("Você recebeu [X" .. count .. "] de Ouro")
-        --     return
-        -- end
     end
 )
