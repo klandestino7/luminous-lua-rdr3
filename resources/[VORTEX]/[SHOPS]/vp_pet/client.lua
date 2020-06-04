@@ -178,7 +178,7 @@ end
 local function ShowNotification( _message )
 	local timer = 200
 	while timer > 0 do
-		DisplayHelp(_message, 0.50, 0.90, 0.6, 0.6, true, 161, 3, 0, 255, true, 10000)
+		DisplayHelp(_message, 0.85, 0.90, 0.3, 0.3, true, 161, 3, 0, 255, true, 10000)
 		timer = timer - 1
 		Citizen.Wait(0)
 	end
@@ -207,14 +207,14 @@ Citizen.CreateThread(function()
 		local IsZone, IdZone = IsNearZone( Config.Coords )
 
 		if IsZone then
-			DisplayHelp(Config.Shoptext, 0.50, 0.95, 0.6, 0.6, true, 255, 255, 255, 255, true, 10000)
+			DisplayHelp(Config.Shoptext, 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
 			if IsControlJustPressed(0, keys['E']) then
 				WarMenu.OpenMenu('id_dog')
 				CurrentZoneActive = IdZone
 			end
 		end
 
-		if IsControlJustReleased( 0, keys["J"]) then
+		if IsControlJustReleased( 0, keys["G"]) then
 			pressLeft = GetGameTimer()
 			pressTime = pressTime + 1
 		end
@@ -368,7 +368,8 @@ AddEventHandler( 'VP:PET:spawndog', function ( dog, isInShop )
 				DeleteEntity(dogspawn[idOfThedog].model)
 				dogspawn[idOfThedog].model = CreatePed( model, x, y, b, heading, 1, 1 )
 				dogspawn[idOfThedog].id = idOfThedog
-				SET_PED_RELATIONSHIP_GROUP_HASH( dogspawn[idOfThedog].model, model )
+
+				SET_PED_RELATIONSHIP_GROUP_HASH( CACHORROENTITY, model )
 				SET_PED_DEFAULT_OUTFIT( dogspawn[idOfThedog].model )
 				local blip = SET_BLIP_TYPE( dogspawn[idOfThedog].model )
 				Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Seu animal')
@@ -379,23 +380,28 @@ AddEventHandler( 'VP:PET:spawndog', function ( dog, isInShop )
 
 			TaskGoToEntity( dogspawn[idOfThedog].model, player, -1, 7.2, 2.0, 0, 0 )
 			CACHORROENTITY = dogspawn[idOfThedog].model
+			
+			SetPedAsGroupMember(CACHORROENTITY, GetPedGroupIndex(PlayerPedId()))
 		end
 
 	end
 
 end )
-
+local Follow = nil
 
 Citizen.CreateThread(function()
 	while true do		
 		Citizen.Wait(0)	
-		if IsControlJustPressed(1, keys["J"]) then
-			print(CACHORROENTITY)
-			local playc = GetEntityCoords(PlayerPedId())
-			TaskGoToEntity(CACHORROENTITY, PlayerPedId(), -1, 2.2, 2.0, 0, 0)
+		if IsControlJustPressed(1, keys["G"]) then
+				print(CACHORROENTITY)
+				local playc = GetEntityCoords(PlayerPedId())
+				TaskGoToEntity(CACHORROENTITY, PlayerPedId(), -1, 2.2, 2.0, 0, 0)
+				GetPedGroupIndex(CACHORROENTITY)
 		end
     end
 end)
+
+
 
 function SET_BLIP_TYPE ( animal )
 	return Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, animal)
@@ -410,12 +416,16 @@ function SET_PED_DEFAULT_OUTFIT ( dog )
 end
 
 function SET_PED_RELATIONSHIP_GROUP_HASH ( iVar0, iParam0 )
+
 	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iVar0, _GET_DEFAULT_RELATIONSHIP_GROUP_HASH( iParam0 ) )
+
 end
 
 function _GET_DEFAULT_RELATIONSHIP_GROUP_HASH ( iParam0 )
 	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iParam0 );
 end
+
+
 
 -- | Timer | --
 

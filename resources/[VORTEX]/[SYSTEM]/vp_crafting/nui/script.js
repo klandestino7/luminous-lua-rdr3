@@ -1,6 +1,7 @@
 var ownedParts;
 var craftingItems;
 var parsedItemNames;
+var ItemDesciption;
 
 window.addEventListener("message", function(event) {
     if (event.data.action == 'open') {
@@ -11,21 +12,21 @@ window.addEventListener("message", function(event) {
         ownedParts = event.data.ownedParts;
         craftingItems = event.data.craftingItems;
         parsedItemNames = event.data.parsedItemNames;
+        ItemDesciption = event.data.ItemDesciption;
 
         $('#playerInventory .containinv').html('');
         $.each(craftingItems, function(i, data) {
-
             $('#playerInventory .containinv').append(`
                 <div class="slot" id="craftable_${i}" onclick="select(this)">
                     <div class="item" style="background-image: url('nui://vp_inventory/nui/images/items/${i}.png')">
-                        <div class="item-name">
+                        
+                    </div>
+                    <div class="item-name">
                             ${parsedItemNames[i]}
                         </div>
-                    </div>
                     <div class="item-name-bg"></div>
                 </div>
             `);
-
             if (data.canCraft == false) {
                 $(`#craftable_${i}`).addClass('disabled');
             }
@@ -83,7 +84,7 @@ function showCraftingParts(id) {
                     <img class="imgitem" src="nui://vp_inventory/nui/images/items/${id}.png">                    
                 </div>  
                 <p class="invtitle">${parsedItemNames[id]}</p>
-                <p class="invdesc">${craftingItems[id].craftingDesc}</p>
+                <p class="invdesc">${ItemDesciption[id]}</p>
             `);
 
                     $('#otherInventory .containinv').append(`
@@ -114,13 +115,13 @@ function showCraftingParts(id) {
             <div class="slot disabler">
                 <div">
                 <div class="item-count">
-                    <div class="item-count-bg">
+                    <div class="item-count-bg disabler">
                     </div>
                 </div>
                 <div class="item-name">
                 </div>
                 </div>
-                    <div class="item-name-bg">
+                    <div class="item-name-bg disabler">
                 </div>
              </div>
         `);

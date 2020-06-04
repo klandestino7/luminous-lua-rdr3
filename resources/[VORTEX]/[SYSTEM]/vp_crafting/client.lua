@@ -50,6 +50,7 @@ AddEventHandler(
         -- if not wasOpenedBefore then
 
         local ItemNamePool = {}
+        local ItemDescripPool = {}
 
         for itemId, neededForCrafting in pairs(Config) do
             if ItemList[itemId] then
@@ -57,6 +58,10 @@ AddEventHandler(
 
                 if ItemNamePool[itemId] == nil then
                     ItemNamePool[itemId] = ItemList[itemId].name
+                end
+
+                if ItemDescripPool[itemId] == nil then
+                    ItemDescripPool[itemId] = ItemList[itemId].description
                 end
 
                 for craftingItem, min in pairs(neededForCrafting) do
@@ -72,15 +77,20 @@ AddEventHandler(
 
                 craftingItems[itemId].canCraft = craftable
             end
+<<<<<<< HEAD
         end
 
+=======
+        end        
+>>>>>>> a6fae5dee86199371c6cee64a60d572ed5239881
         SetNuiFocus(true, true)
         SendNUIMessage(
             {
                 action = "open",
                 craftingItems = craftingItems,
                 ownedParts = playerItems,
-                parsedItemNames = ItemNamePool
+                parsedItemNames = ItemNamePool,
+                ItemDesciption = ItemDescripPool
             }
         )
         -- wasOpenedBefore = true

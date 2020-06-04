@@ -155,7 +155,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "lerf",
+    "lerjornal",
     function(source, args, rawCommand)
         local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_SIT_GROUND_READING_JOURNAL"), 100000, true, false, false, false)
@@ -275,7 +275,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "whiskey",
+    "awhisky3",
     function(source, args)
         local propEntity = CreateObject(GetHashKey("p_bottleJD01x"), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
 
@@ -286,7 +286,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "champs",
+    "achamps",
     function(source, args)
         local propEntity = CreateObject(GetHashKey("p_glass001x"), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
 
@@ -294,7 +294,7 @@ RegisterCommand(
     end
 )
 RegisterCommand(
-    "beer",
+    "acerveja2",
     function(source, args)
         local propEntity = CreateObject(GetHashKey("p_bottleBeer01a"), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
 
@@ -303,7 +303,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "coffee",
+    "acafe",
     function(source, args)
         local propEntity = CreateObject(GetHashKey("p_mugCoffee01x"), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
 
@@ -312,7 +312,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "stew",
+    "acomida",
     function(source, args)
         local bowl = CreateObject("p_bowl04x_stew", GetEntityCoords(PlayerPedId()), true, true, false, false, true)
         local spoon = CreateObject("p_spoon01x", GetEntityCoords(PlayerPedId()), true, true, false, false, true)

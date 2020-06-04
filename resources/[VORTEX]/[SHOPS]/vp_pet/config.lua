@@ -8,5 +8,5 @@ Config.Coords = {
 }
 
 Config.Spawndog = {
-	vector4( -284.09, 685.34, 113.59, 234.45 )
+	vector4(-277.147,686.500,113.604, 234.45 )
 }
