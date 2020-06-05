@@ -70,7 +70,7 @@ local function refreshCommands(player)
         local suggestions = {}
 
         for _, command in ipairs(registeredCommands) do
-            if IsPlayerAceAllowed(player, ("command.%s"):format(command.name)) then
+            -- if IsPlayerAceAllowed(player, ("command.%s"):format(command.name)) then
                 table.insert(
                     suggestions,
                     {
@@ -78,7 +78,7 @@ local function refreshCommands(player)
                         help = ""
                     }
                 )
-            end
+            -- end
         end
 
         TriggerClientEvent("chat:addSuggestions", player, suggestions)
