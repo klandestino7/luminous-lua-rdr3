@@ -5,9 +5,7 @@ AddEventHandler(
         local isHuman = IsPedHuman(pedGathered)
 
         if ped == PlayerPedId() and not isHuman then
-            TriggerServerEvent("VP:SKINNING:Skinned")
-
-
+            TriggerServerEvent("VP:SKINNING:Skinned", GetEntityModel(pedGathered))
         end
     end
 )
