@@ -135,8 +135,8 @@ body {
 }
 
 .container .shop .inner-container .slot-container .slot img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 70%;
+    max-height: 70%;
 }
 
 .container .shop .inner-container .slot-container .selected {
@@ -156,7 +156,7 @@ body {
     text-align: center;
     margin-top: -10px;
     margin-bottom: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 #confirmation-bg{

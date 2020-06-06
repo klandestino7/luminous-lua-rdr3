@@ -356,13 +356,13 @@ local controlsorder = {
     -- 0x5966D52A,
     -- 0xB73BCA77,
     -- 0xCEFD9220,
-    -- 0xF3830D8E,
+    -- 0x760A9C6F,
     -- 0x760A9C6F,
     0x05CA7C52,
     0x6319DB71,
     0xA65EBAB4,
     0xDEB34313
-    -- 0xF3830D8E J
+    -- 0x760A9C6F J
     ---
     -- 0x13C42BB2,
     -- 0x470DC190,
@@ -376,43 +376,43 @@ local groups = {
     {
         -- name = "Emotes",
         actions = {
-            {"Waving", -339257980},
-            {"HatTipping", -1457020913},
-            {"NodHead", -822629770},
-            {"Spit", -2106738342}
+            {"Acenar", -339257980},
+            {"Tirar o Chapéu", -1457020913},
+            {"Acenar com a Cabeça", -822629770},
+            {"Cuspir", -2106738342}
         }
         -- prompt_group
     },
-    {
-        -- name = "Emotes",
-        actions = {
-            {"FollowMe", 1115379199},
-            {"HissyFit", 796723886},
-            {"Point", 486225122},
-            {"WannaFish", 1159716480}
-        }
+    -- {
+    --     -- name = "Emotes",
+    --     actions = {
+    --         {"FollowMe", 1115379199},
+    --         {"HissyFit", 796723886},
+    --         {"Point", 486225122},
+    --         {"WannaFish", 1159716480}
+    --     }
         -- prompt_group
-    },
-    {
-        -- name = "Emotes",
-        actions = {
-            {"LetsGo", 1593752891},
-            {"PlaySomeCards", -843470756},
-            {"LookToDistance", 935157006},
-            {"LookYonder", 7918540}
-        }
-        -- prompt_group
-    },
-    {
-        -- name = "Emotes",
-        actions = {
-            {"BlowKiss", 1927505461},
-            {"Boast", -1252070669},
-            {"HellYeah ", -402959},
-            {"Flex", -773960361}
-        }
-        -- prompt_group
-    }
+    -- },
+    -- {
+    --     -- name = "Emotes",
+    --     actions = {
+    --         {"LetsGo", 1593752891},
+    --         {"PlaySomeCards", -843470756},
+    --         {"LookToDistance", 935157006},
+    --         {"LookYonder", 7918540}
+    --     }
+    --     -- prompt_group
+    -- },
+    -- {
+    --     -- name = "Emotes",
+    --     actions = {
+    --         {"BlowKiss", 1927505461},
+    --         {"Boast", -1252070669},
+    --         {"HellYeah ", -402959},
+    --         {"Flex", -773960361}
+    --     }
+    --     -- prompt_group
+    -- }
 }
 
 function init()
@@ -489,7 +489,7 @@ Citizen.CreateThread(
             Citizen.Wait(0)
 
             if activeGroupIndex == 0 then
-                if IsControlJustPressed(0, 0xF3830D8E) then -- J
+                if IsControlJustPressed(0, 0x760A9C6F) then -- G
                     activeGroupIndex = 1
                 end
             else
@@ -498,7 +498,7 @@ Citizen.CreateThread(
 
                 disablecontrols()
 
-                if IsControlJustPressed(0, 0xF3830D8E) then -- J
+                if IsControlJustPressed(0, 0x760A9C6F) then -- G
                     activeGroupIndex = 0
                 end
 

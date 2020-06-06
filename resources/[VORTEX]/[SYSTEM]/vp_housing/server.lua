@@ -91,6 +91,7 @@ Citizen.CreateThread(
                     for _, User in pairs(API.getUsersByGroup(house_id)) do
                         User:removeGroup(house_id)                        
                     end
+                    dbAPI.execute('DELETE:house_rent', {house_id = house_id})
                 end
             end
         end

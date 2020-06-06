@@ -4,12 +4,73 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
+-- // 0x255A5EF65EDA9167
+-- BOOL NETWORK_IS_PLAYER_IN_MY_SESSION(int player) // NETWORK_IS_PLAYER_ID_FREE // NETWORK_IS_PLAYER_ID_VALID
+
+-- // 0x5A91BCEF74944E93
+-- void NETWORK_ADD_PLAYER_TO_MY_SESSION?
+
+-- PEDSHOT
+-- 0x27B1AE4D8C652F08
+-- 0xE59F4924BD3A718D
+
+
+-- 0x8FB7C254CFCBF78E
+-- NETWORK_SESSION_SETMATCHMAKING_GROUP?
+
+-- 0xE72E5C1289BD1F40
+-- NETWORK_SET_SESSION_PLAYERS? // MATCHMAKING
+
+-- 0xA4484173759749B1
+-- NETWORK_CL // NETWORK_FOLLOW_INVITE?
+
+-- 0xA4484173759749B1
+-- NETWORK_CLEAR_MY_SESSION?
+
+-- 0x39A8EF7AF29A192C
+-- NETWORK_SESSION_OPEN? // NETWORK_SESSION_SETMATCHMAKING
+
+-- // 0xE47001B7CB8B98AE
+-- NetworkSendTransitionGamerInstruction
+
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
-		local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 0.0, 0.0)
-		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
-		coords = vec3(coords.xy, groundZ)
+		-- Citizen.InvokeNative(0xE72E5C1289BD1F40, 1, 0)
+		-- Citizen.InvokeNative(0x309BBEBEA8A3986C, 1, 0)
+
+		-- NETWORK::_0x : l128
+
+		-- local networkHandle = NetworkHandleFromPlayer(PlayerPedId())
+		-- print(networkHandle)
+		local isPlayerIdValid = Citizen.InvokeNative(0x255A5EF65EDA9167, 31)
+		print(PlayerId(), isPlayerIdValid)
+
+		Citizen.InvokeNative(0xFD4272A137703449)
+
+		print(NetworkGetPlayerIndex(player))
+
+		-- Citizen.InvokeNative(0x5A91BCEF74944E93, PlayerId(), 30.0)
+		-- Citizen.InvokeNative(0x51951DE06C0D1C40, PlayerId(), 1)
+		-- Citizen.InvokeNative(0xA4484173759749B1)
+		print(NetworkIsSessionActive())
+		
+		-- 	Global_1572887->f_342.f_4 = 4;
+		-- Global_1572887->f_342.f_21 = iParam0; // 1,
+		-- Global_1572887->f_342.f_5 = 18;                   -- IS_PRIVATE
+		-- Global_1572887->f_342.f_6 = 0;
+		-- Global_1572887->f_342.f_25 = 0;
+		-- Global_1572887->f_342.f_26 = 0;
+
+		-- for i = 8, 8 * 32, 8 do
+		-- 	print(i)
+		-- end
+
+		exports.research:DataViewNetowrk()
+
+		-- local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 0.0, 0.0)
+		-- local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
+		-- coords = vec3(coords.xy, groundZ)
 
 		-- TaskSwapFishingBait(PlayerPedId(), "p_baitWorm01x", 1)
 		-- Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
@@ -54,26 +115,26 @@ RegisterCommand(
 
 		-- Wait(1000)
 
-		local scenario_type = 0xB5800B30
+		-- local scenario_type = 0xB5800B30
 
-		print(scenario_type)
+		-- print(scenario_type)
 
 		-- -- // 0x19A6BE7D9C6884D3
 		-- -- void _REQUEST_SCENARIO_TYPE(Hash scenarioType, int p1, Hash p2, Hash p3)
-		Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
-		while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
-			print("scenario not loaded")
-			Wait(10)
-		end
+		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
+		-- while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
+		-- 	print("scenario not loaded")
+		-- 	Wait(10)
+		-- end
 		-- -- func_1963
 
-		local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenario_type, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
+		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenario_type, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
 		-- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, scenario_type, obj, GetEntityHeading(obj), 0.0, 0, 0)
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
 
-		Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
+		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
 
-		print(scenario)
+		-- print(scenario)
 
 		-- Wait(250)
 
@@ -127,7 +188,6 @@ RegisterCommand(
 	end
 )
 
-
 -- local group = GetRandomIntInRange(0, 0xffffff)
 -- local prompt
 
@@ -174,9 +234,9 @@ RegisterCommand(
 
 Citizen.CreateThread(
 	function()
-		print("PLAYERPED: " .. PlayerPedId())
+		-- print("PLAYERPED: " .. PlayerPedId())
 
-		print(" ")
+		-- print(" ")
 
 		-- local obj = CreateObject("p_cs_woodPile01x", GetEntityCoords(PlayerPedId()), 1, 1, 1)
 
@@ -186,6 +246,13 @@ Citizen.CreateThread(
 
 		while true do
 			Citizen.Wait(0)
+
+			local pcoords = GetEntityCoords(PlayerPedId())
+			local forawrd = GetEntityForwardVector(PlayerPedId())
+
+			local f = pcoords + (forawrd * 30.0)
+
+			Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,pcoords, f, 255, 0, 0, 255)
 
 			local size = GetNumberOfEvents(0)
 
@@ -200,7 +267,7 @@ Citizen.CreateThread(
 						print("EVENT_PED_WHISTLE", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 2)
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
-						TriggerEvent('VP:EVENTS:PedWhistle', view["0"], view["2"])
+						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
 						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 10)
