@@ -82,7 +82,7 @@ function draw(shopId) {
         }
     }
 
-    if ((renderedItems % 4) != 0) {
+    if ((renderedItems % 4) != 0  || renderedItems < 16) {
 
         var needed = 0;
 

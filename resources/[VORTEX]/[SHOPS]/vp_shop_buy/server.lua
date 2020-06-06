@@ -36,9 +36,10 @@ local verificationData = {
     -- }
 
     ["Geral"] = {
-        ["tobacco_seed"] = {0, 1, 1, 1},
-        ["corn_seed"] = {0, 1, 1, 1},
-        ["sugarcane_seed"] = {0, 1, 1, 1}
+        ["tobacco_seed"] = {100, 1, 1, 1},
+        ["corn_seed"] = {100, 1, 1, 1},
+        ["sugarcane_seed"] = {100, 1, 1, 1},
+        ["pickaxe"] = {100, 1, 1, 1},
     }
 }
 
@@ -66,12 +67,12 @@ AddEventHandler(
 
         local itemData = data[itemId]
 
-        local itemLevel = itemData[1]
+        -- local itemLevel = itemData[1]
 
-        if Character:getLevel() < itemLevel then
-            User:notify("error", "Você não tem level suficiente")
-            return
-        end
+        -- if Character:getLevel() < itemLevel then
+        --     User:notify("error", "Você não tem level suficiente")
+        --     return
+        -- end
 
         local Inventory = Character:getInventory()
 

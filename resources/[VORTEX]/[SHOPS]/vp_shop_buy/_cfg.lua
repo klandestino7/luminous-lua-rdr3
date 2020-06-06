@@ -30,9 +30,10 @@ Config.ShopDatas = {
 	{
 		name = "Geral",
 		{
-			{"tobacco_seed", 0, 1, 1},
-			{"corn_seed", 0, 1, 1},
-			{"sugarcane_seed", 0, 1, 1}
+			{"tobacco_seed", 100, 1, 1},
+			{"corn_seed", 100, 1, 1},
+			{"sugarcane_seed", 100, 1, 1},
+			{"pickaxe", 100, 1, 1}
 		}
 	}
 }
@@ -69,6 +70,7 @@ Config.ShopLocations = {
 	-- 	{1296.121, -1279.396, 75.834}
 	-- },
 	["Geral"] = {
-		{1327.907, -1292.865, 77.023}
+		{1327.907, -1292.865, 77.023},
+		{-785.338, -1323.850, 43.884}
 	}
 }
