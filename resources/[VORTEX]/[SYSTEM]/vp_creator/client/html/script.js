@@ -22,6 +22,26 @@ window.addEventListener('message', function(event) {
     }
 });
 
+function required()     {
+    var empt = document.getElementById("NomePlayer").value;
+    var empt2 = document.getElementById("Idade").value;
+
+    if (empt == "")
+        {
+            $.post('http://vp_creator/CheckButtons', "O nome não pode ficar vazio");
+            return false;
+        }
+    else if(empt2 == "")
+        {
+            $.post('http://vp_creator/CheckButtons', "A idade não pode ficar vazia");
+            return false;
+        }
+    else {
+        {
+            return true; 
+        }
+    }
+}
 
 var currentPage = 'char-info';
 
