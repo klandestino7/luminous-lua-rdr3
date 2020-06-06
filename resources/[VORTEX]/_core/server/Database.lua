@@ -156,7 +156,7 @@ API_Database.prepare('FCRP/UnBan', 'UPDATE users SET banned = 0, reason = "" WHE
 API_Database.prepare('FCRP/Whitelisted', 'SELECT * from whitelist WHERE identifier = @identifier')
 
 -------- CHARACTER QUERIES -----------
-API_Database.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, groups, age) VALUES (@user_id, @charName, '{\"user\":true}',@charAge); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare('FCRP/CreateCharacter', "INSERT INTO characters(user_id, characterName, groups, age) VALUES (@user_id, @charName, 0,@charAge); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare('FCRP/GetCharacters', 'SELECT * from characters WHERE user_id = @user_id')
 API_Database.prepare('FCRP/GetCharacter', 'SELECT * from characters WHERE charid = @charid')
 API_Database.prepare('FCRP/DeleteCharacter', 'DELETE FROM characters WHERE charid = @charid')

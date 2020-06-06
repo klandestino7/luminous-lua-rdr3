@@ -3,11 +3,13 @@ local Proxy = module("_core", "lib/Proxy")
 
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
+
 local FirstSpawn = false
 local car = nil
 local ped = nil
 local coords = vector3(-746.465,-1294.942,43.244)
 
+--[[
 RegisterCommand('first', function()
     TriggerEvent('VP:CREATOR:FirstSpawn')
 end)
@@ -19,7 +21,7 @@ RegisterCommand('goped', function()
 end)
 RegisterCommand('first2', function()
     TriggerMusicEvent("MC_MUSIC_STOP")
-end)
+end) ]]
 
 
 RegisterNetEvent("VP:CREATOR:FirstSpawn")
@@ -27,7 +29,6 @@ AddEventHandler(
     "VP:CREATOR:FirstSpawn",
     function()
         if not FirstSpawn then
-            FirstSpawn = true
             TriggerMusicEvent("REHR_START")
             NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
             SetEntityInvincible(PlayerPedId(), true)  
@@ -40,8 +41,9 @@ AddEventHandler(
             Wait(3000)
             SetPedIntoVehicle(PlayerPedId(), car, 1)
             Wait(2000)    
-            cAPI.EndFade(500)
+            cAPI.EndFade(500)            
             TriggerEvent('VP:CREATOR:StartNotify')
+            FirstSpawn = true
         end
     end
 )

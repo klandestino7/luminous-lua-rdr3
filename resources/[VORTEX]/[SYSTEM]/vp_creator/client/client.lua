@@ -210,6 +210,14 @@ TeethUsing = nil
 MustacheUsing = nil
 PedScaleUsing = nil
 
+
+RegisterNUICallback(
+    "CheckButtons",
+    function(data)
+        TriggerEvent('VP:NOTIFY:Simple', data, 5000)
+    end
+)
+
 RegisterNUICallback(
     "HeadType",
     function(data)
