@@ -165,6 +165,7 @@ API_Database.prepare('FCRP/GetCharNameByCharId', 'SELECT characterName from char
 API_Database.prepare('FCRP/UpdateLevel', 'UPDATE characters SET level = @level WHERE charid = @charid')
 API_Database.prepare('FCRP/UpdateXP', 'UPDATE characters SET xp = @xp WHERE charid = @charid')
 API_Database.prepare('UPDATE:character_data_role', 'UPDATE characters SET groups = @role WHERE charid = @charid')
+API_Database.prepare('UPDATE:character_data_clothing', 'UPDATE characters SET clothes = @clothing WHERE charid = @charid')
 -------- CHARACTER DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCData', 'CALL setData(@target, @key, @value, @charid)')
 API_Database.prepare('FCRP/GetCData', 'CALL getData(@target, @charid, @key)')
