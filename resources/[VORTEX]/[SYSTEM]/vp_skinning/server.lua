@@ -4,6 +4,11 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local AnimalModelToItem = {
+    [`A_C_Egret_01`] = 'feather_1',
+    [`A_C_Heron_01`] = 'feather_2',
+}
+
 RegisterNetEvent("VP:SKINNING:Skinned")
 AddEventHandler(
     "VP:SKINNING:Skinned",

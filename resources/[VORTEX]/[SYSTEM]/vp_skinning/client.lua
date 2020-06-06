@@ -6,6 +6,8 @@ AddEventHandler(
 
         if ped == PlayerPedId() and not isHuman then
             TriggerServerEvent("VP:SKINNING:Skinned")
+
+
         end
     end
 )
