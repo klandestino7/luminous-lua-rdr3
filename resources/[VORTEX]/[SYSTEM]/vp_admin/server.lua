@@ -269,13 +269,14 @@ RegisterCommand(
             cAPI.SetPlayerPed(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
         else
             if Character:hasGroupOrInheritance("admin") then
-                cAPI.SetPlayerPed(source, args[2])
+                cAPI.SetPlayerPed(source, args[1])
             else
                 User:notify("error", "Você não tem permissão!")
             end
         end
     end
 )
+
 RegisterCommand(
     "cds",
     function(source, args, rawCommand)
