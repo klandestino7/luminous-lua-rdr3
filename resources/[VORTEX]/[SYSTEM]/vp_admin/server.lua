@@ -252,7 +252,22 @@ RegisterCommand(
         end
 
         if Character:hasGroupOrInheritance("admin") then
-            Character:getInventory():addItem(args[1], tonumber(args[2]))
+
+            if #args >= 3 then
+                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
+                if UserTarget ~= nil then
+                    local CharacterTarget = UserTarget:getCharacter();
+                    if CharacterTarget ~= nil then
+                        CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
+                    else
+                         User:notify("error", "Usuario não escolheu um personagem ainda!")
+                    end
+                else
+                    User:notify("error", "Usuario invalido!")
+                end
+            else
+                Character:getInventory():addItem(args[1], tonumber(args[2]))
+            end
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -377,11 +392,11 @@ RegisterCommand(
     function(source, args, rawCommand)
         local _source = source
         local User = API.getUserFromSource(source)
-        local Character = User:getCharacter()
+        -- local Character = User:getCharacter()
 
-        if Character ~= nil then
+        -- if Character ~= nil then
             TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, " ^2*" .. GetPlayerName(source) .. ": Meu ID " .. User:getId())
-        end
+        --end
     end
 )
 
@@ -448,8 +463,8 @@ RegisterCommand(
             if #args > 0 then
                 local m = ""
 
-                for i = 0, #args do
-                    m = m + " " + args[i]
+                for i = 1, #args do
+                    m = m .. " " .. args[i]
                 end
 
                 TriggerClientEvent("VP:TOAST:New", -1, "longer_speech", m)
@@ -503,10 +518,10 @@ AddEventHandler(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroupOrInheritance("admin") then
+        -- if Character:hasGroupOrInheritance("admin") then
             TriggerClientEvent("VP:ADMIN:ReceiveGamerTagsInfo", _source, API.getSources())
             sourcesUsingGamerTags[_source] = true
-        end
+        -- end
     end
 )
 
