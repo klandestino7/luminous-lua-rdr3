@@ -98,7 +98,7 @@ AddEventHandler(
         local characterId = Character:getId()
 
         if onGoingHunting[characterId] == nil or entModel ~= onGoingHunting[characterId] then
-            TriggerClientEvent("VP:ANIMAL_HUNTING:EntityNotAccepted", _source, entity)
+            TriggerClientEvent("VP:BUTCHER:EntityNotAccepted", _source, entity)
             User:notify("error", "O açogueiro não quer este animal")
             return
         end
@@ -111,7 +111,7 @@ AddEventHandler(
         Inventory:addItem("money", reward)
         User:notify("dollar", reward)
 
-        TriggerClientEvent("VP:ANIMAL_HUNTING:EntityAccepted", _source, entity)
+        TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
     end
 )
 

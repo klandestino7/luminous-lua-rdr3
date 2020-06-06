@@ -15,7 +15,8 @@ local spotPool = {
 local closestSpotIndex
 
 local prompt
--- local prompt_name = CreateVarString(10, "LITERAL_STRING", "Açogueiro")
+local prompt_shop
+local prompt_name = CreateVarString(10, "LITERAL_STRING", "Açogueiro")
 
 Citizen.CreateThread(
     function()
@@ -70,7 +71,7 @@ Citizen.CreateThread(
                 local pedPosition = GetEntityCoords(PlayerPedId())
 
                 if #(pedPosition - spotPosition) <= 1.5 then
-                    PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", "Açogueiro"))
+                    PromptSetActiveGroupThisFrame(prompt_group, prompt_name)
                     HandlePrompts()
                 end
 
@@ -131,48 +132,14 @@ RegisterNetEvent("VP:ANIMAL_HUNTING:NotifyAnimalName")
 AddEventHandler(
     "VP:ANIMAL_HUNTING:NotifyAnimalName",
     function(type, entityModel)
-
         local r = {}
 
         if type == 1 then
-            r = {"success", "Procure um(a) " .. GetModelAnimalName(entityModel) .. ' e traga para o açogueiro'}
+            TriggerEvent("VP:NOTIFY:Simple", "Estou a procura de um(a) " .. GetModelAnimalName(entityModel) .. ", irei recompensa-lo caso você traga para mim", 5000)
         elseif type == 2 then
-            r = {"alert", "O açougueiro ainda está a procura de um(a) " .. GetModelAnimalName(entityModel)}
+            TriggerEvent("VP:NOTIFY:Simple", "O açougueiro ainda está a procura de um(a) " .. GetModelAnimalName(entityModel), 5000)
         elseif type == 3 then
-            r = {'error', 'Termine a caça atual para poder começar outra!'}
-        end
-
-        cAPI.notify(table.unpack(r))
-    end
-)
-
-RegisterNetEvent("VP:ANIMAL_HUNTING:EntityAccepted")
-AddEventHandler(
-    "VP:ANIMAL_HUNTING:EntityAccepted",
-    function(entity)
-        if DoesEntityExist(entity) then
-            -- if GetEntityModel(entity) == entModel then
-            Citizen.InvokeNative(0x18FF3110CF47115D, entity, 2, true)
-
-            while GetEntityAlpha(entity) > 0 do
-                Citizen.Wait(1500)
-                SetEntityAlpha(entity, GetEntityAlpha(entity) - 51)
-            end
-
-            DeleteEntity(entity)
-        -- end
-        end
-    end
-)
-
-RegisterNetEvent("VP:ANIMAL_HUNTING:EntityNotAccepted")
-AddEventHandler(
-    "VP:ANIMAL_HUNTING:EntityNotAccepted",
-    function(entity)
-        if DoesEntityExist(entity) then
-            -- if GetEntityModel(entity) == entModel then
-            Citizen.InvokeNative(0x18FF3110CF47115D, entity, 2, true)
-        -- end
+            cAPI.notify("error", "Termine a caça atual para poder começar outra!")
         end
     end
 )
@@ -193,26 +160,28 @@ function HandlePrompts()
             Citizen.Wait(1000)
         end
     end
+
+    if PromptIsJustPressed(prompt_shop) then
+        TriggerEvent("VP:SHOP:SELL:OpenShop", "Acogueiro")
+    end
 end
 
 function InitiatePrompts()
-    -- prompt_butcher = PromptRegisterBegin()
-    -- PromptSetControlAction(prompt_butcher, 0x5966D52A)
-    -- PromptSetText(prompt_butcher, CreateVarString(10, "LITERAL_STRING", ""))
-    -- PromptSetEnabled(prompt_butcher, 1)
-    -- PromptSetVisible(prompt_butcher, 1)
-    -- PromptSetStandardMode(prompt_butcher, 1)
-    -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_butcher, 1.5)
-    -- PromptRegisterEnd(prompt_butcher)
-
     prompt_group = GetRandomIntInRange(0, 0xffffff)
+
+    prompt_shop = PromptRegisterBegin()
+    PromptSetControlAction(prompt_shop, 0x5966D52A)
+    PromptSetText(prompt_shop, CreateVarString(10, "LITERAL_STRING", "Vender Mantimentos"))
+    PromptSetEnabled(prompt_shop, 1)
+    PromptSetVisible(prompt_shop, 1)
+    PromptSetStandardMode(prompt_shop, 1)
+    PromptSetGroup(prompt_shop, prompt_group)
+    PromptRegisterEnd(prompt_shop)
 
     prompt = PromptRegisterBegin()
 
-    print(position, prompt, prompt_group)
-
     PromptSetControlAction(prompt, 0xE8342FF2)
-    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Começar Caça de um ?"))
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Caça Específica"))
     PromptSetEnabled(prompt, true)
     PromptSetVisible(prompt, true)
     PromptSetHoldMode(prompt, true)
@@ -235,6 +204,7 @@ AddEventHandler(
     function(resourceName)
         if GetCurrentResourceName() == resourceName then
             -- for _, prompt in pairs(prompts) do
+            PromptDelete(prompt_shop)
             PromptDelete(prompt)
         -- end
         end
