@@ -1030,7 +1030,7 @@ RegisterNUICallback(
         --     ['beltbuckle'] = beltbuckleUsing
         -- }
         
-        local data = {
+        local dados = {
             HatUsing,
             ShirtsUsing,
             VestsUsing,
@@ -1058,7 +1058,9 @@ RegisterNUICallback(
             beltbuckleUsing
         }
 
-        TriggerServerEvent("VP:CLOTHES:SavePlayerClothing", json.decode(dados), true)
+        print(json.encode(dados))
+
+        TriggerServerEvent("VP:CLOTHES:SavePlayerClothing", dados, true)
         DestroyClothingMenu()
     end
 )
@@ -1101,7 +1103,7 @@ Citizen.CreateThread(
 
             for _, shopPosition in pairs(shops) do
                 if #(pPosition - shopPosition) <= 1.5 then
-                    DrawTxt(Config.Shoptext, 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
+                    DrawTxt("Pressione ALT para abrir a loja de roupas.", 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
                     if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
                         TriggerEvent("VP:STORECLOTHES:OpenClothingMenu")
                     end

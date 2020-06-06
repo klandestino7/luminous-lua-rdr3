@@ -15,7 +15,7 @@ AddEventHandler(
         --     User:notify('Dinheiro insuficiente!')
         --     return
         -- end
-        TriggerClientEvent("VP:STORECLOTHES:open", _source)
+        TriggerClientEvent("VP:STORECLOTHES:OpenClothingMenu", _source)
     end
 )
 

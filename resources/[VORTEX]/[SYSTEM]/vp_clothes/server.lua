@@ -8,7 +8,7 @@ dbAPI = Proxy.getInterface("API_DB")
 RegisterNetEvent("VP:CLOTHES:SavePlayerClothing")
 AddEventHandler(
     "VP:CLOTHES:SavePlayerClothing",
-    function(data, securePayment)
+    function(dataClothes, securePayment)
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
@@ -16,6 +16,8 @@ AddEventHandler(
             -- for k, v in pairs(data) do
             --     Character:setData(Character:getId(), 'clothes', k, v)
             -- end
+
+            local data = json.encode(dataClothes)
 
             local Inventory = Character:getInventory()
             if Inventory:removeItem(-1, "money", #data * 0.2) then
