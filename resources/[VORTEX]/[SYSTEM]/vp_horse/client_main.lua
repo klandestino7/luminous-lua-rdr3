@@ -243,8 +243,8 @@ function WhistleHorse()
         end
     else
         if not cAPI.IsPlayerHorseActivationBlocked() then
-            -- InitiateHorse()
-            InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
+            InitiateHorse()
+            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
         else
             cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
         end
