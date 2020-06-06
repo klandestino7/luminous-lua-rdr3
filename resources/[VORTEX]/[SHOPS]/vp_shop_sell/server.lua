@@ -5,35 +5,16 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
-    -- ["Ammunation"] = {
-    --     -- Dollar, Gold, Amount(optional)
-    --     ["weapon_combatpistol"] = {1, 100},
-    --     ["weapon_assaultrifle"] = {1, 100},
-    --     ["ammo_combatpistol"] = {0, 0, 20},
-    --     ["weapon_knife"] = { 0}
-    -- },
-    -- ["Policia"] = {
-    --     group = "admin",
-    --     -- Price, Amount(optional)
-    --     ["revolver_doubleaction"] = {0, 0},
-    --     ["rifle_springfield"] = {0, 0},
-    --     ["shotgun_pump"] = {0, 0},
-    --     ["ammo_revolver"] = {0, 0, 100},
-    --     ["ammo_rifle"] = {0, 0, 75},
-    --     ["ammo_shotgun"] = {0, 0, 50}
-    -- },
-    -- ["Mercadinho"] = {
-    --     --  Price, Amount(optional)
-    --     ["consumable_vodka"] = {1, 50}
-    -- },
-    -- ["Planeta Semente'"] = {
-    --     ["tobacco_seed"] = {1, 100, 10}
-    -- }
-
-    ["Geral"] = {
+    ["Mercado Geral"] = {
         ["tobacco"] = {1, 1, 10},
         ["corn"] = {1, 1, 10},
-        ["sugarcane"] = {1, 1, 10}
+        ["sugarcane"] = {1, 1, 10},
+        ["feather_1"] = {100, 25, 5},
+    },
+    ["Acogueiro"] = {
+        ["meat"] = {100, 1, 1},
+        ["feather_1"] = {100, 1, 5},
+        ["feather_2"] = {100, 1, 5},
     }
 }
 
@@ -44,6 +25,7 @@ AddEventHandler(
         local _source = source
 
         if not verificationData[shopId] or not verificationData[shopId][itemId] then
+            -- User:notify("error", "Item não registrado, contate um ADMIN")
             return
         end
 
@@ -67,7 +49,7 @@ AddEventHandler(
 
         if Inventory:getItemAmount(itemId) < itemAmount then
             local idata = API.getItemDataFromId(itemId)
-            User:notify("error", "Você precisa de no mínimo x" .. itemAmount .. "de " .. idata:getName() .. " para vender!")
+            User:notify("error", "Você precisa de no mínimo x" .. itemAmount .. " " .. idata:getName() .. " para vender!")
             return
         end
 
@@ -81,10 +63,11 @@ AddEventHandler(
 
         if Inventory:removeItem(-1, itemId, itemAmount) then
             Inventory:addItem(currencyItem, itemPrice)
+            User:notify("item", API.getItemDataFromId(itemId):getName(), -(itemAmount))
             if not withGold then
-                User:notify("dollar", string.format("%.2f", -(itemPrice / 100)))
+                User:notify("dollar", string.format("%.2f", (itemPrice / 100)))
             else
-                User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
+                User:notify("gold", string.format("%.2f", (itemPrice / 100)))
             end
         end
     end
