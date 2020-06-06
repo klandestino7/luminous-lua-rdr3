@@ -16,10 +16,10 @@ AddEventHandler('VP:CREATOR:saveCreation', function(characterName, Age, SkinMdf)
         Character:setData(Character:getId(), "charTable", "thirst", 0)
         Character:setData(Character:getId(), "charTable", "banco", 0)
 
-        local encoded = json.encode({-299.22,749.49,117.96})
+        local encoded = json.encode({-746.465,-1294.942,43.244})
         Character:setData(Character:getId(), "charTable", "position", encoded)       
         User:setCharacter(Character:getId()) -- Will draw itself      
     end
-    Wait(4000)
-    TriggerClientEvent('VP:CREATOR:FirstSpawn', _source)    
+   -- Wait(4000)
+   -- TriggerClientEvent('VP:CREATOR:FirstSpawn', _source)    
 end)
