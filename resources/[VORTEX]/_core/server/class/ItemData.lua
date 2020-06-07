@@ -116,9 +116,9 @@ function triggerUse(User, itemData)
 
 
                     if itemId:find("health") then
-                        cAPI.VaryPlayerHorseHealth(source, 25)
+                        cAPI.VaryHorseHealth(source, 25)
                     elseif itemId:find("stamina") then
-                        cAPI.VaryPlayerHorseStamina(source, 25)
+                        cAPI.VaryHorseStamina(source, 25)
                     end
                     return true
                 else
@@ -130,8 +130,10 @@ function triggerUse(User, itemData)
 
                 if itemId:find("health") then
                     cAPI.VaryPlayerHealth(User:getSource(), 25)
+                    cAPI.VaryPlayerCore(User:getSource(), 0, 25, 0, true)
                 elseif itemId:find("stamina") then
                     cAPI.VaryPlayerStamina(User:getSource(), 25)
+                    cAPI.VaryPlayerCore(User:getSource(), 1, 25, 0, true)
                 end
                 return true
             end
