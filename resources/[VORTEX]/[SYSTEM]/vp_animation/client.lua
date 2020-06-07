@@ -82,22 +82,21 @@ RegisterCommand(
     end
 )
 
-RegisterCommand(
-    "bandana",
-    function(source, args, rawCommand)
-        RequestAnimDict("mech_inventory@equip_facemask@fallbacks")
-        while not HasAnimDictLoaded("mech_inventory@equip_facemask@fallbacks") do
-            Citizen.Wait(100)
-        end
+-- RegisterCommand(
+--     "bandana",
+--     function(source, args, rawCommand)
+--         RequestAnimDict("mech_inventory@equip_facemask@fallbacks")
+--         while not HasAnimDictLoaded("mech_inventory@equip_facemask@fallbacks") do
+--             Citizen.Wait(100)
+--         end
 
-        TaskPlayAnim(PlayerPedId(), "mech_inventory@equip_facemask@fallbacks", "bandana_enter_r", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
-    end
-)
+--         TaskPlayAnim(PlayerPedId(), "mech_inventory@equip_facemask@fallbacks", "bandana_enter_r", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
+--     end
+-- )
 
 local Bandana = false
-
 RegisterCommand(
-    "bandana2",
+    "bandana",
     function(source, args, rawCommand)
         RequestAnimDict("mech_inventory@clothing@bandana")
         while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
@@ -107,14 +106,12 @@ RegisterCommand(
         if not Bandana then
             TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
             Wait(2000)
-            print("colocou")
             Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), 879715242)
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
             Bandana = true
         else
             TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
             Wait(2000)
-            print("tirou")
             Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), -972364774)
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
             Bandana = false

@@ -92,6 +92,8 @@ AddEventHandler(
 
                 cAPI.SetPedFaceFeature(ped, pFaceFeatures)
 
+                Wait(100)
+                
                 cAPI.SetPedScale(ped, pScale)
 
                 cAPI.SetPedClothing(ped, pClothing)

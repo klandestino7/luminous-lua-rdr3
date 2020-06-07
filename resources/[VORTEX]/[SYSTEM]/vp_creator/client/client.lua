@@ -442,15 +442,21 @@ RegisterNUICallback(
             interpCamera2("Rosto", pedSelected)   
         end
         local ped = pedSelected
-        if data.id < 180 then
-            num = (data.id / 100 + 0.01) - 0.78
-        else
-            num = (data.id / 100) - 0.8
+
+        local value = tonumber(data.id)
+        local isPositive =  value > 185
+        local variation = (math.abs(185 - value) * 0.005333)
+        if not isPositive then 
+          variation = -(variation)
         end
-        SetPedScale(ped, num)
-        PedScaleUsing = num
+
+        SetPedScale(ped, 1.0 + variation)
+        
+        PedScaleUsing = 1.0 + variation
     end
 )
+
+
 
 RegisterNUICallback(
     "NomePlayer",

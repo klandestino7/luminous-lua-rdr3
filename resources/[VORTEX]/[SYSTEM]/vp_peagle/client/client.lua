@@ -17,7 +17,7 @@ end)
 RegisterNetEvent('VP:PEAGLE:ReceiveMenssage')
 AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
         local back = true
-
+        local Notified = false
         local pigeon = CreatePed("A_C_Pigeon", PlayerCoords, 92.0, true, true, true, true)
         Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
 
@@ -34,7 +34,6 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
         while true do
             Citizen.Wait(1)
             Citizen.InvokeNative(0xA5C38736C426FCB8, pigeon, true)
-            mensagemp = false
 
             while true do
                 local player = PlayerPedId()
@@ -49,21 +48,30 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
                 if back then
                     TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
                 end                
-
+               
                 if dst < 60 then
-                    
-                    print(dst)
-                    
+
+                    if not Notified then
+                        TriggerEvent('VP:NOTIFY:Simple', 'Você tem uma pombo mensagem. Pressione ALT para chamar o pombo.', 5000)
+                        Notified = true
+                    end
+
+                    if Notified and dst > 4 then
+                        Wait(15000)
+                        TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)
+                    end                    
+
                     if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
+                        TaskWhistleAnim(PlayerPedId(), -433953410, 1971704925)                        
                         back = false
-                        TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 2, 0)       
-                        
-                        if dst < 4 then
+                        TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 2, 0)                         
+                        if dst < 3.5 then
                             local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, pigeon, Citizen.InvokeNative(0x34F008A7E48C496B, pigeon, 2), 0, 0, 512)
                             TaskPickupCarriableEntity(PlayerPedId(), carriable)  
                             openGuiRead(text)
                         end
-                    end
+                    end                  
+
                 end
             end
         end
