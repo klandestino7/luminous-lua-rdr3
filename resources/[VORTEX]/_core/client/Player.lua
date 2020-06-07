@@ -26,9 +26,9 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
             cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
 
             cAPI.SetSkin(PlayerPedId(), pSkin)
-             Wait(100)
+            Wait(100)
             cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
-             Wait(30)
+            Wait(30)
             cAPI.SetPedScale(PlayerPedId(), pScale)
             cAPI.SetPedClothing(PlayerPedId(), pClothing)
         end
@@ -40,7 +40,7 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     Wait(1500)
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
-    TriggerServerEvent('API:pre_OnUserCharacterInitialization')
+    TriggerServerEvent("API:pre_OnUserCharacterInitialization")
 end
 
 function cAPI.PlayerAsInitialized(bool)
@@ -198,127 +198,111 @@ function cAPI.SetPlayerPosition(x, y, z)
     SetEntityCoords(PlayerPedId(), x + 0.0001, y + 0.0001, z + 0.0001, 1, 0, 0, 1)
 end
 
-function cAPI.VaryPlayerHealth(value, secondsTillFillUp)
-    Citizen.CreateThread(
-        function()
-            if secondsTillFillUp == nil then
-                secondsTillFillUp = 1
-            end
-
-            local ped = PlayerPedId()
-
-            if secondsTillFillUp == 1 then
-                Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 0, 1.0, true)
-            end
-
-            valuePerTick = value / secondsTillFillUp
-            while secondsTillFillUp > 0 do
-                Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, GetAttributeCoreValue(ped, 0) + valuePerTick) -- SetAttributeCoreValue
-                SetEntityHealth(ped, GetEntityHealth(ped) + valuePerTick)
-
-                secondsTillFillUp = secondsTillFillUp - 1
-                Citizen.Wait(1000)
-
-                if secondsTillFillUp <= 0 then
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 0, 0.0, false)
-                end
-            end
-        end
-    )
+function cAPI.VaryPlayerHealth(variation, variationTime)
+    VaryPedHealth(PlayerPedId(), variation, variationTime)
 end
 
-function cAPI.VaryPlayerStamina(value, secondsTillFillUp)
-    Citizen.CreateThread(
-        function()
-            if secondsTillFillUp == nil then
-                secondsTillFillUp = 1
-            end
-
-            local ped = PlayerPedId()
-
-            if secondsTillFillUp == 1 then
-                Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 1, 1.0, true)
-            end
-
-            valuePerTick = value / secondsTillFillUp
-            while secondsTillFillUp > 0 do
-                Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, GetAttributeCoreValue(ped, 1) + valuePerTick) -- SetAttributeCoreValue
-                Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, Citizen.InvokeNative(0x775A1CA7893AA8B5, ped) + valuePerTick)
-
-                secondsTillFillUp = secondsTillFillUp - 1
-                Citizen.Wait(1000)
-
-                if secondsTillFillUp <= 0 then
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, ped, 1, 0.0, false)
-                end
-            end
-        end
-    )
-
-    local ped = PlayerPedId()
-    local n = math.floor(GetAttributeCoreValue(ped, 1) + variation)
+function cAPI.VaryPlayerStamina(variation, variationTime)
+    VaryPedStamina(PlayerPedId(), variation, variationTime)
 end
 
-function cAPI.VaryPlayerHorseHealth(value, secondsTillVary, goldenEffect)
-    local playerHorse = cAPI.GetPlayerHorse()
-    if playerHorse ~= nil and playerHorse ~= 0 then
+function cAPI.VaryPlayerCore(core, variation, variationTime, goldenEffect)
+    VaryPedCore(PlayerPedId(), core, variation, variationTime, goldenEffect)
+end
+
+function cAPI.VaryHorseHealth(variation, variationTime)
+    if cAPI.IsPlayerHorseActive() then
+        VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
+    end
+end
+
+function cAPI.VaryHorseStamina(variation, variationTime)
+    if cAPI.IsPlayerHorseActive() then
+        VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
+    end
+end
+
+function cAPI.VaryHorseCore(core, variation, variationTime, goldenEffect)
+    if cAPI.IsPlayerHorseActive() then
+        VaryPedCore(cAPI.GetPlayerHorse(), core, variation, variationTime, goldenEffect)
+    end
+end
+
+function VaryPedHealth(ped, variation, variationTime)
+    if variationTime == nil or variationTime <= 1 then
+        SetEntityHealth(ped, GetEntityHealth(ped) + variation)
+    else
         Citizen.CreateThread(
             function()
-                if secondsTillVary ~= nil and secondsTillVary > 0 then
-                    valuePerTick = value / secondsTillFillUp
-                    while secondsTillFillUp > 0 do
-                        Citizen.InvokeNative(0xC6258F41D86676E0, playerHorse, 0, GetAttributeCoreValue(playerHorse, 0) + valuePerTick)
-                        -- SetAttributeCoreValue
-                        SetEntityHealth(playerHorse, GetEntityHealth(playerHorse) + valuePerTick)
+                variationPerTick = variation / variationTime
+                while true do
+                    local oldValue = GetEntityHealth(ped)
+                    SetEntityHealth(ped, oldValue + variationPerTick)
 
-                        secondsTillFillUp = secondsTillFillUp - 1
-                        Citizen.Wait(1000)
+                    variationTime = variationTime - 1
 
-                        if secondsTillFillUp <= 0 then
-                            Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 0, 0.0, false)
-                        end
+                    if variationTime <= 0 then
+                        break
                     end
-                else
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 0, GetAttributeCoreValue(playerHorse, 0) + value, goldenEffect or false)
-                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, playerHorse, value)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 0, 0.0, false)
+
+                    Citizen.Wait(1000)
                 end
             end
         )
     end
 end
 
-function cAPI.VaryPlayerHorseStamina(value, secondsTillVary, goldenEffect)
-    local playerHorse = cAPI.GetPlayerHorse()
-    if playerHorse ~= nil and playerHorse ~= 0 then
+--     -1000.0 - 1000.0
+function VaryPedStamina(ped, variation, variationTime)
+    if variationTime == nil or variationTime <= 1 then
+        Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, variation) -- _CHARGE_PED_STAMINA
+    else
         Citizen.CreateThread(
             function()
-                if secondsTillVary ~= nil and secondsTillVary > 0 then
-                    valuePerTick = value / secondsTillFillUp
-                    while secondsTillFillUp > 0 do
-                        Citizen.InvokeNative(0xC6258F41D86676E0, playerHorse, 1, GetAttributeCoreValue(playerHorse, 1) + valuePerTick)
-                        -- SetAttributeCoreValue
-                        Citizen.InvokeNative(0xC3D4B754C0E86B9E, playerHorse, valuePerTick)
-                        -- _CHARGE_PED_STAMINA
+                variationPerTick = variation / variationTime
+                while variationTime > 0 do
+                    local oldValue = GetPedStamina(ped)
+                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, oldValue + variationPerTick) -- _CHARGE_PED_STAMINA
 
-                        secondsTillFillUp = secondsTillFillUp - 1
-                        Citizen.Wait(1000)
+                    variationTime = variationTime - 1
 
-                        if secondsTillFillUp <= 0 then
-                            Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 1, 0.0, false)
-                        end
+                    if variationTime <= 0 then
+                        break
                     end
-                else
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 1, GetAttributeCoreValue(playerHorse, 1) + value, goldenEffect or false)
-                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, playerHorse, value)
-                    Citizen.InvokeNative(0xF6A7C08DF2E28B28, playerHorse, 1, 0.0, false)
+
+                    Citizen.Wait(1000)
                 end
             end
         )
     end
 end
 
-local playerHorse
+function VaryPedCore(ped, core, variation, variationTime, goldenEffect)
+    if variationTime == nil or variationTime <= 1 then
+        local oldCoreValue = GetAttributeCoreValue(ped, core)
+        Citizen.InvokeNative(0xC6258F41D86676E0, ped, core, oldCoreValue + variation)
+    else
+        Citizen.CreateThread(
+            function()
+                valuePerTick = variation / variationTime
+                while true do
+                    local oldCoreValue = GetAttributeCoreValue(ped, core)
+                    Citizen.InvokeNative(0xC6258F41D86676E0, ped, core, oldCoreValue + valuePerTick)
+
+                    variationTime = variationTime - 1
+
+                    if variationTime <= 0 then
+                        break
+                    end
+
+                    Citizen.Wait(1000)
+                end
+            end
+        )
+    end
+end
+
+local playerHorse = 0
 local isHorseActivationBlocked = false
 local horseActivationSeconds
 local isHorseInWrithe = false
@@ -431,4 +415,3 @@ Citizen.CreateThread(
         end
     end
 )
-
