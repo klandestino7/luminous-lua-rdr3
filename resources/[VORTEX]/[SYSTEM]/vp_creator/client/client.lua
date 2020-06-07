@@ -5,7 +5,7 @@ cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
 adding = true
-creator = false
+vpcreator = false
 inCustomization = false
 groundCam = nil
 hided = false
@@ -87,12 +87,12 @@ Citizen.CreateThread(
         RequestImap(183712523)
         while true do
             Citizen.Wait(0)
-            if creator then
+            if vpcreator then
                 for k, v in pairs(light) do
                     DrawLightWithRange(light[k].x, light[k].y, light[k].z, 255, 255, 255, light[k].r, light[k].f)
                 end
             end
-            if creator and not inCustomization then
+            if vpcreator and not inCustomization then
                 if groundCam == nil then
                     DisplayHud(false)
                   --  createCam("selection")                  
@@ -149,7 +149,7 @@ Citizen.CreateThread(
 RegisterCommand(
     "creatormod",
     function(source, args)
-        creator = true
+        vpcreator = true
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
         SetEntityVisible(PlayerPedId(), false)
         SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
@@ -162,7 +162,7 @@ RegisterNetEvent("VP:CHARCREATION:starting")
 AddEventHandler(
     "VP:CHARCREATION:starting",
     function()
-        creator = true
+        vpcreator = true
         cAPI.EndFade(500)
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
         SetEntityVisible(PlayerPedId(), false)
@@ -442,15 +442,21 @@ RegisterNUICallback(
             interpCamera2("Rosto", pedSelected)   
         end
         local ped = pedSelected
-        if data.id < 180 then
-            num = (data.id / 100 + 0.01) - 0.78
-        else
-            num = (data.id / 100) - 0.8
+
+        local value = tonumber(data.id)
+        local isPositive =  value > 185
+        local variation = (math.abs(185 - value) * 0.005333)
+        if not isPositive then 
+          variation = -(variation)
         end
-        SetPedScale(ped, num)
-        PedScaleUsing = num
+
+        SetPedScale(ped, 1.0 + variation)
+        
+        PedScaleUsing = 1.0 + variation
     end
 )
+
+
 
 RegisterNUICallback(
     "NomePlayer",
@@ -560,13 +566,11 @@ RegisterNUICallback(
         TriggerServerEvent("VP:CREATOR:saveCreation", CharacterName, CharacterAge, SkinModf)
         closeAll()
 
-        SetNuiFocus(false, false)
-        SendNUIMessage(
-            {
-                action = "hide"
-            }
-        )
+        SetNuiFocus(false, false) 
+   
         cAPI.StartFade(500)
+        Wait(10000)
+        cAPI.EndFade(500)
     end
 )
 

@@ -28,9 +28,10 @@ exports {
 }
 
 VoiceEnabled "true"
-ServerUniqueIdentifier "Tp5R8cj0YhSKCw+AVZFd15xNa/Y="
+ServerUniqueIdentifier "BfCcsXHVimmv2a7xy5dme+5sj7M="
 RequiredUpdateBranch ""
 MinimumPluginVersion ""
 SoundPack "default"
-IngameChannelId "22"
-IngameChannelPassword "crazy@123"
+IngameChannelId "1"
+IngameChannelPassword "klan@123"
+

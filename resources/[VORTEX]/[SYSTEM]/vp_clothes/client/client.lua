@@ -1,5 +1,4 @@
 adding = true
-clothes = false
 inCustomization = false
 cam = nil
 hided = false
@@ -271,7 +270,6 @@ RegisterCommand(
     "openClothingShopMenu",
     function(source, args)
         inCustomization = true
-        clothes = true
         hided = false
         CamActive = false
         SetEntityHeading(PlayerPedId(), 334)
@@ -283,7 +281,6 @@ AddEventHandler(
     "VP:STORECLOTHES:OpenClothingMenu",
     function()
         inCustomization = true
-        clothes = true
         hided = false
         CamActive = false
         SetEntityHeading(PlayerPedId(), 334)
@@ -1080,7 +1077,7 @@ function DestroyClothingMenu()
     DisplayHud(true)
 
     inCustomization = false
-    clothes = false
+    hided = false
 
     SendNUIMessage(
         {

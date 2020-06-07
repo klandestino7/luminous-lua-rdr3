@@ -252,7 +252,7 @@ Citizen.CreateThread(
 
 			local f = pcoords + (forawrd * 30.0)
 
-			Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,pcoords, f, 255, 0, 0, 255)
+			-- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,pcoords, f, 255, 0, 0, 255)
 
 			local size = GetNumberOfEvents(0)
 
