@@ -232,6 +232,9 @@ RegisterCommand(
 -- 	return view
 -- end
 
+RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
+RegisterNetEvent("VP:EVENTS:PedWhistle")
+
 Citizen.CreateThread(
 	function()
 		-- print("PLAYERPED: " .. PlayerPedId())
@@ -247,13 +250,6 @@ Citizen.CreateThread(
 		while true do
 			Citizen.Wait(0)
 
-			local pcoords = GetEntityCoords(PlayerPedId())
-			local forawrd = GetEntityForwardVector(PlayerPedId())
-
-			local f = pcoords + (forawrd * 30.0)
-
-			-- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,pcoords, f, 255, 0, 0, 255)
-
 			local size = GetNumberOfEvents(0)
 
 			if size > 0 then
@@ -264,52 +260,54 @@ Citizen.CreateThread(
 
 					if eventAtIndex == 1327216456 then
 						-- [bit 0] = Ped who is whistling
-						print("EVENT_PED_WHISTLE", PlayerPedId(), i)
+						-- print("EVENT_PED_WHISTLE", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 2)
-						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
+						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
+
+
 						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
 						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 10)
-						exports["research"]:DataViewNativeGetEventData(0, i, 10)
-						Wait(1000)
+						-- exports["research"]:DataViewNativeGetEventData(0, i, 10)
+						-- Wait(1000)
 					elseif eventAtIndex == -1246119244 then
 						-- [bit 0] Ped -- Mostly the animal being interacted
 						-- [bit 2] Ped -- Mostly the one who is interacting
 						-- [bit 4] Interaction
 						-- print(GetHashKey("INTERACTION_POSITIVELONG"), GetHashKey("INTERACTION_POSITIVESHORT"), GetHashKey("INTERACTION_CANCEL"), GetHashKey("INTERACTION_COMPLETE"))
-						print("EVENT_PED_ANIMAL_INTERACTION", PlayerPedId(), i)
+						-- print("EVENT_PED_ANIMAL_INTERACTION", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 3)
-						exports["research"]:DataViewNativeGetEventData(0, i, 3)
+						-- exports["research"]:DataViewNativeGetEventData(0, i, 3)
 					elseif eventAtIndex == -2091944374 then
 						-- 24 Player
 						-- 25 Lotter
-						print("EVENT_PLAYER_LOOT_PED")
+						-- print("EVENT_PLAYER_LOOT_PED")
 						-- exports["vp_admin"]:js_teste_native(0, i, 26)
-						exports["research"]:DataViewNativeGetEventData(0, i, 26)
+						-- exports["research"]:DataViewNativeGetEventData(0, i, 26)
 					elseif eventAtIndex == -1511724297 then
 						-- exports["vp_admin"]:js_teste_native(0, i, 36)
-						print("EVENT_PLAYER_LOOT_?")
+						-- print("EVENT_PLAYER_LOOT_?")
 					elseif eventAtIndex == 1352063587 then
-						print("EVENT | PED_INTERACTION_RANSACK_SCENARIO", Citizen.InvokeNative(0xD04241BBF6D03A5E, PlayerPedId()))
-						local view = exports["research"]:DataViewNativeGetEventData(0, i, 4)
-						local pedInteracting = view["0"]
-						local containerEntity = view["2"]
-						local containerScenario = view["4"]
-						local isClosing = view["6"]
+						-- print("EVENT | PED_INTERACTION_RANSACK_SCENARIO", Citizen.InvokeNative(0xD04241BBF6D03A5E, PlayerPedId()))
+						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 4)
+						-- local pedInteracting = view["0"]
+						-- local containerEntity = view["2"]
+						-- local containerScenario = view["4"]
+						-- local isClosing = view["6"]
 
-						print(pedInteracting, containerEntity, containerScenario, isClosing)
+						-- print(pedInteracting, containerEntity, containerScenario, isClosing)
 					elseif eventAtIndex == 1208357138 then
 						-- local carriableEntity = view["0"]
 						-- local pedCarrier
-						print("EVENT | Carriable state change / Carriable carrier changes?")
-						exports["research"]:DataViewNativeGetEventData(0, i, 5)
+						-- print("EVENT | Carriable state change / Carriable carrier changes?")
+						-- exports["research"]:DataViewNativeGetEventData(0, i, 5)
 					elseif eventAtIndex == -687266558 then
 						-- index\bitIndex
 						-- 1\0: Entity
 						-- 3\3: Entity
-						print("EVENT | PED_STARTS_CARRYING")
-						exports["research"]:DataViewNativeGetEventData(0, i, 4)
+						-- print("EVENT | PED_STARTS_CARRYING")
+						-- exports["research"]:DataViewNativeGetEventData(0, i, 4)
 					elseif eventAtIndex == 1376140891 then
 						-- 1\0: Entity/Ped/Player Ped
 						-- 2\2: Entity/Ped carriable
@@ -317,7 +315,7 @@ Citizen.CreateThread(
 						--[[
 
 						]]
-						print("EVENT | PED_FINISHED_GATHERING_PED *totally not real name*")
+						-- print("EVENT | PED_FINISHED_GATHERING_PED *totally not real name*")
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 3)
 						local ped = view["0"]
 						local pedGathered = view["2"]
@@ -325,7 +323,7 @@ Citizen.CreateThread(
 
 						TriggerEvent("VP:EVENTS:PedFinishedGatheringPed", ped, pedGathered, bool_unk)
 					elseif eventAtIndex == 218595333 then
-						print("Horse broken")
+						-- print("Horse broken")
 					end
 
 					-- if eventAtIndex == 2099179610 then
@@ -358,10 +356,6 @@ Citizen.CreateThread(
 		end
 	end
 )
-
-RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
-
-RegisterNetEvent("VP:EVENTS:PedWhistle")
 
 -- 0x14169FA823679E41
 

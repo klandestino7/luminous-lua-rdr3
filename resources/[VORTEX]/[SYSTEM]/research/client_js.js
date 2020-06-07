@@ -8,7 +8,6 @@ exports('DataViewNativeGetEventData', (eventGroup, index, argStructSize) => {
     Citizen.invokeNative("0x57EC5FA4D4D6AFCA", eventGroup, index, view, argStructSize, Citizen.returnResultAnyway());
     let out = new Int32Array(buffer);
 
-    console.log(out);
     // console.log(JSON.stringify(out));
     return out;
 });
@@ -85,5 +84,4 @@ exports('DataViewNetowrk', () => {
     // Citizen.invokeNative("0x2989E131FDE37E97", 0, 109, view);
 
     let out = new Int32Array(buffer);
-    console.log(out);
 });
