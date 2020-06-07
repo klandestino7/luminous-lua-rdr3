@@ -262,9 +262,8 @@ Citizen.CreateThread(
 						-- [bit 0] = Ped who is whistling
 						-- print("EVENT_PED_WHISTLE", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 2)
-						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
-
-
+						
+						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
 						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
 						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
