@@ -84,8 +84,6 @@ function startLookingForAPlayerToSend(slotId)
         return
     end
 
-   
-
     currentlyTryingToSendItem = true
     Citizen.CreateThread(
         function()
@@ -167,6 +165,7 @@ function startLookingForAPlayerToSend(slotId)
                             PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", lastAimedPlayerIndexName))
 
                             if PromptHasHoldModeCompleted(prompt_send) then
+                                currentlyTryingToSendItem = false
                                 PromptDelete(prompt_send)
                                 PromptDelete(prompt_cancel)
                                 TriggerServerEvent('VP:INVENTORY:SendToPlayer', slotId, GetPlayerServerId(lastAimedPlayerIndex))
@@ -174,6 +173,7 @@ function startLookingForAPlayerToSend(slotId)
                             end
 
                             if PromptHasHoldModeCompleted(prompt_cancel) then
+                                currentlyTryingToSendItem = false
                                 PromptDelete(prompt_send)
                                 PromptDelete(prompt_cancel)
                                 break
