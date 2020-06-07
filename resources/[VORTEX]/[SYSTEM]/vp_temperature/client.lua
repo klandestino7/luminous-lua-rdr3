@@ -62,7 +62,7 @@ Citizen.CreateThread(
                 SetPedWetnessHeight(ped, 1.0)
             elseif tempAtPed <= 0 then
                 Citizen.InvokeNative(0xCB9401F918CB0F75, ped, "Cold_Stamina", 1, 500)
-            -- NativeApplyDamageToPed(ped, 5)
+                cAPI.VaryPlayerHealth(-2)
             end
         end
     end
