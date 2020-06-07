@@ -1,77 +1,37 @@
 local isDrinking = false
 
-function HandleDrink()
-    local playerHorse = cAPI.GetPlayerHorse()
-    if mount == playerHorse then
-        TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
-        Citizen.CreateThread(
-            function()
-                while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
-                    Wait(100)
-                end
-                ActionDrink()
-            end
-        )
-    else
-        local horsePosition = GetEntityCoords(playerHorse)
-
-        if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
-            ActionDrink()
-
-            local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
-            if horserRider ~= 0 then
-                TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
-                Citizen.CreateThread(
-                    function()
-                        while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
-                            Wait(100)
-                        end
-                        ActionDrink()
-                    end
-                )
-            else
-                ActionDrink()
-            end
-        end
-    end
-end
-
 function ActionDrink()
-    if CanHorseDrink() then
-        -- WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC
+    local playerHorse = cAPI.GetPlayerHorse()
+    TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_DRINK_GROUND"), 20000, true, false, false, false)
+    isDrinking = true
 
-        local playerHorse = cAPI.GetPlayerHorse()
-        TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_DRINK_GROUND"), 20000, true, false, false, false)
-        isDrinking = true
+    Citizen.CreateThread(
+        function()
+            while true do
+                Wait(250)
 
-        Citizen.CreateThread(
-            function()
-                while true do
-                    Wait(250)
+                local v = NativeGetHorseStaminaCore()
+                NativeSetHorseStaminaCore(v + 1)
 
-                    local v = NativeGetHorseStaminaCore()
-                    NativeSetHorseStaminaCore(v + 1)
-
-                    if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 or v >= 100 then
-                        break
-                    end
-
-                    -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                    --     cAPI.notify("alert", "Cavalo parou de beber porque a animação acabou")
-                    --     break
-                    -- end
-
-                    -- if v == 100 then
-                    --     cAPI.notify("alert", "Cavalo parou de beber porque o core está cheio")
-                    --     break
-                    -- end
+                if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 or v >= 100 then
+                    break
                 end
 
-                ClearPedTasks(playerHorse)
-                isDrinking = false
+                -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
+                --     cAPI.notify("alert", "Cavalo parou de beber porque a animação acabou")
+                --     break
+                -- end
+
+                -- if v == 100 then
+                --     cAPI.notify("alert", "Cavalo parou de beber porque o core está cheio")
+                --     break
+                -- end
             end
-        )
-    end
+
+            ClearPedTasks(playerHorse)
+            isDrinking = false
+        end
+    )
 end
 
 function CanHorseDrink()
@@ -104,10 +64,9 @@ function HasWaterNearHorseHead()
     -- print(w)
 
     -- if math.abs(w.z) < 1.0 then
-        if IsPedSwimming(playerHorse) then
-            cAPI.notify("error", "Fundo demais")
-            return false
-        end
+    if IsPedSwimming(playerHorse) then
+        return false
+    end
     -- end
 
     return true

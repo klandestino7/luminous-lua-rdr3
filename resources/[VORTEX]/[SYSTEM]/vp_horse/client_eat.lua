@@ -1,101 +1,37 @@
 local isEating = false
 
-function HandleEat()
-    local playerHorse = cAPI.GetPlayerHorse()
-    
-    if mount == playerHorse then
-        TaskDismountAnimal(PlayerPedId(), 1, 0, 0, 0, 0)
-        Citizen.CreateThread(
-            function()
-                while GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) == 1 do
-                    Wait(100)
-                end
-                ActionEat()
-            end
-        )
-    else
-        local horsePosition = GetEntityCoords(playerHorse)
-
-        if #(GetEntityCoords(PlayerPedId()) - horsePosition) <= 5.0 then
-            ActionEat()
-
-            local horserRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
-            if horserRider ~= 0 then
-                TaskDismountAnimal(horserRider, 1, 0, 0, 0, 0)
-                Citizen.CreateThread(
-                    function()
-                        while GetScriptTaskStatus(horserRider, 0x1DE2A7BD, 0) == 1 do
-                            Wait(100)
-                        end
-                        ActionEat()
-                    end
-                )
-            else
-                ActionEat()
-            end
-        end
-    end
-end
-
 function ActionEat()
-    if CanHorseEat() then
-        -- TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_HORSE_GRAZING_CAMP"), 10000, true, false, false, false)
+    local playerHorse = cAPI.GetPlayerHorse()
+    TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_GRAZING"), 20000, true, false, false, false)
+    isEating = true
 
-        -- /spawnprop s_horsnack_carrot01x
+    Citizen.CreateThread(
+        function()
+            while true do
+                Wait(250)
 
-        -- OPENSEQUENCETASK ??????? do it in js
+                local v = NativeGetHorseStaminaCore()
+                NativeSetHorseStaminaCore(v + 1)
 
-        -- local horseRider = Citizen.InvokeNative(0xB676EFDA03DADA52, playerHorse, 0, Citizen.ResultAsInteger())
-
-        -- TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_PICKUPPLANT"), GetHashKey("s_horsnack_carrot01x"), 0)
-
-        -- eating = true
-
-        -- Citizen.CreateThread(
-        --     function()
-        --         Wait(3500)
-        --         TaskAnimalInteraction(horseRider, playerHorse, GetHashKey("INTERACTION_FOOD"), GetHashKey("s_horsnack_carrot01x"), 1)
-
-        --         Wait(2000)
-        --         eating = false
-
-        --         local v = NativeGetHorseStaminaCore()
-        --         NativeSetHorseStaminaCore(v + 70)
-        --     end
-        -- )
-
-        local playerHorse = cAPI.GetPlayerHorse()
-        TaskStartScenarioInPlace(playerHorse, GetHashKey("WORLD_ANIMAL_DONKEY_GRAZING"), 20000, true, false, false, false)
-        isEating = true
-
-        Citizen.CreateThread(
-            function()
-                while true do
-                    Wait(250)
-
-                    local v = NativeGetHorseStaminaCore()
-                    NativeSetHorseStaminaCore(v + 1)
-
-                    if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 or v >= 100 then
-                        break
-                    end
-
-                    -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
-                    --     cAPI.notify("alert", "Cavalo parou de comer porque a animação acabou")
-                    --     break
-                    -- end
-
-                    -- if v == 100 then
-                    --     cAPI.notify("alert", "Cavalo parou de comer porque o core está cheio")
-                    --     break
-                    -- end
+                if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 or v >= 100 then
+                    break
                 end
 
-                ClearPedTasks(playerHorse)
-                isEating = false
+                -- if GetScriptTaskStatus(playerHorse, 0x3B3A458F, 0) ~= 1 then
+                --     cAPI.notify("alert", "Cavalo parou de comer porque a animação acabou")
+                --     break
+                -- end
+
+                -- if v == 100 then
+                --     cAPI.notify("alert", "Cavalo parou de comer porque o core está cheio")
+                --     break
+                -- end
             end
-        )
-    end
+
+            ClearPedTasks(playerHorse)
+            isEating = false
+        end
+    )
 end
 
 function CanHorseEat()
