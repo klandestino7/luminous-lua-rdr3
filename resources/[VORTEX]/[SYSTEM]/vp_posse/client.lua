@@ -8,13 +8,13 @@ local hash
 local nearestPlayers
 
 local spotPool = {
-    vec3(-1753.07, -394.78, 156.18), -- Criar posse em um lugar
+    vec3(-374.009,724.092,116.359), -- Criar posse em um lugar
 }
 
 local closestSpotIndex
 
 local prompt
-local prompt_name = CreateVarString(10, "LITERAL_STRING", "Açogueiro")
+local prompt_name = CreateVarString(10, "LITERAL_STRING", "Bando")
 
 Citizen.CreateThread(
     function()
@@ -36,8 +36,6 @@ Citizen.CreateThread(
         end
     end
 )
-
-
 
 RegisterNetEvent("VP:POSSE:SetPosse")
 AddEventHandler(
@@ -69,9 +67,14 @@ Citizen.CreateThread(
 
 function HandlePrompts()
     if PromptHasHoldModeCompleted(prompt) then
-        -- if IsControlPressed(0, 0xE8342FF2) then
-        print('chamoooou o criador')
-        -- end
+        PromptSetEnabled(prompt, false)
+        Citizen.CreateThread(
+            function()
+                Citizen.Wait(1000)
+                PromptSetEnabled(prompt, true)
+            end
+        )     
+        TriggerServerEvent('VP:POSSE:checkBando')        
     end
 end
 
