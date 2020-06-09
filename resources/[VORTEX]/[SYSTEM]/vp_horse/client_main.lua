@@ -9,8 +9,8 @@ local horseName
 local horseComponents = {}
 
 -- ! REMOVE
-horseModel = "A_C_Horse_Turkoman_Gold"
-horseName = "Burrinho"
+--horseModel = "A_C_Horse_Turkoman_Gold"
+--horseName = "Burrinho"
 -- ! REMOVE
 
 local prompt_inventory
@@ -91,7 +91,7 @@ function InitiateHorse(atCoords)
 
     cAPI.SetPlayerHorse(entity)
 
-    if horseModel == GetHashKey("A_C_HORSE_MORGAN_FLAXENCHESTNUT") then
+    if horseModel == GetHashKey("A_C_Horse_MP_Mangy_Backup") then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
         NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
         PromptSetVisible(prompt_inventory, false)

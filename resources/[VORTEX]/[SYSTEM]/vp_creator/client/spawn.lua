@@ -30,8 +30,7 @@ AddEventHandler(
     function()
         if not FirstSpawn then
             TriggerMusicEvent("REHR_START")
-            NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
-            SetEntityInvincible(PlayerPedId(), true)  
+            NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)           
             Wait(100)
             SetEntityCoords(PlayerPedId(), -1099.470,-1839.129,60.327)
             Wait(2500)
@@ -40,8 +39,7 @@ AddEventHandler(
             TriggerEvent('VP:CREATOR:CreatePedOnVehicle', 'CS_BivCoachDriver')
             Wait(3000)
             SetPedIntoVehicle(PlayerPedId(), car, 1)
-            Wait(2000)    
-            cAPI.EndFade(500)            
+            Wait(2000)               
             TriggerEvent('VP:CREATOR:StartNotify')
             FirstSpawn = true
         end

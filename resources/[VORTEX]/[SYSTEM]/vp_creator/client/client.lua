@@ -150,6 +150,7 @@ RegisterCommand(
     "creatormod",
     function(source, args)
         vpcreator = true
+        inCustomization = false
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
         SetEntityVisible(PlayerPedId(), false)
         SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
@@ -163,6 +164,7 @@ AddEventHandler(
     "VP:CHARCREATION:starting",
     function()
         vpcreator = true
+        inCustomization = false
         cAPI.EndFade(500)
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
         SetEntityVisible(PlayerPedId(), false)
@@ -208,7 +210,7 @@ EyesUsing = nil
 PorteUsing = nil
 TeethUsing = nil
 MustacheUsing = nil
-PedScaleUsing = nil
+PedScaleUsing = 1.0
 
 
 RegisterNUICallback(
@@ -443,6 +445,8 @@ RegisterNUICallback(
         end
         local ped = pedSelected
 
+
+
         local value = tonumber(data.id)
         local isPositive =  value > 185
         local variation = (math.abs(185 - value) * 0.005333)
@@ -451,7 +455,7 @@ RegisterNUICallback(
         end
 
         SetPedScale(ped, 1.0 + variation)
-        
+
         PedScaleUsing = 1.0 + variation
     end
 )
@@ -566,8 +570,7 @@ RegisterNUICallback(
         TriggerServerEvent("VP:CREATOR:saveCreation", CharacterName, CharacterAge, SkinModf)
         closeAll()
 
-        SetNuiFocus(false, false) 
-   
+        SetNuiFocus(false, false)   
         cAPI.StartFade(500)
         Wait(10000)
         cAPI.EndFade(500)
