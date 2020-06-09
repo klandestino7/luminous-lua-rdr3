@@ -9,17 +9,17 @@ AddEventHandler('VP:CREATOR:saveCreation', function(characterName, Age, SkinMdf)
     local _source = source
     local User = API.getUserFromSource(_source)
     local Character = User:createCharacter(characterName, Age)
-    if Character ~= nil then    
+    if Character ~= nil then
         Character:setSkinData(Character:getId(), json.encode(SkinMdf))
 
         Character:setData(Character:getId(), "charTable", "hunger", 0)
         Character:setData(Character:getId(), "charTable", "thirst", 0)
         Character:setData(Character:getId(), "charTable", "banco", 0)
 
-        local encoded = json.encode({-746.465,-1294.942,43.244})
+        local encoded = json.encode({-1099.470,-1839.129,60.327})
         Character:setData(Character:getId(), "charTable", "position", encoded)       
         User:setCharacter(Character:getId()) -- Will draw itself      
     end
-   -- Wait(4000)
-   -- TriggerClientEvent('VP:CREATOR:FirstSpawn', _source)    
+     Wait(4000)
+    TriggerClientEvent('VP:CREATOR:FirstSpawn', _source)    
 end)

@@ -64,6 +64,8 @@ Citizen.CreateThread(
        --     N_0xd4ee21b7cc7fd350(false)
         --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
         --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
+
+            
             
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)

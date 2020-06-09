@@ -53,17 +53,17 @@ Citizen.CreateThread(
 
 			SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
 
-			local ped = PlayerPedId()
+            local ped = PlayerPedId()
 
-			if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
-				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-				Citizen.Wait(2000)
-			elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
-				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-				Citizen.Wait(1000)
-			else
-				SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
-			end
+            if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
+                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+                Citizen.Wait(2000)
+            elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
+                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+                Citizen.Wait(3500)
+            else
+                SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
+            end
 
 			DisableControlAction(0, 0x580C4473, true) -- hud disable
 			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
