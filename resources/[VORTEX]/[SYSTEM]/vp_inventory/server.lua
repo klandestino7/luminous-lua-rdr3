@@ -78,13 +78,22 @@ AddEventHandler(
             return
         end
 
-        local ItemData = API.getItemDataFromId(data.id)
+        local Slot = Inventory:getSlots()[slotId]
 
-        if Inventory:removeItem(slotId, data.id, data.amount) then
-            User:notify("item", ItemData:getName(), -(data.amount))
-            TriggerClientEvent("VP:INVENTORY:DROP:Create", data.id)
+        if Slot == nil or Slot:getItemAmount() < 1 then
+            return
+        end
+
+        local itemData = Slot:getItemData()
+
+        local itemId = Slot:getItemId()
+        local itemAmount = Slot:getItemAmount()
+
+        if Inventory:removeItem(slotId, itemId, itemAmount) then
+            User:notify("item", itemData:getName(), -(itemAmount))
+            TriggerClientEvent("VP:INVENTORY:DROP:Create", itemId)
         else
-            User:notify("error", "x" .. data.amount .. " " .. ItemData:getName() .. " não encontrado no inventário")
+            User:notify("error", "x" .. itemAmount .. " " .. itemData:getName() .. " não encontrado no inventário")
         end
     end
 )
