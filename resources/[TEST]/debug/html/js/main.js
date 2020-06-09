@@ -19,7 +19,7 @@ var app = new Vue({
   methods: {
     toggle (name) {
       this.trackingItems[name] = !this.trackingItems[name]
-      post('http://spanser_debug/set_tracking', JSON.stringify({
+      post('http://debug/set_tracking', JSON.stringify({
         key: `Track${name.charAt(0).toUpperCase()}${name.slice(1)}`,
         value: this.trackingItems[name]
       }))
@@ -36,7 +36,7 @@ var app = new Vue({
     window.removeEventListener('message', this.listener);
   },
   mounted() {
-    post('http://spanser_debug/loaded', JSON.stringify({}))
+    post('http://debug/loaded', JSON.stringify({}))
     this.listener = window.addEventListener('message', (event) => {
       const item = event.data || event.detail
       if (this[item.type]) {
@@ -45,7 +45,7 @@ var app = new Vue({
     })
     window.addEventListener('keyup', e => {
       if (e.which === 27) {
-        post('http://spanser_debug/close_ui', JSON.stringify({}))
+        post('http://debug/close_ui', JSON.stringify({}))
       }
     })
   },

@@ -90,9 +90,7 @@ AddEventHandler(
 
                 cAPI.SetSkin(ped, pSkin)
 
-                cAPI.SetPedFaceFeature(ped, pFaceFeatures)
-
-                Wait(100)
+                cAPI.SetPedFaceFeature(ped, pFaceFeatures) 
                 
                 cAPI.SetPedScale(ped, pScale)
 

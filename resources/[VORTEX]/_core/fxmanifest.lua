@@ -13,7 +13,7 @@ client_scripts {
 	"client/_Main.lua",
 	"client/BasicNeeds.lua",
 	"client/LoadIPL.lua",
---	"client/KoilIPL.lua",
+	--"client/KoilIPL.lua",
 	"client/Ped.lua",
 	"client/Player.lua",
 	"client/Wrapper.lua",

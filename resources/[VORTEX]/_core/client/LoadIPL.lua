@@ -150,14 +150,16 @@ RequestImap(-2144587490) -- Covers small plot hole with mound of dirt
 
 ------------------------------------- Braithwaite Mansion
 --Mansion Interior
-RequestImap(1149195254)  --Brathwaite House Shell
-RequestImap(58066174)  -- Interior
--- Mansion Exterior 
-RequestImap(-1521525254)  --Green House Valentine -- Exterior Trees and Flowers 1(Run 1 and 2 together)
-RequestImap(-761186147)  --Green House Valentine -- Exterior Trees and Flowers 2(Run 1 and 2 together)
-RequestImap(-2137633069)  -- Shudders Close Upstairs Bedroom and Downstairs Library
-RequestImap(-880373663)  -- Front Balcony Lantern Added
-RequestImap(-70021332)  -- Adds Working tools and supplies to upper balcony
+-- RequestImap(1149195254)  --Brathwaite House Shell
+-- RequestImap(58066174)  -- Interior
+-- -- Mansion Exterior 
+-- RequestImap(-1521525254)  --Green House Valentine -- Exterior Trees and Flowers 1(Run 1 and 2 together)
+-- RequestImap(-761186147)  --Green House Valentine -- Exterior Trees and Flowers 2(Run 1 and 2 together)
+-- RequestImap(-2137633069)  -- Shudders Close Upstairs Bedroom and Downstairs Library
+-- RequestImap(-880373663)  -- Front Balcony Lantern Added
+-- RequestImap(-70021332)  -- Adds Working tools and supplies to upper balcony
+
+
 ------------------------------------- #### END OF BRAITHWAITE MANSION ####
 
 ------------------------------------- Grey Estates
@@ -170,9 +172,10 @@ RequestImap(-1229109520) -- Green Plants
 
 ------------------------------------- Black Water Town Hall
 RequestImap(-2082201137)  --Blackwater Ground Town Hall
-RequestImap(1343343014)  --Black Water Town Hall Addons Construction
-RequestImap(739412171)  -- Two Boards in front of city hall (Goes with Town Hall Construction)
-RequestImap(-5339556)  --Bank Under Construction
+-- RequestImap(1343343014)  --Black Water Town Hall Addons Construction
+-- RequestImap(739412171)  -- Two Boards in front of city hall (Goes with Town Hall Construction)
+-- RequestImap(-5339556)  --Bank Under Construction
+
 ------------------------------------- #### END OF BLACKWATER TOWN HALL ####
 
 ------------------------------------- First Camp - Winter Area -1346 2407 311
@@ -205,3 +208,90 @@ RequestImap(-515396642) -- Jail Cell Window Fixed
 
 RequestImap(62512826)
 RequestImap(1234648758)
+
+
+
+
+local Imaps ={
+-- /// valentine closed IPLS
+731209239,
+724436573,
+-1475403379,
+-518785376,
+-1878882174,
+1202020135,
+-1989899190,
+951314072,
+-780819048,
+-52140817,
+1081087978,
+696143352,
+-981203673,
+1228600352,
+-1301569116,
+282485265,
+56708243,
+199047531,
+-776975047,
+2095116685,
+-892659042,
+1136898294,
+897455211,
+1804593020,
+-1049500949,
+1325716092,
+--// CONVENTO IPLS
+1405627586,
+-1889108254, 
+--// POKER SHIP SAINT DENIS IPL 
+1056170594,
+-873881483,
+881979872,
+1157695860,
+1859948183,
+-1688366042,
+-929277449,
+-723094901,
+-801609437,
+-278745837,
+-- /// SAINT DENIS IPL, CONSTRUCTION DECK
+165972019, -- NEW
+-1036688493, -- OLD
+-- // FIX GROUND JOHN
+-284612948,
+-- /// MANSÃO DESTRUIDA 
+-1643869063,
+-1220264217,
+-1108618313,
+-1508467572,
+-990258606, 
+-- // FIX GROUND EMERALD
+-1377975054, 
+-- // HOUSE EMERALD    
+-574996782,
+1169511062,
+-2111718052,
+-1266106154,
+1192526031,
+
+}
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            for _,v in pairs(Imaps) do
+                RemoveImap(v)
+            end
+        end
+    end
+)
+
+
+
+
+Citizen.CreateThread(function()
+    for _,v in pairs(Imaps) do
+        RequestImap(v)
+    end
+end)

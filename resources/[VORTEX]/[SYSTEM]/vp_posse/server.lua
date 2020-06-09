@@ -25,7 +25,6 @@ RegisterCommand(
                     isOnline = isOnline
                 }
             end 
-
             TriggerClientEvent("VP:POSSE:OpenMenu", source, data, Posse:getName())
         else
             -- else
@@ -38,15 +37,31 @@ RegisterCommand(
     false
 )
 
-RegisterCommand(
-    "createBando",
-    function(source, args, rawCommand)
+RegisterNetEvent("VP:POSSE:checkBando")
+AddEventHandler(
+    "VP:POSSE:checkBando",
+    function(name)
         local User = API.getUserFromSource(source)
-        if not User:isInAPosse() then
-            if args[1] then
-                API.createPosse(User:getCharacter():getId(),args[1])
-            end
+        if not User:isInAPosse() then           
+            TriggerEvent('VP:POSSE:createBando')
+        else
+            TriggerClientEvent('VP:NOTIFY:Simple', source, 'Você já está em um bando, para criar um novo deve sair do atual.', 5000)
         end
+    end
+)
+
+RegisterNetEvent("VP:POSSE:createBando")
+AddEventHandler(
+    "VP:POSSE:createBando",
+    function(source)
+        local PosseName = cAPI.prompt("Nome do seu Bando (Sem Espaço):", "")
+
+        if PosseName == "" then
+            TriggerClientEvent('VP:NOTIFY:Simple', source, 'Você não digitou um nome válido', 5000)
+            return
+        end
+        API.createPosse(User:getCharacter():getId(), PosseName)
+        TriggerClientEvent('VP:NOTIFY:Simple', source, 'Registro do '.. PosseName .. ' efetuado com Sucesso.', 5000)
     end
 )
 
