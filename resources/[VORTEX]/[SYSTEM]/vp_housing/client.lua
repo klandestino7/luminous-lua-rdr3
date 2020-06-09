@@ -66,7 +66,7 @@ Citizen.CreateThread(
 
             for _, v in pairs(places) do
                 local dist = #(pCoords - v)
-                if dist <= 1.5 then
+                if dist <= 1.0 then
                     nearAValidPlace = true
                     break
                 end
