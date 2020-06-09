@@ -7,6 +7,38 @@ API = Tunnel.getInterface("API")
 local hash
 local nearestPlayers
 
+local spotPool = {
+    vec3(-1753.07, -394.78, 156.18), -- Criar posse em um lugar
+}
+
+local closestSpotIndex
+
+local prompt
+local prompt_name = CreateVarString(10, "LITERAL_STRING", "Açogueiro")
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(1000)
+            closeToPosser = false
+            local ped = PlayerPedId()
+            local pedVec = GetEntityCoords(ped)
+
+            local closestDist
+
+            for _, v in pairs(spotPool) do
+                local dist = #(pedVec - v)
+                if (dist <= 50 and closestDist == nil) or (closestDist ~= nil and dist < closestDist) then
+                    closestDist = dist
+                    closestSpotIndex = _
+                end
+            end
+        end
+    end
+)
+
+
+
 RegisterNetEvent("VP:POSSE:SetPosse")
 AddEventHandler(
     "VP:POSSE:SetPosse",
@@ -24,19 +56,52 @@ AddEventHandler(
 
 Citizen.CreateThread(
     function()
+        InitiatePrompts()
         while true do
-            Citizen.Wait(1000)
-            if hash ~= nil then
-                local ped = PlayerPedId()
-                if GetPedRelationshipGroupHash(ped) ~= hash then
-                    SetPedRelationshipGroupHash(ped, hash)
-                end
-
-                nearestPlayers = cAPI.getNearestPlayers(5)
+            Citizen.Wait(0)
+            if closestSpotIndex ~= nil then
+                PromptSetActiveGroupThisFrame(prompt_group, prompt_name)
+                HandlePrompts()
             end
         end
     end
 )
+
+function HandlePrompts()
+    if PromptHasHoldModeCompleted(prompt) then
+        -- if IsControlPressed(0, 0xE8342FF2) then
+        print('chamoooou o criador')
+        -- end
+    end
+end
+
+
+function InitiatePrompts()
+    prompt_group = GetRandomIntInRange(0, 0xffffff)
+
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, 0xE8342FF2)
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Criar Bando"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, true)
+    -- Citizen.InvokeNative(0xAE84C5EE2C384FB3, prompt, position)
+    -- Citizen.InvokeNative(0x0C718001B77CA468, prompt, 3.0)
+    PromptSetGroup(prompt, prompt_group)
+    PromptRegisterEnd(prompt)
+end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if GetCurrentResourceName() == resourceName then
+            -- for _, prompt in pairs(prompts) do
+            PromptDelete(prompt)
+        -- end
+        end
+    end
+)
+
 
 RegisterNetEvent("VP:POSSE:OpenMenu")
 AddEventHandler(

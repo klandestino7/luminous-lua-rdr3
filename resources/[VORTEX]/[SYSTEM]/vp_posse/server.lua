@@ -24,8 +24,7 @@ RegisterCommand(
                     name = name,
                     isOnline = isOnline
                 }
-            end 
-
+            end
             TriggerClientEvent("VP:POSSE:OpenMenu", source, data, Posse:getName())
         else
             -- else
