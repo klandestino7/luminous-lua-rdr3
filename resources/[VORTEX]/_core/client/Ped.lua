@@ -13,7 +13,11 @@ function cAPI.SetPlayerPed(model)
     SetPlayerModel(PlayerId(), modelHash, true)
     NativeSetRandomOutfitVariation(PlayerPedId())
 
-    -- SetModelAsNoLongerNeeded(model)
+    -- while not NativeHasPedComponentLoaded(ped) do
+    --     Wait(10)
+    -- end
+
+    SetModelAsNoLongerNeeded(model)
 
     -- Citizen.Wait(200)
 end
@@ -71,7 +75,10 @@ function cAPI.SetPedFaceFeature(ped, faceFeatures)
         -- Doesn't need to be requested !!!!!!
 
         NativeSetPedFaceFeature(ped, faceFeatureHash, floatValue)
-        NativeUpdatePedVariation(ped)
+
+        while not NativeHasPedComponentLoaded(ped) do
+            Wait(10)
+        end
     end
 end
 
@@ -82,6 +89,10 @@ function cAPI.SetPedBodyType(ped, bodyTypeHash)
 
     -- if IsPedMale(ped) then
     Citizen.InvokeNative(0xA5BAE410B03E7371, ped, bodyTypeHash, true, true, true)
+
+    while not NativeHasPedComponentLoaded(ped) do
+        Wait(10)
+    end
     -- else
     --     Citizen.InvokeNative(0xA5BAE410B03E7371, ped, bodyTypeHash, true, true, true)
     -- end
@@ -110,12 +121,11 @@ function cAPI.SetPedClothing(ped, clothingArray)
 
             NativeSetPedComponentEnabled(ped, componentHash, true, true)
 
-            -- while NativeIsPedComponentEquipped(ped, componentHash) == false do
-            --     print(componentHash, "isEquipped", NativeIsPedComponentEquipped(ped, componentHash))
-            --     Wait(10)
-            -- end
+            while not NativeHasPedComponentLoaded(ped) do
+                Wait(10)
+            end
 
-            -- SetModelAsNoLongerNeeded(modelHash)
+            SetModelAsNoLongerNeeded(modelHash)
 
             numComponents = numComponents + 1
         end
@@ -133,6 +143,10 @@ function cAPI.SetPedClothing(ped, clothingArray)
             NativeSetPedComponentEnabled(ped, 0x1178F4F4, true, true)
             NativeSetPedComponentEnabled(ped, 0x141281DC, true, true)
             NativeSetPedComponentEnabled(ped, 0x1945CE44, true, true)
+        end
+
+        while not NativeHasPedComponentLoaded(ped) do
+            Wait(10)
         end
     end
 end
@@ -187,16 +201,16 @@ end
 
 function NativeSetPedFaceFeature(ped, index, value)
     Citizen.InvokeNative(0x5653AB26C82938CF, ped, index, value)
+    NativeUpdatePedVariation(ped)
 end
 
 function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
-    -- local categoryHash = NativeGetPedComponentCategory(componentHash)
+    local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)
     -- print(componentHash, categoryHash, NativeGetMetapedType(ped))
 
-    -- NativeFixMeshIssues(ped, categoryHash)
+    NativeFixMeshIssues(ped, categoryHash)
 
     Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, componentHash, immediately, isMp, true)
-    -- NativeUpdatePedVariation(ped)
 end
 
 function NativeUpdatePedVariation(ped)
@@ -211,89 +225,102 @@ function NativeIsPedComponentEquipped(ped, componentHash)
     return Citizen.InvokeNative(0xFB4891BD7578CDC1, ped, componentHash)
 end
 
-function NativeGetPedComponentCategory(componentHash)
-    return Citizen.InvokeNative(0x5FF9A878C3D115B8, componentHash, NativeGetMetapedType(ped), true)
+function NativeGetPedComponentCategory(isFemale, componentHash)
+    return Citizen.InvokeNative(0x5FF9A878C3D115B8, componentHash, isFemale, true)
 end
 
 function NativeGetMetapedType(ped)
     return Citizen.InvokeNative(0xEC9A1261BF0CE510, ped)
 end
 
+function NativeHasPedComponentLoaded(ped)
+    return Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, ped)
+end
 
 function cAPI.playAnim(upper, seq, looping)
     if seq.task then -- is a task (cf https://github.com/ImagicTheCat/vRP/pull/118)
-      cAPI.stopAnim(true)
-  
-      local ped = GetPlayerPed(-1)
-      if seq.task == "PROP_HUMAN_SEAT_CHAIR_MP_PLAYER" then -- special case, sit in a chair
-        local x,y,z = cAPI.getPosition()
-        TaskStartScenarioAtPosition(ped, seq.task, x, y, z-1, GetEntityHeading(ped), 0, 0, false)
-      else
-        TaskStartScenarioInPlace(ped, seq.task, 0, not seq.play_exit)
-      end
-    else -- a regular animation sequence
-    cAPI.stopAnim(self, upper)
-  
-      local flags = 0
-      if upper then flags = flags+48 end
-      if looping then flags = flags+1 end
-  
-      Citizen.CreateThread(function()
-        -- prepare unique id to stop sequence when needed
-        local id = self.anim_ids:gen()
-        self.anims[id] = true
-  
-        for k,v in pairs(seq) do
-          local dict = v[1]
-          local name = v[2]
-          local loops = v[3] or 1
-  
-          for i=1,loops do
-            if self.anims[id] then -- check animation working
-              local first = (k == 1 and i == 1)
-              local last = (k == #seq and i == loops)
-  
-              -- request anim dict
-              RequestAnimDict(dict)
-              local i = 0
-              while not HasAnimDictLoaded(dict) and i < 1000 do -- max time, 10 seconds
-                Citizen.Wait(10)
-                RequestAnimDict(dict)
-                i = i+1
-              end
-  
-              -- play anim
-              if HasAnimDictLoaded(dict) and self.anims[id] then
-                local inspeed = 8.0001
-                local outspeed = -8.0001
-                if not first then inspeed = 2.0001 end
-                if not last then outspeed = 2.0001 end
-  
-                TaskPlayAnim(GetPlayerPed(-1),dict,name,inspeed,outspeed,-1,flags,0,0,0,0)
-              end
-  
-              Citizen.Wait(0)
-              while GetEntityAnimCurrentTime(GetPlayerPed(-1),dict,name) <= 0.95 and IsEntityPlayingAnim(GetPlayerPed(-1),dict,name,3) and self.anims[id] do
-                Citizen.Wait(0)
-              end
-            end
-          end
+        cAPI.stopAnim(true)
+
+        local ped = GetPlayerPed(-1)
+        if seq.task == "PROP_HUMAN_SEAT_CHAIR_MP_PLAYER" then -- special case, sit in a chair
+            local x, y, z = cAPI.getPosition()
+            TaskStartScenarioAtPosition(ped, seq.task, x, y, z - 1, GetEntityHeading(ped), 0, 0, false)
+        else
+            TaskStartScenarioInPlace(ped, seq.task, 0, not seq.play_exit)
         end
-  
-        -- free id
-        self.anim_ids:free(id)
-        self.anims[id] = nil
-      end)
+    else -- a regular animation sequence
+        cAPI.stopAnim(self, upper)
+
+        local flags = 0
+        if upper then
+            flags = flags + 48
+        end
+        if looping then
+            flags = flags + 1
+        end
+
+        Citizen.CreateThread(
+            function()
+                -- prepare unique id to stop sequence when needed
+                local id = self.anim_ids:gen()
+                self.anims[id] = true
+
+                for k, v in pairs(seq) do
+                    local dict = v[1]
+                    local name = v[2]
+                    local loops = v[3] or 1
+
+                    for i = 1, loops do
+                        if self.anims[id] then -- check animation working
+                            local first = (k == 1 and i == 1)
+                            local last = (k == #seq and i == loops)
+
+                            -- request anim dict
+                            RequestAnimDict(dict)
+                            local i = 0
+                            while not HasAnimDictLoaded(dict) and i < 1000 do -- max time, 10 seconds
+                                Citizen.Wait(10)
+                                RequestAnimDict(dict)
+                                i = i + 1
+                            end
+
+                            -- play anim
+                            if HasAnimDictLoaded(dict) and self.anims[id] then
+                                local inspeed = 8.0001
+                                local outspeed = -8.0001
+                                if not first then
+                                    inspeed = 2.0001
+                                end
+                                if not last then
+                                    outspeed = 2.0001
+                                end
+
+                                TaskPlayAnim(GetPlayerPed(-1), dict, name, inspeed, outspeed, -1, flags, 0, 0, 0, 0)
+                            end
+
+                            Citizen.Wait(0)
+                            while GetEntityAnimCurrentTime(GetPlayerPed(-1), dict, name) <= 0.95 and IsEntityPlayingAnim(GetPlayerPed(-1), dict, name, 3) and self.anims[id] do
+                                Citizen.Wait(0)
+                            end
+                        end
+                    end
+                end
+
+                -- free id
+                self.anim_ids:free(id)
+                self.anims[id] = nil
+            end
+        )
     end
-  end
-  
-  -- stop animation (new version)
-  -- upper: true, stop the upper animation, false, stop full animations
-  function cAPI.stopAnim(upper)
+end
+
+-- stop animation (new version)
+-- upper: true, stop the upper animation, false, stop full animations
+function cAPI.stopAnim(upper)
     self.anims = {} -- stop all sequences
     if upper then
-      ClearPedSecondaryTask(GetPlayerPed(-1))
+        ClearPedSecondaryTask(GetPlayerPed(-1))
     else
-      ClearPedTasks(GetPlayerPed(-1))
+        ClearPedTasks(GetPlayerPed(-1))
     end
-  end
+end

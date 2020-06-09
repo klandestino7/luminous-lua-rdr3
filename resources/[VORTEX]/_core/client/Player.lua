@@ -11,36 +11,24 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     local pScale = pedInfo.pedSize
     local pClothing = json.decode(clothing)
 
-    cAPI.SetPlayerPed(pModel)
+    Citizen.CreateThread(function()
+        cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
+    end)
+
     cAPI.replaceWeapons({})
 
-    Citizen.CreateThread(
-        function()
-            cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
-        end
-    )
+    cAPI.SetPlayerPed(pModel)
+    cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
+    cAPI.SetSkin(PlayerPedId(), pSkin)
+    cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
+    cAPI.SetPedScale(PlayerPedId(), pScale)
+    cAPI.SetPedClothing(PlayerPedId(), pClothing)
 
-    Citizen.CreateThread(
-        function()
-            Wait(6000)
-            cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
-
-            cAPI.SetSkin(PlayerPedId(), pSkin)
-            Wait(100)
-            cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
-            Wait(30)
-            cAPI.SetPedScale(PlayerPedId(), pScale)
-            cAPI.SetPedClothing(PlayerPedId(), pClothing)
-        end
-    )
-
-    TriggerEvent("ToogleBackCharacter")
     initializedPlayer = true
-
-    Wait(1500)
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")
+
 end
 
 function cAPI.PlayerAsInitialized(bool)
