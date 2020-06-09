@@ -85,7 +85,7 @@ AddEventHandler(
     function(entity)
         if DoesEntityExist(entity) then
             -- if GetEntityModel(entity) == entModel then
-            Citizen.InvokeNative(0x18FF3110CF47115D, entity, 2, true)
+            Citizen.InvokeNative(0x18FF3110CF47115D, entity, 2, false)
 
             while GetEntityAlpha(entity) > 0 do
                 Citizen.Wait(1500)
@@ -93,6 +93,7 @@ AddEventHandler(
             end
 
             DeleteEntity(entity)
+            DeletePed(entity)
         -- end
         end
     end

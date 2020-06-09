@@ -66,7 +66,7 @@ Citizen.CreateThread(
 
             for _, v in pairs(places) do
                 local dist = #(pCoords - v)
-                if dist <= 1.5 then
+                if dist <= 1.0 then
                     nearAValidPlace = true
                     break
                 end
@@ -93,9 +93,9 @@ Citizen.CreateThread(
             ["house:1"] = {"Chalé Renegado", 20.0, 1.0, vec3(1370.606, -874.264, 70.132), 25.0},
             ["house:2"] = {"Recanto Dormente", 20.0, 1.0, vec3(1135.113, -979.852, 69.398), 25.0},
             ["house:3"] = {"Renascença Espaçosa", 20, 1.0, vec3(-1680.596, -338.923, 174.025), 20.0},
-            ["house:4"] = {"Refúgio Ensolarado", 20, 1.0, vec3(-1412.024, -2672.382, 42.239), 20.0},
-            ["house:5"] = {"Posto Manzanita", 20, 1.0, vec3(-1978.603, -1667.799, 118.181), 20.0},
-            ["house:6"] = {"A Vista da Baía", 20, 1.0, vec3(-690.097, 1044.061, 135.004), 20.0},
+            ["house:4"] = {"Refúgio Ensolarado", 20, 1.0, vec3(-1412.024, -2672.382, 42.239), 15.0},
+            ["house:5"] = {"Posto Manzanita", 20, 1.0, vec3(-1978.603, -1667.799, 118.181), 12.5},
+            ["house:6"] = {"A Vista da Baía", 20, 1.0, vec3(-690.097, 1044.061, 135.004), 18.0},
             ["house:7"] = {"Aconchego Rochoso", 20, 1.0, vec3(900.425, 261.278, 116.005), 20.0}
         }
 
@@ -297,7 +297,7 @@ function initiateCameraAtCenter(coordsFrom, center, r)
 
                         local _, groundZ, _ = GetGroundZAndNormalFor_3dCoord(camVec.x, camVec.y, camVec.z)
 
-                        if math.abs(z - groundZ) < minHeightAboveGround then
+                        if _ and math.abs(z - groundZ) < minHeightAboveGround then
                             camVec = vec3(camVec.xy, groundZ + minHeightAboveGround)
                         end
 

@@ -14,7 +14,6 @@ API = Tunnel.getInterface("API")
 -- 0x27B1AE4D8C652F08
 -- 0xE59F4924BD3A718D
 
-
 -- 0x8FB7C254CFCBF78E
 -- NETWORK_SESSION_SETMATCHMAKING_GROUP?
 
@@ -43,18 +42,18 @@ RegisterCommand(
 
 		-- local networkHandle = NetworkHandleFromPlayer(PlayerPedId())
 		-- print(networkHandle)
-		local isPlayerIdValid = Citizen.InvokeNative(0x255A5EF65EDA9167, 31)
-		print(PlayerId(), isPlayerIdValid)
+		-- local isPlayerIdValid = Citizen.InvokeNative(0x255A5EF65EDA9167, 31)
+		-- print(PlayerId(), isPlayerIdValid)
 
-		Citizen.InvokeNative(0xFD4272A137703449)
+		-- Citizen.InvokeNative(0xFD4272A137703449)
 
-		print(NetworkGetPlayerIndex(player))
+		-- print(NetworkGetPlayerIndex(player))
 
 		-- Citizen.InvokeNative(0x5A91BCEF74944E93, PlayerId(), 30.0)
 		-- Citizen.InvokeNative(0x51951DE06C0D1C40, PlayerId(), 1)
 		-- Citizen.InvokeNative(0xA4484173759749B1)
-		print(NetworkIsSessionActive())
-		
+		-- print(NetworkIsSessionActive())
+		--
 		-- 	Global_1572887->f_342.f_4 = 4;
 		-- Global_1572887->f_342.f_21 = iParam0; // 1,
 		-- Global_1572887->f_342.f_5 = 18;                   -- IS_PRIVATE
@@ -66,14 +65,14 @@ RegisterCommand(
 		-- 	print(i)
 		-- end
 
-		exports.research:DataViewNetowrk()
+		-- exports.research:DataViewNetowrk()
 
 		-- local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 0.0, 0.0)
 		-- local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
 		-- coords = vec3(coords.xy, groundZ)
 
 		-- TaskSwapFishingBait(PlayerPedId(), "p_baitWorm01x", 1)
-		-- Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
+		Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
 
 		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
 		-- if IsModelValid(objHash) then
@@ -175,63 +174,6 @@ RegisterCommand(
 	end
 )
 
-RegisterCommand(
-	"hook",
-	function(source, args, rawCommand)
-		-- local fish = tonumber(args[1])
-		-- local w = Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(),fish)
-		-- Citizen.InvokeNative(0x517D01BF27B682D1, PlayerPedId(), 0.0, 0.0, 0.0, 1.0 * 0.01745329, 2)
-		-- Citizen.InvokeNative(0x9050DF2C53801208, PlayerPedId(), (3.141593 * 0.5))
-		-- Citizen.InvokeNative(0xF3735ACD11ACD501, PlayerPedId(), -1.0)
-		Citizen.InvokeNative(0x1F298C7BD30D1240, PlayerPedId())
-		print("hooked", w)
-	end
-)
-
--- local group = GetRandomIntInRange(0, 0xffffff)
--- local prompt
-
--- function initiatePrompt()
--- 	print('cretaed')
---     prompt = PromptRegisterBegin()
---     PromptSetControlAction(prompt,0xE8342FF2)
---     PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Crafting"))
---     PromptSetEnabled(prompt, 1)
---     PromptSetVisible(prompt, 1)
---     PromptSetStandardMode(prompt, 1)
--- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt, 0)
--- 	PromptSetAttribute(prompt, 10, true)
--- 	PromptSetAttribute(prompt, 11, true)
--- 	PromptSetAttribute(prompt, 18, true)
--- 	PromptSetTag(prompt, "CTX_REEL")
--- 	PromptSetGroup(prompt, group)
---     PromptRegisterEnd(prompt)
--- end
-
--- EVENT_PED_WHISTLE
--- case 1327216456:
--- func_157(iParam0);
-
--- exports('js_teste_native', (group, i, size) => {
-
---     let buffer = new ArrayBuffer(256 * 2);
---     let view = new DataView(buffer);
---     // dataView.setInt32(0, 3);
---     // dataView.setInt32(3, );
-
---     Citizen.invokeNative("0x57EC5FA4D4D6AFCA", group, i, view, size, Citizen.returnResultAnyway());
---     let out = new Int32Array(buffer);
-
---     console.log(out);
---     // console.log(JSON.stringify(out));
--- });
-
--- function DataViewNativeGetEventData(eventGroup, index, argStructSize)
--- 	local view = DataView.ArrayBuffer(256 * 2)
--- 	Citizen.InvokeNative(0x57EC5FA4D4D6AFCA, eventGroup, index, view:Buffer(), argStructSize, Citizen.ReturnResultAnyway())
--- 	return view
--- end
-
 RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
 RegisterNetEvent("VP:EVENTS:PedWhistle")
 
@@ -262,14 +204,14 @@ Citizen.CreateThread(
 						-- [bit 0] = Ped who is whistling
 						-- print("EVENT_PED_WHISTLE", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 2)
-						
+
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
 						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
-						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
 						-- exports["vp_admin"]:js_teste_native(0, i, 10)
 						-- exports["research"]:DataViewNativeGetEventData(0, i, 10)
 						-- Wait(1000)
+						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
 					elseif eventAtIndex == -1246119244 then
 						-- [bit 0] Ped -- Mostly the animal being interacted
 						-- [bit 2] Ped -- Mostly the one who is interacting
@@ -294,7 +236,6 @@ Citizen.CreateThread(
 						-- local containerEntity = view["2"]
 						-- local containerScenario = view["4"]
 						-- local isClosing = view["6"]
-
 						-- print(pedInteracting, containerEntity, containerScenario, isClosing)
 					elseif eventAtIndex == 1208357138 then
 						-- local carriableEntity = view["0"]
@@ -322,7 +263,7 @@ Citizen.CreateThread(
 
 						TriggerEvent("VP:EVENTS:PedFinishedGatheringPed", ped, pedGathered, bool_unk)
 					elseif eventAtIndex == 218595333 then
-						-- print("Horse broken")
+					-- print("Horse broken")
 					end
 
 					-- if eventAtIndex == 2099179610 then
@@ -355,6 +296,270 @@ Citizen.CreateThread(
 		end
 	end
 )
+
+local myFish
+local lastFishCoords
+
+RegisterCommand(
+	"hook",
+	function(source, args, rawCommand)
+		Citizen.InvokeNative(0xF0FBF193F1F5C0EA, myFish)
+		SetEntityInvincible(myFish, true)
+		SetPedConfigFlag(myFish, 17, true)
+		Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(), myFish)
+
+		--[[
+			CRIAR UM OBJETO DE BAIT
+			SETAR COMO O BAIT
+			E PEGAR OS PEIXES PROXIMO DELE
+		]]
+
+	end
+)
+
+RegisterCommand(
+	"fish",
+	function(source, args, rawCommand)
+		local r = {
+			"A_C_FISHBLUEGIL_01_SM",
+			"A_C_FISHBULLHEADCAT_01_SM",
+			"A_C_FISHCHAINPICKEREL_01_SM",
+			"A_C_FISHCHANNELCATFISH_01_LG",
+			"A_C_FISHLAKESTURGEON_01_LG",
+			"A_C_FISHLARGEMOUTHBASS_01_MS",
+			"A_C_FISHLONGNOSEGAR_01_LG",
+			"A_C_FISHMUSKIE_01_LG",
+			"A_C_FISHNORTHERNPIKE_01_LG",
+			"A_C_FISHPERCH_01_SM",
+			"A_C_FISHREDFINPICKEREL_01_SM",
+			"A_C_FISHROCKBASS_01_SM",
+			"A_C_FISHSMALLMOUTHBASS_01_MS",
+			"A_C_FISHSALMONSOCKEYE_01_MS",
+			"A_C_FISHRAINBOWTROUT_01_MS"
+		}
+
+		local pedModel = r[math.random(1, #r)]
+
+		local pedModelHash = GetHashKey(pedModel)
+		if not IsModelValid(pedModelHash) then
+			print("model is not valid")
+			return
+		end
+
+		if not HasModelLoaded(pedModelHash) then
+			RequestModel(pedModelHash)
+			while not HasModelLoaded(pedModelHash) do
+				Citizen.Wait(10)
+			end
+		end
+
+		local plped = PlayerPedId()
+		local forward = GetEntityForwardVector(plped)
+		local c = GetEntityCoords(plped) + (forward * 10.0)
+
+		local ped = CreatePed(pedModelHash, c, GetEntityHeading(plped), 1, 0)
+		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
+		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+		myFish = ped
+		lastFishCoords = c
+	end
+)
+
+local p1
+local p2
+local p3
+local promptGroup = GetRandomIntInRange(0, 0xffffff)
+local prompt_group_name = CreateVarString(10, "LITERAL_STRING", "Pesca")
+
+local carriedOnce = false
+
+print(1.0 / (1.0 + 0.0))
+
+-- Citizen.CreateThread(
+-- 	function()
+-- 		Citizen.InvokeNative(0xF66090013DE648D5, "MGFSH")
+-- 		Citizen.InvokeNative(0x8BC7C1F929D07BF3, GetHashKey("HUD_CTX_FISHING"))
+-- 		prompts()
+
+-- 		Citizen.InvokeNative(0xA63FCAD3A6FEC6D2, PlayerId(), 1) -- ENABLE_EAGLE_EYE(PLayer player, BOOL, enable)
+-- 		Citizen.InvokeNative(0x95EE1DEE1DCD9070, PlayerId(), 1) -- ENABLE_DEADEYE(Player player, BOOL enable)
+-- 		Citizen.InvokeNative(0x2C41D93F550D5E37, PlayerId(), 0) -- ENABLE_?(Player player, BOOL enable) /*default eagleeye when 0, green eagleye when wrong params */
+
+-- 		Citizen.InvokeNative(0x28A13BF6B05C3D83, PlayerId(), 1) -- SETS DEADEYE/EAGLEEYE INFINITE
+-- 		-- Citizen.InvokeNative(0x1710BC33CFB83634, PlayerId()) -- SET_ACTIVE_DEADEYE
+-- 		-- true: transition
+-- 		-- Citizen.InvokeNative(0x64FF4BF9AF59E139, PlayerId(), 0) -- SET_*_DEADEYE_DISABLED
+-- 		-- Citizen.InvokeNative(0x06E1FB78B1E59CA5, PlayerId(), 1)
+-- 		-- Citizen.InvokeNative(0xCE285A4413B00B7F, PlayerId(), 0)
+
+-- 		-- Citizen.InvokeNative(0xBC02B3D151D3859F, PlayerId(), 1)
+-- 		-- Citizen.InvokeNative(0x62ED71E133B6C9F1, PlayerId(), 0, 255, 255)
+
+-- 		while true do
+-- 			-- Citizen.InvokeNative(0x11A7FF918EF6BC66, PlayerId(), 0.0)
+
+-- 			Citizen.Wait(0)
+
+-- 			drawcircle()
+
+-- 			-- PromptSetActiveGroupThisFrame(promptGroup, prompt_group_name)
+
+-- 			if IsControlPressed(0, GetHashKey("INPUT_AIM")) then
+-- 				if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
+
+
+-- 					-- 0x8AC1D721B2097B6E
+
+-- 					-- local a =	Citizen.InvokeNative(0xF3735ACD11ACD500, PlayerPedId(), myFish)
+-- 					-- IS_FISH_HOOKED?
+-- 					-- Citizen.InvokeNative(0xF3735ACD11ACD501, PlayerPedId(), 0)
+-- 					-- exports['research']:DataViewNetowrk();
+-- 					-- -- print(a)
+-- 					print('yes')
+-- 					TaskGoToEntity(myFish, PlayerPedId(), -1, 0.1, 1.5, 0.1, 1)
+-- 				end
+-- 			end
+
+-- 			if PromptIsJustPressed(p3) then
+-- 				-- 0x5952DFA38FA529FE
+-- 				Citizen.InvokeNative(0x2208438012482A1A, PlayerPedId(), false, false)
+-- 			end
+
+-- 			-- print(IsEntityDead(myFish), IsEntityAttached(myFish), IsEntityInWater(myFish))
+
+-- 			if myFish ~= nil then
+-- 				Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(PlayerPedId()), GetEntityCoords(myFish), 255, 255, 0, 255)
+-- 				Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, GetEntityCoords(myFish), lastFishCoords, 255, 0, 255, 255)
+-- 				-- if carriedOnce == false then
+-- 				-- 	if not Citizen.InvokeNative(0xA911EE21EDF69DAF, PlayerPedId()) and IsEntityDead(myFish) and not IsEntityInWater(myFish) then
+-- 				-- 		DisableControlAction(0, GetHashKey("INPUT_AIM"), true)
+-- 				-- 		TaskPickupCarriableEntity(PlayerPedId(), myFish)
+-- 				-- 		carriedOnce = true
+-- 				-- 	end
+-- 				-- end
+
+-- 				local rand = math.random(100)
+
+-- 				if rand <= 5 then
+-- 					print('fleeing')
+-- 					TaskSmartFleeCoord(myFish, GetEntityCoords(PlayerPedId()), 40.0, 20000, 8, 1077936128)
+-- 				end
+-- 			end
+
+-- 			if HasAnimEventFired(PlayerPedId(), -1947554776) then
+-- 				print("fired")
+-- 			end
+-- 		end
+-- 	end
+-- )
+
+-- 0 : MGFSH_CTX_GRIP
+-- 1 : MGFSH_CTX_RESET & MGFSH_CTX_CUT_LINE
+-- 2 : MGFSH_CTX_HOOK
+-- 3 : MGFSH_CTX_REEL_LURE & MGFSH_CTX_REEL_IN
+-- 4 : MGFSH_CTX_CONTROL
+-- 5 : MGFSH_CTX_THROW_BACK
+-- 6 : MGFSH_CTX_KEEP
+-- 7 : MGFSH_CTX_CHOOSE
+-- 8 : MGFSH_CTX_EQUIP
+
+-- func_234 -- IS_PROMPT_VALID
+-- func_408 -- IS_PROMPT_JUST_PRESSED
+
+-- WATER::_0xF0FBF193F1F5C0EA(Ped fish)
+
+function prompts()
+	-- 0x05CA7C52
+	-- 0x6319DB71
+	-- 0xA65EBAB4
+	-- 0xDEB34313
+
+	p1 = PromptRegisterBegin()
+	Citizen.InvokeNative(0xF4A5C4509BF923B1, p1, 0)
+	PromptSetControlAction(p1, 0xCEFD9220)
+	PromptSetText(p1, "MGFSH_CTX_GRIP")
+	PromptSetEnabled(p1, 1)
+	PromptSetVisible(p1, 1)
+	-- PromptSetStandardMode(p1, 1)
+	PromptSetHoldIndefinitelyMode(p1, true)
+	-- PromptSetGroup(p1, promptGroup)
+	PromptRegisterEnd(p1)
+	PromptSetTag(p1, "CTX_GRIP")
+
+	p2 = PromptRegisterBegin()
+	Citizen.InvokeNative(0xF4A5C4509BF923B1, p2, 0)
+	PromptSetControlAction(p2, 0x05CA7C52)
+	PromptSetText(p2, "MGFSH_CTX_HOOK")
+	PromptSetEnabled(p2, 1)
+	PromptSetVisible(p2, 1)
+	PromptSetStandardMode(p2, 0)
+	-- PromptSetGroup(p2, promptGroup)
+	PromptRegisterEnd(p2)
+
+	p3 = PromptRegisterBegin()
+	Citizen.InvokeNative(0xF4A5C4509BF923B1, p3, 0)
+	PromptSetControlAction(p3, 0x6319DB71)
+	PromptSetText(p3, "MGFSH_CTX_REEL_IN")
+	PromptSetEnabled(p3, 1)
+	PromptSetVisible(p3, 1)
+	-- PromptSetRotateMode(p3, 0.0, 0)
+	PromptSetAttribute(p3, 10, 1)
+	PromptSetAttribute(p3, 11, 1)
+	PromptSetAttribute(p3, 18, 1)
+	PromptSetStandardMode(p3, 0)
+	-- PromptSetGroup(p3, promptGroup)
+	PromptRegisterEnd(p3)
+	PromptSetTag(p3, "CTX_REEL")
+
+	-- func_326
+end
+
+function delprompts()
+	PromptDelete(p1)
+	PromptDelete(p2)
+	PromptDelete(p3)
+	DeletePed(myFish)
+end
+
+AddEventHandler(
+	"onResourceStop",
+	function(resourceName)
+		if GetCurrentResourceName() == resourceName then
+			delprompts()
+		end
+	end
+)
+
+function drawcircle()
+	local center = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 15.0, 0.0)
+
+			local r = 10.0
+
+			local Cx = center.x
+			local Cy = center.y
+			local z = center.z
+
+			X_deg0 = Cx + (r * math.cos(0))
+			Y_deg0 = Cy + (r * math.sin(0))
+
+			-- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(PlayerPedId()), center, 255, 0, 0, 255)
+
+			for i = 0, 360, 45 do
+				i = math.rad(i)
+				local X_deg0 = Cx + (r * math.cos(i))
+				local Y_deg0 = Cy + (r * math.sin(i))
+
+				local Vec = vec3(X_deg0, Y_deg0, z)
+
+				-- local _, groundZ, _ = GetGroundZAndNormalFor_3dCoord(camVec.x, camVec.y, camVec.z)
+
+				-- if math.abs(z - groundZ) < minHeightAboveGround then
+				-- 	Vec = vec3(Vec)
+				-- end
+
+				Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,center, Vec, 255, 0, 0, 255)
+			end
+end
 
 -- 0x14169FA823679E41
 

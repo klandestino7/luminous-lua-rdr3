@@ -75,69 +75,20 @@ Citizen.CreateThread(
     end
 )
 
---[[
-["1"] = 0xE6F612E4,
-["2"] = 0x1CE6D9EB,
-["3"] = 0x4F49CC4C,
-["4"] = 0x8F9F9E58,
-["5"] = 0xAB62E997,
-["6"] = 0xA1FDE2A6,
-["7"] = 0xB03A913B,
-["8"] = 0x42385422,
-
-    ["F1"] = 0xA8E3F467,
-    ["F4"] = 0x1F6D95E5,
-    ["F6"] = 0x3C0A40F2,
-]]
 
 Citizen.CreateThread(
     function()
-        while true do            
-            Citizen.Wait(0)
-           -- print(GetHashKey('INPUT_SELECT_NEXT_WHEEL'))
-            EnableControlAction(0, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
-            EnableControlAction(0, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
-            EnableControlAction(0, 0x3C0A40F2, true)
-
-            EnableControlAction(1, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
-            EnableControlAction(1, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
-            EnableControlAction(1, 0x3C0A40F2, true)
-
-            EnableControlAction(2, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN'), true)
-            EnableControlAction(2, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE'), true)
-            EnableControlAction(2, 0x3C0A40F2, true)
-
-            if IsControlJustPressed(0, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
-                print('1')
-            end
-            if IsControlJustPressed(1, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
-                print('2')
-            end
-            if IsControlJustPressed(2, GetHashKey('INPUT_SELECT_WEAPON_HANDGUN')) then
-                print('3')
-            end
-
-            if IsControlJustPressed(0, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
-                print('1')
-            end
-            if IsControlJustPressed(1, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
-                print('2')
-            end
-            if IsControlJustPressed(2, GetHashKey('INPUT_SELECT_WEAPON_AUTO_RIFLE')) then
-                print('3')
-            end
-
-            if IsControlJustPressed(0, 0x3C0A40F2) then
-                print('1')
-            end
-            if IsControlJustPressed(1, 0x3C0A40F2) then
-                print('2')
-            end
-            if IsControlJustPressed(2, 0x3C0A40F2) then
-                print('3')
+        while true do
+            Citizen.Wait(1000)
+            for _, i in pairs(GetActivePlayers()) do
+                local ped = GetPlayerPed(i)
+                if ped ~= 0 then
+                    SetPedPromptName(ped, 'Desconhecido')
+                end
             end
         end
-end)
+    end
+)
 
 RegisterCommand(
     "testb",
