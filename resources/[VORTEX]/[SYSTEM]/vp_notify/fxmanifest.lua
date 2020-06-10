@@ -16,5 +16,6 @@ ui_page {
 
 exports {
 	'DisplayLeftNotification',
-	'DisplayNotification'
+	'DisplayNotification',
+	'DisplayLocationNotification'
 }
