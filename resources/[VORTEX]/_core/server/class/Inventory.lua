@@ -55,17 +55,6 @@ function API.Inventory(id, capacity, slots)
         return 0
     end
 
-    self.getItemAmount = function(this, itemId)
-        local amount = 0
-
-        for _, slotId in pairs(getSlotsWithEqualItemId(self.slots, itemId)) do
-            local _amount = self.slots[slotId]:getItemAmount()
-            amount = amount + _amount
-        end
-
-        return amount
-    end
-
     self.hasItem = function(this, item_id)
         return self:getItemAmount(item_id) > 0
     end

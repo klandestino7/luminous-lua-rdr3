@@ -25,7 +25,9 @@ local verificationData = {
         ["shotgun_pump"] = {0, 0, 0},
         ["ammo_revolver"] = {0, 0, 0, 100},
         ["ammo_rifle"] = {0, 0, 0, 75},
-        ["ammo_shotgun"] = {0, 0, 0, 50}
+        ["ammo_shotgun"] = {0, 0, 0, 50},
+        ["melee_lantern_electric"] = {0, 0, 0, 1},
+        ["melee_torch"] = {0, 0, 0, 1}
     },
     -- ["Mercadinho"] = {
     --     -- Level, Price, Amount(optional)
@@ -35,11 +37,13 @@ local verificationData = {
     --     ["tobacco_seed"] = {1, 100, 10}
     -- }
 
-    ["Geral"] = {
-        ["tobacco_seed"] = {100, 1, 1, 1},
-        ["corn_seed"] = {100, 1, 1, 1},
-        ["sugarcane_seed"] = {100, 1, 1, 1},
+    ["Mercado Geral"] = {
+        ["tobacco_seed"] = {10, 1, 1, 1},
+        ["corn_seed"] = {10, 1, 1, 1},
+        ["sugarcane_seed"] = {10, 1, 1, 1},
         ["pickaxe"] = {100, 1, 1, 1},
+        ["lasso"] = {200, 1, 1, 1},
+        ["melee_knife"] = {300, 1, 1}
     }
 }
 
@@ -104,7 +108,7 @@ AddEventHandler(
                     User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
                 end
             end
-                User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount or 1)
+            User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount or 1)
         else
             User:notify("error", "Espaço insuficiente na bolsa!")
         end

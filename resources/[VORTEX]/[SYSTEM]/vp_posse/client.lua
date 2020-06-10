@@ -28,9 +28,12 @@ Citizen.CreateThread(
 
             for _, v in pairs(spotPool) do
                 local dist = #(pedVec - v)
-                if (dist <= 50 and closestDist == nil) or (closestDist ~= nil and dist < closestDist) then
+                if (dist <= 5 and closestDist == nil) or (closestDist ~= nil and dist < closestDist) then
                     closestDist = dist
                     closestSpotIndex = _
+                else
+                    closestDist = nil
+                    closestSpotIndex = nil
                 end
             end
         end
@@ -105,7 +108,6 @@ AddEventHandler(
     end
 )
 
-
 RegisterNetEvent("VP:POSSE:OpenMenu")
 AddEventHandler(
     "VP:POSSE:OpenMenu",
@@ -134,6 +136,7 @@ AddEventHandler(
         )
     end
 )
+
 RegisterNUICallback(
     "NUICallbackOff",
     function()
@@ -144,21 +147,23 @@ RegisterNUICallback(
 RegisterNUICallback(
     "promote",
     function(charId)
-        TriggerServerEvent("VP:POSSE:Promote", charId)
+        print(charId)
+        TriggerServerEvent("VP:POSSE:Promote", charId.charId)
     end
 )
 
 RegisterNUICallback(
     "demote",
     function(charId)
-        TriggerServerEvent("VP:POSSE:Demote", charId)
+         print(charId)
+        TriggerServerEvent("VP:POSSE:Demote", charId.charId)
     end
 )
 
 RegisterNUICallback(
     "kick",
     function(charId)
-        TriggerServerEvent("VP:POSSE:Kick", charId)
+        TriggerServerEvent("VP:POSSE:Kick", charId.charId)
     end
 )
 
