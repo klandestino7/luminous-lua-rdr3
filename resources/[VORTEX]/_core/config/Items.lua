@@ -488,14 +488,14 @@ ItemList = {
         type = 'tonic',
         name = 'Medicina de Má Qualidade',
         weight = 0.4,
-        description = 'Ajuda na saúde. É um líquido medicinal.',
+        description = 'Ajuda na saúde. É um líquido medicinal e ílegal...',
         stackSize = 1,
     },
     ["stimulant_poor"] = {
         type = 'tonic',
         name = 'Estimulante de Má Qualidade',
         weight = 0.4,
-        description = 'Ajuda a melhorar a disposição física de seu corpo.',
+        description = 'Ajuda a melhorar a disposição física de seu corpo e ílegal...',
         stackSize = 1,
     },
     ---------------------------------------------
@@ -517,14 +517,14 @@ ItemList = {
         type = 'boost',
         name = 'Medicina para Cavalo de Má Qualidade',
         weight = 0.4,
-        description = 'Ajuda na saúde. É um líquido medicinal.',
+        description = 'Ajuda na saúde. É um líquido medicinal e ílegal...',
         stackSize = 1,
     },
     ["horse_stimulant_poor"] = {
         type = 'boost',
         name = 'Estimulante para Cavalo de Má Qualidade',
         weight = 0.4,
-        description = 'Ajuda a melhorar a disposição física de seu cavalo.',
+        description = 'Ajuda a melhorar a disposição física de seu cavalo e ílegal...',
         stackSize = 1,
     },
      ---------------------------------------------
