@@ -4,7 +4,7 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
-
+opened = false
 local Cinematic = false
 
 
@@ -65,7 +65,11 @@ Citizen.CreateThread(
         --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
         --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
 
-            
+            if IsControlJustPressed(0, 0x446258B6) then
+                print('press')
+                opened = true
+                TriggerServerEvent('VP:HUD:request')
+            end
             
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)
@@ -127,6 +131,35 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("VP:HUD:show")
+AddEventHandler(
+    "VP:HUD:show",
+    function(data)
+        SendNUIMessage(
+            {
+                showhud = true,            
+                data = data
+            }
+        )
+        Wait(10000)
+        TriggerEvent('VP:HUD:hide')
+    end
+)
+
+RegisterNetEvent("VP:HUD:hide")
+AddEventHandler(
+    "VP:HUD:hide",
+    function()
+        opened = false
+        SendNUIMessage(
+            {
+                hidehud = true
+            }
+        )
+    end
+)
+
+
 RegisterCommand(
     "cans",
     function(source, args)
@@ -166,7 +199,6 @@ Citizen.CreateThread(
         end
     end
 )
-
 
 function GetCurrentStateName()
     local pedCoords = GetEntityCoords(PlayerPedId())

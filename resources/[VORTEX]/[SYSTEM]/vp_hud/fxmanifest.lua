@@ -8,6 +8,17 @@ client_script {
 }
 
 server_scripts {
+    '@_core/lib/utils.lua',
     'server/server.lua'   
 }
 
+
+ui_page 'nui/ui.html'
+
+files {
+    'nui/*',
+    'nui/assets/*',
+    'nui/assets/icon/*',
+    'nui/css/*',
+    'nui/js/*'
+}

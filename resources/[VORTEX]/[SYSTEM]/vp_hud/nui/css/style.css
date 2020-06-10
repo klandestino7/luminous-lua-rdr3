@@ -1,0 +1,186 @@
+@font-face {
+	font-family: crock;
+	src: url(../assets/crock.ttf);
+}
+
+@font-face {
+	font-family: robotoslab;
+	src: url(../assets/robotoslab.ttf);	
+
+}
+body {
+	overflow: hidden;
+	user-select: none;
+}
+
+#container {
+	position: absolute;
+	top:2%;
+	width: 100%;
+	display:flex;
+	justify-content: center;
+}
+
+	.info { position: absolute; }
+	.info.server { top: 40px; right: 35px; width: 120px; height: 54px; }
+	#server { position:absolute; 	display:none;}
+	.info.server #server img { max-width: 100%; opacity: 1.0; }
+	#server2 { position:absolute;}
+	.info.server #server2 img { max-width: 100%; opacity: 0.55; position: relative;}
+
+#boxhud{
+	position:absolute;
+	background-image: url(../assets/bg.png);
+	background-repeat:  no-repeat;
+	background-position: center;
+	background-size:100% 100%;	
+	padding: 0vw 2.5vw;
+}
+
+#money {	
+	font-family: crock;
+	display:flex;
+	justify-content: center;
+	font-weight: 200;
+	font-size: 1.0vw;
+	color: white;
+	height:100%;
+	width: 100%;
+	padding: 0.3vw 0vw;
+	text-shadow:
+		-0.5px -0.5px 0 #000,
+		0.5px -0.5px 0 #000,
+		-0.5px 0.5px 0 #000,
+		0.5px 0.5px 0 #000;
+}
+
+#money #level i {
+	background-image: url(../assets/icon/level.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:1.5vw;
+}
+
+#money #xp i {
+	background-image: url(../assets/icon/xp.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:1.5vw;
+}
+
+
+#money #gold i {
+	background-image: url(../assets/icon/gold.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:1.5vw;
+	margin-right:5px;
+}
+
+#money #cash i {
+	background-image: url(../assets/icon/money.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:1.5vw;
+
+}
+
+#money #id i {
+	background-image: url(../assets/icon/id.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:1.5vw;
+	margin-right:-3px;
+}
+
+#started {
+	color: white;
+	position: absolute;
+	left: 20%;
+	top: 5%;
+	width: 60%;
+	background: rgba(40, 40, 40, 0.8);
+}
+
+
+#gold{display:flex;color:#f5c504;margin-right:25px;}
+#cash{display:flex;margin-right:25px; }
+#id{margin-right:25px; color:#d2b84f;}
+#level{margin-right:25px;} 
+#xp{margin-right:25px; color:#4fafd2;}
+
+#goldsvg2{color:#f5c504;}
+
+
+div:before {
+  content:attr(data-text1);  
+  color:red;
+   font-size: 5px;
+}
+
+div:after {
+  content:attr(data-text2);  
+  color:yellow;
+  font-size: 2px;
+}
+
+.goldsvg {	
+	content:'';
+	width:20px;
+	height:20px; 
+}
+
+.cashsvg {	
+	content:'';
+	width:25px;
+	height:25px; 
+	margin-top:-3px;
+	font-size: 25px;
+	margin-right:-10px;
+}
+
+#money2 {
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	font-family: kirsty;
+	font-size: 20px;
+	color: white;
+	padding: 4px;
+	text-shadow:
+		-0.5px -0.5px 0 #000,
+		0.5px -0.5px 0 #000,
+		-0.5px 0.5px 0 #000,
+		0.5px 0.5px 0 #000;
+}
+
+.fas {
+	color: #ffffff;
+	font-weight: 900;
+	margin-right: 6px;
+}
+
+.tiny {
+	font-size: 25px;
+	position: absolute;
+	right:30px; 
+	top:50%;
+}
+
+.tiny2 {
+	position: absolute;
+	text-align: right;
+	font-size: 32px;
+	width: 100%;
+	right:30px; 
+	top:35%;
+}
+
+.tiny3 {
+	position: absolute;
+	text-align: right;
+	font-size: 25px;
+	width: 100%;
+	right:30px; 
+	top:40%;
+}

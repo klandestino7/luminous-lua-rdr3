@@ -1,3 +1,10 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+API = Proxy.getInterface("API")
+API_DB = Proxy.getInterface("API_DB")
+cAPI = Tunnel.getInterface("API")
+
 AddEventHandler(
     "VP:INVENTORY:UPDATE:AddItem",
     function(Inventory, itemId)
@@ -35,6 +42,36 @@ AddEventHandler(
             end
         end
 end)
+
+
+RegisterServerEvent('VP:HUD:request')
+AddEventHandler('VP:HUD:request', function()
+	local _source = source
+	local User = API.getUserFromSource(_source)
+    local Character = User:getCharacter()
+    local Inventory = Character:getInventory()
+
+	if Character == nil then
+		return
+	end
+	
+    local level = Character:getLevel()
+    local xp = Character:getExp()
+    local id = User:getId()
+    local dolar = Inventory:getItemAmount("money") / 100
+    local gold = Inventory:getItemAmount("gold") / 100
+
+	
+    local data = {
+        ["xp"] = xp,
+        ["id"] = id,
+        ["dolar"] = dolar,
+        ["gold"] = gold,
+        ["level"] = level,
+    }
+
+	TriggerClientEvent('VP:HUD:show', _source, data)
+end) 
 
 
 RegisterCommand("reveal", function(source, args)
