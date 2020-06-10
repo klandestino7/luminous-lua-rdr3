@@ -234,6 +234,6 @@ API_Database.prepare('INSERT:crop_insert_slot', 'INSERT INTO farms(crop_id, slot
 API_Database.prepare('SELECT:get_crop_slots', 'SELECT slot_id, crop_percent_grown, crop_min_time_water FROM farms WHERE crop_id = @crop_id')
 
 ------------ HOUSE RENT QUERIES --------------
-API_Database.prepare('INSERT:house_rent', 'INSERT INTO house_id(house_id, house_next_payment) VALUES (@house_id, @house_next_payment)')
-API_Database.prepare('SELECT:house_rent', 'SELECT house_next_payment from house_id WHERE house_id = @house_id')
+API_Database.prepare('INSERT:house_rent', 'INSERT INTO house_rent(house_id, house_next_payment) VALUES (@house_id, @house_next_payment)')
+API_Database.prepare('SELECT:house_rent', 'SELECT house_next_payment from house_rent WHERE house_id = @house_id')
 API_Database.prepare('DELETE:house_rent', 'DELETE FROM house_rent WHERE house_id = @house_id')
