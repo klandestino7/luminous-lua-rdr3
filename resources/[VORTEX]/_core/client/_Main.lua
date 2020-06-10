@@ -373,15 +373,16 @@ Citizen.CreateThread(
 	function()
 		while true do
 			Citizen.Wait(3)
-			if IsControlJustPressed(1, 166) then
+			if IsControlJustPressed(0, 0xCEFD9220) then
 				SendNUIMessage({act = "event", event = "yes"})
 			end
-			if IsControlJustPressed(1, 167) then
+			if IsControlJustPressed(0, 0x4BC9DABB) then
 				SendNUIMessage({act = "event", event = "no"})
 			end
 		end
 	end
 )
+
 
 local noclip = false
 local noclip_speed = 10.0
@@ -444,7 +445,7 @@ Citizen.CreateThread(
 				elseif IsControlPressed(0, 0xDB096B85) then -- CTRL
 					noclip_speed = 0.2
 				else
-					noclip_speed = 0.001
+					noclip_speed = 1.0
 				end
 
 				SetEntityCoordsNoOffset(ped, x, y, z, true, true, true)

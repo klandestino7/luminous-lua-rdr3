@@ -31,6 +31,7 @@ function API.Posse(id, charid, name, members)
     end
 
     self.notifyMembers = function()
+        
     end
 
     self.promoteMember = function(this, charid)
