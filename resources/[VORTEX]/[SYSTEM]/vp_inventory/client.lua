@@ -283,7 +283,7 @@ RegisterNUICallback(
 RegisterNUICallback(
     "drop",
     function(cb)
-        -- TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId))
+        TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId))
     end
 )
 
