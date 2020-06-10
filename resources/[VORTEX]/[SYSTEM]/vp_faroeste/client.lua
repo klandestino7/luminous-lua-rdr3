@@ -26,6 +26,12 @@ RegisterCommand('blipcall', function(source, args)
     end    
 end)
 
+RegisterCommand('estado', function(source, args)
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
+    print(town_hash)
+
+end)
 
 
 

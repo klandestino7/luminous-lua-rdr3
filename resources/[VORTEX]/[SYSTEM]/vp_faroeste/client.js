@@ -1,4 +1,4 @@
-exports('js_get_ped_component_at_index', () => {
+/*exports('js_get_ped_component_at_index', () => {
 
   const arrayBuffer = new ArrayBuffer(256 * 4);
   const dataView = new DataView(arrayBuffer);
@@ -25,4 +25,5 @@ exports('js_get_ped_component_at_index', () => {
 
   // return new Vector3(arrayOut[0], arrayOut[2], arrayOut[4]);
   // return [arrayOut[0], arrayOut[2], arrayOut[4]];
-});
+}); */
+
