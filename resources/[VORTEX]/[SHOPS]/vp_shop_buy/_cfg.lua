@@ -24,16 +24,20 @@ Config.ShopDatas = {
 			{"shotgun_pump", 0, 0, 0},
 			{"ammo_revolver", 0, 0, 0},
 			{"ammo_rifle", 0, 0, 0},
-			{"ammo_shotgun", 0, 0, 0}
+			{"ammo_shotgun", 0, 0, 0},
+			{"melee_lantern_electric", 0, 0, 0},
+			{"melee_torch", 0, 0, 0},
 		}
 	},
 	{
-		name = "Geral",
+		name = "Mercado Geral",
 		{
-			{"tobacco_seed", 100, 1, 1},
-			{"corn_seed", 100, 1, 1},
-			{"sugarcane_seed", 100, 1, 1},
-			{"pickaxe", 100, 1, 1}
+			{"tobacco_seed", 10, 1, 1},
+			{"corn_seed", 10, 1, 1},
+			{"sugarcane_seed", 10, 1, 1},
+			{"pickaxe", 100, 1, 1},
+			{"lasso", 200, 1, 1},
+			{"melee_knife", 300, 1, 1},
 		}
 	}
 }
@@ -69,7 +73,7 @@ Config.ShopLocations = {
 	-- ["PlanetaSemente"] = {
 	-- 	{1296.121, -1279.396, 75.834}
 	-- },
-	["Geral"] = {
+	["Mercado Geral"] = {
 		{1327.907, -1292.865, 77.023},
 		{-785.338, -1323.850, 43.884}
 	}

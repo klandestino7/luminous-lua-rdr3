@@ -14,20 +14,6 @@ local sentFirstData = false
 
 Citizen.CreateThread(
     function()
-        for shopId, shopLocations in pairs(Config.ShopLocations) do
-            -- for _, locationData in pairs(shopLocations) do
-            --     local x, y, z, _ = table.unpack(locationData)
-            --     local blip = AddBlipForCoord(x, y, z)
-            --     SetBlipSprite(blip, 110)
-            --     SetBlipDisplay(blip, 4)
-            --     SetBlipScale(blip, 0.7)
-            --     SetBlipAsShortRange(blip, true)
-            --     BeginTextCommandSetBlipName("STRING")
-            --     AddTextComponentSubstringPlayerName("map_blip")
-            --     EndTextCommandSetBlipName(blip)
-            -- end
-        end
-
         while true do
             Citizen.Wait(1000)
 
@@ -71,8 +57,11 @@ Citizen.CreateThread(
 
                 if #(pCoords - closestShopVector) <= 1.5 then
                     PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", closestShopId))
-                    if PromptIsJustPressed(prompt) then
-                        TriggerEvent("VP:SHOP:SELL:OpenShop", closestShopId)
+                    if PromptHasHoldModeCompleted(prompt) then
+                        if IsControlPressed(0, 0xDFF812F9) then
+                            TriggerEvent("VP:SHOP:SELL:OpenShop", closestShopId)
+                            Citizen.Wait(1000)
+                        end
                     end
                 end
             end
@@ -85,9 +74,9 @@ function InitiatePrompts()
     prompt_group = GetRandomIntInRange(0, 0xffffff)
     PromptSetControlAction(prompt, 0xDFF812F9)
     PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Abrir"))
-    PromptSetEnabled(prompt, 1)
-    PromptSetVisible(prompt, 1)
-    PromptSetStandardMode(prompt, 1)
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, true)
     PromptSetPosition(prompt, foundShopVector)
     PromptSetGroup(prompt, prompt_group)
     -- N_0x0c718001b77ca468(prompt, 1.5)
@@ -123,8 +112,6 @@ AddEventHandler(
                     end
                 end
             end
-
-            print('sent first data')
 
             SendNUIMessage(
                 {
