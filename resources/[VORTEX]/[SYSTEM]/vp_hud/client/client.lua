@@ -4,7 +4,7 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
-
+opened = false
 local Cinematic = false
 
 
@@ -65,7 +65,11 @@ Citizen.CreateThread(
         --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
         --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
 
-            
+            if IsControlJustPressed(0, 0x446258B6) then
+                print('press')
+                opened = true
+                TriggerServerEvent('VP:HUD:request')
+            end
             
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)
@@ -127,6 +131,35 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("VP:HUD:show")
+AddEventHandler(
+    "VP:HUD:show",
+    function(data)
+        SendNUIMessage(
+            {
+                showhud = true,            
+                data = data
+            }
+        )
+        Wait(10000)
+        TriggerEvent('VP:HUD:hide')
+    end
+)
+
+RegisterNetEvent("VP:HUD:hide")
+AddEventHandler(
+    "VP:HUD:hide",
+    function()
+        opened = false
+        SendNUIMessage(
+            {
+                hidehud = true
+            }
+        )
+    end
+)
+
+
 RegisterCommand(
     "cans",
     function(source, args)
@@ -148,6 +181,139 @@ RegisterCommand(
     end
 )
 
+
+Citizen.CreateThread(
+    function()
+        local StateName
+        while true do
+            Citizen.Wait(0)
+            local CurrentStateName = GetCurrentStateName()            
+            if CurrentStateName ~= StateName then  
+                local RegionName = GetCurrentRegionName()
+                DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+                DrawTxt(RegionName, 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+                DrawTxt(CurrentStateName, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+                Wait(10000)
+                StateName = CurrentStateName              
+            end
+        end
+    end
+)
+
+function GetCurrentStateName()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
+
+    if town_hash == GetHashKey("GuarmaD") then
+        return "Nuevo Paraiso"
+    elseif town_hash == GetHashKey("BayouNwa") then
+        return "Lemoyne"
+    elseif town_hash == GetHashKey("bigvalley") then
+        return "West Elizabeth"
+    elseif town_hash == GetHashKey("BluewaterMarsh") then
+        return "Lemoyne"
+    elseif town_hash == GetHashKey("ChollaSprings") then
+        return "New Austin"
+    elseif town_hash == GetHashKey("Cumberland") then
+        return "Ambarino"
+    elseif town_hash == GetHashKey("DiezCoronas") then
+        return "Nuevo Paraiso"
+    elseif town_hash == GetHashKey("GaptoothRidge") then
+        return "New Austin"
+    elseif town_hash == GetHashKey("greatPlains") then
+        return "West Elizabeth"
+    elseif town_hash == GetHashKey("GrizzliesEast") then
+        return "Ambarino"
+    elseif town_hash == GetHashKey("GrizzliesWest") then
+        return "Ambarino"
+    elseif town_hash == GetHashKey("HennigansStead") then
+        return "New Austin"
+    elseif town_hash == GetHashKey("Perdido") then
+        return "Nuevo Paraiso"
+    elseif town_hash == GetHashKey("PuntaOrgullo") then
+        return "Nuevo Paraiso"
+    elseif town_hash == GetHashKey("RioBravo") then
+        return "New Austin"
+    elseif town_hash == GetHashKey("roanoke") then
+        return "New Hanover"
+    elseif town_hash == GetHashKey("scarlettMeadows") then
+        return "Lemoyne"
+    elseif town_hash == GetHashKey("TallTrees") then
+        return "West Elizabeth"
+    elseif town_hash == GetHashKey("Heartlands") then
+        return "New Hanover"
+    elseif town_hash == false then
+        return "Cidade Desconhecida"
+    end
+end
+
+
+function GetCurrentRegionName()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
+    if town_hash == GetHashKey("GuarmaD") then
+        return "GuarmaD"
+    elseif town_hash == GetHashKey("BayouNwa") then
+        return "Bayou Nwa"
+    elseif town_hash == GetHashKey("bigvalley") then
+        return "Big Valley"
+    elseif town_hash == GetHashKey("BluewaterMarsh") then
+        return "Bluewater Marsh"
+    elseif town_hash == GetHashKey("ChollaSprings") then
+        return "Cholla Springs"
+    elseif town_hash == GetHashKey("Cumberland") then
+        return "Cumberland"
+    elseif town_hash == GetHashKey("DiezCoronas") then
+        return "Diez Coronas"
+    elseif town_hash == GetHashKey("GaptoothRidge") then
+        return "Gaptooth Ridge"
+    elseif town_hash == GetHashKey("greatPlains") then
+        return "Great Plains"
+    elseif town_hash == GetHashKey("GrizzliesEast") then
+        return "Grizzlies East"
+    elseif town_hash == GetHashKey("GrizzliesWest") then
+        return "Grizzlies West"
+    elseif town_hash == GetHashKey("HennigansStead") then
+        return "Hennigans Stead"
+    elseif town_hash == GetHashKey("Perdido") then
+        return "Perdido"
+    elseif town_hash == GetHashKey("PuntaOrgullo") then
+        return "Punta Orgullo"
+    elseif town_hash == GetHashKey("RioBravo") then
+        return "Rio Bravo"
+    elseif town_hash == GetHashKey("roanoke") then
+        return "Roanoke"
+    elseif town_hash == GetHashKey("scarlettMeadows") then
+        return "Scarlett Meadows"
+    elseif town_hash == GetHashKey("TallTrees") then
+        return "Tall Trees"
+    elseif town_hash == GetHashKey("Heartlands") then
+        return "The Heartlands"
+    elseif town_hash == false then
+        return "Desconhecido"
+    end
+end
+
+
+function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
+	local str = CreateVarString(10, 'LITERAL_STRING', str)
+	--Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
+	SetTextScale(w, h)
+	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+	SetTextCentre(centre)
+	if enableShadow then
+		SetTextDropshadow(1, 0, 0, 0, 255)
+	end
+	Citizen.InvokeNative(0xADA9255D, 1)
+	DisplayText(str, x, y)
+end
+
+
+
+
+function CreateVarString(p0, p1, variadic)
+	return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
+end
 
 -- local prompt = false
 -- local AnimalPrompt

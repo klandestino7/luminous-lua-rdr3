@@ -5,7 +5,9 @@ local blips = {
     { name = 'Sheriff (DP)', sprite = -693644997, x = -759.17, y = -1266.61, z = 44.06 }, --BLAKCWATER
     { name = 'Sheriff (DP)', sprite = -693644997, x = -1808.51, y = -348.13, z = 164.65 }, --STRAWBERRY
    	{ name = 'Sheriff (DP)', sprite = -693644997, x = -275.95, y = 804.97, z = 119.38 }, --ARMADILLO 
-   	{ name = 'Sheriff (DP)', sprite = -693644997, x = 1359.64, y = -1304.43, z = 77.77 }, --RHODES
+   	{ name = 'Sheriff (DP)', sprite = -693644997, x = 1359.64, y = -1304.43, z = 77.77 }, --RHODES     
+   	{ name = 'Sheriff (DP)', sprite = -693644997, x = 2908.20, y = 1311.53, z = 44.94 }, -- ANNESBURGS
+   	
     { name = 'Departamento de Polícia', sprite = -693644997, x = 2512.04, y = -1308.5, z = 48.95 }, --SAINT DENIS
 
    	-- LOJA DE ARMAS
@@ -52,6 +54,9 @@ local blips = {
 	--BANCOS
 	{ name = 'Banco', sprite = -2128054417, x = -308.52, y = 775.99, z = 118.7 },
 	{ name = 'Banco', sprite = -2128054417, x = -813.09, y = -1277.52, z = 43.64 },
+	{ name = 'Banco', sprite = -2128054417, x = 2642.879, y = -1296.995, z = 52.252 },  -- saint DENIS
+	{ name = 'Banco', sprite = -2128054417, x = 1299.520, y = -1300.899, z = 77.625 }, -- BLAKCWATER
+
 	-- CORREIOS
 
 	{ name = 'Correio', sprite = 1861010125, x = -872.21, y = -1334.13, z = 43.97 },
@@ -72,7 +77,7 @@ local blips = {
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = 1889.65, y = -1343.7, z = 42.51 },
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = -5514.86, y = -3044.4, z = -2.39 },
 	--CRIAÇAO DE BANDO
-	{ name = 'Criar Bando', sprite = -428972082, x = -61.61, y = -391.78, z = 72.21 },
+	{ name = 'Criar Bando', sprite = -428972082, x = -374.009, y = 724.092, z = 116.359 },
 	{ name = 'Mineração', sprite = 1202244626, x = -2368.15, y = 112.84, z = 216.77 },
 	{ name = 'Processamento de Cobre', sprite = -2024635066, x = 2942.67, y = 1381.81, z = 56.25 },
 	{ name = 'Processamento de Metal', sprite = -2024635066, x = -6048.58, y = -3260.85, z = -17.98 },

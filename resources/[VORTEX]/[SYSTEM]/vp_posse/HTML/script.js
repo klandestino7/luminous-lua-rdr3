@@ -16,18 +16,18 @@ window.addEventListener("message", function (event) { //lua actions
                         <span>${rankToRankName(data.rank)}</span>
                     </div>
                     <div class="um-container">
-                        <div id="Remove-${charId}">
+                        <div id="Remove-${charId}" onclick="kick(${data.UserID})">
                             <img src="https://filmcrz.github.io/blips/index.files/image709.png">
                         </div>
-                        <div id="Info-${charId}">
+                        <div id="Info-${charId}" >
                             <img src="https://filmcrz.github.io/blips/index.files/image747.png">
                         </div>
                     </div>
                     <div class="pd-container">
-                        <div id="Promote-${charId}">
+                        <div id="Promote-${charId}" onclick="promote(${data.UserID})">
                             <img src="https://filmcrz.github.io/blips/index.files/image691.png">
                         </div>
-                        <div id="Unpromote-${charId}">
+                        <div id="Unpromote-${charId}" onclick="demote(${data.UserID})">
                             <img src="https://filmcrz.github.io/blips/index.files/image699.png">
                         </div>
                     </div>
@@ -38,9 +38,8 @@ window.addEventListener("message", function (event) { //lua actions
                 Tooltip(document.getElementById(`Remove-${charId}`), "Remover do Bando")
                 Tooltip(document.getElementById(`Info-${charId}`), `
                 <a style="color: white;"text-align:center;"> Dados do jogador no bando:</a><br>
-                <a style="color: white;">Passaporte: <font style="color: rgba(127,220,86,1.0);"> ${charId} </font></a><br>
-                <a style="color: white;">Horas online: <font style="color: rgba(127,220,86,1.0);"> 22 horas</font></a><br>
-                <a style="color: white;">Contribuicao: <font style="color: rgba(127,220,86,1.0);"> 125 b.p</font></a><br>
+                <a style="color: white;">Passaporte: <font style="color: rgba(127,220,86,1.0);"> ${data.UserID} </font></a><br>
+                <a style="color: white;">Level: <font style="color: rgba(127,220,86,1.0);"> ${data.level}</font></a><br>
                 <a style="color: white;">Titulacao: <font style="color: rgba(127,220,86,1.0);"> ${rankToRankName(data.rank)}</font></a><br>
             `)
             }
@@ -55,27 +54,29 @@ window.addEventListener("message", function (event) { //lua actions
 function promote(element) {
     var charId = $(element).attr('id');
     $.post('http://vp_posse/promote', JSON.stringify({
-        charId: charId,
+        charId: element,
     }));
 }
 
 function demote(element) {
     var charId = $(element).attr('id');
     $.post('http://vp_posse/demote', JSON.stringify({
-        charId: charId,
+        charId: element,
     }));
 }
 
 function kick(element) {
     var charId = $(element).attr('id');
     $.post('http://vp_posse/kick', JSON.stringify({
-        charId: charId,
+        charId: element,
     }));
 }
 
 function leave(element) {
     var charId = $(element).attr('id');
-    $.post('http://vp_posse/leave', JSON.stringify({}));
+    $.post('http://vp_posse/leave', JSON.stringify({
+        charId: element,
+    }));
 }
 
 function rankToRankName(rank) {
