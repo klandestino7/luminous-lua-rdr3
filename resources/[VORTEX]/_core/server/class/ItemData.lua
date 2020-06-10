@@ -95,51 +95,98 @@ function triggerUse(User, itemData)
         return true
     end
 
-    if itemType == "tonic" or itemType == "boost" then
-        if itemId:find("tonic") then
-            cAPI.TaskInteraction(source, "drink_tonic")
-            User:closeInventory()
+    if itemId:find("medicine") then
+        -- medicine_good
+        if itemId:find("horse") then
+            local variation = 15.0
+            local variationCore = 15.0
 
-            if itemId:find("health") then
-                cAPI.VaryPlayerHealth(source, 25, 60)
-            elseif itemId:find("stamina") then
-                cAPI.VaryPlayerStamina(source, 25, 60)
+            if itemId:find("poor") then
+                local variation = 5.0
+                local variationCore = 5.0
             end
+
+            if cAPI.IsPlayerMountedOnOwnHorse(source) then
+                Citizen.CreateThread(
+                    function()
+                        cAPI.TaskAnimalInteraction(source, "injection")
+                        cAPI.VaryHorseHealth(source, variation)
+                        cAPI.VaryHorseCore(source, 0, variationCore)
+                    end
+                )
+                return true
+            end
+        else
+            local variation = 25.0
+            local variationCore = 25.0
+            local canBeSick = false
+
+            if itemId:find("poor") then
+                local variation = 15.0
+                local variationCore = 15.0
+                canBeSick = true
+            end
+
+            Citizen.CreateThread(
+                function()
+                    cAPI.TaskInteraction(source, "drink_tonic")
+                    cAPI.VaryPlayerHealth(source, variation)
+                    cAPI.VaryPlayerCore(source, 0, variationCore)
+                end
+            )
             return true
         end
 
-        if itemId:find("boost") then
-            if itemId:find("horse") then
-                if cAPI.IsPlayerMountedOnOwnHorse(source) then
-                    cAPI.TaskAnimalInteraction(source, "injection")
-                    User:closeInventory()
+        return false
+    end
 
+    if itemId:find("stimulant") then
+        -- medicine_good
+        if itemId:find("horse") then
+            local variation = 15.0
+            local variationCore = 15.0
 
-                    if itemId:find("health") then
-                        cAPI.VaryHorseHealth(source, 25)
-                    elseif itemId:find("stamina") then
-                        cAPI.VaryHorseStamina(source, 25)
+            if itemId:find("poor") then
+                local variation = 5.0
+                local variationCore = 5.0
+            end
+
+            if cAPI.IsPlayerMountedOnOwnHorse(source) then
+                Citizen.CreateThread(
+                    function()
+                        cAPI.TaskAnimalInteraction(source, "injection")
+                        cAPI.VaryHorseStamina(source, variation)
+                        cAPI.VaryHorseCore(source, 1, variationCore)
                     end
-                    return true
-                else
-                    return false
-                end
-            else
-                cAPI.TaskInteraction(source, "injection")
-                User:closeInventory()
-
-                if itemId:find("health") then
-                    cAPI.VaryPlayerHealth(User:getSource(), 25)
-                    cAPI.VaryPlayerCore(User:getSource(), 0, 25, 0, true)
-                elseif itemId:find("stamina") then
-                    cAPI.VaryPlayerStamina(User:getSource(), 25)
-                    cAPI.VaryPlayerCore(User:getSource(), 1, 25, 0, true)
-                end
+                )
                 return true
             end
+        else
+            local variation = 25.0
+            local variationCore = 25.0
+            local canBeSick = false
+
+            if itemId:find("poor") then
+                local variation = 15.0
+                local variationCore = 15.0
+                canBeSick = true
+            end
+
+            Citizen.CreateThread(
+                function()
+                    cAPI.TaskInteraction(source, "injection")
+                    cAPI.VaryPlayerStamina(source, variation)
+                    cAPI.VaryPlayerCore(source, 1, variationCore)
+                end
+            )
+            return true
         end
 
         return false
+    end
+
+    if itemId == 'waterbottle' then
+        cAPI.VaryPlayerStamina(source, 50)
     end
 
     if itemId == "chest_small" then
