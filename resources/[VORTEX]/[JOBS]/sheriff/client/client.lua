@@ -29,6 +29,8 @@ AddEventHandler(
 				role = role + 2
 			end
 		end
+
+		print("group", role)
 	end
 )
 
@@ -47,6 +49,14 @@ AddEventHandler(
 	end
 )
 
+RegisterNetEvent("VP:SHERIFF:UpdateRole")
+AddEventHandler(
+	"VP:SHERIFF:UpdateRole",
+	function(_role)
+		role = _role
+	end
+)
+
 keys = {
 	["G"] = 0x760A9C6F,
 	["S"] = 0xD27782E3,
@@ -55,42 +65,6 @@ keys = {
 	["G"] = 0x5415BE48,
 	["E"] = 0xDFF812F9
 }
-
----------------------------
--- POLICE MANAGEMENT API --
----------------------------
-SheriffCheck = nil
-PoliceCheck = nil
-Citizen.CreateThread(
-	function()
-		for k, v in pairs(Config.Coords) do
-			Citizen.InvokeNative(0x554d9d53f696d002, -1595050198, v)
-		end
-
-		while true do
-			Citizen.Wait(0)
-			local playerPed = PlayerPedId()
-			local coords = GetEntityCoords(playerPed)
-			if isATrooper() then
-				for k, v in pairs(Config.Coords) do
-					if Vdist(coords, v) < 8 then
-						if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
-							WarMenu.OpenMenu("DpOfficerMenu")
-						end
-					end
-				end
-
-				if IsControlJustPressed(0, 0x760A9C6F) then -- Hold F6
-					TriggerEvent("VP:SHERIFF:cuffcheck")
-				end
-
-				if IsControlJustPressed(0, 0x3C0A40F2) then -- Hold F6
-					WarMenu.OpenMenu("OfficerMenu")
-				end
-			end
-		end
-	end
-)
 
 RegisterCommand(
 	"checkpolice",
@@ -134,29 +108,55 @@ AddEventHandler(
 -- /////////////// MENU DO DEPARTAMENTO
 Citizen.CreateThread(
 	function()
+
+		for k, v in pairs(Config.Coords) do
+			Citizen.InvokeNative(0x554d9d53f696d002, -1595050198, v)
+		end
+
 		WarMenu.CreateMenu("DpOfficerMenu", "Departamento")
 		WarMenu.SetSubTitle("DpOfficerMenu", "Opções")
-		WarMenu.CreateSubMenu("Armored", "DpOfficerMenu", "Armamento")
+		-- WarMenu.CreateSubMenu("Armored", "DpOfficerMenu", "Armamento")
 		WarMenu.CreateSubMenu("vehicle", "DpOfficerMenu", "Transporte.")
 		while true do
 			Citizen.Wait(0)
 			local playerPed = PlayerPedId()
 			local coords = GetEntityCoords(playerPed)
-			if WarMenu.IsMenuOpened("DpOfficerMenu") then
-				if WarMenu.MenuButton("Armas", "Armored") then
+
+			if isATrooper() then
+				for k, v in pairs(Config.Coords) do
+					if #(coords - v) < 8.0 then
+						if IsControlJustPressed(0, 0xCEFD9220) then  -- Hold ALT
+							print('hold')
+							WarMenu.OpenMenu("DpOfficerMenu")
+							break
+						end
+					end
 				end
+
+				if IsControlJustPressed(0, 0x760A9C6F) then -- Hold F6
+					TriggerEvent("VP:SHERIFF:cuffcheck")
+				end
+
+				if IsControlJustPressed(0, 0x3C0A40F2) then -- Hold F6
+					WarMenu.OpenMenu("OfficerMenu")
+				end
+			end
+
+			if WarMenu.IsMenuOpened("DpOfficerMenu") then
+				-- if WarMenu.MenuButton("Armas", "Armored") then
+				-- end
 				if WarMenu.MenuButton("Transportes", "vehicle") then
 				end
 				WarMenu.Display()
-			elseif WarMenu.IsMenuOpened("Armored") then
-				if WarMenu.Button("Pistola Mauser") then
-					TriggerEvent("VP:SHERIFF:giveweapon", "weapon_pistol_semiauto")
-				elseif WarMenu.Button("Bolt action rifle") then
-					TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_RIFLE_BOLTACTION")
-				elseif WarMenu.Button("Pump shotgun") then
-					TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_SHOTGUN_PUMP")
-				end
-				WarMenu.Display()
+			-- elseif WarMenu.IsMenuOpened("Armored") then
+			-- 	if WarMenu.Button("Pistola Mauser") then
+			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "weapon_pistol_semiauto")
+			-- 	elseif WarMenu.Button("Bolt action rifle") then
+			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_RIFLE_BOLTACTION")
+			-- 	elseif WarMenu.Button("Pump shotgun") then
+			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_SHOTGUN_PUMP")
+			-- 	end
+			-- 	WarMenu.Display()
 			elseif WarMenu.IsMenuOpened("vehicle") then
 				if WarMenu.Button("Carroça 2") then
 					SpawnVehicle("POLICEWAGON01X", GetPlayerPed())
