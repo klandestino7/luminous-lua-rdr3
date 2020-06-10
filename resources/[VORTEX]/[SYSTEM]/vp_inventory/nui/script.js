@@ -414,7 +414,15 @@ function elementAsDraggable(element, a, b, c, d, e) {
             select($(this));
         },
         stop: function(event, ui) {
-            select($(this));
+            var elem = document.elementFromPoint(ui.position.left, ui.position.top); // x, y
+
+            if ($(elem).is("body")) {
+                $.post('http://vp_inventory/drop', JSON.stringify({
+                    slotId: $(this).attr('id'),
+                }));
+            }
+
+            // select($(this));
             // unSelect($(this));
         },
     });
@@ -559,12 +567,32 @@ function drawPrimary() {
 
                 elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize);
 
-                $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
-                    let selfSlot = $(this).attr('id');
-                    $.post('http://vp_inventory/use', JSON.stringify({
-                        slotId: selfSlot,
-                    }));
-                })
+                // $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
+                //     let selfSlot = $(this).attr('id');
+                //     $.post('http://vp_inventory/use', JSON.stringify({
+                //         slotId: selfSlot,
+                //     }));
+                // })
+
+                $(`#primary-inventory .slot-container #${slotId}`).mouseup(function(evt) {
+                    if (evt.originalEvent.detail === 2) { // Double right-click
+                        switch (evt.which) {
+                            case 1: // left-click
+                                var selfSlot = $(this).attr('id');
+                                $.post('http://vp_inventory/use', JSON.stringify({
+                                    slotId: selfSlot,
+                                }));
+                                break
+                            case 3: // right-click
+                                select(this);
+                                var selfSlot = $(this).attr('id');
+                                $.post('http://vp_inventory/startsendingslot', JSON.stringify({
+                                    slotId: selfSlot,
+                                }));
+                                break
+                        }
+                    }
+                });
             }
         } else {
             $("#primary-inventory .slot-container").append(`
@@ -832,29 +860,29 @@ function closeInventory() {
 }
 
 
-$(function() {
-    $.contextMenu({
-        selector: '.selected',
-        callback: function(key, options) {
-            var m = key;
-            // colocar aqui a função de click rightc
-            console.log($(key).attr('id'));
-            $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
-        },
-        items: {
-            functionUse: { name: "Usar", icon: "use" },
-            functionDrop: {
-                name: "Dropar",
-                icon: "drop",
-                callback: function(key, opt) {
-                    
-                }
-            },
-            functionSend: { name: "Enviar", icon: "send" }
-        }
-    });
-    $('.selected').on('click', function(e) {
-        // colocar aqui a função de click LEFT
-        console.log('ye');
-    })
-});
+// $(function() {
+//     $.contextMenu({
+//         selector: '.selected',
+//         callback: function(key, options) {
+//             var m = key;
+//             // colocar aqui a função de click rightc
+//             console.log($(key).attr('id'));
+//             $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
+//         },
+//         items: {
+//             functionUse: { name: "Usar", icon: "use" },
+//             functionDrop: {
+//                 name: "Dropar",
+//                 icon: "drop",
+//                 callback: function(key, opt) {
+
+//                 }
+//             },
+//             functionSend: { name: "Enviar", icon: "send" }
+//         }
+//     });
+//     $('.selected').on('click', function(e) {
+//         // colocar aqui a função de click LEFT
+//         console.log('ye');
+//     })
+// });

@@ -15,20 +15,6 @@ local sentFirstData = false
 
 Citizen.CreateThread(
     function()
-        for shopId, shopLocations in pairs(Config.ShopLocations) do
-            -- for _, locationData in pairs(shopLocations) do
-            --     local x, y, z, _ = table.unpack(locationData)
-            --     local blip = AddBlipForCoord(x, y, z)
-            --     SetBlipSprite(blip, 110)
-            --     SetBlipDisplay(blip, 4)
-            --     SetBlipScale(blip, 0.7)
-            --     SetBlipAsShortRange(blip, true)
-            --     BeginTextCommandSetBlipName("STRING")
-            --     AddTextComponentSubstringPlayerName("map_blip")
-            --     EndTextCommandSetBlipName(blip)
-            -- end
-        end
-
         while true do
             Citizen.Wait(1000)
 
@@ -74,41 +60,44 @@ Citizen.CreateThread(
                     -- if IsControlJustPressed(0, 0xDFF812F9) then
                     PromptSetActiveGroupThisFrame(prompt_group, prompt_group_name)
 
-                    if PromptIsJustPressed(prompt) then
-                        if sentFirstData == true then
-                            SendNUIMessage(
-                                {
-                                    display = true,
-                                    shopId = closestShopId
-                                }
-                            )
-                        else
-                            local temp_ConfigShopData = Config.ShopDatas
+                    if PromptHasHoldModeCompleted(prompt) then
+                        if IsControlPressed(0, 0xDFF812F9) then
+                            if sentFirstData == true then
+                                SendNUIMessage(
+                                    {
+                                        display = true,
+                                        shopId = closestShopId
+                                    }
+                                )
+                            else
+                                local temp_ConfigShopData = Config.ShopDatas
 
-                            for _, shopData in pairs(temp_ConfigShopData) do
-                                for key, value in pairs(shopData) do
-                                    if key ~= "name" then
-                                        for _, shopItemData in pairs(value) do
-                                            local itemData = ItemList[shopItemData[1]]
-                                            if itemData then
-                                                shopItemData[5] = itemData.name
-                                                shopItemData[6] = itemData.weight
-                                                shopItemData[7] = itemData.description
+                                for _, shopData in pairs(temp_ConfigShopData) do
+                                    for key, value in pairs(shopData) do
+                                        if key ~= "name" then
+                                            for _, shopItemData in pairs(value) do
+                                                local itemData = ItemList[shopItemData[1]]
+                                                if itemData then
+                                                    shopItemData[5] = itemData.name
+                                                    shopItemData[6] = itemData.weight
+                                                    shopItemData[7] = itemData.description
+                                                end
                                             end
                                         end
                                     end
                                 end
+                                SendNUIMessage(
+                                    {
+                                        display = true,
+                                        shopId = closestShopId,
+                                        firstTimeData = temp_ConfigShopData
+                                    }
+                                )
+                                sentFirstData = true
                             end
-                            SendNUIMessage(
-                                {
-                                    display = true,
-                                    shopId = closestShopId,
-                                    firstTimeData = temp_ConfigShopData
-                                }
-                            )
-                            sentFirstData = true
+                            SetNuiFocus(true, true)
+                            Citizen.Wait(1000)
                         end
-                        SetNuiFocus(true, true)
                     end
                 end
             end
@@ -121,9 +110,9 @@ function initPrompt()
     prompt_group = GetRandomIntInRange(0, 0xffffff)
     PromptSetControlAction(prompt, 0xDFF812F9)
     PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Abrir"))
-    PromptSetEnabled(prompt, 1)
-    PromptSetVisible(prompt, 1)
-    PromptSetStandardMode(prompt, 1)
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, true)
     -- PromptSetPosition(prompt, foundShopVector)
     -- N_0x0c718001b77ca468(prompt, 1.5)
     PromptSetGroup(prompt, prompt_group)

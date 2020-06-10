@@ -470,53 +470,61 @@ ItemList = {
     --     stackSize = 5,
     -- },
      ---------------------------------------------
-    ["tonic_health"] = {
+    ["medicine_good"] = {
         type = 'tonic',
-        name = 'Tônico de Vida',
+        name = 'Medicina de Boa Qualidade',
         weight = 0.4,
-        varOnUse = 25,
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+        description = 'Ajuda na saúde. É um líquido medicinal.',
         stackSize = 1,
     },
-    ["tonic_stamina"] = {
+    ["stimulant_good"] = {
         type = 'tonic',
-        name = 'Tônico de Energia',
+        name = 'Estimulante de Boa Qualidade',
         weight = 0.4,
-        varOnUse = 25,
-        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
+        description = 'Ajuda a melhorar a disposição física de seu corpo.',
         stackSize = 1,
     },
-     ---------------------------------------------
-    ["boost_health"] = {
-        type = 'boost',
-        name = 'Boost de Vida',
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+      ["medicine_poor"] = {
+        type = 'tonic',
+        name = 'Medicina de Má Qualidade',
         weight = 0.4,
+        description = 'Ajuda na saúde. É um líquido medicinal e ílegal...',
         stackSize = 1,
     },
-    ["boost_stamina"] = {
-        type = 'boost',
-        name = 'Boost de Energia',
+    ["stimulant_poor"] = {
+        type = 'tonic',
+        name = 'Estimulante de Má Qualidade',
         weight = 0.4,
-        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
+        description = 'Ajuda a melhorar a disposição física de seu corpo e ílegal...',
         stackSize = 1,
     },
     ---------------------------------------------
-    ---------------------------------------------
-    ["horse_boost_health"] = {
+    ["horse_medicine_good"] = {
         type = 'boost',
-        name = 'Boost de Vida para Cavalo',
+        name = 'Medicina para Cavalo de Boa Qualidade',
         weight = 0.4,
-        varOnUse = 25,
-        description = 'Tônico de Vida, ajuda na saúde. É um líquido medicinal.',
+        description = 'Ajuda na saúde. É um líquido medicinal.',
         stackSize = 1,
     },
-    ["horse_boost_stamina"] = {
+    ["horse_stimulant_good"] = {
         type = 'boost',
-        name = 'Boost de Energia para Cavalo',
+        name = 'Estimulante para Cavalo de Boa Qualidade',
         weight = 0.4,
-        varOnUse = 25,
-        description = 'Tônico de Energia, ajuda a melhorar a disposição física de seu corpo.',
+        description = 'Ajuda a melhorar a disposição física de seu cavalo.',
+        stackSize = 1,
+    },
+    ["horse_medicine_poor"] = {
+        type = 'boost',
+        name = 'Medicina para Cavalo de Má Qualidade',
+        weight = 0.4,
+        description = 'Ajuda na saúde. É um líquido medicinal e ílegal...',
+        stackSize = 1,
+    },
+    ["horse_stimulant_poor"] = {
+        type = 'boost',
+        name = 'Estimulante para Cavalo de Má Qualidade',
+        weight = 0.4,
+        description = 'Ajuda a melhorar a disposição física de seu cavalo e ílegal...',
         stackSize = 1,
     },
      ---------------------------------------------

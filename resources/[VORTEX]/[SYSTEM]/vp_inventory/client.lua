@@ -283,7 +283,14 @@ RegisterNUICallback(
 RegisterNUICallback(
     "drop",
     function(cb)
-        TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId))
+        -- TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId))
+    end
+)
+
+RegisterNUICallback(
+    "startsendingslot",
+    function(cb)
+        startLookingForAPlayerToSend(cb.slotId)
     end
 )
 
@@ -333,20 +340,9 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
-    "startsendingslot",
-    function()
-        local slotId = cb.slotId
-        startLookingForAPlayerToSend()
-    end
-)
-
-RegisterNUICallback(
     "NUIFocusOff",
     function()
         closeInv()
-
-        Wait(100)
-        startLookingForAPlayerToSend()
     end
 )
 
