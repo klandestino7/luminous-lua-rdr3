@@ -23,15 +23,17 @@ Citizen.CreateThread(
 
             local foundShopId
             local foundShopVector
+            local lastDist
 
             for shopId, shopLocations in pairs(Config.ShopLocations) do
                 for _, locationData in pairs(shopLocations) do
                     local x, y, z, _ = table.unpack(locationData)
                     local vec = vec3(x, y, z)
                     local dist = #(pCoords - vec)
-                    if dist <= 50 then
+                    if (foundShopVector == nil and dist <= 10.0) or (lastDist ~= nil and dist < lastDist)  then
                         foundShopId = shopId
                         foundShopVector = vec
+                        lastDist = dist
                     end
                 end
             end
