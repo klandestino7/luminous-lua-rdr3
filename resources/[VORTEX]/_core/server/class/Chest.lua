@@ -12,41 +12,45 @@ function API.Chest(id)
     end
 
     self.getOwnerCharId = function()
-        return self.owner_char_id
+        return self.owner_char_id or 0
     end
 
     self.getPosition = function()
         return self.position
     end
 
+    self.setPosition = function(this, v)
+        self.position = v
+    end
+
     self.getType = function()
-        return self.type
+        return self.type or 0
     end
 
     self.getCapacity = function()
-        return self.capacity
+        return self.capacity or 20
     end
 
     -- O items do baú são globais, são sempre os mesmos independente de quem abra
     self.isGlobal = function()
-        return self.type == 0
+        return self:getType() == 0
     end
 
     -- O baú pode ser aberto por qualquer um, mas os items sao diferentes para cada player
     self.isPublic = function()
-        return self.type == 1
+        return self:getType() == 1
     end
 
     -- O baú é aberto só pelo dono do baú, os items são sempre os mesmos
     self.isPrivate = function()
-        return self.type == 2
+        return self:getType() == 2
     end
 
     self.getInventory = function(this, User)
         local Character = User:getCharacter()
         local charId = Character:getId()
 
-        print(self.id)
+        print(self.type)
 
         if self:isGlobal() then
             if self.groups then
@@ -92,7 +96,7 @@ function API.Chest(id)
                         {
                             id = "chest:" .. self.id,
                             charid = 0,
-                            capacity = self.capacity,
+                            capacity = self:getCapacity(),
                             slot = 0,
                             itemId = 0,
                             itemAmount = 0,
@@ -100,7 +104,7 @@ function API.Chest(id)
                         }
                     )
 
-                    Inventory = API.Inventory("chest:" .. self.id, self.capacity, {})
+                    Inventory = API.Inventory("chest:" .. self.id,self:getCapacity(), {})
                 end
 
                 if self.inventories == nil then
@@ -139,7 +143,7 @@ function API.Chest(id)
                         {
                             id = "chest:char:" .. targetId,
                             charid = targetId,
-                            capacity = self.capacity,
+                            capacity = self:getCapacity(),
                             slot = 0,
                             itemId = 0,
                             itemAmount = 0,
@@ -147,7 +151,7 @@ function API.Chest(id)
                         }
                     )
 
-                    Inventory = API.Inventory("chest:char" .. targetId, self.capacity, {})
+                    Inventory = API.Inventory("chest:char" .. targetId, self:getCapacity(), {})
                 end
 
                 if self.inventories == nil then
@@ -159,6 +163,15 @@ function API.Chest(id)
 
             return self.inventories[targetId]
         end
+    end
+
+    self.setInventory = function(this, id, v)
+
+        if self.inventories == nil then
+            self.inventories = {}
+        end
+
+        self.inventories[id] = v
     end
 
     return self

@@ -11,6 +11,25 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
     self.role = role or 0
 
+    -- self.user_id
+    -- self.source
+
+    self.setUserId = function(this, v)
+        self.user_id = v
+    end
+
+    self.setSource = function(this, v)
+        self.source = v
+    end
+
+    self.getUserId = function()
+        return self.user_id
+    end
+
+    self.getSource = function()
+        return self.source
+    end
+
     self.getInventory = function()
         return self.Inventory
     end
@@ -31,6 +50,9 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
             if bit ~= nil then
                 self.role = self.role + bit
+
+                TriggerClientEvent('VP:EVENTS:CharacterJoinedGroup', self:getSource(), group)
+
                 API_Database.execute("UPDATE:character_data_role", {charid = self:getId(), role = self.role})
             end
         end
@@ -42,6 +64,9 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
             if bit ~= nil then
                 self.role = self.role - bit
+
+                TriggerClientEvent('VP:EVENTS:CharacterLeftGroup', self:getSource(), group)
+
                 API_Database.execute("UPDATE:character_data_role", {charid = self:getId(), role = self.role})
             end
         end

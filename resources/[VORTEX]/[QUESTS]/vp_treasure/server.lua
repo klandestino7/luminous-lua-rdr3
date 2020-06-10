@@ -9,8 +9,8 @@ local list = {}
 local bauId = {}
 
 local inventory_items = {
-  [1] = {["apple"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20, ["tonic_medicine"] = 500},
-  [2] = {["apple"] = 5, ["rifle_boltaction"] = 1, ["generic_provision_rf_wood_minor"] = 5, ["raw_copper"] = 2},
+  [1] = {["pigeonpost"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
+  [2] = {["pigeonpost"] = 5, ["rifle_boltaction"] = 1, ["raw_gold"] = 5, ["raw_copper"] = 2},
   [3] = {["revolver_cattleman"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20},
   [4] = {["melee_lantern_electric"] = 1, ["thrown_dynamite"] = 2, ["gold"] = 100},
   [5] = {["lasso"] = 5, ["shotgun_repeating"] = 1, ["money"] = 500},
@@ -20,8 +20,8 @@ local inventory_items = {
 local TREASURE = {
   [1] = {-921.25, -1577.69, 66.03}, --blackwater
   [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
-  [3] = {-4388.91, -2490.98, 1.00}, -- CHOLLA SPRINGS
-  [4] = {-5095.73, -3738.19, -1.90}, --   benedict point
+  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
+  [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
   [5] = {1887.26, 279.11, 77.11}, -- EMERALD STATION
   [6] = {-758.89, -380.43, 41.96} -- dakota river
 }
@@ -62,7 +62,6 @@ RegisterCommand(
   "callbau",
   function()
     local random = math.random(1, 6)
-    print(random)
     TriggerEvent("TREASURE:create", random)
   end
 )
@@ -94,17 +93,9 @@ AddEventHandler(
     local z = TREASURE[id][3]
     local Chest = API.getChestFromChestId(chest_id)
 
-    local chest_id = "e." .. math.random(9999)
-    local chest_owner_id = 0 -- Não tem dono, então o id é 0, irrelevante
-    local chest_type = 0 -- Global, os items são sempre os mesmos
-    local chest_capacity = 20 -- Capacidade maxima de peso
-    local chest_group = nil -- Grupo necessaria para abrir o baú(nenhum)
-    local inventory_id = nil
     local inventory_capacity = 20 -- A mesma que a de cima
     local yram = math.random(2, 50)
     local xram = math.random(2, 20)
-
-    chest_position = {x + xram, y + yram, z, 10.0}
 
     local itensram = math.random(1, 6)
 
@@ -114,16 +105,26 @@ AddEventHandler(
       local i = math.random(112, 128)
       local tries = 16
       while parsed[i] ~= nil and tries > 0 do
-          i = math.random(112, 128)
-          tries = tries - 1
+        i = math.random(112, 128)
+        tries = tries - 1
       end
-      parsed[i] = {itemId, itemAmount}
+
+      local itemData = API.getItemDataFromId(itemId)
+
+      if itemData:getType() == "weapon" then
+        parsed[i] = {itemId, itemAmount, 0, 1}
+      else
+        parsed[i] = {itemId, itemAmount}
+      end
     end
 
-    local parsed = {}
+    local chest_id = "e:" .. math.random(9999)
+    local chest_Inventory = API.Inventory("chest:" .. chest_id, 20, parsed)
+    chest_Inventory:setAutoSort(false)
 
-    local chest_Inventory = API.Inventory(inventory_id, inventory_capacity, parsed)
-    local Chest = API.Chest(chest_id, chest_owner_id, chest_position, chest_type, chest_capacity, chest_Inventory, chest_group)
+    local Chest = API.Chest(chest_id)
+    Chest:setPosition({x + xram, y + yram, z, 10.0})
+    Chest:setInventory(0, chest_Inventory)
     Chest:cache() -- Se torna disponivel para sync com os clients
 
     bauId[chest_id] = true

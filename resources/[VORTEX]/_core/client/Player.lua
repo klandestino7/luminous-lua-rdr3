@@ -403,3 +403,6 @@ Citizen.CreateThread(
         end
     end
 )
+
+RegisterNetEvent('VP:EVENTS:CharacterJoinedGroup')
+RegisterNetEvent('VP:EVENTS:CharacterLeftGroup')

@@ -176,6 +176,7 @@ RegisterCommand(
 
 RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
 RegisterNetEvent("VP:EVENTS:PedWhistle")
+RegisterNetEvent("VP:EVENTS:PedInteractionRansackScenario")
 
 Citizen.CreateThread(
 	function()
@@ -230,13 +231,12 @@ Citizen.CreateThread(
 						-- exports["vp_admin"]:js_teste_native(0, i, 36)
 						-- print("EVENT_PLAYER_LOOT_?")
 					elseif eventAtIndex == 1352063587 then
-						-- print("EVENT | PED_INTERACTION_RANSACK_SCENARIO", Citizen.InvokeNative(0xD04241BBF6D03A5E, PlayerPedId()))
-						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 4)
-						-- local pedInteracting = view["0"]
-						-- local containerEntity = view["2"]
-						-- local containerScenario = view["4"]
-						-- local isClosing = view["6"]
-						-- print(pedInteracting, containerEntity, containerScenario, isClosing)
+						local view = exports["research"]:DataViewNativeGetEventData(0, i, 4)
+						local pedInteracting = view["0"]
+						local containerEntity = view["2"]
+						local containerScenario = view["4"]
+						local isClosing = view["6"]
+						TriggerEvent("VP:EVENTS:PedInteractionRansackScenario", pedInteracting, containerEntity, containerScenario, isClosing)
 					elseif eventAtIndex == 1208357138 then
 						-- local carriableEntity = view["0"]
 						-- local pedCarrier
@@ -560,6 +560,50 @@ function drawcircle()
 				Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,center, Vec, 255, 0, 0, 255)
 			end
 end
+
+local prompt_patdown
+
+function pp ()
+	prompt_patdown = PromptRegisterBegin()
+	PromptSetControlAction(prompt_patdown, 0x05CA7C52)
+	PromptSetText(prompt_patdown, CreateVarString(10, "LITERAL_STRING", "Revistar"))
+	PromptSetEnabled(prompt_patdown, true)
+	PromptSetVisible(prompt_patdown, false)
+	PromptSetHoldMode(prompt_patdown, true)
+	PromptRegisterEnd(prompt_patdown)
+end
+
+Citizen.CreateThread(function()
+	pp()
+
+	local lastTarget
+
+	while true do
+		Citizen.Wait(250)
+		local _, entity = GetPlayerTargetEntity(PlayerId())
+
+		if _ then
+			if lastTarget ~= entity then -- and IsPedAPlayer(entity) then
+				PromptSetVisible(prompt_patdown, true)
+				PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
+				lastTarget = entity
+			end
+		else
+			lastTarget = nil
+		end
+
+		if lastTarget ~= nil then
+			local pPosition = GetEntityCoords(PlayerPedId())
+			local tPosition = GetEntityCoords(lastTarget)
+			local dist = #(pPosition - tPosition)
+			if dist <= 1.5 then
+				PromptSetEnabled(prompt_patdown, true)
+			else
+				PromptSetEnabled(prompt_patdown, false)
+			end
+		end
+	end
+end)
 
 -- 0x14169FA823679E41
 
