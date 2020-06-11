@@ -1,52 +1,58 @@
 @font-face {
-    font-family: 'RDRLino';
-    /* src: url("../../vp_inventory/nui/fonts/RDRLino-Regular.ttf"); */
-    src: url("nui://vp_inventory/nui/fonts/RDRLino-Regular.ttf");
+    font-family: 'RDR';
+    /* src: url("../../vp_inventory/nui/fonts/HapnaSlabSerif-DemiBold.ttf"); */
+    src: url("nui://vp_inventory/nui/fonts/HapnaSlabSerif-DemiBold.ttf");
     /* src: url("../../vp_creator/client/html/fonts/robotoslab.ttf"); */
 }
 
 * {
-    font-family: 'RDRLino';
+    font-family: 'RDR';
     overflow: hidden;
 }
 
-/* body{
-	background: black;
-} */
+body {
+    /* background: black; */
+    font-size: 16px;
+}
 
 .toast-container {
     position: absolute;
-    right: 0;
-    top: 50%;
+    right: 25px;
+    top: 40%;
     transform: translate(0, -50%);
-    /* width: fit-content;
-    height: fit-content; */
+    height: 52px;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /* border: 1px solid green; */
+    /* border: 1px solid red; */
+}
+
+#no-icon {
+    top: 60%;
 }
 
 .toast {
+    position: absolute;
+    height: 24px;
     width: fit-content;
-    padding: 3px 6px 3px 16px;
+    padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
-    animation: intro 1s 0.1s forwards;
+    bottom: -100%;
 }
 
 .toast .toast-text {
-    height: 20px;
+    /* height: 20px; */
     width: fit-content;
     /* background: red; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
 }
 
 .toast .toast-type {
@@ -60,17 +66,17 @@
 
 .toast .type-quantity {
     margin: 0 0 0 -3px;
-    font-size: 14px;
 }
 
 .toast .toast-type-icon {
     margin: 0 0 0 6px;
-    height: 20px;
-    width: 20px;
+    height: 24px;
+    width: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* border: 1px solid red; */
 }
 
 .toast .toast-type-icon img {
@@ -78,7 +84,8 @@
     height: 100%;
 }
 
-.toast:nth-child(even) {
+
+/* .toast:nth-child(even) {
     margin: 10px 0px 10px 0px;
 }
 
@@ -89,7 +96,7 @@
 
 .toast:last-child {
     margin-bottom: 0;
-}
+} */
 
 .toast.background {
     background: url(assets/toast-bg.png);
@@ -97,32 +104,10 @@
 }
 
 .toast.background span {
-    margin-right: 10px;
-    font-size: 10px;
+    margin: 0px 10px 0px 10px;
+    font-size: 14px;
 }
 
 .toast .toast-text priority {
     color: rgb(255, 200, 0)
-}
-
-.outro {
-    animation: outro 1s 0.1s forwards;
-}
-
-@keyframes intro {
-    0% {
-        transform: translate(200%, 0px);
-    }
-    100% {
-        transform: translate(0px, 0px);
-    }
-}
-
-@keyframes outro {
-    0% {
-        transform: translate(0px, 0px);
-    }
-    100% {
-        transform: translate(200%, 0px);
-    }
 }
