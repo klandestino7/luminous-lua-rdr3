@@ -573,17 +573,16 @@ function pp ()
 	PromptRegisterEnd(prompt_patdown)
 end
 
+local lastTarget
+
 Citizen.CreateThread(function()
 	pp()
-
-	local lastTarget
-
 	while true do
 		Citizen.Wait(250)
 		local _, entity = GetPlayerTargetEntity(PlayerId())
 
 		if _ then
-			if lastTarget ~= entity then -- and IsPedAPlayer(entity) then
+			if lastTarget ~= entity and IsPedAPlayer(entity) then
 				PromptSetVisible(prompt_patdown, true)
 				PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
 				lastTarget = entity
@@ -604,6 +603,16 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		if PromptHasHoldModeCompleted(prompt_patdown) and lastTarget ~= nil then
+			TriggerServerEvent('VP:PATDOWN:TryToPatDown', lastTarget)
+			Citizen.Wait(1000)
+		end
+	end
+end
 
 -- 0x14169FA823679E41
 
