@@ -8,7 +8,7 @@ function RequestManager() {
 }
 
 RequestManager.prototype.buildText = function(text, time) {
-    return "<span>" + text + " <span class=\"yes\">Y</span> <span class=\"no\">N</span></span>";
+    return "<span>" + text + " <span class=\"yes\">E</span> <span class=\"no\">N</span></span>";
 }
 
 RequestManager.prototype.addRequest = function(id, text, time) {

@@ -23,7 +23,11 @@ function cAPI.SetPlayerPed(model)
 end
 
 function cAPI.SetPedScale(ped, num)
-    SetPedScale(ped, tonumber(num))
+    if num == 0 or num == nil then
+        SetPedScale(ped, tonumber(1.0))
+    else
+        SetPedScale(ped, tonumber(num))
+    end
 end
 
 function cAPI.SetPedFaceFeature(ped, faceFeatures)
