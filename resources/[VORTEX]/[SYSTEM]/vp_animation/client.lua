@@ -380,16 +380,16 @@ local groups = {
         }
         -- prompt_group
     },
-    -- {
-    --     -- name = "Emotes",
-    --     actions = {
-    --         {"FollowMe", 1115379199},
-    --         {"HissyFit", 796723886},
-    --         {"Point", 486225122},
-    --         {"WannaFish", 1159716480}
-    --     }
+    {
+        -- name = "Emotes",
+        actions = {
+            {"Siga-me", 1115379199},
+            {"HissyFit", 796723886},
+            {"Apontar", 486225122},
+            {"Mandar Biejo", 1927505461}
+        }
         -- prompt_group
-    -- },
+    }
     -- {
     --     -- name = "Emotes",
     --     actions = {
@@ -403,7 +403,7 @@ local groups = {
     -- {
     --     -- name = "Emotes",
     --     actions = {
-    --         {"BlowKiss", 1927505461},
+    --         {"WannaFish", 1159716480},
     --         {"Boast", -1252070669},
     --         {"HellYeah ", -402959},
     --         {"Flex", -773960361}
