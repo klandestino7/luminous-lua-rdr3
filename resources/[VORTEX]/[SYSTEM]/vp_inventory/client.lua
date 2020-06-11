@@ -20,7 +20,6 @@ Citizen.CreateThread(
     end
 )
 
-local sendingSlotId
 
 local whereWeaponIsAtSlot = {}
 local isReloadingOrShooting = false
@@ -60,7 +59,6 @@ Citizen.CreateThread(
 )
 
 local currentlyTryingToSendItem = false
-
 local prompt_senditem
 
 function startLookingForAPlayerToSend(slotId)
