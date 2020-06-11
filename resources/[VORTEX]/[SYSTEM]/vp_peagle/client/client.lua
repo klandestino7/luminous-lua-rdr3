@@ -47,7 +47,7 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
                 dst = #(vector3(ec.x, ec.y, ec.z) - myV)
                 local ed = coords.x, coords.y, coords.z
                 local playc = GetEntityCoords(PlayerPedId())
-                                
+
                 if back then
                     TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
                 end                
@@ -78,9 +78,11 @@ Citizen.CreateThread(
             Citizen.Wait(15000)
             local IsPedAir = IsEntityInAir(pigeon, 1)
             local playc = GetEntityCoords(PlayerPedId())
-            if not IsPedAir and Notified and dst > 4 then
-                TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
-               --TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
+            if pigeon ~= nil then
+                if not IsPedAir and Notified and dst > 4 then
+                    TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
+                --TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
+                end
             end
         end
     end
@@ -130,6 +132,7 @@ function HandlePrompts()
             local carriable = Citizen.InvokeNative(0xF0B4F759F35CC7F5, pigeon, Citizen.InvokeNative(0x34F008A7E48C496B, pigeon, 2), 0, 0, 512)
             TaskPickupCarriableEntity(PlayerPedId(), carriable)  
             openGuiRead(message)
+            DeleteEntity(pigeon)
         end
     end
 end
