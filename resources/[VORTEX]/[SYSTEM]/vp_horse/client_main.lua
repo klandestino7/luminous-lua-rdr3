@@ -9,8 +9,8 @@ local horseName
 local horseComponents = {}
 
 -- ! REMOVE
---horseModel = "A_C_Horse_Turkoman_Gold"
---horseName = "Burrinho"
+-- horseModel = "A_C_Horse_Turkoman_Gold"
+-- horseName = "Burrinho"
 -- ! REMOVE
 
 local prompt_inventory
@@ -237,34 +237,36 @@ end
 AddEventHandler(
     "VP:EVENTS:PedWhistle",
     function(ped, whistleTypeHash)
-        print("whistle")
         if ped == PlayerPedId() then
-            WhistleHorse()
+            WhistleHorse(whistleTypeHash)
         end
     end
 )
 
-function WhistleHorse()
+function WhistleHorse(whistleTypeHash)
+    local whistleType = "SHORT"
+
+    if whistleTypeHash == 869278708 then
+        whistleType = "LONG"
+    end
+
     if cAPI.IsPlayerHorseActive() and not cAPI.IsPlayerHorseActivationBlocked() then
         local playerHorse = cAPI.GetPlayerHorse()
-        -- if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
-        --     TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
-        -- else
-        -- cAPI.notify("error", "Seu cavalo já está vindo")
-        -- end
-
-        --[[
-            Cavalo está seguindo o player
-        ]]
-        if GetScriptTaskStatus(playerHorse, 0x3EF867F4, 0) ~= 1 then
-            TaskFollowToOffsetOfEntity(playerHorse, PlayerPedId(), math.random(0.0, 3.0), math.random(0, 3.0), 0.0, 1.0, -1, 10.0, 1)
-        else
-            ClearPedTasks(playerHorse)
+        if whistleType == "SHORT" then
+            if GetScriptTaskStatus(playerHorse, 0x4924437D, 0) ~= 0 then
+                TaskGoToEntity(playerHorse, PlayerPedId(), -1, 7.2, 2.0, 0, 0)
+            end
+        elseif whistleType == "LONG" then
+            if GetScriptTaskStatus(playerHorse, 0x3EF867F4, 0) ~= 1 then
+                TaskFollowToOffsetOfEntity(playerHorse, PlayerPedId(), math.random(0.0, 3.0), math.random(0, 3.0), 0.0, 1.0, -1, 10.0, 1)
+            else
+                ClearPedTasks(playerHorse)
+            end
         end
     else
         if not cAPI.IsPlayerHorseActivationBlocked() then
-            print("initiate")
-            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
+            -- DEBUGGGING
+            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0)) 
             InitiateHorse()
         else
             cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
@@ -322,11 +324,13 @@ Citizen.CreateThread(
             if PromptIsJustPressed(prompt_brush) then
                 local playerHorse = cAPI.GetPlayerHorse()
                 TaskAnimalInteraction(PlayerPedId(), playerHorse, GetHashKey("INTERACTION_BRUSH"), GetHashKey("p_brushhorse01x"), 1)
-                Citizen.CreateThread(function()
-                    Citizen.Wait(10000)
-                    Citizen.InvokeNative(0x314C5465195F3B30, playerHorse, 0.0) -- SetMetapedWeariness
-                    ClearPedEnvDirt(playerHorse)
-                end)
+                Citizen.CreateThread(
+                    function()
+                        Citizen.Wait(10000)
+                        Citizen.InvokeNative(0x314C5465195F3B30, playerHorse, 0.0) -- SetMetapedWeariness
+                        ClearPedEnvDirt(playerHorse)
+                    end
+                )
             end
 
             if CanHorseEat() then
@@ -349,7 +353,6 @@ Citizen.CreateThread(
 
             -- if IsControlPressed(0, 0xF8982F00) then
             --     local mount = GetMount(PlayerPedId())
-            --     print(mount, cAPI.GetPlayerHorse())
             --     if mount ~= 0 and mount == cAPI.GetPlayerHorse() then
             --         PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(mount), CreateVarString(10, 'LITERAL_STRING', "horseName"))
             --     end
