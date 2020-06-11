@@ -7,11 +7,12 @@ RegisterCommand(
             -- "PG_SCENARIO_CHOPWOOD", -- DW
             -- "PG_AMBIENT_CAMP_ADD_WOOD", -- DW
             -- "PROP_HUMAN_WOOD_CHOP",
+            -- "PROP_HUMAN_WOOD_CHOP_AXESTUCK_01_02",
             -- "WORLD_HUMAN_PLANE_WOOD_NO_PLANK",
             -- "WORLD_HUMAN_PLANE_WOOD",
             -- "PLAYER_CAMP_CHORES_WOOD_CHOP",
-            -- "BCH_WOOD_CHOP_PRESADIE3"
-            -- "PROP_HUMAN_WOOD_CHOP_AND_SHARPEN_AXE"
+            -- "BCH_WOOD_CHOP_PRESADIE3",
+            -- "PROP_HUMAN_WOOD_CHOP_AND_SHARPEN_AXE",
             -- "WORLD_PLAYER_CHORES_FEEDBAG_PICKUP",
             -- "WORLD_PLAYER_CHORES_FEEDBAG_PUTDOWN",
             -- "WORLD_HUMAN_CHICKEN_CRATE_PICKUP_2",
@@ -22,7 +23,14 @@ RegisterCommand(
             -- "WORLD_PLAYER_CHORES_SACK_PUT_DOWN_1",
             -- "RANSACK_PROP_CHEST_PICKUP",
             -- "RANSACK_PROP_CHEST_PUTDOWN",
-            "WORLD_HUMAN_NEWSPAPER_PICKUP",
+            -- "WORLD_HUMAN_NEWSPAPER_PICKUP",
+            "PROP_HUMAN_BUTCHER_DEER_MALE_A_MEAT_DROP",
+            -- PROP_HUMAN_PUMP_WATER
+            -- PROP_HUMAN_PUMP_WATER_BUCKET
+            -- PROP_HUMAN_PUMP_WATER_BUCKET_FEMALE_B
+            -- PROP_HUMAN_PUMP_WATER_BUCKET_MALE_A  
+            -- PROP_HUMAN_PUMP_WATER_FEMALE_B
+            -- PROP_HUMAN_PUMP_WATER_MALE_A
         }
 
         -- _NO : Means you can attach the scenario to your on prop
@@ -107,9 +115,11 @@ Citizen.CreateThread(
             if closest ~= nil then
                 if IsControlJustPressed(0, 0xB4E465B4) then
                     print("using scenario", ped, closest)
+
+                    -- PROP_HUMAN_WOOD_CHOP_PICKUPLSIDE2
                     TaskUseScenarioPoint(ped, closest, "", 0, false, false, 0, false, -1.0, false)
-                    Wait(5000)
-                    TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_NEWSPAPER_PICKUP"), 0, true, 0, 0, 0)
+                    -- Wait(5000)
+                    -- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("PROP_HUMAN_WOOD_CHOP_PICKUPLSIDE1"), 0, true, 0, 0, 0)
                 end
             end
         end
