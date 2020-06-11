@@ -45,7 +45,7 @@ end)
 RegisterNetEvent("VP:NOTIFY:Simple")
 AddEventHandler("VP:NOTIFY:Simple",function(mensagem, time)
 	SendNUIMessage({ css = 'sucesso', mensagem = mensagem, time =  time })
-	exports['vp_notify']:DisplayLocationNotification(text,locale,10000)	
+--	exports['vp_notify']:DisplayLocationNotification(text,locale,10000)	
 end)
 
 RegisterCommand('enviar', function()
