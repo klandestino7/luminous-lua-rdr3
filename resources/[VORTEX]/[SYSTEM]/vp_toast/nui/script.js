@@ -106,8 +106,6 @@ function resetInterval(containerId) {
     $(`${containerId} .toast:first-child()`).animate({
         top: "-=100%",
     }, 150);
-    
-    console.log($(`${containerId} .toast:first-child()`));
 
     intervalIds[containerId] = setInterval(function() {
 
