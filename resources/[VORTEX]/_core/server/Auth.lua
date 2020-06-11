@@ -140,10 +140,8 @@ RegisterNetEvent('API:OnUserCharacterInitialization')
 
 RegisterNetEvent('API:pre_OnUserCharacterInitialization')
 AddEventHandler('API:pre_OnUserCharacterInitialization', function()
-    print('pre char')
     local _source = source
     local User = API.getUserFromSource(_source)
     local Character = User:getCharacter()
-    print('finished, triggering char init')
     TriggerEvent('API:OnUserCharacterInitialization', User, Character:getId())
 end)
