@@ -185,15 +185,41 @@ AddEventHandler(
 		local Character = User:getCharacter()
 
 		local role = 0
-		if Character:hasGroup('trooper') then
+		if Character:hasGroup("trooper") then
 			role = role + 1
 		end
-		if Character:hasGroup('trooper') then
+		if Character:hasGroup("trooper") then
 			role = role + 2
 		end
 
-		print('character initizliation', role)
-		TriggerClientEvent('VP:SHERIFF:UpdateRole', User:getSource(), role)
+		print("character initizliation", role)
+		TriggerClientEvent("VP:SHERIFF:UpdateRole", User:getSource(), role)
+	end
+)
+
+RegisterNetEvent("VP:SHERIFF:TryToPatDown")
+AddEventHandler(
+	"VP:SHERIFF:TryToPatDown",
+	function(playerToPatdown)
+		local _source = source
+		local User = API.getUserFromSource(_source)
+		local Character = User:getCharacter()
+
+		if Character == nil then
+			return
+		end
+
+		local UserTarget = API.getUserFromSource(playerToPatdown)
+		local CharacterTarget = UserTarget:getCharacter()
+
+		if CharacterTarget == nil then
+			return
+		end
+
+		local InventoryTarget = CharacterTarget:getInventory()
+
+		User:viewInventory()
+		User:viewInventoryAsSecondary(InventoryTarget)
 	end
 )
 

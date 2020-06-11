@@ -108,7 +108,6 @@ AddEventHandler(
 -- /////////////// MENU DO DEPARTAMENTO
 Citizen.CreateThread(
 	function()
-
 		for k, v in pairs(Config.Coords) do
 			Citizen.InvokeNative(0x554d9d53f696d002, -1595050198, v)
 		end
@@ -125,8 +124,8 @@ Citizen.CreateThread(
 			if isATrooper() then
 				for k, v in pairs(Config.Coords) do
 					if #(coords - v) < 8.0 then
-						if IsControlJustPressed(0, 0xCEFD9220) then  -- Hold ALT
-							print('hold')
+						if IsControlJustPressed(0, 0xCEFD9220) then -- Hold ALT
+							print("hold")
 							WarMenu.OpenMenu("DpOfficerMenu")
 							break
 						end
@@ -143,20 +142,20 @@ Citizen.CreateThread(
 			end
 
 			if WarMenu.IsMenuOpened("DpOfficerMenu") then
+				-- elseif WarMenu.IsMenuOpened("Armored") then
+				-- 	if WarMenu.Button("Pistola Mauser") then
+				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "weapon_pistol_semiauto")
+				-- 	elseif WarMenu.Button("Bolt action rifle") then
+				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_RIFLE_BOLTACTION")
+				-- 	elseif WarMenu.Button("Pump shotgun") then
+				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_SHOTGUN_PUMP")
+				-- 	end
+				-- 	WarMenu.Display()
 				-- if WarMenu.MenuButton("Armas", "Armored") then
 				-- end
 				if WarMenu.MenuButton("Transportes", "vehicle") then
 				end
 				WarMenu.Display()
-			-- elseif WarMenu.IsMenuOpened("Armored") then
-			-- 	if WarMenu.Button("Pistola Mauser") then
-			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "weapon_pistol_semiauto")
-			-- 	elseif WarMenu.Button("Bolt action rifle") then
-			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_RIFLE_BOLTACTION")
-			-- 	elseif WarMenu.Button("Pump shotgun") then
-			-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_SHOTGUN_PUMP")
-			-- 	end
-			-- 	WarMenu.Display()
 			elseif WarMenu.IsMenuOpened("vehicle") then
 				if WarMenu.Button("Carroça 2") then
 					SpawnVehicle("POLICEWAGON01X", GetPlayerPed())
@@ -166,6 +165,74 @@ Citizen.CreateThread(
 					SpawnVehicle("supplywagon", GetPlayerPed())
 				end
 				WarMenu.Display()
+			end
+
+			HandlePrompts()
+		end
+	end
+)
+
+local prompt_patdown
+
+local lastTargetPlayerServerId
+
+function pp()
+	prompt_patdown = PromptRegisterBegin()
+	PromptSetControlAction(prompt_patdown, 0x05CA7C52)
+	PromptSetText(prompt_patdown, CreateVarString(10, "LITERAL_STRING", "Revistar"))
+	PromptSetEnabled(prompt_patdown, true)
+	PromptSetVisible(prompt_patdown, false)
+	PromptSetHoldMode(prompt_patdown, true)
+	PromptRegisterEnd(prompt_patdown)
+end
+
+function HandlePrompts()
+	if PromptHasHoldModeCompleted(prompt_patdown) and lastTargetPlayerServerId ~= nil then
+		TriggerServerEvent("VP:SHERIFF:TryToPatDown", lastTargetPlayerServerId)
+		Citizen.Wait(1000)
+	end
+end
+
+Citizen.CreateThread(
+	function()
+		pp()
+		while true do
+			Citizen.Wait(250)
+			local y, entity = GetPlayerTargetEntity(PlayerId())
+
+			lastTargetPlayerServerId = nil
+
+			if y then
+				for _, pid in pairs(GetActivePlayers()) do
+					if NetworkIsPlayerActive(pid) then
+						local pped = GetPlayerPed(pid)
+						if entity == pped then
+							local serverId = GetPlayerServerId(pid)
+							if lastTargetPlayerServerId ~= serverId then
+								lastTargetPlayerServerId = serverId
+
+								PromptSetVisible(prompt_patdown, true)
+								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
+
+								local pPosition = GetEntityCoords(PlayerPedId())
+								local tPosition = GetEntityCoords(pped)
+
+								local dist = #(pPosition - tPosition)
+								if dist <= 1.5 then
+									PromptSetEnabled(prompt_patdown, true)
+								else
+									PromptSetEnabled(prompt_patdown, false)
+								end
+
+								break
+							end
+						end
+					end
+				end
+			end
+
+			if lastTargetPlayerServerId == nil then
+				PromptSetVisible(prompt_patdown, false)
 			end
 		end
 	end
