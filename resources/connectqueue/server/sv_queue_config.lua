@@ -4,9 +4,46 @@ Config = {}
 -- a lot of the steamid converting websites are broken rn and give you the wrong steamid. I use https://steamid.xyz/ with no problems.
 -- you can also give priority through the API, read the examples/readme.
 Config.Priority = {
-    ["STEAM_0:1:0000####"] = 1,
-    ["steam:110000######"] = 25,
-    ["ip:127.0.0.0"] = 85
+
+    ["steam:11000010596ee06"] = 999, -- KLAN
+    ["steam:110000115598f8c"] = 999, -- GASHEX
+    ["steam:1100001349014c1"] = 999, -- BELA
+    ["steam:110000106321dbf"] = 999, -- SORAM
+    ["steam:110000109766c18"] = 999, -- KEY
+
+     -- ///////////////// APOIADORES //////////////////
+    ["steam:110000107156247"] = 45, -- Miojo#0001 / 11.06
+    ["steam:110000114c155cc"] = 45, -- ELÉ JUNIOR / 11.06
+    ["steam:110000106ff1cbd"] = 25, -- Supla Games#1480 / 11.06
+    ["steam:110000105f862f7"] = 45, -- PaL0MinhA#0001 / 11.06
+    ["steam:11000011559ed3f"] = 5, -- Coelho#6335 / 11.06 
+    ["steam:1100001067bddc2"] = 30, -- Franco Signorelli#9502 / 11.06
+    ["steam:11000011204cc57"] = 18, -- Meninote#5349 / 11.06
+    ["steam:110000111b14f4c"] = 10, -- CoyotePlay#0096 / 11.06
+    ["steam:110000136568842"] = 5, -- Leandrosniper#8919 / 11.06
+    ["steam:11000010f7857eb"] = 5, -- Mands#7288 / 11.06
+    ["steam:1100001063df198"] = 10, -- nhish#4982 / 11.06
+
+   -- ///////////////// NITRO BOOSTERS //////////////////
+    ["steam:1100001128e0a15"] = 15, -- Revolvi38#0038 / 11.06
+    ["steam:110000134de800c"] = 15, -- NattefrostHe4rt#9761 / 11.06
+    ["steam:1100001178ea858"] = 15, -- Tayfe#8846 / 11.06
+    ["steam:110000135fcae2c"] = 15, -- Chaveco#0666 / 11.06
+    ["steam:11000010c99c072"] = 15, -- dark paradise#0014 / 11.06
+    ["steam:11000010d34c06e"] = 15, -- Quinny#7957 / 11.06
+    ["steam:1100001121b084e"] = 15, -- FixoH`#1117 / 11.06
+    ["steam:11000010b03fc75"] = 15, -- BlackFPS#0007 / 11.06
+    ["steam:11000010dc424d9"] = 15, -- Mark Nunes#3418 / 11.06
+    ["steam:1100001055da0a1"] = 15, -- Blue Eyes#4732 / 11.06
+    ["steam:110000112643e37"] = 15, -- cleytinho2000#7166 / 11.06
+    ["steam:11000013c62e106"] = 15, -- Farlindu#3891 / 11.06
+    ["steam:1100001045461b8"] = 15, -- dinho#6107 / 11.06
+    ["steam:110000110f385c2"] = 15, -- ! a Shimatai#0001 / 11.06
+    ["steam:110000107caf442"] = 15, -- Diego OwnZ#0862 / 11.06
+    ["steam:1100001062dd384"] = 15, -- nery#8195 / 11.06
+    ["steam:110000134b230b1"] = 15, -- Velma Dricky#4393 / 11.06
+    ["steam:110000113393044"] = 15, -- Andrade#1920 / 11.06 
+
 }
 
 -- require people to run steam
