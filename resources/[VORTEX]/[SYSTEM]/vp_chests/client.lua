@@ -1,17 +1,17 @@
-RegisterNetEvent('VP:CHESTS:StartPlayerPlacement')
-RegisterNetEvent('VP:CHESTS:SyncChest')
-RegisterNetEvent('VP:CHESTS:SyncMultipleChests')
+RegisterNetEvent("VP:CHESTS:StartPlayerPlacement")
+RegisterNetEvent("VP:CHESTS:SyncChest")
+RegisterNetEvent("VP:CHESTS:SyncMultipleChests")
 
 AddEventHandler(
-    'VP:CHESTS:StartPlayerPlacement',
+    "VP:CHESTS:StartPlayerPlacement",
     function(source, capacity)
-        print('VP:CHESTS:StartPlayerPlacement')
+        print("VP:CHESTS:StartPlayerPlacement")
         createTempEntity(capacity)
     end
 )
 
 AddEventHandler(
-    'VP:CHESTS:SyncChest',
+    "VP:CHESTS:SyncChest",
     function(chestId, capacity, x, y, z, h)
         print(chestId, capacity, x, y, z, h)
         Chest(chestId, capacity, x, y, z, h)
@@ -19,7 +19,7 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'VP:CHESTS:SyncMultipleChests',
+    "VP:CHESTS:SyncMultipleChests",
     function(array)
         for chestId, values in pairs(array) do
             Chest(chestId, values[1], values[2], values[3], values[4], values[5])
@@ -40,7 +40,7 @@ function createTempEntity(capacity)
     tempEntity = CreateObject(getModelFromCapacity(capacity), vec, false, true, false)
     tempCapacity = capacity
     SetEntityAlpha(tempEntity, 110, false)
-    print('createTempEntity')
+    print("createTempEntity")
 end
 
 function RotAnglesToVec(rot) -- input vector3
@@ -89,27 +89,25 @@ function drawTempEntity()
         if Citizen.InvokeNative(0x50F940259D3841E6, 1, 0x07CE1E61) then -- LMB
             x, y, z = table.unpack(GetEntityCoords(tempEntity))
             local h = GetEntityHeading(tempEntity)
-  
 
             DeleteEntity(tempEntity)
             tempEntity = nil
 
-            x = tonumber(string.format('%.2f', x))
-            y = tonumber(string.format('%.2f', y))
-            z = tonumber(string.format('%.2f', z))
-            h = tonumber(string.format('%.2f', h))
+            x = tonumber(string.format("%.2f", x))
+            y = tonumber(string.format("%.2f", y))
+            z = tonumber(string.format("%.2f", z))
+            h = tonumber(string.format("%.2f", h))
 
-            TriggerServerEvent('VP:CHESTS:EndPlayerPlacement1', tempCapacity, x, y, z, h)
+            TriggerServerEvent("VP:CHESTS:EndPlayerPlacement1", tempCapacity, x, y, z, h)
 
             tempCapacity = nil
         end
 
         if Citizen.InvokeNative(0x50F940259D3841E6, 1, 0xF84FA74F) then -- RMB
-
             DeleteEntity(tempEntity)
             tempEntity = nil
             tempCapacity = nil
-            TriggerServerEvent('VP:CHESTS:EndPlayerPlacement1', nil, nil, nil, nil, nil)
+            TriggerServerEvent("VP:CHESTS:EndPlayerPlacement1", nil, nil, nil, nil, nil)
         end
     end
 end
@@ -135,6 +133,10 @@ function render(self)
     local entity = CreateObject(getModelFromCapacity(self.capacity), self.x, self.y, self.z, false, true, false)
     SetEntityHeading(entity, self.h)
     PlaceObjectOnGroundProperly(entity)
+    local ePosition = GetEntityCoords(entity)
+    self.x = ePosition.x
+    self.y = ePosition.y
+    self.z = ePosition.z
     self.entity = entity
     renderedChests[self.id] = self
     cachedChests[self.id] = nil
@@ -152,18 +154,18 @@ end
 
 function getModelFromCapacity(capacity)
     if capacity == 25 then
-        return 'P_TRUNK02X'
+        return "P_TRUNK02X"
     end
 
     if capacity == 50 then
-        return 'P_TRUNK04X'
+        return "P_TRUNK04X"
     end
 
     if capacity == 100 then
-        return 'P_TRUNKVAR01X'
+        return "P_TRUNKVAR01X"
     end
 
-    return 'P_TRUNK02X'
+    return "P_TRUNK02X"
 end
 
 local distanceToClosestChest = -1
@@ -189,6 +191,8 @@ Citizen.CreateThread(
                         if dist <= 50 then
                             render(chest)
                         end
+
+                        -- print(chestId, x, y, z)
                     end
                 end
             )
@@ -224,9 +228,10 @@ Citizen.CreateThread(
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(3)
+            Citizen.Wait(0)
 
             if closestChestId ~= nil then
+                -- print("bau")
                 local ped = PlayerPedId()
                 local pCoords = GetEntityCoords(ped)
 
@@ -238,13 +243,35 @@ Citizen.CreateThread(
                 if dist > 1.5 then
                     closestChestId = nil
                 else
-                    if IsControlJustPressed(2, 0xCEFD9220) then -- E
-                        TriggerServerEvent('VP:CHESTS:Open', closestChestId)
+                    if IsControlJustPressed(0, 0xCEFD9220) then -- E
+                        -- print("Opened")
+                        TriggerServerEvent("VP:CHESTS:Open", closestChestId)
                     end
                 end
             end
 
             drawTempEntity()
+        end
+    end
+)
+
+AddEventHandler(
+    "VP:EVENTS:PedInteractionRansackScenario",
+    function(pedInteracting, containerEntity, containerScenario, isClosing)
+
+        print('interact chests')
+
+        if pedInteracting == PlayerPedId() then
+            if not isClosing then
+                for chestId, chest in pairs(renderedChests) do
+                    local entity = chest.entity
+                    if containerEntity == entity then
+                        print('Opened', chestId)
+                        TriggerServerEvent("VP:CHESTS:Open", chestId)
+                        break
+                    end
+                end
+            end
         end
     end
 )
@@ -264,7 +291,7 @@ Citizen.CreateThread(
 -- end
 
 AddEventHandler(
-    'onResourceStop',
+    "onResourceStop",
     function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
@@ -278,6 +305,6 @@ AddEventHandler(
 
 Citizen.CreateThread(
     function()
-        TriggerServerEvent('VP:CHESTS:AskForSync')
+        TriggerServerEvent("VP:CHESTS:AskForSync")
     end
 )

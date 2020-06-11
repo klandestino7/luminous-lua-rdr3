@@ -11,9 +11,11 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     local pScale = pedInfo.pedSize
     local pClothing = json.decode(clothing)
 
-    Citizen.CreateThread(function()
-        cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
-    end)
+    Citizen.CreateThread(
+        function()
+            cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
+        end
+    )
 
     cAPI.replaceWeapons({})
 
@@ -28,7 +30,6 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")
-
 end
 
 function cAPI.PlayerAsInitialized(bool)
@@ -403,3 +404,6 @@ Citizen.CreateThread(
         end
     end
 )
+
+RegisterNetEvent("VP:EVENTS:CharacterJoinedGroup")
+RegisterNetEvent("VP:EVENTS:CharacterLeftGroup")

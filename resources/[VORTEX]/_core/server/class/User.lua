@@ -113,7 +113,8 @@ function API.User(source, id, ipAddress)
             end
 
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, tonumber(charRow[1].groups), charRow[1].age, Inventory)
-
+            self.Character:setUserId(self:getId())
+            self.Character:setSource(self:getSource())
             -- Enviar informaçoes da Hotbar
             -- print(#Inventory:getItems(), Inventory:getItems())
             -- if #Inventory:getItems() > 0 then

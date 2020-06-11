@@ -23,10 +23,6 @@ function API.Inventory(id, capacity, slots)
         return self.id
     end
 
-    self.getItems = function()
-        return self.items
-    end
-
     self.getWeight = function()
         local weight = 0
         for slotId, Slot in pairs(self.slots) do
@@ -36,6 +32,14 @@ function API.Inventory(id, capacity, slots)
             end
         end
         return weight
+    end
+
+    self.autoSort = function()
+        return self.autosort == nil or self.autosort
+    end
+
+    self.setAutoSort = function(this, v)
+        self.autosort = v
     end
 
     self.setCapacity = function(this, v)
@@ -123,7 +127,9 @@ function API.Inventory(id, capacity, slots)
                 end
             else
                 if slotIdTo < first or slotIdTo > last then
-                    slotIdTo = getFreeSlots(self:getSlots(), Slot:getItemId())[1]
+                    if self:autoSort() then
+                        slotIdTo = getFreeSlots(self:getSlots(), Slot:getItemId())[1]
+                    end
                 end
             end
 
@@ -364,7 +370,23 @@ function API.Inventory(id, capacity, slots)
                 )
             end
 
-            self:addRecent(itemId, itemAmount)
+            local toastType = "item"
+            if itemId == "gold" then
+                toastType = "gold"
+            elseif itemId == "money" then
+                toastType = "dollar"
+            end
+
+            local itemName = itemData:getName()
+            for vSource, _ in pairs(self.viewersSources) do
+                if toastType == "item" then
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, itemAmount)
+                else
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemAmount / 100)
+                end
+            end
+
+            -- self:addRecent(itemId, itemAmount)
 
             syncToViewers(self.viewersSources, sync, self:getWeight())
 
@@ -426,6 +448,22 @@ function API.Inventory(id, capacity, slots)
                     end
                 end
             end
+
+            local toastType = "item"
+            if itemId == "gold" then
+                toastType = "gold"
+            elseif itemId == "money" then
+                toastType = "dollar"
+            end
+
+            local itemName = itemData:getName()
+            for vSource, _ in pairs(self.viewersSources) do
+                if toastType == "item" then
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, -(itemAmount))
+                else
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, -(itemAmount / 100))
+                end
+            end
         else
             local Slot = self.slots[slotId]
 
@@ -455,6 +493,22 @@ function API.Inventory(id, capacity, slots)
                         API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
                     end
                 )
+            end
+
+            local toastType = "item"
+            if itemId == "gold" then
+                toastType = "gold"
+            elseif itemId == "money" then
+                toastType = "dollar"
+            end
+
+            local itemName = itemData:getName()
+            for vSource, _ in pairs(self.viewersSources) do
+                if toastType == "item" then
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, -(itemAmount))
+                else
+                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, -(itemAmount / 100))
+                end
             end
         end
 
@@ -661,13 +715,9 @@ end
 
 function syncToViewers(viewers, slotsToSync, inventoryWeight)
     for viewerSource, asPrimary in pairs(viewers) do
-        -- local User = API.getUserFromSource(viewerSource)
-
         if asPrimary then
-            -- User:notify("Inventário Principal: + x" .. amount .. " " .. ItemData:getName())
             TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", viewerSource, slotsToSync, inventoryWeight)
         else
-            -- User:notify("Inventário Secundário: + x" .. amount .. " " .. ItemData:getName())
             TriggerClientEvent("VP:INVENTORY:SecondarySyncSlots", viewerSource, slotsToSync, inventoryWeight)
         end
     end

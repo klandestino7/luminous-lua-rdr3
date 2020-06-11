@@ -80,7 +80,6 @@ AddEventHandler(
 AddEventHandler(
     'VP:CHESTS:Open',
     function(chestId)
-        print('VP:CHESTS:Open')
         local _source = source
 
         local Chest = API.getChestFromChestId(chestId)

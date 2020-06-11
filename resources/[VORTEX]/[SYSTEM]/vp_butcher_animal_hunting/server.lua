@@ -116,7 +116,7 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    "API:OnUserCharacterInitialiation",
+    "API:OnUserCharacterInitialization",
     function(User, characterId)
         local _source = User:getSource()
 
