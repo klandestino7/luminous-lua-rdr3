@@ -92,33 +92,38 @@ AddEventHandler(
     function(source, targetUserId)
         local _source = source
         local User = API.getUserFromSource(_source)
-        print(User)
+        local Character = User:getCharacter()
+        
         if not User:isInAPosse() then
             User:notify("Você não está em um bando")
             TriggerClientEvent("VP:POSSE:CloseMenu", _source)
             return
         end
 
+        local Posse = API.getPosse(User:getPosseId())           
+
         local TargetSource = API.getUserFromUserId(parseInt(targetUserId)):getSource()
-
         local UserTarget = API.getUserFromSource(TargetSource)
+        local userRank = Posse:getMemberRank(Character:getId())
 
+        if userRank == 3 then
+            User:notify("Somente um membro de cargo superior pode conviar para o bando")
+            return
+        end
+        
         if UserTarget == nil then
-            User:notify("Usuario de id " .. TargetSource .. " não está online")
+            User:notify("Usuario de id " .. targetUserId .. " não está online")
             return
         end
 
         if UserTarget:isInAPosse() then
-            User:notify("Usuario de id " .. TargetSource .. " já se encontra em um bando!")
+            User:notify("Usuario de id " .. targetUserId .. " já se encontra em um bando!")
             return
         end
 
-        User:notify("Você convidou o ID " .. TargetSource .. " para entrar no bando")
+        User:notify("Você convidou o ID " .. targetUserId .. " para entrar no bando")
 
         UserTarget:notify("Você foi convidado a entrar no bando.")
-
-
-        local Posse = API.getPosse(User:getPosseId())
 
         local yes = cAPI.request(TargetSource, "Convite para o Bando " .. Posse:getName() .. " ?", 30)
 
@@ -239,7 +244,6 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Posse = API.getPosse(User:getPosseId())
 
-
         Posse:removeMember(Character:getId())
         Posse:notifyMembers(Character:getName() .. " saiu do bando!")
 
@@ -265,8 +269,6 @@ AddEventHandler(
 
         local Character = User:getCharacter()
         local Posse = API.getPosse(User:getPosseId())
-
-        print(Character:getId(), targetUserId)
 
         Posse:removeMember(Character:getId())    
         Posse:notifyMembers(Character:getName() .. " foi removido do bando!")
