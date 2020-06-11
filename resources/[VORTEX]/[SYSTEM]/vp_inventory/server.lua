@@ -110,7 +110,7 @@ AddEventHandler(
             return
         end
 
-        local CharacterTarget = User:Character()
+        local CharacterTarget = UserTarget:Character()
 
         if CharacterTarget == nil then
             return
@@ -119,11 +119,13 @@ AddEventHandler(
         local InventoryTarget = CharacterTarget:getInventory()
 
         local User = API.getUserFromSource(_source)
-        local Inventory = User:getPrimaryInventoryViewing()
+        local Character = User:getCharacter()
 
-        if Inventory == nil then
+        if Character == nil then
             return
         end
+
+        local Inventory = Character:getInventory()
 
         local Slot = Inventory:getSlots()[slotId]
 
@@ -150,7 +152,6 @@ AddEventHandler(
                     toastType = 'dollar'
                     amountToDisplay = amountToDisplay / 100
                 end
-
 
                 User:notify(toastType, ItemData:getName(), -(amountToDisplay))
 

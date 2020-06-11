@@ -50,24 +50,7 @@ Citizen.CreateThread(
                             local inWeapon = GetAmmoInPedWeapon(ped, weaponHash)
                             local ammoRemaining = math.floor(inWeapon - inClip)
 
-                            -- if not wasReloading then
-                            --     inClip = inClip - 1
-                            -- end
-
-                            -- print(weaponId .. " inClip: " .. inClip .. " Remaining: " .. ammoRemaining)
-
                             TriggerServerEvent("VP:INVENTORY:SaveWeaponAmmoOnDB", slotId, inClip, ammoRemaining)
-
-                        -- local slots = {
-                        --     [slotId] = {weaponId:gsub("weapon_", ""), 1, inClip, ammoRemaining}
-                        -- [slotId] = {weaponId, 1, inClip, ammoRemaining}
-                        -- }
-
-                        -- SendNUIMessage(
-                        --     {
-                        --         primarySlots = computeSlots(slots, true)
-                        --     }
-                        -- )
                         end
                     end
                 end
@@ -78,110 +61,95 @@ Citizen.CreateThread(
 
 local currentlyTryingToSendItem = false
 
-function startLookingForAPlayerToSend(slotId)
+local prompt_senditem
 
+function startLookingForAPlayerToSend(slotId)
     if currentlyTryingToSendItem then
         return
     end
 
     currentlyTryingToSendItem = true
+
+    local lastTargetPlayerServerId = nil
+
+    prompt_senditem = PromptRegisterBegin()
+    PromptSetControlAction(prompt_senditem, 0x07CE1E61)
+    PromptSetText(prompt_senditem, CreateVarString(10, "LITERAL_STRING", "Enviar"))
+    PromptSetEnabled(prompt_senditem, true)
+    PromptSetVisible(prompt_senditem, false)
+    PromptSetHoldMode(prompt_senditem, true)
+    PromptRegisterEnd(prompt_senditem)
+
     Citizen.CreateThread(
         function()
-            local lastAimedPed
-            local lastAimedPlayerIndex
-            local lastAimedPlayerIndexName
+            local timeRemaining = 10
+            while currentlyTryingToSendItem do
+                local y, entity = GetPlayerTargetEntity(PlayerId())
 
-            function RotationToDirection(rotation)
-                local adjustedRotation = {
-                    x = (math.pi / 180) * rotation.x,
-                    y = (math.pi / 180) * rotation.y,
-                    z = (math.pi / 180) * rotation.z
-                }
-                local direction = {
-                    x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-                    y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-                    z = math.sin(adjustedRotation.x)
-                }
-                return direction
-            end
+                lastTargetPlayerServerId = nil
 
-            local prompt_group = GetRandomIntInRange(0, 0xffffff)
+                if y then
+                    for _, pid in pairs(GetActivePlayers()) do
+                        if NetworkIsPlayerActive(pid) then
+                            local pped = GetPlayerPed(pid)
+                            if entity == pped then
+                                local serverId = GetPlayerServerId(pid)
+                                if lastTargetPlayerServerId ~= serverId then
+                                    lastTargetPlayerServerId = serverId
 
-            local prompt_send = PromptRegisterBegin()
-            PromptSetControlAction(prompt_send, 0x07CE1E61)
-            PromptSetText(prompt_send, CreateVarString(10, "LITERAL_STRING", "Enviar"))
-            PromptSetEnabled(prompt_send, true)
-            PromptSetVisible(prompt_send, true)
-            PromptSetHoldMode(prompt_send, true)
-            PromptSetGroup(prompt_send, prompt_group)
-            PromptRegisterEnd(prompt_send)
+                                    PromptSetVisible(prompt_senditem, true)
+                                    PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
 
-            local prompt_cancel = PromptRegisterBegin()
-            PromptSetControlAction(prompt_cancel, 0xF84FA74F)
-            PromptSetText(prompt_cancel, CreateVarString(10, "LITERAL_STRING", "Cancelar"))
-            PromptSetEnabled(prompt_cancel, true)
-            PromptSetVisible(prompt_cancel, true)
-            PromptSetHoldMode(prompt_cancel, true)
-            PromptSetGroup(prompt_cancel, prompt_group)
-            PromptRegisterEnd(prompt_cancel)
+                                    local pPosition = GetEntityCoords(PlayerPedId())
+                                    local tPosition = GetEntityCoords(pped)
 
-            while true do
-                Citizen.Wait(0)
+                                    local dist = #(pPosition - tPosition)
+                                    if dist <= 1.5 then
+                                        PromptSetEnabled(prompt_senditem, true)
+                                    else
+                                        PromptSetEnabled(prompt_senditem, false)
+                                    end
 
-                local closeToAPlayer= false
-                local pPosition = GetEntityCoords(PlayerPedId())
-                for _, index in pairs(GetActivePlayers()) do
-                    local playerPed = GetPlayerPed(index)
-                    if #(GetEntityCoords(playerPed) - pPosition) <= 10.0 then
-                        closeToAPlayer = true
-                        break
-                    end
-                end
-
-                if closeToAPlayer == false then
-                    PromptDelete(prompt_send)
-                    PromptDelete(prompt_cancel)
-                    break
-                end
-
-                local cameraRotation = GetGameplayCamRot()
-                local cameraCoord = GetGameplayCamCoord()
-                local direction = RotationToDirection(cameraRotation)
-                local aimingAtVector = vec3(cameraCoord.x + direction.x * 5.0, cameraCoord.y + direction.y * 5.0, cameraCoord.z + direction.z * 5.0)
-
-                local rayHandle = StartShapeTestRay(cameraCoord, aimingAtVector, 12, PlayerPedId(), 0)
-                local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
-
-                -- print(hit, endCoords, entityHit)
-
-                if hit == 1 then
-                    if (lastAimedPed == nil or lastAimedPed ~= entityHit) and IsPedAPlayer(lastAimedPed) then
-                        lastAimedPed = entityHit
-
-                        lastAimedPlayerIndex = NetworkGetPlayerIndexFromPed(lastAimedPed)
-                        lastAimedPlayerIndexName = GetPlayerName(lastAimedPlayerIndex) or 'NPC'
-                    else
-                        if lastAimedPed ~= nil then
-                            PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", lastAimedPlayerIndexName))
-
-                            if PromptHasHoldModeCompleted(prompt_send) then
-                                currentlyTryingToSendItem = false
-                                PromptDelete(prompt_send)
-                                PromptDelete(prompt_cancel)
-                                TriggerServerEvent('VP:INVENTORY:SendToPlayer', slotId, GetPlayerServerId(lastAimedPlayerIndex))
-                                break
-                            end
-
-                            if PromptHasHoldModeCompleted(prompt_cancel) then
-                                currentlyTryingToSendItem = false
-                                PromptDelete(prompt_send)
-                                PromptDelete(prompt_cancel)
-                                break
+                                    break
+                                end
                             end
                         end
                     end
                 end
+
+                if lastTargetPlayerServerId == nil then
+                    PromptSetVisible(prompt_senditem, false)
+                end
+
+                Citizen.Wait(250)
+
+                timeRemaining = timeRemaining - 0.25
+
+                if timeRemaining <= 0 then
+                    currentlyTryingToSendItem = false
+                end
             end
+        end
+    )
+
+    Citizen.CreateThread(
+        function()
+            while currentlyTryingToSendItem do
+                Citizen.Wait(0)
+                if lastTargetPlayerServerId ~= nil then
+                    if PromptHasHoldModeCompleted(prompt_senditem) then
+                        PromptDelete(prompt_senditem)
+                        prompt_senditem = nil
+
+                        currentlyTryingToSendItem = false
+
+                        TriggerServerEvent("VP:INVENTORY:SendToPlayer", slotId, lastTargetPlayerServerId)
+                    end
+                end
+            end
+
+            PromptDelete(prompt_senditem)
+            prompt_senditem = nil
         end
     )
 end
@@ -353,6 +321,18 @@ AddEventHandler(
             return
         end
         closeInv()
+    end
+)
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if (GetCurrentResourceName() ~= resourceName) then
+            return
+        end
+        if prompt_senditem ~= nil then
+            PromptDelete(prompt_senditem)
+        end
     end
 )
 
