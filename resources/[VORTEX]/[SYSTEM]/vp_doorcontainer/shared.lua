@@ -62,7 +62,16 @@ local doorStates = {
     [1733501235] = {true, 2158285782},
     [2817024187] = {true, 2089945615},
     [1751238140] = {false},
-    [531022111] = {true}
+    [531022111] = {true},
+
+    -- GUNSMITH VALENTINE
+    [2042647667] = {false},
+    [475159788] = {false},
+    -- MEDIC VALENTINE
+    [3439738919] = {false},
+    -- STABLE VALENTINE
+    [1132010214] = {false, 1876749464},
+    [1331491364] = {false, 1876749464}
 
 }
 
