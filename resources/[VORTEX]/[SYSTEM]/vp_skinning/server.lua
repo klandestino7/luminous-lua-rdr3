@@ -5,8 +5,9 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local AnimalModelToItem = {
-    [`A_C_Egret_01`] = 'feather_1',
-    [`A_C_Heron_01`] = 'feather_2',
+    [`A_C_Egret_01`] = "feather_1",
+    [`A_C_Heron_01`] = "feather_2",
+    [-1076508705] = "feather_5",
 }
 
 RegisterNetEvent("VP:SKINNING:Skinned")
