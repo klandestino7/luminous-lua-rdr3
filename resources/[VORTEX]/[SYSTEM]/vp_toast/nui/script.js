@@ -1,4 +1,3 @@
-
 window.addEventListener("message", function(event) {
 
     var text, type, quantity, type_icon;
@@ -69,7 +68,7 @@ window.addEventListener("message", function(event) {
 
     containerId = '#' + containerId;
 
-    var element = $("<div class='toast'></div>").appendTo(containerId);
+    var element = $(`<div class='toast' data-duration="${duration}"></div>`).appendTo(containerId);
 
     if (event.data.type == 'speech') {
         $(element).addClass('background');
@@ -92,34 +91,39 @@ window.addEventListener("message", function(event) {
     }
 
     if ($(`${containerId} .toast`).length == 1) {
-        resetInterval(containerId);
+        resetInterval(containerId, duration);
     }
 });
 
 let intervalIds = [];
 
-function resetInterval(containerId) {
+function resetInterval(containerId, duration) {
     if (intervalIds[containerId] != undefined) {
         clearInterval(intervalIds[containerId]);
     }
 
-    $(`${containerId} .toast:first-child()`).animate({
+    var elementFirstChild = `${containerId} .toast:first-child()`
+    $(elementFirstChild).animate({
         top: "-=100%",
     }, 150);
 
     intervalIds[containerId] = setInterval(function() {
 
-        $(`${containerId} .toast:first-child()`).animate({
+        $(elementFirstChild).animate({
             top: "-=100%",
             opacity: "0",
         }, 100, function() {
             $(this).remove();
         });
 
-        $(`${containerId} .toast:nth-child(2)`).animate({
+        var elementSecondChild = `${containerId} .toast:nth-child(2)`;
+        $(elementSecondChild).animate({
             top: "-=100%",
         }, 150);
-    }, 1000);
+
+        duration = $(elementSecondChild).data("duration");
+
+    }, duration);
 }
 
 // function fake(text) {
