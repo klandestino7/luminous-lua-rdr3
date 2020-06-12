@@ -9,7 +9,7 @@ cAPI = Tunnel.getInterface("API")
 -- 	local _source = source
 -- 	local User = API.getUserFromSource(_source)
 -- 	local Character = User:getCharacter()
--- 	local job = Character:hasGroup('police')
+-- 	local job = Character:hasGroupOrInheritance('trooper')
 
 -- 	if job then
 
@@ -30,11 +30,11 @@ AddEventHandler(
 			return
 		end
 
-		local police = Character:hasGroup("police")
-		local sheriff = Character:hasGroup("sheriff")
+		local trooper = Character:hasGroupOrInheritance("trooper")
+		local sheriff = Character:hasGroupOrInheritance("sheriff")
 
-		if police then
-			TriggerClientEvent("VP:SHERIFF:PoliceCheck", _source, police)
+		if trooper then
+			TriggerClientEvent("VP:SHERIFF:trooperCheck", _source, trooper)
 		end
 		if sheriff then
 			TriggerClientEvent("VP:SHERIFF:SheriffCheck", _source, sheriff)
@@ -49,12 +49,12 @@ AddEventHandler(
 		local _source = source
 		local User = API.getUserFromSource(_source)
 		local Character = User:getCharacter()
-		local policejob = Character:hasGroup("police")
+		local trooperjob = Character:hasGroupOrInheritance("trooper")
 
-		--TriggerClientEvent('VP:SHERIFF:result', _source, policejob)
+		--TriggerClientEvent('VP:SHERIFF:result', _source, trooperjob)
 
-		local policejob = Character:hasGroup("police")
-		if policejob == false then
+		local trooperjob = Character:hasGroupOrInheritance("trooper")
+		if trooperjob == false then
 			TriggerEvent("VP:SHERIFF:soltar", target)
 		else
 			TriggerClientEvent("chatMessage", source, "SISTEMA", {255, 255, 255}, "Você não é um oficial")
@@ -62,21 +62,7 @@ AddEventHandler(
 	end
 )
 
--- RegisterCommand('prender', function(source, args)
--- 	local source = source
--- 	TriggerEvent("redemrp:getPlayerFromId", source, function(user)
--- 		local policejob = user.getJob()
--- 	if policejob == 'police' then
--- 	if args[1] and GetPlayerName(args[1]) ~= nil and tonumber(args[2]) then
--- 		TriggerEvent('fc_jail:sendToJail', tonumber(args[1]), tonumber(args[2] * 60))
--- 	else
--- 		TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'ID ou Tempo Inválido!' } } )
--- 	end
--- 	else
--- 		 TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
--- 		end
--- 	end)
--- end)
+
 
 RegisterCommand(
 	"colocar",
@@ -86,8 +72,8 @@ RegisterCommand(
 			"redemrp:getPlayerFromId",
 			source,
 			function(user)
-				local policejob = user.getJob()
-				--	if policejob == 'police' then
+				local trooperjob = user.getJob()
+				--	if trooperjob == 'trooper' then
 				TriggerClientEvent("VP:SHERIFF:playercheck", source)
 				--xPlayer.removeInventoryItem('handcuffs', 1)
 				--	else
@@ -122,7 +108,7 @@ AddEventHandler(
 	function(target)
 		local xPlayer = ESX.GetPlayerFromId(source)
 
-		if xPlayer.job.name == "police" then
+		if xPlayer.job.name == "trooper" then
 		else
 			print(("VP:SHERIFF: %s attempted to put in vehicle (not cop)!"):format(xPlayer.identifier))
 		end
@@ -185,10 +171,10 @@ AddEventHandler(
 		local Character = User:getCharacter()
 
 		local role = 0
-		if Character:hasGroup("trooper") then
+		if Character:hasGroupOrInheritance("trooper") then
 			role = role + 1
 		end
-		if Character:hasGroup("trooper") then
+		if Character:hasGroupOrInheritance("trooper") then
 			role = role + 2
 		end
 
@@ -223,23 +209,23 @@ AddEventHandler(
 	end
 )
 
--- RegisterCommand('prender', function(source)
--- 	local _source = source
--- 	local User = API.getUserFromSource(source)
--- 	local Character = User:getCharacter()
+ RegisterCommand('prender', function(source)
+ 	local _source = source
+ 	local User = API.getUserFromSource(source)
+ 	local Character = User:getCharacter()
 
--- 	handcuffs = false
--- 		local policejob = Character:hasGroup('police')
--- 		if policejob == true then
--- 			TriggerClientEvent('VP:SHERIFF:cuffcheck', source)
--- 			handcuffs = true
--- 		else
--- 			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
--- 		end
--- 		if handcuffs == true then
--- 			TriggerEvent('VP:SHERIFF:prender', target)
--- 		end
--- end)
+ 	handcuffs = false
+ 		local trooperjob = Character:hasGroupOrInheritance('trooper')
+ 		if trooperjob == true then
+ 			TriggerClientEvent('VP:SHERIFF:cuffcheck', source)
+ 			handcuffs = true
+ 		else
+ 			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
+ 		end
+ 		if handcuffs == true then
+ 			TriggerEvent('VP:SHERIFF:prender', target)
+ 		end
+ end)
 
 -- RegisterServerEvent('VP:SHERIFF:checkjob')
 -- AddEventHandler('VP:SHERIFF:checkjob', function(source, playerjob)
