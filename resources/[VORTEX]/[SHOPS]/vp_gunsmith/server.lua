@@ -6,22 +6,22 @@ cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
     -- min_level, price_dollar, price_gold
-    ["revolver_lemat"] = {0, 317, 13},
-    ["revolver_cattleman"] = {0, 50, 2},
+    ["revolver_lemat"] = {0, 31700, 1300},
+    ["revolver_cattleman"] = {0, 5000, 200},
     -- ["revolver_navy"] = {0, 257, 11},
-    ["pistol_volcanic"] = {0, 300, 14},
-    ["shotgun_sawedoff"] = {0, 65, 15},
-    ["repeater_carbine"] = {0, 90, 4},
-    ["repeater_henry"] = {0, 234, 10},
-    ["sniperrifle_rollingblock"] = {0, 500, 20},
-    ["rifle_varmint"] = {0, 72, 3},
-    ["rifle_boltaction"] = {0, 216, 9},
+    ["pistol_volcanic"] = {0, 30000, 1400},
+    ["shotgun_sawedoff"] = {0, 6500, 1500},
+    ["repeater_carbine"] = {0, 90000, 400},
+    ["repeater_henry"] = {0, 23400, 1000},
+    ["sniperrifle_rollingblock"] = {0, 50000, 2000},
+    ["rifle_varmint"] = {0, 7200, 300},
+    ["rifle_boltaction"] = {0, 21600, 900},
     -- AMMO
-    ["ammo_revolver"] = {0, 10, 2, 20},
-    ["ammo_pistol"] = {0, 10, 2, 20},
-    ["ammo_repeater"] = {0, 10, 2, 20},
-    ["ammo_rifle"] = {0, 10, 2, 20},
-    ["ammo_shotgun"] = {0, 10, 2, 20}
+    ["ammo_revolver"] = {0, 200, 100, 20},
+    ["ammo_pistol"] = {0, 200, 100, 20},
+    ["ammo_repeater"] = {0, 200, 100, 20},
+    ["ammo_rifle"] = {0, 200, 100, 20},
+    ["ammo_shotgun"] = {0, 200, 100, 20}
 }
 
 -- ["revolver_lemat"] = {1, 7, 317, 13},
@@ -34,17 +34,16 @@ local verificationData = {
 -- -- repeater
 -- ["repeater_carbine"] = {1, 2, 90, 4},
 -- ["repeater_henry"] = {1, 17, 234, 10},
--- -- precision rifle 
+-- -- precision rifle
 -- ["sniperrifle_rollingblock"] = {1, 15, 500, 20},
 -- -- MELEE
 -- --  ["BOLAS"] = {1, 1, 30, 2},
 -- ["thrown_throwing_knives"] = {1, 1, 2.5, 0.5},
--- ["melee_cleaver"] = {1, 5, 8, 1},  
--- ["melee_knife"] = {1, 1, 0.5, 0.1},     
+-- ["melee_cleaver"] = {1, 5, 8, 1},
+-- ["melee_knife"] = {1, 1, 0.5, 0.1},
 -- -- manual rifle
 -- ["rifle_varmint"] = {1, 7, 72, 3},
 -- ["rifle_boltaction"] = {1, 9, 216, 9},
-
 
 RegisterNetEvent("VP:GUNSMITH:TryToBuy")
 AddEventHandler(
@@ -93,7 +92,7 @@ AddEventHandler(
                     User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
                 end
             end
-            User:notify('item', API.getItemDataFromId(itemId):getName(), itemAmount)
+            User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount)
         else
             User:notify("error", "Espaço insuficiente na bolsa!")
         end
