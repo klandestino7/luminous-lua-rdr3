@@ -16,26 +16,6 @@ local keys = {
 
 local prompts = {}
 
-
-RegisterCommand('blipcall', function(source, args)
-    local blip = args[1]
-
-    while blip do
-        Citizen.Wait(0)
-        Citizen.InvokeNative(0x2A32FAA57B937173,0x6903B113, -310.974,789.703,117.821-0.99, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.5, 255, 0, 0, 20, 0, 0, 2, 0, 0, 0, false)   
-    end    
-end)
-
-RegisterCommand('estado', function(source, args)
-    local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
-    print(town_hash)
-
-end)
-
-
-
-
 RegisterCommand('dv', function()
     local playerPed = PlayerPedId()
     local vehicle   = GetVehiclePedIsIn(playerPed, false)
@@ -60,34 +40,6 @@ RegisterCommand('off2', function(source, args)
     SetNuiFocus(false,false)
     cAPI.EndFade(500)
 
-end)
-
-RegisterCommand('testar', function(source, args)
-
-    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistlePitch", 0.1)
-    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistleClarity", 1.0)
-    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistleShape", 10.0)
-
-    --exports["vp_faroeste"]:js_get_ped_component_at_index()
-
-end)
-
-
-RegisterCommand('pedsize', function(source, args)   
-    local value = tonumber(args[1])
-    local isPositive =  value > 185
-    local variation = (math.abs(185 - value) * 0.005333)
-    if not isPositive then 
-      variation = -(variation)
-    end
-
-    SetPedScale(PlayerPedId(), 1.0 + variation)
-    print(1.0 + variation)
-
-    local GetPed = Citizen.InvokeNative(0x1D491CCF7211FB74 ,PlayerPedId())
-
-    Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)   
- --   SetTaskMoveNetworkSignalFloat(PlayerPedId(), "CURRENT_HEADING", 0.65);
 end)
 
 RegisterCommand('model', function(source, args)
