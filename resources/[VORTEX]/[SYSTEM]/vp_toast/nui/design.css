@@ -34,7 +34,7 @@ body {
 
 .toast {
     position: absolute;
-    height: 24px;
+    height: 20px;
     width: fit-content;
     padding: 0;
     display: flex;
@@ -43,6 +43,10 @@ body {
     align-items: center;
     color: white;
     bottom: -100%;
+}
+
+.toast.gold{
+    color: rgb(255, 200, 0);
 }
 
 .toast .toast-text {
@@ -65,13 +69,13 @@ body {
 }
 
 .toast .type-quantity {
-    margin: 0 0 0 -3px;
+    margin: 0 6px 0 -6px;
 }
 
 .toast .toast-type-icon {
     margin: 0 0 0 6px;
-    height: 24px;
-    width: 24px;
+    height: 20px;
+    width: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -109,5 +113,5 @@ body {
 }
 
 .toast .toast-text priority {
-    color: rgb(255, 200, 0)
+    color: rgb(255, 200, 0);
 }
