@@ -44,6 +44,13 @@ window.addEventListener("message", function(event) {
         containerId = 'no-icon';
     }
 
+    if (event.data.type == 'xp'){
+        quantity = event.data.quantity;
+        type = quantity > 0 ? '+' : '-';
+        quantity = Math.abs(quantity);
+        type_icon = 'xp';
+    }
+
     if (event.data.type == 'item') {
         text = event.data.text;
         quantity = event.data.quantity;
@@ -57,6 +64,12 @@ window.addEventListener("message", function(event) {
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
         type_icon = 'dollar';
+        if (quantity < 1.0) {
+            quantity *= 100;
+            quantity = "¢" + quantity;
+        } else {
+            quantity = "$" + quantity;
+        }
     }
 
     if (event.data.type == 'gold') {
@@ -64,18 +77,19 @@ window.addEventListener("message", function(event) {
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
         type_icon = 'gold';
+        // quantity = "G" + quantity;
     }
 
     containerId = '#' + containerId;
 
     var element = $(`<div class='toast' data-duration="${duration}"></div>`).appendTo(containerId);
 
-    if (event.data.type == 'speech') {
-        $(element).addClass('background');
+    if (event.data.type == 'gold'){
+        $(element).addClass('gold');
     }
 
-    if (text != undefined) {
-        $(element).append(`<span class='toast-text'>${text}</span>`);
+    if (event.data.type == 'speech') {
+        $(element).addClass('background');
     }
 
     if (type != undefined) {
@@ -84,6 +98,12 @@ window.addEventListener("message", function(event) {
 
     if (quantity != undefined) {
         $(element).append(`<span class='type-quantity'>${quantity}</span>`);
+    }
+
+    if (text != undefined) {
+        $(element).append(`<span class='toast-text'>${text}</span>`);
+    } else {
+        $(element).find(`.type-quantity`).css('margin', '0 0 0 -6px');
     }
 
     if (type_icon != undefined) {
@@ -95,33 +115,43 @@ window.addEventListener("message", function(event) {
     }
 });
 
-let intervalIds = [];
+var intervalIds = [];
 
 function resetInterval(containerId, duration) {
     if (intervalIds[containerId] != undefined) {
         clearInterval(intervalIds[containerId]);
     }
 
-    var elementFirstChild = `${containerId} .toast:first-child()`
+    let elementFirstChild = `${containerId} .toast:first-child()`
     $(elementFirstChild).animate({
         top: "-=100%",
     }, 150);
 
     intervalIds[containerId] = setInterval(function() {
 
-        $(elementFirstChild).animate({
-            top: "-=100%",
-            opacity: "0",
-        }, 100, function() {
-            $(this).remove();
-        });
+        let elementSecondChild = `${containerId} .toast:nth-child(2)`;
+        let hasNextChild = $(elementSecondChild).length > 0;
 
-        var elementSecondChild = `${containerId} .toast:nth-child(2)`;
-        $(elementSecondChild).animate({
-            top: "-=100%",
-        }, 150);
+        if (hasNextChild) {
+            $(elementFirstChild).animate({
+                top: "-=100%",
+                opacity: "0",
+            }, 100, function() {
+                $(this).remove();
+            });
 
-        duration = $(elementSecondChild).data("duration");
+            $(elementSecondChild).animate({
+                top: "-=100%",
+            }, 150);
+
+            duration = $(elementSecondChild).data("duration");
+        } else {
+            $(elementFirstChild).animate({
+                opacity: "0",
+            }, 100, function() {
+                $(this).remove();
+            });
+        }
 
     }, duration);
 }
