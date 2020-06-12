@@ -188,6 +188,9 @@ end
 function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
     if Queue:IsInQueue(ids) then return end
 
+    -- Counter player instancing?
+    Citizen.Wait(60000)
+
     local tmp = {
         source = src,
         ids = ids,
