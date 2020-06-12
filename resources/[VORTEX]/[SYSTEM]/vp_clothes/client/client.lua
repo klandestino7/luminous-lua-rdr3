@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+API = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+
 adding = true
 inCustomization = false
 cam = nil
@@ -6,6 +12,7 @@ spawnedCamera = nil
 choosePed = {}
 pedSelected = PlayerPedId()
 sex = nil
+positionBack = nil
 
 InterP = false
 CamActive = false
@@ -30,6 +37,7 @@ local chaps_f = {}
 
 local cloaks_m = {}
 local cloaks_f = {}
+
 
 local spats_m = {}
 local spats_f = {}
@@ -80,8 +88,11 @@ local pants_f = {}
 local masks_m = {} --mask
 local masks_f = {}
 ------------------------------------------
-local coats_m = {} --boots
+local coats_m = {} --coats
 local coats_f = {}
+------------------------------------------
+local coats2_m = {} --coats
+local coats2_f = {}
 -----------------------------------------
 local boots_m = {} --coats
 local boots_f = {}
@@ -175,6 +186,8 @@ Citizen.CreateThread(
                     table.insert(masks_m, v.Hash)
                 elseif v.category == "coats" then
                     table.insert(coats_m, v.Hash)
+                elseif v.category == "coats2" then
+                    table.insert(coats2_m, v.Hash)
                 elseif v.category == "boots" then
                     table.insert(boots_m, v.Hash)
                 elseif v.category == "torsos" then
@@ -246,6 +259,8 @@ Citizen.CreateThread(
                     table.insert(masks_f, v.hash)
                 elseif v.category == "coats" then
                     table.insert(coats_f, v.hash)
+                elseif v.category == "coats2" then
+                    table.insert(coats2_f, v.hash)
                 elseif v.category == "skirts" then
                     table.insert(skirts_f, v.hash)
                 elseif v.category == "torsos" then
@@ -272,7 +287,9 @@ RegisterCommand(
         inCustomization = true
         hided = false
         CamActive = false
-        SetEntityHeading(PlayerPedId(), 334)
+        cAPI.InFade(500)
+        Wait(1500)
+        createCamera()
     end
 )
 
@@ -283,14 +300,14 @@ AddEventHandler(
         inCustomization = true
         hided = false
         CamActive = false
-        SetEntityHeading(PlayerPedId(), 334)
+        cAPI.InFade(500)
+        Wait(1500)
         createCamera()
     end
 )
 
 function rotation(dir)
     local pedRot = GetEntityHeading(PlayerPedId()) + dir
-    print(pedRot)
     SetEntityHeading(PlayerPedId(), pedRot % 360)
 end
 
@@ -350,18 +367,25 @@ AddEventHandler(
 )
 
 function createCamera()
-    TriggerEvent("VP:NOTIFY:Simple", "Utilize as teclas A e D para rotacionar o personagem, e as setas do teclado para selecionar as opções.", 10000)
+    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
+    SetEntityCoords(PlayerPedId(), 2555.352,-1160.896,53.002)
     local coords = GetEntityCoords(PlayerPedId())
-    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", coords.x - 2.0, coords.y + 3.5, coords.z + 5.2)
-    SetCamCoord(groundCam, coords.x - 2.0, coords.y - 1.5, coords.z + 0.2)
-    SetCamRot(groundCam, -10.0, 0.0, GetEntityHeading(PlayerPedId()) + 253)
+    groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 2554.450, -1161.843, 53.782)
+  SetEntityHeading(PlayerPedId(), 286.07)
+    SetCamCoord(groundCam, 2554.450, -1161.843, 53.782)
+ --  SetCamFov(groundCam, 100)
+    SetCamRot(groundCam, -10.0, 0.0, 152.09)
     SetCamActive(groundCam, true)
     RenderScriptCams(true, false, 1, true, true)
     --Wait(3000)
     -- last camera, create interpolate
     fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-    SetCamCoord(fixedCam, coords.x - 2.0, coords.y - 0.5, coords.z + 0.5)
-    SetCamRot(fixedCam, -15.0, 0, GetEntityHeading(PlayerPedId()) + 300)
+    SetCamCoord(fixedCam, 2557.021,-1160.685,54.202)
+    SetCamRot(fixedCam, -15.0, 0, 115.09)
+    Wait(3000)
+    cAPI.OutFade(500)
+    TriggerEvent("VP:NOTIFY:Simple", "Utilize as teclas A e D para rotacionar o personagem, e as setas do teclado para selecionar as opções.", 10000)
+    --SetCamFov(fixedCam, 100)
     SetCamActive(fixedCam, true)
     SetCamActiveWithInterp(fixedCam, groundCam, 3900, true, true)
     Wait(3900)
@@ -400,6 +424,8 @@ LegsUsing = 0
 GlovesUsing = 0
 NeckwearUsing = 0
 GunbeltsUsing = 0
+cloaksUsing = 0
+coats2Using = 0
 
 spursUsing = 0
 chapsUsing = 0
@@ -917,6 +943,56 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
+    "Cloaks",
+    function(data)
+        if tonumber(data.id) == 0 then
+            num = 0
+            cloaksUsing = num
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3C1A74CD, 0) -- cloaks REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+        else
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xE06D30CE, 0) -- cloaks REMOVE
+            if sex == "mp_male" then
+                local num = tonumber(data.id)
+                hash = ("0x" .. cloaks_m[num])
+                setcloth(hash)
+                cloaksUsing = ("0x" .. cloaks_m[num])
+            else
+                local num = tonumber(data.id)
+                hash = ("0x" .. cloaks_f[num])
+                setcloth(hash)
+                cloaksUsing = ("0x" .. cloaks_f[num])
+            end
+        end
+    end
+)
+
+RegisterNUICallback(
+    "Jaqueta",
+    function(data)
+        if tonumber(data.id) == 0 then
+            num = 0
+            coats2Using = num
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xE06D30CE, 0) -- cloaks REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+        else
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3C1A74CD, 0) -- cloaks REMOVE
+            if sex == "mp_male" then
+                local num = tonumber(data.id)
+                hash = ("0x" .. coats2_m[num])
+                setcloth(hash)
+                coats2Using = ("0x" .. coats2_m[num])
+            else
+                local num = tonumber(data.id)
+                hash = ("0x" .. coats2_f[num])
+                setcloth(hash)
+                coats2Using = ("0x" .. coats2_f[num])
+            end
+        end
+    end
+)
+
+RegisterNUICallback(
     "Eyewear",
     function(data)
         if tonumber(data.id) == 0 then
@@ -993,7 +1069,9 @@ function setcloth(hash)
     if not HasModelLoaded(model2) then
         Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
     end
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
+
+    NativeSetPedComponentEnabled(PlayerPedId(), tonumber(hash), true, true)
+    --Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
 end
 
 RegisterNUICallback(
@@ -1026,7 +1104,7 @@ RegisterNUICallback(
         --     ['offhand'] = offhandUsing,
         --     ['beltbuckle'] = beltbuckleUsing
         -- }
-        
+    
         local dados = {
             HatUsing,
             ShirtsUsing,
@@ -1052,6 +1130,8 @@ RegisterNUICallback(
             beltsUsing,
             ponchosUsing,
             offhandUsing,
+            cloaksUsing,
+            coats2Using,
             beltbuckleUsing
         }
 
@@ -1059,15 +1139,24 @@ RegisterNUICallback(
 
         TriggerServerEvent("VP:CLOTHES:SavePlayerClothing", dados, true)
         DestroyClothingMenu()
+        cAPI.InFade(500)
+
+        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+        if positionBack ~= nil then
+            SetEntityCoords(PlayerPedId(), positionBack)
+        end
+        Wait(4000)
+        cAPI.OutFade(500)
     end
 )
 
 RegisterCommand(
     "clotheat",
     function()
-        local bandana = 0x34E62EF6
+        local bandana = 0x4F22177B
         print(bandana)
-        Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), bandana, true, true, true)
+        NativeSetPedComponentEnabled(PlayerPedId(), bandana, true, true)
+        --Citizen.InvokeNative(0xD3A7B003ED343FD9, , true, true, true)
     end
 )
 
@@ -1100,8 +1189,10 @@ Citizen.CreateThread(
 
             for _, shopPosition in pairs(shops) do
                 if #(pPosition - shopPosition) <= 1.5 then
+                    positionBack = shopPosition
                     DrawTxt("Pressione ALT para abrir a loja de roupas.", 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
-                    if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
+                    if IsControlJustReleased(0, 0xDFF812F9) then -- LEFT ALT
+                        print('presses')
                         TriggerEvent("VP:STORECLOTHES:OpenClothingMenu")
                     end
                 end
@@ -1109,6 +1200,40 @@ Citizen.CreateThread(
         end
     end
 )
+
+function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
+    local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)
+    -- print(componentHash, categoryHash, NativeGetMetapedType(ped))
+
+    NativeFixMeshIssues(ped, categoryHash)
+
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, componentHash, immediately, isMp, true)
+end
+
+function NativeUpdatePedVariation(ped)
+    Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
+end
+
+function NativeFixMeshIssues(ped, categoryHash)
+    Citizen.InvokeNative(0x59BD177A1A48600A, ped, categoryHash)
+end
+
+function NativeIsPedComponentEquipped(ped, componentHash)
+    return Citizen.InvokeNative(0xFB4891BD7578CDC1, ped, componentHash)
+end
+
+function NativeGetPedComponentCategory(isFemale, componentHash)
+    return Citizen.InvokeNative(0x5FF9A878C3D115B8, componentHash, isFemale, true)
+end
+
+function NativeGetMetapedType(ped)
+    return Citizen.InvokeNative(0xEC9A1261BF0CE510, ped)
+end
+
+function NativeHasPedComponentLoaded(ped)
+    return Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, ped)
+end
+
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
     local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
