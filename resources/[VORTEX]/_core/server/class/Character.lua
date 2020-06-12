@@ -314,26 +314,26 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         return table.unpack(row).is_dead
     end
 
-    self.savePosition = function(this, x, y, z)
-        local encoded = json.encode({x, y, z})
-        self:setData(self:getId(), "charTable", "position", encoded)
-    end
+    -- self.savePosition = function(this, x, y, z)
+    --     local encoded = json.encode({x, y, z})
+    --     self:setData(self:getId(), "charTable", "position", encoded)
+    -- end
 
     self.getLastPosition = function(this)
         local lastPositionFromDb = self:getData(self.id, "charTable", "position")
         return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {-329.9, 775.11, 121.74}
     end
 
-    self.saveClothes = function()
-        --[[ for k,v in pairs(cAPI.getClothes()) do
-            self:setData(self.id, 'clothes', k, v)
-        end ]]
+    self.getCachedStats = function()
+        local c = self:getData(self.id, "charTable", "stats")
+        return c ~= nil and json.decode(c) or {}
     end
 
-    self.saveProfiles = function()
-        --[[ for k,v in pairs(cAPI.getProfiles()) do
-            self:setData(self.id, 'charTable', k, v)
-        end ]]
+    self.cacheStats = function(this, position, health, stamina, healthCore, staminaCore)
+        local encodedStats = json.encode({health, stamina, healthCore, staminaCore})
+        local encodedPosition = json.encode(position)
+        self:setData(self:getId(), "charTable", "stats", encodedStats)
+        self:setData(self:getId(), "charTable", "position", encodedPosition)
     end
 
     return self

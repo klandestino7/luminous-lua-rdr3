@@ -46,8 +46,13 @@ local blips = {
 
 	--DOCTOR
 	{ name = 'Doctor', sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39 },
+<<<<<<< HEAD
 	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },	
 
+=======
+	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },
+	
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 	--SALOON
 	{ name = 'Saloon', sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98 },
 	{ name = 'Saloon', sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68 },
@@ -100,11 +105,23 @@ local blips = {
 	{ name = 'Convento Claremonnt', sprite = -428972082 , x = 2401.339, y = -1103.892, z = 47.051},
 }
 
+local blips = {}
+
 Citizen.CreateThread(function()
 	for _, info in pairs(blips) do
         local blip = N_0x554d9d53f696d002(1664425300, info.x, info.y, info.z)
         SetBlipSprite(blip, info.sprite, 1)
 		SetBlipScale(blip, 0.2)
 		Citizen.InvokeNative(0x9CB1A1623062F402, blip, info.name)
+		table.insert(blips, blip)
     end  
+end)
+
+AddEventHandler('onResourceStop', function(resourceName)
+	if resourceName == GetCurrentResourceName() then
+		for _, blip in pairs(blips) do
+			-- RemoveBlip(blip)
+			Citizen.InvokeNative(0xF2C3C9DA47AAA54A, blip)
+		end
+	end
 end)

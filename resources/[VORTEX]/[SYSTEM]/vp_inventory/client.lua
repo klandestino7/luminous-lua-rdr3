@@ -18,10 +18,18 @@ Citizen.CreateThread(
                 Wait(500)
             end 
             --]]
+=======
+            -- if IsControlJustPressed(0, 0x3076E97C) then -- NUMPAD 6
+            --     SendNUIMessage(
+            --         {
+            --             type = "nextHotbarSlot"
+            --         }
+            --     )
+            --     Wait(500)
+            -- end
         end
     end
 )
-
 
 local whereWeaponIsAtSlot = {}
 local isReloadingOrShooting = false
@@ -68,6 +76,8 @@ function startLookingForAPlayerToSend(slotId)
         return
     end
 
+    closeInv()
+
     currentlyTryingToSendItem = true
 
     local lastTargetPlayerServerId = nil
@@ -101,9 +111,10 @@ function startLookingForAPlayerToSend(slotId)
                                     PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
 
                                     local pPosition = GetEntityCoords(PlayerPedId())
-                                    local tPosition = GetEntityCoords(pped)
+                                    local tPosition = GetEntityCoords(entity)
 
                                     local dist = #(pPosition - tPosition)
+
                                     if dist <= 1.5 then
                                         PromptSetEnabled(prompt_senditem, true)
                                     else

@@ -23,7 +23,11 @@ AddEventHandler(
         print(author .. "^7: " .. message .. "^7")
     end
 )
+<<<<<<< HEAD
 --]]
+=======
+]]
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 -- /////////////////////// COMENTAR ISSO
 AddEventHandler(
     "__cfx_internal:commandFallback",

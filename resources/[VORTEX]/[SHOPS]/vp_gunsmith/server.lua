@@ -34,17 +34,16 @@ local verificationData = {
 -- -- repeater
 -- ["repeater_carbine"] = {1, 2, 90, 4},
 -- ["repeater_henry"] = {1, 17, 234, 10},
--- -- precision rifle 
+-- -- precision rifle
 -- ["sniperrifle_rollingblock"] = {1, 15, 500, 20},
 -- -- MELEE
 -- --  ["BOLAS"] = {1, 1, 30, 2},
 -- ["thrown_throwing_knives"] = {1, 1, 2.5, 0.5},
--- ["melee_cleaver"] = {1, 5, 8, 1},  
--- ["melee_knife"] = {1, 1, 0.5, 0.1},     
+-- ["melee_cleaver"] = {1, 5, 8, 1},
+-- ["melee_knife"] = {1, 1, 0.5, 0.1},
 -- -- manual rifle
 -- ["rifle_varmint"] = {1, 7, 72, 3},
 -- ["rifle_boltaction"] = {1, 9, 216, 9},
-
 
 RegisterNetEvent("VP:GUNSMITH:TryToBuy")
 AddEventHandler(
@@ -93,7 +92,7 @@ AddEventHandler(
                     User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
                 end
             end
-            User:notify('item', API.getItemDataFromId(itemId):getName(), itemAmount)
+            User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount)
         else
             User:notify("error", "Espaço insuficiente na bolsa!")
         end

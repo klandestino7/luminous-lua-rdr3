@@ -16,6 +16,7 @@ local keys = {
 
 local prompts = {}
 
+<<<<<<< HEAD
 
 RegisterCommand('inv', function()
     Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
@@ -38,6 +39,8 @@ end)
 
 
 
+=======
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 RegisterCommand('dv', function()
     local playerPed = PlayerPedId()
     local vehicle   = GetVehiclePedIsIn(playerPed, false)
@@ -64,6 +67,7 @@ RegisterCommand('off2', function(source, args)
 
 end)
 
+<<<<<<< HEAD
 RegisterCommand('testar', function(source, args)
 
     Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistlePitch", 0.1)
@@ -73,6 +77,63 @@ RegisterCommand('testar', function(source, args)
     --exports["vp_faroeste"]:js_get_ped_component_at_index()
 
 end)
+=======
+RegisterCommand('model', function(source, args)
+    local model = "p_haybale03x"
+    if IsModelValid(model) then
+        if not HasModelLoaded(model) then
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Citizen.Wait(10)
+            end
+        end
+    end
+
+    local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
+    local object = CreateObject(model, coords, true, true, false, false, true)
+    PlaceObjectOnGroundProperly(object)
+    Wait(1000)
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PICKUP_1", 0, 0)
+    Wait(3000)
+    print('sk')
+    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PUT_DOWN_2_MALE_A", 0, 0)
+end)
+
+
+RegisterCommand(
+    "kit1",
+    function(source, args)        
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_REVOLVER_CATTLEMAN'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_RIFLE_SPRINGFIELD'), 500, true, 0)
+        Wait(1000)
+      --  Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_MOLOTOV'), 500, true, 0)
+
+    end
+)
+
+RegisterCommand(
+    "kit2",
+    function(source, args)        
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_BOW'), 500, true, 0)
+        SetPedAmmoByType(ped, GetHashKey('ammo_arrow_fire'), 200)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_KNIFE_JAWBONE'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_TOMAHAWK_ANCIENT'), 500, true, 0)
+        Wait(1000)
+        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_HATCHET_VIKING'), 500, true, 0) 
+    end
+)
+
+
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 
 -- Citizen.CreateThread(function()
 --     local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);
