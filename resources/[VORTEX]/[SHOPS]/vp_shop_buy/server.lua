@@ -38,12 +38,12 @@ local verificationData = {
     -- }
 
     ["Mercado Geral"] = {
-        ["tobacco_seed"] = {10, 1, 1, 1},
-        ["corn_seed"] = {10, 1, 1, 1},
-        ["sugarcane_seed"] = {10, 1, 1, 1},
-        ["pickaxe"] = {100, 1, 1, 1},
-        ["lasso"] = {200, 1, 1, 1},
-        ["melee_knife"] = {300, 1, 1}
+        ["tobacco_seed"] = {0, 10, 4, 5},
+        ["corn_seed"] = {0, 10, 4, 5},
+        ["sugarcane_seed"] = {0, 10, 4, 5},
+        ["pickaxe"] = {0, 100, 40, 1},
+        ["lasso"] = {0, 3000, 1200, 1},
+        ["melee_knife"] = {0, 2000, 800, 1}
     }
 }
 

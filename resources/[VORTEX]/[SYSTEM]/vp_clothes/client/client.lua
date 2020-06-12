@@ -288,8 +288,7 @@ RegisterCommand(
         hided = false
         CamActive = false
         cAPI.InFade(500)
-        Wait(1500)
-        createCamera()
+        SetEveryoneAsInvisible()
     end
 )
 
@@ -301,10 +300,12 @@ AddEventHandler(
         hided = false
         CamActive = false
         cAPI.InFade(500)
-        Wait(1500)
-        createCamera()
+        SetEveryoneAsInvisible()        
     end
 )
+
+
+
 
 function rotation(dir)
     local pedRot = GetEntityHeading(PlayerPedId()) + dir
@@ -345,7 +346,7 @@ Citizen.CreateThread(
                         action = "show",
                         gender = sex
                     }
-                )
+                )           
             end
         end
     end
@@ -366,12 +367,31 @@ AddEventHandler(
     end
 )
 
+function SetEveryoneAsInvisible()
+   NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
+  while inCustomization do
+  	Citizen.Wait(0)
+	    for _, pid in pairs(GetActivePlayers()) do
+	    	--print('1 '.. pid)
+	       SetEntityVisible(GetPlayerPed(pid), false)
+	    end
+   end
+
+ 	for _, pid in pairs(GetActivePlayers()) do
+ 		--print('2 '.. pid)
+      -- SetEntityVisible(GetPlayerPed(pid), true)
+   	end
+   	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+end
+
 function createCamera()
-    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), 2555.352,-1160.896,53.002)
     local coords = GetEntityCoords(PlayerPedId())
     groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 2554.450, -1161.843, 53.782)
-  SetEntityHeading(PlayerPedId(), 286.07)
+  	SetEntityHeading(PlayerPedId(), 286.07)
+
+
+  --	SetEntityVisible(PlayerPedId(), false)
     SetCamCoord(groundCam, 2554.450, -1161.843, 53.782)
  --  SetCamFov(groundCam, 100)
     SetCamRot(groundCam, -10.0, 0.0, 152.09)
@@ -1077,88 +1097,83 @@ end
 RegisterNUICallback(
     "Confirm",
     function()
-        -- local dados = {
-        --     ['hat'] = HatUsing,
-        --     ['shirts'] = ShirtsUsing,
-        --     ['vests'] = VestsUsing,
-        --     ['pants'] = PantsUsing,
-        --     ['boots'] = BootsUsing,
-        --     ['masks'] = MasksUsing,
-        --     ['coats'] = CoatsUsing,
-        --     ['skirts'] = SkirtsUsing,
-        --     ['legs'] = LegsUsing,
-        --     ['gloves'] = GlovesUsing,
-        --     ['neckwear'] = NeckwearUsing,
-        --     ['gunbelts'] = GunbeltsUsing,
-        --     ['spurs'] = spursUsing,
-        --     ['chaps'] = chapsUsing,
-        --     ['spats'] = spatsUsing,
-        --     ['eyewear'] = eyewearUsing,
-        --     ['access'] = accessUsing,
-        --     ['neckties'] = necktiesUsing,
-        --     ['bracelets'] = braceletsUsing,
-        --     ['suspenders'] = suspendersUsing,
-        --     ['gauntlets'] = gauntletsUsing,
-        --     ['belts'] = beltsUsing,
-        --     ['ponchos'] = ponchosUsing,
-        --     ['offhand'] = offhandUsing,
-        --     ['beltbuckle'] = beltbuckleUsing
-        -- }
-    
         local dados = {
-            HatUsing,
-            ShirtsUsing,
-            VestsUsing,
-            PantsUsing,
-            BootsUsing,
-            MasksUsing,
-            CoatsUsing,
-            SkirtsUsing,
-            LegsUsing,
-            GlovesUsing,
-            NeckwearUsing,
-            GunbeltsUsing,
-            spursUsing,
-            chapsUsing,
-            spatsUsing,
-            eyewearUsing,
-            accessUsing,
-            necktiesUsing,
-            braceletsUsing,
-            suspendersUsing,
-            gauntletsUsing,
-            beltsUsing,
-            ponchosUsing,
-            offhandUsing,
-            cloaksUsing,
-            coats2Using,
-            beltbuckleUsing
+            ['hat'] = HatUsing,
+            ['shirts'] = ShirtsUsing,
+            ['vests'] = VestsUsing,
+            ['pants'] = PantsUsing,
+            ['boots'] = BootsUsing,
+            ['masks'] = MasksUsing,
+            ['coats'] = CoatsUsing,
+            ['skirts'] = SkirtsUsing,
+            ['legs'] = LegsUsing,
+            ['gloves'] = GlovesUsing,
+            ['neckwear'] = NeckwearUsing,
+            ['gunbelts'] = GunbeltsUsing,
+            ['spurs'] = spursUsing,
+            ['chaps'] = chapsUsing,
+            ['spats'] = spatsUsing,
+            ['eyewear'] = eyewearUsing,
+            ['access'] = accessUsing,
+            ['neckties'] = necktiesUsing,
+            ['bracelets'] = braceletsUsing,
+            ['suspenders'] = suspendersUsing,
+            ['gauntlets'] = gauntletsUsing,
+            ['belts'] = beltsUsing,
+            ['ponchos'] = ponchosUsing,
+            ['offhand'] = offhandUsing,
+            ['beltbuckle'] = beltbuckleUsing,
+            ['cloaks'] = cloaksUsing,
+            ['coats2'] = coats2Using,
+            ['beltbuckle'] = beltbuckleUsing
         }
+    
+        -- local dados = {
+        --     HatUsing,
+        --     ShirtsUsing,
+        --     VestsUsing,
+        --     PantsUsing,
+        --     BootsUsing,
+        --     MasksUsing,
+        --     CoatsUsing,
+        --     SkirtsUsing,
+        --     LegsUsing,
+        --     GlovesUsing,
+        --     NeckwearUsing,
+        --     GunbeltsUsing,
+        --     spursUsing,
+        --     chapsUsing,
+        --     spatsUsing,
+        --     eyewearUsing,
+        --     accessUsing,
+        --     necktiesUsing,
+        --     braceletsUsing,
+        --     suspendersUsing,
+        --     gauntletsUsing,
+        --     beltsUsing,
+        --     ponchosUsing,
+        --     offhandUsing,
+        --     cloaksUsing,
+        --     coats2Using,
+        --     beltbuckleUsing
+        -- }
 
-        print(json.encode(dados))
+       -- print(json.encode(dados))
 
         TriggerServerEvent("VP:CLOTHES:SavePlayerClothing", dados, true)
         DestroyClothingMenu()
         cAPI.InFade(500)
-
-        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
         if positionBack ~= nil then
             SetEntityCoords(PlayerPedId(), positionBack)
         end
         Wait(4000)
+       	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+       	 --SetEntityVisible(PlayerPedId(), true)
         cAPI.OutFade(500)
     end
 )
 
-RegisterCommand(
-    "clotheat",
-    function()
-        local bandana = 0x4F22177B
-        print(bandana)
-        NativeSetPedComponentEnabled(PlayerPedId(), bandana, true, true)
-        --Citizen.InvokeNative(0xD3A7B003ED343FD9, , true, true, true)
-    end
-)
+
 
 function DestroyClothingMenu()
     DestroyAllCams(true)
@@ -1191,7 +1206,7 @@ Citizen.CreateThread(
                 if #(pPosition - shopPosition) <= 1.5 then
                     positionBack = shopPosition
                     DrawTxt("Pressione ALT para abrir a loja de roupas.", 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
-                    if IsControlJustReleased(0, 0xDFF812F9) then -- LEFT ALT
+                    if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
                         print('presses')
                         TriggerEvent("VP:STORECLOTHES:OpenClothingMenu")
                     end

@@ -132,10 +132,6 @@ Citizen.CreateThread(
 					end
 				end
 
-				if IsControlJustPressed(0, 0x760A9C6F) then -- Hold F6
-					TriggerEvent("VP:SHERIFF:cuffcheck")
-				end
-
 				if IsControlJustPressed(0, 0x3C0A40F2) then -- Hold F6
 					WarMenu.OpenMenu("OfficerMenu")
 				end

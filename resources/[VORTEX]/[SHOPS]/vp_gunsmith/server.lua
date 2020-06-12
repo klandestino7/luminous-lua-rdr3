@@ -6,22 +6,22 @@ cAPI = Tunnel.getInterface("API")
 
 local verificationData = {
     -- min_level, price_dollar, price_gold
-    ["revolver_lemat"] = {0, 317, 13},
-    ["revolver_cattleman"] = {0, 50, 2},
+    ["revolver_lemat"] = {0, 31700, 1300},
+    ["revolver_cattleman"] = {0, 5000, 200},
     -- ["revolver_navy"] = {0, 257, 11},
-    ["pistol_volcanic"] = {0, 300, 14},
-    ["shotgun_sawedoff"] = {0, 65, 15},
-    ["repeater_carbine"] = {0, 90, 4},
-    ["repeater_henry"] = {0, 234, 10},
-    ["sniperrifle_rollingblock"] = {0, 500, 20},
-    ["rifle_varmint"] = {0, 72, 3},
-    ["rifle_boltaction"] = {0, 216, 9},
+    ["pistol_volcanic"] = {0, 30000, 1400},
+    ["shotgun_sawedoff"] = {0, 6500, 1500},
+    ["repeater_carbine"] = {0, 90000, 400},
+    ["repeater_henry"] = {0, 23400, 1000},
+    ["sniperrifle_rollingblock"] = {0, 50000, 2000},
+    ["rifle_varmint"] = {0, 7200, 300},
+    ["rifle_boltaction"] = {0, 21600, 900},
     -- AMMO
-    ["ammo_revolver"] = {0, 10, 2, 20},
-    ["ammo_pistol"] = {0, 10, 2, 20},
-    ["ammo_repeater"] = {0, 10, 2, 20},
-    ["ammo_rifle"] = {0, 10, 2, 20},
-    ["ammo_shotgun"] = {0, 10, 2, 20}
+    ["ammo_revolver"] = {0, 200, 100, 20},
+    ["ammo_pistol"] = {0, 200, 100, 20},
+    ["ammo_repeater"] = {0, 200, 100, 20},
+    ["ammo_rifle"] = {0, 200, 100, 20},
+    ["ammo_shotgun"] = {0, 200, 100, 20}
 }
 
 -- ["revolver_lemat"] = {1, 7, 317, 13},

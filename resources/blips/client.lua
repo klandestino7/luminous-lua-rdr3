@@ -46,7 +46,8 @@ local blips = {
 
 	--DOCTOR
 	{ name = 'Doctor', sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39 },
-	
+	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },	
+
 	--SALOON
 	{ name = 'Saloon', sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98 },
 	{ name = 'Saloon', sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68 },
@@ -69,9 +70,10 @@ local blips = {
 	--HOTELES
 	{ name = 'Motel', sprite = -211556852, x = -325.74, y = 772.92, z = 117.44 },
 	--Loja de itens
-	--{ name = 'Loja de itens', sprite = 249721687, x = 2949.3, y = 525.67, z = 199.3 },
+	{ name = 'Loja de itens', sprite = 249721687, x = 1327.907, y = -1292.865, z = 77.023 },
 	{ name = 'Aldeia indígena', sprite = -1944395098, x = 449.36, y = 2234.05, z = 247.65 },
---{ name = 'Loja de itens', sprite = 1322310532, x = -277.76, y = 804.97, z = 119.38 },
+	{ name = 'Loja de itens', sprite = 1322310532, x = -785.338, y = -1323.850, z = 43.884 },
+
 	--loja de carroça
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = -396.48, y = 654.25, z = 114.66 },
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = 1889.65, y = -1343.7, z = 42.51 },
@@ -94,6 +96,8 @@ local blips = {
 	{ name = 'Mineração', sprite = 1202244626, x = -4396.01, y = -2160.36, z = 48.3 },
 	{ name = 'Mineração', sprite = 1202244626, x = -5978.16, y = -3164.54, z = -25.31 },
 	{ name = 'Mineração', sprite = 1202244626, x = -1434.47, y = 1207.79, z = 226.2 },
+
+	{ name = 'Convento Claremonnt', sprite = -428972082 , x = 2401.339, y = -1103.892, z = 47.051},
 }
 
 Citizen.CreateThread(function()

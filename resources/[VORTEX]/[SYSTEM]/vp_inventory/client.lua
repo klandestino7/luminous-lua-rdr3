@@ -8,6 +8,7 @@ Citizen.CreateThread(
                 opened = true
             end
 
+            --[[
             if IsControlJustPressed(0, 0x3076E97C) then -- NUMPAD 6
                 SendNUIMessage(
                     {
@@ -15,7 +16,8 @@ Citizen.CreateThread(
                     }
                 )
                 Wait(500)
-            end
+            end 
+            --]]
         end
     end
 )

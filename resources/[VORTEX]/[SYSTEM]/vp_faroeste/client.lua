@@ -17,22 +17,24 @@ local keys = {
 local prompts = {}
 
 
-RegisterCommand('blipcall', function(source, args)
-    local blip = args[1]
+RegisterCommand('inv', function()
+    Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
+end)
 
-    while blip do
+RegisterCommand('vis', function()
+
+end)
+
+AddEventHandler('SaltyChat_TalkStateChanged', function(isTalking)
+    while isTalking do
         Citizen.Wait(0)
-        Citizen.InvokeNative(0x2A32FAA57B937173,0x6903B113, -310.974,789.703,117.821-0.99, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.5, 255, 0, 0, 20, 0, 0, 2, 0, 0, 0, false)   
-    end    
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
+    end
+    if not isTalking then
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_normal", "FACE_HUMAN@GEN_MALE@BASE")
+        Citizen.InvokeNative(0x726256CC1EEB182F, PlayerPedId())
+    end   
 end)
-
-RegisterCommand('estado', function(source, args)
-    local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
-    print(town_hash)
-
-end)
-
 
 
 
@@ -71,80 +73,6 @@ RegisterCommand('testar', function(source, args)
     --exports["vp_faroeste"]:js_get_ped_component_at_index()
 
 end)
-
-
-RegisterCommand('pedsize', function(source, args)   
-    local value = tonumber(args[1])
-    local isPositive =  value > 185
-    local variation = (math.abs(185 - value) * 0.005333)
-    if not isPositive then 
-      variation = -(variation)
-    end
-
-    SetPedScale(PlayerPedId(), 1.0 + variation)
-    print(1.0 + variation)
-
-    local GetPed = Citizen.InvokeNative(0x1D491CCF7211FB74 ,PlayerPedId())
-
-    Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)   
- --   SetTaskMoveNetworkSignalFloat(PlayerPedId(), "CURRENT_HEADING", 0.65);
-end)
-
-RegisterCommand('model', function(source, args)
-    local model = "p_haybale03x"
-    if IsModelValid(model) then
-        if not HasModelLoaded(model) then
-            RequestModel(model)
-            while not HasModelLoaded(model) do
-                Citizen.Wait(10)
-            end
-        end
-    end
-
-    local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
-    local object = CreateObject(model, coords, true, true, false, false, true)
-    PlaceObjectOnGroundProperly(object)
-    Wait(1000)
-    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PICKUP_1", 0, 0)
-    Wait(3000)
-    print('sk')
-    Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_BALE_PUT_DOWN_2_MALE_A", 0, 0)
-end)
-
-
-RegisterCommand(
-    "kit1",
-    function(source, args)        
-        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
-                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_REVOLVER_CATTLEMAN'), 500, true, 0)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_RIFLE_SPRINGFIELD'), 500, true, 0)
-        Wait(1000)
-      --  Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_MOLOTOV'), 500, true, 0)
-
-    end
-)
-
-RegisterCommand(
-    "kit2",
-    function(source, args)        
-        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
-                RemoveAllPedWeapons(PlayerPedId(), 1, 1)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_BOW'), 500, true, 0)
-        SetPedAmmoByType(ped, GetHashKey('ammo_arrow_fire'), 200)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_KNIFE_JAWBONE'), 500, true, 0)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_THROWN_TOMAHAWK_ANCIENT'), 500, true, 0)
-        Wait(1000)
-        Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey('WEAPON_MELEE_HATCHET_VIKING'), 500, true, 0) 
-    end
-)
-
-
 
 -- Citizen.CreateThread(function()
 --     local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);
