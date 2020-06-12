@@ -18,7 +18,7 @@ local verificationData = {
     --     ["rifle_varmint"] = {0, 72, 3}
     -- },
     ["Arsenal"] = {
-        group = "admin",
+        group = "trooper",
         -- Level, Price, Amount(optional)
         ["revolver_doubleaction"] = {0, 0, 0},
         ["rifle_springfield"] = {0, 0, 0},
