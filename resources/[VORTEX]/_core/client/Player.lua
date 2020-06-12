@@ -14,6 +14,7 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     Citizen.CreateThread(
         function()
             cAPI.PlaySkyCameraAnimationAtCoords(decodedLastPosition)
+            cAPI.PlayerAsInitialized(true)
         end
     )
 
@@ -25,8 +26,6 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
     cAPI.SetPedScale(PlayerPedId(), pScale)
     cAPI.SetPedClothing(PlayerPedId(), pClothing)
-
-    initializedPlayer = true
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")
@@ -188,106 +187,32 @@ function cAPI.SetPlayerPosition(x, y, z)
 end
 
 function cAPI.VaryPlayerHealth(variation, variationTime)
-    VaryPedHealth(PlayerPedId(), variation, variationTime)
+    cAPI.VaryPedHealth(PlayerPedId(), variation, variationTime)
 end
 
 function cAPI.VaryPlayerStamina(variation, variationTime)
-    VaryPedStamina(PlayerPedId(), variation, variationTime)
+    cAPI.VaryPedStamina(PlayerPedId(), variation, variationTime)
 end
 
 function cAPI.VaryPlayerCore(core, variation, variationTime, goldenEffect)
-    VaryPedCore(PlayerPedId(), core, variation, variationTime, goldenEffect)
+    cAPI.VaryPedCore(PlayerPedId(), core, variation, variationTime, goldenEffect)
 end
 
 function cAPI.VaryHorseHealth(variation, variationTime)
     if cAPI.IsPlayerHorseActive() then
-        VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
+        cAPI.VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
     end
 end
 
 function cAPI.VaryHorseStamina(variation, variationTime)
     if cAPI.IsPlayerHorseActive() then
-        VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
+        cAPI.VaryPedHealth(cAPI.GetPlayerHorse(), variation, variationTime)
     end
 end
 
 function cAPI.VaryHorseCore(core, variation, variationTime, goldenEffect)
     if cAPI.IsPlayerHorseActive() then
-        VaryPedCore(cAPI.GetPlayerHorse(), core, variation, variationTime, goldenEffect)
-    end
-end
-
-function VaryPedHealth(ped, variation, variationTime)
-    if variationTime == nil or variationTime <= 1 then
-        SetEntityHealth(ped, GetEntityHealth(ped) + variation)
-    else
-        Citizen.CreateThread(
-            function()
-                variationPerTick = variation / variationTime
-                while true do
-                    local oldValue = GetEntityHealth(ped)
-                    SetEntityHealth(ped, oldValue + variationPerTick)
-
-                    variationTime = variationTime - 1
-
-                    if variationTime <= 0 then
-                        break
-                    end
-
-                    Citizen.Wait(1000)
-                end
-            end
-        )
-    end
-end
-
---     -1000.0 - 1000.0
-function VaryPedStamina(ped, variation, variationTime)
-    if variationTime == nil or variationTime <= 1 then
-        Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, variation) -- _CHARGE_PED_STAMINA
-    else
-        Citizen.CreateThread(
-            function()
-                variationPerTick = variation / variationTime
-                while variationTime > 0 do
-                    local oldValue = GetPedStamina(ped)
-                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, oldValue + variationPerTick) -- _CHARGE_PED_STAMINA
-
-                    variationTime = variationTime - 1
-
-                    if variationTime <= 0 then
-                        break
-                    end
-
-                    Citizen.Wait(1000)
-                end
-            end
-        )
-    end
-end
-
-function VaryPedCore(ped, core, variation, variationTime, goldenEffect)
-    if variationTime == nil or variationTime <= 1 then
-        local oldCoreValue = GetAttributeCoreValue(ped, core)
-        Citizen.InvokeNative(0xC6258F41D86676E0, ped, core, oldCoreValue + variation)
-    else
-        Citizen.CreateThread(
-            function()
-                valuePerTick = variation / variationTime
-                while true do
-                    local oldCoreValue = GetAttributeCoreValue(ped, core)
-                    Citizen.InvokeNative(0xC6258F41D86676E0, ped, core, oldCoreValue + valuePerTick)
-
-                    variationTime = variationTime - 1
-
-                    if variationTime <= 0 then
-                        break
-                    end
-
-                    Citizen.Wait(1000)
-                end
-            end
-        )
+        cAPI.VaryPedCore(cAPI.GetPlayerHorse(), core, variation, variationTime, goldenEffect)
     end
 end
 
@@ -405,5 +330,63 @@ Citizen.CreateThread(
     end
 )
 
+local role
+
 RegisterNetEvent("VP:EVENTS:CharacterJoinedGroup")
+AddEventHandler(
+    "VP:EVENTS:CharacterJoinedGroup",
+    function(group)
+        if not cAPI.hasGroup(group) then
+            local bit = config_file_GROUPS[group:lower()]
+
+            if bit ~= nil then
+                role = role + bit
+            end
+        end
+    end
+)
 RegisterNetEvent("VP:EVENTS:CharacterLeftGroup")
+AddEventHandler(
+    "VP:EVENTS:CharacterLeftGroup",
+    function(group)
+        if cAPI.hasGroup(group) then
+            local bit = config_file_GROUPS[group:lower()]
+
+            if bit ~= nil then
+                role = role - bit
+            end
+        end
+    end
+)
+
+function cAPI.hasGroup(group)
+    local bit = config_file_GROUPS[group:lower()]
+
+    if bit ~= nil then
+        return (self.role & bit) ~= 0
+    end
+
+    return false
+end
+
+function cAPI.hasGroupOrInheritance(group)
+    if cAPI.hasGroup(group) then
+        return true
+    else
+        local lastParent = group
+        -- print('Trying inheritance for group ' .. group)
+
+        -- local nth = 1
+        while lastParent ~= nil do
+            local inheritance = config_file_INHERITANCE[lastParent]
+            lastParent = inheritance
+            -- print(nth .. '* inheritance' .. inheritance)
+
+            if lastParent ~= nil and cAPI.hasGroup(lastParent) then
+                return true
+            end
+        end
+    end
+
+    return false
+end

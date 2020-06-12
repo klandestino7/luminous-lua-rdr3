@@ -9,6 +9,7 @@ client_scripts {
 	"config/Clothes.lua",
 	"config/Items.lua",
 	"config/CraftableItems.lua",
+	"config/Permissions.lua",
 	---------------------
 	"client/_Main.lua",
 	"client/BasicNeeds.lua",
