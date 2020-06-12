@@ -8,6 +8,7 @@ RegisterServerEvent("chat:clear")
 RegisterServerEvent("__cfx_internal:commandFallback")
 
 -- /////////////////////// COMENTAR ISSO
+--[[
 AddEventHandler(
     "_chat:messageEntered",
     function(author, color, message)
@@ -22,6 +23,7 @@ AddEventHandler(
         print(author .. "^7: " .. message .. "^7")
     end
 )
+]]
 -- /////////////////////// COMENTAR ISSO
 AddEventHandler(
     "__cfx_internal:commandFallback",
