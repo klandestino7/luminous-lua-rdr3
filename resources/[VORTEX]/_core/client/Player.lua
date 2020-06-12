@@ -1,4 +1,4 @@
-function cAPI.Initialize(pedInfo, clothing, lastPosition)
+function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     local decodedLastPosition = json.decode(lastPosition)
     if decodedLastPosition.x ~= nil then
         decodedLastPosition = {decodedLastPosition.x, decodedLastPosition.y, decodedLastPosition.z}
@@ -10,6 +10,7 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     local pFaceFeatures = json.decode(pedInfo.features)
     local pScale = pedInfo.pedSize
     local pClothing = json.decode(clothing)
+    local pStats = stats
 
     Citizen.CreateThread(
         function()
@@ -26,6 +27,23 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition)
     cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
     cAPI.SetPedScale(PlayerPedId(), pScale)
     cAPI.SetPedClothing(PlayerPedId(), pClothing)
+
+
+    -- local pHealth = 250
+    -- local pStamina = 34.0
+    -- local pHealthCore = 100
+    -- local pStaminaCore = 100
+    -- if #pStats > 0 then
+         pHealth = pStats[1] or 250
+         pStamina = pStats[2] or 34.0
+         pHealthCore = pStats[3] or 100
+         pStaminaCore = pStats[3] or 100
+    -- end
+
+    cAPI.VaryPlayerHealth(pHealth)
+    cAPI.VaryPlayerStamina(pStamina)
+    cAPI.VaryPlayerCore(0, pHealthCore)
+    cAPI.VaryPlayerCore(1, pStaminaCore)
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")

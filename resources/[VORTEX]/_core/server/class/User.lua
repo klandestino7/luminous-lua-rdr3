@@ -175,9 +175,9 @@ function API.User(source, id, ipAddress)
         return self.Character
     end
     self.saveCharacter = function()
-        if self.Character ~= nil then
-            self.Character:savePosition(Character:getLastPosition())
-        end
+        -- if self.Character ~= nil then
+        --     self.Character:savePosition(Character:getLastPosition())
+        -- end
     end
 
     self.drawCharacter = function()
@@ -190,7 +190,9 @@ function API.User(source, id, ipAddress)
 
         local character_lastposition = Character:getLastPosition()
 
-        cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition)
+        local character_stats = Character:getCachedStats()
+
+        cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)
         -- cAPI.CWanted(Character:getWanted())
     end
 

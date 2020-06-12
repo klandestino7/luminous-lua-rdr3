@@ -53,17 +53,17 @@ Citizen.CreateThread(
 
 			SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
 
-            local ped = PlayerPedId()
+			local ped = PlayerPedId()
 
-            if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
-                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-                Citizen.Wait(2000)
-            elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
-                SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
-                Citizen.Wait(3500)
-            else
-                SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
-            end
+			if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+				Citizen.Wait(2000)
+			elseif IsPedGettingIntoAVehicle(ped) or Citizen.InvokeNative(0x95CBC65780DE7EB1, ped, false) then
+				SetRelationshipBetweenGroups(1, "PLAYER", "PLAYER")
+				Citizen.Wait(3500)
+			else
+				SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
+			end
 
 			DisableControlAction(0, 0x580C4473, true) -- hud disable
 			DisableControlAction(0, 0xCF8A4ECA, true) -- hud disable
@@ -87,7 +87,7 @@ Citizen.CreateThread(
 Citizen.CreateThread(
 	function()
 		while true do
-			Citizen.Wait(10000)
+			Citizen.Wait(60000)
 			if cAPI.IsPlayerInitialized() then
 				local playerPed = PlayerPedId()
 				if playerPed and playerPed ~= -1 then
@@ -95,7 +95,13 @@ Citizen.CreateThread(
 					x = tonumber(string.format("%.3f", x))
 					y = tonumber(string.format("%.3f", y))
 					z = tonumber(string.format("%.3f", z))
-					TriggerServerEvent("updatePosOnServerForPlayer", x, y, z)
+
+					local pHealth = GetEntityHealth(playerPed)
+					local pStamina = tonumber(string.format("%.2f", Citizen.InvokeNative(0x775A1CA7893AA8B5, playerPed, Citizen.ResultAsFloat())))
+					local pHealthCore = Citizen.InvokeNative(0x36731AC041289BB1 , playerPed, 0, Citizen.ResultAsInteger())
+					local pStaminaCore = Citizen.InvokeNative(0x36731AC041289BB1 , playerPed, 1, Citizen.ResultAsInteger())
+
+					TriggerServerEvent("VP:CacheCharacterStats", {x, y, z}, pHealth, pStamina, pHealthCore, pStaminaCore)
 				end
 			end
 		end
@@ -382,7 +388,6 @@ Citizen.CreateThread(
 		end
 	end
 )
-
 
 local noclip = false
 local noclip_speed = 10.0
