@@ -8,14 +8,14 @@ Citizen.CreateThread(
                 opened = true
             end
 
-            if IsControlJustPressed(0, 0x3076E97C) then -- NUMPAD 6
-                SendNUIMessage(
-                    {
-                        type = "nextHotbarSlot"
-                    }
-                )
-                Wait(500)
-            end
+            -- if IsControlJustPressed(0, 0x3076E97C) then -- NUMPAD 6
+            --     SendNUIMessage(
+            --         {
+            --             type = "nextHotbarSlot"
+            --         }
+            --     )
+            --     Wait(500)
+            -- end
         end
     end
 )
@@ -65,6 +65,8 @@ function startLookingForAPlayerToSend(slotId)
     if currentlyTryingToSendItem then
         return
     end
+
+    closeInv()
 
     currentlyTryingToSendItem = true
 
