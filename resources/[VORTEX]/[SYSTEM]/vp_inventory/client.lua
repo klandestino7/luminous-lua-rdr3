@@ -20,7 +20,6 @@ Citizen.CreateThread(
     end
 )
 
-
 local whereWeaponIsAtSlot = {}
 local isReloadingOrShooting = false
 
@@ -101,9 +100,10 @@ function startLookingForAPlayerToSend(slotId)
                                     PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
 
                                     local pPosition = GetEntityCoords(PlayerPedId())
-                                    local tPosition = GetEntityCoords(pped)
+                                    local tPosition = GetEntityCoords(entity)
 
                                     local dist = #(pPosition - tPosition)
+
                                     if dist <= 1.5 then
                                         PromptSetEnabled(prompt_senditem, true)
                                     else
