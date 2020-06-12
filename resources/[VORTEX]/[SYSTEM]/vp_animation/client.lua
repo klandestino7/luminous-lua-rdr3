@@ -272,6 +272,15 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "espelho",
+    function(source, args, rawCommand)
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+        Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_POCKET_MIRROR"), 100000, true, false, false, false)
+    end
+)
+
+
+RegisterCommand(
     "awhisky3",
     function(source, args)
         local propEntity = CreateObject(GetHashKey("p_bottleJD01x"), GetEntityCoords(PlayerPedId()), false, true, false, false, true)
@@ -281,6 +290,8 @@ RegisterCommand(
         print(istask)
     end
 )
+
+
 
 RegisterCommand(
     "achamps",

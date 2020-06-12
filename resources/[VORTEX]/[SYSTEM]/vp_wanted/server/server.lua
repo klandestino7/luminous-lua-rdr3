@@ -41,9 +41,14 @@ AddEventHandler('VP:WANTED:RewardNotify', function(id, reward, city)
     local charid = Character:getId()
     local wan = Character:getData(charid, "wanted", city)
 
-    if wan ~= nil then  
-        local wantedvalue = json.decode(wan)
-        TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+    if wan ~= nil then 
+        if wan == "{}" then 
+            local wantedvalue = 0
+            TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+        else
+            local wantedvalue = json.decode(wan)
+            TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+        end
     else
         TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward, pname, city) 
     end
@@ -87,3 +92,6 @@ RegisterCommand('gwanted2', function(source)
     local wanted = json.decode(wan)
     TriggerClientEvent('VP:WANTED:GetWanted', _source, wanted)
 end)
+
+
+

@@ -57,9 +57,11 @@ Citizen.CreateThread(
 
             -- print(oldTempt, "->", tempAtPed)
 
-            if tempAtPed >= 30 then
-                cAPI.VaryPlayerStamina(-2)
-                SetPedWetnessHeight(ped, 1.0)
+            if tempAtPed >= 40 then
+                if GetEntityHealth(PlayerPedId()) >= 5 then
+                    cAPI.VaryPlayerStamina(-2)
+                    SetPedWetnessHeight(ped, 1.0)
+                end
             elseif tempAtPed <= 0 then
                 Citizen.InvokeNative(0xCB9401F918CB0F75, ped, "Cold_Stamina", 1, 500)
                 cAPI.VaryPlayerHealth(-2)

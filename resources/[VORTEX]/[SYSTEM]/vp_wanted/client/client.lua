@@ -13,6 +13,11 @@ AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords)
 end)
 
 
+local reward2 = 0 
+local pname = "Nome Desconhecido"
+local annon = false
+local CityName = "Cidade Fantasma"
+
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
@@ -41,18 +46,13 @@ Citizen.CreateThread(function()
 	end
 end)
 
-local reward2 = 0 
-local pname = "Nome Desconhecido"
-local annon = false
-local CityName = "Cidade Fantasma"
 
-RegisterCommand('wanted', 
-    function(source, args, rawCommand)
-        if args[1] ~= nil then        
-            TriggerServerEvent('VP:WANTED:RewardNotify', args[1], args[2], GetCurrentTownName()) 
-            TriggerServerEvent('VP:WANTED:RewardSERVER', args[1], args[2], GetCurrentTownName())
-        end
+RegisterNetEvent('VP:WANTED:RewardClient')
+AddEventHandler('VP:WANTED:RewardClient', function(arg1, arg2)
+    TriggerServerEvent('VP:WANTED:RewardNotify', arg1, arg2, GetCurrentTownName()) 
+    TriggerServerEvent('VP:WANTED:RewardSERVER', arg1, arg2, GetCurrentTownName())
 end)
+
 
 RegisterNetEvent('VP:WANTED:RewardNotify')
 AddEventHandler('VP:WANTED:RewardNotify', function(reward, playername, city)
@@ -69,9 +69,9 @@ end)
 
 RegisterNetEvent('VP:WANTED:GetWanted')
 AddEventHandler('VP:WANTED:GetWanted', function(city)
-    for city, value in pairs(city) do
-
-   end
+    for key, value in pairs(city) do
+        print(key, value)
+    end
 end)
 
 Citizen.CreateThread(function()
@@ -92,13 +92,12 @@ AddEventHandler('VP:WANTED:outlawNotify', function(alert)
     TriggerEvent('Distress', 'sucesso', "<b style='color:#007cb5; font-weight:700;'>Sheriff:</b> ".. (alert))
 end)
 
+
 function GetCurrentTownName()
     local pedCoords = GetEntityCoords(PlayerPedId())
-    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
 
     if town_hash == GetHashKey("Annesburg") then
-        return "Annesburg"
-    elseif town_hash == GetHashKey("Annesburg") then
         return "Annesburg"
     elseif town_hash == GetHashKey("Armadillo") then
         return "Armadillo"

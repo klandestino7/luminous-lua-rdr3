@@ -79,14 +79,6 @@ Citizen.CreateThread(
                 TriggerServerEvent('VP:HUD:request')
             end
 
-            if IsControlJustPressed(0, 0x4BC9DABB) then
-                print('talking')
-                Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_happy", "FACE_HUMAN@GEN_MALE@BASE")
-             --   Citizen.InvokeNative(0xEA47FE3719165B94, PlayerPedId(), "FACE_HUMAN@GEN_MALE@BASE", "mood_talking_happy", 1090519040, -4.0, 5000, 17, 0, 0, 0, 0, 0, 0)
-            else
-                Citizen.InvokeNative(0x726256CC1EEB182F ,PlayerPedId())
-            end
-            
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)
             DisplayHud(true)

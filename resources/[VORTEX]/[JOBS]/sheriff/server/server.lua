@@ -62,6 +62,28 @@ AddEventHandler(
 	end
 )
 
+RegisterCommand('wanted', 
+    function(source, args, rawCommand)
+    if args[1] ~= nil then        
+
+    end
+end)
+
+
+ RegisterCommand('wanted', function(source, args)
+ 	local _source = source
+ 	local User = API.getUserFromSource(source)
+ 	local Character = User:getCharacter()		 
+ 		local trooperjob = Character:hasGroupOrInheritance('sheriff')
+ 		if trooperjob == true then
+ 			if args[1] ~= nil then
+ 				TriggerClientEvent('VP:WANTED:RewardClient', _source, args[1], args[2])
+ 			end
+ 		else
+ 			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
+		end	
+ end)
+
 
 
 RegisterCommand(
@@ -148,13 +170,6 @@ AddEventHandler(
 	end
 )
 
-RegisterCommand(
-	"soltar",
-	function(target)
-		TriggerClientEvent("VP:SHERIFF:nyckelcheck", target)
-		--xPlayer.removeInventoryItem('handcuffs', 1)
-	end
-)
 
 RegisterServerEvent("VP:SHERIFF:unlocking")
 AddEventHandler(
@@ -214,18 +229,77 @@ AddEventHandler(
  	local User = API.getUserFromSource(source)
  	local Character = User:getCharacter()
 
- 	handcuffs = false
+		 handcuffs = false
+		 
  		local trooperjob = Character:hasGroupOrInheritance('trooper')
  		if trooperjob == true then
  			TriggerClientEvent('VP:SHERIFF:cuffcheck', source)
  			handcuffs = true
  		else
  			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
- 		end
+		 end
+		 
  		if handcuffs == true then
  			TriggerEvent('VP:SHERIFF:prender', target)
  		end
  end)
+
+ 
+RegisterCommand(
+	"soltar",
+	function(source)
+		local _source = source
+		local User = API.getUserFromSource(source)
+		local Character = User:getCharacter()
+		
+		local trooperjob = Character:hasGroupOrInheritance('trooper')
+		if trooperjob == true then
+			TriggerClientEvent("VP:SHERIFF:nyckelcheck", source)			
+			handcuffs = true
+		else
+			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
+		end
+
+
+
+	end
+)
+
+
+ 
+RegisterCommand(
+	"pv",
+	function(source)
+
+		local _source = source
+		local User = API.getUserFromSource(source)
+		local Character = User:getCharacter()
+		
+		local trooperjob = Character:hasGroupOrInheritance('trooper')
+		if trooperjob == true then			
+			TriggerClientEvent("VP:SHERIFF:putinvehicle", source)
+		else
+			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
+		end
+	end
+)
+
+RegisterCommand(
+	"rv",
+	function(source)
+		local _source = source
+		local User = API.getUserFromSource(source)
+		local Character = User:getCharacter()
+		
+		local trooperjob = Character:hasGroupOrInheritance('trooper')
+		if trooperjob == true then			
+			TriggerClientEvent("VP:SHERIFF:outvehicle", source)
+		else
+			TriggerClientEvent('chatMessage', source, 'SISTEMA', {255, 255, 255}, 'Você não é um oficial')
+		end
+	end
+)
+
 
 -- RegisterServerEvent('VP:SHERIFF:checkjob')
 -- AddEventHandler('VP:SHERIFF:checkjob', function(source, playerjob)
