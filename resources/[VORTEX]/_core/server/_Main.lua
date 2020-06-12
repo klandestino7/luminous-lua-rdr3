@@ -131,3 +131,15 @@ end
 function API.kick(source, reason)
     API.dropPlayer(source, reason)
 end
+
+function API.NotifyUsersWithGroup(group, message)
+    for user_id, User in pairs(API.users) do
+        local Character = User:getCharacter()
+
+        if Character ~= nil then
+            if Character:hasGroupOrInheritance(group) then
+                User:notify(message)
+            end
+        end
+    end
+end

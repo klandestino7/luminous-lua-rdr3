@@ -6,31 +6,34 @@ cAPI = Tunnel.getInterface("API")
 
 local data = {
     [1] = {
-        staticReward = 10000,
-        staticSecondsToReward = 10,
+        staticName = "Banco de BlackWater",
+        staticReward = 100000,
+        staticSecondsToReward = 10 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
         -- cooldown
     },
     [2] = {
-        staticReward = 10000,
-        staticSecondsToReward = 30,
+        staticName = "Banco de Saint Dennis",
+        staticReward = 200000,
+        staticSecondsToReward = 15 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
     },
     [3] = {
-        staticReward = 10000,
-        staticSecondsToReward = 30,
+        staticName = "Banco Rhodes",
+        staticReward = 100000,
+        staticSecondsToReward = 10 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
     },
-    [4] = {
-        staticReward = 10000,
-        staticSecondsToReward = 30,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
-    }
-
+    -- [4] = {
+    --     staticName = "Banco Valentine",
+    --     staticReward = 10000,
+    --     staticSecondsToReward = 10 * 60,
+    --     staticMaxParticipants = 3,
+    --     staticCooldown = 30 * 60
+    -- }
 }
 
 local indexBeingRobbed = nil
@@ -47,19 +50,26 @@ AddEventHandler(
         local _source = source
 
         if interiorIndexBeingRobbed ~= nil then
-            print("Interior já está sendo roubado")
-            TriggerClientEvent('VP:Notify', _source, "Esse local já está sendo roubado")
+            -- print("Interior já está sendo roubado")
+            TriggerClientEvent("VP:NOTIFY:Simple", _source, "Esse local já está sendo roubado")
             return
         end
 
         if data[index].cooldown ~= nil then
             if data[index].cooldown > os.time() then
-                print("Fomos assaltados a pouco tempo, não temos dinheiro")
-                TriggerClientEvent('VP:Notify', _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
+                -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
+                TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
                 return
             else
                 data[index].cooldown = nil
             end
+        end
+
+        local numTroopers = #API.getUsersByGroup('trooper')
+
+        if numTroopers < 5 then
+            TriggerClientEvent("VP:TOAST:New", _source, 'error', 'Não há policiais suficientes!')
+            return
         end
 
         indexBeingRobbed = index
@@ -79,13 +89,13 @@ AddEventHandler(
                     if playerSource == participantSource then
                         numParticipantsToCheck = numParticipantsToCheck - 1
                         isParticipant = true
-                        if numParticipants < maxParticipants then
+                        -- if numParticipants < maxParticipants then
                             numParticipants = numParticipants + 1
                             TriggerClientEvent("VP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
                             participants[participantSource] = true
-                        else
-                            TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
-                        end
+                        -- else
+                        --     TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
+                        -- end
                     end
                 end
             end
@@ -96,6 +106,8 @@ AddEventHandler(
 
             isParticipant = nil
         end
+
+        API.NotifyUsersWithGroup("trooper", "Um assalto começou no banco " .. data[index].staticName)
     end
 )
 
@@ -110,8 +122,10 @@ function countdownRobberyTime()
                     indexBeingRobbed_seconds = indexBeingRobbed_seconds - 1
 
                     if indexBeingRobbed_seconds == 0 then
-                        print("Robbery seconds is now 0")
-           --             TriggerClientEvent('VP:Notify', _source, "O tempo do roubo é de 0s")
+                        -- for _, participantSource in pairs(indexBeingRobbed_participants) do
+                        --     TriggerClientEvent('VP:TOAST:New', participantSource, 'alert', indexBeingRobbed .. ' secs')
+                        -- end
+
                         endRobberyGiveReward()
                     end
                 end
@@ -119,8 +133,6 @@ function countdownRobberyTime()
         end
     )
 end
-
-
 
 function endRobberyGiveReward()
     print("endRobberyGiveReward")
@@ -149,19 +161,19 @@ function endRobberyGiveReward()
         if Character ~= nil then
             local reward = data[indexBeingRobbed].staticReward
             Character:getInventory():addItem("money", reward)
-            --TriggerClientEvent('VP:Notify', User, "Você recebeu R$ " .. reward .. " pelo assalto")
-            User:notify('dollar', reward / 100)
+            -- User:notify("success", "Você recebeu R$ " .. reward .. " pelo assalto")
+            User:notify("dollar", reward / 100)
         end
     end
 
-    print("indexBeingRobbed", indexBeingRobbed)
     data[indexBeingRobbed].cooldown = os.time() + (1000 * data[indexBeingRobbed].staticCooldown)
 
     indexBeingRobbed = nil
     indexBeingRobbed_seconds = 0
     indexBeingRobbed_participants = {}
     robberyBeingEnded = false
-    
+
+    TriggerClientEvent("VP:TOAST:New", -1, "alert", "O assalto acabou!")
     TriggerClientEvent("VP:ROBBERY:EndRobbery", -1)
 end
 
@@ -192,8 +204,10 @@ AddEventHandler(
             TriggerClientEvent("VP:ROBBERY:EndRobbery", -1)
         end
 
-        print("Player " .. _source .. " left the robbery")
-        TriggerClientEvent('VP:Notify', _source, "O " .. _source .. " left the robbery")
+        API.NotifyUsersWithGroup("trooper", "-1 Assaltante")
+
+        -- print("Player " .. _source .. " left the robbery")
+        -- TriggerClientEvent('VP:Notify', _source, "O " .. _source .. " left the robbery")
     end
 )
 
@@ -202,6 +216,7 @@ AddEventHandler(
     function(source, reason)
         if indexBeingRobbed_participants[source] ~= nil then
             TriggerEvent("VP:ROBBERY:PlayerAbandonedRobbery", source)
+            API.NotifyUsersWithGroup("trooper", "-1 Assaltante")
         end
     end
 )

@@ -4,19 +4,19 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-RegisterCommand(
-    "int",
-    function(source, args, rawCommand)
-        print(GetInteriorFromEntity(PlayerPedId()))
-    end,
-    false
-)
+-- RegisterCommand(
+--     "interiss",
+--     function(source, args, rawCommand)
+--         print('a,', GetInteriorFromEntity(PlayerPedId()))
+--     end,
+--     false
+-- )
 
 local interiors = {
     [1] = 72962, -- BANCO BLACKWATER
     [2] = 42754, -- BANCO SAINT DENNIS
     [3] = 29442, -- BANCO RHODES
-    [4] = 12290 -- BANCO VALENTINE
+    -- [4] = 12290 -- BANCO VALENTINE
 }
 
 local interiorIndexBeingRobbed = nil
@@ -40,11 +40,11 @@ Citizen.CreateThread(
             local ped = PlayerPedId()
 
             local interiorIdPlayerIsIn = GetInteriorFromEntity(ped)
-            
+
             if interiorIdPlayerIsIn ~= 0 then
                 for index, interiorId in pairs(interiors) do
                     if interiorIdPlayerIsIn == interiorId then
-                        print(index)
+                        -- print(index)
                         interiorIndexPlayerIsIn = index
                     end
                 end
@@ -59,7 +59,6 @@ Citizen.CreateThread(
     function()
         ClearPedTasksImmediately(PlayerPedId())
 
-        
         --AddTextEntry("shoot_to_start", "Atire para começar o assalto")
         --AddTextEntry("wait_to_shoot", "Aguarde 10 segundos...")
         local hashUnarmed = GetHashKey("WEAPON_UNARMED")
@@ -73,14 +72,14 @@ Citizen.CreateThread(
                     if interiorIndexBeingRobbed == nil then
                         if not shootingToStartCooldown then
                             if not roubo then
-                                notify('Atire para começar o assalto.')
+                                notify("Atire para começar o assalto.")
                                 roubo = true
                             end
-                          --  TriggerEvent('VP:Notify', 'Atire para começar o assalto.')
+                            --  TriggerEvent('VP:Notify', 'Atire para começar o assalto.')
                             if IsPedShooting(ped) then
                                 initShootingCountdown()
 
-                                print("Roubo começo!!")
+                                -- print("Roubo começo!!")
 
                                 local playerId = PlayerId()
                                 local interiorIdPlayerIsIn = interiors[interiorIndexPlayerIsIn]
@@ -103,14 +102,14 @@ Citizen.CreateThread(
                                 TriggerServerEvent("VP:ROBBERY:TryToStartRobbery", interiorIndexPlayerIsIn, participants)
                             end
                         else
-                            notify('Aguarde 10 segundos...')
-                           -- DisplayHelpTextThisFrame("wait_to_shoot", false)
-                           --TriggerEvent('VP:Notify', 'Aguarde 10 segundos...')
+                            -- notify('Aguarde 10 segundos...')
+                            -- DisplayHelpTextThisFrame("wait_to_shoot", false)
+                            --TriggerEvent('VP:Notify', 'Aguarde 10 segundos...')
                         end
                     else
                         if IsPedShooting(ped) then
-                           --notify('Roubo em andamento, aguarde...')
-                            print("Roubo em andamento, aguarde")
+                        --notify('Roubo em andamento, aguarde...')
+                        -- print("Roubo em andamento, aguarde")
                         end
                     end
 
@@ -123,14 +122,14 @@ Citizen.CreateThread(
                         RemoveAnimDict("random@arrests@busted")
                         ClearPedTasks(ped)
                     else
-                       -- DisableControlAction(0, 24, true)
-                      --  DisableControlAction(0, 25, true)
-                      --  DisableControlAction(0, 140, true)
-                      --  DisableControlAction(0, 141, true)
-                       -- DisableControlAction(0, 142, true)
-                      --  DisableControlAction(0, 257, true)
-                      --  DisableControlAction(0, 263, true)
-                     --   DisableControlAction(0, 264, true)
+                        -- DisableControlAction(0, 24, true)
+                        --  DisableControlAction(0, 25, true)
+                        --  DisableControlAction(0, 140, true)
+                        --  DisableControlAction(0, 141, true)
+                        -- DisableControlAction(0, 142, true)
+                        --  DisableControlAction(0, 257, true)
+                        --  DisableControlAction(0, 263, true)
+                        --   DisableControlAction(0, 264, true)
 
                         if weaponHash ~= hashUnarmed then
                             SetCurrentPedWeapon(ped, hashUnarmed, true)
@@ -142,7 +141,7 @@ Citizen.CreateThread(
                 end
                 if interiorIndexPlayerIsIn == interiorIndexBeingRobbed then
                     if secondsUntilRobberyEnds ~= nil then
-                       -- local hours = secondsUntilRobberyEnds / 3600
+                        -- local hours = secondsUntilRobberyEnds / 3600
                         local minutes = math.floor((secondsUntilRobberyEnds % 3600) / 60)
                         local seconds = secondsUntilRobberyEnds % 60
                         drawText(minutes .. " minutos e " .. seconds .. " segundos", true)
@@ -162,7 +161,7 @@ function initCheckPedIsOutside()
     isParticipantOfRobbery = true
     Citizen.CreateThread(
         function()
-            local defaultSeconds = 5 
+            local defaultSeconds = 5
             defaultSeconds = defaultSeconds * 10 -- 100ms (Wait) * 50 = 5000ms
             secondsUntilAbandonRobbery = defaultSeconds
             while isParticipantOfRobbery do
@@ -181,12 +180,12 @@ function initCheckPedIsOutside()
                     secondsUntilAbandonRobbery = secondsUntilAbandonRobbery - 1 -- Wait ms
                     if secondsUntilAbandonRobbery <= 0 then
                         if not isBlockedByRobbery then
-                            print("Você ficou tempo demais fora do roubo")
+                            -- print("Você ficou tempo demais fora do roubo")
                             TriggerServerEvent("VP:ROBBERY:PlayerAbandonedRobbery")
                         else
+                            -- print("Você ficou tempo demais fora do roubo blocked")
                             isBlockedByRobbery = false
                             ClearPedTasks(ped)
-                            print("Você ficou tempo demais fora do roubo blocked")
                         end
 
                         TriggerEvent("VP:ROBBERY:EndRobbery")
@@ -211,7 +210,7 @@ function initCheckPedIsOutside()
 end
 
 function initSecondsCountdown(seconds)
-    print("got seconds", seconds)
+    -- print("got seconds", seconds)
     secondsUntilRobberyEnds = seconds
 
     Citizen.CreateThread(
@@ -254,6 +253,8 @@ AddEventHandler(
             initCheckPedIsOutside()
             initSecondsCountdown(seconds)
         end
+
+        TriggerEvent("VP:TOAST:New", "alert", "O assalto acabará em " .. seconds .. " segundos")
     end
 )
 
@@ -271,15 +272,16 @@ AddEventHandler(
     end
 )
 
-RegisterCommand('iplrq', function(source , args)
-
-    RequestImap(995510724)
-    RequestImap(1193981581)
-    RequestImap(-1026473536)
-    RequestImap(1829082995)
-    print("loaded")
-    
-end)
+RegisterCommand(
+    "iplrq",
+    function(source, args)
+        RequestImap(995510724)
+        RequestImap(1193981581)
+        RequestImap(-1026473536)
+        RequestImap(1829082995)
+        -- print("loaded")
+    end
+)
 
 RegisterNetEvent("VP:ROBBERY:EndRobbery")
 AddEventHandler(
@@ -291,40 +293,44 @@ AddEventHandler(
         isBlockedByRobbery = false
 
         secondsUntilRobberyEnds = nil
-        secondsUntilAbandonRobbery = nil        
+        secondsUntilAbandonRobbery = nil
         shootingToStartCooldown = false
         Wait(5000)
         roubo = false
     end
 )
 
+local lastDisplayedText
+local lastVarString
+
 function drawText(str, center)
-    local x =  0.87
+    local x = 0.87
     local y = 0.95
-	local str = CreateVarString(10, "LITERAL_STRING", str)
-	SetTextScale(0.4, 0.4)
-	SetTextColor(255, 255, 255, 255)
-	Citizen.InvokeNative(0xADA9255D, 1)
-	--DisplayText(str, x, y)
-	if center then
-		SetTextCentre(center)
-		DisplayText(str, x, y)
-	elseif alignRight then
-	DisplayText(str, x+0.15, y)
-	else 
-	DisplayText(str, x, y)
+    if lastDisplayedText == nil or lastDisplayedText ~= str then
+        lastDisplayedText = str
+        lastVarString = CreateVarString(10, "LITERAL_STRING", str)
+    end
+    SetTextScale(0.4, 0.4)
+    SetTextColor(255, 255, 255, 255)
+    Citizen.InvokeNative(0xADA9255D, 1)
+    --DisplayText(str, x, y)
+    if center then
+        SetTextCentre(center)
+        DisplayText(lastVarString, x, y)
+    elseif alignRight then
+        DisplayText(lastVarString, x + 0.15, y)
+    else
+        DisplayText(lastVarString, x, y)
     end
 end
 
-
 function notify(_message)
-	local str = Citizen.InvokeNative(0xFA925AC00EB830B9, 10, "LITERAL_STRING", _message, Citizen.ResultAsLong())
-	SetTextScale(0.25, 0.25)
-	SetTextCentre(1)
-	Citizen.InvokeNative(0xFA233F8FE190514C, str)
-	Citizen.InvokeNative(0xE9990552DEC71600)
+    local str = Citizen.InvokeNative(0xFA925AC00EB830B9, 10, "LITERAL_STRING", _message, Citizen.ResultAsLong())
+    SetTextScale(0.25, 0.25)
+    SetTextCentre(1)
+    Citizen.InvokeNative(0xFA233F8FE190514C, str)
+    Citizen.InvokeNative(0xE9990552DEC71600)
 end
-
 
 -- function drawText(text)
 --     SetTextFont(0)
