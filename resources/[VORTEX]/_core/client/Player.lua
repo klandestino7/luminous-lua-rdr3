@@ -35,6 +35,10 @@ function cAPI.PlayerAsInitialized(bool)
     initializedPlayer = bool
 end
 
+function cAPI.IsPlayerInitialized()
+    return initializedPlayer
+end
+
 function cAPI.notify(type, text, quantity)
     if type ~= nil and text == nil and quantity == nil then
         text = type

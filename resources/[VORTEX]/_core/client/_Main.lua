@@ -88,7 +88,7 @@ Citizen.CreateThread(
 	function()
 		while true do
 			Citizen.Wait(10000)
-			if initializedPlayer then
+			if cAPI.IsPlayerInitialized() then
 				local playerPed = PlayerPedId()
 				if playerPed and playerPed ~= -1 then
 					local x, y, z = table.unpack(GetEntityCoords(playerPed))
