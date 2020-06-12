@@ -95,33 +95,43 @@ window.addEventListener("message", function(event) {
     }
 });
 
-let intervalIds = [];
+var intervalIds = [];
 
 function resetInterval(containerId, duration) {
     if (intervalIds[containerId] != undefined) {
         clearInterval(intervalIds[containerId]);
     }
 
-    var elementFirstChild = `${containerId} .toast:first-child()`
+    let elementFirstChild = `${containerId} .toast:first-child()`
     $(elementFirstChild).animate({
         top: "-=100%",
     }, 150);
 
     intervalIds[containerId] = setInterval(function() {
 
-        $(elementFirstChild).animate({
-            top: "-=100%",
-            opacity: "0",
-        }, 100, function() {
-            $(this).remove();
-        });
+        let elementSecondChild = `${containerId} .toast:nth-child(2)`;
+        let hasNextChild = $(elementSecondChild).length > 0;
 
-        var elementSecondChild = `${containerId} .toast:nth-child(2)`;
-        $(elementSecondChild).animate({
-            top: "-=100%",
-        }, 150);
+        if (hasNextChild) {
+            $(elementFirstChild).animate({
+                top: "-=100%",
+                opacity: "0",
+            }, 100, function() {
+                $(this).remove();
+            });
 
-        duration = $(elementSecondChild).data("duration");
+            $(elementSecondChild).animate({
+                top: "-=100%",
+            }, 150);
+
+            duration = $(elementSecondChild).data("duration");
+        }else{
+            $(elementFirstChild).animate({
+                opacity: "0",
+            }, 100, function() {
+                $(this).remove();
+            });
+        }
 
     }, duration);
 }
