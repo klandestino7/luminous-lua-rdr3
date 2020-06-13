@@ -35,17 +35,17 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     cAPI.SetSkin(PlayerPedId(), pSkin)
     cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
     cAPI.SetPedScale(PlayerPedId(), pScale)
-    cAPI.SetPedClothing(PlayerPedId(), pClothing)    
+    cAPI.SetPedClothing(PlayerPedId(), pClothing)
 
     -- local pHealth = 250
     -- local pStamina = 34.0
     -- local pHealthCore = 100
     -- local pStaminaCore = 100
     -- if #pStats > 0 then
-         pHealth = pStats[1] or 250
-         pStamina = pStats[2] or 34.0
-         pHealthCore = pStats[3] or 100
-         pStaminaCore = pStats[3] or 100
+    pHealth = pStats[1] or 250
+    pStamina = pStats[2] or 34.0
+    pHealthCore = pStats[3] or 100
+    pStaminaCore = pStats[3] or 100
     -- end
 
     cAPI.VaryPlayerHealth(pHealth)
@@ -362,6 +362,14 @@ Citizen.CreateThread(
 
 local role
 
+RegisterNetEvent("VP:EVENTS:CharacterSetRole")
+AddEventHandler(
+    "VP:EVENTS:CharacterSetRole",
+    function(_role)
+        role = _role
+    end
+)
+
 RegisterNetEvent("VP:EVENTS:CharacterJoinedGroup")
 AddEventHandler(
     "VP:EVENTS:CharacterJoinedGroup",
@@ -375,6 +383,7 @@ AddEventHandler(
         end
     end
 )
+
 RegisterNetEvent("VP:EVENTS:CharacterLeftGroup")
 AddEventHandler(
     "VP:EVENTS:CharacterLeftGroup",

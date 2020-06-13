@@ -136,12 +136,21 @@ RegisterNetEvent("API:OnUserSelectCharacter")
 --     end
 -- )
 
-RegisterNetEvent('API:OnUserCharacterInitialization')
+RegisterNetEvent("API:OnUserCharacterInitialization")
+AddEventHandler(
+    "API:OnUserCharacterInitialization",
+    function(User, character_id)
+        TriggerClientEvent("VP:EVENTS:CharacterSetRole", User:getSource(), User:getCharacter().role)
+    end
+)
 
-RegisterNetEvent('API:pre_OnUserCharacterInitialization')
-AddEventHandler('API:pre_OnUserCharacterInitialization', function()
-    local _source = source
-    local User = API.getUserFromSource(_source)
-    local Character = User:getCharacter()
-    TriggerEvent('API:OnUserCharacterInitialization', User, Character:getId())
-end)
+RegisterNetEvent("API:pre_OnUserCharacterInitialization")
+AddEventHandler(
+    "API:pre_OnUserCharacterInitialization",
+    function()
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+        TriggerEvent("API:OnUserCharacterInitialization", User, Character:getId())
+    end
+)
