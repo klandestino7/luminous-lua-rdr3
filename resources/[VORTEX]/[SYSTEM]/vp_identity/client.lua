@@ -136,6 +136,7 @@ RegisterNUICallback(
         Citizen.Wait(500)
         Destroy()
         NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+        SetEntityInvincible(PlayerPedId(), false)
         Wait(1800)
         cAPI.EndFade(500)
     end
@@ -161,7 +162,7 @@ function createCamera()
     DisplayHud(false)
 
     NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
-
+    SetEntityInvincible(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), 1060.94, 1597.82, 373.00)
     FreezeEntityPosition(PlayerPedId(), true)
 

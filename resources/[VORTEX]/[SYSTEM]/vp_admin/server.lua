@@ -518,10 +518,10 @@ AddEventHandler(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        -- if Character:hasGroupOrInheritance("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             TriggerClientEvent("VP:ADMIN:ReceiveGamerTagsInfo", _source, API.getSources())
             sourcesUsingGamerTags[_source] = true
-        -- end
+        end
     end
 )
 

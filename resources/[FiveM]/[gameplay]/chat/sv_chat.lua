@@ -23,7 +23,11 @@ AddEventHandler(
         print(author .. "^7: " .. message .. "^7")
     end
 )
+<<<<<<< HEAD
+--]]
+=======
 ]]
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 -- /////////////////////// COMENTAR ISSO
 AddEventHandler(
     "__cfx_internal:commandFallback",
@@ -44,7 +48,7 @@ AddEventHandler(
 AddEventHandler(
     "chat:init",
     function()
-        TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, "^2* " .. GetPlayerName(source) .. " joined.")
+       -- TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, "^2* " .. GetPlayerName(source) .. " joined.")
     end
 )
 
@@ -52,7 +56,7 @@ AddEventHandler(
     "playerDropped",
     function(reason)
         if GetPlayerName(source) ~= nil then
-            TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, "^2* " .. GetPlayerName(source) .. " left (" .. reason .. ")")
+          --  TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, "^2* " .. GetPlayerName(source) .. " left (" .. reason .. ")")
         end
     end
 )

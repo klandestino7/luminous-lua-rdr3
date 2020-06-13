@@ -20,7 +20,7 @@ local InstaCause = nil
 local InstaDeath = false
 local VitalPartDamage = false
 local BodyPartDamage = {0}
-
+ Button = true
 local prompts = {}
 local promptGroup
 
@@ -308,11 +308,12 @@ AddEventHandler(
 	"VP:RESPAWN:Treatment",
 	function()
 		cAPI.VaryPlayerHealth(5, 5)
+		Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)	
 		isDead = false
 		isInjure = false
 		DestroyAllCams(true)
+		SetEntityHealth(PlayerPedId(), 150)
 		clearDeath()
-
 	end
 )
 
@@ -355,6 +356,7 @@ local promptGroup
 
 Citizen.CreateThread(
 	function()
+		initRespawnPrompt()
 		while true do
 			Citizen.Wait(0)
 			if isDead then
@@ -412,11 +414,15 @@ Citizen.CreateThread(
 					Uptime()
 				end
 				if PressDeath then
+						Button = false
+					if PressDeath and not Button then
+						initRespawnPrompt()
+						Button = true
+					end
 					local closestIndex
 					local lowestDist
 					local ped = PlayerPedId()
 					local coords = GetEntityCoords(ped)
-					initRespawnPrompt()
 					for _, prompt in pairs(prompts) do
 						if PromptHasHoldModeCompleted(prompt) then						
 							for index, vector in pairs(Locations) do
@@ -438,6 +444,7 @@ Citizen.CreateThread(
 )
 
 function initRespawnPrompt()
+ 	if isDead then
 	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Você está morto.')
 	local prompt = PromptRegisterBegin()
 	PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
@@ -451,6 +458,7 @@ function initRespawnPrompt()
 	PromptSetGroup(prompt, promptGroup)
 	PromptRegisterEnd(prompt)
 	table.insert(prompts, prompt)
+	end
 end
 
 
@@ -546,6 +554,7 @@ function clearDeath()
 	VitalPartDamage = false
 	InstaCause = nil
 	deathCause = nil
+	Button = true
 	damageBone = {0}
 	BodyPartDamage = {0}
 	ClearTimecycleModifier()

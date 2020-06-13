@@ -38,6 +38,9 @@ Citizen.CreateThread(
                 TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
             end
 
+            if IsControlPressed(0, 0xD8F73058) then
+                ClearPedSecondaryTask(PlayerPedId())
+            end
             --   if IsControlPressed(1, 0x4CC0E2FE) then -- B
             --     print("apertou")
             --     RequestAnimDict("script_hideout@six_point_cabin@rob_discuss")

@@ -16,6 +16,31 @@ local keys = {
 
 local prompts = {}
 
+<<<<<<< HEAD
+
+RegisterCommand('inv', function()
+    Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
+end)
+
+RegisterCommand('vis', function()
+
+end)
+
+AddEventHandler('SaltyChat_TalkStateChanged', function(isTalking)
+    while isTalking do
+        Citizen.Wait(0)
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
+    end
+    if not isTalking then
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_normal", "FACE_HUMAN@GEN_MALE@BASE")
+        Citizen.InvokeNative(0x726256CC1EEB182F, PlayerPedId())
+    end   
+end)
+
+
+
+=======
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 RegisterCommand('dv', function()
     local playerPed = PlayerPedId()
     local vehicle   = GetVehiclePedIsIn(playerPed, false)
@@ -42,6 +67,17 @@ RegisterCommand('off2', function(source, args)
 
 end)
 
+<<<<<<< HEAD
+RegisterCommand('testar', function(source, args)
+
+    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistlePitch", 0.1)
+    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistleClarity", 1.0)
+    Citizen.InvokeNative(0x9963681A8BC69BF3, PlayerPedId(), "Ped.WhistleShape", 10.0)
+
+    --exports["vp_faroeste"]:js_get_ped_component_at_index()
+
+end)
+=======
 RegisterCommand('model', function(source, args)
     local model = "p_haybale03x"
     if IsModelValid(model) then
@@ -97,6 +133,7 @@ RegisterCommand(
 )
 
 
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 
 -- Citizen.CreateThread(function()
 --     local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);

@@ -62,7 +62,7 @@ AddEventHandler('VP:WANTED:RewardNotify', function(reward, playername, city)
     local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)    
     annon = true
-    Wait(5000)
+    Wait(9000)
     annon = false
 end)
 

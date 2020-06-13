@@ -46,8 +46,13 @@ local blips = {
 
 	--DOCTOR
 	{ name = 'Doctor', sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39 },
+<<<<<<< HEAD
+	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },	
+
+=======
 	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },
 	
+>>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 	--SALOON
 	{ name = 'Saloon', sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98 },
 	{ name = 'Saloon', sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68 },
@@ -70,9 +75,10 @@ local blips = {
 	--HOTELES
 	{ name = 'Motel', sprite = -211556852, x = -325.74, y = 772.92, z = 117.44 },
 	--Loja de itens
-	--{ name = 'Loja de itens', sprite = 249721687, x = 2949.3, y = 525.67, z = 199.3 },
+	{ name = 'Loja de itens', sprite = 249721687, x = 1327.907, y = -1292.865, z = 77.023 },
 	{ name = 'Aldeia indígena', sprite = -1944395098, x = 449.36, y = 2234.05, z = 247.65 },
---{ name = 'Loja de itens', sprite = 1322310532, x = -277.76, y = 804.97, z = 119.38 },
+	{ name = 'Loja de itens', sprite = 1322310532, x = -785.338, y = -1323.850, z = 43.884 },
+
 	--loja de carroça
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = -396.48, y = 654.25, z = 114.66 },
 	{ name = 'Loja de aluguel de Carroça', sprite = 1012165077, x = 1889.65, y = -1343.7, z = 42.51 },
