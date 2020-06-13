@@ -214,7 +214,7 @@ Citizen.CreateThread(
 								local tPosition = GetEntityCoords(pped)
 
 								local dist = #(pPosition - tPosition)
-								if dist <= 1.5 then
+								if dist <= 1.5 and IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
 									PromptSetEnabled(prompt_patdown, true)
 								else
 									PromptSetEnabled(prompt_patdown, false)
