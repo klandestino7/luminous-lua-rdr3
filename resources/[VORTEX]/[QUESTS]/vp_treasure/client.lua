@@ -7,8 +7,8 @@ cAPI = Tunnel.getInterface('API')
 
 RegisterNetEvent('TREASURE:create')
 AddEventHandler('TREASURE:create', function(x,y,z)
-	TriggerEvent('Distress', 'sucesso', 'Há um tesouro perdido no mapa, procure pela mancha vermelha.')
-	local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 693035517, x, y, z, 100.0)	
+	TriggerEvent('VP:NOTIFY:Simple', 'Há um tesouro perdido no mapa, procure pela mancha vermelha.', 10000)
+	local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 693035517, x, y, z, 150.0)	
 	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Tesouro Perdido')		
 end)
 

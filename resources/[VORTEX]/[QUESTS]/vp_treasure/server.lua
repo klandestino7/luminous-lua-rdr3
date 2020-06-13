@@ -13,8 +13,8 @@ local inventory_items = {
   [2] = {["pigeonpost"] = 5, ["rifle_boltaction"] = 1, ["raw_gold"] = 5, ["raw_copper"] = 2},
   [3] = {["revolver_cattleman"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20},
   [4] = {["melee_lantern_electric"] = 1, ["thrown_dynamite"] = 2, ["gold"] = 100},
-  [5] = {["lasso"] = 5, ["shotgun_repeating"] = 1, ["money"] = 500},
-  [6] = {["rifle_springfield"] = 5, ["shotgun_repeating"] = 1, ["money"] = 500}
+  [5] = {["lasso"] = 5, ["shotgun_repeating"] = 1, ["money"] = 5000},
+  [6] = {["rifle_springfield"] = 5, ["shotgun_repeating"] = 1, ["money"] = 5000}
 }
 
 local TREASURE = {
