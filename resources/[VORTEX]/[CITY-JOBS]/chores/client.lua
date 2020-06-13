@@ -43,8 +43,11 @@ RegisterCommand(
             "WORLD_HUMAN_FEEDBAG_PICKUP",
             -- "WORLD_HUMAN_FEED_PIGS"
             -- "WORLD_HUMAN_SACK_PICKUP_1_",
-            --   "WORLD_HUMAN_SACK_PICKUP",
-            --   "WORLD_HUMAN_BASKET_PICKUP",
+            -- "WORLD_HUMAN_SACK_PICKUP",
+            --  "WORLD_HUMAN_BASKET_PICKUP",
+            "WORLD_HUMAN_FEED_CHICKEN",
+            "WORLD_HUMAN_FEED_CHICKENS_FEMALE_A",
+            "WORLD_HUMAN_FEED_CHICKENS_MALE_A",
         }
 
         -- _NO : Means you can attach the scenario to your on prop
@@ -111,8 +114,8 @@ Citizen.CreateThread(
         -- Citizen.InvokeNative(0xC0F0417A90402742, veh, GetHashKey("PG_VEH_CART06_LANTERNS01"))
         -- local propset =Citizen.InvokeNative(0xA079300AF757FB1A, 3370002)
 
-        local sc = Citizen.InvokeNative(0xF533D68FF970D190, GetEntityCoords(PlayerPedId()), GetHashKey("MP005_P_HUNTINGWAGONTARP01"), 50.0, 0, false)
-        print(sc)
+        -- local sc = Citizen.InvokeNative(0xF533D68FF970D190, GetEntityCoords(PlayerPedId()), GetHashKey("MP005_P_HUNTINGWAGONTARP01"), 50.0, 0, false)
+        -- print(sc)
 
         while true do
             Citizen.Wait(0)
@@ -175,6 +178,10 @@ AddEventHandler(
             end
 
             for _, scenario in pairs(GetPopulationFeedBagPutdown()) do
+                NativeDeleteScenarioPoint(scenario)
+            end
+
+            for _, scenario in pairs(GetPopulationManurePickup()) do
                 NativeDeleteScenarioPoint(scenario)
             end
         end
@@ -268,6 +275,8 @@ Citizen.CreateThread(
 
             PopulateFeedBagPickup()
             PopulateFeedBagPutdown()
+
+            PopulateManurePickup()
 
             Citizen.Wait(2500)
         end

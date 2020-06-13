@@ -9,6 +9,8 @@ client_scripts {
     "client.lua",
     "ChorePopulators/FeedBagPickup.lua",
     "ChorePopulators/FeedBagPutdown.lua",
+    "ChorePopulators/ManurePickup.lua",
+    "ChorePopulators/FeedChicken.lua",
 }
 
 -- server_scripts {
