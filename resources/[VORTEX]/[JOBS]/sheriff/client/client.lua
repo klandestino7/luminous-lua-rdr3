@@ -18,7 +18,7 @@ Citizen.CreateThread(
 			local playerPed = PlayerPedId()
 			local coords = GetEntityCoords(playerPed)
 		
-			if cAPI.hasGroupOrInheritance('trooper') then
+			if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
 				for k, v in pairs(Config.Coords.Vehicles) do
 					if #(coords - vector3(v.Spawner.x, v.Spawner.y, v.Spawner.z)) < 3.0 then
 						if not IsPedInAnyVehicle(PlayerPedId(), true) then 
