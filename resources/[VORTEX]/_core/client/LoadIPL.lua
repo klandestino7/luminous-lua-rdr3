@@ -172,9 +172,9 @@ RequestImap(-1229109520) -- Green Plants
 
 ------------------------------------- Black Water Town Hall
 RequestImap(-2082201137)  --Blackwater Ground Town Hall
--- RequestImap(1343343014)  --Black Water Town Hall Addons Construction
--- RequestImap(739412171)  -- Two Boards in front of city hall (Goes with Town Hall Construction)
--- RequestImap(-5339556)  --Bank Under Construction
+RequestImap(1343343014)  --Black Water Town Hall Addons Construction
+RequestImap(739412171)  -- Two Boards in front of city hall (Goes with Town Hall Construction)
+RequestImap(-5339556)  --Bank Under Construction
 
 ------------------------------------- #### END OF BLACKWATER TOWN HALL ####
 
