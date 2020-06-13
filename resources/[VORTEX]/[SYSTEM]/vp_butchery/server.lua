@@ -77,6 +77,8 @@ AddEventHandler(
     function(entType, entModel, entity, quality)
         local _source = source
 
+        local User = API.getUserFromSource(_source)
+
         local payment = sellables[entModel]
 
         if payment == nil then
@@ -85,12 +87,11 @@ AddEventHandler(
             return
         end
 
-        local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Inventory = Character:getInventory()
 
         Inventory:addItem("money", payment)
-        User:notify("dollar", payment)
+        User:notify("dollar", payment / 100)
 
         TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
     end
