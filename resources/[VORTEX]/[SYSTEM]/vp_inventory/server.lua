@@ -353,25 +353,25 @@ AddEventHandler(
     end
 )
 
-RegisterCommand(
-    "garmas",
-    function(source, args)
-        local _source = source
-        local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
+-- RegisterCommand(
+--     "garmas",
+--     function(source, args)
+--         local _source = source
+--         local User = API.getUserFromSource(_source)
+--         local Character = User:getCharacter()
 
-        local armas = cAPI.replaceWeapons(_source, {})
-        local Inventory = Character:getInventory()
-        -- local ammo = cAPI.getAmmo(_source)
+--         local armas = cAPI.replaceWeapons(_source, {})
+--         local Inventory = Character:getInventory()
+--         -- local ammo = cAPI.getAmmo(_source)
 
-        -- for w, v in pairs(armas) do
-        --     Inventory:addItem(w, 1)
-        -- end
+--         -- for w, v in pairs(armas) do
+--         --     Inventory:addItem(w, 1)
+--         -- end
 
-        -- for a, v in pairs(ammo) do
-        --     Inventory:addItem(w, v)
-        -- end
+--         -- for a, v in pairs(ammo) do
+--         --     Inventory:addItem(w, v)
+--         -- end
 
-        TriggerClientEvent("frp_inventory:removeWeapons", _source)
-    end
-)
+--         TriggerClientEvent("frp_inventory:removeWeapons", _source)
+--     end
+-- )

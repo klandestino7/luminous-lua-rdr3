@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 Citizen.CreateThread(
     function()
         while true do
@@ -388,7 +394,8 @@ function computeSlots(table, shotOrReloaded)
                         end
 
                         if not HasPedGotWeapon(ped, weaponHash, false) then
-                            GiveWeaponToPed(ped, weaponHash, ammoInWeapon, false, false)
+                            -- GiveWeaponToPed(ped, weaponHash, ammoInWeapon, false, false)
+                            cAPI.giveWeapon(weaponId, ammoInWeapon, false)
                         end
 
                         SetPedAmmo(ped, weaponHash, ammoInWeapon)
