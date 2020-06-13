@@ -92,6 +92,7 @@ AddEventHandler(
                 SetEntityAlpha(entity, GetEntityAlpha(entity) - 51)
             end
 
+            SetEntityAsMissionEntity(entity, true, true)
             DeleteEntity(entity)
             DeletePed(entity)
         -- end
