@@ -397,7 +397,8 @@ function computeSlots(table, shotOrReloaded)
 
                         if not HasPedGotWeapon(ped, weaponHash, false) then
                             -- GiveWeaponToPed(ped, weaponHash, ammoInWeapon, false, false)
-                            cAPI.giveWeapon(weaponId, ammoInWeapon, false)
+                            -- cAPI.giveWeapon(weaponId, ammoInWeapon, false)
+                            Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, weaponHash, ammoInWeapon, true, true)
                         end
 
                         SetPedAmmo(ped, weaponHash, ammoInWeapon)
