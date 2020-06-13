@@ -1,32 +1,15 @@
-local positions = {
-    vec3(-742.337, -1366.698, 43.357)
+local locationsToFeed = {
+    vec3(-745.990, -1363.049, 43.234)
 }
 
-local scenarios = {}
+local carryingAndCanFeed = false
 
-function PopulateFeedBagPickup()
-    local ped = PlayerPedId()
-    local pedPosition = GetEntityCoords(ped)
+local closestFeedingIndex
+local closestFeedingPosition
 
-    local scenarioType = "WORLD_HUMAN_FEEDBAG_PICKUP"
-    local scenarioTypeHash = GetHashKey(scenarioType)
-
-    for _, position in pairs(positions) do
-        local hasCollision, groundZ, normal = GetGroundZAndNormalFor_3dCoord(position.x, position.y, position.z)
-
-        if hasCollision then
-            position = vec3(position.xy, groundZ)
-            if NativeFindClosestActiveScenarioPointOfType(scenarioTypeHash, position, 2.0) == 0 then
-                local scenario = NativeCreateScenarioPoint(scenarioTypeHash, position, 180.0)
-                table.insert(scenarios, scenario)
-            end
-        end
-    end
-end
-
-function GetPopulationFeedBagPickup()
-    return scenarios
-end
+-- WORLD_HUMAN_FEED_CHICKEN
+-- WORLD_HUMAN_FEED_CHICKENS_FEMALE_A
+-- WORLD_HUMAN_FEED_CHICKENS_MALE_A
 
 Citizen.CreateThread(
     function()
@@ -34,13 +17,14 @@ Citizen.CreateThread(
             Citizen.Wait(1000)
 
             local ped = PlayerPedId()
-            if Citizen.InvokeNative(0x2D0571BB55879DA2, ped) ~= GetHashKey("WORLD_HUMAN_FEEDBAG_PICKUP") then
+            if Citizen.InvokeNative(0x2D0571BB55879DA2, ped) == GetHashKey("WORLD_HUMAN_FEEDBAG_PICKUP") then
+
                 local pPosition = GetEntityCoords(ped)
 
                 local cIndex
                 local cDist
 
-                for _, location in pairs(positions) do
+                for _, location in pairs(locationsToFeed) do
                     -- if
                     local dist = #(pPosition - location)
                     if dist <= 10.0 then
@@ -54,20 +38,23 @@ Citizen.CreateThread(
                 closestFeedingIndex = cIndex
 
                 if closestFeedingIndex ~= nil then
-                    closestFeedingPosition = positions[closestFeedingIndex]
 
-                    HandleFeedbagPickup()
+                    closestFeedingPosition = locationsToFeed[closestFeedingIndex]
+
+                    HandleFeedChickens()
                 else
                     closestFeedingPosition = nil
                 end
             else
                 closestFeedingPosition = nil
             end
+
         end
     end
 )
 
-function HandleFeedbagPickup()
+function HandleFeedChickens()
+
     local ped = PlayerPedId()
     while closestFeedingPosition ~= nil do
         Citizen.Wait(0)
@@ -77,15 +64,11 @@ function HandleFeedbagPickup()
         local dist = #(pPosition - closestFeedingPosition)
 
         if dist <= 1.5 then
-            if PromptFeedbag() then
+            if PromptFeed() then
                 PromptDelete(prompt)
                 prompt = nil
 
-                local scenario = scenarios[closestFeedingIndex]
-
-                TaskUseScenarioPoint(ped, scenario, "", -1.0, true, false, 0, false, -1.0, true)
-                TaskStartScenarioInPlace(ped, Citizen.InvokeNative(scenario), 0, true, 0, -1.0, false)
-                break
+                TaskStartScenarioInPlace(ped, GetHashKey("WORLD_HUMAN_FEED_CHICKEN"), 0, true, 0, -1.0, false)
             end
         end
     end
@@ -93,12 +76,12 @@ end
 
 local prompt
 
-function PromptFeedbag()
+function PromptFeed()
     if prompt == nil then
         prompt = PromptRegisterBegin()
         -- 0xE8342FF2
         PromptSetControlAction(prompt, 0x7F8D09B8)
-        PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Pegar Alimento"))
+        PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Alimentar Galinhas"))
         PromptSetStandardMode(prompt, true)
         PromptSetEnabled(prompt, 1)
         PromptSetVisible(prompt, 1)
