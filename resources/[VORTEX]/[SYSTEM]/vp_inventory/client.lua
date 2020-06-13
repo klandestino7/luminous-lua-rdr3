@@ -298,22 +298,22 @@ RegisterNUICallback(
     end
 )
 
-RegisterNUICallback(
-    "interactWithHotbarSlot",
-    function(cb)
-        local itemId = cb.itemId or "unarmed"
-        local weaponId = "weapon_" .. itemId
-        local weaponHash = GetHashKey(weaponId)
+-- RegisterNUICallback(
+--     "interactWithHotbarSlot",
+--     function(cb)
+--         local itemId = cb.itemId or "unarmed"
+--         local weaponId = "weapon_" .. itemId
+--         local weaponHash = GetHashKey(weaponId)
 
-        local ped = PlayerPedId()
+--         local ped = PlayerPedId()
 
-        local _, currentWeapon = GetCurrentPedWeapon(ped, true, 0, true)
-        if currentWeapon ~= weaponHash then
-            Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, weaponHash, 0, true, true)
-            TaskReloadWeapon(ped, 0)
-        end
-    end
-)
+--         local _, currentWeapon = GetCurrentPedWeapon(ped, true, 0, true)
+--         if currentWeapon ~= weaponHash then
+--             Citizen.InvokeNative(0x5E3BDDBCB83F3D84, ped, weaponHash, 0, true, true)
+--             TaskReloadWeapon(ped, 0)
+--         end
+--     end
+-- )
 
 RegisterNUICallback(
     "NUIFocusOff",
@@ -419,36 +419,3 @@ function computeSlots(table, shotOrReloaded)
 
     return table
 end
-
--- local promptUse
--- local promptDrop
-
--- Citizen.CreateThread(
---     function()
---         local prompt = PromptRegisterBegin()
---         local promptGroup = GetRandomIntInRange(0, 0xffffff)
---         PromptSetControlAction(prompt, 0x7F8D09B8)
---         PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Usar Item"))
---         PromptSetEnabled(prompt, 1)
---         PromptSetVisible(prompt, 1)
---         PromptSetHoldMode(prompt, 1)
---         PromptSetGroup(prompt, promptGroup)
---         PromptRegisterEnd(prompt)
-
---         -- prompt2 = PromptRegisterBegin()
---         -- local promptGroup = GetRandomIntInRange(0, 0xffffff)
---         -- PromptSetControlAction(prompt2, 0x7F8D09B8)
---         -- PromptSetText(prompt2, CreateVarString(10, 'LITERAL_STRING', 'Dropar Item'))
---         -- PromptSetEnabled(prompt2, 1)
---         -- PromptSetVisible(prompt2, 1)
---         -- PromptSetHoldMode(prompt2, 1)
---         -- PromptSetGroup(prompt2, promptGroup)
---         -- PromptRegisterEnd(prompt2)
---         while true do
---             Citizen.Wait(0)
---             if opened then
---                 PromptSetActiveGroupThisFrame(promptGroup, CreateVarString(10, "LITERAL_STRING", "Inventário"))
---             end
---         end
---     end
--- )
