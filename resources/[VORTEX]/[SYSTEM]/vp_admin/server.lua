@@ -266,7 +266,9 @@ RegisterCommand(
                     User:notify("error", "Usuario invalido!")
                 end
             else
-                Character:getInventory():addItem(args[1], tonumber(args[2]))
+                if #args == 2 then
+                    Character:getInventory():addItem(args[1], tonumber(args[2]))
+                end
             end
         else
             User:notify("error", "Você não tem permissão!")
