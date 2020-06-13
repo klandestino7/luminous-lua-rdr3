@@ -63,7 +63,6 @@ local doorStates = {
     [2089945615] = {true, 2817024187},
     [1751238140] = {false},
     [531022111] = {true},
-
     -- GUNSMITH VALENTINE
     [2042647667] = {false},
     [475159788] = {false},
@@ -72,7 +71,6 @@ local doorStates = {
     -- STABLE VALENTINE
     [1132010214] = {false, 1876749464},
     [1331491364] = {false, 1876749464}
-
 }
 
 -- TALVEZ MUDAR O SISTEMA PARA O CLIENT SÓ PEDIR O SYNC
@@ -193,7 +191,7 @@ Citizen.CreateThread(
                     1988748538,
                     1657401918,
                     1502928852,
-                    2212368673,
+                    2212368673
                 }
             )
 
@@ -230,7 +228,10 @@ Citizen.CreateThread(
 
                     if doorStates[doorHash][2] ~= nil then
                         local doorPair = doorStates[doorHash][2]
-                        doorStates[doorPair][1] = newDoorState
+                        print("Porta " .. doorHash .. " com par, porém o par não foi definido ...")
+                        if doorStates[doorPair][1] then
+                            doorStates[doorPair][1] = newDoorState
+                        end
                     end
 
                     TriggerClientEvent("VP:DOORSTATECONTAINER:SetDoorState", -1, doorHash, newDoorState)
