@@ -30,8 +30,6 @@ local secondsUntilAbandonRobbery = nil
 
 local shootingToStartCooldown = false
 
-local roubo = false
-
 Citizen.CreateThread(
     function()
         while true do
@@ -71,10 +69,7 @@ Citizen.CreateThread(
                 if weaponHash ~= hashUnarmed then
                     if interiorIndexBeingRobbed == nil then
                         if not shootingToStartCooldown then
-                            if not roubo then
-                                notify("Atire para começar o assalto.")
-                                roubo = true
-                            end
+                            notify("Atire para começar o assalto.")
                             --  TriggerEvent('VP:Notify', 'Atire para começar o assalto.')
                             if IsPedShooting(ped) then
                                 initShootingCountdown()
@@ -134,8 +129,8 @@ Citizen.CreateThread(
                         if weaponHash ~= hashUnarmed then
                             SetCurrentPedWeapon(ped, hashUnarmed, true)
                         end
-                        if not IsEntityPlayingAnim(ped, "random@arrests@busted", "idle_a", 3) then
-                            TaskPlayAnim(ped, "random@arrests@busted", "idle_a", 8.0, 1.0, -1, 63, 0, 0, 0, 0)
+                        if not IsEntityPlayingAnim(ped,  "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+                            TaskPlayAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 8.0, 1.0, -1, 63, 0, 0, 0, 0)
                         end
                     end
                 end
@@ -295,8 +290,6 @@ AddEventHandler(
         secondsUntilRobberyEnds = nil
         secondsUntilAbandonRobbery = nil
         shootingToStartCooldown = false
-        Wait(5000)
-        roubo = false
     end
 )
 

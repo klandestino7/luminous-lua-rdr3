@@ -135,8 +135,6 @@ function countdownRobberyTime()
 end
 
 function endRobberyGiveReward()
-    print("endRobberyGiveReward")
-
     if indexBeingRobbed == nil then
         return
     end
