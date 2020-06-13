@@ -32,14 +32,14 @@ Config.ShopDatas = {
 	{
 		name = "Mercado Geral",
 		{
-			{"tobacco_seed", 10, 4, 1},
-			{"corn_seed", 10, 4, 1},
-			{"sugarcane_seed", 10, 4, 1},
-			{"pickaxe", 100, 40, 1},
-			{"lasso", 3000, 1200, 1},
-			{"melee_knife", 2000, 800, 1},
-			{"melee_lantern_electric", 200, 80, 1},
-			{"melee_torch", 200, 80, 1},
+			{"tobacco_seed", 1, 10, 4},
+			{"corn_seed", 1, 10, 4},
+			{"sugarcane_seed", 1, 10, 4},
+			{"pickaxe", 1, 100, 40},
+			{"lasso", 1, 3000, 1200},
+			{"melee_knife", 1, 2000, 800},
+			{"melee_lantern_electric", 1, 200, 80},
+			{"melee_torch", 1, 200, 80},
 		}
 	}
 }
