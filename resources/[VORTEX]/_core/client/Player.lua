@@ -393,7 +393,7 @@ function cAPI.hasGroup(group)
     local bit = config_file_GROUPS[group:lower()]
 
     if bit ~= nil then
-        return (self.role & bit) ~= 0
+        return (role & bit) ~= 0
     end
 
     return false
