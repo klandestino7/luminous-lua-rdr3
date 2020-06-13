@@ -67,7 +67,7 @@ Citizen.CreateThread(
 
                     local butcherVec = butchers[closestButcherIndex]
 
-                    if #(carriableVec - butcherVec) <= 2.5 then
+                    if #(carriableVec - butcherVec) <= 2.5 and NativeGetCarrierAsPed(lastCarriable) == 0 then
                         Citizen.InvokeNative(0x18FF3110CF47115D, lastCarriable, 2, false)
                         TriggerServerEvent("VP:BUTCHER:TryToSell", type, GetEntityModel(lastCarriable), lastCarriable, GetAnimalCarcassQuality(lastCarriable))
 
@@ -118,4 +118,8 @@ end
 function GetAnimalCarcassQuality(Ped)
     local ret = Citizen.InvokeNative(0x88EFFED5FE8B0B4A, Ped)
     return ret ~= false and ret or 0
+end
+
+function NativeGetCarrierAsPed(entity)
+    return Citizen.InvokeNative(0x09B83E68DE004CD4 , entity, Citizen.ResultAsInteger())
 end

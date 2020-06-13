@@ -86,7 +86,7 @@ Citizen.CreateThread(
                 if carriedEntity == false and lastCarriable ~= nil then
                     local carriableVec = GetEntityCoords(lastCarriable)
 
-                    if #(carriableVec - spotPosition) <= 2.5 then
+                    if #(carriableVec - spotPosition) <= 2.5 and NativeGetCarrierAsPed(lastCarriable) == 0 then
                         Citizen.InvokeNative(0x18FF3110CF47115D, lastCarriable, 2, false)
                         TriggerServerEvent("VP:ANIMAL_HUNTING:TryToEndQuest", type, GetEntityModel(lastCarriable), lastCarriable, GetAnimalCarcassQuality(lastCarriable))
 
