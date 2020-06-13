@@ -59,20 +59,20 @@ AddEventHandler(
         local Character = User:getCharacter()
 
         if onGoingHunting[Character:getId()] then
-            User:notify('error', 'Termine a caça atual para poder começar outra!')
+            User:notify("error", "Termine a caça atual para poder começar outra!")
             return
         end
-        
+
         local r = math.random(1, #sellables)
 
-        local choosenAnimalModel = sellables[r]['model']
+        local choosenAnimalModel = sellables[r]["model"]
         -- local choosenAnimalName = sellables[r]['name']
 
         -- Character:setData(Character:getId(), "charTable", "caca", choosenAnimalModel)
 
         -- TriggerClientEvent("VP:ANIMAL_HUNTING:taskMission", _source, choosenAnimalModel)
         -- TriggerClientEvent('VP:ANIMAL_HUNTING:AnimalHuntingPromptEnabled', _source, false, )
-        TriggerClientEvent('VP:ANIMAL_HUNTING:NotifyAnimalName', _source, 1, choosenAnimalModel)
+        TriggerClientEvent("VP:ANIMAL_HUNTING:NotifyAnimalName", _source, 1, choosenAnimalModel)
 
         -- User:notify("alert", "Procure por " .. choosenAnimalName.. "!")
 
@@ -104,14 +104,18 @@ AddEventHandler(
         end
 
         local reward = sellables[onGoingHunting[characterId]]
-        onGoingHunting[characterId] = nil
 
         local Inventory = Character:getInventory()
 
-        Inventory:addItem("money", reward)
-        User:notify("dollar", reward)
+        if Inventory:addItem("money", reward) then
+            onGoingHunting[characterId] = nil
 
-        TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
+            User:notify("dollar", reward)
+
+            TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
+        else
+            TriggerClientEvent("VP:BUTCHER:EntityNotAccepted", _source, entity)
+        end
     end
 )
 
@@ -133,7 +137,7 @@ AddEventHandler(
             local animalHashBeingHunted = onGoingHunting[characterId]
             -- local animalName = sellables[animalHashBeingHunted]['name']
             -- TriggerClientEvent("VP_notify", _source, "você ainda precisa procurar por um " ..  animalName .. "!")
-            TriggerClientEvent('VP:ANIMAL_HUNTING:NotifyAnimalName', _source, 2, animalHashBeingHunted)
+            TriggerClientEvent("VP:ANIMAL_HUNTING:NotifyAnimalName", _source, 2, animalHashBeingHunted)
         end
     end
 )

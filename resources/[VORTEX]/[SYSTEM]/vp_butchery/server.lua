@@ -79,7 +79,7 @@ AddEventHandler(
 
         local User = API.getUserFromSource(_source)
 
-        local payment = sellables[entModel]
+        local payment = sellables[tonumber(entModel)]
 
         if payment == nil then
             TriggerClientEvent("VP:BUTCHER:EntityNotAccepted", _source, entity)
@@ -90,9 +90,12 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Inventory = Character:getInventory()
 
-        Inventory:addItem("money", payment)
-        User:notify("dollar", payment / 100)
+        if Inventory:addItem("money", payment) then
+            User:notify("dollar", payment / 100)
 
-        TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
+            TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
+        else
+            TriggerClientEvent("VP:BUTCHER:EntityNotAccepted", _source, entity)
+        end
     end
 )
