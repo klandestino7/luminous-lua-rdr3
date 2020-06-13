@@ -43,7 +43,9 @@ local verificationData = {
         ["sugarcane_seed"] = {0, 10, 4, 5},
         ["pickaxe"] = {0, 100, 40, 1},
         ["lasso"] = {0, 3000, 1200, 1},
-        ["melee_knife"] = {0, 2000, 800, 1}
+        ["melee_knife"] = {0, 2000, 800, 1},
+        ["melee_lantern_electric"] = {0, 200, 80, 1},
+        ["melee_torch"] = {0, 200, 80, 1}
     }
 }
 
