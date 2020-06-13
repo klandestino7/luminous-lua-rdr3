@@ -414,14 +414,16 @@ function elementAsDraggable(element, a, b, c, d, e) {
             select($(this));
         },
         stop: function(event, ui) {
-            var elem = document.elementFromPoint(ui.position.left, ui.position.top); // x, y
+            setTimeout(function (){
+                var elem = document.elementFromPoint(ui.position.left, ui.position.top); // x, y
 
-            if ($(elem).is("body")) {
-                $.post('http://vp_inventory/drop', JSON.stringify({
-                    slotId: $(this).attr('id'),
-                }));
-            }
-
+                if ($(elem).is("body")) {
+                    $.post('http://vp_inventory/drop', JSON.stringify({
+                        slotId: $(this).attr('id'),
+                    }));
+                }
+            }, 100);
+            
             // select($(this));
             // unSelect($(this));
         },
