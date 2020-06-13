@@ -13,7 +13,7 @@ local AnimalModelToItem = {
 RegisterNetEvent("VP:SKINNING:Skinned")
 AddEventHandler(
     "VP:SKINNING:Skinned",
-    function(entityModelHash)
+    function(entityModelHash, isHuman)
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -26,16 +26,22 @@ AddEventHandler(
         local Inventory = Character:getInventory()
 
         local item = "meat"
+        local itemAmount = 1
 
-        if AnimalModelToItem[entityModelHash] then
-            item = AnimalModelToItem[entityModelHash] 
+        if not isHuman then
+            if AnimalModelToItem[entityModelHash] then
+                item = AnimalModelToItem[entityModelHash] 
+            end
+        else
+            item = 'money'
+            itemAmount = 1
         end
 
         local itemData = API.getItemDataFromId(item)
         local itemWeight = itemData:getWeight()
 
         if --[[ (Inventory:getWeight() + meatWeight) <= Inventory:getCapacity() and --]] Inventory:addItem(item, 1) then
-            User:notify("item", itemData:getName(), 1)
+            User:notify("item", itemData:getName(), itemAmount)
         -- else
         --     User:notify("Bolsa sem espaço!")
         --     TriggerClientEvent("VP:LOOTING:LooteableDenied", _source, GetHashKey('p_whitefleshymeat01xa'))
