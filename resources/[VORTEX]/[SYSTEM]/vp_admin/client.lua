@@ -13,7 +13,15 @@ AddEventHandler(
 		local pSkin = json.decode(pedInfo.modSkin)
 		local pFaceFeatures = json.decode(pedInfo.features)
 		local pScale = tonumber(pedInfo.pedSize)
-		local pClothing = json.decode(clothes)
+		local pClothing
+
+		if json.decode(clothes).Outfit ~= nil then 
+			if tonumber(json.decode(clothes).Outfit) <= 100 then
+				pClothing = tonumber(json.decode(clothes).Outfit)
+			end                   
+		else
+			pClothing = json.decode(clothes)    
+		end
 
 		cAPI.SetPlayerPed(pModel)
 		Wait(130)

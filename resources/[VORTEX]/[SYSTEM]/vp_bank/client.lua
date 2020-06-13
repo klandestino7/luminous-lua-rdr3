@@ -35,8 +35,8 @@ while true do
 
           -- print(weaponHash, hashUnarmed)
           if weaponHash == hashUnarmed then            
-            DrawTxt('Aperte (N) para acessar seu cofre', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
-            if IsControlJustPressed(0, 0x4BC9DABB) then					
+            DrawTxt('Aperte (ALT) para acessar seu cofre', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
+            if IsControlJustPressed(0, 0xE8342FF2) then					
               inMenu = true
               SetNuiFocus(true, true)
               SendNUIMessage({type = 'openGeneral'})

@@ -9,7 +9,17 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     local pSkin = json.decode(pedInfo.modSkin)
     local pFaceFeatures = json.decode(pedInfo.features)
     local pScale = pedInfo.pedSize
-    local pClothing = json.decode(clothing)
+    local pClothing
+
+    if type(clothing) ~= "string" then
+        if clothing <= 100 then
+            pClothing = clothing
+        end
+    else
+        pClothing = json.decode(clothing)
+        print(pClothing)
+    end
+
     local pStats = stats
 
     Citizen.CreateThread(
@@ -20,14 +30,12 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     )
 
     cAPI.replaceWeapons({})
-
     cAPI.SetPlayerPed(pModel)
     cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
     cAPI.SetSkin(PlayerPedId(), pSkin)
     cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
     cAPI.SetPedScale(PlayerPedId(), pScale)
-    cAPI.SetPedClothing(PlayerPedId(), pClothing)
-
+    cAPI.SetPedClothing(PlayerPedId(), pClothing)    
 
     -- local pHealth = 250
     -- local pStamina = 34.0

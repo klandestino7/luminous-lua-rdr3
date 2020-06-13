@@ -73,8 +73,17 @@ AddEventHandler(
                 local pSkin = json.decode(skinMdf.modSkin)
                 local pFaceFeatures = json.decode(skinMdf.features)
                 local pScale = tonumber(skinMdf.pedSize)
-                local pClothing = json.decode(values.clothes)
+             --   local pClothing = json.decode(values.clothes)
+                local pClothing
 
+                if json.decode(values.clothes).Outfit ~= nil then 
+                    if tonumber(json.decode(values.clothes).Outfit) <= 100 then
+                        pClothing = tonumber(json.decode(values.clothes).Outfit)
+                    end                   
+                else
+                    pClothing = json.decode(values.clothes)    
+                end
+            
                 if not HasModelLoaded(pModel) then
                     RequestModel(pModel)
                     while not HasModelLoaded(pModel) do
