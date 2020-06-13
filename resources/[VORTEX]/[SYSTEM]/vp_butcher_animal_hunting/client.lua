@@ -69,13 +69,13 @@ Citizen.CreateThread(
                 local spotPosition = spotPool[closestSpotIndex]
 
                 local pedPosition = GetEntityCoords(PlayerPedId())
+                local carriedEntity = GetPedCarriedEntity()
 
-                if #(pedPosition - spotPosition) <= 1.5 then
+                if #(pedPosition - spotPosition) <= 1.5 and carriedEntity == 0  then
                     PromptSetActiveGroupThisFrame(prompt_group, prompt_name)
                     HandlePrompts()
                 end
 
-                local carriedEntity = GetPedCarriedEntity()
                 local type = GetEntityType(carriedEntity)
                 -- 1 : animal
                 -- 3 : pelt
@@ -145,7 +145,7 @@ AddEventHandler(
 )
 
 function GetPedCarriedEntity()
-    return Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId())
+    return Citizen.InvokeNative(0xD806CD2A4F2C2996, PlayerPedId(), Citizen.ResultAsInteger())
 end
 
 function GetAnimalCarcassQuality(Ped)
