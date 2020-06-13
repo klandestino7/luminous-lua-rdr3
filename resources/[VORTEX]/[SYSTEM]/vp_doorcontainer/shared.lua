@@ -59,8 +59,11 @@ local doorStates = {
     [349074475] = {false},
     -- BANKS DOORS
     [3317756151] = {true, 3088209306},
+    [3088209306] = {true, 3317756151},
     [2158285782] = {true, 1733501235},
+    [1733501235] = {true, 2158285782},
     [2089945615] = {true, 2817024187},
+    [2817024187] = {true, 2089945615},
     [1751238140] = {false},
     [531022111] = {true},
     -- GUNSMITH VALENTINE
@@ -68,7 +71,7 @@ local doorStates = {
     [475159788] = {false},
     -- MEDIC VALENTINE
     [3439738919] = {false},
-    -- STABLE VALENTINE
+    -- STABLE VALENTINEVALENTINE
     [1132010214] = {false, 1876749464},
     [1331491364] = {false, 1876749464}
 }
@@ -215,12 +218,16 @@ Citizen.CreateThread(
                         return
                     end
 
+                    local doorGroup = "admin"
+
                     if doorStates[doorHash][3] ~= nil then
-                        local Character = User:getCharacter()
-                        if Character == nil or not Character:hasGroupOrInheritance(doorStates[doorHash][3]) then
-                            User:notify("error", "Você não pode abrir esta porta")
-                            return
-                        end
+                        doorGroup = doorStates[doorHash][3]
+                    end
+
+                    local Character = User:getCharacter()
+                    if Character == nil or not Character:hasGroupOrInheritance(doorGroup) then
+                        User:notify("error", "Você não pode abrir esta porta")
+                        return
                     end
 
                     local newDoorState = not doorStates[doorHash][1]
