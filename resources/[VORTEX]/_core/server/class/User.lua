@@ -187,12 +187,16 @@ function API.User(source, id, ipAddress)
         --   local character_skin = Character:getSkin()
 
         local character_clothing = Character:getClothes()
-
         local character_lastposition = Character:getLastPosition()
 
         local character_stats = Character:getCachedStats()
-
-        cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)
+           
+        if json.decode(character_clothing).Outfit ~= nil then
+            cAPI.Initialize(self:getSource(), json.decode(character_model), tonumber(json.decode(character_clothing).Outfit), character_lastposition, character_stats)  
+        else
+            cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)    
+        end
+        
         -- cAPI.CWanted(Character:getWanted())
     end
 

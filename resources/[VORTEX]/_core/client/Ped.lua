@@ -117,42 +117,46 @@ end
 function cAPI.SetPedClothing(ped, clothingArray)
     local numComponents = 0
 
-    if clothingArray ~= nil then
-        for _, componentHash in pairs(clothingArray) do
-            componentHash = tonumber(componentHash)
-
-            -- Doesn't need to be requested !!!!!!
-
-            NativeSetPedComponentEnabled(ped, componentHash, true, true)
-
+    if clothingArray ~= "{}" then
+        if clothingArray ~= nil then
+            if type(clothingArray) == "table" then
+                for _, componentHash in pairs(clothingArray) do
+                    componentHash = tonumber(componentHash)
+                    -- Doesn't need to be requested !!!!!!
+                    NativeSetPedComponentEnabled(ped, componentHash, true, true)
+                    while not NativeHasPedComponentLoaded(ped) do
+                        Wait(10)
+                    end
+                    SetModelAsNoLongerNeeded(modelHash)
+                    numComponents = numComponents + 1
+                end
+            else                
+                if clothingArray <= 100 then
+                    SetPedOutfitPreset(ped, clothingArray)                
+                end
+            end
+        end
+    else
+        if numComponents <= 0 then
+            -- Load default clothing
+            if IsPedMale(ped) then
+                NativeSetPedComponentEnabled(ped, 0x1B164391, true, true)
+                NativeSetPedComponentEnabled(ped, 0x10B87936, true, true)
+                NativeSetPedComponentEnabled(ped, 0x11B7CAB1, true, true)
+                NativeSetPedComponentEnabled(ped, 0x1526EAB7, true, true)
+            else
+                NativeSetPedComponentEnabled(ped, 0x15B760CE, true, true)
+                NativeSetPedComponentEnabled(ped, 0x1178F4F4, true, true)
+                NativeSetPedComponentEnabled(ped, 0x141281DC, true, true)
+                NativeSetPedComponentEnabled(ped, 0x1945CE44, true, true)
+            end
+    
             while not NativeHasPedComponentLoaded(ped) do
                 Wait(10)
             end
-
-            SetModelAsNoLongerNeeded(modelHash)
-
-            numComponents = numComponents + 1
         end
     end
-
-    if numComponents <= 0 then
-        -- Load default clothing
-        if IsPedMale(ped) then
-            NativeSetPedComponentEnabled(ped, 0x1B164391, true, true)
-            NativeSetPedComponentEnabled(ped, 0x10B87936, true, true)
-            NativeSetPedComponentEnabled(ped, 0x11B7CAB1, true, true)
-            NativeSetPedComponentEnabled(ped, 0x1526EAB7, true, true)
-        else
-            NativeSetPedComponentEnabled(ped, 0x15B760CE, true, true)
-            NativeSetPedComponentEnabled(ped, 0x1178F4F4, true, true)
-            NativeSetPedComponentEnabled(ped, 0x141281DC, true, true)
-            NativeSetPedComponentEnabled(ped, 0x1945CE44, true, true)
-        end
-
-        while not NativeHasPedComponentLoaded(ped) do
-            Wait(10)
-        end
-    end
+   
 end
 
 function cAPI.TaskAnimalInteraction(interaction)

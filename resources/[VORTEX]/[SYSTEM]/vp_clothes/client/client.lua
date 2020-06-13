@@ -288,7 +288,7 @@ RegisterCommand(
         hided = false
         CamActive = false
         cAPI.InFade(500)
-        SetEveryoneAsInvisible()
+      --||  SetEveryoneAsInvisible()
     end
 )
 
@@ -300,12 +300,9 @@ AddEventHandler(
         hided = false
         CamActive = false
         cAPI.InFade(500)
-        SetEveryoneAsInvisible()        
+       -- SetEveryoneAsInvisible()        
     end
 )
-
-
-
 
 function rotation(dir)
     local pedRot = GetEntityHeading(PlayerPedId()) + dir
@@ -331,12 +328,22 @@ Citizen.CreateThread(
             if inCustomization and not hided then
                 SetNuiFocus(true, true)
                 local hashm = GetEntityModel(PlayerPedId())
-                local fm = -171876066
-                if hashm ~= fm then
+
+                local female = -1481695040
+                local male = -171876066
+
+                if hashm == female then
                     sex = "mp_female"
-                else
+                elseif hashm == male then
                     sex = "mp_male"
+                else
+                    sex = "other"
                 end
+
+
+
+
+
                 if not CamActive then
                     createCamera()
                     CamActive = true
@@ -367,22 +374,22 @@ AddEventHandler(
     end
 )
 
-function SetEveryoneAsInvisible()
-   NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
-  while inCustomization do
-  	Citizen.Wait(0)
-	    for _, pid in pairs(GetActivePlayers()) do
-	    	--print('1 '.. pid)
-	       SetEntityVisible(GetPlayerPed(pid), false)
-	    end
-   end
+-- function SetEveryoneAsInvisible()
+--    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
+--   while inCustomization do
+--   	Citizen.Wait(0)
+-- 	    for _, pid in pairs(GetActivePlayers()) do
+-- 	    	print('1 '.. pid)
+-- 	       SetEntityVisible(GetPlayerPed(pid), false)
+-- 	    end
+--    end
 
- 	for _, pid in pairs(GetActivePlayers()) do
- 		--print('2 '.. pid)
-      -- SetEntityVisible(GetPlayerPed(pid), true)
-   	end
-   	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
-end
+--  	for _, pid in pairs(GetActivePlayers()) do
+--  		print('2 '.. pid)
+--       SetEntityVisible(GetPlayerPed(pid), true)
+--    	end
+--    	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+-- end
 
 function createCamera()
     SetEntityCoords(PlayerPedId(), 2555.352,-1160.896,53.002)
@@ -1084,6 +1091,20 @@ RegisterNUICallback(
     end
 )
 
+RegisterNUICallback(
+    "Outfit",
+    function(data)
+        if tonumber(data.id) == 0 then
+            num = 0
+            OutfitUsing = num
+        else
+            local num = tonumber(data.id)
+            SetPedOutfitPreset(PlayerPedId(), num)  
+            OutfitUsing = num  
+        end
+    end
+)
+
 function setcloth(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
@@ -1125,7 +1146,8 @@ RegisterNUICallback(
             ['beltbuckle'] = beltbuckleUsing,
             ['cloaks'] = cloaksUsing,
             ['coats2'] = coats2Using,
-            ['beltbuckle'] = beltbuckleUsing
+            ['beltbuckle'] = beltbuckleUsing,
+            ['Outfit'] = OutfitUsing
         }
     
         -- local dados = {

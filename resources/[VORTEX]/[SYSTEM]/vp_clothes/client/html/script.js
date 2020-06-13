@@ -1,17 +1,47 @@
 $('#creatormenu').fadeOut(0);
 
+var currentPage = 'Roupas';
+
 window.addEventListener('message', function(event) {
     if (event.data.action == "show") {
         $("#creatormenu").fadeIn(500);
 
         gender = event.data.gender;
-        if (gender == "mp_male") {
-            document.getElementById("Saia").classList.add("disabled");
-        } else {
-            document.getElementById("Saia").classList.remove("disabled");
-        }
-        
 
+        if (gender != "mp_male" && gender != "mp_female") {
+            
+            document.getElementById("button-head").classList.add("disabled");
+            document.getElementById("button-creator").classList.add("disabled");
+            document.getElementById("button-body").classList.remove("disabled");
+            currentPage = 'Ped';
+            $("#Roupas").css('display','none');
+            $("#Ped").css('display','block');
+            $("#Acessorios").css('display','none');
+            $("#button-head").css('pointer-events','none');
+            $("#button-creator").css('pointer-events','none');
+
+        } else if (gender == "mp_male") {
+            document.getElementById("button-head").classList.remove("disabled");
+            document.getElementById("button-creator").classList.remove("disabled");
+            document.getElementById("button-body").classList.add("disabled");
+            $("#button-body").css('pointer-events','none');
+            $("#button-head").css('pointer-events','auto');
+            $("#button-creator").css('pointer-events','auto');     
+            $("#Ped").css('display','none');
+            document.getElementById("Saia").classList.add("disabled");  
+
+        } else {
+            document.getElementById("button-head").classList.remove("disabled");
+            document.getElementById("button-creator").classList.remove("disabled");
+            document.getElementById("button-body").classList.add("disabled");
+            $("#button-body").css('pointer-events','none');
+            $("#button-head").css('pointer-events','auto');
+            $("#button-creator").css('pointer-events','auto');   
+            $("#Ped").css('display','none');
+            document.getElementById("Saia").classList.remove("disabled");           
+        } 
+        
+        
         if (event.data.action == "hide") {
             $("#creatormenu").fadeOut(500);
         }
@@ -21,9 +51,6 @@ window.addEventListener('message', function(event) {
         }
     }
 });
-
-
-var currentPage = 'Roupas';
 
 $('.menu-selectb').on('click', function() {
     $(`#${currentPage}`).hide();
