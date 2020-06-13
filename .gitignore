@@ -10,3 +10,4 @@ citizen/*
 *.key
 resources/debug
 cfx-rdr-spanser-debug
+resources/GHMattiMySQL/settings.xml
