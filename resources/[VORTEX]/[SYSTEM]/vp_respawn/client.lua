@@ -7,26 +7,24 @@ API = Tunnel.getInterface("API")
 local respawned = false
 local firstjoin = true
 local pressed = false
-local PressDeath = false
+local canDisplayRespawnPrompt = false
 local isDead = false
 local deathEndingTime
-local isInjure = false
+local isInjuried = false
 local up = false
 
 local deathCause = nil
 local damageBone = {0}
 local LoopCause = false
 local InstaCause = nil
-local InstaDeath = false
-local VitalPartDamage = false
+-- local diedOfFatalCause = false
+local TookDamageToVitalOrgan = false
 local BodyPartDamage = {0}
- Button = true
-local prompts = {}
-local promptGroup
+Button = true
 
-local InstaDeathCauses = {
+local diedOfFatalCauseCauses = {
 	"WEAPON_EXPLOSION",
-	"WEAPON_FIRE",
+	"WEAPON_FIRE"
 }
 
 local DeathCauses = {
@@ -106,23 +104,22 @@ local DeathCauses = {
 	"weapon_thrown_tomahawk_ancient"
 }
 
-
 local vitalBones = {
-	'cabeça',
-	'pescoço',
-	'coluna'
+	"cabeça",
+	"pescoço",
+	"coluna"
 }
 
 local allbones = {
-	['cabeça'] = {
-		21030,
+	["cabeça"] = {
+		21030
 	},
-	['pescoço'] = {
+	["pescoço"] = {
 		14283,
 		14284,
-		14285,
+		14285
 	},
-	['coluna'] = {	
+	["coluna"] = {
 		14410,
 		14411,
 		14412,
@@ -131,9 +128,9 @@ local allbones = {
 		14415,
 		14416,
 		11569,
-		56200,
+		56200
 	},
-	['maoesquerda'] = {
+	["maoesquerda"] = {
 		41403,
 		41404,
 		41405,
@@ -155,7 +152,7 @@ local allbones = {
 		41342,
 		34606
 	},
-	['maodireita'] = {
+	["maodireita"] = {
 		16827,
 		16828,
 		16829,
@@ -177,110 +174,143 @@ local allbones = {
 		16766,
 		22798
 	},
-	['braçodireito'] = {
-		54187,	
+	["braçodireito"] = {
+		54187,
 		46065
 	},
-	['braçoesquerdo'] = {
+	["braçoesquerdo"] = {
 		53675,
 		37873
 	},
-	['pernadireita'] = {
+	["pernadireita"] = {
 		6884,
-		43312,	
+		43312,
 		54802
 	},
-	['pedireito'] = {
+	["pedireito"] = {
 		33646,
 		41273,
 		18013,
 		18029
 	},
-	['peesquerdo'] = {
+	["peesquerdo"] = {
 		45454,
 		53081,
 		11440,
 		11456
-	},	
-	['pernaesquerda'] = {
+	},
+	["pernaesquerda"] = {
 		65478,
 		55120,
 		30226
 	},
-	['genitaria'] = {
+	["genitaria"] = {
 		10208,
 		10209,
 		39035
 	}
 }
 
+local isBadlyInjuried = false
+local timesLeftPlayerCanGetUp = 2
+local lastDiceChance
+local fullDeathAtGameTime
+
+local fakeGameplayCam
+local fakeGameplayCamDeg = 0
+-- local fakeGameplayCamUD = 0
+
 Citizen.CreateThread(
 	function()
 		local lastHealth = GetEntityHealth(PlayerPedId())
 		while true do
-			Citizen.Wait(100)		
+			Citizen.Wait(100)
+			-- if isBadlyInjuried == false then
 			if lastHealth ~= GetEntityHealth(PlayerPedId()) then
 				local retVal, boneIndex = GetPedLastDamageBone(PlayerPedId())
 				if boneIndex ~= 0 then
 					table.insert(damageBone, boneIndex)
-					for BodyPartName,v in pairs(allbones) do	
-						for _,IndexBodyPart in pairs(v) do
-							 if IndexBodyPart == boneIndex then
-								for _, BodyInsta in pairs(BodyPartDamage) do		
-									if BodyInsta ~= BodyPartName then			
+					for BodyPartName, v in pairs(allbones) do
+						for _, IndexBodyPart in pairs(v) do
+							if IndexBodyPart == boneIndex then
+								for _, BodyInsta in pairs(BodyPartDamage) do
+									if BodyInsta ~= BodyPartName then
 										table.insert(BodyPartDamage, BodyPartName)
 									end
-									for _,VitalPart in pairs(vitalBones) do																				
-										if VitalPart == BodyPartName then	
-											VitalPartDamage = true
-										end							
+									for _, bone in pairs(vitalBones) do
+										if bone == BodyPartName then
+											TookDamageToVitalOrgan = true
+										end
 									end
 								end
-							 end
+							end
 						end
 					end
 				end
 
-				for _, key in pairs(DeathCauses) do							
-					if GetHashKey(key) == GetPedCauseOfDeath(PlayerPedId()) then
-						deathCause = key
-						print('death ' .. deathCause)
-						if GetPedCauseOfDeath(PlayerPedId()) == GetHashKey("WEAPON_EXPLOSION") and GetPedCauseOfDeath(PlayerPedId()) == GetHashKey("WEAPON_EXPLOSION") then
-							InstaDeath = true
-							print('InstaCause TRUE1')	
-						else
-							if GetPedCauseOfDeath(PlayerPedId()) ~= GetHashKey("WEAPON_UNARMED") and GetPedCauseOfDeath(PlayerPedId()) ~= GetHashKey("WEAPON_FALL") then
-								if VitalPartDamage then									
-									InstaDeath = true
-									print('InstaCause TRUE2')
-								end
+				lastHealth = GetEntityHealth(PlayerPedId())
+
+				local diedOfFatalCause = false
+
+				if lastHealth <= 0 then
+					for _, key in pairs(DeathCauses) do
+						local causeOfDeath = GetPedCauseOfDeath(PlayerPedId())
+						if GetHashKey(key) == causeOfDeath then
+							deathCause = key
+							-- print("death " .. deathCause)
+
+							if causeOfDeath == GetHashKey("WEAPON_EXPLOSION") or causeOfDeath == GetHashKey("WEAPON_THROWN_DYNAMITE") then
+								-- print("InstaCause TRUE1", key)
+								diedOfFatalCause = true
 							else
-								InstaDeath = false
-								print('InstaCause FALSE3')
+								if causeOfDeath ~= GetHashKey("WEAPON_UNARMED") and causeOfDeath ~= GetHashKey("WEAPON_FALL") then
+									if TookDamageToVitalOrgan then
+										diedOfFatalCause = true
+									-- print("InstaCause TRUE2", key)
+									end
+								else
+									-- print("InstaCause FALSE3", key)
+									diedOfFatalCause = false
+								end
 							end
-						end	
+						end
+					end
+
+					-- print("diedOfFatalCause", diedOfFatalCause)
+
+					if diedOfFatalCause then
+						isBadlyInjuried = false
+						-- print("Handle as fatal")
+						HandleAsInjured(diedOfFatalCause)
+					else
+						if not isBadlyInjuried then
+							-- print("Handle as not fatal")
+							HandleAsInjured(false)
+						end
 					end
 				end
-
-				lastHealth = GetEntityHealth(PlayerPedId())
 			end
-		end
-end)
-
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(0) -- DO NOT REMOVE
-			local player = PlayerId()
-			if IsPlayerDead(player) and isDead == false then
-				Citizen.Wait(0) -- DO NOT REMOVE
-				isDead = true
-				deathEndingTime = GetGameTimer() + Config.RespawnTime
-				--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
-			end
+			-- end
 		end
 	end
 )
+
+-- Citizen.CreateThread(
+-- 	function()
+-- 		-- InitiateGetUpPrompt()
+
+-- 		while true do
+-- 			Citizen.Wait(0) -- DO NOT REMOVE
+-- 			local player = PlayerId()
+-- 			if IsPlayerDead(player) and isDead == false then
+-- 				Citizen.Wait(0) -- DO NOT REMOVE
+-- 				isDead = true
+-- 				deathEndingTime = GetGameTimer() + 1 --Config.RespawnTime
+-- 			--NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+-- 			end
+-- 		end
+-- 	end
+-- )
 
 RegisterCommand(
 	"kys",
@@ -297,9 +327,9 @@ AddEventHandler(
 	function()
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
 		isDead = false
-		isInjure = false
+		isInjuried = false
 		DestroyAllCams(true)
-		clearDeath()
+		DestroyDeathRelatedInformation()
 	end
 )
 
@@ -308,12 +338,12 @@ AddEventHandler(
 	"VP:RESPAWN:Treatment",
 	function()
 		cAPI.VaryPlayerHealth(5, 5)
-		Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)	
+		Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)
 		isDead = false
-		isInjure = false
+		isInjuried = false
 		DestroyAllCams(true)
 		SetEntityHealth(PlayerPedId(), 150)
-		clearDeath()
+		DestroyDeathRelatedInformation()
 	end
 )
 
@@ -322,20 +352,12 @@ AddEventHandler(
 	"VP:RESPAWN:PlayerUp",
 	function()
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
-		isDead = false		
+		isDead = false
 		DestroyAllCams(true)
 		Uptime()
 		SetEntityHealth(PlayerPedId(), 2)
 	end
 )
-
-RegisterCommand('getDam', function()
-	cAPI.VaryPlayerHealth(5, 60)
-	isDead = false
-	isInjure = false
-	DestroyAllCams(true)
-	clearDeath()
-end)
 
 RegisterNetEvent("VP:RESPAWN:PlayerDead")
 AddEventHandler(
@@ -351,149 +373,504 @@ local Locations = {
 	[3] = vector3(2725.834, -1224.180, 50.367) -- SAINT DENNIS
 }
 
-local prompts = {}
-local promptGroup
+local prompt_getup
+local prompt_respawn
+local prompt_group
 
-Citizen.CreateThread(
-	function()
-		initRespawnPrompt()
+-- Citizen.CreateThread(
+-- 	function()
+-- 		while true do
+-- 			Citizen.Wait(0)
+-- 			if isDead then
+-- 				if deathEndingTime > GetGameTimer() then
+-- 					print('yes')
+-- 					if diedOfFatalCause then
+-- 						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+-- 						DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+-- 						DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+-- 						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
+-- 					else
+-- 						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+-- 						DrawTxt(Config.LocaleDead, 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+-- 						DrawTxt("Levantando em", 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+-- 						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
+-- 					end
+-- 					DisableAllControlActions(0)
+-- 					DisableAllControlActions(1)
+-- 					DisableAllControlActions(2)
+-- 					Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
+-- 					Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
+-- 					DestroyAllCams(true)
+-- 					DisplayHud(false)
+-- 					DisplayRadar(false)
+-- 				else
+-- 					if diedOfFatalCause then
+-- 						print('DisplayRespawn')
+-- 						isInjuried = true
+-- 						canDisplayRespawnPrompt = true
+-- 						up = false
+
+-- 						InitiateRespawnPrompt()
+-- 						CreateFakeCam()
+-- 					else
+-- 						isInjuried = true
+-- 						up = true
+-- 					end
+-- 				end
+
+-- 				--SetPedToRagdollWithFall(PlayerPedId(), Config.RespawnTime, Config.RespawnTime,0 , -0.440, -0.890, 0, 2, 0,0,0,0,0,0)
+-- 				--SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)
+
+-- 				DestroyAllCams(true)
+-- 			end
+-- 			if isInjuried then
+-- 				isDead = false
+-- 				Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
+-- 				Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
+-- 				DisplayHud(true)
+-- 				DisplayRadar(true)
+-- 				if up then
+-- 					NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+-- 					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)
+-- 					SetEntityHealth(PlayerPedId(), 1)
+-- 					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
+-- 					LoopCause = false
+-- 					isDead = false
+-- 					Uptime()
+-- 				end
+-- 				if canDisplayRespawnPrompt then
+-- 					-- PromptSetActiveGroupThisFrame(prompt_group, varStringCasa)
+
+-- 					if PromptHasHoldModeCompleted(prompt_respawn) then
+-- 						local closestIndex
+-- 						local lowestDist
+-- 						local ped = PlayerPedId()
+-- 						local coords = GetEntityCoords(ped)
+
+-- 						for index, vector in pairs(Locations) do
+-- 							local dst = #(vector - coords)
+-- 							if lowestDist == nil or dst < lowestDist then
+-- 								lowestDist = dst
+-- 								closestIndex = index
+-- 								canDisplayRespawnPrompt = false
+-- 								isInjuried = false
+
+-- 								PromptDelete(prompt_respawn)
+-- 								prompt_respawn = nil
+-- 							end
+-- 						end
+-- 						TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
+-- 					end
+-- 				end
+-- 			end
+-- 		end
+-- 	end
+-- )
+
+function HandleAsInjured(fatal)
+	local ped = PlayerPedId()
+
+	TookDamageToVitalOrgan = false
+	ClearPedLastDamageBone(ped)
+
+	isBadlyInjuried = true
+
+	CreateFakeCam()
+
+	-- print('Called HandleAsInjured', fatal)
+
+	if fatal == true then
+		-- print("Died of fatal cause", fatal)
+
+		fullDeathAtGameTime = GetGameTimer() + 1000 * 60 * 5
+		-- fullDeathAtGameTime = GetGameTimer() + 1000
+
+		InitiateRespawnPrompt()
+		PromptSetEnabled(prompt_respawn, false)
+
 		while true do
 			Citizen.Wait(0)
-			if isDead then
-				if deathEndingTime > GetGameTimer() then
-					
-					if InstaDeath then
-						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-						DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
-						DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)			
-					else
-						DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-						DrawTxt(Config.LocaleDead, 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
-						DrawTxt("Levantando em", 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-						DrawTxt("" .. tonumber(string.format("%.0f", (((GetGameTimer() - deathEndingTime) * -1) / 1000))), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)	
-					end
-					DisableAllControlActions(0)
-					DisableAllControlActions(1)
-					DisableAllControlActions(2)
-					Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
-					Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
-					DestroyAllCams(true)
-					DisplayHud(false)
-					DisplayRadar(false)
-				else
-					if InstaDeath then
-						isInjure = true
-						PressDeath = true
-						up = false
-					else	
-						isInjure = true
-						up = true						
+
+			local pedHealth = GetEntityHealth(ped)
+			if pedHealth <= 0 then
+				Citizen.InvokeNative(0xFA08722A5EA82DA7, "CrossLine01")
+				Citizen.InvokeNative(0xFDB74C9CC54C3F37, 1.0)
+
+				local fullDeathTimeDiff = fullDeathAtGameTime - GetGameTimer()
+
+				DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+				DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+				DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+				DrawTxt("" .. string.format("%.0f", math.max(fullDeathTimeDiff / 1000, 0)), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
+
+				if fullDeathTimeDiff <= 0 then
+					if PromptIsEnabled(prompt_respawn) == 0 then
+						PromptSetEnabled(prompt_respawn, true)
 					end
 
-				end
+					if PromptHasHoldModeCompleted(prompt_respawn) then
+						-- print("About to respawn...")
 
-				--SetPedToRagdollWithFall(PlayerPedId(), Config.RespawnTime, Config.RespawnTime,0 , -0.440, -0.890, 0, 2, 0,0,0,0,0,0)
-				--SetPedToRagdoll(PlayerPedId(), Config.RespawnTime, Config.RespawnTime, 0, 0, 0, 0)
+						DestroyDeathRelatedInformation()
 
-				DestroyAllCams(true)
-			end
-			if isInjure then
-				isDead = false
-				Citizen.InvokeNative(0xFA08722A5EA82DA7, Config.Timecycle)
-				Citizen.InvokeNative(0xFDB74C9CC54C3F37, Config.TimecycleStrenght)
-				DisplayHud(true)
-				DisplayRadar(true)
-				if up then
-					NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
-					Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 1)
-					SetEntityHealth(PlayerPedId(), 1)
-					cAPI.notify("alert", "Você está ferido, procure por ajuda médica")
-					LoopCause = false
-					isDead = false
-					Uptime()
-				end
-				if PressDeath then
-						Button = false
-					if PressDeath and not Button then
-						initRespawnPrompt()
-						Button = true
-					end
-					local closestIndex
-					local lowestDist
-					local ped = PlayerPedId()
-					local coords = GetEntityCoords(ped)
-					for _, prompt in pairs(prompts) do
-						if PromptHasHoldModeCompleted(prompt) then						
-							for index, vector in pairs(Locations) do
-								local dst = #(vector - coords)
-								if lowestDist == nil or dst < lowestDist then
-									lowestDist = dst
-									closestIndex = index
-									PressDeath = false
-									isInjure = false
-								end
+						local coords = GetEntityCoords(PlayerPedId())
+
+						local closestIndex
+						local lowestDist
+
+						for index, vector in pairs(Locations) do
+							local dst = #(vector - coords)
+							if lowestDist == nil or dst < lowestDist then
+								lowestDist = dst
+								closestIndex = index
 							end
-							TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
 						end
+
+						TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
 					end
 				end
-			end
-		end
-	end
-)
-
-function initRespawnPrompt()
- 	if isDead then
-	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Você está morto.')
-	local prompt = PromptRegisterBegin()
-	PromptSetActiveGroupThisFrame(promptGroup, varStringCasa)
-	PromptSetControlAction(prompt, 0xE8342FF2)
-	PromptSetText(prompt, CreateVarString(10, 'LITERAL_STRING', 'Renascer'))
-	PromptSetStandardMode(prompt, true)    
-	PromptSetEnabled(prompt, 1)
-	PromptSetVisible(prompt, 1)
-	PromptSetHoldMode(prompt, 1)
-	N_0x0c718001b77ca468(prompt, 3.0)
-	PromptSetGroup(prompt, promptGroup)
-	PromptRegisterEnd(prompt)
-	table.insert(prompts, prompt)
-	end
-end
-
-
-function Uptime()
-	local AliveTime = math.random(13, 18) * 60000
-	local UpTime = GetGameTimer() + AliveTime
-	while true do
-	Citizen.Wait(0)
-		if UpTime < GetGameTimer() then		
-			SetEntityHealth(PlayerPedId(), 0)
-			PressDeath = true
-			break
-		else
-			if isDead then
-				isInjure = true				
-				PressDeath = true				
-				isDead = false
-			end
-			if isInjure then
-				up = true
 			else
+				--[[
+							Nosso player foi revivido, então a gente quebra a
+							função toda e segue com a vida
+						]]
+				-- print("Broke")
 				break
 			end
-			DisableControlAction(0, 0x8FFC75D6, true) -- sprint
-			DisableControlAction(0, 0xD9D0E1C0, true) -- jump
+		end
+	else
+		-- print("Died of simple cause")
+
+		local timeTillFirstRevive = GetGameTimer() + 1000 * 60 * 1
+		-- timeTillFirstRevive = GetGameTimer() + 1000
+
+		local addedToReviveTime = false
+
+		PlayDice()
+
+		InitiateGetUpPrompt()
+		PromptSetEnabled(prompt_getup, false)
+
+		while isBadlyInjuried do
+			Citizen.Wait(0)
+
+			local pedHealth = GetEntityHealth(ped)
+			if pedHealth <= 0 then
+				Citizen.InvokeNative(0xFA08722A5EA82DA7, "CrossLine01")
+				Citizen.InvokeNative(0xFDB74C9CC54C3F37, 1.0)
+
+				DisplayHud(false)
+				DisplayRadar(false)
+
+				DisableAllControlActions(0)
+				DisableAllControlActions(1)
+				DisableAllControlActions(2)
+
+				EnableControlAction(0, 0x7F8D09B8, true)
+				EnableControlAction(0, 0xDFF812F9, true)
+
+				if addedToReviveTime == false then
+					addedToReviveTime = true
+					timeTillFirstRevive = GetGameTimer() + 1000 * 60 * 1
+					-- timeTillFirstRevive = GetGameTimer() + 1000
+				end
+
+				if fakeGameplayCam == nil then
+					--[[
+								A camera por algum motivo não existe enquanto
+								nosso player está morto definitivamente, então a gente
+								recria a camera
+							]]
+					CreateFakeCam()
+				end
+
+				if PromptIsEnabled(prompt_getup) and NativePromptHasMashModeCompleted(prompt_getup) then
+					--[[
+								O player tem o prompt de levantar ativo na tela
+								e apertou o prompt por completo
+								então a gente levanta ele e diminui a quantidade
+								de vezes restantes para levantar
+							]]
+					PromptSetEnabled(prompt_getup, false)
+					PromptSetVisible(prompt_getup, false)
+
+					-- print("Dice decided you should get up", lastDiceChance)
+					NetworkResurrectLocalPlayer(GetEntityCoords(ped), true, true, false)
+					SetEntityHealth(ped, 2)
+
+					SetAsDrunk(true)
+
+					addedToReviveTime = false
+
+					timesLeftPlayerCanGetUp = timesLeftPlayerCanGetUp - 1
+				else
+					local timeTillfirstReviveDiff = timeTillFirstRevive - GetGameTimer()
+
+					if timesLeftPlayerCanGetUp > 0 then
+						--[[
+									O player morreu novamente por razoes externas
+									(não foi pelo nosso sistema de desmaiar novamente)
+									então se verifica se o prompt tá ativo, caso nao esteja
+								]]
+						-- print(timesLeftPlayerCanGetUp, PromptIsEnabled(prompt_getup))
+						if PromptIsEnabled(prompt_getup) == 0 then
+							if timeTillfirstReviveDiff <= 0 then
+								PromptSetEnabled(prompt_getup, true)
+								PromptSetVisible(prompt_getup, true)
+
+								PromptSetMashWithResistanceMode(prompt_getup, 10, 7.0 - (timesLeftPlayerCanGetUp * 0.75), 0)
+								-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+							end
+						end
+					else
+						-- print("Chamando HandleAsInjured acabou as chances de levantar")
+
+						isBadlyInjuried = false
+						HandleAsInjured(true)
+
+						PromptDelete(prompt_group)
+					end
+				end
+
+				-- if fullDeathTimeDiff > 0 then
+				--[[
+									O player ainda tem varios segundos antes de morrer definitivamente
+									então a gente mostra quantos segundos faltam
+								]]
+				DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.08, 0.8, 0, 0, 0, 250, 1)
+				DrawTxt("~e~DESMAIADO", 0.50, 0.07, 0.8, 0.8, true, 255, 255, 255, 255, true)
+			else
+				if fakeGameplayCam ~= nil then
+					--[[
+								A camera por algum motivo não existe enquanto
+								nosso player está desmaiado, então a gente
+								recria a camera
+							]]
+					DestroyFakeCam()
+				end
+
+				-- 0.1% de chance do player desmaiar de novo
+				if lastDiceChance ~= nil and lastDiceChance <= 1 then
+					SetEntityHealth(ped, 0)
+
+					if timesLeftPlayerCanGetUp > 0 then
+						-- Player tem mais chances de reviver, reativa os prompts
+						
+						PromptSetEnabled(prompt_getup, true)
+						PromptSetVisible(prompt_getup, true)
+
+						PromptSetMashWithResistanceMode(prompt_getup, 10, 7.0 - (timesLeftPlayerCanGetUp * 0.75), 0)
+						-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+
+						RollDice()
+					end
+				else
+					if pedHealth > 2 then
+						--[[
+									A vida do player foi aumenteda em quando ele estava machucado
+									então ele ousou /revive ou algum remédio
+									aceitamos então que ele está vivo e bem
+
+									acaba o thread
+								]]
+						isBadlyInjuried = false
+					end
+				end
+			end
 		end
 	end
+
+	-- print("destroydeathrelated")
+	DestroyDeathRelatedInformation()
 end
 
+function PlayDice()
+	Citizen.CreateThread(
+		function()
+			while isBadlyInjuried do
+				Citizen.Wait(1000)
+				RollDice()
+			end
+		end
+	)
+end
+
+function RollDice()
+	lastDiceChance = math.random(1000)
+	-- print("Dice selected", lastDiceChance)
+end
+
+function SetAsDrunk(bool)
+	local ped = PlayerPedId()
+	Citizen.InvokeNative(0x406CCF555B04FAD3, ped, 1, bool and 0.95 or 0.0)
+	Citizen.InvokeNative(0xCB9401F918CB0F75, ped, "IsDrunk", bool, -1)
+	Citizen.InvokeNative(0x437C08DB4FEBE2BD, ped, "Drunkness", bool and 0.95 or 0.0, -1)
+end
+
+function newDestroy()
+	timesLeftPlayerCanGetUp = 2
+
+	isBadlyInjuried = false
+
+	lastDiceChance = nil
+
+	DestroyFakeCam()
+
+	fakeGameplayCamDeg = 0
+
+	PromptDelete(prompt_respawn)
+	prompt_respawn = nil
+
+	PromptDelete(prompt_getup)
+	prompt_getup = nil
+
+	ClearTimecycleModifier()
+
+	DisplayHud(true)
+	DisplayRadar(true)
+
+	SetAsDrunk(false)
+end
+
+function InitiateRespawnPrompt()
+	-- Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Você está morto.")
+
+	if prompt_respawn ~= nil then
+		PromptDelete(prompt_respawn)
+	end
+
+	prompt_respawn = PromptRegisterBegin()
+	-- 0xE8342FF2
+	PromptSetControlAction(prompt_respawn, 0x7F8D09B8)
+	PromptSetText(prompt_respawn, CreateVarString(10, "LITERAL_STRING", "Renascer"))
+	PromptSetStandardMode(prompt_respawn, true)
+	PromptSetEnabled(prompt_respawn, 1)
+	PromptSetVisible(prompt_respawn, 1)
+	PromptSetHoldMode(prompt_respawn, 1)
+	-- N_0x0c718001b77ca468(prompt, 3.0)
+	-- PromptSetGroup(prompt, prompt_group)
+	PromptRegisterEnd(prompt_respawn)
+end
+
+function InitiateGetUpPrompt()
+	if prompt_getup ~= nil then
+		PromptDelete(prompt_getup)
+	end
+
+	prompt_getup = PromptRegisterBegin()
+	-- 0xE8342FF2
+	PromptSetControlAction(prompt_getup, 0xDFF812F9)
+	PromptSetText(prompt_getup, CreateVarString(10, "LITERAL_STRING", "Levantar"))
+	PromptSetStandardMode(prompt_getup, true)
+	PromptSetEnabled(prompt_getup, 1)
+	PromptSetVisible(prompt_getup, 1)
+	PromptSetHoldMode(prompt_getup, 1)
+
+	PromptSetMashWithResistanceMode(prompt_getup, 10, 5.5, 0)
+	-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+
+	PromptRegisterEnd(prompt_getup)
+end
+
+function CreateFakeCam()
+	DestroyFakeCam()
+
+	local center = GetGameplayCamCoord()
+	center = GetEntityCoords(PlayerPedId())
+
+	local xDeg0 = center.x + (5.0 * math.cos(math.rad(fakeGameplayCamDeg)))
+	local yDeg0 = center.y + (5.0 * math.sin(math.rad(fakeGameplayCamDeg)))
+
+	-- GetGameplayCamFov()
+	fakeGameplayCam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vec3(xDeg0, yDeg0, center.z + 0.7), GetGameplayCamRot(0), 40.0, false, 0) -- CAMERA COORDS
+	-- PointCamAtCoord(cam, pPosition)
+	PointCamAtEntity(fakeGameplayCam, PlayerPedId(), 0.0, 0.0, 0.0, 0.0)
+	SetCamActive(fakeGameplayCam, true)
+	RenderScriptCams(true, false, 1, true, true)
+
+	Citizen.CreateThread(
+		function()
+			local ped = PlayerPedId()
+			while fakeGameplayCam ~= nil do
+				Citizen.Wait(0)
+
+				local mouseLRnormal = GetDisabledControlNormal(0, 0xA987235F)
+				-- local mouseLRnormal = GetControlNormal(0, 0xA987235F)
+
+				if mouseLRnormal ~= 0 then
+					if mouseLRnormal > 0.0 then
+						-- Right
+						local new = fakeGameplayCamDeg + 0.25
+						if new > 360 then
+							new = new - 360
+						end
+						fakeGameplayCamDeg = new
+					else
+						-- Left
+						local new = fakeGameplayCamDeg - 0.25
+						if new < 0 then
+							new = 360 + new
+						end
+
+						fakeGameplayCamDeg = new
+					end
+				end
+
+				center = GetEntityCoords(ped)
+
+				local xDeg0 = center.x + (5.0 * math.cos(math.rad(fakeGameplayCamDeg)))
+				local yDeg0 = center.y + (5.0 * math.sin(math.rad(fakeGameplayCamDeg)))
+
+				SetCamCoord(fakeGameplayCam, vec3(xDeg0, yDeg0, center.z + 0.7))
+			end
+		end
+	)
+end
+
+function DestroyFakeCam()
+	DestroyCam(fakeGameplayCam, true)
+	fakeGameplayCam = nil
+end
+
+function NativePromptHasMashModeCompleted(prompt)
+	return Citizen.InvokeNative(0x845CE958416DC473, prompt)
+end
+
+function NativePromptIsControlActionActive(control)
+	return Citizen.InvokeNative(0x1BE19185B8AFE299, control)
+end
+
+-- function Uptime()
+-- 	local AliveTime = math.random(13, 18) * 60000
+-- 	local UpTime = GetGameTimer() + AliveTime
+-- 	while true do
+-- 		Citizen.Wait(0)
+-- 		if UpTime < GetGameTimer() then
+-- 			SetEntityHealth(PlayerPedId(), 0)
+-- 			canDisplayRespawnPrompt = true
+-- 			break
+-- 		else
+-- 			if isDead then
+-- 				isInjuried = true
+-- 				canDisplayRespawnPrompt = true
+-- 				isDead = false
+-- 			end
+-- 			if isInjuried then
+-- 				up = true
+-- 			else
+-- 				break
+-- 			end
+-- 			DisableControlAction(0, 0x8FFC75D6, true) -- sprint
+-- 			DisableControlAction(0, 0xD9D0E1C0, true) -- jump
+-- 		end
+-- 	end
+-- end
 
 RegisterNetEvent("FRP_respawn:respawnvip")
 AddEventHandler(
 	"FRP_respawn:respawnvip",
 	function()
-		clearDeath()
+		DestroyDeathRelatedInformation()
 		SendNUIMessage(
 			{
 				type = 1,
@@ -506,24 +883,21 @@ AddEventHandler(
 	end
 )
 
-
 RegisterNetEvent("VP:RESPAWN:CheckDeath")
 AddEventHandler(
 	"VP:RESPAWN:CheckDeath",
 	function()
+		local data = {
+			deathCause,
+			diedOfFatalCause,
+			TookDamageToVitalOrgan,
+			BodyPartDamage
+		}
 
-	local data = {
-		deathCause,
-		InstaDeath,
-		VitalPartDamage,
-		BodyPartDamage
-	}
-
-	local player, distance = GetClosestPlayer()
-	if distance ~= -1 and distance <= 3.0 then
-		TriggerServerEvent('VP:MEDIC:StatusDeath', GetPlayerServerId(player), data)
-	end
-
+		local player, distance = GetClosestPlayer()
+		if distance ~= -1 and distance <= 3.0 then
+			TriggerServerEvent("VP:MEDIC:StatusDeath", GetPlayerServerId(player), data)
+		end
 	end
 )
 
@@ -531,7 +905,7 @@ RegisterNetEvent("FRP_respawn:respawn")
 AddEventHandler(
 	"FRP_respawn:respawn",
 	function(spawn)
-		clearDeath()
+		DestroyDeathRelatedInformation()
 		TriggerServerEvent("VP:Respawn:_Dead")
 		DoScreenFadeOut(500)
 		-- print(Locations[spawn])
@@ -543,15 +917,15 @@ AddEventHandler(
 	end
 )
 
-function clearDeath()
-	isInjure = false
+function DestroyDeathRelatedInformation()
+	isInjuried = false
 	isDead = false
-	LoopCause = false	
+	LoopCause = false
 	deathEndingTime = nil
-	up = false	
+	up = false
 	UpTime = nil
-	InstaDeath = false
-	VitalPartDamage = false
+	diedOfFatalCause = false
+	TookDamageToVitalOrgan = false
 	InstaCause = nil
 	deathCause = nil
 	Button = true
@@ -560,10 +934,13 @@ function clearDeath()
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
+
 	TriggerServerEvent("VP:RESPAWN:onPlayerDeath")
-	for _, prompt in pairs(prompts) do
-		PromptDelete(prompt)
-	end
+
+	newDestroy()
+
+	DestroyCam(fakeGameplayCam, true)
+	fakeGameplayCam = nil
 end
 
 RegisterNUICallback(
@@ -650,60 +1027,53 @@ AddEventHandler(
 	"onResourceStop",
 	function(resourceName)
 		if resourceName == GetCurrentResourceName() then
-			for _, prompt in pairs(prompts) do
-				PromptDelete(prompt)
-			end
+			-- if prompt_respawn ~= nil then
+			-- 	PromptDelete(prompt_respawn)
+			-- 	DestroyCam(fakeGameplayCam, true)
+			-- end
+
+			DestroyDeathRelatedInformation()
 		end
 	end
 )
 
-function isNearPlayer()
-	local player, distance = GetClosestPlayer()
-	if distance ~= -1 and distance <= 2.0 then
-	    return player, distance
-	else
-	    return false
-	end
-	return false
-end
-
 function GetPlayers()
-    local players = {}
+	local players = {}
 
-    for _,player in ipairs(GetActivePlayers()) do
-        local ped = GetPlayerPed(player)
+	for _, player in ipairs(GetActivePlayers()) do
+		local ped = GetPlayerPed(player)
 
-        if DoesEntityExist(ped) then
-            table.insert(players, player)
-        end
-    end
-    return players
+		if DoesEntityExist(ped) then
+			table.insert(players, player)
+		end
+	end
+	return players
 end
 
 function GetClosestPlayer()
-    local players, closestDistance, closestPlayer = GetPlayers(), -1, -1
-    
-    local coords, usePlayerPed = coords, false
-    local playerPed, playerId = PlayerPedId(), PlayerId()
+	local players, closestDistance, closestPlayer = GetPlayers(), -1, -1
 
-    if coords then
-        coords = vector3(coords.x, coords.y, coords.z)
-    else
-        usePlayerPed = true
-        coords = GetEntityCoords(playerPed)
-    end
-    for i=1, #players, 1 do
-        local target = GetPlayerPed(players[i])
+	local coords, usePlayerPed = coords, false
+	local playerPed, playerId = PlayerPedId(), PlayerId()
 
-        if not usePlayerPed or (usePlayerPed and players[i] ~= playerId) then
-            local targetCoords = GetEntityCoords(target)
-            local distance = #(coords - targetCoords)
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		usePlayerPed = true
+		coords = GetEntityCoords(playerPed)
+	end
+	for i = 1, #players, 1 do
+		local target = GetPlayerPed(players[i])
 
-            if closestDistance == -1 or closestDistance > distance then
-                closestPlayer = players[i]
-                closestDistance = distance
-            end
-        end
-    end
-    return closestPlayer, closestDistance
+		if not usePlayerPed or (usePlayerPed and players[i] ~= playerId) then
+			local targetCoords = GetEntityCoords(target)
+			local distance = #(coords - targetCoords)
+
+			if closestDistance == -1 or closestDistance > distance then
+				closestPlayer = players[i]
+				closestDistance = distance
+			end
+		end
+	end
+	return closestPlayer, closestDistance
 end
