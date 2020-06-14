@@ -46,13 +46,8 @@ local blips = {
 
 	--DOCTOR
 	{ name = 'Doctor', sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39 },
-<<<<<<< HEAD
-	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },	
-
-=======
 	{ name = 'Doctor', sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437 },
 	
->>>>>>> 2c754c361c5f835eb5c4ef19896aedd36856526d
 	--SALOON
 	{ name = 'Saloon', sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98 },
 	{ name = 'Saloon', sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68 },
