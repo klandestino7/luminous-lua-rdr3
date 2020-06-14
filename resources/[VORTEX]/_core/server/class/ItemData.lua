@@ -185,8 +185,9 @@ function triggerUse(User, itemData)
         return false
     end
 
-    if itemId == 'waterbottle' then
+    if itemId == "waterbottle" then
         cAPI.VaryPlayerStamina(source, 50)
+        return true
     end
 
     if itemId == "chest_small" then
@@ -205,6 +206,10 @@ function triggerUse(User, itemData)
 
     if itemId == "pigeonpost" then
         TriggerClientEvent("VP:PIGEONPOST:Init", source)
+    end
+
+    if itemId == "pan" then
+        TriggerClientEvent("FrankieGoldPanner:StartGoldPan", source)
     end
 
     return false
