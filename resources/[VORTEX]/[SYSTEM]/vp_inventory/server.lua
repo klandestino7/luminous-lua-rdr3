@@ -90,8 +90,10 @@ AddEventHandler(
         local itemAmount = Slot:getItemAmount()
 
         if Inventory:removeItem(slotId, itemId, itemAmount) then
-            -- User:notify("item", itemData:getName(), -(itemAmount))
-            TriggerClientEvent("VP:INVENTORY:DROP:Create", itemId)
+            -- TriggerClientEvent("VP:INVENTORY:DROP:Create", itemId)
+            if not User:hasInventoryOpen() then
+                User:notify("item", itemId, -(itemAmount))
+            end
         else
             User:notify("error", "x" .. itemAmount .. " " .. itemData:getName() .. " não encontrado no inventário")
         end
@@ -140,28 +142,28 @@ AddEventHandler(
         local ItemData = API.getItemDataFromId(itemAtSlot)
 
         -- if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
-            if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
-                Inventory:removeItem(slotId, itemAtSlot, amountAtSlot)
+        if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
+            Inventory:removeItem(slotId, itemAtSlot, amountAtSlot)
 
-                local amountToDisplay = amountAtSlot
-                local toastType = 'item'
+            local amountToDisplay = amountAtSlot
+            local toastType = "item"
 
-                if itemAtSlot == 'gold' then
-                    toastType = 'gold'
-                    amountToDisplay = amountToDisplay / 100
-                elseif  itemAtSlot == 'money' then
-                    toastType = 'dollar'
-                    amountToDisplay = amountToDisplay / 100
-                end
-
-                User:notify(toastType, ItemData:getName(), -(amountToDisplay))
-
-                if UserTarget:getPrimaryInventoryViewing() == nil then
-                    UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
-                end
-            else
-                User:notify("error", "Bolsa da pesssoa está sem espaço!")
+            if itemAtSlot == "gold" then
+                toastType = "gold"
+                amountToDisplay = amountToDisplay / 100
+            elseif itemAtSlot == "money" then
+                toastType = "dollar"
+                amountToDisplay = amountToDisplay / 100
             end
+
+            User:notify(toastType, ItemData:getName(), -(amountToDisplay))
+
+            if UserTarget:getPrimaryInventoryViewing() == nil then
+                UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
+            end
+        else
+            User:notify("error", "Bolsa da pesssoa está sem espaço!")
+        end
         -- -- else
         --     User:notify("error", "Você não tem x" .. ItemData:getName())
         -- end

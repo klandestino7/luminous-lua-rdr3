@@ -158,12 +158,11 @@ function API.User(source, id, ipAddress)
                     self.Character:addGroup("admin")
                 end
             end
-            
-            TriggerEvent('API:OnUserSelectCharacter', self, id)
+
+            TriggerEvent("API:OnUserSelectCharacter", self, id)
 
             ---------------- AUTO ADMING GROUP TO USER WITH ID 1
             self.drawCharacter()
-
         end
     end
 
@@ -190,13 +189,13 @@ function API.User(source, id, ipAddress)
         local character_lastposition = Character:getLastPosition()
 
         local character_stats = Character:getCachedStats()
-           
+
         if json.decode(character_clothing).Outfit ~= nil then
-            cAPI.Initialize(self:getSource(), json.decode(character_model), tonumber(json.decode(character_clothing).Outfit), character_lastposition, character_stats)  
+            cAPI.Initialize(self:getSource(), json.decode(character_model), tonumber(json.decode(character_clothing).Outfit), character_lastposition, character_stats)
         else
-            cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)    
+            cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)
         end
-        
+
         -- cAPI.CWanted(Character:getWanted())
     end
 
@@ -238,6 +237,14 @@ function API.User(source, id, ipAddress)
 
     self.getSecondaryInventoryViewing = function()
         return self.secondaryViewingInventory
+    end
+
+    self.hasInventoryOpen = function()
+        if self:getCharacter() == nil then
+            return false
+        else
+            return self:getPrimaryInventoryViewing() == self:getCharacter():getInventory()
+        end
     end
 
     self.setHorse = function(this, id)

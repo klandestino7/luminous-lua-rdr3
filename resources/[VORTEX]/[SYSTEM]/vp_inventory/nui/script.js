@@ -5,6 +5,8 @@ var shortcutPressed = null;
 
 var hotbarSlotSelected = 5;
 
+var hasItemDropCooldown = false;
+
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -414,16 +416,21 @@ function elementAsDraggable(element, a, b, c, d, e) {
             select($(this));
         },
         stop: function(event, ui) {
-            setTimeout(function (){
+            if (hasItemDropCooldown == false) {
+                let slotId = $(this).attr('id')
                 var elem = document.elementFromPoint(ui.position.left, ui.position.top); // x, y
 
                 if ($(elem).is("body")) {
                     $.post('http://vp_inventory/drop', JSON.stringify({
                         slotId: $(this).attr('id'),
                     }));
+                    hasItemDropCooldown = true;
+                    setTimeout(function() {
+                        hasItemDropCooldown = false;
+                    }, 100);
                 }
-            }, 100);
-            
+            }
+
             // select($(this));
             // unSelect($(this));
         },
