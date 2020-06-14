@@ -532,7 +532,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("admin") then
             -- cAPI.SetPlayerPosition(-1, cAPI.getPosition(_source))
             if args[2] ~= nil then
-                local UserTarget = API.getUserFromUserId(parseInt(args[1])):getSource()
+                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
                 if UserTarget ~= nil then
                     local CharacterTarget = UserTarget:getCharacter()
 
