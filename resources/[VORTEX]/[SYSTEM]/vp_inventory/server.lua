@@ -107,17 +107,17 @@ AddEventHandler(
         local _source = source
 
         local UserTarget = API.getUserFromSource(playerTarget)
-
+        print('1')
         if UserTarget == nil then
             return
         end
 
-        local CharacterTarget = UserTarget:Character()
+        local CharacterTarget = UserTarget:getCharacter()
 
         if CharacterTarget == nil then
             return
         end
-
+        
         local InventoryTarget = CharacterTarget:getInventory()
 
         local User = API.getUserFromSource(_source)
@@ -126,44 +126,42 @@ AddEventHandler(
         if Character == nil then
             return
         end
-
         local Inventory = Character:getInventory()
 
-        local Slot = Inventory:getSlots()[slotId]
+        local Slot = Inventory:getSlots()[tonumber(slotId)]
 
         if Slot == nil then
             -- User:notify("error", "Você não tem x" .. ItemData:getName())
             return
         end
-
+    
         local itemAtSlot = Slot:getItemId()
         local amountAtSlot = Slot:getItemAmount()
 
         local ItemData = API.getItemDataFromId(itemAtSlot)
-
         -- if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
-        if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
-            Inventory:removeItem(slotId, itemAtSlot, amountAtSlot)
+            if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
+                Inventory:removeItem(tonumber(slotId), itemAtSlot, amountAtSlot)
 
-            local amountToDisplay = amountAtSlot
-            local toastType = "item"
+                local amountToDisplay = amountAtSlot
+                local toastType = 'item'
 
-            if itemAtSlot == "gold" then
-                toastType = "gold"
-                amountToDisplay = amountToDisplay / 100
-            elseif itemAtSlot == "money" then
-                toastType = "dollar"
-                amountToDisplay = amountToDisplay / 100
+                if itemAtSlot == 'gold' then
+                    toastType = 'gold'
+                    amountToDisplay = amountToDisplay / 100
+                elseif  itemAtSlot == 'money' then
+                    toastType = 'dollar'
+                    amountToDisplay = amountToDisplay / 100
+                end
+
+                User:notify(toastType, ItemData:getName(), -(amountToDisplay))
+
+                if UserTarget:getPrimaryInventoryViewing() == nil then
+                    UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
+                end
+            else
+                User:notify("error", "Bolsa da pesssoa está sem espaço!")
             end
-
-            User:notify(toastType, ItemData:getName(), -(amountToDisplay))
-
-            if UserTarget:getPrimaryInventoryViewing() == nil then
-                UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
-            end
-        else
-            User:notify("error", "Bolsa da pesssoa está sem espaço!")
-        end
         -- -- else
         --     User:notify("error", "Você não tem x" .. ItemData:getName())
         -- end
