@@ -48,7 +48,8 @@ window.addEventListener("message", function(event) {
         quantity = event.data.quantity;
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
-        type_icon = 'xp';
+        // type_icon = 'xp';
+        quantity = quantity + ' XP';
     }
 
     if (event.data.type == 'item') {

@@ -28,40 +28,46 @@ function GetPopulationFeedBagPickup()
     return scenarios
 end
 
+local usingScenario = false
+local closestFeedingIndex
+local closestFeedingPosition
+
 Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(1000)
 
-            local ped = PlayerPedId()
-            if Citizen.InvokeNative(0x2D0571BB55879DA2, ped) ~= GetHashKey("WORLD_HUMAN_FEEDBAG_PICKUP") then
-                local pPosition = GetEntityCoords(ped)
+            if usingScenario == false then
+                local ped = PlayerPedId()
+                if Citizen.InvokeNative(0x2D0571BB55879DA2, ped) ~= GetHashKey("WORLD_HUMAN_FEEDBAG_PICKUP") then
+                    local pPosition = GetEntityCoords(ped)
 
-                local cIndex
-                local cDist
+                    local cIndex
+                    local cDist
 
-                for _, location in pairs(positions) do
-                    -- if
-                    local dist = #(pPosition - location)
-                    if dist <= 10.0 then
-                        if cDist == nil or dist < cDist then
-                            cIndex = _
-                            cDist = dist
+                    for _, location in pairs(positions) do
+                        -- if
+                        local dist = #(pPosition - location)
+                        if dist <= 10.0 then
+                            if cDist == nil or dist < cDist then
+                                cIndex = _
+                                cDist = dist
+                            end
                         end
                     end
-                end
 
-                closestFeedingIndex = cIndex
+                    closestFeedingIndex = cIndex
 
-                if closestFeedingIndex ~= nil then
-                    closestFeedingPosition = positions[closestFeedingIndex]
+                    if closestFeedingIndex ~= nil then
+                        closestFeedingPosition = positions[closestFeedingIndex]
 
-                    HandleFeedbagPickup()
+                        HandleFeedbagPickup()
+                    else
+                        closestFeedingPosition = nil
+                    end
                 else
                     closestFeedingPosition = nil
                 end
-            else
-                closestFeedingPosition = nil
             end
         end
     end
@@ -76,16 +82,26 @@ function HandleFeedbagPickup()
 
         local dist = #(pPosition - closestFeedingPosition)
 
+        -- print(dist)
+
         if dist <= 1.5 then
-            if PromptFeedbag() then
+            -- if PromptFeedbag() then
+            if IsControlJustPressed(0, 0x7F8D09B8) then
+                usingScenario = true
+                print("yes")
                 PromptDelete(prompt)
                 prompt = nil
 
                 local scenario = scenarios[closestFeedingIndex]
 
-                TaskUseScenarioPoint(ped, scenario, "", -1.0, true, false, 0, false, -1.0, true)
-                TaskStartScenarioInPlace(ped, Citizen.InvokeNative(scenario), 0, true, 0, -1.0, false)
-                break
+                -- print(scenario)
+
+                TaskUseScenarioPoint(ped, scenario, 0, 0, true, false, 0, false, -1, false)
+
+                -- local prop =
+
+            -- TaskStartScenarioInPlace(ped, Citizen.InvokeNative(scenario), 0, true, 0, -1.0, false)
+            -- break
             end
         end
     end
@@ -95,14 +111,14 @@ local prompt
 
 function PromptFeedbag()
     if prompt == nil then
-        prompt = PromptRegisterBegin()
+        prompt = NewPrompt()
         -- 0xE8342FF2
         PromptSetControlAction(prompt, 0x7F8D09B8)
         PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Pegar Alimento"))
         PromptSetStandardMode(prompt, true)
         PromptSetEnabled(prompt, 1)
         PromptSetVisible(prompt, 1)
-        PromptSetHoldMode(prompt, 1)
+        PromptSetStandardMode(prompt, 1)
         -- N_0x0c718001b77ca468(prompt, 3.0)
         -- PromptSetGroup(prompt, prompt_group)
         PromptRegisterEnd(prompt)

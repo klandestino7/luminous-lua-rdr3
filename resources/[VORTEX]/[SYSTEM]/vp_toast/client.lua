@@ -1,4 +1,3 @@
-
 -- VP:TOAST:New -> "speech", "Simular a fala de um personagem"
 -- VP:TOAST:New -> "dev", "Mensagem com intuito de ser para Devs"
 -- VP:TOAST:New -> "alert", "Você é viado"
@@ -13,11 +12,15 @@
 -- VP:TOAST:New -> "item", "Pistola Vulcan", -10
 -- VP:TOAST:New -> "longer_alert", "Toast que demora mais tempo para sumir, funciona para todos",
 
-
 RegisterNetEvent("VP:TOAST:New")
 AddEventHandler(
     "VP:TOAST:New",
     function(type, text, quantity)
+        if type == "item" then
+            if ItemList[text] then
+                text = ItemList[text].name
+            end
+        end
 
         if tonumber(text) then
             quantity = text
@@ -33,11 +36,3 @@ AddEventHandler(
         )
     end
 )
-
-RegisterCommand('notifica', function()
-    TriggerEvent('VP:TOAST:New', "longer_error", "Você tomou o estouro.")
-    Wait(1000)
-    TriggerEvent('VP:TOAST:New', "dev", "Mensagem com intuito de ser para Devs")
-    Wait(1000)
-	TriggerEvent('VP:TOAST:New', "alert", "Você foi libertado.")
-end)
