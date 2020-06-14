@@ -1,172 +1,86 @@
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface("API")
-cAPI = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
--- 1 - Sheriff
--- 2 - Trooper
-
-local role = 0
-
-function isASheriff()
-	return (role & 1) ~= 0
-end
-
-function isATrooper()
-	return (role & 2) ~= 0
-end
-
-AddEventHandler(
-	"VP:EVENTS:CharacterJoinedGroup",
-	function(group)
-		if group == "sheriff" then
-			if not isASheriff() then
-				role = role + 1
-			end
-		elseif group == "trooper" then
-			if not isATrooper() then
-				role = role + 2
-			end
-		end
-
-		print("group", role)
-	end
-)
-
-AddEventHandler(
-	"VP:EVENTS:CharacterLeftGroup",
-	function(group)
-		if group == "sheriff" then
-			if isASheriff() then
-				role = role - 1
-			end
-		elseif group == "trooper" then
-			if isATrooper() then
-				role = role - 2
-			end
-		end
-	end
-)
-
-RegisterNetEvent("VP:SHERIFF:UpdateRole")
-AddEventHandler(
-	"VP:SHERIFF:UpdateRole",
-	function(_role)
-		role = _role
-	end
-)
-
-keys = {
-	["G"] = 0x760A9C6F,
-	["S"] = 0xD27782E3,
-	["W"] = 0x8FD015D8,
-	["H"] = 0x24978A28,
-	["G"] = 0x5415BE48,
-	["E"] = 0xDFF812F9
-}
-
-RegisterCommand(
-	"checkpolice",
-	function()
-		TriggerServerEvent("VP:SHERIFF:checkjob")
-		print("ois")
-
-		local model2 = GetHashKey(tonumber(0xA5074E9))
-		if not HasModelLoaded(model2) then
-			Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
-		end
-
-		Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3F7F3587, 0)
-		Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
-
-		Wait(1000)
-
-		Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), 0x929677D, true, true, true)
-		Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
-
-		--WarMenu.OpenMenu('OfficerMenu')
-	end
-)
-
-RegisterNetEvent("VP:SHERIFF:PoliceCheck")
-AddEventHandler(
-	"VP:SHERIFF:PoliceCheck",
-	function(police)
-		PoliceCheck = police
-	end
-)
-
-RegisterNetEvent("VP:SHERIFF:SheriffCheck")
-AddEventHandler(
-	"VP:SHERIFF:SheriffCheck",
-	function(sheriff)
-		SheriffCheck = sheriff
-	end
-)
-
+local spawncoords
+local head
 -- /////////////// MENU DO DEPARTAMENTO
 Citizen.CreateThread(
 	function()
-		for k, v in pairs(Config.Coords) do
-			Citizen.InvokeNative(0x554d9d53f696d002, -1595050198, v)
-		end
-
 		WarMenu.CreateMenu("DpOfficerMenu", "Departamento")
 		WarMenu.SetSubTitle("DpOfficerMenu", "Opções")
-		-- WarMenu.CreateSubMenu("Armored", "DpOfficerMenu", "Armamento")
 		WarMenu.CreateSubMenu("vehicle", "DpOfficerMenu", "Transporte.")
+
 		while true do
 			Citizen.Wait(0)
 			local playerPed = PlayerPedId()
 			local coords = GetEntityCoords(playerPed)
-
-			if isATrooper() then
-				for k, v in pairs(Config.Coords) do
-					if #(coords - v) < 8.0 then
-						if IsControlJustPressed(0, 0xCEFD9220) then -- Hold ALT
-							print("hold")
-							WarMenu.OpenMenu("DpOfficerMenu")
-							break
+		
+			if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+				for k, v in pairs(Config.Coords.Vehicles) do
+					if #(coords - vector3(v.Spawner.x, v.Spawner.y, v.Spawner.z)) < 3.0 then
+						if not IsPedInAnyVehicle(PlayerPedId(), true) then 
+							DrawTxt('Aperte (ALT) para pegar uma carroça', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
+							if IsControlJustPressed(0, 0xE8342FF2) then					
+								WarMenu.OpenMenu("DpOfficerMenu")
+								spawncoords = vector3(v.Spawner.x, v.Spawner.y, v.Spawner.z)
+								head = v.Spawner.h
+							end
 						end
-					end
-				end
-
-				if IsControlJustPressed(0, 0x3C0A40F2) then -- Hold F6
-					WarMenu.OpenMenu("OfficerMenu")
+					end					
+				end				
+				for k, v in pairs(Config.Coords.Vehicles) do
+					if #(coords - vector3(v.DV.x, v.DV.y, v.DV.z)) < 5.0 then	
+						if IsPedInAnyVehicle(PlayerPedId(), true) then 
+							DrawTxt('Aperte (ALT) para GUARGAR a carroça', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)						
+							if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
+								DeleteVehicle(GetVehiclePedIsIn(PlayerPedId(),false))
+							end
+						end							
+					end					
 				end
 			end
 
-			if WarMenu.IsMenuOpened("DpOfficerMenu") then
-				-- elseif WarMenu.IsMenuOpened("Armored") then
-				-- 	if WarMenu.Button("Pistola Mauser") then
-				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "weapon_pistol_semiauto")
-				-- 	elseif WarMenu.Button("Bolt action rifle") then
-				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_RIFLE_BOLTACTION")
-				-- 	elseif WarMenu.Button("Pump shotgun") then
-				-- 		TriggerEvent("VP:SHERIFF:giveweapon", "WEAPON_SHOTGUN_PUMP")
-				-- 	end
-				-- 	WarMenu.Display()
-				-- if WarMenu.MenuButton("Armas", "Armored") then
-				-- end
+			if WarMenu.IsMenuOpened("DpOfficerMenu") then				
 				if WarMenu.MenuButton("Transportes", "vehicle") then
 				end
 				WarMenu.Display()
 			elseif WarMenu.IsMenuOpened("vehicle") then
 				if WarMenu.Button("Carroça 2") then
-					SpawnVehicle("POLICEWAGON01X", GetPlayerPed())
+					print(spawncoords, head)
+					SpawnVehicle("POLICEWAGON01X", spawncoords, head)
 				elseif WarMenu.Button("Carroça Cela") then
-					SpawnVehicle("WAGONPRISON01X", GetPlayerPed())
+					SpawnVehicle("WAGONPRISON01X", spawncoords, head)
 				elseif WarMenu.Button("Carrça Carga") then
-					SpawnVehicle("supplywagon", GetPlayerPed())
+					SpawnVehicle("supplywagon", spawncoords, head	)
 				end
 				WarMenu.Display()
 			end
-
-			HandlePrompts()
 		end
 	end
 )
+
+
+
+function SpawnVehicle(Vmodel, coords, head)
+	local veh = GetHashKey(Vmodel)
+	Citizen.CreateThread(
+		function()
+			RequestModel(veh)
+
+			while not HasModelLoaded(veh) do
+				Wait(1000)
+				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
+			end
+			if HasModelLoaded(veh) then
+				local car = CreateVehicle(veh, coords, head, true, true, false, true)
+				print("Model spawned Succes: " .. Vmodel)
+			end
+		end
+	)
+end
 
 local prompt_patdown
 
@@ -189,58 +103,70 @@ function HandlePrompts()
 	end
 end
 
-Citizen.CreateThread(
-	function()
-		pp()
-		while true do
-			Citizen.Wait(250)
-			local y, entity = GetPlayerTargetEntity(PlayerId())
 
-			lastTargetPlayerServerId = nil
+function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
+	local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
+	SetTextScale(w, h)
+	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+	SetTextCentre(centre)
+	  if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
+	Citizen.InvokeNative(0xADA9255D, 10);
+	DisplayText(str, x, y)
+  end
 
-			if y then
-				for _, pid in pairs(GetActivePlayers()) do
-					if NetworkIsPlayerActive(pid) then
-						local pped = GetPlayerPed(pid)
-						if entity == pped then
-							local serverId = GetPlayerServerId(pid)
-							if lastTargetPlayerServerId ~= serverId then
-								lastTargetPlayerServerId = serverId
 
-								PromptSetVisible(prompt_patdown, true)
-								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
 
-								local pPosition = GetEntityCoords(PlayerPedId())
-								local tPosition = GetEntityCoords(pped)
+-- Citizen.CreateThread(
+-- 	function()
+-- 		pp()
+-- 		while true do
+-- 			Citizen.Wait(250)
+-- 			local y, entity = GetPlayerTargetEntity(PlayerId())
+-- 			lastTargetPlayerServerId = nil
+-- 			if y then
+-- 				for _, pid in pairs(GetActivePlayers()) do
+-- 					if NetworkIsPlayerActive(pid) then
+-- 						local pped = GetPlayerPed(pid)
+-- 						if entity == pped then
+-- 							local serverId = GetPlayerServerId(pid)
+-- 							if lastTargetPlayerServerId ~= serverId then
+-- 								lastTargetPlayerServerId = serverId
 
-								local dist = #(pPosition - tPosition)
-								if dist <= 1.5 and IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
-									PromptSetEnabled(prompt_patdown, true)
-								else
-									PromptSetEnabled(prompt_patdown, false)
-								end
+-- 								PromptSetVisible(prompt_patdown, true)
+-- 								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
 
-								break
-							end
-						end
-					end
-				end
-			end
+-- 								local pPosition = GetEntityCoords(PlayerPedId())
+-- 								local tPosition = GetEntityCoords(pped)
 
-			if lastTargetPlayerServerId == nil then
-				PromptSetVisible(prompt_patdown, false)
-			end
-		end
-	end
-)
+-- 								local dist = #(pPosition - tPosition)
+-- 								if dist <= 1.5 and IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+-- 									PromptSetEnabled(prompt_patdown, true)
+-- 								else
+-- 									PromptSetEnabled(prompt_patdown, false)
+-- 								end
 
--- /////////////// MENU DO OFICIAL
+-- 								break
+-- 							end
+-- 						end
+-- 					end
+-- 				end
+-- 			end
+-- 			HandlePrompts()
+-- 			if lastTargetPlayerServerId == nil then
+-- 				PromptSetVisible(prompt_patdown, false)
+-- 			end
+-- 		end
+-- 	end
+-- )
+
+--[[ /////////////// MENU DO OFICIAL
 Citizen.CreateThread(
 	function()
 		WarMenu.CreateMenu("OfficerMenu", "Menu do Oficial")
 		WarMenu.SetSubTitle("OfficerMenu", "Opções")
 		WarMenu.CreateSubMenu("citizen", "OfficerMenu", "Interação Cidadão")
 		WarMenu.CreateSubMenu("vehiclec", "OfficerMenu", "Interação Veiculo")
+		
 		while true do
 			Citizen.Wait(0)
 			local playerPed = PlayerPedId()
@@ -279,41 +205,23 @@ Citizen.CreateThread(
 			end
 		end
 	end
-)
+) ]]
 
-function SpawnVehicle(Vmodel, ply)
-	local veh = GetHashKey(Vmodel)
-	local coords = GetEntityCoords(ply)
-	local head = "0.77"
-	Citizen.CreateThread(
-		function()
-			RequestModel(veh)
-			while not HasModelLoaded(veh) do
-				Wait(1000)
-				print("Loading Model: " .. Vmodel .. "Loading Hash: " .. veh)
-			end
-			if HasModelLoaded(veh) then
-				local car = CreateVehicle(veh, coords.x + 2, coords.y + 2, coords.z, head, true, true, false, true)
-				print("Model spawned Succes: " .. Vmodel)
-			end
-		end
-	)
-end
 
-RegisterNetEvent("VP:SHERIFF:giveweapon")
-AddEventHandler(
-	"VP:SHERIFF:giveweapon",
-	function(weapon)
-		Citizen.CreateThread(
-			function()
-				local weapon = GetHashKey(weapon)
-				local playerPed = PlayerPedId()
-				Wait(1000)
-				GiveDelayedWeaponToPed(playerPed, weapon, 100, true, 2)
-			end
-		)
-	end
-)
+-- RegisterNetEvent("VP:SHERIFF:giveweapon")
+-- AddEventHandler(
+-- 	"VP:SHERIFF:giveweapon",
+-- 	function(weapon)
+-- 		Citizen.CreateThread(
+-- 			function()
+-- 				local weapon = GetHashKey(weapon)
+-- 				local playerPed = PlayerPedId()
+-- 				Wait(1000)
+-- 				GiveDelayedWeaponToPed(playerPed, weapon, 100, true, 2)
+-- 			end
+-- 		)
+-- 	end
+-- )
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
 	local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
@@ -332,46 +240,9 @@ local handcuffed = false
 local officer = -1
 local id = "This user did not set their ID!"
 
-RegisterNetEvent("VP:SHERIFF:unrestrain")
-AddEventHandler(
-	"VP:SHERIFF:unrestrain",
-	function()
-		if Handcuffed then
-			local playerPed = PlayerPedId()
-			Handcuffed = false
-			ClearPedSecondaryTask(playerPed)
-			SetEnableHandcuffs(playerPed, false)
-			DisablePlayerFiring(playerPed, false)
-			SetPedCanPlayGestureAnims(playerPed, true)
-			FreezeEntityPosition(playerPed, false)
-			DisplayRadar(true)
-		end
-	end
-)
-
 ------------------------------------------------------------------------
 -- ALGEMAS E CHAVES
 ------------------------------------------------------------------------
-
-RegisterCommand(
-	"handclear",
-	function(source)
-		ped = GetPlayerPed(-1)
-		local femaleHash = GetHashKey("mp_f_freemode_01")
-		local maleHash = GetHashKey("mp_m_freemode_01")
-		ClearPedTasks(ped)
-		SetEnableHandcuffs(ped, false)
-		UncuffPed(ped)
-		--[[
-        if GetEntityModel(ped) == femaleHash then -- mp female
-            SetPedComponentVariation(ped, 7, prevFemaleVariation, 0, 0)
-        elseif GetEntityModel(ped) == maleHash then -- mp male
-            SetPedComponentVariation(ped, 7, prevMaleVariation, 0, 0)
-        end ]]
-	end
-)
-
--- Locals
 local cuffed = false
 local dict = "TASK_ARREST_PED"
 local anim = "idle"
@@ -583,47 +454,9 @@ AddEventHandler(
 		end
 	end
 )
-
--- ??
--- Citizen.CreateThread(function()
---     while true do
---         Citizen.Wait(0)
---         if not changed then
---             ped = PlayerPedId()
---             local IsCuffed = IsPedCuffed(ped)
---             if IsCuffed and not IsEntityPlayingAnim(PlayerPedId(), dict, anim, 3) then
---                 Citizen.Wait(0)
---                 TaskPlayAnim(ped, dict, anim, 8.0, -8, -1, flags, 0, 0, 0, 0)
---             end
---         else
---             changed = false
---         end
---     end
--- end)
-
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(0)
-			ped = PlayerPedId()
-			if cuffed then
-				DisableControlAction(0, 0x8FFC75D6, true) -- SHIFT
-				DisableControlAction(0, 0xD9D0E1C0, true) -- espaço
-				DisableControlAction(0, 0xCEFD9220, true) -- SHIFT
-			end
-		end
-	end
-)
-
--- RegisterNetEvent('VP:SHERIFF:result')
--- AddEventHandler('VP:SHERIFF:result', function(value)
--- 	print(value)
--- end)
-
 ------------------------------------------------------------------------
 -- ALGEMAS E CHAVES
 ------------------------------------------------------------------------
-
 function GetPlayers()
 	local players = {}
 	for _, player in ipairs(GetActivePlayers()) do
@@ -659,82 +492,37 @@ function GetClosestPlayer()
 	return closestPlayer, closestDistance
 end
 
-RegisterCommand(
-	"drag",
-	function(source, args, rawCommand)
-		closestPlayer, closestdistance = GetClosestPlayer()
-		if closest ~= nil and DoesEntityExist(GetPlayerPed(closestPlayer)) then
-			if closestdistance - 1 and closestdistance < 3 then
-				local closestID = GetPlayerServerId(closestPlayer)
-				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "You are dragging the nearest player. (" .. GetPlayerName(closestPlayer) .. ")")
-				TriggerServerEvent("dragServer", closestID)
-			else
-				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "Nearest player is too far away")
-			end
-		end
-	end
-)
+-- RegisterCommand(
+-- 	"drag",
+-- 	function(source, args, rawCommand)
+-- 		closestPlayer, closestdistance = GetClosestPlayer()
+-- 		if closest ~= nil and DoesEntityExist(GetPlayerPed(closestPlayer)) then
+-- 			if closestdistance - 1 and closestdistance < 3 then
+-- 				local closestID = GetPlayerServerId(closestPlayer)
+-- 				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "You are dragging the nearest player. (" .. GetPlayerName(closestPlayer) .. ")")
+-- 				TriggerServerEvent("dragServer", closestID)
+-- 			else
+-- 				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "Nearest player is too far away")
+-- 			end
+-- 		end
+-- 	end
+-- )
 
-RegisterCommand(
-	"undrag",
-	function()
-		closest, distance = GetClosestPlayer()
-		if closest ~= nil and DoesEntityExist(GetPlayerPed(closest)) then
-			if distance - 1 and distance < 3 then
-				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "You are no longer dragging the nearest player. (" .. GetPlayerName(closest) .. ")")
-				local closestID = GetPlayerServerId(closest)
-				TriggerServerEvent("unDragServer", closestID)
-			else
-				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "Nearest player is too far away")
-			end
-		end
-	end
-)
-
-RegisterNetEvent("dragClient")
-AddEventHandler(
-	"dragClient",
-	function(closestID)
-		local officer = GetClosestPlayer()
-		local officerPed = GetPlayerPed(GetPlayerFromServerId(officer))
-		local pP = GetPlayerPed(-1)
-		drag = true
-		if handcuffed == true then
-			while drag == true do
-				Citizen.Wait(0)
-				if IsPedDeadOrDying then
-					drag = false
-				end
-				AttachEntityToEntity(pP, officerPed, 4103, 11816, 0.48, 0.00, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
-			end
-		end
-	end
-)
-
-RegisterNetEvent("unDragClient")
-AddEventHandler(
-	"unDragClient",
-	function(closestID)
-		local pP = GetPlayerPed(-1)
-		drag = false
-		DetachEntity(pP, true, false)
-	end
-)
-
-RegisterNetEvent("putInClient")
-AddEventHandler(
-	"putInClient",
-	function(closestID, veh)
-		local pP = GetPlayerPed(-1)
-		local pos = GetEntityCoords(pP)
-		local entityWorld = GetOffsetFromEntityInWorldCoords(pP, 0.0, 20.0, 0.0)
-		local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
-		local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
-		if vehicleHandle ~= nil then
-			SetPedIntoVehicle(pP, vehicleHandle, 1)
-		end
-	end
-)
+-- RegisterCommand(
+-- 	"undrag",
+-- 	function()
+-- 		closest, distance = GetClosestPlayer()
+-- 		if closest ~= nil and DoesEntityExist(GetPlayerPed(closest)) then
+-- 			if distance - 1 and distance < 3 then
+-- 				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "You are no longer dragging the nearest player. (" .. GetPlayerName(closest) .. ")")
+-- 				local closestID = GetPlayerServerId(closest)
+-- 				TriggerServerEvent("unDragServer", closestID)
+-- 			else
+-- 				TriggerEvent("chatMessage", "Police System", {255, 255, 255}, "Nearest player is too far away")
+-- 			end
+-- 		end
+-- 	end
+-- )
 
 RegisterNetEvent("showIDClient")
 AddEventHandler(
