@@ -33,3 +33,9 @@ AddEventHandler(
     end
   end
 )
+
+RegisterCommand('TrainSpawn', function ()
+
+ TriggerClientEvent("Trainroute", GetHostId())
+
+end)
