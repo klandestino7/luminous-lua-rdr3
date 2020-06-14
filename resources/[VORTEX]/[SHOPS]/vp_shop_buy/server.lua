@@ -49,7 +49,7 @@ local verificationData = {
         ["melee_lantern_electric"] = {0, 200, 80, 1},
         ["melee_torch"] = {0, 200, 80, 1},
         ["bow"] = {0, 7000, 2800, 1},
-        ["arrow"] = {0, 100, 40, 1}
+        ["ammo_arrow"] = {0, 100, 40, 1}
     }
 }
 

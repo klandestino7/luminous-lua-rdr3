@@ -43,7 +43,7 @@ Config.ShopDatas = {
 			{"melee_lantern_electric", 1, 200, 80},
 			{"melee_torch", 1, 200, 80},
 			{"bow", 1, 7000, 2800},
-			{"arrow", 1, 100, 40}
+			{"ammo_arrow", 1, 100, 40}
 		}
 	}
 }
