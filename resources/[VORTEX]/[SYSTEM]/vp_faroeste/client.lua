@@ -36,10 +36,14 @@ AddEventHandler('VP:FAROESTE:loadtenue', function(kek)
 end)
 local Bandana = false
 
-RegisterCommand('off2', function(source, args)
+RegisterCommand('offnui', function(source, args)
     SetNuiFocus(false,false)
     cAPI.EndFade(500)
+end)
 
+
+RegisterCommand('onnui', function(source, args)
+    SetNuiFocus(true,true)
 end)
 
 -- Citizen.CreateThread(function()
