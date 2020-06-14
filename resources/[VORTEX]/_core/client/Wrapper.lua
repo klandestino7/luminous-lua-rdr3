@@ -53,6 +53,7 @@ function cAPI.PlaySkyCameraAnimationAtCoords(coords)
 	local vecPosition = vec3(coords[1], coords[2], coords[3])
 
 	RequestCollisionAtCoord(vecPosition)
+
 	local cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
 	PointCamAtCoord(cam, vecPosition.xy, vecPosition.z + 200)
 	SetCamActive(cam, true)
@@ -65,6 +66,13 @@ function cAPI.PlaySkyCameraAnimationAtCoords(coords)
 	PointCamAtCoord(cam2, vecPosition.xy, vecPosition.z + 2)
 	SetCamActiveWithInterp(cam2, cam3, 5000, true, true)
 	RenderScriptCams(false, true, 500, true, true)
+
+	local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(vecPosition.x, vecPosition.y, vecPosition.z)
+
+	if _ then
+		vecPosition = vec3(vecPosition.xy, groundZ)
+	end
+
 	SetEntityCoords(PlayerPedId(), vecPosition)
 
 	Citizen.Wait(5000)
