@@ -119,7 +119,7 @@ setTick(() => {
                         }
                     }
                 } else {
-                    notifyHelp('Suas cartas acabaram, aguarde 20 minutos e vá para o posto novamente. Você recebeu $8,00')
+                    notifyHelp('Suas cartas acabaram, aguarde 20 minutos e vá para o posto novamente. Você recebeu $10,00')
                     DeleteBlips();
                     timer = 1200;
                     steps = 0;
