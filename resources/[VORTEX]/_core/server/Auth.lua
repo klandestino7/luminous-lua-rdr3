@@ -54,19 +54,21 @@ AddEventHandler(
 
                                 index = indexOf(_source)
 
-                                deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
+                                if index ~= nil then
+                                    deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
 
-                                -- print(_source, index)
+                                    -- print(_source, index)
 
-                                if index == 1 then
-                                    Citizen.Wait(15000)
+                                    if index == 1 then
+                                        Citizen.Wait(15000)
 
-                                    sessionQueue = splice(sessionQueue, index, 1)
+                                        sessionQueue = splice(sessionQueue, index, 1)
 
-                                    TriggerEvent("API:playerJoin", user_id, source, playerName)
+                                        TriggerEvent("API:playerJoin", user_id, source, playerName)
 
-                                    deferrals.done()
-                                    break
+                                        deferrals.done()
+                                        break
+                                    end
                                 end
                             end
                         end
@@ -110,6 +112,12 @@ AddEventHandler(
         end ]]
         print(reason)
         API.dropPlayer(_source, reason)
+
+        local index = indexOf(_source)
+
+        if index ~= nil then
+            sessionQueue = splice(sessionQueue, index, 1)
+        end
     end
 )
 
