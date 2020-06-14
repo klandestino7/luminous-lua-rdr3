@@ -26,7 +26,7 @@ AddEventHandler(
     function(playerName, kickReason, deferrals)
         deferrals.defer()
 
-        if #GetPlayers() >= 32 then
+        if #GetPlayers() >= 32 or #API.users >= 32 then
             print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
             deferrals.done("32/32")
             CancelEvent()
@@ -75,7 +75,7 @@ AddEventHandler(
                                         -- sessionQueue = splice(sessionQueue, index, 1)
                                         table.remove(sessionQueue, index)
 
-                                        if #GetPlayers() < 32 then
+                                        if #GetPlayers() < 32 and #API.users < 32 then
                                             TriggerEvent("API:playerJoin", user_id, _source, playerName)
                                             deferrals.done()
                                         else
