@@ -58,8 +58,6 @@ function draw(shopId) {
                 var itemWeight = itemData[5];
                 var itemDescription = itemData[6];
 
-                console.log(itemId);
-
                 itemWeight = itemWeight.toFixed(1);
                 itemPrice_dollar = (itemPrice_dollar / 100).toFixed(2);
                 itemPrice_gold = (itemPrice_gold / 100).toFixed(2);
