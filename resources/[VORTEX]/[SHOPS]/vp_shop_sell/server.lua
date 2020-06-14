@@ -15,6 +15,11 @@ local verificationData = {
         ["meat"] = {100, 1, 1},
         ["feather_1"] = {100, 1, 5},
         ["feather_2"] = {100, 1, 5},
+    },
+    ["Posto de Troca"] = {
+        ["raw_coal"] = {100, 40, 2},
+        ["raw_iron"] = {200, 80, 2},
+        ["raw_copper"] = {300, 120, 2},
     }
 }
 
