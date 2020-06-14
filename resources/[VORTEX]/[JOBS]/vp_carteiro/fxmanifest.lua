@@ -10,5 +10,6 @@ client_scripts {
 }
 
 server_scripts {
+	'@_core/lib/utils.lua',
 	'server.lua'
 }
