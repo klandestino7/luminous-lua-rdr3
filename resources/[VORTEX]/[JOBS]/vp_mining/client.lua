@@ -213,8 +213,37 @@ AddEventHandler(
 RegisterNetEvent("VP:MINING:StartMiningAnimation")
 AddEventHandler(
     "VP:MINING:StartMiningAnimation",
-    function()
-        TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, 0, -1.0, false)
+    function()        
+        if not IsPedMale(PlayerPedId()) then
+            local waiting = 0
+            local dict = "amb_work@world_human_pickaxe@wall@male_d@base"
+            RequestAnimDict(dict)
+            while not HasAnimDictLoaded(dict) do
+                waiting = waiting + 100
+                Citizen.Wait(100)
+                if waiting > 5000 then
+                  --  TriggerEvent("redemrp_notification:start", "Request Animation is broken, Relog", 4, "warning")
+                    break
+                end
+            end
+
+            local ped = PlayerPedId()
+            local coords = GetEntityCoords(ped)
+            local boneIndex = GetEntityBoneIndexByName(ped, "SKEL_R_HAND")
+            local modelHash = GetHashKey("P_PICKAXE01X")
+            LoadModel(modelHash)
+            entity = CreateObject(modelHash, coords.x, coords.y, coords.z, true, false, false)
+            SetEntityVisible(entity, true)
+            SetEntityAlpha(entity, 255, false)
+            Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
+            SetModelAsNoLongerNeeded(modelHash)
+            AttachEntityToEntity(entity, ped, boneIndex, -0.030, -0.300, -0.010, 0.0, 100.0, 68.0, false, false, false, true, 2, true) ---6th rotates axe point
+            TaskPlayAnim(ped, dict, "base", 1.0, 8.0, -1, 1, 0, false, false, false)
+        else
+            TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, false, -1.0, false)
+        end
+
+       --- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, 0, -1.0, false)
 
         local timeout = 2000
         while GetScriptTaskStatus(PlayerPedId(), 0x3B3A458F, 0) ~= 1 do
