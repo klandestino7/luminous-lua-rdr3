@@ -28,7 +28,7 @@ AddEventHandler(
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
 
-        if ids[1] == nil then
+        if ids[1] == nil or #GetPlayers() == 32 then
             deferrals.done("Abra a Steam.")
             CancelEvent()
             return
