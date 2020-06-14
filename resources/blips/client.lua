@@ -100,8 +100,6 @@ local blips = {
 	{ name = 'Convento Claremonnt', sprite = -428972082 , x = 2401.339, y = -1103.892, z = 47.051},
 }
 
-local blips = {}
-
 Citizen.CreateThread(function()
 	for _, info in pairs(blips) do
         local blip = N_0x554d9d53f696d002(1664425300, info.x, info.y, info.z)
