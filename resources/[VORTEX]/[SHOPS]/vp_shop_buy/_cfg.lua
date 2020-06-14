@@ -26,7 +26,9 @@ Config.ShopDatas = {
 			{"ammo_rifle", 0, 0, 0},
 			{"ammo_shotgun", 0, 0, 0},
 			{"melee_lantern_electric", 0, 0, 0},
-			{"melee_torch", 0, 0, 0}
+			{"melee_torch", 0, 0, 0},
+			{"lasso", 0, 0, 0},
+			{"melee_knife", 0, 0, 0},
 		}
 	},
 	{

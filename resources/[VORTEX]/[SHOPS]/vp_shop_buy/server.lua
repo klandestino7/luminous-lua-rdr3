@@ -27,7 +27,9 @@ local verificationData = {
         ["ammo_rifle"] = {0, 0, 0, 75},
         ["ammo_shotgun"] = {0, 0, 0, 50},
         ["melee_lantern_electric"] = {0, 0, 0, 1},
-        ["melee_torch"] = {0, 0, 0, 1}
+        ["melee_torch"] = {0, 0, 0, 1},
+        ["lasso"] = {0, 0, 0, 1},
+        ["melee_knife"] = {0, 0, 0, 1},
     },
     -- ["Mercadinho"] = {
     --     -- Level, Price, Amount(optional)
