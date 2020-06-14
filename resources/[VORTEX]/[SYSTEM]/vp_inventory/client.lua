@@ -103,7 +103,6 @@ function startLookingForAPlayerToSend(slotId)
                                 local serverId = GetPlayerServerId(pid)
                                 if lastTargetPlayerServerId ~= serverId then
                                     lastTargetPlayerServerId = serverId
-
                                     PromptSetVisible(prompt_senditem, true)
                                     PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
 
@@ -150,7 +149,6 @@ function startLookingForAPlayerToSend(slotId)
                         prompt_senditem = nil
 
                         currentlyTryingToSendItem = false
-
                         TriggerServerEvent("VP:INVENTORY:SendToPlayer", slotId, lastTargetPlayerServerId)
                     end
                 end
