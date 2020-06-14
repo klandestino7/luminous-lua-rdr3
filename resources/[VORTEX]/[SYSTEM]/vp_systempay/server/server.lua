@@ -34,6 +34,10 @@ AddEventHandler(
 		local User = API.getUserFromSource(_source)
 		local Character = User:getCharacter()
 
+		if Character == nil then
+			return
+		end
+
 		local Inventory = User:getCharacter():getInventory()
 		local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
 
@@ -52,17 +56,19 @@ AddEventHandler(
 	"VP:SYSTEMPAY:xp",
 	function(count)
 		local countxp = count
-		local _source = tonumber(source)
+		local _source = source
 		local User = API.getUserFromSource(_source)
 		local Character = User:getCharacter()
 
-		for i, v in pairs(xp) do
-			local group = Character:hasGroup(v[1])
-			if group then
-				Character:varyExp(tonumber(countxp * v[2]))
+		if Character ~= nil then
+			for i, v in pairs(xp) do
+				local group = Character:hasGroup(v[1])
+				if group then
+					Character:varyExp(tonumber(countxp * v[2]))
+				end
 			end
+			print("XP Distribuido com Sucesso.")
 		end
-		print("XP Distribuido com Sucesso.")
 	end
 )
 
