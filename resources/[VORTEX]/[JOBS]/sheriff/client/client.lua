@@ -17,33 +17,33 @@ Citizen.CreateThread(
 			Citizen.Wait(0)
 			local playerPed = PlayerPedId()
 			local coords = GetEntityCoords(playerPed)
-		
-			if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+
+			if cAPI.hasGroupOrInheritance("trooper") or cAPI.hasGroupOrInheritance("sheriff") then
 				for k, v in pairs(Config.Coords.Vehicles) do
 					if #(coords - vector3(v.Spawner.x, v.Spawner.y, v.Spawner.z)) < 3.0 then
-						if not IsPedInAnyVehicle(PlayerPedId(), true) then 
-							DrawTxt('Aperte (ALT) para pegar uma carroça', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
-							if IsControlJustPressed(0, 0xE8342FF2) then					
+						if not IsPedInAnyVehicle(PlayerPedId(), true) then
+							DrawTxt("Aperte (ALT) para pegar uma carroça", 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
+							if IsControlJustPressed(0, 0xE8342FF2) then
 								WarMenu.OpenMenu("DpOfficerMenu")
 								spawncoords = vector3(v.Spawner.x, v.Spawner.y, v.Spawner.z)
 								head = v.Spawner.h
 							end
 						end
-					end					
-				end				
+					end
+				end
 				for k, v in pairs(Config.Coords.Vehicles) do
-					if #(coords - vector3(v.DV.x, v.DV.y, v.DV.z)) < 5.0 then	
-						if IsPedInAnyVehicle(PlayerPedId(), true) then 
-							DrawTxt('Aperte (ALT) para GUARGAR a carroça', 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)						
+					if #(coords - vector3(v.DV.x, v.DV.y, v.DV.z)) < 5.0 then
+						if IsPedInAnyVehicle(PlayerPedId(), true) then
+							DrawTxt("Aperte (ALT) para GUARGAR a carroça", 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
 							if IsControlJustPressed(0, 0xE8342FF2) then -- Hold ALT
-								DeleteVehicle(GetVehiclePedIsIn(PlayerPedId(),false))
+								DeleteVehicle(GetVehiclePedIsIn(PlayerPedId(), false))
 							end
-						end							
-					end					
+						end
+					end
 				end
 			end
 
-			if WarMenu.IsMenuOpened("DpOfficerMenu") then				
+			if WarMenu.IsMenuOpened("DpOfficerMenu") then
 				if WarMenu.MenuButton("Transportes", "vehicle") then
 				end
 				WarMenu.Display()
@@ -54,15 +54,13 @@ Citizen.CreateThread(
 				elseif WarMenu.Button("Carroça Cela") then
 					SpawnVehicle("WAGONPRISON01X", spawncoords, head)
 				elseif WarMenu.Button("Carrça Carga") then
-					SpawnVehicle("supplywagon", spawncoords, head	)
+					SpawnVehicle("supplywagon", spawncoords, head)
 				end
 				WarMenu.Display()
 			end
 		end
 	end
 )
-
-
 
 function SpawnVehicle(Vmodel, coords, head)
 	local veh = GetHashKey(Vmodel)
@@ -103,61 +101,60 @@ function HandlePrompts()
 	end
 end
 
-
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
 	local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
 	SetTextScale(w, h)
 	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
 	SetTextCentre(centre)
-	  if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
-	Citizen.InvokeNative(0xADA9255D, 10);
+	if enableShadow then
+		SetTextDropshadow(1, 0, 0, 0, 255)
+	end
+	Citizen.InvokeNative(0xADA9255D, 10)
 	DisplayText(str, x, y)
-  end
+end
 
+Citizen.CreateThread(
+	function()
+		pp()
+		while true do
+			Citizen.Wait(250)
+			local y, entity = GetPlayerTargetEntity(PlayerId())
+			lastTargetPlayerServerId = nil
+			if y then
+				for _, pid in pairs(GetActivePlayers()) do
+					if NetworkIsPlayerActive(pid) then
+						local pped = GetPlayerPed(pid)
+						if entity == pped then
+							local serverId = GetPlayerServerId(pid)
+							if lastTargetPlayerServerId ~= serverId then
+								lastTargetPlayerServerId = serverId
 
+								PromptSetVisible(prompt_patdown, true)
+								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
 
--- Citizen.CreateThread(
--- 	function()
--- 		pp()
--- 		while true do
--- 			Citizen.Wait(250)
--- 			local y, entity = GetPlayerTargetEntity(PlayerId())
--- 			lastTargetPlayerServerId = nil
--- 			if y then
--- 				for _, pid in pairs(GetActivePlayers()) do
--- 					if NetworkIsPlayerActive(pid) then
--- 						local pped = GetPlayerPed(pid)
--- 						if entity == pped then
--- 							local serverId = GetPlayerServerId(pid)
--- 							if lastTargetPlayerServerId ~= serverId then
--- 								lastTargetPlayerServerId = serverId
+								local pPosition = GetEntityCoords(PlayerPedId())
+								local tPosition = GetEntityCoords(pped)
 
--- 								PromptSetVisible(prompt_patdown, true)
--- 								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
+								local dist = #(pPosition - tPosition)
+								if dist <= 1.5 and (cAPI.hasGroupOrInheritance('trooper') or IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3)) then
+									PromptSetEnabled(prompt_patdown, true)
+								else
+									PromptSetEnabled(prompt_patdown, false)
+								end
 
--- 								local pPosition = GetEntityCoords(PlayerPedId())
--- 								local tPosition = GetEntityCoords(pped)
-
--- 								local dist = #(pPosition - tPosition)
--- 								if dist <= 1.5 and IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
--- 									PromptSetEnabled(prompt_patdown, true)
--- 								else
--- 									PromptSetEnabled(prompt_patdown, false)
--- 								end
-
--- 								break
--- 							end
--- 						end
--- 					end
--- 				end
--- 			end
--- 			HandlePrompts()
--- 			if lastTargetPlayerServerId == nil then
--- 				PromptSetVisible(prompt_patdown, false)
--- 			end
--- 		end
--- 	end
--- )
+								break
+							end
+						end
+					end
+				end
+			end
+			HandlePrompts()
+			if lastTargetPlayerServerId == nil then
+				PromptSetVisible(prompt_patdown, false)
+			end
+		end
+	end
+)
 
 --[[ /////////////// MENU DO OFICIAL
 Citizen.CreateThread(
@@ -206,8 +203,6 @@ Citizen.CreateThread(
 		end
 	end
 ) ]]
-
-
 -- RegisterNetEvent("VP:SHERIFF:giveweapon")
 -- AddEventHandler(
 -- 	"VP:SHERIFF:giveweapon",
