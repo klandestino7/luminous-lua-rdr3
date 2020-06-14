@@ -16,6 +16,7 @@ RegisterCommand(
     "peagle",
     function(source,args)
     local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+
     local idcart = math.random(111,999)
     
     local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
@@ -30,6 +31,7 @@ end)
 
 RegisterNetEvent("VP:PEAGLE:ReceiveCoords")
 AddEventHandler("VP:PEAGLE:ReceiveCoords", function(coords, tplayer, Mensagem)
+  print( tplayer, coords, Mensagem)
   TriggerClientEvent("VP:PEAGLE:ReceiveMenssage", tplayer, coords, Mensagem)
 end)
 
