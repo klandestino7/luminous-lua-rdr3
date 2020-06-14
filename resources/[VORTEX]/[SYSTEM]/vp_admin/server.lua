@@ -538,7 +538,7 @@ RegisterCommand(
 
                     if CharacterTarget ~= nil then
                         if #args >= 2 then
-                            local name = args[i]
+                            local name = args[2]
 
                             for i = 3, #args do
                                 if args[i] ~= nil then
