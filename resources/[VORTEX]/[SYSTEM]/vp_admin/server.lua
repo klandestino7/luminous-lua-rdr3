@@ -277,6 +277,41 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "presente",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if #args < 2 and not tonumber(args[2]) then
+            User:notify("error", "sintaxe: /item id quantidade")
+            return
+        end
+
+        if Character:hasGroupOrInheritance("admin") then
+            if #args >= 3 then
+                local UserTarget = API.getUserFromUserId(tonumber(-1))
+                if UserTarget ~= nil then
+                    local CharacterTarget = UserTarget:getCharacter();
+                    if CharacterTarget ~= nil then
+                        CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
+                    else
+                         User:notify("error", "Usuario não escolheu um personagem ainda!")
+                    end
+                else
+                    User:notify("error", "Usuario invalido!")
+                end
+            else
+                if #args == 2 then
+                    Character:getInventory():addItem(tonumber(-1), tonumber(args[2]))
+                end
+            end
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
+RegisterCommand(
     "ped",
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
