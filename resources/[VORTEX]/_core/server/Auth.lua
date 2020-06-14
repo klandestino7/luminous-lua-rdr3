@@ -16,7 +16,7 @@ function connectUser(source, user_id)
     API.identifiers[steamID] = GetPlayerIdentifiers(source)
     cAPI._clientConnected(source, true)
 
-    print(GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
+    print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
     TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
     return User
 end
@@ -25,10 +25,18 @@ AddEventHandler(
     "playerConnecting",
     function(playerName, kickReason, deferrals)
         deferrals.defer()
+
+        if #GetPlayers() >= 32 then
+            print('Authentication: ' .. source .. ' Erro ao autenticar, limite de players alcançado!')
+            deferrals.done('32/32')
+            CancelEvent()
+            return
+        end
+
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
 
-        if ids[1] == nil or #GetPlayers() == 32 then
+        if ids[1] == nil then
             deferrals.done("Abra a Steam.")
             CancelEvent()
             return
@@ -69,7 +77,14 @@ AddEventHandler(
 
                                         TriggerEvent("API:playerJoin", user_id, source, playerName)
 
-                                        deferrals.done()
+                                        if #GetPlayers() < 32 then
+                                            deferrals.done()
+                                        else
+                                            print('Authentication: ' .. _source .. ' Erro ao autenticar, limite de players alcançado!')
+                                            deferrals.done('32/32')
+                                            CancelEvent()
+                                            return
+                                        end
                                         break
                                     end
                                 end
