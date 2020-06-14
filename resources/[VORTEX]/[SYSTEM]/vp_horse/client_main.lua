@@ -385,12 +385,13 @@ Citizen.CreateThread(
                 end
             end
 
-            if IsControlJustPressed(0, 0xE16B9AAD) then
+             --- bugado o cavalo não volta a correr
+           --[[ if IsControlJustPressed(0, 0xE16B9AAD) then
                 local mount = GetMount(PlayerPedId())
                 if mount ~= 0 then
                     TaskHorseAction(mount, 3, 0, 0)
                 end
-            end
+            end ]]
 
             -- drawBoundingBox()
         end
