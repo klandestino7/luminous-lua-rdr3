@@ -541,10 +541,11 @@ RegisterCommand(
                         local name = ""
 
                         for i = 2, #args do
-                            name = name + args[i] 
+                            name = name .. " " .. args[i] 
                         end
 
                         CharacterTarget:createHorse("A_C_Horse_Arabian_White", name)
+                        User:notify('success', 'Cavalo setado!')
                     else
                         User:notify('error', 'Usuário ainda não escolheu um char')
                     end
