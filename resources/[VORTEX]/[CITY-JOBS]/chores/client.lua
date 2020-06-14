@@ -165,6 +165,8 @@ Citizen.CreateThread(
     end
 )
 
+local prompts = {}
+
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
@@ -183,6 +185,10 @@ AddEventHandler(
 
             for _, scenario in pairs(GetPopulationManurePickup()) do
                 NativeDeleteScenarioPoint(scenario)
+            end
+            
+            for _, prompt in pairs(prompts) do
+                PromptDelete(prompt)
             end
         end
     end
@@ -221,6 +227,12 @@ function NativeFindClosestActiveScenarioPointOfType(scenarioTypeHash, position, 
 end
 
 function PumpScenario()
+end
+
+function NewPrompt()
+    local prompt = PromptRegisterBegin()
+    table.insert(prompts, prompt)
+    return prompt
 end
 
 -- local rewardPrompt()

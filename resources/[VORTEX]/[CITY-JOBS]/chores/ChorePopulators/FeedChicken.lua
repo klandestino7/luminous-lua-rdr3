@@ -78,7 +78,7 @@ local prompt
 
 function PromptFeed()
     if prompt == nil then
-        prompt = PromptRegisterBegin()
+        prompt = NewPrompt()
         -- 0xE8342FF2
         PromptSetControlAction(prompt, 0x7F8D09B8)
         PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Alimentar Galinhas"))
