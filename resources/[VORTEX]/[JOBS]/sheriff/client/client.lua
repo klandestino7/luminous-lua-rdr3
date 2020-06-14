@@ -91,6 +91,7 @@ function pp()
 	PromptSetEnabled(prompt_patdown, true)
 	PromptSetVisible(prompt_patdown, false)
 	PromptSetHoldMode(prompt_patdown, true)
+	PromptSetGroup(prompt_patdown, PlayerPedId())
 	PromptRegisterEnd(prompt_patdown)
 end
 
