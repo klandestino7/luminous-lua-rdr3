@@ -252,15 +252,14 @@ RegisterCommand(
         end
 
         if Character:hasGroupOrInheritance("admin") then
-
             if #args >= 3 then
                 local UserTarget = API.getUserFromUserId(tonumber(args[1]))
                 if UserTarget ~= nil then
-                    local CharacterTarget = UserTarget:getCharacter();
+                    local CharacterTarget = UserTarget:getCharacter()
                     if CharacterTarget ~= nil then
                         CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
                     else
-                         User:notify("error", "Usuario não escolheu um personagem ainda!")
+                        User:notify("error", "Usuario não escolheu um personagem ainda!")
                     end
                 else
                     User:notify("error", "Usuario invalido!")
@@ -291,11 +290,11 @@ RegisterCommand(
             if #args >= 3 then
                 local UserTarget = API.getUserFromUserId(tonumber(-1))
                 if UserTarget ~= nil then
-                    local CharacterTarget = UserTarget:getCharacter();
+                    local CharacterTarget = UserTarget:getCharacter()
                     if CharacterTarget ~= nil then
                         CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
                     else
-                         User:notify("error", "Usuario não escolheu um personagem ainda!")
+                        User:notify("error", "Usuario não escolheu um personagem ainda!")
                     end
                 else
                     User:notify("error", "Usuario invalido!")
@@ -432,7 +431,7 @@ RegisterCommand(
         -- local Character = User:getCharacter()
 
         -- if Character ~= nil then
-            TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, " ^2*" .. GetPlayerName(source) .. ": Meu ID " .. User:getId())
+        TriggerClientEvent("chatMessage", -1, "", {255, 255, 255}, " ^2*" .. GetPlayerName(source) .. ": Meu ID " .. User:getId())
         --end
     end
 )
@@ -523,6 +522,40 @@ RegisterCommand(
     end
 )
 
+RegisterCommand(
+    "givehorse",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            -- cAPI.SetPlayerPosition(-1, cAPI.getPosition(_source))
+            if args[2] ~= nil then
+                local UserTarget = API.getUserFromUserId(parseInt(args[1])):getSource()
+                if UserTarget ~= nil then
+                    local CharacterTarget = UserTarget:getCharacter()
+
+                    if CharacterTarget ~= nil then
+
+                        local name
+
+                        for i = 3, #args do
+                            name = name + args[i] 
+                        end
+
+                        CharacterTarget:createHorse("A_C_Horse_Arabian_White", name)
+                    else
+                        User:notify('error', 'Usuário ainda não escolheu um char')
+                    end
+                else
+                    User:notify('error', 'Usuário não existe ou não está logado')
+                end
+            end
+        end
+    end,
+    false
+)
 
 -- RegisterCommand(
 --     "idfromsource",
