@@ -54,7 +54,7 @@ AddEventHandler(
 
                                 index = indexOf(_source)
 
-                                print("user_id" .. user_id .. " source: " .. source, index)
+                                -- print("user_id" .. user_id .. " source: " .. source, index)
 
                                 if index ~= nil then
                                     deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
