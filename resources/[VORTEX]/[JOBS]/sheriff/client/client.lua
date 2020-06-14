@@ -120,14 +120,18 @@ Citizen.CreateThread(
 		while true do
 			Citizen.Wait(250)
 			local y, entity = GetPlayerTargetEntity(PlayerId())
-			lastTargetPlayerServerId = nil
+
+			local foundPlayer = false
+
 			if y then
 				for _, pid in pairs(GetActivePlayers()) do
 					if NetworkIsPlayerActive(pid) then
+						foundPlayer = true
+
 						local pped = GetPlayerPed(pid)
 						if entity == pped then
 							local serverId = GetPlayerServerId(pid)
-							if lastTargetPlayerServerId ~= serverId then
+							if lastTargetPlayerServerId == nil or lastTargetPlayerServerId ~= serverId then
 								lastTargetPlayerServerId = serverId
 
 								PromptSetVisible(prompt_patdown, true)
@@ -150,7 +154,8 @@ Citizen.CreateThread(
 				end
 			end
 			HandlePrompts()
-			if lastTargetPlayerServerId == nil then
+			if foundPlayer == false then
+				lastTargetPlayerServerId = nil
 				PromptSetVisible(prompt_patdown, false)
 			end
 		end
