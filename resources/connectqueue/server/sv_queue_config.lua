@@ -5,11 +5,11 @@ Config = {}
 -- you can also give priority through the API, read the examples/readme.
 Config.Priority = {
 
-    ["steam:11000010596ee06"] = 999, -- KLAN
-    ["steam:110000115598f8c"] = 999, -- GASHEX
-    ["steam:1100001349014c1"] = 999, -- BELA
-    ["steam:110000106321dbf"] = 999, -- SORAM
-    ["steam:110000109766c18"] = 999, -- KEY
+    ["steam:11000010596ee06"] = 99, -- KLAN
+    ["steam:110000115598f8c"] = 99, -- GASHEX
+    ["steam:1100001349014c1"] = 99, -- BELA
+    ["steam:110000106321dbf"] = 99, -- SORAM
+    ["steam:110000109766c18"] = 99, -- KEY
 
      -- ///////////////// APOIADORES //////////////////
     ["steam:110000107156247"] = 45, -- Miojo#0001 / 11.06
@@ -53,7 +53,7 @@ Config.RequireSteam = true
 Config.PriorityOnly = false
 
 -- disables hardcap, should keep this true
-Config.DisableHardCap = true
+Config.DisableHardCap = false
 
 -- will remove players from connecting if they don't load within: __ seconds; May need to increase this if you have a lot of downloads.
 -- i have yet to find an easy way to determine whether they are still connecting and downloading content or are hanging in the loadscreen.

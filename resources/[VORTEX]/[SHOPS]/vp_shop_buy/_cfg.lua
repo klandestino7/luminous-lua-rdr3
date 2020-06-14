@@ -26,7 +26,9 @@ Config.ShopDatas = {
 			{"ammo_rifle", 0, 0, 0},
 			{"ammo_shotgun", 0, 0, 0},
 			{"melee_lantern_electric", 0, 0, 0},
-			{"melee_torch", 0, 0, 0}
+			{"melee_torch", 0, 0, 0},
+			{"lasso", 0, 0, 0},
+			{"melee_knife", 0, 0, 0},
 		}
 	},
 	{
@@ -40,6 +42,8 @@ Config.ShopDatas = {
 			{"melee_knife", 1, 2000, 800},
 			{"melee_lantern_electric", 1, 200, 80},
 			{"melee_torch", 1, 200, 80},
+			{"bow", 1, 7000, 2800},
+			{"arrow", 1, 100, 40}
 		}
 	}
 }
@@ -57,9 +61,10 @@ Config.ShopLocations = {
 		{-764.768, -1272.072, 44.041},
 		{-1813.974, -354.651, 164.649},
 		{-278.365, 805.207, 119.380},
-		{2494.231,-1304.628,48.954}, -- Saint Denis
-		{2494.392, -1312.568, 48.954},-- Saint Denis 
-		{2907.258,1308.845,44.938}, -- annes
+		{2494.231, -1304.628, 48.954}, -- Saint Denis
+		{2494.392, -1312.568, 48.954},
+		 -- Saint Denis
+		{2907.258, 1308.845, 44.938} -- annes
 	},
 	-- ["Mercadinho"] = {
 	-- 	{373.875, 325.896, 103.566},

@@ -16,7 +16,7 @@ function connectUser(source, user_id)
     API.identifiers[steamID] = GetPlayerIdentifiers(source)
     cAPI._clientConnected(source, true)
 
-    print(GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
+    print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
     TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
     return User
 end
@@ -25,6 +25,14 @@ AddEventHandler(
     "playerConnecting",
     function(playerName, kickReason, deferrals)
         deferrals.defer()
+
+        if #GetPlayers() >= 32 then
+            print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
+            deferrals.done("32/32")
+            CancelEvent()
+            return
+        end
+
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
 
@@ -54,7 +62,7 @@ AddEventHandler(
 
                                 index = indexOf(_source)
 
-                                print("user_id" .. user_id .. " source: " .. source, index)
+                                -- print("user_id" .. user_id .. " source: " .. source, index)
 
                                 if index ~= nil then
                                     deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
@@ -67,9 +75,15 @@ AddEventHandler(
                                         -- sessionQueue = splice(sessionQueue, index, 1)
                                         table.remove(sessionQueue, index)
 
-                                        TriggerEvent("API:playerJoin", user_id, source, playerName)
-
-                                        deferrals.done()
+                                        if #GetPlayers() < 32 then
+                                            TriggerEvent("API:playerJoin", user_id, _source, playerName)
+                                            deferrals.done()
+                                        else
+                                            print("Authentication: " .. _source .. " Erro ao autenticar, limite de players alcançado!")
+                                            deferrals.done("32/32")
+                                            CancelEvent()
+                                            return
+                                        end
                                         break
                                     end
                                 end

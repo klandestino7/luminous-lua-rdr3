@@ -107,7 +107,7 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     end
 
     self.getExp = function()
-        return self.xp
+        return self.xp or 0
     end
 
     self.varyExp = function(this, variation)

@@ -180,24 +180,6 @@ AddEventHandler(
 	end
 )
 
-AddEventHandler(
-	"API:OnUserCharacterInitialization",
-	function(User, character_id)
-		local Character = User:getCharacter()
-
-		local role = 0
-		if Character:hasGroupOrInheritance("trooper") then
-			role = role + 1
-		end
-		if Character:hasGroupOrInheritance("trooper") then
-			role = role + 2
-		end
-
-		print("character initizliation", role)
-		TriggerClientEvent("VP:SHERIFF:UpdateRole", User:getSource(), role)
-	end
-)
-
 RegisterNetEvent("VP:SHERIFF:TryToPatDown")
 AddEventHandler(
 	"VP:SHERIFF:TryToPatDown",

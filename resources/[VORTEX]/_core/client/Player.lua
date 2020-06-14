@@ -360,7 +360,7 @@ Citizen.CreateThread(
     end
 )
 
-local role
+local role = 0
 
 RegisterNetEvent("VP:EVENTS:CharacterSetRole")
 AddEventHandler(

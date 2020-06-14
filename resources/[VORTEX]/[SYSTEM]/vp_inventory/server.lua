@@ -130,6 +130,7 @@ AddEventHandler(
         local Slot = Inventory:getSlots()[slotId]
 
         if Slot == nil then
+            -- User:notify("error", "Você não tem x" .. ItemData:getName())
             return
         end
 
@@ -138,9 +139,9 @@ AddEventHandler(
 
         local ItemData = API.getItemDataFromId(itemAtSlot)
 
-        if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
+        -- if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
             if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
-                Inventory:removeItem(-1, itemAtSlot, amountAtSlot)
+                Inventory:removeItem(slotId, itemAtSlot, amountAtSlot)
 
                 local amountToDisplay = amountAtSlot
                 local toastType = 'item'
@@ -161,9 +162,9 @@ AddEventHandler(
             else
                 User:notify("error", "Bolsa da pesssoa está sem espaço!")
             end
-        else
-            User:notify("error", "Você não tem x" .. ItemData:getName())
-        end
+        -- -- else
+        --     User:notify("error", "Você não tem x" .. ItemData:getName())
+        -- end
     end
 )
 
