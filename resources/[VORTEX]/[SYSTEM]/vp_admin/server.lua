@@ -538,7 +538,7 @@ RegisterCommand(
 
                     if CharacterTarget ~= nil then
 
-                        local name
+                        local name = ""
 
                         for i = 2, #args do
                             name = name + args[i] 
