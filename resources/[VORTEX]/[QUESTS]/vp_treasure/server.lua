@@ -58,13 +58,13 @@ AddEventHandler(
   end
 )
 
-RegisterCommand(
-  "callbau",
-  function()
-    local random = math.random(1, 6)
-    TriggerEvent("TREASURE:create", random)
-  end
-)
+-- RegisterCommand(
+--   "callbau",
+--   function()
+--     local random = math.random(1, 6)
+--     TriggerEvent("TREASURE:create", random)
+--   end
+-- )
 
 RegisterNetEvent("TREASURE:timeCall")
 AddEventHandler(
