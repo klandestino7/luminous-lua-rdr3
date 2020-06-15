@@ -15,12 +15,12 @@ AddEventHandler(
 		local pScale = tonumber(pedInfo.pedSize)
 		local pClothing
 
-		if json.decode(clothes).Outfit ~= nil then 
+		if json.decode(clothes).Outfit ~= nil then
 			if tonumber(json.decode(clothes).Outfit) <= 100 then
 				pClothing = tonumber(json.decode(clothes).Outfit)
-			end                   
+			end
 		else
-			pClothing = json.decode(clothes)    
+			pClothing = json.decode(clothes)
 		end
 
 		cAPI.SetPlayerPed(pModel)
@@ -77,8 +77,13 @@ AddEventHandler(
 			end
 		end
 
-		local obj = CreateObject(modelHash, GetEntityCoords(PlayerPedId()), 1, 1, 1)
+		local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
+		local hasCollision, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x, y, z)
+		z = groundZ
 
+		local obj = CreateObject(modelHash, x, y, z, 1, 1, 1)
+
+		print('spawned', obj)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
 	end
 )
