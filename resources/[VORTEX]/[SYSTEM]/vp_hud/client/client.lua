@@ -106,7 +106,7 @@ Citizen.CreateThread(
                         else
                             local serverId = GetPlayerServerId(i)
                             local userId = cAPI.GetUserIdFromServerId(serverId)
-                            SetPedPromptName(ped, "Desconhecido ・ " .. userId)
+                            SetPedPromptName(ped, "Desconhecido : " .. userId)
                         end
                     end
 
