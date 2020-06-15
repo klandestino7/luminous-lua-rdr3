@@ -427,7 +427,7 @@ function elementAsDraggable(element, a, b, c, d, e) {
                     hasItemDropCooldown = true;
                     setTimeout(function() {
                         hasItemDropCooldown = false;
-                    }, 100);
+                    }, 1000);
                 }
             }
 

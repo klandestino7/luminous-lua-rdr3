@@ -41,7 +41,7 @@ AddEventHandler(
         end
 
         TriggerClientEvent("VP:PET:spawndog", _src, _model, true)
-        print(_resul)
+        -- print(_resul)
 
         if _resul == nil then
             Inventory:removeItem(-1, "money", tonumber(_price * 100))
@@ -69,10 +69,10 @@ AddEventHandler(
 
         if Hasdogs ~= nil then
             local dog = Hasdogs
-            print(dog)
+            -- print(dog)
             TriggerClientEvent("VP:PET:spawndog", _src, dog, false)
         else
-            print("Error, dog!")
+            -- print("Error, dog!")
         end
     end
 )

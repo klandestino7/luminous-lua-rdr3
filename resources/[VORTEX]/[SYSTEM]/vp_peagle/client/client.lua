@@ -9,8 +9,10 @@ RegisterNetEvent("VP:PEAGLE:GetCoords")
 AddEventHandler(
     "VP:PEAGLE:GetCoords",
     function(tplayer,Mensagem)
+
     local ped = PlayerPedId()
     local Coords = GetEntityCoords(ped)
+
     TriggerServerEvent("VP:PEAGLE:ReceiveCoords", Coords, tplayer, Mensagem)
 end)
 
@@ -24,6 +26,7 @@ message = nil
 
 RegisterNetEvent('VP:PEAGLE:ReceiveMenssage')
 AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
+        print("spawn peagle 1")
         pigeon = CreatePed("A_C_Pigeon", PlayerCoords, 92.0, true, true, true, true)
         Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
         message = text
@@ -37,7 +40,7 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
         Wait(2000)        
       --  TaskFlyToCoord(pigeon, 0, 62.92, 42.51, 102.15 + 10, 1, 0)
         Citizen.InvokeNative(0xA5C38736C426FCB8, pigeon, true)
-
+        print("spawn peagle 2")
         while true do
             Citizen.Wait(1)
                 local player = PlayerPedId()
