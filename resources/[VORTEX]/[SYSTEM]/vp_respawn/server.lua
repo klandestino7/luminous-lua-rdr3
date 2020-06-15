@@ -32,6 +32,20 @@ AddEventHandler(
     end
 )
 
+RegisterServerEvent("VP:RESPAWN:SetPlayerAsDead")
+AddEventHandler(
+    "VP:RESPAWN:SetPlayerAsDead",
+    function(bool)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+
+        if Character ~= nil then
+            Character:setDeath(bool)
+        end
+    end
+)
+
 RegisterServerEvent("VP:RESPAWN:CheckDeath")
 AddEventHandler(
     "VP:RESPAWN:CheckDeath",
