@@ -2,6 +2,10 @@ trainHash = 987516329
 CURRENT_TRAIN = nil
 train = nil
 
+-- GHOST TRAIN
+CURRENT_GHOST_TRAIN = nil
+Ghost_train = nil
+
 local stops = {
     {["dst"] = 180.0, ["dst2"] = 4.0, ["x"] = -142.67,  ["y"] = 654.18,   ["z"] = 113.52, ["time"] = 60000, ["name"] = "Valentine Station"},
     {["dst"] = 400.0, ["dst2"] = 4.0, ["x"] = 2685.39,  ["y"] = -1480.33, ["z"] = 45.80,  ["time"] = 60000, ["name"] = "Saint Denis Station"},
@@ -83,3 +87,63 @@ function trainroute()
         end
     end
 end
+
+Citizen.CreateThread(function()
+    Wait(500)
+    while true do
+        Wait(8000)
+        print(GetClockHours(), GetClockMinutes(), Ghost_train)
+        if GetClockHours() == 0 then
+            if GetClockMinutes() >= 1 and GetClockMinutes() <= 3 then
+                if Ghost_train == nil then
+                    print('calltrain')
+                    TriggerServerEvent("VP:GHOSTRAIN:calltrain")                
+                end
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('VP:GHOST:Trainroute')
+AddEventHandler('VP:GHOST:Trainroute', function(n)
+
+    local trainWagons = N_0x635423d55ca84fc8(241358608)
+
+    for wagonIndex = 0, trainWagons - 1 do
+        local trainWagonModel = N_0x8df5f6a19f99f0d5(241358608, wagonIndex)        
+        SetEntityCollision(trainWagonModel, false, false)
+
+        while not HasModelLoaded(trainWagonModel) do
+            Citizen.InvokeNative(0xFA28FE3A6246FC30, trainWagonModel, 1)
+            SetEntityCollision(trainWagonModel, false, false)
+            Citizen.Wait(100)
+        end
+    end
+ 
+    --spawn--
+    local ped = PlayerPedId()
+    local Ghost_train = N_0xc239dbd9a57d2a71(241358608, 841.3918, -626.9301, 73.62413, 1, 0, 1, 0) 
+    local coords = GetEntityCoords(Ghost_train)
+    local trainV = vector3(coords.x, coords.y, coords.z)
+    Citizen.InvokeNative(0xBA8818212633500A, Ghost_train, 0, 1) -- this makes the train undrivable for players         
+
+    CURRENT_GHOST_TRAIN = Ghost_train
+
+    SetMissionTrainCoords(CURRENT_GHOST_TRAIN, 841.3918, -626.9301, 73.62413 )
+
+
+    SetTrainSpeed(CURRENT_GHOST_TRAIN, 1.0)
+    SetTrainCruiseSpeed(CURRENT_GHOST_TRAIN, 12.0)
+
+    Citizen.InvokeNative(0xF66F820909453B8C, CURRENT_GHOST_TRAIN, false, false)
+    SetEntityCollision(trainWagons, false, false)
+    -- --SetEntityAlpha(train, 0, true)
+    N_0xba8818212633500a(CURRENT_GHOST_TRAIN,  4, 1)
+
+    N_0xba8818212633500a(CURRENT_GHOST_TRAIN, 4, 1)
+    N_0xba8818212633500a(CURRENT_GHOST_TRAIN, 5, 1)
+    N_0xba8818212633500a(CURRENT_GHOST_TRAIN, 6, 1)
+     Wait(15000)
+     DeleteEntity(CURRENT_GHOST_TRAIN)
+
+end)
