@@ -518,7 +518,7 @@ local serverToUser = {}
 
 RegisterNetEvent('VP:_CORE:SetServerIdAsUserId')
 AddEventHandler('VP:_CORE:SetServerIdAsUserId', function(serverid, userid)
-	serverToUser[serverId] = userid
+	serverToUser[serverid] = userid
 	serverToUserChanged  = true
 end)
 
@@ -528,8 +528,8 @@ AddEventHandler('VP:_CORE:SetServerIdAsUserIdPacked', function(r)
 	serverToUserChanged  = true
 end)
 
-function cAPI.GetUserIdFromServerId(serverId)
-	return serverToUser[serverId] or 0
+function cAPI.GetUserIdFromServerId(serverid)
+	return serverToUser[serverid] or 0
 end
 
 function cAPI.GetServerIdFromUserId(userid)
