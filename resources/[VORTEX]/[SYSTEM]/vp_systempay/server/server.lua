@@ -98,8 +98,8 @@ cAPI = Tunnel.getInterface("API")
 -- )
 
 local r = {
-	["trooper"] = 15000,
-	["sheriff"] = 25000
+	["trooper"] = 1500,
+	["sheriff"] = 2500
 }
 
 local withHoldingPaymentToUsers = {}
