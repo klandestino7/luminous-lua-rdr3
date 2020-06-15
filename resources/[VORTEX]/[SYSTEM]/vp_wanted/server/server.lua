@@ -19,7 +19,6 @@ AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords, CityName, 
     local _source = source
     local User = API.getUserFromSource(_source)      
     local Character = User:getCharacter()
-    if Character:hasGroup("user") then
         if playerGender == -171876066 then
             playerGender = 'homem'
         else
@@ -27,7 +26,8 @@ AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords, CityName, 
         end
         TriggerClientEvent('VP:WANTED:outlawNotify', -1, 'Disparos por ' .. playerGender .. ' foram relatados em ' .. CityName)
         TriggerClientEvent('VP:WANTED:gunshotInProgress', -1, targetCoords)
-    end
+ 
+
 end)
 
 RegisterServerEvent('VP:WANTED:RewardNotify')

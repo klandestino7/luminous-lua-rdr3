@@ -1,15 +1,17 @@
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface("API")
-cAPI = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
 RegisterNetEvent('VP:WANTED:gunshotInProgress')
-AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords)
-    local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 408396114, targetCoords.x, targetCoords.y, targetCoords.z, 60.0)	
-    Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Disparo de Tiro')
-    Wait(8000)
-    RemoveBlip(blip)  
+AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords) 
+    if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+        local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 408396114, targetCoords.x, targetCoords.y, targetCoords.z, 60.0)	
+        Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Disparo de Tiro')
+        Wait(8000)
+        RemoveBlip(blip)  
+    end
 end)
 
 
@@ -23,25 +25,30 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 		local playerCoords = GetEntityCoords(playerPed)
-       local CityName = GetCurrentTownName()
-        if IsPedShooting(playerPed) then
-            if ListaArmas then
-                local Policia = TriggerServerEvent('VP:WANTED:checkJOB')       
-    
-                if CityName ~= nil then--and CityName ~= "Cidade Fantasma" then
+        local CityName = GetCurrentTownName()
+        local retval, hashArma = GetCurrentPedWeapon(PlayerPedId(), 0, 0,0)
+        local arma = Citizen.InvokeNative(0x705BE297EEBDB95D, hashArma)
+
+        if IsPedShooting(playerPed) then        
+            if arma then
+         --       local Policia = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff')
+                if CityName ~= nil and CityName ~= "Cidade Fantasma" then          
                     local ped = PlayerPedId()
                     local currentWeaponHash = GetCurrentPedWeapon(ped)
                     local havesilence = false
                     local playerGender = GetEntityModel(ped)		            
-                    Citizen.Wait(3000)                                   
-                    DecorSetInt(playerPed, 'isOutlaw', 2)
+                    Citizen.Wait(3000)                   
+                   -- DecorSetInt(playerPed, 'isOutlaw', 2)           
                     TriggerServerEvent('VP:WANTED:gunshotInProgress', {
                         x = playerCoords.x,
                         y = playerCoords.y,
                         z = playerCoords.z,
-                    }, CityName, playerGender)                
+                    }, CityName, playerGender)      
                 end
             end
+
+
+
 		end
 	end
 end)
@@ -88,8 +95,9 @@ end)
 
 RegisterNetEvent('VP:WANTED:outlawNotify')
 AddEventHandler('VP:WANTED:outlawNotify', function(alert)
-    print('notifi')
-    TriggerEvent('Distress', 'sucesso', "<b style='color:#007cb5; font-weight:700;'>Sheriff:</b> ".. (alert))
+    if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+        TriggerEvent('VP:NOTIFY:Simple', "Sheriff: ".. (alert), 5000)
+    end
 end)
 
 
