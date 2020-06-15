@@ -131,7 +131,7 @@ function API.dropPlayer(source, reason)
 
         print(#GetPlayers() .. "/32 | " .. playerName .. " (" .. ipAddress .. ") desconectou (motivo = " .. reason .. ")")
 
-        TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, _source, nil)
+        TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, source, nil)
     --    User:saveCharacter()
     end
 end

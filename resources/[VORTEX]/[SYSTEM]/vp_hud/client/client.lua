@@ -109,6 +109,9 @@ Citizen.CreateThread(
                             SetPedPromptName(ped, "Desconhecido ・ " .. userId)
                         end
                     end
+
+                    SetPedCanBeTargetted(ped, true)
+                    SetPedCanBeTargettedByPlayer(ped, PlayerId(), true)
                 end
             end
         end
