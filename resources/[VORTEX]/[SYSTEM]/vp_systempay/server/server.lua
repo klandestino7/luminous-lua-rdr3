@@ -99,7 +99,8 @@ cAPI = Tunnel.getInterface("API")
 
 local r = {
 	["trooper"] = 1500,
-	["sheriff"] = 2500
+	["sheriff"] = 2500,
+	["medic"] = 1000
 }
 
 local withHoldingPaymentToUsers = {}
@@ -110,7 +111,7 @@ Citizen.CreateThread(
 			Citizen.Wait(1000 * 60 * 60)
 
 			for group, payment in pairs(r) do
-				for _, User in pairs(API.getUsersByGroup(group)) do
+				for _, User in pairs(API.getUsersByGroup(group, false)) do
 					local Character = User:getCharacter()
 
 					local user_id = User:getId()
@@ -149,7 +150,7 @@ Citizen.CreateThread(
 					local Character = User:getCharacter()
 					if Character ~= nil then
 						local Inventory = Character:getInventory()
-						if Inventory:addItem('money', totalpayment) then
+						if Inventory:addItem("money", totalpayment) then
 							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
 							withHoldingPaymentToUsers[user_id] = nil
 						else

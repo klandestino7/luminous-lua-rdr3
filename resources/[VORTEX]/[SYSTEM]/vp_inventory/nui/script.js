@@ -15,6 +15,12 @@ var hasItemDropCooldown = false;
 
 // Criar uma descrição para os items em _core/config/Items.lua
 
+var mouseX, mouseY;
+$(document).mousemove(function(e) {
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+}).mouseover(); 
+
 document.addEventListener("DOMContentLoaded", function(event) {
     $('.hotbar').hide();
 });
@@ -418,7 +424,7 @@ function elementAsDraggable(element, a, b, c, d, e) {
         stop: function(event, ui) {
             if (hasItemDropCooldown == false) {
                 let slotId = $(this).attr('id')
-                var elem = document.elementFromPoint(ui.position.left, ui.position.top); // x, y
+                var elem = document.elementFromPoint(mouseX, mouseY); // x, y
 
                 if ($(elem).is("body")) {
                     $.post('http://vp_inventory/drop', JSON.stringify({

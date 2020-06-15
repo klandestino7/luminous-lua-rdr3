@@ -8,47 +8,43 @@ opened = false
 local Cinematic = false
 local temperature = GetTemperatureAtCoords(GetEntityCoords(PlayerPedId(), true))
 
-RegisterCommand('horsecl', function()
+RegisterCommand(
+    "horsecl",
+    function()
+        local playerHorse = cAPI.GetPlayerHorse()
+        -- playerHorse = 228907
+        local p = PlayerId()
 
-    local playerHorse = cAPI.GetPlayerHorse()
-    -- playerHorse = 228907
-    local p = PlayerId()
+        Citizen.InvokeNative(0xD2CB0FB0FDCB473D, p, 0)
 
-    Citizen.InvokeNative(0xD2CB0FB0FDCB473D, p, 0)
+        local z = Citizen.InvokeNative(0x8FBF9EDB378CCB8C, p, playerHorse)
+        local w = Citizen.InvokeNative(0x227B06324234FB09, p, playerHorse)
 
-    local z = Citizen.InvokeNative(0x8FBF9EDB378CCB8C, p, playerHorse)
-    local w = Citizen.InvokeNative(0x227B06324234FB09, p, playerHorse)
+        local main_horse = Citizen.InvokeNative(0x46FA0AE18F4C7FA9, p)
+        local temp_horse = Citizen.InvokeNative(0xD3F7445CEA2E5035, p)
+        Citizen.InvokeNative(0x75415EE0CB583760, playerHorse, 7, 950)
 
-    local main_horse = Citizen.InvokeNative(0x46FA0AE18F4C7FA9, p)
-    local temp_horse = Citizen.InvokeNative(0xD3F7445CEA2E5035, p)
-    Citizen.InvokeNative(0x75415EE0CB583760, playerHorse, 7, 950)
-
-    print(cAPI.GetPlayerHorse(), playerHorse, main_horse, temp_horse, DoesEntityExist(playerHorse))
-
-end)
-
+        print(cAPI.GetPlayerHorse(), playerHorse, main_horse, temp_horse, DoesEntityExist(playerHorse))
+    end
+)
 
 Citizen.CreateThread(
     function()
         -- ESCONDER E MOSTRAR ALGUMAS HUDS
-       Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
-       Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
+        Citizen.InvokeNative(0x4CC5F2FC1332577F, 1058184710) --remove skill cards
+        Citizen.InvokeNative(0x4CC5F2FC1332577F, -66088566) --removed money
 
         N_0x4cc5f2fc1332577f(-2106452847) -- remove wheell itens
-       -- N_0x4cc5f2fc1332577f(-1249243147)
-       -- N_0x4cc5f2fc1332577f(2011163970)
-        
+        -- N_0x4cc5f2fc1332577f(-1249243147)
+        -- N_0x4cc5f2fc1332577f(2011163970)
 
-
-        
         -- Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
-       Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
+        Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
 
         while true do
             Citizen.Wait(0)
-  
-           
-       --     Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking", "FACE_HUMAN@GEN_MALE@BASE")
+
+            --     Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking", "FACE_HUMAN@GEN_MALE@BASE")
             if Cinematic then
                 N_0x69d65e89ffd72313(true)
             else
@@ -57,45 +53,65 @@ Citizen.CreateThread(
 
             if IsPedOnMount(PlayerPedId()) then
                 N_0x8bc7c1f929d07bf3(474191950)
-            --   ShowPlayerCores(false) -- player core
+                --   ShowPlayerCores(false) -- player core
                 Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
             else
-            --    ShowPlayerCores(false) -- player core
-             ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+                --    ShowPlayerCores(false) -- player core
+                ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
                 N_0x4cc5f2fc1332577f(474191950)
             end
 
             --N_0xbae08f00021bffb2(horse) -- agitates the horse
-         -- N_0x8bc7c1f929d07bf3(2106452847) -- show
- 
-        --    N_0x50c803a4cd5932c5(false)
-       --     N_0xd4ee21b7cc7fd350(false)
-        --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
-        --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
+            -- N_0x8bc7c1f929d07bf3(2106452847) -- show
+
+            --    N_0x50c803a4cd5932c5(false)
+            --     N_0xd4ee21b7cc7fd350(false)
+            --    Citizen.InvokeNative(0x50C803A4CD5932C5, true)
+            --    Citizen.InvokeNative(0xD4EE21B7CC7FD350, true)
 
             if IsControlJustPressed(0, 0x446258B6) then
-                print('press')
+                print("press")
                 opened = true
-                TriggerServerEvent('VP:HUD:request')
+                TriggerServerEvent("VP:HUD:request")
             end
 
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
             DisplayRadar(true)
             DisplayHud(true)
-           -- Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
+            -- Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
         end
     end
 )
-
 
 Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(1000)
-            for _, i in pairs(GetActivePlayers()) do
-                local ped = GetPlayerPed(i)
-                if ped ~= 0 then
-                    SetPedPromptName(ped, 'Desconhecido')
+            -- for _, i in pairs(GetActivePlayers()) do
+            --     local ped = GetPlayerPed(i)
+            --     if ped ~= 0 then
+            --         SetPedPromptName(ped, 'Desconhecido')
+            --     end
+            -- end
+
+            if cAPI.HasKnownPlayersChanged() then
+
+                local canSeeIds = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('admin')
+
+                for _, i in pairs(GetActivePlayers()) do
+                    local ped = GetPlayerPed(i)
+                    if ped ~= 0 then
+                        if not canSeeIds then
+                            SetPedPromptName(ped, "Desconhecido")
+                        else
+                            local serverId = GetPlayerServerId(i)
+                            local userId = cAPI.GetUserIdFromServerId(serverId)
+                            SetPedPromptName(ped, "Desconhecido : " .. userId)
+                        end
+                    end
+
+                    SetPedCanBeTargetted(ped, true)
+                    SetPedCanBeTargettedByPlayer(ped, PlayerId(), true)
                 end
             end
         end
@@ -107,18 +123,17 @@ RegisterCommand(
     function(source, args)
         local a = Citizen.InvokeNative(0x935A30AA88FB1014, PlayerPedId(), Citizen.ResultAsVector())
         local b = Citizen.InvokeNative(0x6BFBDC46139C45AB, GetEntityCoords(PlayerPedId()))
-        print(a,b)
+        print(a, b)
     end
 )
-
 
 RegisterCommand(
     "cinema",
     function(source, args)
-        if args[1] == '1' then
+        if args[1] == "1" then
             Cinematic = true
         elseif args[1] == "2" then
-            print('foi')
+            print("foi")
             Cinematic = false
         end
     end
@@ -131,10 +146,10 @@ AddEventHandler(
         if toggle == nil then
             SetMinimapHideFow(false)
         else
+            --  RevealMinimapFow(toggle)
             Citizen.InvokeNative(0xEB3CB3386C775D72, 0)
-            Citizen.InvokeNative(0x63E7279D04160477, toggle, 0)         
+            Citizen.InvokeNative(0x63E7279D04160477, toggle, 0)
             Citizen.InvokeNative(0xF8096DF9B87246E3, toggle)
-          --  RevealMinimapFow(toggle)
         end
     end
 )
@@ -145,12 +160,12 @@ AddEventHandler(
     function(data)
         SendNUIMessage(
             {
-                showhud = true,            
+                showhud = true,
                 data = data
             }
         )
         Wait(10000)
-        TriggerEvent('VP:HUD:hide')
+        TriggerEvent("VP:HUD:hide")
     end
 )
 
@@ -167,13 +182,12 @@ AddEventHandler(
     end
 )
 
-
 RegisterCommand(
     "cans",
     function(source, args)
         Citizen.InvokeNative(0xEA47FE3719165B94, PlayerPedId(), "FACE_HUMAN@GEN_MALE@BASE", "mood_talking_happy", 1090519040, -4.0, 5000, 17, 0, 0, 0, 0, 0, 0)
-      --  Citizen.InvokeNative(0x726256CC1EEB182F, PlayerPedId())        
-      --  Citizen.InvokeNative(0xEA47FE3719165B94, PlayerPedId(), "FACE_HUMAN@GEN_MALE@BASE", "mood_talking_happy", 1090519040, -4.0, -1, 17, 0, 0, 0, 0, 0, 0)
+        --  Citizen.InvokeNative(0x726256CC1EEB182F, PlayerPedId())
+        --  Citizen.InvokeNative(0xEA47FE3719165B94, PlayerPedId(), "FACE_HUMAN@GEN_MALE@BASE", "mood_talking_happy", 1090519040, -4.0, -1, 17, 0, 0, 0, 0, 0, 0)
     end
 )
 local NotifyShow
@@ -184,7 +198,7 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
             CurrentStateName = GetCurrentStateName()
-            
+
             if CurrentStateName ~= StateName then
                 NotifyShow = true
                 if NotifyShow then
@@ -192,28 +206,26 @@ Citizen.CreateThread(
                     DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.08, 0.20, 0.10, 0.8, 0, 0, 0, 250, 1)
                     DrawTxt(RegionName, 0.50, 0.04, 0.6, 0.6, true, 255, 255, 255, 255, true)
                     DrawTxt(CurrentStateName, 0.50, 0.078, 0.3, 0.3, true, 255, 255, 255, 255, true)
-                    DrawTxt(GetClockHours()..":"..GetClockMinutes() .. " | " .. string.format("%0.1f", temperature).."°C", 0.50, 0.099, 0.28, 0.28, true, 255, 255, 255, 255, true)
+                    DrawTxt(GetClockHours() .. ":" .. GetClockMinutes() .. " | " .. string.format("%0.1f", temperature) .. "°C", 0.50, 0.099, 0.28, 0.28, true, 255, 255, 255, 255, true)
                 end
             end
         end
     end
 )
 
-
 Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if CurrentStateName ~= StateName then                
-                StateName = GetCurrentStateName() 
+            if CurrentStateName ~= StateName then
+                StateName = GetCurrentStateName()
                 temperature = GetTemperatureAtCoords(GetEntityCoords(PlayerPedId(), true))
                 NotifyShow = false
-                Citizen.Wait(10000) 
+                Citizen.Wait(10000)
             end
         end
     end
 )
-
 
 function GetCurrentStateName()
     local pedCoords = GetEntityCoords(PlayerPedId())
@@ -262,7 +274,6 @@ function GetCurrentStateName()
     end
 end
 
-
 function GetCurrentRegionName()
     local pedCoords = GetEntityCoords(PlayerPedId())
     local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 10)
@@ -309,22 +320,21 @@ function GetCurrentRegionName()
     end
 end
 
-
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
-	local str = CreateVarString(10, 'LITERAL_STRING', str)
-	--Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
-	SetTextScale(w, h)
-	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
-	SetTextCentre(centre)
-	if enableShadow then
-		SetTextDropshadow(1, 0, 0, 0, 255)
-	end
-	Citizen.InvokeNative(0xADA9255D, 1)
-	DisplayText(str, x, y)
+    local str = CreateVarString(10, "LITERAL_STRING", str)
+    --Citizen.InvokeNative(0x66E0276CC5F6B9DA, 2)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    Citizen.InvokeNative(0xADA9255D, 1)
+    DisplayText(str, x, y)
 end
 
 function CreateVarString(p0, p1, variadic)
-	return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
+    return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
 end
 
 -- local prompt = false

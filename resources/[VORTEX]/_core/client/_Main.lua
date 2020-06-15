@@ -512,3 +512,38 @@ function cAPI.EndFade(timer)
 		Citizen.Wait(1)
 	end
 end
+
+local serverToUserChanged = false
+local serverToUser = {}
+
+RegisterNetEvent('VP:_CORE:SetServerIdAsUserId')
+AddEventHandler('VP:_CORE:SetServerIdAsUserId', function(serverid, userid)
+	serverToUser[serverid] = userid
+	serverToUserChanged  = true
+end)
+
+RegisterNetEvent('VP:_CORE:SetServerIdAsUserIdPacked')
+AddEventHandler('VP:_CORE:SetServerIdAsUserIdPacked', function(r)
+	serverToUser = r
+	serverToUserChanged  = true
+end)
+
+function cAPI.GetUserIdFromServerId(serverid)
+	return serverToUser[serverid] or 0
+end
+
+function cAPI.GetServerIdFromUserId(userid)
+	for serverid, _userid in pairs(serverToUser) do
+		if _userid == userid then
+			return serverid
+		end
+	end
+
+	return 0
+end
+
+function cAPI.HasKnownPlayersChanged()
+	local _temp = serverToUserChanged
+	serverToUserChanged = false
+	return _temp
+end

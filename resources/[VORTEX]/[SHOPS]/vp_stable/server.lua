@@ -102,7 +102,9 @@ AddEventHandler(
         local Character = User:getCharacter()
 
         User:setHorse(id)
-        Character:setHorse(id)
+
+        -- Character:setHorse(id)
+        
         local Horse = Character:getHorse()
         
         TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo selecionado', 5000)

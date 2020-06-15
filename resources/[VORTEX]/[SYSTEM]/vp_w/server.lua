@@ -99,7 +99,8 @@ local weatherPerRegion = {
         ["misty"] = 0.2
     },
     ["BayouNwa"] = {
-        ["sunny"] = 0.2
+        ["sunny"] = 0.0,
+        ["fog"] = 1.0,
     }
 }
 

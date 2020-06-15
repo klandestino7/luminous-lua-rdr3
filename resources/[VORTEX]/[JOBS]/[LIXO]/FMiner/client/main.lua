@@ -131,11 +131,13 @@ function GenerateRockCoords()
             end
         end
 
-        local coordZ = GetCoordZ(RockCoordX, RockCoordY)
-        local coord = vector3(RockCoordX, RockCoordY, coordZ)
+        if RockCoordX ~= nil then
+            local coordZ = GetCoordZ(RockCoordX, RockCoordY)
+            local coord = vector3(RockCoordX, RockCoordY, coordZ)
 
-        if ValidateRockCoord(coord) then
-            return coord
+            if ValidateRockCoord(coord) then
+                return coord
+            end
         end
     end
 end

@@ -35,6 +35,23 @@ API = Tunnel.getInterface("API")
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
+
+		-- local comp = GetHashKey("COMPOSITE_LOOTABLE_VULTURE_EGG_DEF")
+
+		-- Citizen.InvokeNative(0x73F0D0327BFA0812, comp)
+		
+		-- while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, comp) do
+		-- 	Citizen.Wait(10)
+		-- end
+
+		-- Citizen.InvokeNative(0x7563CBCA99253D1A, PlayerId(), GetHashKey("BLIP_MP_ROLE_COLLECTOR_ILO"))
+		-- Citizen.InvokeNative(0x62ED71E133B6C9F1, PlayerId(), 255, 255, 0)
+
+		-- exports['research']:DataViewNetowrk(comp)
+        -- local w = Citizen.InvokeNative(0x5B4BBE80AD5972DC, comp, GetEntityCoords(PlayerPedId()), 0.0, 0, 0, -1)
+
+        -- print(w)
+
 		-- Citizen.InvokeNative(0xE72E5C1289BD1F40, 1, 0)
 		-- Citizen.InvokeNative(0x309BBEBEA8A3986C, 1, 0)
 
@@ -72,7 +89,7 @@ RegisterCommand(
 		-- coords = vec3(coords.xy, groundZ)
 
 		-- TaskSwapFishingBait(PlayerPedId(), "p_baitWorm01x", 1)
-		Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
+		-- Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
 
 		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
 		-- if IsModelValid(objHash) then
@@ -300,13 +317,13 @@ Citizen.CreateThread(
 local myFish
 local lastFishCoords
 
-RegisterCommand(
-	"hook",
-	function(source, args, rawCommand)
-		Citizen.InvokeNative(0xF0FBF193F1F5C0EA, myFish)
-		SetEntityInvincible(myFish, true)
-		SetPedConfigFlag(myFish, 17, true)
-		Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(), myFish)
+-- RegisterCommand(
+-- 	"hook",
+-- 	function(source, args, rawCommand)
+-- 		Citizen.InvokeNative(0xF0FBF193F1F5C0EA, myFish)
+-- 		SetEntityInvincible(myFish, true)
+-- 		SetPedConfigFlag(myFish, 17, true)
+-- 		Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(), myFish)
 
 		--[[
 			CRIAR UM OBJETO DE BAIT
@@ -314,56 +331,56 @@ RegisterCommand(
 			E PEGAR OS PEIXES PROXIMO DELE
 		]]
 
-	end
-)
+-- 	end
+-- )
 
-RegisterCommand(
-	"fish",
-	function(source, args, rawCommand)
-		local r = {
-			"A_C_FISHBLUEGIL_01_SM",
-			"A_C_FISHBULLHEADCAT_01_SM",
-			"A_C_FISHCHAINPICKEREL_01_SM",
-			"A_C_FISHCHANNELCATFISH_01_LG",
-			"A_C_FISHLAKESTURGEON_01_LG",
-			"A_C_FISHLARGEMOUTHBASS_01_MS",
-			"A_C_FISHLONGNOSEGAR_01_LG",
-			"A_C_FISHMUSKIE_01_LG",
-			"A_C_FISHNORTHERNPIKE_01_LG",
-			"A_C_FISHPERCH_01_SM",
-			"A_C_FISHREDFINPICKEREL_01_SM",
-			"A_C_FISHROCKBASS_01_SM",
-			"A_C_FISHSMALLMOUTHBASS_01_MS",
-			"A_C_FISHSALMONSOCKEYE_01_MS",
-			"A_C_FISHRAINBOWTROUT_01_MS"
-		}
+-- RegisterCommand(
+-- 	"fish",
+-- 	function(source, args, rawCommand)
+-- 		local r = {
+-- 			"A_C_FISHBLUEGIL_01_SM",
+-- 			"A_C_FISHBULLHEADCAT_01_SM",
+-- 			"A_C_FISHCHAINPICKEREL_01_SM",
+-- 			"A_C_FISHCHANNELCATFISH_01_LG",
+-- 			"A_C_FISHLAKESTURGEON_01_LG",
+-- 			"A_C_FISHLARGEMOUTHBASS_01_MS",
+-- 			"A_C_FISHLONGNOSEGAR_01_LG",
+-- 			"A_C_FISHMUSKIE_01_LG",
+-- 			"A_C_FISHNORTHERNPIKE_01_LG",
+-- 			"A_C_FISHPERCH_01_SM",
+-- 			"A_C_FISHREDFINPICKEREL_01_SM",
+-- 			"A_C_FISHROCKBASS_01_SM",
+-- 			"A_C_FISHSMALLMOUTHBASS_01_MS",
+-- 			"A_C_FISHSALMONSOCKEYE_01_MS",
+-- 			"A_C_FISHRAINBOWTROUT_01_MS"
+-- 		}
 
-		local pedModel = r[math.random(1, #r)]
+-- 		local pedModel = r[math.random(1, #r)]
 
-		local pedModelHash = GetHashKey(pedModel)
-		if not IsModelValid(pedModelHash) then
-			print("model is not valid")
-			return
-		end
+-- 		local pedModelHash = GetHashKey(pedModel)
+-- 		if not IsModelValid(pedModelHash) then
+-- 			print("model is not valid")
+-- 			return
+-- 		end
 
-		if not HasModelLoaded(pedModelHash) then
-			RequestModel(pedModelHash)
-			while not HasModelLoaded(pedModelHash) do
-				Citizen.Wait(10)
-			end
-		end
+-- 		if not HasModelLoaded(pedModelHash) then
+-- 			RequestModel(pedModelHash)
+-- 			while not HasModelLoaded(pedModelHash) do
+-- 				Citizen.Wait(10)
+-- 			end
+-- 		end
 
-		local plped = PlayerPedId()
-		local forward = GetEntityForwardVector(plped)
-		local c = GetEntityCoords(plped) + (forward * 10.0)
+-- 		local plped = PlayerPedId()
+-- 		local forward = GetEntityForwardVector(plped)
+-- 		local c = GetEntityCoords(plped) + (forward * 10.0)
 
-		local ped = CreatePed(pedModelHash, c, GetEntityHeading(plped), 1, 0)
-		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
-		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
-		myFish = ped
-		lastFishCoords = c
-	end
-)
+-- 		local ped = CreatePed(pedModelHash, c, GetEntityHeading(plped), 1, 0)
+-- 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
+-- 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+-- 		myFish = ped
+-- 		lastFishCoords = c
+-- 	end
+-- )
 
 local p1
 local p2
