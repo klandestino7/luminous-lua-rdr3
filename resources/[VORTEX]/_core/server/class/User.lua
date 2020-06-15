@@ -249,7 +249,8 @@ function API.User(source, id, ipAddress)
 
     self.setHorse = function(this, id)
         local Horse = self:getCharacter():setHorse(id)
-        cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
+        TriggerClientEvent('VP:HORSE:SetHorseInfo', self:getSource(),Horse:getModel(), Horse:getName(), Horse:getComponents())
+        -- cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
     end
 
     self.notify = function(this, type, text, quantity)
