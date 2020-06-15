@@ -800,21 +800,23 @@ end
 function canFitHotbarSlot(slotId, itemId)
     local itemData = API.getItemDataFromId(itemId)
 
-    if slotId == 129 or slotId == 130 then
-        if not itemData:isMelee(itemId) and not itemData:isThrowable(itemId) then
-            return true
-        else
-            return false
-        end
-    end
+    return true
 
-    if slotId == 131 then
-        return itemData:isMelee(itemId)
-    end
+    -- if slotId == 129 or slotId == 130 then
+    --     if not itemData:isMelee(itemId) and not itemData:isThrowable(itemId) then
+    --         return true
+    --     else
+    --         return false
+    --     end
+    -- end
 
-    if slotId == 132 then
-        return itemData:isThrowable(itemId)
-    end
+    -- if slotId == 131 then
+    --     return itemData:isMelee(itemId)
+    -- end
+
+    -- if slotId == 132 then
+    --     return itemData:isThrowable(itemId)
+    -- end
 end
 
 function deepcopy(orig)
