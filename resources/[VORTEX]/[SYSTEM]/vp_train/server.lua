@@ -34,8 +34,3 @@ AddEventHandler(
   end
 )
 
-RegisterCommand('TrainSpawn', function ()
-
- TriggerClientEvent("Trainroute", GetHostId())
-
-end)
