@@ -51,15 +51,16 @@ function draw(shopId) {
 
                 var itemId = itemData[0];
                 var itemPrice_dollar = itemData[1];
-                var itemPrice_gold = itemData[2];
+                // var itemPrice_gold = itemData[2];
                 var itemAmountNeededToSell = itemData[3];
                 var itemName = itemData[4];
                 var itemDescription = itemData[5];
-                var itemWeight = itemData[6];
+                // var itemWeight = itemData[6];
+                var itemWeight = 0;
 
                 itemWeight = itemWeight.toFixed(1);
                 itemPrice_dollar = (itemPrice_dollar / 100).toFixed(2);
-                itemPrice_gold = (itemPrice_gold / 100).toFixed(2);
+                // itemPrice_gold = (itemPrice_gold / 100).toFixed(2);
 
                 $('.slot-container').append(`
                     <div class="slot" id="${itemId}" onclick="select(this)">
@@ -67,14 +68,14 @@ function draw(shopId) {
                     </div>
                 `);
 
-               var element = $(`.slot-container #${itemId}`);
+                var element = $(`.slot-container #${itemId}`);
                 $(element).attr('shopId', shopId);
                 $(element).attr('minSell', itemAmountNeededToSell);
                 $(element).attr('name', itemName);
                 $(element).attr('descripition', itemDescription);
                 $(element).attr('weight', itemWeight);
                 $(element).attr('p_dollar', itemPrice_dollar);
-                $(element).attr('p_gold', itemPrice_gold);
+                // $(element).attr('p_gold', itemPrice_gold);
 
                 renderedItems++;
             }
@@ -115,21 +116,21 @@ function sell(gold) {
         $('#confirmation-container #confirm_title').text(itemName);
         buyingWithGold = gold;
 
-        $('#p_gold_img').removeClass('fhover_gold');
+        // $('#p_gold_img').removeClass('fhover_gold');
         $('#p_dollar_img').removeClass('fhover_dollar');
 
-        if (buyingWithGold) {
-            $('#p_gold_img').addClass('fhover_gold');
-        } else {
+        // if (buyingWithGold) {
+        //     $('#p_gold_img').addClass('fhover_gold');
+        // } else {
             $('#p_dollar_img').addClass('fhover_dollar');
-        }
+        // }
     }
 }
 
 function cancel() {
     $('#confirmation-container').hide();
-    $('#p_gold_img').removeClass('fhover_gold');
-    $('#p_dollar_img').removeClass('fhover_dollar');
+    // $('#p_gold_img').removeClass('fhover_gold');
+    // $('#p_dollar_img').removeClass('fhover_dollar');
     buyingWithGold = false;
 }
 
@@ -139,8 +140,8 @@ function sellItem() {
         var itemId = $('.selected').attr('id');
 
         $('#confirmation-container').hide();
-        $('#p_gold_img').removeClass('fhover_gold');
-        $('#p_dollar_img').removeClass('fhover_dollar');
+        // $('#p_gold_img').removeClass('fhover_gold');
+        // $('#p_dollar_img').removeClass('fhover_dollar');
 
         $.post('http://vp_shop_sell/sellItem', JSON.stringify({ shopId: shopId, itemId: itemId, withGold: buyingWithGold }));
         buyingWithGold = false;
@@ -166,19 +167,34 @@ function select(element) {
 
         $(element).addClass('selected');
 
-        var item_name = $(element).attr('name');
-        var item_min_sell = $(element).attr('minSell');
-        var item_description = $(element).attr('description');
-        var item_weight = $(element).attr('weight');
-        var item_p_dollar = $(element).attr('p_dollar');
-        var item_p_gold = $(element).attr('p_gold');
+        let item_name = $(element).attr('name');
+        let item_min_sell = $(element).attr('minSell');
+        let item_description = $(element).attr('description');
+        let item_weight = $(element).attr('weight');
+        let item_p_dollar = $(element).attr('p_dollar');
+        // var item_p_gold = $(element).attr('p_gold');
 
-        $('#name').text('x' + item_min_sell + ' ' + item_name);
+        // $('#name').text('x' + item_min_sell + ' ' + item_name);
+        $('#name').text(item_name);
         $('#description').text(item_description);
-        $('#weight').text(item_weight + 'KG');
-        $('#p_dollar').text(item_p_dollar);
-        $('#p_gold').text(item_p_gold);
+        // $('#weight').text(item_weight + 'KG');
+        // if (item_p_gold != undefined) {
+        //     $('#p_dollar').show();
+        //     $('#p_dollar').text(item_p_dollar);
+        // }else{
+        //     $('#p_dollar').hide();
+        // }
+        $('#p_dollar').text("$" + item_p_dollar);
 
+        let itemId = $(element).attr('id');
+        let shopId = $(element).attr('shopId');
+
+        $.post('http://vp_shop_sell/selectedItem', JSON.stringify({ shopId: shopId, itemId: itemId}));
+
+        // $.post("http://vp_shop_sell/selectedItem", JSON.stringify({
+        //     itemId: itemId,
+        //     shopId: shopId
+        // }));
         // $('#confirmation-container #confirm_title').text(item_name);
     }
 }
@@ -189,9 +205,11 @@ function unSelect(element) {
         $('#name').text('');
         $('#description').text('');
         $('#confirmation-container').hide();
-        buyingWithGold = false;
-        $('#p_gold_img').removeClass('fhover_gold');
-        $('#p_dollar_img').removeClass('fhover_dollar');
+        // buyingWithGold = false;
+        // $('#p_gold_img').removeClass('fhover_gold');
+        // $('#p_dollar_img').removeClass('fhover_dollar');
+
+        $.post("http://vp_shop_sell/unselectedItem", JSON.stringify({}));
     }
 }
 

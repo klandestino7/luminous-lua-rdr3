@@ -8,9 +8,16 @@ local closestShopId
 local closestShopVector
 
 local prompt
+local prompt_sell
 local prompt_group
 
 local sentFirstData = false
+
+local NUIOpen = false
+
+local selected_itemId
+local selected_shopId
+local selected_prompt_group_name
 
 Citizen.CreateThread(
     function()
@@ -51,17 +58,38 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
-            if closestShopId ~= nil then
-                local ped = PlayerPedId()
-                local pCoords = GetEntityCoords(ped)
+            if NUIOpen == false then
+                if closestShopId ~= nil then
+                    local ped = PlayerPedId()
+                    local pCoords = GetEntityCoords(ped)
 
-                if #(pCoords - closestShopVector) <= 1.5 then
-                    PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", closestShopId))
-                    if PromptHasHoldModeCompleted(prompt) then
-                        if IsControlPressed(0, 0xDFF812F9) then
-                            TriggerEvent("VP:SHOP:SELL:OpenShop", closestShopId)
-                            Citizen.Wait(1000)
+                    if #(pCoords - closestShopVector) <= 1.5 then
+                        PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", closestShopId))
+                        if PromptHasHoldModeCompleted(prompt) then
+                            if IsControlPressed(0, 0xDFF812F9) then
+                                TriggerEvent("VP:SHOP:SELL:OpenShop", closestShopId)
+                                Citizen.Wait(1000)
+                            end
                         end
+                    end
+                end
+            else
+                DisableAllControlActions(0)
+                DisableAllControlActions(1)
+                DisableAllControlActions(2)
+                EnableControlAction(0, 0x7F8D09B8, true)
+                if selected_shopId ~= nil and selected_itemId ~= nil then
+                    PromptSetActiveGroupThisFrame(prompt_group, selected_prompt_group_name)
+                    if PromptHasHoldModeCompleted(prompt_sell) then
+                        PromptSetEnabled(prompt_sell, false)
+                        Citizen.CreateThread(
+                            function()
+                                Citizen.Wait(1000)
+                                PromptSetEnabled(prompt_sell, true)
+                            end
+                        )
+
+                        TriggerServerEvent("VP:SHOP:TryToSell", selected_shopId, selected_itemId, false)
                     end
                 end
             end
@@ -84,6 +112,24 @@ function InitiatePrompts()
     PromptRegisterEnd(prompt)
 end
 
+function InitiatePostOpenShopPrompts()
+    prompt_sell = PromptRegisterBegin()
+    PromptSetControlAction(prompt_sell, 0x7F8D09B8)
+    PromptSetText(prompt_sell, CreateVarString(10, "LITERAL_STRING", "Vender"))
+    PromptSetEnabled(prompt_sell, true)
+    PromptSetVisible(prompt_sell, false)
+    PromptSetHoldMode(prompt_sell, true)
+    PromptSetGroup(prompt_sell, prompt_group)
+    PromptRegisterEnd(prompt_sell)
+
+    -- prompt_sell_all = PromptRegisterBegin()
+    -- PromptSetControlAction(prompt_sell_all, 0xDFF812F9)
+    -- PromptSetText(prompt_sell_all, CreateVarString(10, "LITERAL_STRING", "Vender Tudo"))
+    -- PromptSetEnabled(prompt_sell_all, true)
+    -- PromptSetVisible(prompt_sell_all, true)
+    -- PromptSetHoldMode(prompt_sell_all, true)
+end
+
 RegisterNetEvent("VP:SHOP:SELL:OpenShop")
 AddEventHandler(
     "VP:SHOP:SELL:OpenShop",
@@ -102,11 +148,13 @@ AddEventHandler(
                 for key, value in pairs(shopData) do
                     if key ~= "name" then
                         for _, shopItemData in pairs(value) do
-                            local itemData = ItemList[shopItemData[1]]
+                            local itemId = shopItemData[1]
+                            local itemData = ItemList[itemId]
                             if itemData then
+                                local minItemAmount = shopItemData[3]
                                 shopItemData[5] = itemData.name
                                 shopItemData[6] = itemData.desc
-                                shopItemData[7] = itemData.weight * shopItemData[4]
+                                shopItemData[7] = itemData.weight * minItemAmount
                             end
                         end
                     end
@@ -123,20 +171,47 @@ AddEventHandler(
             sentFirstData = true
         end
         SetNuiFocus(true, true)
+        SetNuiFocusKeepInput(true)
+
+        InitiatePostOpenShopPrompts()
+        NUIOpen = true
+    end
+)
+
+-- RegisterNUICallback(
+--     "sellItem",
+--     function(data, cb)
+--         TriggerServerEvent("VP:SHOP:TryToSell", data.shopId, data.itemId, data.withGold)
+--     end
+-- )
+
+RegisterNUICallback(
+    "selectedItem",
+    function(data)
+        selected_itemId = data.itemId
+        selected_shopId = data.shopId
+        selected_prompt_group_name = CreateVarString(10, "LITERAL_STRING", "x" .. GetItemSellAmount(selected_shopId, selected_itemId) .. " " .. ItemList[selected_itemId].name)
+
+        PromptSetVisible(prompt, false)
+        PromptSetVisible(prompt_sell, true)
+        PromptSetText(prompt_sell, CreateVarString(10, "LITERAL_STRING", "Vender"))
     end
 )
 
 RegisterNUICallback(
-    "sellItem",
+    "unselectedItem",
     function(data, cb)
-        TriggerServerEvent("VP:SHOP:TryToSell", data.shopId, data.itemId, data.withGold)
+        -- local itemId = cb.itemId
+        selected_itemId = nil
+        selected_shopId = nil
+        PromptSetVisible(prompt_sell, false)
     end
 )
 
 RegisterNUICallback(
     "focusOff",
     function(data, cb)
-        SetNuiFocus(false, false)
+        NUIHide()
     end
 )
 
@@ -144,12 +219,7 @@ AddEventHandler(
     "onResourceStop",
     function(resourceName)
         if resourceName == GetCurrentResourceName() then
-            SendNUIMessage(
-                {
-                    display = false
-                }
-            )
-            SetNuiFocus(false, false)
+            NUIHide()
 
             if prompt ~= nil then
                 PromptDelete(prompt)
@@ -157,3 +227,31 @@ AddEventHandler(
         end
     end
 )
+
+function NUIHide()
+    SendNUIMessage(
+        {
+            display = false
+        }
+    )
+    SetNuiFocusKeepInput(false)
+
+    SetNuiFocus(false, false)
+    NUIOpen = false
+    PromptDelete(prompt_sell)
+    PromptSetVisible(prompt, true)
+end
+
+function GetItemSellAmount(shopId, itemId)
+    for i = 1, #Config.ShopDatas do
+        if Config.ShopDatas[i].name == shopId then
+            for _, v in pairs(Config.ShopDatas[i][1]) do
+                local _itemId = v[1]
+                if _itemId == itemId then
+                    return v[3]
+                end
+            end
+            break
+        end
+    end
+end
