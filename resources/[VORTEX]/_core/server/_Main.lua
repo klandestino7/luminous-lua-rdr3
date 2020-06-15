@@ -64,14 +64,20 @@ function API.getUserIdFromCharId(charid)
     return nil
 end
 
-function API.getUsersByGroup(group)
+function API.getUsersByGroup(group, checkForInheritance)
     local ret = {}
 
     for user_id, User in pairs(API.getUsers()) do
         local Character = User:getCharacter()
         if Character ~= nil then
-            if Character:hasGroupOrInheritance(group) then
-                table.insert(ret, User)
+            if checkForInheritance == nil or checkForInheritance == true then
+                if Character:hasGroupOrInheritance(group) then
+                    table.insert(ret, User)
+                end
+            else
+                if Character:hasGroup(group) then
+                    table.insert(ret, User)
+                end
             end
         end
     end
@@ -131,7 +137,7 @@ function API.dropPlayer(source, reason)
 
         print(#GetPlayers() .. "/32 | " .. playerName .. " (" .. ipAddress .. ") desconectou (motivo = " .. reason .. ")")
 
-        TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, source, nil)
+        TriggerClientEvent("VP:_CORE:SetServerIdAsUserId", -1, source, nil)
     --    User:saveCharacter()
     end
 end
