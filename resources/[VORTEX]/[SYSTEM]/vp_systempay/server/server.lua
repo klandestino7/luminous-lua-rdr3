@@ -96,3 +96,68 @@ AddEventHandler(
 		end
 	end
 )
+
+local r = {
+	["trooper"] = 15000,
+	["sheriff"] = 25000
+}
+
+local withHoldingPaymentToUsers = {}
+
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(1000 * 60 * 60)
+
+			for group, payment in pairs(r) do
+				for _, User in pairs(API.getUsersByGroup(group)) do
+					local Character = User:getCharacter()
+
+					local user_id = User:getId()
+
+					if Character ~= nil then
+						local Inventory = Character:getInventory()
+
+						if Inventory:addItem("money", payment) then
+							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
+						else
+							if withHoldingPaymentToUsers[user_id] then
+								payment = payment + withHoldingPaymentToUsers[user_id]
+							end
+							withHoldingPaymentToUsers[user_id] = payment
+						end
+					else
+						if withHoldingPaymentToUsers[user_id] then
+							payment = payment + withHoldingPaymentToUsers[user_id]
+						end
+						withHoldingPaymentToUsers[user_id] = payment
+					end
+				end
+			end
+		end
+	end
+)
+
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(1000 * 60 * 1)
+
+			for user_id, totalpayment in pairs(withHoldingPaymentToUsers) do
+				local User = API.getUserFromId(user_id)
+				if User ~= nil then
+					local Character = User:getCharacter()
+					if Character ~= nil then
+						local Inventory = Character:getInventory()
+						if Inventory:addItem('money', totalpayment) then
+							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
+							withHoldingPaymentToUsers[user_id] = nil
+						else
+							User:notify("error", "Sem espaço na Bolsa para receber salário!")
+						end
+					end
+				end
+			end
+		end
+	end
+)
