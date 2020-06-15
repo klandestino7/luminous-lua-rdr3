@@ -504,7 +504,7 @@ RegisterCommand(
                     m = m .. " " .. args[i]
                 end
 
-                TriggerClientEvent("VP:TOAST:New", -1, "longer_speech", m)
+                TriggerClientEvent("VP:NOTIFY:Simple", -1, m, 10000)
             end
         end
     end
