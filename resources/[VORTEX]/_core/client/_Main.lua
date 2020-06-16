@@ -87,7 +87,7 @@ Citizen.CreateThread(
 Citizen.CreateThread(
 	function()
 		while true do
-			Citizen.Wait(60000)
+			Citizen.Wait(30000)
 			if cAPI.IsPlayerInitialized() then
 				local playerPed = PlayerPedId()
 				if playerPed and playerPed ~= -1 then
