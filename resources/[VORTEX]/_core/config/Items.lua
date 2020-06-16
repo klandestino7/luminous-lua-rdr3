@@ -840,6 +840,13 @@ ItemList = {
         description = "Munição produzida especialmente para rifles.",
         stackSize = 45
     },
+    ["ammo_sniper"] = {
+        type = "ammo",
+        name = "Munição de Sniper",
+        weight = 0.1,
+        description = "Munição produzida especialmente para snipers.",
+        stackSize = 45
+    },
     -- ['ammo_rifle_express'] = {
     --     type = 'ammo',
     --     name = 'Munição de Rifle Expresso',
@@ -868,13 +875,13 @@ ItemList = {
     --     description = 'Munição produzida especialmente para rifles do tipo split.',
     --     stackSize = 60,
     -- },
-    ["ammo_rifle_varmint"] = {
-        type = "ammo",
-        name = "Munição de Rifle",
-        weight = 0.1,
-        description = "Munição produzida especialmente para rifles.",
-        stackSize = 60
-    },
+    -- ["ammo_rifle_varmint"] = {
+    --     type = "ammo",
+    --     name = "Munição de Rifle",
+    --     weight = 0.1,
+    --     description = "Munição produzida especialmente para rifles.",
+    --     stackSize = 60
+    -- },
     ["ammo_shotgun"] = {
         type = "ammo",
         name = "Munição de Shotgun",
