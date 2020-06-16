@@ -581,6 +581,27 @@ ItemList = {
         description = "Carne obtida após esfolar o animal",
         stackSize = 6
     },
+    ["meat_poor"] = {
+        type = "generic",
+        name = "Carne Animal Péssima",
+        weight = 1.0,
+        description = "Carne obtida após esfolar o animal",
+        stackSize = 6
+    },
+    ["meat_good"] = {
+        type = "generic",
+        name = "Carne Animal Boa",
+        weight = 1.0,
+        description = "Carne obtida após esfolar o animal",
+        stackSize = 6
+    },
+    ["meat_perfect"] = {
+        type = "generic",
+        name = "Carne Animal Perfeita",
+        weight = 1.0,
+        description = "Carne obtida após esfolar o animal",
+        stackSize = 6
+    },
     ["raw_iron"] = {
         type = "generic",
         name = "Metal Bruto",
