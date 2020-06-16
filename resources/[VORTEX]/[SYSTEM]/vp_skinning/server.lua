@@ -13,7 +13,7 @@ local AnimalModelToItem = {
 RegisterNetEvent("VP:SKINNING:Skinned")
 AddEventHandler(
     "VP:SKINNING:Skinned",
-    function(entityModelHash, isHuman)
+    function(entityModelHash, isHuman, entityQuality)
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -25,12 +25,20 @@ AddEventHandler(
 
         local Inventory = Character:getInventory()
 
-        local item = "meat"
+        local item = 'meat_poor'
         local itemAmount = 1
 
         if not isHuman then
             if AnimalModelToItem[entityModelHash] then
                 item = AnimalModelToItem[entityModelHash] 
+            else
+                if entityQuality == 2 then
+                    item = 'meat_perfect'
+                elseif  entityQuality == 1 then
+                    item = 'meat_good'
+                elseif  entityQuality == 0 then
+                    item = 'meat_poor'
+                end
             end
         else
             item = 'money'
