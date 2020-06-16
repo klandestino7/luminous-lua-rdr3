@@ -67,6 +67,8 @@ AddEventHandler(
 
                             local index = indexOf(_source)
 
+                            local seconds = 15
+
                             while index ~= nil do
                                 Citizen.Wait(1000)
 
@@ -75,15 +77,21 @@ AddEventHandler(
                                 -- print("user_id" .. user_id .. " source: " .. source, index)
 
                                 if index ~= nil then
-                                    deferrals.update("Conectando em " .. (index * 30) .. " segundos. Aguarde!")
+                                    deferrals.update("Conectando em " .. (index * seconds) .. " segundos. Aguarde!")
 
                                     -- print(_source, index)
 
                                     if index == 1 then
-                                        Citizen.Wait(30000)
+                                        Citizen.Wait(seconds * 1000)
 
                                         -- sessionQueue = splice(sessionQueue, index, 1)
                                         table.remove(sessionQueue, index)
+
+                                        if #GetPlayers() > 30 then
+                                            seconds = 30
+                                        else
+                                            seconds = 15
+                                        end
 
                                         if #GetPlayers() < 32 and #API.users < 32 then
                                             TriggerEvent("API:playerJoin", user_id, _source, playerName)
