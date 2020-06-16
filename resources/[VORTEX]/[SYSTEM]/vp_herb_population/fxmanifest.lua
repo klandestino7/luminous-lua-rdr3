@@ -4,6 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_scripts {
     "@_core/lib/utils.lua",
+    'exports.js',
     'client.lua',
 }
 
@@ -11,3 +12,8 @@ client_scripts {
 -- 	"@_core/lib/utils.lua",
 -- 	'server.lua'
 -- }
+
+exports {
+	'NativeCreateComposite',
+	'NativeGetCompositeEntities',
+}

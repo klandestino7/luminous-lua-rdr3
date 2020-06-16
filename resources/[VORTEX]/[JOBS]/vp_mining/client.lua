@@ -213,7 +213,7 @@ AddEventHandler(
 RegisterNetEvent("VP:MINING:StartMiningAnimation")
 AddEventHandler(
     "VP:MINING:StartMiningAnimation",
-    function()        
+    function()
         if not IsPedMale(PlayerPedId()) then
             local waiting = 0
             local dict = "amb_work@world_human_pickaxe@wall@male_d@base"
@@ -222,7 +222,7 @@ AddEventHandler(
                 waiting = waiting + 100
                 Citizen.Wait(100)
                 if waiting > 5000 then
-                  --  TriggerEvent("redemrp_notification:start", "Request Animation is broken, Relog", 4, "warning")
+                    --  TriggerEvent("redemrp_notification:start", "Request Animation is broken, Relog", 4, "warning")
                     break
                 end
             end
@@ -243,7 +243,7 @@ AddEventHandler(
             TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, false, -1.0, false)
         end
 
-       --- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, 0, -1.0, false)
+        --- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("EA_WORLD_HUMAN_PICKAXE_NEW"), 0, true, 0, -1.0, false)
 
         local timeout = 2000
         while GetScriptTaskStatus(PlayerPedId(), 0x3B3A458F, 0) ~= 1 do
@@ -305,3 +305,72 @@ end
 function NativeFindClosestActiveScenarioPointOfType(position, type, radius)
     return Citizen.InvokeNative(0xF533D68FF970D190, position, type, radius, 0, 0, Citizen.ResultAsInteger())
 end
+
+--[[
+Citizen.CreateThread(
+    function()
+        local DRAW_LINE = GetHashKey("DRAW_LINE")
+
+        local r = 100.0
+
+        while true do
+            Citizen.Wait(0)
+
+            local ped = PlayerPedId()
+            local pedCoords = GetEntityCoords(ped)
+
+            local Cx, Cy, Cz = table.unpack(pedCoords)
+
+            -- local _, pedGroundZ, _ = GetGroundZAndNormalFor_3dCoord(Cx, Cy, Cz)
+
+            -- if _ then
+            --     Cz = pedGroundZ + 0.1
+            -- end
+
+            for i = 0, 360, 2.5 do
+                i = math.rad(i)
+                local X_deg0 = Cx + (r * math.cos(i))
+                local Y_deg0 = Cy + (r * math.sin(i))
+
+                local Vec = vec3(X_deg0, Y_deg0, Cz)
+
+                local shapeTest = StartShapeTestRay(pedCoords, Vec, -1, ped)
+                local retvval, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(shapeTest)
+
+                if hit ~= 0 then
+                    Vec = endCoords
+                end
+
+                local _, groundZ, _ = GetGroundZAndNormalFor_3dCoord(Vec.x, Vec.y, Vec.z)
+
+                if _ then
+                    Vec = vec3(Vec.xy, groundZ)
+                end
+
+                if entityHit == 0 then
+                    if not NativeIsCollisionMarkedOutside(Vec) then
+                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, Vec, Vec + vec3(0, 0, 0.7), 0, 0, 255, 255)
+                    else
+                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, Vec, Vec + vec3(0, 0, 0.7), 255, 0, 0, 51)
+                    end
+                else
+                    if not IsEntityAnObject(entityHit) then
+                        if not NativeIsCollisionMarkedOutside(Vec) then
+                            Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, Vec, Vec + vec3(0, 0, 0.7), 0, 255, 0, 255)
+                        else
+                            Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, Vec, Vec + vec3(0, 0, 0.7), 255, 0, 0, 51)
+                        end
+                    else
+                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, Vec, Vec + vec3(0, 0, 0.7), 255, 0, 0, 51)
+                    end
+                end
+            end
+        end
+    end
+)
+
+
+function NativeIsCollisionMarkedOutside(v)
+    return Citizen.InvokeNative(0xF291396B517E25B2, v)
+end
+--]]

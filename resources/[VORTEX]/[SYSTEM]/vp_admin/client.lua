@@ -83,7 +83,7 @@ AddEventHandler(
 
 		local obj = CreateObject(modelHash, x, y, z, 1, 1, 1)
 
-		print('spawned', obj)
+		print("spawned", obj)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
 	end
 )
@@ -378,3 +378,24 @@ function RotationToDirection(rotation)
 	}
 	return direction
 end
+
+local adminModeOn = false
+
+RegisterCommand(
+	"adminmode",
+	function()
+		if cAPI.hasGroup("admin") then
+			adminModeOn = not adminModeOn
+			cAPI.notify('error', 'ADMIN :o')
+		else
+			cAPI.notify('error', 'Não não')
+		end
+	end,
+	false
+)
+
+Citizen.CreateThread(function()
+	while true do
+		
+	end
+end)
