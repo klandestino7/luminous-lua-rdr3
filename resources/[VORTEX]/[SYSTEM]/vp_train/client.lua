@@ -92,11 +92,9 @@ Citizen.CreateThread(function()
     Wait(500)
     while true do
         Wait(8000)
-        print(GetClockHours(), GetClockMinutes(), Ghost_train)
         if GetClockHours() == 0 then
             if GetClockMinutes() >= 1 and GetClockMinutes() <= 3 then
                 if Ghost_train == nil then
-                    print('calltrain')
                     TriggerServerEvent("VP:GHOSTRAIN:calltrain")                
                 end
             end
