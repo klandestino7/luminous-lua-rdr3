@@ -9,6 +9,7 @@ function connectUser(source, user_id)
 
     if #GetPlayers() == 33 then
         API.dropPlayer(source, 'Quase bugou a instancia')
+        return
     end
 
     local steamID = GetPlayerIdentifiers(source)[1]
