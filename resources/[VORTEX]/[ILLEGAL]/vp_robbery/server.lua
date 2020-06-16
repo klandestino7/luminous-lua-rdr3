@@ -7,7 +7,7 @@ cAPI = Tunnel.getInterface("API")
 local data = {
     [1] = {
         staticName = "Banco de BlackWater",
-        staticReward = 100000,
+        staticReward = 35000,
         staticSecondsToReward = 10 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
@@ -15,14 +15,14 @@ local data = {
     },
     [2] = {
         staticName = "Banco de Saint Dennis",
-        staticReward = 200000,
+        staticReward = 50000,
         staticSecondsToReward = 15 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
     },
     [3] = {
         staticName = "Banco Rhodes",
-        staticReward = 100000,
+        staticReward = 35000,
         staticSecondsToReward = 10 * 60,
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
