@@ -305,10 +305,6 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         end
     end
 
-    self.playerDead = function()
-        self.Inventory:deleteInventory()
-    end
-
     self.setDeath = function(this, value)
         API_Database.execute("FCRP/SetPlayerDeath", {charid = self:getId(), is_dead = value})
     end
