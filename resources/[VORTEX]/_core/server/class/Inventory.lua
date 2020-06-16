@@ -286,6 +286,12 @@ function API.Inventory(id, capacity, slots)
             return false
         end
 
+        local itemWeight = itemData:getWeight()
+
+        if (itemWeight * itemAmount) + self:getWeight() > self:getCapacity() then
+            return false
+        end
+
         local itemStackSize = itemData:getStackSize()
 
         local candidatesSlots = {}
