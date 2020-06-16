@@ -132,7 +132,7 @@ RequestImap(-814821283) -- Fishing Stuff
 ------------------------------------- #### END OF RHODES STORY CAMP ####
 
 ------------------------------------- Rhodes Camp
---RequestImap(-159557995) -- Two Tents, Wagon, Chairs
+RequestImap(-159557995) -- Two Tents, Wagon, Chairs
 ------------------------------------- #### END OF RHODES CAMP ####
 
 ------------------------------------- Boat and Supplies Near Rhodes Camp
@@ -211,39 +211,43 @@ RequestImap(1234648758)
 
 
 
-
 local Imaps ={
--- /// valentine closed IPLS
-731209239,
-724436573,
--1475403379,
--518785376,
--1878882174,
-1202020135,
--1989899190,
-951314072,
--780819048,
--52140817,
-1081087978,
-696143352,
--981203673,
-1228600352,
--1301569116,
-282485265,
-56708243,
-199047531,
--776975047,
-2095116685,
--892659042,
-1136898294,
-897455211,
-1804593020,
--1049500949,
-1325716092,
+
+-- -- /// valentine closed IPLS
+-- 731209239,
+-- 724436573,
+-- -1475403379,
+-- -518785376,
+-- -1878882174,
+-- 1202020135,
+-- -1989899190,
+-- 951314072,
+-- -780819048,
+-- -52140817,
+-- 1081087978,
+-- 696143352,
+-- -981203673,
+-- 1228600352,
+-- -1301569116,
+-- 282485265,
+-- 56708243,
+-- 199047531,
+-- -776975047,
+-- 2095116685,
+-- -892659042,
+-- 1136898294,
+-- 897455211,
+-- 1804593020,
+-- -1049500949,
+-- 1325716092,
+
 --// CONVENTO IPLS
 1405627586,
 -1889108254, 
+
 --// POKER SHIP SAINT DENIS IPL 
+1347068672,
+943998860,
 1056170594,
 -873881483,
 881979872,
@@ -254,19 +258,26 @@ local Imaps ={
 -723094901,
 -801609437,
 -278745837,
+-41173958,
+1160690623,
+
 -- /// SAINT DENIS IPL, CONSTRUCTION DECK
 165972019, -- NEW
--1036688493, -- OLD
+-- -1036688493, -- OLD
+
 -- // FIX GROUND JOHN
 -284612948,
+
 -- /// MANSÃO DESTRUIDA 
 -1643869063,
 -1220264217,
 -1108618313,
 -1508467572,
 -990258606, 
+
 -- // FIX GROUND EMERALD
 -1377975054, 
+
 -- // HOUSE EMERALD    
 -574996782,
 1169511062,
@@ -287,11 +298,62 @@ AddEventHandler(
     end
 )
 
-
+function getValBank()
+    local interior = GetInteriorAtCoords(-308.2578, 777.48, 117.7031)
+    local isValid = IsValidInterior(interior)
+    if isValid then
+        if IsInteriorReady(interior) then
+                        if IsInteriorEntitySetActive(interior, "val_bank_front_windows") then
+                print("Valentine Bank Interior Already Active")
+            else
+                ActivateInteriorEntitySet(interior, "val_bank_int_curtainsopen")
+                -- ActivateInteriorEntitySet(interior, "val_bank_mud5_windowblock")
+                ActivateInteriorEntitySet(interior, "val_bank_front_windows")
+                print("Valentine Bank Interior Activated")
+            end
+        end
+    end
+end
+function getValSaloon()
+    local interior = GetInteriorAtCoords(-310.0119, 802.9316, 117.9846)
+    local isValid = IsValidInterior(interior)
+    if isValid then
+        if IsInteriorReady(interior) then
+            if IsInteriorEntitySetActive(interior, "front_windows") then
+                print("Valentine Saloon Interior Already Active")
+            else
+                ActivateInteriorEntitySet(interior, "front_windows")
+                ActivateInteriorEntitySet(interior, "val_saloon_br03_bed")
+                print("Valentine Saloon Interior Activated")
+            end
+        end
+    end
+end
+function getValJail()
+    local interior = GetInteriorAtCoords(-273.4513, 811.3408, 118.38)
+    local isValid = IsValidInterior(interior)
+    if isValid then
+        if IsInteriorReady(interior) then
+            if IsInteriorEntitySetActive(interior, "val_jail_int_walla") then
+                print("Valentine Jail Interior Already Active")
+            else
+                ActivateInteriorEntitySet(interior, "val_jail_int_walla")
+                ActivateInteriorEntitySet(interior, "val_jail_int_wallb")
+                print("Valentine Jail Interior Activated")
+            end
+        end
+    end
+end
 
 
 Citizen.CreateThread(function()
+    getValJail()
+    getValSaloon()
+    getValBank()
+
     for _,v in pairs(Imaps) do
-        RequestImap(v)
+        RequestImap(v)        
     end
+    
 end)
+
