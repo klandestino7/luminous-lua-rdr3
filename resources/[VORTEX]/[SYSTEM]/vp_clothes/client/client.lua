@@ -626,11 +626,13 @@ RegisterNUICallback(
                 hash = ("0x" .. coats_m[num])
                 setcloth(hash)
                 CoatsUsing = ("0x" .. coats_m[num])
+                coats2Using = 0
             else
                 local num = tonumber(data.id)
                 hash = ("0x" .. coats_f[num])
                 setcloth(hash)
                 CoatsUsing = ("0x" .. coats_f[num])
+                coats2Using = 0
             end
         end
     end
@@ -988,7 +990,7 @@ RegisterNUICallback(
                 local num = tonumber(data.id)
                 hash = ("0x" .. cloaks_f[num])
                 setcloth(hash)
-                cloaksUsing = ("0x" .. cloaks_f[num])
+                cloaksUsing = ("0x" .. cloaks_f[num])             
             end
         end
     end
@@ -1009,11 +1011,13 @@ RegisterNUICallback(
                 hash = ("0x" .. coats2_m[num])
                 setcloth(hash)
                 coats2Using = ("0x" .. coats2_m[num])
+                CoatsUsing = 0
             else
                 local num = tonumber(data.id)
                 hash = ("0x" .. coats2_f[num])
                 setcloth(hash)
                 coats2Using = ("0x" .. coats2_f[num])
+                CoatsUsing = 0
             end
         end
     end
