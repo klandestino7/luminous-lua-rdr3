@@ -34,14 +34,14 @@ end
 AddEventHandler(
     "playerConnecting",
     function(playerName, kickReason, deferrals)
-        deferrals.defer()
-
         if #GetPlayers() >= 31 or #API.users >= 31 then
             print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
             deferrals.done("32/32")
             CancelEvent()
             return
         end
+
+        deferrals.defer()
 
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
