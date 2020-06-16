@@ -110,9 +110,7 @@ function InitiatePrompts()
     -- N_0x0c718001b77ca468(prompt, 1.5)
     -- PrompContextSetSize(prompt, 3.0)
     PromptRegisterEnd(prompt)
-end
 
-function InitiatePostOpenShopPrompts()
     prompt_sell = PromptRegisterBegin()
     PromptSetControlAction(prompt_sell, 0x7F8D09B8)
     PromptSetText(prompt_sell, CreateVarString(10, "LITERAL_STRING", "Vender"))
@@ -121,13 +119,6 @@ function InitiatePostOpenShopPrompts()
     PromptSetHoldMode(prompt_sell, true)
     PromptSetGroup(prompt_sell, prompt_group)
     PromptRegisterEnd(prompt_sell)
-
-    -- prompt_sell_all = PromptRegisterBegin()
-    -- PromptSetControlAction(prompt_sell_all, 0xDFF812F9)
-    -- PromptSetText(prompt_sell_all, CreateVarString(10, "LITERAL_STRING", "Vender Tudo"))
-    -- PromptSetEnabled(prompt_sell_all, true)
-    -- PromptSetVisible(prompt_sell_all, true)
-    -- PromptSetHoldMode(prompt_sell_all, true)
 end
 
 RegisterNetEvent("VP:SHOP:SELL:OpenShop")
@@ -173,8 +164,9 @@ AddEventHandler(
         SetNuiFocus(true, true)
         SetNuiFocusKeepInput(true)
 
-        InitiatePostOpenShopPrompts()
         NUIOpen = true
+
+        PromptSetVisible(prompt, false)
     end
 )
 
@@ -192,7 +184,6 @@ RegisterNUICallback(
         selected_shopId = data.shopId
         selected_prompt_group_name = CreateVarString(10, "LITERAL_STRING", "x" .. GetItemSellAmount(selected_shopId, selected_itemId) .. " " .. ItemList[selected_itemId].name)
 
-        PromptSetVisible(prompt, false)
         PromptSetVisible(prompt_sell, true)
         PromptSetText(prompt_sell, CreateVarString(10, "LITERAL_STRING", "Vender"))
     end
@@ -223,6 +214,7 @@ AddEventHandler(
 
             if prompt ~= nil then
                 PromptDelete(prompt)
+                PromptDelete(prompt_sell)
             end
         end
     end
@@ -238,7 +230,7 @@ function NUIHide()
 
     SetNuiFocus(false, false)
     NUIOpen = false
-    PromptDelete(prompt_sell)
+    PromptSetVisible(prompt_sell, false)
     PromptSetVisible(prompt, true)
 end
 
