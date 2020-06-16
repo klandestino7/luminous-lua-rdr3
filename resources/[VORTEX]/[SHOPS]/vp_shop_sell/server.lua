@@ -13,6 +13,9 @@ local verificationData = {
     },
     ["Acogueiro"] = {
         ["meat"] = {100, 1, 1},
+        ["meat_poor"] = {100, 1, 1},
+        ["meat_good"] = {130, 1, 1},
+        ["meat_perfect"] = {200, 1, 1},
         ["feather_1"] = {100, 1, 5},
         ["feather_2"] = {100, 1, 5},
     },
