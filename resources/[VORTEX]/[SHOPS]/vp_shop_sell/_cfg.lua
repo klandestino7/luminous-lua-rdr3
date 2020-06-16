@@ -18,10 +18,10 @@ Config.ShopDatas = {
 			-- {"meat", 80, 32, 1},
 			-- {"feather_1", 100, 40, 5},
 			-- {"feather_2", 100, 40, 5}
-			{"meat", 80, 1},
-			{"meat_poor", 80, 1},
-			{"meat_good", 130, 1},
-			{"meat_perfect", 200, 1},
+			{"meat", 200, 1},
+			{"meat_poor", 200, 1},
+			{"meat_good", 400, 1},
+			{"meat_perfect", 800, 1},
 			{"feather_1", 100, 5},
 			{"feather_2", 100, 5}
 		}
