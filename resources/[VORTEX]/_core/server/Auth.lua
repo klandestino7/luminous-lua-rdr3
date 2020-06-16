@@ -7,7 +7,7 @@ function connectUser(source, user_id)
         return
     end
 
-    if #GetPlayers() == 33 then
+    if #GetPlayers() == 32 then
         API.dropPlayer(source, 'Quase bugou a instancia')
         return
     end
@@ -36,7 +36,7 @@ AddEventHandler(
     function(playerName, kickReason, deferrals)
         deferrals.defer()
 
-        if #GetPlayers() >= 32 or #API.users >= 32 then
+        if #GetPlayers() >= 31 or #API.users >= 31 then
             print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
             deferrals.done("32/32")
             CancelEvent()
@@ -93,7 +93,7 @@ AddEventHandler(
                                             seconds = 15
                                         end
 
-                                        if #GetPlayers() < 32 and #API.users < 32 then
+                                        if #GetPlayers() < 31 and #API.users < 31 then
                                             TriggerEvent("API:playerJoin", user_id, _source, playerName)
                                             deferrals.done()
                                         else
