@@ -38,8 +38,12 @@ Citizen.CreateThread(
                 TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
             end
 
-            if IsControlPressed(0, 0xD8F73058) then
-                ClearPedSecondaryTask(PlayerPedId())
+            if IsControlPressed(0, 0xD8F73058) then -- U | Cancelar animação
+                local ped = PlayerPedId()
+
+                ClearPedTasks(ped)
+                ClearPedSecondaryTask(ped)
+                SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
             end
             --   if IsControlPressed(1, 0x4CC0E2FE) then -- B
             --     print("apertou")
@@ -291,7 +295,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "awhisky3",
     function(source, args)
@@ -302,8 +305,6 @@ RegisterCommand(
         print(istask)
     end
 )
-
-
 
 RegisterCommand(
     "achamps",
@@ -369,7 +370,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_COTTONBALE_PICKUP_2", 0, 0)
     end
 )
-
 
 local prompts = {}
 
