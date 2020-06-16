@@ -314,6 +314,7 @@ function getValBank()
         end
     end
 end
+
 function getValSaloon()
     local interior = GetInteriorAtCoords(-310.0119, 802.9316, 117.9846)
     local isValid = IsValidInterior(interior)
@@ -329,6 +330,7 @@ function getValSaloon()
         end
     end
 end
+
 function getValJail()
     local interior = GetInteriorAtCoords(-273.4513, 811.3408, 118.38)
     local isValid = IsValidInterior(interior)
