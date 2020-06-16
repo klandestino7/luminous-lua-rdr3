@@ -131,6 +131,14 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "violao",
+    function(source, args, rawCommand)
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+        Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_GUITAR_PICKUP"), -1, true, false, false, false)
+    end
+)
+
+RegisterCommand(
     "fumar",
     function(source, args, rawCommand)
         local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
@@ -360,6 +368,7 @@ RegisterCommand(
         Citizen.InvokeNative(0x3BBDD6143FF16F98, PlayerPedId(), object, "p_hayBale03x_PH_R_HAND", "WORLD_HUMAN_COTTONBALE_PICKUP_2", 0, 0)
     end
 )
+
 
 local prompts = {}
 
