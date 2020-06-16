@@ -10,9 +10,9 @@ local AnimalModelToItem = {
     [-1076508705] = "feather_5",
 }
 
-RegisterNetEvent("VP:SKINNING:Skinned")
+RegisterNetEvent("VP:GATHERING:Gathered")
 AddEventHandler(
-    "VP:SKINNING:Skinned",
+    "VP:GATHERING:Gathered",
     function(entityModelHash, isHuman, entityQuality)
         local _source = source
 

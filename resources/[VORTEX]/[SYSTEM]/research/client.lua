@@ -191,7 +191,7 @@ RegisterCommand(
 	end
 )
 
-RegisterNetEvent("VP:EVENTS:PedFinishedGatheringPed")
+RegisterNetEvent("VP:EVENTS:PedFinishedGatheringEntity")
 RegisterNetEvent("VP:EVENTS:PedWhistle")
 RegisterNetEvent("VP:EVENTS:PedInteractionRansackScenario")
 
@@ -216,7 +216,9 @@ Citizen.CreateThread(
 				for i = 0, size - 1 do
 					local eventAtIndex = GetEventAtIndex(0, i)
 
+					-- if eventAtIndex ~= 1626561060 and eventAtIndex ~= 735942751 then
 					-- print(eventAtIndex)
+					-- end
 
 					if eventAtIndex == 1327216456 then
 						-- [bit 0] = Ped who is whistling
@@ -275,10 +277,13 @@ Citizen.CreateThread(
 						-- print("EVENT | PED_FINISHED_GATHERING_PED *totally not real name*")
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 3)
 						local ped = view["0"]
-						local pedGathered = view["2"]
+						local entity = view["2"]
 						local bool_unk = view["4"]
 
-						TriggerEvent("VP:EVENTS:PedFinishedGatheringPed", ped, pedGathered, bool_unk)
+						print(ped, entity, bool_unk, IsEntityAPed(entity))
+						print(GetEntityModel(entity))
+
+						TriggerEvent("VP:EVENTS:PedFinishedGatheringEntity", ped, entity, bool_unk)
 					elseif eventAtIndex == 218595333 then
 					-- print("Horse broken")
 					end
