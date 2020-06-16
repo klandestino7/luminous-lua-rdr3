@@ -257,6 +257,11 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
+
+                for k, v in pairs(slots) do
+                    slots[k] = json.decode(v)
+                end
+
                 Inventory = API.Inventory("horse:" .. id, tonumber(inv_query[1].inv_capacity), slots)
             end
             self.Horse = API.Horse(id, horseRows[1]["model"], horseRows[1]["name"], Inventory)
