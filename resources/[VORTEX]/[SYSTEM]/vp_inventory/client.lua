@@ -185,7 +185,7 @@ RegisterNetEvent("VP:INVENTORY:openAsPrimary")
 AddEventHandler(
     "VP:INVENTORY:openAsPrimary",
     function(slots, inventoryWeight, inventoryMaxWeight)
-        slots = computeSlots(slots)
+        slots = computeSlots(slots, true)
 
         SetNuiFocus(true, true)
         SendNUIMessage(
@@ -203,7 +203,7 @@ RegisterNetEvent("VP:INVENTORY:openAsSecondary")
 AddEventHandler(
     "VP:INVENTORY:openAsSecondary",
     function(slots, inventoryWeight, inventoryMaxWeight)
-        slots = computeSlots(slots)
+        slots = computeSlots(slots, false)
 
         SetNuiFocus(true, true)
         SendNUIMessage(
@@ -221,7 +221,7 @@ RegisterNetEvent("VP:INVENTORY:PrimarySyncSlots")
 AddEventHandler(
     "VP:INVENTORY:PrimarySyncSlots",
     function(slots, inventoryWeight)
-        slots = computeSlots(slots)
+        slots = computeSlots(slots, true)
 
         SendNUIMessage(
             {
@@ -236,7 +236,7 @@ RegisterNetEvent("VP:INVENTORY:SecondarySyncSlots")
 AddEventHandler(
     "VP:INVENTORY:SecondarySyncSlots",
     function(slots, inventoryWeight)
-        slots = computeSlots(slots)
+        slots = computeSlots(slots, false)
 
         SendNUIMessage(
             {
@@ -353,7 +353,7 @@ function closeInv()
     TriggerServerEvent("VP:INVENTORY:Close")
 end
 
-function computeSlots(table, shotOrReloaded)
+function computeSlots(table, asPrimary)
     local ped = PlayerPedId()
     for slotId, values in pairs(table) do
         local itemInfo = ItemList[values[1]]
@@ -371,7 +371,7 @@ function computeSlots(table, shotOrReloaded)
 
             local itemType = itemInfo.type
 
-            if itemInfo.type == "weapon" then
+            if itemInfo.type == "weapon" and asPrimary then
                 -- ammoInClip = ammoInClip - 1
                 values[3] = ammoInClip
                 values[4] = ammoInWeapon
