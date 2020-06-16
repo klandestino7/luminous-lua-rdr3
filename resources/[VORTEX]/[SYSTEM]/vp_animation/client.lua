@@ -131,7 +131,7 @@ RegisterCommand(
 )
 
 RegisterCommand(
-    "violao",
+    "violaob",
     function(source, args, rawCommand)
         local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_GUITAR_PICKUP"), -1, true, false, false, false)
