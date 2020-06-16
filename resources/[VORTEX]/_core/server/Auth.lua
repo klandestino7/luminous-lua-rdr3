@@ -7,6 +7,11 @@ function connectUser(source, user_id)
         return
     end
 
+    if #GetPlayers() == 33 then
+        API.dropPlayer(source, 'Quase bugou a instancia')
+        return
+    end
+
     local steamID = GetPlayerIdentifiers(source)[1]
 
     local User = API.User(source, user_id, GetPlayerEndpoint(source))
@@ -17,6 +22,7 @@ function connectUser(source, user_id)
     cAPI._clientConnected(source, true)
 
     print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
+    
     TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
 
     TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, source, user_id)
@@ -69,12 +75,12 @@ AddEventHandler(
                                 -- print("user_id" .. user_id .. " source: " .. source, index)
 
                                 if index ~= nil then
-                                    deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
+                                    deferrals.update("Conectando em " .. (index * 30) .. " segundos. Aguarde!")
 
                                     -- print(_source, index)
 
                                     if index == 1 then
-                                        Citizen.Wait(15000)
+                                        Citizen.Wait(30000)
 
                                         -- sessionQueue = splice(sessionQueue, index, 1)
                                         table.remove(sessionQueue, index)
