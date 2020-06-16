@@ -74,12 +74,12 @@ AddEventHandler(
                                 -- print("user_id" .. user_id .. " source: " .. source, index)
 
                                 if index ~= nil then
-                                    deferrals.update("Conectando em " .. (index * 15) .. " segundos. Aguarde!")
+                                    deferrals.update("Conectando em " .. (index * 25) .. " segundos. Aguarde!")
 
                                     -- print(_source, index)
 
                                     if index == 1 then
-                                        Citizen.Wait(15000)
+                                        Citizen.Wait(25000)
 
                                         -- sessionQueue = splice(sessionQueue, index, 1)
                                         table.remove(sessionQueue, index)
