@@ -341,7 +341,7 @@ Citizen.CreateThread(
             local prompt_group_close
             local prompt_close
 
-            local prompt_group_name = CreateVarString(10, "LITERAL_STRING", "Porta")
+            -- local prompt_group_name = CreateVarString(10, "LITERAL_STRING", "Porta")
 
             Citizen.CreateThread(
                 function()
@@ -367,7 +367,7 @@ Citizen.CreateThread(
                                     local doorState = doorStates[closestDoorHash][1]
 
                                     if doorState == true then
-                                        PromptSetActiveGroupThisFrame(prompt_group_close, prompt_group_name)
+                                        PromptSetActiveGroupThisFrame(prompt_group_close, CreateVarString(10, "LITERAL_STRING", "Porta"))
 
                                         if PromptHasHoldModeCompleted(prompt_close) then
                                             PromptSetEnabled(prompt_close, false)
@@ -382,7 +382,7 @@ Citizen.CreateThread(
                                             TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                         end
                                     else
-                                        PromptSetActiveGroupThisFrame(prompt_group_open, prompt_group_name)
+                                        PromptSetActiveGroupThisFrame(prompt_group_open, CreateVarString(10, "LITERAL_STRING", "Porta"))
 
                                         if PromptHasHoldModeCompleted(prompt_open) then
                                             PromptSetEnabled(prompt_open, false)
