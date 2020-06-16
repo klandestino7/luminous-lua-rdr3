@@ -7,6 +7,10 @@ function connectUser(source, user_id)
         return
     end
 
+    if #GetPlayers() == 33 then
+        API.dropPlayer(source, 'Quase bugou a instancia')
+    end
+
     local steamID = GetPlayerIdentifiers(source)[1]
 
     local User = API.User(source, user_id, GetPlayerEndpoint(source))
@@ -17,6 +21,7 @@ function connectUser(source, user_id)
     cAPI._clientConnected(source, true)
 
     print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
+    
     TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
 
     TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, source, user_id)
