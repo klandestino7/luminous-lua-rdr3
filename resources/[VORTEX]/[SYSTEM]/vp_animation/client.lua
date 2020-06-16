@@ -133,8 +133,9 @@ RegisterCommand(
 RegisterCommand(
     "violaob",
     function(source, args, rawCommand)
-        local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
-        Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_GUITAR_PICKUP"), -1, true, false, false, false)
+        local ped = PlayerPedId()
+        -- Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_GUITAR_PICKUP"), -1, true, false, false, false)
+        local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_HUMAN_GUITAR_PICKUP"), GetEntityCoords(ped) + (GetEntityForwardVector(ped) * 0.7), GetEntityHeading(ped) + 170, 2.0, -1.0, 1)
     end
 )
 
