@@ -258,15 +258,11 @@ Citizen.CreateThread(
 AddEventHandler(
     "VP:EVENTS:PedInteractionRansackScenario",
     function(pedInteracting, containerEntity, containerScenario, isClosing)
-
-        print('interact chests')
-
         if pedInteracting == PlayerPedId() then
             if not isClosing then
                 for chestId, chest in pairs(renderedChests) do
                     local entity = chest.entity
                     if containerEntity == entity then
-                        print('Opened', chestId)
                         TriggerServerEvent("VP:CHESTS:Open", chestId)
                         break
                     end
@@ -308,3 +304,11 @@ Citizen.CreateThread(
         TriggerServerEvent("VP:CHESTS:AskForSync")
     end
 )
+
+
+-- 	case joaat("S_FOOTLOCKER01X"):
+-- return "mech_ransack@chest@med@open@normal@b";
+-- case joaat("S_LOOTABLEBIGMISCCHEST"):
+--     return "mech_ransack@chest@lrg@open@normal@b";
+
+-- ENTITY::PLAY_ENTITY_ANIM(iParam1, sVar1, here, 8f, false, true, false, 0f, 0);
