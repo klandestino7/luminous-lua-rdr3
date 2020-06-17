@@ -439,34 +439,34 @@ function createPeds()
     end
 end
 
-HatUsing = 0
-ShirtsUsing = 0
-VestsUsing = 0
-PantsUsing = 0
-BootsUsing = 0
-MasksUsing = 0
-CoatsUsing = 0
-SkirtsUsing = 0
-LegsUsing = 0
-GlovesUsing = 0
-NeckwearUsing = 0
-GunbeltsUsing = 0
-cloaksUsing = 0
-coats2Using = 0
+HatUsing = nil
+ShirtsUsing = nil
+VestsUsing = nil
+PantsUsing = nil
+BootsUsing = nil
+MasksUsing = nil
+CoatsUsing = nil
+SkirtsUsing = nil
+LegsUsing = nil
+GlovesUsing = nil
+NeckwearUsing = nil
+GunbeltsUsing = nil
+cloaksUsing = nil
+coats2Using = nil
 
-spursUsing = 0
-chapsUsing = 0
-spatsUsing = 0
-eyewearUsing = 0
-accessUsing = 0
-necktiesUsing = 0
-braceletsUsing = 0
-suspendersUsing = 0
-gauntletsUsing = 0
-beltsUsing = 0
-ponchosUsing = 0
-offhandUsing = 0
-beltbuckleUsing = 0
+spursUsing = nil
+chapsUsing = nil
+spatsUsing = nil
+eyewearUsing = nil
+accessUsing = nil
+necktiesUsing = nil
+braceletsUsing = nil
+suspendersUsing = nil
+gauntletsUsing = nil
+beltsUsing = nil
+ponchosUsing = nil
+offhandUsing = nil
+beltbuckleUsing = nil
 
 RegisterNUICallback(
     "Chapeu",
@@ -621,6 +621,8 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x662AC34, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xE06D30CE, 0) -- cloaks REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
             if sex == "mp_male" then
                 local num = tonumber(data.id)
                 hash = ("0x" .. coats_m[num])
@@ -980,7 +982,6 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3C1A74CD, 0) -- cloaks REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
-            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xE06D30CE, 0) -- cloaks REMOVE
             if sex == "mp_male" then
                 local num = tonumber(data.id)
                 hash = ("0x" .. cloaks_m[num])
@@ -1005,7 +1006,8 @@ RegisterNUICallback(
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xE06D30CE, 0) -- cloaks REMOVE
             Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
         else
-            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x3C1A74CD, 0) -- cloaks REMOVE
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x662AC34, 0) -- cloaks REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
             if sex == "mp_male" then
                 local num = tonumber(data.id)
                 hash = ("0x" .. coats2_m[num])
@@ -1108,6 +1110,57 @@ RegisterNUICallback(
         end
     end
 )
+
+
+local Bandana = false
+RegisterCommand(
+    "bandana",
+    function(source, args, rawCommand)
+        RequestAnimDict("mech_inventory@clothing@bandana")
+        while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
+            Citizen.Wait(100)
+        end
+
+        if not Bandana then
+            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+            Wait(2000)
+            setcloth2(tonumber(879715242))
+            Bandana = true
+        else
+            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+            Wait(2000)
+            setcloth2(tonumber(-972364774))
+            Bandana = false
+        end
+    end
+)
+
+local Badge = false
+RegisterCommand(
+    "badge",
+    function(source, args, rawCommand)
+
+        if not Badge then
+            setcloth(0x1FC12C9C)
+            Badge = true
+        else
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xDB4C451D, 0) -- SPURS REMOVE
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+            Badge = false
+        end
+    end
+)
+
+function setcloth2(hash)
+    local model2 = hash
+    if not HasModelLoaded(model2) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+    end
+
+    NativeSetPedComponentEnabled(PlayerPedId(), tonumber(hash), true, true)
+    --Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
+end
+
 
 function setcloth(hash)
     local model2 = GetHashKey(tonumber(hash))
@@ -1241,6 +1294,8 @@ Citizen.CreateThread(
         end
     end
 )
+
+
 
 function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
     local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)

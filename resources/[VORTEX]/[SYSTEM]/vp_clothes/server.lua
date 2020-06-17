@@ -25,10 +25,10 @@ AddEventHandler(
           --  if Inventory:removeItem(-1, "money", #data * 0.2) then            
               --  TriggerClientEvent('VP:CLOTHES:ClearOldClothing', _source)                
                 for k, v in pairs(dataClothes) do 
-                    --if v ~= 0 then
+                    if v ~= nil then
                       --  print(k,v)
                         Character:setData(Character:getId(), 'clothes', k, v)
-                    --end
+                    end
                    -- dbAPI.execute("UPDATE:character_data_clothing", {charid = Character:getId(), clothing = data})
                 end              
             --else
