@@ -32,8 +32,8 @@
 				closebox();
 				window.addEventListener('message', function (event) {
 					let item = event.data;
-					console.log(JSON.stringify(item.data))					
-					
+			
+
 					if (item.showhud == true) {
 						viewbox();
 						
@@ -75,4 +75,15 @@ function viewbox() {
 	$("#server").fadeIn();				
 	$("#container").delay(5000);
 	$("#server").delay(5000);
+}
+
+function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font) {
+    SetTextScale(w, h)
+    SetTextColor(Math.floor(col1), Math.floor(col2), Math.floor(col3), Math.floor(a))
+    SetTextCentre(centre)
+    if (enableShadow) {
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    }
+    Citizen.invokeNative('0xADA9255D', font)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
 }
