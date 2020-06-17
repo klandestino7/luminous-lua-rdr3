@@ -439,34 +439,34 @@ function createPeds()
     end
 end
 
-HatUsing = 0
-ShirtsUsing = 0
-VestsUsing = 0
-PantsUsing = 0
-BootsUsing = 0
-MasksUsing = 0
-CoatsUsing = 0
-SkirtsUsing = 0
-LegsUsing = 0
-GlovesUsing = 0
-NeckwearUsing = 0
-GunbeltsUsing = 0
-cloaksUsing = 0
-coats2Using = 0
+HatUsing = nil
+ShirtsUsing = nil
+VestsUsing = nil
+PantsUsing = nil
+BootsUsing = nil
+MasksUsing = nil
+CoatsUsing = nil
+SkirtsUsing = nil
+LegsUsing = nil
+GlovesUsing = nil
+NeckwearUsing = nil
+GunbeltsUsing = nil
+cloaksUsing = nil
+coats2Using = nil
 
-spursUsing = 0
-chapsUsing = 0
-spatsUsing = 0
-eyewearUsing = 0
-accessUsing = 0
-necktiesUsing = 0
-braceletsUsing = 0
-suspendersUsing = 0
-gauntletsUsing = 0
-beltsUsing = 0
-ponchosUsing = 0
-offhandUsing = 0
-beltbuckleUsing = 0
+spursUsing = nil
+chapsUsing = nil
+spatsUsing = nil
+eyewearUsing = nil
+accessUsing = nil
+necktiesUsing = nil
+braceletsUsing = nil
+suspendersUsing = nil
+gauntletsUsing = nil
+beltsUsing = nil
+ponchosUsing = nil
+offhandUsing = nil
+beltbuckleUsing = nil
 
 RegisterNUICallback(
     "Chapeu",
