@@ -393,9 +393,3 @@ RegisterCommand(
 	end,
 	false
 )
-
-Citizen.CreateThread(function()
-	while true do
-		
-	end
-end)
