@@ -5,8 +5,6 @@ local weatherPerRegion = {
         ["sunny"] = 0.45,
         ["clouds"] = 0.3,
         ["sleet"] = 0.2,
-        ["hail"] = 0.1,
-        ["drizzle"] = 0.15
     },
     ["GuarmaD"] = {
         ["sunny"] = 1.0
