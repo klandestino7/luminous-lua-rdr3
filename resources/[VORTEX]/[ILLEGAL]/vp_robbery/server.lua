@@ -48,6 +48,13 @@ AddEventHandler(
     "VP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
+        local PoliceOn = API.GetUsersByGroup("trooper") + API.GetUsersByGroup("sheriff")
+        
+        if PoliceOn < 5 then
+            -- print("Interior já está sendo roubado")
+            TriggerClientEvent("VP:NOTIFY:Simple", _source, "Este banco não pode ser roubado, polícia insuficiente.")
+            return
+        end
 
         if interiorIndexBeingRobbed ~= nil then
             -- print("Interior já está sendo roubado")
