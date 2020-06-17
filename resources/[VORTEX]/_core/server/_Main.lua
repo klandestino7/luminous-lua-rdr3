@@ -146,13 +146,19 @@ function API.kick(source, reason)
     API.dropPlayer(source, reason)
 end
 
-function API.NotifyUsersWithGroup(group, message)
+function API.NotifyUsersWithGroup(group, message, checkForInheritance)
     for user_id, User in pairs(API.users) do
         local Character = User:getCharacter()
 
         if Character ~= nil then
-            if Character:hasGroupOrInheritance(group) then
-                User:notify(message)
+            if checkForInheritance == nil or checkForInheritance == true then
+                if Character:hasGroupOrInheritance(group) then
+                    User:notify(message)
+                end
+            else
+                if Character:hasGroup(group) then
+                    User:notify(message)
+                end
             end
         end
     end

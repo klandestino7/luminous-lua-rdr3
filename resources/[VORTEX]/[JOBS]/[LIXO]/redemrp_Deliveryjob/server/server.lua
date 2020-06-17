@@ -17,16 +17,16 @@ AddEventHandler(
             return
         end
 
-        Character:varyExp(_xp)
+        Character:varyExp(xp)
 
         local Inventory = Characater:getInventory()
 
-        if Inventory:addItem("money", _cash) then
-            User:notify("dollar", _cash)
+        if Inventory:addItem("money", cash) then
+            User:notify("dollar", cash)
         end
 
-        if Inventory:addItem("gold", _gold) then
-            User:notify("gold", _gold)
+        if Inventory:addItem("gold", gold) then
+            User:notify("gold", gold)
         end
     end
 )

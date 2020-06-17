@@ -25,7 +25,7 @@ Citizen.CreateThread(
                 chestsSyncData[queryData["id"]] = {Chest.capacity, table.unpack(Chest.position)}
             end
         end
-        for _, data in pairs(ConfigStaticChests) do
+        for _, data in pairs(config_file_STATICCHESTS) do
             local chest_id, x, y, z, h, type, capacity, group = table.unpack(data)
             -- local query = API_Database.query("FCRP/CreateStaticChest", {position = json.encode({x, y, z, h}), type = type, capacity = capacity})
             -- if #query > 0 then
@@ -37,6 +37,7 @@ Citizen.CreateThread(
             if group then
                 Chest.groups = {group}
             end
+            
             Chest.capacity = capacity
 
             chests[chest_id] = Chest

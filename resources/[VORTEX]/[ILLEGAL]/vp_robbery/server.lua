@@ -62,7 +62,7 @@ AddEventHandler(
             return
         end
 
-        if data[index].cooldown ~= nil then
+        if data[index] ~= nil and data[index].cooldown ~= nil then
             if data[index].cooldown > os.time() then
                 -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
                 TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
