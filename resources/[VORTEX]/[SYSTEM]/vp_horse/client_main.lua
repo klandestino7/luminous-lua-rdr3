@@ -293,8 +293,10 @@ function InitiatePrompts()
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_eat, 1.5)
     PromptRegisterEnd(prompt_eat)
 
+    -- 0x24978A28
+
     prompt_drink = PromptRegisterBegin()
-    PromptSetControlAction(prompt_drink, 0x24978A28)
+    PromptSetControlAction(prompt_drink, 0xB4E465B4)
     PromptSetText(prompt_drink, CreateVarString(10, "LITERAL_STRING", "Mandar Beber"))
     PromptSetEnabled(prompt_drink, 1)
     PromptSetVisible(prompt_drink, 0)

@@ -1,7 +1,7 @@
 local SERVER = IsDuplicityVersion()
 local CLIENT = not SERVER
 
--- doorHash { doorState | doorPair | doorMinGroup }
+-- doorHash { isOpen | doorPair | doorMinGroup }
 local doorStates = {
     -- MANSÃO
     -- [1595076728] = {false, 1439227364},
@@ -64,16 +64,16 @@ local doorStates = {
     [1733501235] = {true, 2158285782},
     [2089945615] = {true, 2817024187},
     [2817024187] = {true, 2089945615},
-    [1751238140] = {false},
+    [1751238140] = {true},
     [531022111] = {true},
     -- GUNSMITH VALENTINE
-    [2042647667] = {false},
-    [475159788] = {false},
+    [2042647667] = {true},
+    [475159788] = {true},
     -- MEDIC VALENTINE
-    [3439738919] = {false},
+    [3439738919] = {true},
     -- STABLE VALENTINEVALENTINE
-    [1132010214] = {false, 1876749464},
-    [1331491364] = {false, 1876749464}
+    [1132010214] = {true, 1876749464},
+    [1331491364] = {true, 1876749464}
 }
 
 -- TALVEZ MUDAR O SISTEMA PARA O CLIENT SÓ PEDIR O SYNC
