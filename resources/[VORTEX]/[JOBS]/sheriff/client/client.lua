@@ -97,8 +97,14 @@ end
 
 function HandlePrompts()
 	if PromptHasHoldModeCompleted(prompt_patdown) and lastTargetPlayerServerId ~= nil then
+		PromptSetEnabled(prompt_patdown, false)
+		Citizen.CreateThread(
+			function()
+				Citizen.Wait(1000)
+				PromptSetEnabled(prompt_patdown, true)
+			end
+		)
 		TriggerServerEvent("VP:SHERIFF:TryToPatDown", lastTargetPlayerServerId)
-		Citizen.Wait(1000)
 	end
 end
 
@@ -118,12 +124,12 @@ Citizen.CreateThread(
 	function()
 		pp()
 		while true do
-			Citizen.Wait(250)
+			Citizen.Wait(0)
 			local y, entity = GetPlayerTargetEntity(PlayerId())
 
 			local foundPlayer = false
 
-			if y then
+			if entity ~= 0 then
 				for _, pid in pairs(GetActivePlayers()) do
 					if NetworkIsPlayerActive(pid) then
 						foundPlayer = true
@@ -141,7 +147,7 @@ Citizen.CreateThread(
 								local tPosition = GetEntityCoords(pped)
 
 								local dist = #(pPosition - tPosition)
-								if dist <= 1.5 and (cAPI.hasGroupOrInheritance('trooper') or IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3)) then
+								if dist <= 1.5 and (cAPI.hasGroupOrInheritance("trooper") or IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3)) then
 									PromptSetEnabled(prompt_patdown, true)
 								else
 									PromptSetEnabled(prompt_patdown, false)
@@ -152,8 +158,11 @@ Citizen.CreateThread(
 						end
 					end
 				end
+
+				if foundPlayer then
+					HandlePrompts()
+				end
 			end
-			HandlePrompts()
 			if foundPlayer == false then
 				lastTargetPlayerServerId = nil
 				PromptSetVisible(prompt_patdown, false)
