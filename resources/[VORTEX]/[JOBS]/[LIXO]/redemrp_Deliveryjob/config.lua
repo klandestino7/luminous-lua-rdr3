@@ -33,7 +33,7 @@ Config.Point1 = {x = 570.52, y = 1676.26, z = 186.48} -- Point 1 location Bacchu
 Config.Cart1 = {x = -179.88, y = 653.84, z = 113.67, h = 69.1} -- Cart spawn point
 Config.StartWorking1 = "Estaçao de Bacchus." -- Start Working Message
 Config.Cash1 = 250 -- Cash payout
-Config.Exp1 = 2 -- EXP payout
+Config.Exp1 = 10 -- EXP payout
 Config.Gold1 = 20 -- Gold payout
 
 --Annesburg to Emerald Ranch
@@ -42,7 +42,7 @@ Config.Point2 = {x = 1420.15, y = 383.93, z = 90.33} -- Point 2 location Emerald
 Config.StartWorking2 = "Emerald Ranch." -- Start Working Message
 Config.Cart2 = {x = 2923.16, y = 1291.9, z = 44.39, h = 154.38} -- Cart spawn point
 Config.Cash2 = 350 -- Cash payout
-Config.Exp2 = 2 -- EXP payout
+Config.Exp2 = 10 -- EXP payout
 Config.Gold2 = 10 -- Gold payout
 
 --Blackwater to Strawberry
@@ -51,7 +51,7 @@ Config.Point3 = {x = -1789.4, y = -376.68, z = 159.1} -- Point 3 location Strawb
 Config.Cart3 = {x = -772.71, y = -1331.18, z = 46.64, h = 92.45} -- Cart spawn point
 Config.StartWorking3 = "Strawberry." -- Start Working Message
 Config.Cash3 = 350 -- Cash payout
-Config.Exp3 = 2 -- EXP payout
+Config.Exp3 = 10 -- EXP payout
 Config.Gold3 = 10 -- Gold payout
 
 --MacFarland Ranch to Armadillo
@@ -60,5 +60,5 @@ Config.Point4 = {x = -3686.81, y = -2627.33, z = -13.43} -- Point 4 location Arm
 Config.Cart4 = {x = -2342.75, y = -2396.24, z = 62.37, h = 140.24} -- Cart spawn point
 Config.StartWorking4 = "Armadillo." -- Start Working Message
 Config.Cash4 = 500 -- Cash payout
-Config.Exp4 = 3 -- EXP payout
+Config.Exp4 = 10 -- EXP payout
 Config.Gold4 = 20 -- Gold payout
