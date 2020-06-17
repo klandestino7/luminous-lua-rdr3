@@ -97,7 +97,6 @@ body {
     position: relative;
     width: 20px;
     margin-right: 4px;
-
 }
 
 .container .inventory .inventory-container header {
@@ -267,6 +266,18 @@ Its simulated from .selected :D
     color: #9d9f9d;
 }
 
+.container .inventory .inventory-container .description-container .description-image {
+    width: fit-content;
+    height: fit-content;
+    margin: 0 auto;
+    /* border: 1px solid green; */
+}
+
+.container .inventory .inventory-container .description-container .description-image img {
+    width: 49px;
+    height: 49px;
+}
+
 .container .inventory .inventory-container .description-container .description-title {
     text-align: center;
     margin-top: 30px;
@@ -283,6 +294,21 @@ Its simulated from .selected :D
     overflow-y: scroll;
     scroll-behavior: smooth;
     margin: 0 5px 0 5px;
+}
+
+.container .inventory .inventory-container .description-container .description-range {
+    width: 100%;
+    height: fit-content;
+    margin: 5px auto 0 auto;
+    /* border: 1px solid green; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container .inventory .inventory-container .description-container .description-range #range-output {
+    font-family: 'Hapna';
+    font-size: 12px;
 }
 
 .container .inventory .inventory-container .control-tip-container {
@@ -384,3 +410,43 @@ Its simulated from .selected :D
 /* .ab {
     border: 1px solid green;
 } */
+
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    /* Full-width */
+    height: 10px;
+    /* Specified height */
+    background-color: rgba(128, 128, 128, 0.2);
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    background-size: contain;
+    margin-top: 10px;
+}
+
+
+/* Mouse-over effects */
+
+/* .slider:hover { */
+    /* opacity: 1; */
+    /* Fully shown on mouse-over */
+/* } */
+
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    cursor: pointer;
+    /* Cursor on hover */
+    /* background: #4CAF50; */
+}
