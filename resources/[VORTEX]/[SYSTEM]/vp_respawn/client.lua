@@ -8,19 +8,13 @@ local respawned = false
 local firstjoin = true
 local pressed = false
 local canDisplayRespawnPrompt = false
-local isDead = false
-local deathEndingTime
-local isInjuried = false
 local up = false
 
 local deathCause = nil
 local damageBone = {0}
-local LoopCause = false
-local InstaCause = nil
 -- local diedOfFatalCause = false
 local TookDamageToVitalOrgan = false
 local BodyPartDamage = {0}
-Button = true
 
 local diedOfFatalCauseCauses = {
 	"WEAPON_EXPLOSION",
@@ -222,7 +216,7 @@ local fakeGameplayCamDeg = 0
 
 Citizen.CreateThread(
 	function()
-		local lastHealth -- = GetEntityHealth(PlayerPedId())
+		local lastHealth  -- = GetEntityHealth(PlayerPedId())
 		while true do
 			Citizen.Wait(100)
 			-- if isBadlyInjuried == false then
@@ -257,19 +251,15 @@ Citizen.CreateThread(
 						local causeOfDeath = GetPedCauseOfDeath(PlayerPedId())
 						if GetHashKey(key) == causeOfDeath then
 							deathCause = key
-							-- print("death " .. deathCause)
 
 							if causeOfDeath == GetHashKey("WEAPON_EXPLOSION") or causeOfDeath == GetHashKey("WEAPON_THROWN_DYNAMITE") then
-								-- print("InstaCause TRUE1", key)
 								diedOfFatalCause = true
 							else
 								if causeOfDeath ~= GetHashKey("WEAPON_UNARMED") and causeOfDeath ~= GetHashKey("WEAPON_FALL") then
 									if TookDamageToVitalOrgan then
 										diedOfFatalCause = true
-									-- print("InstaCause TRUE2", key)
 									end
 								else
-									-- print("InstaCause FALSE3", key)
 									diedOfFatalCause = false
 								end
 							end
@@ -309,8 +299,6 @@ AddEventHandler(
 	"VP:RESPAWN:revive",
 	function()
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
-		isDead = false
-		isInjuried = false
 		DestroyAllCams(true)
 		DestroyDeathRelatedInformation()
 	end
@@ -322,8 +310,6 @@ AddEventHandler(
 	function()
 		cAPI.VaryPlayerHealth(5, 5)
 		Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)
-		isDead = false
-		isInjuried = false
 		DestroyAllCams(true)
 		SetEntityHealth(PlayerPedId(), 150)
 		DestroyDeathRelatedInformation()
@@ -335,9 +321,7 @@ AddEventHandler(
 	"VP:RESPAWN:PlayerUp",
 	function()
 		NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
-		isDead = false
 		DestroyAllCams(true)
-		Uptime()
 		SetEntityHealth(PlayerPedId(), 2)
 	end
 )
@@ -381,7 +365,6 @@ function HandleAsInjured(fatal)
 		-- fullDeathAtGameTime = GetGameTimer() + 1000
 
 		InitiateRespawnPrompt()
-		PromptSetEnabled(prompt_respawn, false)
 
 		while true do
 			Citizen.Wait(0)
@@ -393,12 +376,10 @@ function HandleAsInjured(fatal)
 
 				local fullDeathTimeDiff = fullDeathAtGameTime - GetGameTimer()
 
-				DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-				DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
-				DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
-				DrawTxt("" .. string.format("%.0f", math.max(fullDeathTimeDiff / 1000, 0)), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
-
 				if fullDeathTimeDiff <= 0 then
+					DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.08, 0.8, 0, 0, 0, 250, 1)
+					DrawTxt("~e~MORTO", 0.50, 0.07, 0.8, 0.8, true, 255, 255, 255, 255, true)
+
 					if PromptIsEnabled(prompt_respawn) == 0 then
 						PromptSetEnabled(prompt_respawn, true)
 					end
@@ -421,8 +402,25 @@ function HandleAsInjured(fatal)
 							end
 						end
 
-						TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
+						TriggerServerEvent("VP:RESPAWN:SetPlayerAsAliveAndClearInventory")
+
+						DoScreenFadeOut(500)
+
+						local vecSpawnAt = Locations[closestIndex]
+
+						NetworkResurrectLocalPlayer(vecSpawnAt, 59.95, true, true, false)
+						SetEntityCoords(ped, vecSpawnAt)
+
+						DoScreenFadeIn(500)
+
+						-- TriggerServerEvent("VP:Respawn:checkgroup", closestIndex)
+						break
 					end
+				else
+					DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
+					DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+					DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
+					DrawTxt("" .. string.format("%.0f", math.max(fullDeathTimeDiff / 1000, 0)), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
 				end
 			else
 				--[[
@@ -469,8 +467,8 @@ function HandleAsInjured(fatal)
 
 				if addedToReviveTime == false then
 					addedToReviveTime = true
-					timeTillFirstRevive = GetGameTimer() + 1000 * 60 * 1
-				-- timeTillFirstRevive = GetGameTimer() + 1000
+					-- timeTillFirstRevive = GetGameTimer() + 1000 * 60 * 1
+					timeTillFirstRevive = GetGameTimer() + 1000
 				end
 
 				if fakeGameplayCam == nil then
@@ -510,13 +508,14 @@ function HandleAsInjured(fatal)
 									(não foi pelo nosso sistema de desmaiar novamente)
 									então se verifica se o prompt tá ativo, caso nao esteja
 								]]
+						PromptSetVisible(prompt_getup, true)
 						if PromptIsEnabled(prompt_getup) == 0 then
 							if timeTillfirstReviveDiff <= 0 then
 								PromptSetEnabled(prompt_getup, true)
 								PromptSetVisible(prompt_getup, true)
 
 								PromptSetMashWithResistanceMode(prompt_getup, 10, 7.0 - (timesLeftPlayerCanGetUp * 0.75), 0)
-							-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+								-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
 							end
 						end
 					else
@@ -524,9 +523,11 @@ function HandleAsInjured(fatal)
 
 						isBadlyInjuried = false
 
+						HandleAsInjured(true)
+
 						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", true)
 
-						PromptDelete(prompt_group)
+						PromptDelete(prompt_getup)
 					end
 				end
 
@@ -643,7 +644,7 @@ function InitiateRespawnPrompt()
 	PromptSetControlAction(prompt_respawn, 0x7F8D09B8)
 	PromptSetText(prompt_respawn, CreateVarString(10, "LITERAL_STRING", "Renascer"))
 	PromptSetStandardMode(prompt_respawn, true)
-	PromptSetEnabled(prompt_respawn, 1)
+	PromptSetEnabled(prompt_respawn, false)
 	PromptSetVisible(prompt_respawn, 1)
 	PromptSetHoldMode(prompt_respawn, 1)
 	-- N_0x0c718001b77ca468(prompt, 3.0)
@@ -669,6 +670,20 @@ function InitiateGetUpPrompt()
 	-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
 
 	PromptRegisterEnd(prompt_getup)
+
+	-- prompt_giveup = PromptRegisterBegin()
+	-- -- 0xE8342FF2
+	-- PromptSetControlAction(prompt_getup, 0xDFF812F9)
+	-- PromptSetText(prompt_getup, CreateVarString(10, "LITERAL_STRING", "Levantar"))
+	-- PromptSetStandardMode(prompt_getup, true)
+	-- PromptSetEnabled(prompt_getup, 1)
+	-- PromptSetVisible(prompt_getup, 1)
+	-- PromptSetHoldMode(prompt_getup, 1)
+
+	-- PromptSetMashWithResistanceMode(prompt_getup, 10, 5.5, 0)
+	-- -- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+
+	-- PromptRegisterEnd(prompt_getup)
 end
 
 function CreateFakeCam()
@@ -689,15 +704,18 @@ function CreateFakeCam()
 
 	Citizen.CreateThread(
 		function()
-			local ped = PlayerPedId()
 			while fakeGameplayCam ~= nil do
 				Citizen.Wait(0)
 
-				local mouseLRnormal = GetDisabledControlNormal(0, 0xA987235F)
-				-- local mouseLRnormal = GetControlNormal(0, 0xA987235F)
+				local ped = PlayerPedId()
 
-				if mouseLRnormal ~= 0 then
-					if mouseLRnormal > 0.0 then
+				local mouseLRnormal = GetDisabledControlNormal(0, 0xA987235F)
+				local mouseUDnormal = GetDisabledControlNormal(0, 0xD2047988)
+
+				local mouseNormal = (mouseLRnormal + mouseUDnormal) / 2
+
+				if mouseNormal ~= 0 then
+					if mouseNormal > 0.0 then
 						-- Right
 						local new = fakeGameplayCamDeg + 1.0 -- 0.25
 						if new > 360 then
@@ -758,48 +776,22 @@ function NativePromptIsControlActionActive(control)
 	return Citizen.InvokeNative(0x1BE19185B8AFE299, control)
 end
 
--- function Uptime()
--- 	local AliveTime = math.random(13, 18) * 60000
--- 	local UpTime = GetGameTimer() + AliveTime
--- 	while true do
--- 		Citizen.Wait(0)
--- 		if UpTime < GetGameTimer() then
--- 			SetEntityHealth(PlayerPedId(), 0)
--- 			canDisplayRespawnPrompt = true
--- 			break
--- 		else
--- 			if isDead then
--- 				isInjuried = true
--- 				canDisplayRespawnPrompt = true
--- 				isDead = false
--- 			end
--- 			if isInjuried then
--- 				up = true
--- 			else
--- 				break
--- 			end
--- 			DisableControlAction(0, 0x8FFC75D6, true) -- sprint
--- 			DisableControlAction(0, 0xD9D0E1C0, true) -- jump
--- 		end
+-- RegisterNetEvent("FRP_respawn:respawnvip")
+-- AddEventHandler(
+-- 	"FRP_respawn:respawnvip",
+-- 	function()
+-- 		DestroyDeathRelatedInformation()
+-- 		SendNUIMessage(
+-- 			{
+-- 				type = 1,
+-- 				showMap = true
+-- 			}
+-- 		)
+-- 		SetNuiFocus(true, true)
+-- 		-- remove all items
+-- 		TriggerServerEvent("VP:Respawn:_Dead")
 -- 	end
--- end
-
-RegisterNetEvent("FRP_respawn:respawnvip")
-AddEventHandler(
-	"FRP_respawn:respawnvip",
-	function()
-		DestroyDeathRelatedInformation()
-		SendNUIMessage(
-			{
-				type = 1,
-				showMap = true
-			}
-		)
-		SetNuiFocus(true, true)
-		-- remove all items
-		TriggerServerEvent("VP:Respawn:_Dead")
-	end
-)
+-- )
 
 RegisterNetEvent("VP:RESPAWN:CheckDeath")
 AddEventHandler(
@@ -819,34 +811,27 @@ AddEventHandler(
 	end
 )
 
-RegisterNetEvent("FRP_respawn:respawn")
-AddEventHandler(
-	"FRP_respawn:respawn",
-	function(spawn)
-		DestroyDeathRelatedInformation()
-		TriggerServerEvent("VP:Respawn:_Dead")
-		DoScreenFadeOut(500)
-		-- print(Locations[spawn])
-		NetworkResurrectLocalPlayer(Locations[spawn], 59.95, true, true, false)
-		SetEntityCoordsNoOffset(ped, Locations[spawn], false, false, false, true)
-		SetEntityCoords(ped, Locations[spawn])
+-- RegisterNetEvent("FRP_respawn:respawn")
+-- AddEventHandler(
+-- 	"FRP_respawn:respawn",
+-- 	function(spawn)
+-- 		DestroyDeathRelatedInformation()
+-- 		TriggerServerEvent("VP:Respawn:_Dead")
+-- 		DoScreenFadeOut(500)
+-- 		-- print(Locations[spawn])
+-- 		NetworkResurrectLocalPlayer(Locations[spawn], 59.95, true, true, false)
+-- 		SetEntityCoordsNoOffset(ped, Locations[spawn], false, false, false, true)
+-- 		SetEntityCoords(ped, Locations[spawn])
 
-		DoScreenFadeIn(500)
-	end
-)
+-- 		DoScreenFadeIn(500)
+-- 	end
+-- )
 
 function DestroyDeathRelatedInformation()
-	isInjuried = false
-	isDead = false
-	LoopCause = false
-	deathEndingTime = nil
 	up = false
-	UpTime = nil
 	diedOfFatalCause = false
 	TookDamageToVitalOrgan = false
-	InstaCause = nil
 	deathCause = nil
-	Button = true
 	damageBone = {0}
 	BodyPartDamage = {0}
 	ClearTimecycleModifier()
@@ -856,72 +841,69 @@ function DestroyDeathRelatedInformation()
 	-- TriggerServerEvent("VP:RESPAWN:onPlayerDeath")
 
 	newDestroy()
-
-	DestroyCam(fakeGameplayCam, true)
-	fakeGameplayCam = nil
 end
 
-RegisterNUICallback(
-	"select",
-	function(spawn, cb)
-		local coords = Config[spawn][math.random(#Config[spawn])]
-		local ped = PlayerPedId()
-		SetEntityCoords(ped, coords.x, coords.y, coords.z)
-		SetNuiFocus(false, false)
-		SendNUIMessage(
-			{
-				type = 1,
-				showMap = false
-			}
-		)
-		FreezeEntityPosition(ped, false)
-		ShutdownLoadingScreen()
-		NetworkResurrectLocalPlayer(coords.x, coords.y, coords.z, 59.95, true, true, false)
-		local ped = PlayerPedId()
-		SetEntityCoordsNoOffset(ped, coords.x, coords.y, coords.z, false, false, false, true)
-		ClearPedTasksImmediately(ped)
-		ClearPlayerWantedLevel(PlayerId())
-		FreezeEntityPosition(ped, false)
-		SetPlayerInvincible(PlayerId(), false)
-		SetEntityVisible(ped, true)
-		SetEntityCollision(ped, true)
-		TriggerEvent("playerSpawned", spawn)
-		Citizen.InvokeNative(0xF808475FA571D823, true)
-		NetworkSetFriendlyFireOption(true)
-		TriggerEvent("redemrp_respawn:camera", coords)
-	end
-)
+-- RegisterNUICallback(
+-- 	"select",
+-- 	function(spawn, cb)
+-- 		local coords = Config[spawn][math.random(#Config[spawn])]
+-- 		local ped = PlayerPedId()
+-- 		SetEntityCoords(ped, coords.x, coords.y, coords.z)
+-- 		SetNuiFocus(false, false)
+-- 		SendNUIMessage(
+-- 			{
+-- 				type = 1,
+-- 				showMap = false
+-- 			}
+-- 		)
+-- 		FreezeEntityPosition(ped, false)
+-- 		ShutdownLoadingScreen()
+-- 		NetworkResurrectLocalPlayer(coords.x, coords.y, coords.z, 59.95, true, true, false)
+-- 		local ped = PlayerPedId()
+-- 		SetEntityCoordsNoOffset(ped, coords.x, coords.y, coords.z, false, false, false, true)
+-- 		ClearPedTasksImmediately(ped)
+-- 		ClearPlayerWantedLevel(PlayerId())
+-- 		FreezeEntityPosition(ped, false)
+-- 		SetPlayerInvincible(PlayerId(), false)
+-- 		SetEntityVisible(ped, true)
+-- 		SetEntityCollision(ped, true)
+-- 		TriggerEvent("playerSpawned", spawn)
+-- 		Citizen.InvokeNative(0xF808475FA571D823, true)
+-- 		NetworkSetFriendlyFireOption(true)
+-- 		TriggerEvent("redemrp_respawn:camera", coords)
+-- 	end
+-- )
 
-RegisterNetEvent("redemrp_respawn:camera")
-AddEventHandler(
-	"redemrp_respawn:camera",
-	function(cord)
-		DoScreenFadeIn(500)
-		local coords = cord
-		SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z, 0, 0, 0, 0)
-		cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
-		PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
-		SetCamActive(cam, true)
-		RenderScriptCams(true, false, 1, true, true)
-		DoScreenFadeIn(500)
-		Citizen.Wait(500)
-		cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-		PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
-		SetCamActiveWithInterp(cam3, cam, 3700, true, true)
-		Citizen.Wait(3700)
+-- RegisterNetEvent("redemrp_respawn:camera")
+-- AddEventHandler(
+-- 	"redemrp_respawn:camera",
+-- 	function(cord)
+-- 		DoScreenFadeIn(500)
+-- 		local coords = cord
+-- 		SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z, 0, 0, 0, 0)
+-- 		cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 621.67, 374.08, 873.24, 300.00, 0.00, 0.00, 100.00, false, 0) -- CAMERA COORDS
+-- 		PointCamAtCoord(cam, coords.x, coords.y, coords.z + 200)
+-- 		SetCamActive(cam, true)
+-- 		RenderScriptCams(true, false, 1, true, true)
+-- 		DoScreenFadeIn(500)
+-- 		Citizen.Wait(500)
+-- 		cam3 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+-- 		PointCamAtCoord(cam3, coords.x, coords.y, coords.z + 200)
+-- 		SetCamActiveWithInterp(cam3, cam, 3700, true, true)
+-- 		Citizen.Wait(3700)
 
-		cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
-		PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
-		SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
-		RenderScriptCams(false, true, 500, true, true)
-		Citizen.Wait(500)
-		SetCamActive(cam, false)
-		DestroyCam(cam, true)
-		DestroyCam(cam2, true)
-		DestroyCam(cam3, true)
-		Citizen.Wait(3000)
-	end
-)
+-- 		cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x, coords.y, coords.z + 200, 300.00, 0.00, 0.00, 100.00, false, 0)
+-- 		PointCamAtCoord(cam2, coords.x, coords.y, coords.z + 2)
+-- 		SetCamActiveWithInterp(cam2, cam3, 3700, true, true)
+-- 		RenderScriptCams(false, true, 500, true, true)
+-- 		Citizen.Wait(500)
+-- 		SetCamActive(cam, false)
+-- 		DestroyCam(cam, true)
+-- 		DestroyCam(cam2, true)
+-- 		DestroyCam(cam3, true)
+-- 		Citizen.Wait(3000)
+-- 	end
+-- )
 
 --=============================================================-- DRAW TEXT SECTION--=============================================================--
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
@@ -935,10 +917,6 @@ function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
 	end
 	Citizen.InvokeNative(0xADA9255D, 1)
 	DisplayText(str, x, y)
-end
-
-function CreateVarString(p0, p1, variadic)
-	return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
 end
 
 AddEventHandler(
