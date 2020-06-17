@@ -153,15 +153,15 @@ function cache(self)
 end
 
 function getModelFromCapacity(capacity)
-    if capacity == 25 then
+    if capacity >= 0 and capacity < 50 then
         return "P_TRUNK02X"
     end
 
-    if capacity == 50 then
+    if capacity >= 50 and capacity < 100 then
         return "P_TRUNK04X"
     end
 
-    if capacity == 100 then
+    if capacity >= 100 then
         return "P_TRUNKVAR01X"
     end
 
@@ -225,41 +225,41 @@ Citizen.CreateThread(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
 
-            if closestChestId ~= nil then
-                -- print("bau")
-                local ped = PlayerPedId()
-                local pCoords = GetEntityCoords(ped)
+--             if closestChestId ~= nil then
+--                 -- print("bau")
+--                 local ped = PlayerPedId()
+--                 local pCoords = GetEntityCoords(ped)
 
-                local x = closestChest.x
-                local y = closestChest.y
-                local z = closestChest.z
-                local dist = #(pCoords - vec3(x, y, z))
+--                 local x = closestChest.x
+--                 local y = closestChest.y
+--                 local z = closestChest.z
+--                 local dist = #(pCoords - vec3(x, y, z))
 
-                if dist > 1.5 then
-                    closestChestId = nil
-                else
-                    if IsControlJustPressed(0, 0xCEFD9220) then -- E
-                        -- print("Opened")
-                        TriggerServerEvent("VP:CHESTS:Open", closestChestId)
-                    end
-                end
-            end
+--                 if dist > 1.5 then
+--                     closestChestId = nil
+--                 else
+--                     if IsControlJustPressed(0, 0xCEFD9220) then -- E
+--                         -- print("Opened")
+--                         TriggerServerEvent("VP:CHESTS:Open", closestChestId)
+--                     end
+--                 end
+--             end
 
-            drawTempEntity()
-        end
-    end
-)
+--             drawTempEntity()
+--         end
+--     end
+-- )
 
 AddEventHandler(
     "VP:EVENTS:PedInteractionRansackScenario",
     function(pedInteracting, containerEntity, containerScenario, isClosing)
         if pedInteracting == PlayerPedId() then
-            if not isClosing then
+            if isClosing == 0 then
                 for chestId, chest in pairs(renderedChests) do
                     local entity = chest.entity
                     if containerEntity == entity then
@@ -289,12 +289,15 @@ AddEventHandler(
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
-        if (GetCurrentResourceName() ~= resourceName) then
-            return
-        end
-
-        for _, chest in pairs(renderedChests) do
-            DeleteEntity(chest.entity)
+        if GetCurrentResourceName() == resourceName or resourceName == "_core" then
+            for _, chest in pairs(renderedChests) do
+                local entity = chest.entity
+                SetEntityAsMissionEntity(entity, true, true)
+                if DoesEntityExist(entity) then
+                    DeleteEntity(entity)
+                    DeleteObject(entity)
+                end
+            end
         end
     end
 )
@@ -304,7 +307,6 @@ Citizen.CreateThread(
         TriggerServerEvent("VP:CHESTS:AskForSync")
     end
 )
-
 
 -- 	case joaat("S_FOOTLOCKER01X"):
 -- return "mech_ransack@chest@med@open@normal@b";
