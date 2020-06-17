@@ -48,7 +48,7 @@ AddEventHandler(
     "VP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
-        local PoliceOn = API.GetUsersByGroup("trooper") + API.GetUsersByGroup("sheriff")
+        local PoliceOn = #API.getUsersByGroup("trooper") + #API.getUsersByGroup("sheriff")
         
         if PoliceOn < 5 then
             -- print("Interior já está sendo roubado")
