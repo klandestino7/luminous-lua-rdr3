@@ -106,6 +106,11 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         return self.level
     end
 
+    self.setLevel = function(this, v)
+        self.level = v
+        API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self:getLevel()})
+    end
+
     self.getExp = function()
         return self.xp or 0
     end
@@ -113,21 +118,17 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     self.varyExp = function(this, variation)
         self.xp = self:getExp() + variation
 
-        -- for level, info in pairs(LevelSystem) do
-        --     local savedLevel = level + 1
-        --     if self.xp < LevelSystem[level].xp then
-        --         self.level = level - 1
-        --     else
-        --     end
+        local currentExp = self:getExp()
+        for i, minxp in pairs(config_file_LEVELSTEPS) do
+            local maxxp = config_file_LEVELSTEPS[i + 1] or 999999
 
-
-        --     Citizen.CreateThread(
-        --         function()
-        --             API_Database.execute("FCRP/UpdateLevel", {charid = self:getId(), level = self:getLevel()})
-        --         end
-        --     )
-        --     break
-        -- end
+            if currentExp >= minxp and currentExp < maxxp then
+                if self:getLevel() ~= i then
+                    self:setLevel(i)
+                end
+                break
+            end
+        end
 
         TriggerClientEvent("VP:TOAST:New", self:getSource(), "xp", variation)
 
