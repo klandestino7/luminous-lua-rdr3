@@ -58,18 +58,8 @@ local function setMenuVisible(id, visible, holdCurrent)
 	end
 end
 
--- !! MEMORY
-local cachedVarStrings = {}
-
 local function drawText(text, x, y, font, color, scale, center, shadow, alignRight)
-	local str
-
-	if cachedVarStrings[text] then
-		str = cachedVarStrings[text]
-	else
-		str = CreateVarString(10, "LITERAL_STRING", text)
-		cachedVarStrings[text] = str
-	end
+	local str = CreateVarString(10, "LITERAL_STRING", text)
 
 	if color then
 		SetTextColor(color.r, color.g, color.b, color.a)
