@@ -76,7 +76,7 @@ function API.Chest(id)
             end
 
             if self.inventories == nil or higherThanOne == false then
-                local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "chest:" .. self.id})
+                local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "chest:" .. self:getId()})
 
                 local Inventory
 
@@ -89,12 +89,12 @@ function API.Chest(id)
                         slots[k] = json.decode(v)
                     end
 
-                    Inventory = API.Inventory("chest:" .. self.id, tonumber(query[1].inv_capacity), slots)
+                    Inventory = API.Inventory("chest:" .. self:getId(), tonumber(query[1].inv_capacity), slots)
                 else
                     API_Database.execute(
                         "FCRP/Inventory",
                         {
-                            id = "chest:" .. self.id,
+                            id = "chest:" .. self:getId(),
                             charid = 0,
                             capacity = self:getCapacity(),
                             slot = 0,
@@ -104,7 +104,7 @@ function API.Chest(id)
                         }
                     )
 
-                    Inventory = API.Inventory("chest:" .. self.id,self:getCapacity(), {})
+                    Inventory = API.Inventory("chest:" .. self:getId(), self:getCapacity(), {})
                 end
 
                 if self.inventories == nil then
@@ -151,7 +151,7 @@ function API.Chest(id)
                         }
                     )
 
-                    Inventory = API.Inventory("chest:char" .. targetId, self:getCapacity(), {})
+                    Inventory = API.Inventory("chest:char:" .. targetId, self:getCapacity(), {})
                 end
 
                 if self.inventories == nil then
@@ -166,7 +166,6 @@ function API.Chest(id)
     end
 
     self.setInventory = function(this, id, v)
-
         if self.inventories == nil then
             self.inventories = {}
         end
