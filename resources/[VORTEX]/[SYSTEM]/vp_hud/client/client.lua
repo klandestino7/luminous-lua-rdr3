@@ -94,7 +94,7 @@ Citizen.CreateThread(
             --     end
             -- end
 
-            if cAPI.HasKnownPlayersChanged() then
+            -- if cAPI.HasKnownPlayersChanged() then
 
                 local canSeeIds = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('admin')
 
@@ -105,15 +105,12 @@ Citizen.CreateThread(
                             SetPedPromptName(ped, "Desconhecido")
                         else
                             local serverId = GetPlayerServerId(i)
-                            local userId = cAPI.GetUserIdFromServerId(serverId)
-                            SetPedPromptName(ped, "Desconhecido : " .. userId)
+                            local userId = cAPI.GetUserIdFromServerId(serverId) or '?'
+                            SetPedPromptName(ped, "Desconhecido ~ " .. userId)
                         end
                     end
-
-                    SetPedCanBeTargetted(ped, true)
-                    SetPedCanBeTargettedByPlayer(ped, PlayerId(), true)
                 end
-            end
+            -- end
         end
     end
 )
