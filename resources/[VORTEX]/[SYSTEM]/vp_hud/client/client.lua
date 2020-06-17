@@ -94,7 +94,7 @@ Citizen.CreateThread(
             --     end
             -- end
 
-            if cAPI.HasKnownPlayersChanged() then
+            -- if cAPI.HasKnownPlayersChanged() then
 
                 local canSeeIds = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('admin')
 
@@ -105,18 +105,16 @@ Citizen.CreateThread(
                             SetPedPromptName(ped, "Desconhecido")
                         else
                             local serverId = GetPlayerServerId(i)
-                            local userId = cAPI.GetUserIdFromServerId(serverId)
-                            SetPedPromptName(ped, "Desconhecido : " .. userId)
+                            local userId = cAPI.GetUserIdFromServerId(serverId) or '?'
+                            SetPedPromptName(ped, "Desconhecido ~ " .. userId)
                         end
                     end
-
-                    SetPedCanBeTargetted(ped, true)
-                    SetPedCanBeTargettedByPlayer(ped, PlayerId(), true)
                 end
-            end
+            -- end
         end
     end
 )
+
 
 RegisterCommand(
     "testb",
@@ -135,6 +133,33 @@ RegisterCommand(
         elseif args[1] == "2" then
             print("foi")
             Cinematic = false
+        end
+    end
+)
+
+local Talking = false
+
+AddEventHandler(
+    "SaltyChat_TalkStateChanged",
+    function(isTalking)
+    Talking = isTalking
+    if isTalking then
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_talking_normal", "FACE_HUMAN@GEN_MALE@BASE")
+    else
+        Citizen.InvokeNative(0xFFC24B988B938B38, PlayerPedId(), "mood_normal", "FACE_HUMAN@GEN_MALE@BASE")        
+    end
+end)
+
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
+            if Talking then
+                DrawText('VOZ : Falando',  0.01, 0.01, 0.25, 0.25, false, 252, 240, 192, 145, 0, 7)
+            else
+                DrawText('VOZ : Normal',  0.01, 0.01, 0.25, 0.25, false, 255, 255, 255, 145, 0, 7)
+            end
         end
     end
 )
@@ -336,6 +361,18 @@ end
 function CreateVarString(p0, p1, variadic)
     return Citizen.InvokeNative(0xFA925AC00EB830B9, p0, p1, variadic, Citizen.ResultAsLong())
 end
+
+function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    Citizen.InvokeNative(0xADA9255D, font)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
+end
+
 
 -- local prompt = false
 -- local AnimalPrompt

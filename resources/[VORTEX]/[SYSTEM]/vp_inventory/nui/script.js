@@ -7,6 +7,8 @@ var hotbarSlotSelected = 5;
 
 var hasItemDropCooldown = false;
 
+var lastRangeValue = 1.0;
+
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -19,10 +21,27 @@ var mouseX, mouseY;
 $(document).mousemove(function(e) {
     mouseX = e.pageX;
     mouseY = e.pageY;
-}).mouseover(); 
+}).mouseover();
 
 document.addEventListener("DOMContentLoaded", function(event) {
     $('.hotbar').hide();
+
+    $('.description-range').hide();
+
+    // $("#primary-inventory").css('opacity', '1');
+    // $("#primary #background-image").css('opacity', '0.98');
+
+    $('#range-input').on('input', function() {
+
+        lastRangeValue = this.value;
+
+        let perc = (this.value / this.max) * 100;
+
+        $(this).css('background', `linear-gradient(to right, rgba(116, 116, 116, 0.534) ${perc}%, rgba(128, 128, 128, 0.2) ${perc}%)`);
+
+        $("#range-output").text(this.value);
+    });
+
 });
 
 
@@ -222,18 +241,26 @@ $(document).ready(function() {
 
     $(document).keyup(function(event) {
         if (event.which == shortcutPressed) {
+
+            if (shortcutPressed === 17) { // L CTRL
+                setDescriptionDisplayType(0);
+            }
+
             shortcutPressed = null;
         }
-
     });
 
     $(document).keydown(function(event) {
-        if (event.which == 16) {
-            shortcutPressed = 16;
+        if (event.which == 16) { // SHIFT
+            shortcutPressed = 16; // SHIFT
         }
 
-        if (event.which == 17) {
-            shortcutPressed = 17;
+        if (event.which == 17) { // L CTRL
+            shortcutPressed = 17; // L CTRL
+
+            if ($('.selected').length > 0) {
+                setDescriptionDisplayType(1);
+            }
         }
 
         if (event.which == 81) { // Q
@@ -349,7 +376,7 @@ $(document).ready(function() {
             }
 
             if (shortcutPressed == 17) { // CTRL
-                itemAmount = 1
+                itemAmount = 1;
             }
 
             if ($(ui.helper).parent().parent().attr('id') == 'secondary') {
@@ -424,9 +451,10 @@ function elementAsDraggable(element, a, b, c, d, e) {
         stop: function(event, ui) {
             if (hasItemDropCooldown == false) {
                 let slotId = $(this).attr('id')
-                var elem = document.elementFromPoint(mouseX, mouseY); // x, y
+                var elemAtMouse = document.elementFromPoint(mouseX, mouseY); // x, y
+                var elemAtHelper = document.elementFromPoint(ui.position.left, ui.position.top);
 
-                if ($(elem).is("body")) {
+                if ($(elemAtMouse).is("body") && $(elemAtHelper).is("body")) {
                     $.post('http://vp_inventory/drop', JSON.stringify({
                         slotId: $(this).attr('id'),
                     }));
@@ -508,6 +536,10 @@ function drawPrimary() {
     $(`#primary-inventory .description-description`).text('');
 
     $(`#primary-inventory .slot-container`).html('');
+
+    // $(`#range-input`).attr('step', 1);
+
+    setDescriptionDisplayType(0);
 
     $('.hotbar').fadeIn(500);
     var money = 0;
@@ -657,11 +689,12 @@ function drawPrimary() {
                 }
 
                 if (shortcutPressed == 16) { // SHIFT
-                    itemAmount = -1
+                    itemAmount = -1;
                 }
 
                 if (shortcutPressed == 17) { // CTRL
-                    itemAmount = 1
+                    itemAmount = lastRangeValue;
+                    lastRangeValue = 1;
                 }
 
                 if ($(ui.draggable).parent().parent().attr('id') == 'secondary-inventory') {
@@ -852,6 +885,33 @@ function select(element) {
             }
         }
 
+        let min = 1;
+        let max = $(element).attr("desc_1");
+        let step = 1;
+
+        let itemId = $(element).attr('itemId');
+        if (itemId == 'money' || itemId == 'gold') {
+            min = 0.01;
+            step = 0.01;
+        }
+
+        if (min == 0.01 && lastRangeValue == 1){
+            lastRangeValue = 0.01;
+        }
+
+        $(`#range-input`).attr({
+            "min": min,
+            "max": max,
+            "step": step,
+            "value": min,
+        });
+
+        let perc = (min / max) * 100;
+
+        $(`#range-input`).css('background', `linear-gradient(to right, rgba(116, 116, 116, 0.534) ${perc}%, rgba(128, 128, 128, 0.2) ${perc}%)`);
+
+        $("#range-output").text(min);
+
         $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
         indexSelected = $(element).attr('id');
     }
@@ -864,7 +924,13 @@ function unSelect(element) {
         $(`${elementParentParentId} .description-amount`).text('');
         $(`${elementParentParentId} .description-title`).text('');
         $(`${elementParentParentId} .description-description`).text('');
+
+        setDescriptionDisplayType(0);
     }
+}
+
+function isFloat(n) {
+    return Number(n) === n && n % 1 !== 0;
 }
 
 function closeInventory() {
@@ -880,12 +946,12 @@ function closeInventory() {
 //         selector: '.selected',
 //         callback: function(key, options) {
 //             var m = key;
-//             // colocar aqui a função de click rightc
-//             console.log($(key).attr('id'));
-//             $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
+//             console.log('Click RIGHT')
+//                 // colocar aqui a função de click rightc
+//                 // console.log($(key).attr('id'));
+//                 // // $.post("http://vp_inventory/NUIFocusOff", JSON.stringify({}));
 //         },
 //         items: {
-//             functionUse: { name: "Usar", icon: "use" },
 //             functionDrop: {
 //                 name: "Dropar",
 //                 icon: "drop",
@@ -893,11 +959,32 @@ function closeInventory() {
 
 //                 }
 //             },
-//             functionSend: { name: "Enviar", icon: "send" }
 //         }
 //     });
 //     $('.selected').on('click', function(e) {
 //         // colocar aqui a função de click LEFT
-//         console.log('ye');
+//         // console.log('ye');
+//         console.log('CLICK LEFT');
 //     })
 // });
+
+
+function setDescriptionDisplayType(type) {
+    switch (type) {
+        case 0:
+            $('.description-range').hide();
+
+            $('.description-description').show();
+            break;
+        case 1:
+            $('.description-description').hide();
+
+            $('.description-range').show();
+            break;
+        default:
+            $('.description-range').hide();
+
+            $('.description-description').show();
+            break;
+    }
+}

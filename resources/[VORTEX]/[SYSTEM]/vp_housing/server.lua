@@ -3,7 +3,7 @@ local Proxy = module("_core", "lib/Proxy")
 
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
-dbABI = Proxy.getInterface('API_DB')
+dbABI = Proxy.getInterface("API_DB")
 
 local houses = {
     -- price_dollar, price_gold
@@ -42,7 +42,10 @@ AddEventHandler(
             return
         end
 
-        if #API.getUsersByGroup(houseId) > 0 then
+        -- if #API.getUsersByGroup(houseId) > 0 then
+        local rows = dbABI.query("SELECT:house_rent", {house_id = houseId})
+
+        if #rows > 0 then
             User:notify("error", "Está residência já foi alugada")
             return
         end
@@ -60,12 +63,12 @@ AddEventHandler(
                 local date = os.date("*t")
 
                 local time_sum_sevendays = os.time(date) + (7 * 24 * 60 * 60)
-        
+
                 local date_sum_sevendays = os.date("*t", time_sum_sevendays)
-        
+
                 local sum_to_time = os.time(date_sum_sevendays)
 
-                dbABI.execute('INSERT:house_rent', {house_id = houseId, house_next_payment = sum_to_time})
+                dbABI.execute("INSERT:house_rent", {house_id = houseId, house_next_payment = sum_to_time})
             end
         else
             if Inventory:getItemAmount("gold") < price_gold then
@@ -89,9 +92,9 @@ Citizen.CreateThread(
             for house_id, _ in pairs(houses) do
                 if IsRentExpired(house_id) then
                     for _, User in pairs(API.getUsersByGroup(house_id)) do
-                        User:removeGroup(house_id)                        
+                        User:removeGroup(house_id)
                     end
-                    dbAPI.execute('DELETE:house_rent', {house_id = house_id})
+                    dbAPI.execute("DELETE:house_rent", {house_id = house_id})
                 end
             end
         end
@@ -99,10 +102,9 @@ Citizen.CreateThread(
 )
 
 function IsRentExpired(house_id)
-    local rows = dbABI.query('SELECT:house_rent', {house_id = house_id})
+    local rows = dbABI.query("SELECT:house_rent", {house_id = house_id})
 
     if #rows > 0 then
-
         local date = os.date("*t")
         local time = os.time(date)
 

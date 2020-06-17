@@ -50,8 +50,6 @@ function API.Chest(id)
         local Character = User:getCharacter()
         local charId = Character:getId()
 
-        print(self.type)
-
         if self:isGlobal() then
             if self.groups then
                 local hasAnyGroup = false
@@ -81,6 +79,8 @@ function API.Chest(id)
                 local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "chest:" .. self.id})
 
                 local Inventory
+
+                -- print('Trying to open chest: ' .. self:getId() .. ' capacity: ' .. self:getCapacity())
 
                 if #query > 0 then
                     local slots, _ = json.decode(query[1].inv_slots)

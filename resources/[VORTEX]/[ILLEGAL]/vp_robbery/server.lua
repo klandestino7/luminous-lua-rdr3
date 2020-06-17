@@ -48,7 +48,7 @@ AddEventHandler(
     "VP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
-        local PoliceOn = API.GetUsersByGroup("trooper") + API.GetUsersByGroup("sheriff")
+        local PoliceOn = #API.getUsersByGroup("trooper") + #API.getUsersByGroup("sheriff")
         
         if PoliceOn < 5 then
             -- print("Interior já está sendo roubado")
@@ -62,7 +62,7 @@ AddEventHandler(
             return
         end
 
-        if data[index].cooldown ~= nil then
+        if data[index] ~= nil and data[index].cooldown ~= nil then
             if data[index].cooldown > os.time() then
                 -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
                 TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")

@@ -42,27 +42,6 @@ RegisterCommand('offnui', function(source, args)
 end)
 
 
-RegisterCommand('ipljail', function(source, args)
-    local interior = GetInteriorAtCoords(-273.4513, 811.3408, 118.38)
-    local isValid = IsValidInterior(interior)
-    if isValid then
-        if IsInteriorReady(interior) then
-            if IsInteriorEntitySetActive(interior, "val_jail_int_walla") then
-                print("Valentine Jail Interior Already Active")
-            else
-                ActivateInteriorEntitySet(interior, "val_jail_int_walla")
-                ActivateInteriorEntitySet(interior, "val_jail_int_wallb")
-                print("Valentine Jail Interior Activated")
-            end
-        end
-    end   
-end)
-
-
-
-
-
-
 RegisterCommand('onnui', function(source, args)
     SetNuiFocus(true,true)
 end)

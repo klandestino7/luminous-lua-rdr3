@@ -182,7 +182,7 @@ function PlayerKilledByPlayer(killerServerId, killerClientId, killerWeapon)
         killerClientId = killerClientId
     }
     TriggerEvent("VP:onPlayerDeath", data)
-    TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
+    -- TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
 end
 
 function PlayerKilled()
@@ -195,7 +195,7 @@ function PlayerKilled()
     }
 
     TriggerEvent("VP:onPlayerDeath", data)
-    TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
+    -- TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
 end
 
 function cAPI.isPlayerDead()
