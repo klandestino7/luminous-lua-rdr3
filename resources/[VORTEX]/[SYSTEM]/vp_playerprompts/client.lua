@@ -42,7 +42,7 @@ Citizen.CreateThread(
                             local pped = GetPlayerPed(pid)
                             if pped == entity then
                                 _targetedPlayerEntity = entity
-                                _targetedPlayerServerId = GetPlayerServerId(player)
+                                _targetedPlayerServerId = GetPlayerServerId(pid)
                                 _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
                                 break
                             end
@@ -128,7 +128,7 @@ Citizen.CreateThread(
                     entity = targetedPlayerEntity
                     isAPlayer = true
 
-                    name = "Pessoa"
+                    -- name = "Pessoa "
 
                     if options_isAnAdmin or options_isATrooper or options_isAMedic then
                         name = name .. " " .. targetedPlayerUserId
