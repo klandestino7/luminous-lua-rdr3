@@ -20,7 +20,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 
     local PoliceON = #API.getUsersByGroup("trooper") 
     local SheriffON = #API.getUsersByGroup("sheriff")
-
+	print(PoliceON+SheriffON)
 
 	-- for i=1, #xPlayers, 1 do
 	-- 	local checkPlayer = ESX.GetPlayerFromId(xPlayers[i])
@@ -50,16 +50,15 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 	--	TriggerClientEvent('Notify', source, 'negado',  Locales[Config.Locale]['empty_atm'] .. timeInterval .. timeUnit )
 
 	else
-		if Inventory:getItemAmount("melee_knife") then
-			Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
-
-			TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
-
-			TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
-
-		else
+		local faca = Inventory:getItemAmount("melee_knife")
+		if faca < 1 then
 			TriggerClientEvent('VP:NOTIFY:Simple', source, "Você não pussi uma faca.", 10000)
+			return
 		end
+		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
+		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
+		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)			
+		
 	end	
 end)
 
