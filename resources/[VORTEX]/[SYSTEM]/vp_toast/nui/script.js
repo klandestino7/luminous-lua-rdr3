@@ -5,6 +5,8 @@ window.addEventListener("message", function(event) {
     var duration = 5000;
     var containerId = "with-icon";
 
+    var red = false;
+
     if (event.data.type.includes('longer_')) {
         duration = 12000;
         event.data.type = event.data.type.replace('longer_', '');
@@ -44,7 +46,7 @@ window.addEventListener("message", function(event) {
         containerId = 'no-icon';
     }
 
-    if (event.data.type == 'xp'){
+    if (event.data.type == 'xp') {
         quantity = event.data.quantity;
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
@@ -64,29 +66,50 @@ window.addEventListener("message", function(event) {
         quantity = event.data.quantity;
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
-        type_icon = 'dollar';
+
+        if (type == "+") {
+            type_icon = 'dollar';
+        } else {
+            red = true;
+            type_icon = 'red_dollar';
+        }
+
         if (quantity < 1.0) {
             quantity *= 100;
-            quantity = "¢" + quantity;
+            quantity = "¢" + quantity.toFixed(0);
         } else {
-            quantity = "$" + quantity;
+            quantity = "$" + quantity.toFixed(2);
         }
     }
 
     if (event.data.type == 'gold') {
         quantity = event.data.quantity;
         type = quantity > 0 ? '+' : '-';
+
+        if (type == "+") {
+            type_icon = 'gold';
+        } else {
+            red = true;
+            type_icon = 'red_gold';
+        }
+
         quantity = Math.abs(quantity);
-        type_icon = 'gold';
-        quantity = "G" + quantity;
+
+        quantity = "G" + quantity.toFixed(2);
     }
 
     containerId = '#' + containerId;
 
     var element = $(`<div class='toast' data-duration="${duration}"></div>`).appendTo(containerId);
 
-    if (event.data.type == 'gold'){
+
+
+    if (event.data.type == 'gold') {
         $(element).addClass('gold');
+    }
+
+    if (red === true) {
+        $(element).addClass("red");
     }
 
     if (event.data.type == 'speech') {
