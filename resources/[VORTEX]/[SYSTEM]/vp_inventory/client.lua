@@ -257,8 +257,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "drop",
     function(cb)
-        local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
-        TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId), x, y, z)
+        -- local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
+        -- TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId), x, y, z)
     end
 )
 
