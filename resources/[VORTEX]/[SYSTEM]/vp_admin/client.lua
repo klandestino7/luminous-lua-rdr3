@@ -64,7 +64,7 @@ RegisterNetEvent("VP:ADMIN:SpawnObject")
 AddEventHandler(
 	"VP:ADMIN:SpawnObject",
 	function(model)
-		local modelHash = GetHashKey(model)
+		local modelHash = tonumber(model) == nil and GetHashKey(model) or tonumber(model)
 		if not IsModelValid(modelHash) then
 			print("model is not valid")
 			return

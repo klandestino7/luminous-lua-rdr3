@@ -35,6 +35,10 @@ API = Tunnel.getInterface("API")
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
+		-- SetObjectTextureVariation(5765379, 5)
+
+		-- Citizen.InvokeNative(0xB35370D5353995CB,PlayerPedId(), GetHashKey("MP_MOONSHINE_DRINKING_SOBER_TABLE_LH_HOLD"), 1048576000)
+
 		-- local comp = GetHashKey("COMPOSITE_LOOTABLE_VULTURE_EGG_DEF")
 		-- Citizen.InvokeNative(0x73F0D0327BFA0812, comp)
 		-- while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, comp) do
