@@ -28,7 +28,7 @@ AddEventHandler(
             for id, amount in pairs(InventoryTarget:getItems()) do
                 if InventoryTarget:removeItem(id, amount) then
                     Inventory:addItem(id, amount)
-                    User:notify("item", API.getItemDataFromId(id):getName(), amount)
+                    User:notify("item", id, amount)
                 end
             end
 

@@ -87,12 +87,12 @@ AddEventHandler(
             Inventory:removeItem(-1, currencyItem, itemPrice)
             if itemPrice > 0 then
                 if not withGold then
-                    User:notify("dollar", string.format("%.2f", -(itemPrice / 100)))
+                    User:notify("item", "money", -(itemPrice))
                 else
-                    User:notify("gold", string.format("%.2f", -(itemPrice / 100)))
+                    User:notify("item", "gold", -(itemPrice))
                 end
             end
-            User:notify("item", API.getItemDataFromId(itemId):getName(), itemAmount)
+            User:notify("item", itemId, itemAmount)
         else
             User:notify("error", "Espaço insuficiente na bolsa!")
         end

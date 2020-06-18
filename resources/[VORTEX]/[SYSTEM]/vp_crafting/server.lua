@@ -66,7 +66,7 @@ AddEventHandler(
         end
 
         Inventory:addItem(id, 1)
-        User:notify("item", ItemData:getName(), 1)
+        User:notify("item", id, 1)
 
         TriggerClientEvent("VP:CRAFTING:SyncOnCraft", _source, ownedParts)
     end

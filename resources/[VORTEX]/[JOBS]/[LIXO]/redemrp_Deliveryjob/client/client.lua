@@ -168,7 +168,7 @@ Citizen.CreateThread(
                             pressed = false
                             wag = Config.Cart2
                             wagon(wag)
-                            TriggerEvent("VP:TOAST:New", "Procure pela bandeira branca perto de  " .. Config.StartWorking2)
+                            TriggerEvent("VP:TOAST:New", "alert", "Procure pela bandeira branca perto de  " .. Config.StartWorking2)
                             StartGpsMultiRoute(6, true, true)
 
                             -- Add the points
@@ -186,7 +186,7 @@ Citizen.CreateThread(
                             pressed = false
                             wag = Config.Cart3
                             wagon(wag)
-                            TriggerEvent("VP:TOAST:New", "Procure pela bandeira branca perto de  " .. Config.StartWorking3)
+                            TriggerEvent("VP:TOAST:New", "alert", "Procure pela bandeira branca perto de  " .. Config.StartWorking3)
                             StartGpsMultiRoute(6, true, true)
 
                             -- Add the points
@@ -203,7 +203,7 @@ Citizen.CreateThread(
                             pressed = false
                             wag = Config.Cart4
                             wagon(wag)
-                            TriggerEvent("VP:TOAST:New", "Procure pela bandeira branca perto de  " .. Config.StartWorking4)
+                            TriggerEvent("VP:TOAST:New", "alert", "Procure pela bandeira branca perto de  " .. Config.StartWorking4)
                             StartGpsMultiRoute(6, true, true)
 
                             -- Add the points

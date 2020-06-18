@@ -38,8 +38,7 @@ AddEventHandler(
         for k, v in pairs(Loot) do
             if v.item == FinalLoot then
                 if Inventory:addItem(FinalLoot, v.amountToGive) then
-                    local itemData = API.getItemDataFromId(FinalLoot)
-                    User:notify("item", itemData:getName(), v.amountToGive)
+                    User:notify("item", FinalLoot, v.amountToGive)
                     Character:varyExp(0.1)
                 end
                 break

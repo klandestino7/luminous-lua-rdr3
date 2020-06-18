@@ -48,7 +48,7 @@ AddEventHandler(
         -- Age, timesWatered
 
         -- User:notify("success", "Semente plantada!")
-        User:notify("item", API.getItemDataFromId(seedItem):getName(), -1)
+        User:notify("item", seedItem, -1)
 
         for _, player in pairs(API.getPlayersAtArea(farmAreaId)) do
             TriggerClientEvent("VP:FARM:SetSpot", player, farmAreaId, slot_id, 0)

@@ -18,14 +18,23 @@ AddEventHandler(
     function(type, text, quantity)
         if type == "item" then
             if ItemList[text] then
-                text = ItemList[text].name
+                if text == "money" or text == "gold" then
+                    quantity = quantity / 100
+                    if text == "money" then
+                        type = "dollar"
+                    elseif text == "gold" then
+                        type = "gold"
+                    end
+                else
+                    text = ItemList[text].name
+                end
             end
         end
 
-        if tonumber(text) then
-            quantity = text
-            text = nil
-        end
+        -- if tonumber(text) then
+        --     quantity = text
+        --     text = nil
+        -- end
 
         SendNUIMessage(
             {

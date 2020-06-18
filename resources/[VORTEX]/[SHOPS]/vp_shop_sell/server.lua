@@ -9,7 +9,7 @@ local verificationData = {
         ["tobacco"] = {1, 1, 10},
         ["corn"] = {1, 1, 10},
         ["sugarcane"] = {1, 1, 10},
-        ["feather_1"] = {100, 25, 5},
+        ["feather_1"] = {100, 25, 5}
     },
     ["Acogueiro"] = {
         ["meat"] = {75, 1, 1},
@@ -17,12 +17,12 @@ local verificationData = {
         ["meat_good"] = {137, 1, 1},
         ["meat_perfect"] = {356, 1, 1},
         ["feather_1"] = {100, 1, 5},
-        ["feather_2"] = {100, 1, 5},
+        ["feather_2"] = {100, 1, 5}
     },
     ["Posto de Troca"] = {
         ["raw_coal"] = {100, 40, 2},
         ["raw_iron"] = {200, 80, 2},
-        ["raw_copper"] = {300, 120, 2},
+        ["raw_copper"] = {300, 120, 2}
     }
 }
 
@@ -71,11 +71,11 @@ AddEventHandler(
 
         if Inventory:removeItem(-1, itemId, itemAmount) then
             Inventory:addItem(currencyItem, itemPrice)
-            User:notify("item", API.getItemDataFromId(itemId):getName(), -(itemAmount))
+            User:notify("item", itemIdm -(itemAmount))
             if not withGold then
-                User:notify("dollar", string.format("%.2f", (itemPrice / 100)))
+                User:notify("item", "money", itemPrice)
             else
-                User:notify("gold", string.format("%.2f", (itemPrice / 100)))
+                User:notify("item", "gold", itemPrice)
             end
         end
     end

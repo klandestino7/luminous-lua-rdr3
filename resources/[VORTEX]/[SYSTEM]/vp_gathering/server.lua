@@ -45,13 +45,10 @@ AddEventHandler(
             itemAmount = 1
         end
 
-        local itemData = API.getItemDataFromId(item)
-        local itemWeight = itemData:getWeight()
-
-        if --[[ (Inventory:getWeight() + meatWeight) <= Inventory:getCapacity() and --]] Inventory:addItem(item, 1) then
-            User:notify("item", itemData:getName(), itemAmount)
-        -- else
-        --     User:notify("Bolsa sem espaço!")
+        if Inventory:addItem(item, 1) then
+            User:notify("item", item, itemAmount)
+        else
+            User:notify("Bolsa sem espaço!")
         --     TriggerClientEvent("VP:LOOTING:LooteableDenied", _source, GetHashKey('p_whitefleshymeat01xa'))
         end
     end

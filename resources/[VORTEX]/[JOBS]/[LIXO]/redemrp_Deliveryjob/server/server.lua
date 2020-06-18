@@ -22,11 +22,11 @@ AddEventHandler(
         local Inventory = Characater:getInventory()
 
         if Inventory:addItem("money", cash) then
-            User:notify("dollar", cash)
+            User:notify("item", "money", cash)
         end
 
         if Inventory:addItem("gold", gold) then
-            User:notify("gold", gold)
+            User:notify("item", "gold", gold)
         end
     end
 )

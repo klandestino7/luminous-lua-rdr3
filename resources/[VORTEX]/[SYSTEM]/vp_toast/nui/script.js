@@ -78,7 +78,7 @@ window.addEventListener("message", function(event) {
         type = quantity > 0 ? '+' : '-';
         quantity = Math.abs(quantity);
         type_icon = 'gold';
-        // quantity = "G" + quantity;
+        quantity = "G" + quantity;
     }
 
     containerId = '#' + containerId;
