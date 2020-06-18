@@ -126,8 +126,6 @@ AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
 	SetCurrentPedWeapon(PlayerPedId(),GetHashKey('WEAPON_UNARMED'),true)
 
 	StartAnim1()
-
-	PlayAlarm()
 end)
 
 RegisterNetEvent('VP:ROBREG:warnThePolice')
@@ -202,10 +200,10 @@ function DrawText3D(x, y, z, text)
     DrawSprite("generic_textures", "hud_menu_4a", _x, _y+0.0125,0.015+ factor, 0.03, 0.1, 100, 1, 1, 190, 0)
 end
 
-
-function PlayAlarm()
+RegisterNetEvent('VP:ROBREG:PlayAlarm')
+AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
 	Citizen.CreateThread(function()		
-		Wait(10000)
+		Wait(40000)
 
 		Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
 		
@@ -216,13 +214,13 @@ function PlayAlarm()
 			Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
 		end	
 
-		local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", GetEntityCoords(PlayerPedId()), "BRT2_Sounds", true, 0, true, 0)
+		local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x,y,z, "BRT2_Sounds", 1, 1, 1, 0)
 
-		Wait(30000)
+		Wait(10000)
 
 		Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
 	end)
-end
+end)
 
 function StartAnim1()
 Citizen.CreateThread(function()		

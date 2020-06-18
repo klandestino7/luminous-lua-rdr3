@@ -29,7 +29,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 	-- 		copsIds[i] = xPlayers[i]
 	-- 	end
 	-- end
-
+	print(json.encode(atmInfo))
 	if PoliceON+SheriffON < Config.copsRequired then
 
 		TriggerClientEvent('VP:NOTIFY:Simple', source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)		
@@ -57,7 +57,8 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		end
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
 		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
-		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)			
+		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
+		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4] )		
 		
 	end	
 end)
