@@ -263,13 +263,17 @@ Citizen.CreateThread(
                     if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
                         quickHoldModeToggle(prompt_trooper_uncuff)
 
-                        SetEnableHandcuffs(entity, false, false)
+                        -- SetEnableHandcuffs(entity, false, false)
+
+                        TriggerServerEvent("VP:SHERIFF:cuffing", targetedPlayerServerId)
                     end
 
                     if PromptHasHoldModeCompleted(prompt_trooper_cuff) then
                         quickHoldModeToggle(prompt_trooper_cuff)
 
-                        SetEnableHandcuffs(entity, true, false)
+                        -- SetEnableHandcuffs(entity, true, false)
+
+                        TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
                     end
                 end
             end
