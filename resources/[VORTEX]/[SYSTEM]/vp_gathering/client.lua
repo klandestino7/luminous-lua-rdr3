@@ -14,7 +14,7 @@ AddEventHandler(
                     timeout = timeout - wait
 
                     if NativeIsEntityGathered(entity) then
-                        TriggerServerEvent("VP:GATHERING:Gathered", GetEntityModel(entity), isHuman, GetAnimalCarcassQuality(pedGathered))
+                        TriggerServerEvent("VP:GATHERING:Gathered", GetEntityModel(entity), isHuman, GetAnimalCarcassQuality(entity))
                         break
                     end
                 end

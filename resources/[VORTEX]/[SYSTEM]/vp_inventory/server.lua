@@ -70,6 +70,7 @@ AddEventHandler(
 
             dropPopulation[index] = nil
             dropPopulation_serveronly[index] = nil
+            
             TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
             print("Delete", json.encode(dropPopulation))
@@ -182,12 +183,16 @@ AddEventHandler(
             }
 
             local d_serveronly = {
-                itemWeaponAmmoInClip = itemAmmoInClip,
-                itemWeaponAmmoInWeapon = itemAmmoInWeapon,
+                itemWeaponAmmoInClip = itemAmmoInClip or 0,
+                itemWeaponAmmoInWeapon = itemAmmoInWeapon or 0,
                 deletionTimestamp = os.time() + 1000 * 60 * 10
             }
 
-            table.insert(dropPopulation, d)
+            while dropPopulation[index] ~= nil do
+                index = index + 1
+            end
+
+            dropPopulation[index] = d
             dropPopulation_serveronly[index] = d_serveronly
 
             TriggerClientEvent("VP:INVENTORY:DROP:Create", -1, index, x, y, z, itemId, itemAmount)

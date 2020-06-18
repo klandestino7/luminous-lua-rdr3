@@ -257,15 +257,16 @@ RegisterNUICallback(
 RegisterNUICallback(
     "drop",
     function(cb)
-        -- local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
-        -- TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId), x, y, z)
+        local x, y, z = table.unpack(GetEntityCoords(PlayerPedId()))
+        TriggerServerEvent("VP:INVENTORY:Drop", tonumber(cb.slotId), x, y, z)
     end
 )
 
 RegisterNUICallback(
     "startsendingslot",
     function(cb)
-        startLookingForAPlayerToSend(cb.slotId)
+        -- startLookingForAPlayerToSend(cb.slotId)
+        TriggerEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget", cb.slotId)
     end
 )
 
