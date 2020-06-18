@@ -244,7 +244,7 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
             self.Horse = API.Horse(id, model, name, API.Inventory("horse" .. id, nil, nil))
             local Inventory = self.Horse:getInventory()
 
-            API_Database.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), slot = 0, itemId = 0, itemAmount = 0, procType = "insert"})
+            API_Database.execute("FCRP/Inventory", {id = "horse:" .. id, charid = self:getId(), capacity = Inventory:getCapacity(), slot = 0, itemId = 0, itemAmount = 0, procType = "insert"})
         end
 
         return self.Horse

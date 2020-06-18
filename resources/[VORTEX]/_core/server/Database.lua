@@ -204,7 +204,7 @@ API_Database.prepare('FCRP/JoinAppS', 'SELECT steam from playerjoin WHERE steam 
 API_Database.prepare('FCRP/JoinAppD', 'DELETE FROM jail WHERE charid = @charid')
 
 -------- INVENTORY QUERIES -----------
-API_Database.prepare('FCRP/Inventory', 'CALL procInventory(@id, @charid, @slot, @itemId, @itemAmount, @procType);')
+API_Database.prepare('FCRP/Inventory', 'CALL procInventory(@id, @charid, @capacity, @slot, @itemId, @itemAmount, @procType);')
 API_Database.prepare('UPDATE:inv_update_slot', 'CALL inv_update_slot(@inv_id, @slot_id, @slot_value)')
 API_Database.prepare('UPDATE:inv_remove_slot', 'CALL inv_remove_slot(@inv_id, @slot_id);')
 API_Database.prepare('SELECT:inv_select_slots_and_capacity', 'SELECT inv_slots, inv_capacity FROM inventories WHERE id = @inv_id')
