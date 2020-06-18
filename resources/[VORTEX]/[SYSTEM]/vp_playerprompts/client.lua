@@ -42,7 +42,7 @@ Citizen.CreateThread(
                             local pped = GetPlayerPed(pid)
                             if pped == entity then
                                 _targetedPlayerEntity = entity
-                                _targetedPlayerServerId = GetPlayerServerId(player)
+                                _targetedPlayerServerId = GetPlayerServerId(pid)
                                 _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
                                 break
                             end
@@ -128,11 +128,13 @@ Citizen.CreateThread(
                     entity = targetedPlayerEntity
                     isAPlayer = true
 
-                    name = "Pessoa"
+                    -- name = "Pessoa "
 
                     if options_isAnAdmin or options_isATrooper or options_isAMedic then
                         name = name .. " " .. targetedPlayerUserId
                     end
+
+                    SetPedPromptName(name)
                 end
 
                 local isANpc = not isAPlayer
@@ -263,13 +265,17 @@ Citizen.CreateThread(
                     if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
                         quickHoldModeToggle(prompt_trooper_uncuff)
 
-                        SetEnableHandcuffs(entity, false, false)
+                        -- SetEnableHandcuffs(entity, false, false)
+
+                        TriggerServerEvent("VP:SHERIFF:cuffing", targetedPlayerServerId)
                     end
 
                     if PromptHasHoldModeCompleted(prompt_trooper_cuff) then
                         quickHoldModeToggle(prompt_trooper_cuff)
 
-                        SetEnableHandcuffs(entity, true, false)
+                        -- SetEnableHandcuffs(entity, true, false)
+
+                        TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
                     end
                 end
             end

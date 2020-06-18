@@ -80,96 +80,96 @@ function SpawnVehicle(Vmodel, coords, head)
 	)
 end
 
-local prompt_patdown
+-- local prompt_patdown
 
-local lastTargetPlayerServerId
+-- local lastTargetPlayerServerId
 
-function pp()
-	prompt_patdown = PromptRegisterBegin()
-	PromptSetControlAction(prompt_patdown, 0x05CA7C52)
-	PromptSetText(prompt_patdown, CreateVarString(10, "LITERAL_STRING", "Revistar"))
-	PromptSetEnabled(prompt_patdown, true)
-	PromptSetVisible(prompt_patdown, false)
-	PromptSetHoldMode(prompt_patdown, true)
-	PromptSetGroup(prompt_patdown, PlayerPedId())
-	PromptRegisterEnd(prompt_patdown)
-end
+-- function pp()
+-- 	prompt_patdown = PromptRegisterBegin()
+-- 	PromptSetControlAction(prompt_patdown, 0x05CA7C52)
+-- 	PromptSetText(prompt_patdown, CreateVarString(10, "LITERAL_STRING", "Revistar"))
+-- 	PromptSetEnabled(prompt_patdown, true)
+-- 	PromptSetVisible(prompt_patdown, false)
+-- 	PromptSetHoldMode(prompt_patdown, true)
+-- 	PromptSetGroup(prompt_patdown, PlayerPedId())
+-- 	PromptRegisterEnd(prompt_patdown)
+-- end
 
-function HandlePrompts()
-	if PromptHasHoldModeCompleted(prompt_patdown) and lastTargetPlayerServerId ~= nil then
-		PromptSetEnabled(prompt_patdown, false)
-		Citizen.CreateThread(
-			function()
-				Citizen.Wait(1000)
-				PromptSetEnabled(prompt_patdown, true)
-			end
-		)
-		TriggerServerEvent("VP:SHERIFF:TryToPatDown", lastTargetPlayerServerId)
-	end
-end
+-- function HandlePrompts()
+-- 	if PromptHasHoldModeCompleted(prompt_patdown) and lastTargetPlayerServerId ~= nil then
+-- 		PromptSetEnabled(prompt_patdown, false)
+-- 		Citizen.CreateThread(
+-- 			function()
+-- 				Citizen.Wait(1000)
+-- 				PromptSetEnabled(prompt_patdown, true)
+-- 			end
+-- 		)
+-- 		TriggerServerEvent("VP:SHERIFF:TryToPatDown", lastTargetPlayerServerId)
+-- 	end
+-- end
 
-function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
-	local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
-	SetTextScale(w, h)
-	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
-	SetTextCentre(centre)
-	if enableShadow then
-		SetTextDropshadow(1, 0, 0, 0, 255)
-	end
-	Citizen.InvokeNative(0xADA9255D, 10)
-	DisplayText(str, x, y)
-end
+-- function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
+-- 	local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
+-- 	SetTextScale(w, h)
+-- 	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+-- 	SetTextCentre(centre)
+-- 	if enableShadow then
+-- 		SetTextDropshadow(1, 0, 0, 0, 255)
+-- 	end
+-- 	Citizen.InvokeNative(0xADA9255D, 10)
+-- 	DisplayText(str, x, y)
+-- end
 
-Citizen.CreateThread(
-	function()
-		pp()
-		while true do
-			Citizen.Wait(0)
-			local y, entity = GetPlayerTargetEntity(PlayerId())
+-- Citizen.CreateThread(
+-- 	function()
+-- 		pp()
+-- 		while true do
+-- 			Citizen.Wait(0)
+-- 			local y, entity = GetPlayerTargetEntity(PlayerId())
 
-			local foundPlayer = false
+-- 			local foundPlayer = false
 
-			if entity ~= 0 then
-				for _, pid in pairs(GetActivePlayers()) do
-					if NetworkIsPlayerActive(pid) then
-						foundPlayer = true
+-- 			if entity ~= 0 then
+-- 				for _, pid in pairs(GetActivePlayers()) do
+-- 					if NetworkIsPlayerActive(pid) then
+-- 						foundPlayer = true
 
-						local pped = GetPlayerPed(pid)
-						if entity == pped then
-							local serverId = GetPlayerServerId(pid)
-							if lastTargetPlayerServerId == nil or lastTargetPlayerServerId ~= serverId then
-								lastTargetPlayerServerId = serverId
+-- 						local pped = GetPlayerPed(pid)
+-- 						if entity == pped then
+-- 							local serverId = GetPlayerServerId(pid)
+-- 							if lastTargetPlayerServerId == nil or lastTargetPlayerServerId ~= serverId then
+-- 								lastTargetPlayerServerId = serverId
 
-								PromptSetVisible(prompt_patdown, true)
-								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
+-- 								PromptSetVisible(prompt_patdown, true)
+-- 								PromptSetGroup(prompt_patdown, PromptGetGroupIdForTargetEntity(entity))
 
-								local pPosition = GetEntityCoords(PlayerPedId())
-								local tPosition = GetEntityCoords(pped)
+-- 								local pPosition = GetEntityCoords(PlayerPedId())
+-- 								local tPosition = GetEntityCoords(pped)
 
-								local dist = #(pPosition - tPosition)
-								if dist <= 1.5 and (cAPI.hasGroupOrInheritance("trooper") or IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3)) then
-									PromptSetEnabled(prompt_patdown, true)
-								else
-									PromptSetEnabled(prompt_patdown, false)
-								end
+-- 								local dist = #(pPosition - tPosition)
+-- 								if dist <= 1.5 and (cAPI.hasGroupOrInheritance("trooper") or IsEntityPlayingAnim(pped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3)) then
+-- 									PromptSetEnabled(prompt_patdown, true)
+-- 								else
+-- 									PromptSetEnabled(prompt_patdown, false)
+-- 								end
 
-								break
-							end
-						end
-					end
-				end
+-- 								break
+-- 							end
+-- 						end
+-- 					end
+-- 				end
 
-				if foundPlayer then
-					HandlePrompts()
-				end
-			end
-			if foundPlayer == false then
-				lastTargetPlayerServerId = nil
-				PromptSetVisible(prompt_patdown, false)
-			end
-		end
-	end
-)
+-- 				if foundPlayer then
+-- 					HandlePrompts()
+-- 				end
+-- 			end
+-- 			if foundPlayer == false then
+-- 				lastTargetPlayerServerId = nil
+-- 				PromptSetVisible(prompt_patdown, false)
+-- 			end
+-- 		end
+-- 	end
+-- )
 
 --[[ /////////////// MENU DO OFICIAL
 Citizen.CreateThread(

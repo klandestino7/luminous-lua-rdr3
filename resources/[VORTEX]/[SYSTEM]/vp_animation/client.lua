@@ -41,9 +41,11 @@ Citizen.CreateThread(
             if IsControlPressed(0, 0xD8F73058) then -- U | Cancelar animação
                 local ped = PlayerPedId()
 
-                ClearPedTasks(ped)
-                ClearPedSecondaryTask(ped)
-                SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+                if not IsPlayerFreeAiming(ped) then
+                    ClearPedTasks(ped)
+                    ClearPedSecondaryTask(ped)
+                    SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+                end
             end
             --   if IsControlPressed(1, 0x4CC0E2FE) then -- B
             --     print("apertou")
