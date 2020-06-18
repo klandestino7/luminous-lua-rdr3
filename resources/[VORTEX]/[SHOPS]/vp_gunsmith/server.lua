@@ -21,7 +21,8 @@ local verificationData = {
     ["ammo_pistol"] = {0, 200, 100, 20},
     ["ammo_repeater"] = {0, 200, 100, 20},
     ["ammo_rifle"] = {0, 200, 100, 20},
-    ["ammo_shotgun"] = {0, 200, 100, 20}
+    ["ammo_shotgun"] = {0, 200, 100, 20},
+    ["ammo_22"] = {0, 200, 100, 20},
 }
 
 -- ["revolver_lemat"] = {1, 7, 317, 13},

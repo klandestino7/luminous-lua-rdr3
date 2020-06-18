@@ -742,6 +742,13 @@ ItemList = {
         description = "Munição produzida especialmente para pistolas.",
         stackSize = 60
     },
+    ["ammo_22"] = {
+        type = "ammo",
+        name = "Munição .22",
+        weight = 0.1,
+        description = "Munição produzida especialmente para o Rifle Anti-pragas.",
+        stackSize = 60
+    },
     -- ['ammo_pistol_express'] = {
     --     type = 'ammo',
     --     name = 'Munição de Pistola Expressa',

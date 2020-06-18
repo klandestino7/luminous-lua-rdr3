@@ -660,13 +660,13 @@ function getAmmoTypeFromWeaponType(weapon)
         ammo = "AMMO_REVOLVER"
     end
 
-    if weapon:find("_RIFLE_") then
+    if weapon:find("_RIFLE_") or weapon:find("SNIPERRIFLE_")then
         ammo = "AMMO_RIFLE"
     end
 
-    if weapon:find("SNIPERRIFLE_") then
-        ammo = "AMMO_SNIPER"
-    end
+    -- if  weapon:find("SNIPERRIFLE_") then
+    --     ammo = "AMMO_SNIPER"
+    -- end
 
     if weapon:find("_SHOTGUN_") then
         ammo = "AMMO_SHOTGUN"
@@ -682,6 +682,10 @@ function getAmmoTypeFromWeaponType(weapon)
 
     if weapon:find("WEAPON_THROWN_MOLOTOV") then
         ammo = "AMMO_MOLOTOV"
+    end
+
+    if weapon == "WEAPON_RIFLE_VARMINT" then
+        ammo = "AMMO_22"
     end
 
     return ammo:lower()

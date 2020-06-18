@@ -12,13 +12,13 @@ function load(interiorId)
         {"revolver_lemat", 31700, 1300, 1, "w_revolver_lemat01"},
         {"revolver_cattleman", 5000, 200, 1, "w_revolver_cattleman01"},
         -- {"revolver_navy", 257, 11, 1, "w_revolver_schofield01"}, -- ERA PRA SER O NAVY
-     --   {"pistol_volcanic", 30000, 1400, 1, "w_pistol_volcanic01"},
-     --   {"shotgun_sawedoff", 6500, 1500, 1, "w_shotgun_sawed01"},
+        {"pistol_volcanic", 30000, 1400, 1, "w_pistol_volcanic01"},
+        {"shotgun_sawedoff", 6500, 1500, 1, "w_shotgun_sawed01"},
         {"repeater_carbine", 9000, 400, 1, "w_repeater_carbine01"},
-    --    {"repeater_henry", 23400, 1000, 1, "w_repeater_henry01"},
-      --  {"sniperrifle_rollingblock", 50000, 2000, 1, "w_rifle_rollingblock01"},
-        {"rifle_varmint", 7200, 300, 1, "w_repeater_pumpaction01"}, -- NÃO ESTÁ CARREGANDO
-    --    {"rifle_boltaction", 21600, 900, 1, "w_rifle_boltaction01"}
+        {"repeater_henry", 23400, 1000, 1, "w_repeater_henry01"},
+        {"sniperrifle_rollingblock", 50000, 2000, 1, "w_rifle_rollingblock01"},
+        {"rifle_varmint", 7200, 300, 1, "w_repeater_pumpaction01"} -- NÃO ESTÁ CARREGANDO
+        --    {"rifle_boltaction", 21600, 900, 1, "w_rifle_boltaction01"}
         -- {"thrown_throwing_knives", 250, 50, 1, "w_melee_tomahawk03"},
         -- {"melee_cleaver", 8, 1, 1, "p_cleaver01x"},
         -- {"melee_knife", 5, 1, 1, "w_melee_knife02"},
@@ -30,7 +30,7 @@ function load(interiorId)
     local b = vec3(table.unpack(gunsmith_data.point2))
 
     local pitch, roll, yaw = table.unpack(gunsmith_data.rotation_1)
-    
+
     local d = math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)) / (#weapons - 1)
     local fi = math.atan2(b.y - a.y, b.x - a.x)
 
@@ -51,7 +51,8 @@ function load(interiorId)
         {"ammo_pistol", 200, 100, 20, "s_inv_pistolammo01x"},
         {"ammo_repeater", 200, 100, 20, "s_inv_repeat_rifleammo01x"},
         {"ammo_rifle", 200, 100, 20, "s_inv_rifleammo01x"},
-        {"ammo_shotgun", 200, 100, 20, "s_inv_shotgunammo01x"}
+        {"ammo_shotgun", 200, 100, 20, "s_inv_shotgunammo01x"},
+        {"ammo_22", 200, 100, 20, "s_inv_shotgunammo01x"}
     }
 
     -- a = vec3(table.unpack(gunsmith_data.point3))
@@ -62,48 +63,15 @@ function load(interiorId)
 
         for i = 0, #gunsmith_data.ammo_points do
             if ammos[i + 1] and gunsmith_data.ammo_points[i + 1] then
-                local x, y, z = table.unpack(gunsmith_data.ammo_points[i + 1])
+                local x, y, z, a, b, c = table.unpack(gunsmith_data.ammo_points[i + 1])
                 local d = ammos[i + 1]
+
+                if i == 5 then
+                    pitch, roll, yaw = a, b, c
+                    print(pitch, roll, yaw)
+                end
+
                 createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(ItemList[d[1]].worldModel or d[5], x, y, z, pitch, roll, yaw))
-            end
-        end
-    end
-
-    if gunsmith_data.point3 then
-        local melee = {
-            -- price_dollar, price_gold, amount
-            {"revolver_lemat", 317, 13, 1, "w_revolver_lemat01"},
-            {"revolver_cattleman", 50, 2, 1, "w_revolver_cattleman01"},
-            -- {"revolver_navy", 257, 11, 1, "w_revolver_schofield01"}, -- ERA PRA SER O NAVY
-            {"pistol_volcanic", 300, 14, 1, "w_pistol_volcanic01"},
-            {"shotgun_sawedoff", 65, 15, 1, "w_shotgun_sawed01"},
-            {"repeater_carbine", 90, 4, 1, "w_repeater_carbine01"},
-            {"repeater_henry", 234, 10, 1, "w_repeater_henry01"},
-            {"sniperrifle_rollingblock", 500, 20, 1, "w_rifle_rollingblock01"},
-            {"rifle_varmint", 72, 3, 1, "w_repeater_pumpaction01"}, -- NÃO ESTÁ CARREGANDO
-            {"rifle_boltaction", 216, 9, 1, "w_rifle_boltaction01"}
-            -- {"thrown_throwing_knives", 250, 50, 1, "w_melee_tomahawk03"},
-            -- {"melee_cleaver", 8, 1, 1, "p_cleaver01x"},
-            -- {"melee_knife", 5, 1, 1, "w_melee_knife02"},
-        }
-
-        local a = vec3(table.unpack(gunsmith_data.point3))
-        local b = vec3(table.unpack(gunsmith_data.point4))
-
-        local pitch, roll, yaw = table.unpack(gunsmith_data.rotation_2)
-
-        local d = math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)) / (#melee - 1)
-        local fi = math.atan2(b.y - a.y, b.x - a.x)
-
-        for i = 0, #weapons do
-            local x = a.x + i * d * math.cos(fi)
-            local y = a.y + i * d * math.sin(fi)
-            local z = a.z
-            -- local _, z, _ = GetGroundZAndNormalFor_3dCoord(x, y, a.z)
-
-            if melee[i + 1] then
-                local d = melee[i + 1]
-                createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(d[5], x, y, z, pitch, roll, yaw, "weapon_" .. d[1]))
             end
         end
     end
@@ -282,7 +250,7 @@ function createPrompt(name, itemId, dollar, gold, entitytarget)
     PromptSetGroup(prompt_gold, group)
     PromptRegisterEnd(prompt_gold)
 
-    promptDatas[entitytarget] = {itemId, CreateVarString(10, "LITERAL_STRING", name), prompt_dollar, prompt_gold}
+    promptDatas[entitytarget] = {itemId, name, prompt_dollar, prompt_gold}
 end
 
 function unload()
@@ -428,10 +396,10 @@ Citizen.CreateThread(
                 local data
                 if entityTargeted ~= nil then
                     data = promptDatas[entityTargeted]
-                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(entityTargeted), data[2])
+                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(entityTargeted), CreateVarString(10, "LITERAL_STRING", data[2]))
                 elseif ammoIndexTargeted ~= nil then
                     data = promptDatas[props_ammo[ammoIndexTargeted][1]]
-                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(props_ammo[ammoIndexTargeted][1]), data[2])
+                    PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(props_ammo[ammoIndexTargeted][1]), CreateVarString(10, "LITERAL_STRING", data[2]))
                 end
 
                 if data == nil then
@@ -498,135 +466,135 @@ end
 
 -- - DEBBUGING
 
--- function TxtAtWorldCoord(x, y, z, txt, size, font, alpha)
---     alpha = alpha or 255
---     local s, sx, sy = GetScreenCoordFromWorldCoord(x, y, z)
---     if (sx > 0 and sx < 1) or (sy > 0 and sy < 1) then
---         local s, sx, sy = GetHudScreenPositionFromWorldPosition(x, y, z)
---         DrawTxt(txt, sx, sy, size, true, 255, 255, 255, alpha, true, font) -- Font 2 has some symbol conversions ex. @ becomes the rockstar logo
---     end
--- end
+function TxtAtWorldCoord(x, y, z, txt, size, font, alpha)
+    alpha = alpha or 255
+    local s, sx, sy = GetScreenCoordFromWorldCoord(x, y, z)
+    if (sx > 0 and sx < 1) or (sy > 0 and sy < 1) then
+        local s, sx, sy = GetHudScreenPositionFromWorldPosition(x, y, z)
+        DrawTxt(txt, sx, sy, size, true, 255, 255, 255, alpha, true, font) -- Font 2 has some symbol conversions ex. @ becomes the rockstar logo
+    end
+end
 
--- function DrawTxt(str, x, y, size, enableShadow, r, g, b, a, centre, font)
---     local str = CreateVarString(10, "LITERAL_STRING", str)
---     SetTextScale(1, size)
---     SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
---     SetTextCentre(centre)
---     if enableShadow then
---         SetTextDropshadow(1, 0, 0, 0, 255)
---     end
---     SetTextFontForCurrentCommand(font)
---     DisplayText(str, x, y)
--- end
+function DrawTxt(str, x, y, size, enableShadow, r, g, b, a, centre, font)
+    local str = CreateVarString(10, "LITERAL_STRING", str)
+    SetTextScale(1, size)
+    SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    SetTextFontForCurrentCommand(font)
+    DisplayText(str, x, y)
+end
 
--- local _temp_prop
+local _temp_prop
 
--- RegisterCommand(
---     "gstest",
---     function(source, args, rawCommand)
---         if #args > 0 then
---             local lastCoords
---             local lastHeading
+RegisterCommand(
+    "gstest",
+    function(source, args, rawCommand)
+        if #args > 0 then
+            local lastCoords
+            local lastHeading
 
---             if _temp_prop ~= nil then
---                 lastCoords = GetEntityCoords(_temp_prop)
---                 lastHeading = GetEntityHeading(_temp_prop)
---                 DeleteEntity(_temp_prop)
---                 _temp_prop = nil
---             else
---                 local ped = PlayerPedId()
+            if _temp_prop ~= nil then
+                lastCoords = GetEntityCoords(_temp_prop)
+                lastHeading = GetEntityHeading(_temp_prop)
+                DeleteEntity(_temp_prop)
+                _temp_prop = nil
+            else
+                local ped = PlayerPedId()
 
---                 local pedVector = GetEntityCoords(ped)
+                local pedVector = GetEntityCoords(ped)
 
---                 local cameraRotation = GetGameplayCamRot()
---                 local cameraCoord = GetGameplayCamCoord()
---                 local direction = RotationToDirection(cameraRotation)
---                 lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
+                local cameraRotation = GetGameplayCamRot()
+                local cameraCoord = GetGameplayCamCoord()
+                local direction = RotationToDirection(cameraRotation)
+                lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
---                 local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
---                 local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+                local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
+                local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
---                 if hit == 1 then
---                     lastCoords = endCoords
---                 end
---             end
+                if hit == 1 then
+                    lastCoords = endCoords
+                end
+            end
 
---             if not HasModelLoaded(args[1]) then
---                 RequestModel(args[1])
---                 while not HasModelLoaded(args[1]) do
---                     Citizen.Wait(10)
---                 end
---             end
+            if not HasModelLoaded(args[1]) then
+                RequestModel(args[1])
+                while not HasModelLoaded(args[1]) do
+                    Citizen.Wait(10)
+                end
+            end
 
---             _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
---             SetEntityHeading(_temp_prop, lastHeading)
---             FreezeEntityPosition(_temp_prop, true)
---         end
---     end,
---     false
--- )
+            _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
+            SetEntityHeading(_temp_prop, lastHeading)
+            FreezeEntityPosition(_temp_prop, true)
+        end
+    end,
+    false
+)
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(10)
---             local ped = PlayerPedId()
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(10)
+            local ped = PlayerPedId()
 
---             local pedVector = GetEntityCoords(ped)
+            local pedVector = GetEntityCoords(ped)
 
---             local cameraRotation = GetGameplayCamRot()
---             local cameraCoord = GetGameplayCamCoord()
---             local direction = RotationToDirection(cameraRotation)
---             local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
+            local cameraRotation = GetGameplayCamRot()
+            local cameraCoord = GetGameplayCamCoord()
+            local direction = RotationToDirection(cameraRotation)
+            local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
 
---             local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
---             local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+            local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
+            local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
---             if hit == 1 then
---                 aimingAt = endCoords
---             end
+            if hit == 1 then
+                aimingAt = endCoords
+            end
 
---             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
---             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
+            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
 
---             if IsControlJustPressed(2, 0xF84FA74F) then
---                 print(aimingAt)
---                 print(GetInteriorFromEntity(ped))
---             end
+            if IsControlJustPressed(2, 0xF84FA74F) then
+                print(aimingAt)
+                print(GetInteriorFromEntity(ped))
+            end
 
---             if _temp_prop ~= nil then
---                 SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
+            if _temp_prop ~= nil then
+                SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
 
---                 if IsControlPressed(1, 0x07CE1E61) then -- LMB
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
---                 end
+                if IsControlPressed(1, 0x07CE1E61) then -- LMB
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
+                end
 
---                 if IsControlPressed(0, 0x4AF4D473) then -- DEL
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
---                 end
+                if IsControlPressed(0, 0x4AF4D473) then -- DEL
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
+                end
 
---                 if IsControlPressed(1, 0xDFF812F9) then -- E
---                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
---                 end
+                if IsControlPressed(1, 0xDFF812F9) then -- E
+                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
+                end
 
---                 if IsControlJustPressed(1, 0xF84FA74F) then
---                     DeleteEntity(_temp_prop)
---                     _temp_prop = nil
---                 end
+                if IsControlJustPressed(1, 0xF84FA74F) then
+                    DeleteEntity(_temp_prop)
+                    _temp_prop = nil
+                end
 
---                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.7, "" .. GetEntityCoords(_temp_prop), 0.6, 2)
---                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.6, "" .. GetEntityPitch(_temp_prop), 0.6, 2)
---                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.5, "" .. GetEntityRoll(_temp_prop), 0.6, 2)
---                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.4, "" .. GetEntityHeading(_temp_prop), 0.6, 2)
+                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.7, "" .. GetEntityCoords(_temp_prop), 0.6, 2)
+                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.6, "" .. GetEntityPitch(_temp_prop), 0.6, 2)
+                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.5, "" .. GetEntityRoll(_temp_prop), 0.6, 2)
+                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.4, "" .. GetEntityHeading(_temp_prop), 0.6, 2)
 
---             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
---             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
---             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
---             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
---             end
---         end
---     end
--- )
+            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
+            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
+            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
+            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
+            end
+        end
+    end
+)
 
 -- local lastGunsmithInterior
 
@@ -694,7 +662,7 @@ end
 --         if Config['stock'][indexlua] then
 --             local v =  Config['stock'][indexlua]
 
---             -- local weaponHash = v[1] 
+--             -- local weaponHash = v[1]
 --             local weaponModel = v[2]
 --         end
 --     end
