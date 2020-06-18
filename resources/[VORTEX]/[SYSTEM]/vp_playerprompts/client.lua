@@ -322,7 +322,7 @@ end
 function CreatePrompts()
     fakeplayer_promptgroup = GetRandomIntInRange(0, 0xffffff)
 
-    prompt_patdown = newPrompt(0x05CA7C52, "Revistar", true, 0)
+    prompt_patdown = newPrompt(0x5966D52A, "Revistar", true, 0)
 
     prompt_dead_pickup = newPrompt(0xEB2AC491, "Pegar", true, 0)
 
