@@ -160,8 +160,6 @@ Citizen.CreateThread(
                 end
 
                 if isAPlayer then
-                    PromptSetEnabled(prompt_patdown, false)
-
                     if isAlive then
                         if distance <= 1.5 then
                             if IsEntityPlayingAnim(entity, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
@@ -206,6 +204,28 @@ Citizen.CreateThread(
                                 end
                             end
                         end
+
+                        if distance > 1.5 then
+                            PromptSetEnabled(prompt_patdown, false)
+
+                            if not options_isATrooper then
+                                PromptSetVisible(prompt_trooper_cuff, false)
+                                PromptSetVisible(prompt_trooper_uncuff, false)
+                            end
+
+                            if options_isATrooper then
+                                PromptSetEnabled(prompt_trooper_cuff, false)
+                                PromptSetEnabled(prompt_trooper_uncuff, false)
+
+                                if not IsPedCuffed(entity) then
+                                    PromptSetVisible(prompt_trooper_cuff, true)
+                                    PromptSetVisible(prompt_trooper_uncuff, false)
+                                else
+                                    PromptSetVisible(prompt_trooper_cuff, false)
+                                    PromptSetVisible(prompt_trooper_uncuff, true)
+                                end
+                            end
+                        end
                     end
 
                     if isDead then
@@ -226,57 +246,59 @@ Citizen.CreateThread(
                     end
                 end
 
-                if isAlive then
-                    PromptSetVisible(prompt_admin_revive, false)
+                PromptSetVisible(prompt_admin_revive, false)
 
-                    PromptSetVisible(prompt_dead_pickup, false)
+                PromptSetVisible(prompt_dead_pickup, false)
+
+                if isAlive then
                 end
 
                 if isDead then
-                    PromptSetVisible(prompt_admin_revive, false)
 
-                    PromptSetVisible(prompt_dead_pickup, false)
-
-                    -- if options_isAnAdmin then
-                    PromptSetVisible(prompt_admin_revive, true)
-                    -- end
+                    if options_isAnAdmin then
+                        PromptSetVisible(prompt_admin_revive, true)
+                    end
 
                     if distance <= 2.25 then
                         PromptSetVisible(prompt_dead_pickup, true)
                     end
+                end
 
-                    if PromptIsJustPressed(prompt_patdown) then
-                        TriggerServerEvent("VP:SHERIFF:TryToPatDown", targetedPlayerServerId)
-                    end
+                if PromptHasHoldModeCompleted(prompt_patdown) then
+                    quickHoldModeToggle(prompt_patdown)
 
-                    if PromptHasHoldModeCompleted(prompt_dead_pickup) then
-                        quickHoldModeToggle(prompt_dead_pickup)
+                    TriggerServerEvent("VP:SHERIFF:TryToPatDown", targetedPlayerServerId)
+                end
 
-                        TaskPickupCarriableEntity(ped, entity)
-                    end
+                if PromptHasHoldModeCompleted(prompt_dead_pickup) then
+                    quickHoldModeToggle(prompt_dead_pickup)
 
-                    if PromptHasHoldModeCompleted(prompt_admin_revive) then
-                        quickHoldModeToggle(prompt_admin_revive)
+                    TaskPickupCarriableEntity(ped, entity)
+                end
 
-                        ResurrectPed(entity)
-                        SetEntityHealth(entity, GetEntityMaxHealth(entity))
-                    end
+                if PromptHasHoldModeCompleted(prompt_admin_revive) then
+                    quickHoldModeToggle(prompt_admin_revive)
 
-                    if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
-                        quickHoldModeToggle(prompt_trooper_uncuff)
+                    SetEntityAsMissionEntity(entity, true, true)
+                    ResurrectPed(entity)
+                    SetEntityHealth(entity, GetEntityMaxHealth(entity))
+                    SetEntityAsMissionEntity(entity, false, false)
+                end
 
-                        -- SetEnableHandcuffs(entity, false, false)
+                if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
+                    quickHoldModeToggle(prompt_trooper_uncuff)
 
-                        TriggerServerEvent("VP:SHERIFF:cuffing", targetedPlayerServerId)
-                    end
+                    -- SetEnableHandcuffs(entity, false, false)
 
-                    if PromptHasHoldModeCompleted(prompt_trooper_cuff) then
-                        quickHoldModeToggle(prompt_trooper_cuff)
+                    TriggerServerEvent("VP:SHERIFF:cuffing", targetedPlayerServerId)
+                end
 
-                        -- SetEnableHandcuffs(entity, true, false)
+                if PromptHasHoldModeCompleted(prompt_trooper_cuff) then
+                    quickHoldModeToggle(prompt_trooper_cuff)
 
-                        TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
-                    end
+                    -- SetEnableHandcuffs(entity, true, false)
+
+                    TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
                 end
             end
         end
@@ -300,7 +322,7 @@ end
 function CreatePrompts()
     fakeplayer_promptgroup = GetRandomIntInRange(0, 0xffffff)
 
-    prompt_patdown = newPrompt(0x05CA7C52, "Revistar", false, 0)
+    prompt_patdown = newPrompt(0x05CA7C52, "Revistar", true, 0)
 
     prompt_dead_pickup = newPrompt(0xEB2AC491, "Pegar", true, 0)
 
