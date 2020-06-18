@@ -202,23 +202,19 @@ end
 
 RegisterNetEvent('VP:ROBREG:PlayAlarm')
 AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
-	Citizen.CreateThread(function()		
-		Wait(40000)
-
-		Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
-		
-		local Alarm = Citizen.InvokeNative(0xE368E8422C860BA7, "BELL_ALARM", "BRT2_Sounds", -2)
-
-		while not Alarm do
-			Citizen.Wait(10)
-			Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
-		end	
-
-		local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x,y,z, "BRT2_Sounds", 1, 1, 1, 0)
-
-		Wait(10000)
-
-		Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
+	Citizen.CreateThread(function()				
+		Wait(20000)
+		if isRobberyActive ~= 'fail' then
+			Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")			
+			local Alarm = Citizen.InvokeNative(0xE368E8422C860BA7, "BELL_ALARM", "BRT2_Sounds", -2)
+			while not Alarm do
+				Citizen.Wait(10)
+				Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
+			end	
+			local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x,y,z, "BRT2_Sounds", 1, 1, 1, 0)
+			Wait(10000)
+			Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
+		end
 	end)
 end)
 

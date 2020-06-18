@@ -50,15 +50,18 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 	--	TriggerClientEvent('Notify', source, 'negado',  Locales[Config.Locale]['empty_atm'] .. timeInterval .. timeUnit )
 
 	else
-		local faca = Inventory:getItemAmount("melee_knife")
-		if faca < 1 then
-			TriggerClientEvent('VP:NOTIFY:Simple', source, "Você não pussi uma faca.", 10000)
-			return
-		end
+		-- local faca = Inventory:getItemAmount("melee_knife")
+		-- if faca < 1 then
+		-- 	TriggerClientEvent('VP:NOTIFY:Simple', source, "Você não pussi uma faca.", 10000)
+		-- 	return
+		-- end
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
-		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
+
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
-		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4] )		
+
+		Wait(10000)
+		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
+		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4])
 		
 	end	
 end)
