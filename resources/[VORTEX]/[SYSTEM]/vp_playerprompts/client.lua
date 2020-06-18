@@ -160,8 +160,9 @@ Citizen.CreateThread(
                 end
 
                 if isAPlayer then
-
                     PromptSetVisible(prompt_patdown, true)
+
+                    PromptSetVisible(prompt_player_senditem, false)
 
                     if isAlive then
                         if distance <= 1.5 then
@@ -206,6 +207,12 @@ Citizen.CreateThread(
                                     end
                                 end
                             end
+
+                            if options_itemSendSlotId then
+                                PromptSetVisible(prompt_player_senditem, true)
+
+                                PromptSetEnabled(prompt_player_senditem, true)
+                            end
                         end
 
                         if distance > 1.5 then
@@ -228,6 +235,12 @@ Citizen.CreateThread(
                                     PromptSetVisible(prompt_trooper_uncuff, true)
                                 end
                             end
+
+                            if options_itemSendSlotId then
+                                PromptSetVisible(prompt_player_senditem, true)
+
+                                PromptSetEnabled(prompt_player_senditem, false)
+                            end
                         end
                     end
 
@@ -245,6 +258,8 @@ Citizen.CreateThread(
                     PromptSetVisible(prompt_trooper_cuff, false)
                     PromptSetVisible(prompt_trooper_uncuff, false)
 
+                    PromptSetVisible(prompt_player_senditem, false)
+
                     if isDead then
                     end
                 end
@@ -257,7 +272,6 @@ Citizen.CreateThread(
                 end
 
                 if isDead then
-
                     if options_isAnAdmin then
                         PromptSetVisible(prompt_admin_revive, true)
                     end
@@ -303,24 +317,31 @@ Citizen.CreateThread(
 
                     TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
                 end
+
+                if PromptHasHoldModeCompleted(prompt_player_senditem) then
+                    PromptSetVisible(prompt_player_senditem, true)
+
+                    TriggerServerEvent("VP:INVENTORY:SendToPlayer", options_itemSendSlotId, targetedPlayerServerId)
+                end
             end
         end
     end
 )
 
-function RotationToDirection(rotation)
-    local adjustedRotation = {
-        x = (math.pi / 180) * rotation.x,
-        y = (math.pi / 180) * rotation.y,
-        z = (math.pi / 180) * rotation.z
-    }
-    local direction = {
-        x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-        y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-        z = math.sin(adjustedRotation.x)
-    }
-    return direction
-end
+RegisterNetEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget")
+AddEventHandler(
+    "VP:PLAYERPROMPTS:TryToSendItemSlotToTarget",
+    function(slotId)
+        options_itemSendSlotId = slotId
+
+        Citizen.CreateThread(
+            function()
+                Citizen.Wait(10000)
+                options_itemSendSlotId = nil
+            end
+        )
+    end
+)
 
 function CreatePrompts()
     fakeplayer_promptgroup = GetRandomIntInRange(0, 0xffffff)
@@ -334,6 +355,8 @@ function CreatePrompts()
     prompt_trooper_cuff = newPrompt(0xEB2AC491, "Algemar", true, 1)
 
     prompt_trooper_uncuff = newPrompt(0x7F8D09B8, "Desalgemar", true, 1)
+
+    prompt_player_senditem = newPrompt(0x07CE1E61, "Enviar Item", true, 0)
 end
 
 function newPrompt(control, text, hold, page)
@@ -357,6 +380,20 @@ end
 function quickHoldModeToggle(prompt)
     PromptSetHoldMode(prompt, false)
     PromptSetHoldMode(prompt, true)
+end
+
+function RotationToDirection(rotation)
+    local adjustedRotation = {
+        x = (math.pi / 180) * rotation.x,
+        y = (math.pi / 180) * rotation.y,
+        z = (math.pi / 180) * rotation.z
+    }
+    local direction = {
+        x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+        y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+        z = math.sin(adjustedRotation.x)
+    }
+    return direction
 end
 
 AddEventHandler(

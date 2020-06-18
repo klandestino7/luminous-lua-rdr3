@@ -265,7 +265,8 @@ RegisterNUICallback(
 RegisterNUICallback(
     "startsendingslot",
     function(cb)
-        startLookingForAPlayerToSend(cb.slotId)
+        -- startLookingForAPlayerToSend(cb.slotId)
+        TriggerEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget", cb.slotId)
     end
 )
 
