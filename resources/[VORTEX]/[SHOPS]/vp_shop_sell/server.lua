@@ -71,7 +71,7 @@ AddEventHandler(
 
         if Inventory:removeItem(-1, itemId, itemAmount) then
             Inventory:addItem(currencyItem, itemPrice)
-            User:notify("item", itemIdm -(itemAmount))
+            User:notify("item", itemId, -(itemAmount))
             if not withGold then
                 User:notify("item", "money", itemPrice)
             else
