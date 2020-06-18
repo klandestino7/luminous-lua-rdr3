@@ -25,7 +25,14 @@ AddEventHandler(
             itemAmount = itemAmount / 100
 
             if itemId == "money" then
-                itemAmount = "$" .. itemAmount
+                local c = "$"
+
+                if itemAmount < 1.0 then
+                    c = "¢"
+                    itemAmount = string.format("%.0f", (itemAmount * 100))
+                end
+
+                itemAmount = c .. itemAmount
             elseif itemId == "gold" then
                 itemAmount = "G" .. itemAmount
             end
