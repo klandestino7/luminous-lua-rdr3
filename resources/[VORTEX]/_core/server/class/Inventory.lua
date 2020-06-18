@@ -376,27 +376,15 @@ function API.Inventory(id, capacity, slots)
                 )
             end
 
-            local toastType = "item"
-            if itemId == "gold" then
-                toastType = "gold"
-            elseif itemId == "money" then
-                toastType = "dollar"
-            end
-
-            local itemName = itemData:getName()
             for vSource, _ in pairs(self.viewersSources) do
-                if toastType == "item" then
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, itemAmount)
-                else
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemAmount / 100)
-                end
+                TriggerClientEvent("VP:TOAST:New", vSource, "item", itemId, itemAmount)
             end
 
             -- self:addRecent(itemId, itemAmount)
 
             syncToViewers(self.viewersSources, sync, self:getWeight())
 
-            return true
+            return true, candidatesSlots
         end
         return false
     end
@@ -455,20 +443,8 @@ function API.Inventory(id, capacity, slots)
                 end
             end
 
-            local toastType = "item"
-            if itemId == "gold" then
-                toastType = "gold"
-            elseif itemId == "money" then
-                toastType = "dollar"
-            end
-
-            local itemName = itemData:getName()
             for vSource, _ in pairs(self.viewersSources) do
-                if toastType == "item" then
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, -(itemAmount))
-                else
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, -(itemAmount / 100))
-                end
+                TriggerClientEvent("VP:TOAST:New", vSource, "item", itemId, -(itemAmount))
             end
         else
             local Slot = self.slots[slotId]
@@ -501,20 +477,8 @@ function API.Inventory(id, capacity, slots)
                 )
             end
 
-            local toastType = "item"
-            if itemId == "gold" then
-                toastType = "gold"
-            elseif itemId == "money" then
-                toastType = "dollar"
-            end
-
-            local itemName = itemData:getName()
             for vSource, _ in pairs(self.viewersSources) do
-                if toastType == "item" then
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, itemName, -(itemAmount))
-                else
-                    TriggerClientEvent("VP:TOAST:New", vSource, toastType, -(itemAmount / 100))
-                end
+                TriggerClientEvent("VP:TOAST:New", vSource, "item", itemId, -(itemAmount))
             end
         end
 
@@ -688,7 +652,7 @@ function getAmmoTypeFromWeaponType(weapon)
         ammo = "AMMO_PISTOL"
     end
 
-    if weapon:find("_REPEATER_") then-- or weapon:find("WEAPON_RIFLE_VARMINT") then
+    if weapon:find("_REPEATER_") then -- or weapon:find("WEAPON_RIFLE_VARMINT") then
         ammo = "AMMO_REPEATER"
     end
 

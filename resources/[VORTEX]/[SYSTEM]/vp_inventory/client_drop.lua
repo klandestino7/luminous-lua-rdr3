@@ -1,187 +1,226 @@
--- p_bag_voodoo01x
+local dropPopulation = {}
+--[[
+    {
+        entity
+        position
+        itemName
+        itemAmount
+        itemWeight
+    }
+]]
+local indexInPickupRange
 
--- local PropDroppedItemPool = {}
-
-local prompt_pickup
+local prompt
 local prompt_group
-
-function CreateDroppedItemAt(itemId, itemAmount, x, y, z)
-    local worldModel = ItemList[itemId].worldModel or "p_bag01x"
-    -- p_bag01x
-
-    if not HasModelLoaded(worldModel) then
-        RequestModel(worldModel)
-        while not HasModelLoaded(worldModel) do
-            Wait(10)
-        end
-    end
-
-    local prop = CreateObject(worldModel, x, y, z, 1, 1, 1)
-    PlaceObjectOnGroundProperly(prop)
-    -- SetObjectTargettable(prop, true)
-    -- CreatePromptPickupAtEntity(prop)
-
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 0))
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 1))
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 2))
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 3))
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 4))
-    -- print(Citizen.InvokeNative(0x34F008A7E48C496B, prop, 5))
-
-    local carryconfig
-    -- carryconfig =  Citizen.InvokeNative(0x34F008A7E48C496B, prop, 3)
-    carryconfig = GetHashKey("USABLE_ITEM")
-    -- carryconfig = -411455723
-
-    Citizen.InvokeNative(0xF0B4F759F35CC7F5, prop, carryconfig, 0, 0, 512)
-    Citizen.InvokeNative(0x7DFB49BCDB73089A, prop, true)
-
-    DecorSetString(prop, "dropped_item_itemid", itemId)
-    DecorSetInt(prop, "dropped_item_itemamount", itemAmount)
-
-    -- table.insert(PropDroppedItemPool, {prop, ItemList[itemId].name, itemAmount})
-end
-
-local lgroup
-
-function CreatePromptPickupAtEntity(entity)
-    local prompt_pickup = PromptRegisterBegin()
-    -- prompt_group = GetRandomIntInRange(0, 0xffffff)
-    local prompt_group = PromptGetGroupIdForTargetEntity(entity)
-    PromptSetControlAction(prompt_pickup, 0xDFF812F9)
-    PromptSetText(prompt_pickup, CreateVarString(10, "LITERAL_STRING", "Pegar"))
-    PromptSetEnabled(prompt_pickup, true)
-    PromptSetVisible(prompt_pickup, true)
-    PromptSetStandardMode(prompt_pickup, true)
-    N_0x0c718001b77ca468(prompt_pickup, 3.0)
-    PromptSetGroup(prompt_pickup, prompt_group)
-    PromptRegisterEnd(prompt_pickup)
-
-    lgroup = prompt_group
-
-    print(prompt_pickup, prompt_group)
-end
-
--- Citizen.CreateThread(
---     function()
---         DecorRegister("dropped_item_itemid", 4)
---         DecorRegister("dropped_item_itemamount", 3)
-
---         CreateDroppedItemAt("raw_gold", 1, GetEntityCoords(PlayerPedId()))
---     end
--- )
-
--- local closeToOneOrMoreDroppedItem = false
-
-local endc
-
--- Citizen.CreateThread(
---     function()
-        -- CreatePromptPickup()
-
-        -- while true do
-        --     Citizen.Wait(1000)
-
-        --     local ped = PlayerPedId()
-        --     local pPosition = GetEntityCoords(ped)
-
-            -- closeToOneOrMoreDroppedItem = false
-            -- for _, v in pairs(PropDroppedItemPool) do
-            --     local prop = v[1]
-            --     if #(pPosition - GetEntityCoords(prop)) <= 10.0 then
-            --         closeToOneOrMoreDroppedItem = true
-            --         break
-            --     end
-            -- end
---         end
---     end
--- )
-
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
-
-            -- local ped = PlayerPedId()
-            -- local pPosition = GetEntityCoords(ped)
-
-            -- local entity = GetTargettingEntity()
-
-            -- if entity ~= 0 then
-            --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pPosition, GetEntityCoords(entity), 255, 0, 255, 255)
-            -- end
-
-
-            -- if closeToOneOrMoreDroppedItem then
-            --     local ped = PlayerPedId()
-            --     local pPosition = GetEntityCoords(ped)
-
-            --     local lDist
-            --     local lPropIndex
-
-            --     for _, v in pairs(PropDroppedItemPool) do
-            --         local prop = v[1]
-            --         local dist = #(pPosition - GetEntityCoords(prop))
-            --         if (lDist == nil and dist <= 1.0) or (lDist ~= nil and dist < lDist) then
-            --             lPropIndex = _
-            --         end
-            --     end
-
-            --     if lPropIndex ~= nil then
-            --         local v = PropDroppedItemPool[lPropIndex]
-            --         local prop = v[1]
-            --         local itemName = v[2]
-            --         local itemAmount = v[3]
-            --         -- local prompt_group_name =
-            --         -- local prop_prompt_group = PromptGetGroupIdForTargetEntity(prop)
-
-            --         -- print("prompt showing", itemName, itemAmount, prompt_pickup, prompt_group)
-            --         -- PromptSetGroup(prompt_pickup, prop_prompt_group)
-            --         -- PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", itemName))
-            --     end
-            -- end
-
-            -- PromptSetActiveGroupThisFrame(lgroup, CreateVarString(10, "LITERAL_STRING", "itemName"))
---         end
---     end
--- )
-
-function GetTargettingEntity()
-    local ped = PlayerPedId()
-    local pedVector = GetEntityCoords(ped)
-
-    local cameraRotation = GetGameplayCamRot()
-    local cameraCoord = GetGameplayCamCoord()
-    local direction = RotationToDirection(cameraRotation)
-    local lastCoords = vec3(cameraCoord.x + direction.x * 2.0, cameraCoord.y + direction.y * 2.0, cameraCoord.z + direction.z * 2.0)
-
-    local rayHandle = StartShapeTestRay(cameraCoord, lastCoords, -1, ped, 0)
-    local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
-
-    Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, cameraCoord, lastCoords, 255, 0, 255, 255)
-
-    if hit == 1 then
-        return entityHit
-    end
-end
 
 RegisterNetEvent("VP:INVENTORY:DROP:Create")
 AddEventHandler(
     "VP:INVENTORY:DROP:Create",
-    function()
+    function(index, x, y, z, itemId, itemAmount)
+        local itemName = ItemList[itemId].name or "Item Desconhecido"
+        local itemWeight = ItemList[itemId].weight * itemAmount
+
+        if itemId == "money" or itemId == "gold" then
+            itemName = ""
+            itemAmount = itemAmount / 100
+
+            if itemId == "money" then
+                itemAmount = "$" .. itemAmount
+            elseif itemId == "gold" then
+                itemAmount = "G" .. itemAmount
+            end
+        else
+            itemAmount = "x" .. itemAmount
+        end
+
+        dropPopulation[index] = {
+            position = vec3(x, y, z),
+            itemName = itemName,
+            itemAmount = itemAmount,
+            itemWorldModel = ItemList[itemId].worldModel,
+            itemWeight = string.format("%.2f", itemWeight)
+        }
+
+        local inRange, distance = isCoordsInRenderRange(dropPopulation[index].position)
+
+        if inRange then
+            tryToCreateDroppedEntityForIndex(index)
+
+            if distance <= 1.5 then
+                indexInPickupRange = index
+            end
+        end
     end
 )
 
-function RotationToDirection(rotation)
-    local adjustedRotation = {
-        x = (math.pi / 180) * rotation.x,
-        y = (math.pi / 180) * rotation.y,
-        z = (math.pi / 180) * rotation.z
-    }
-    local direction = {
-        x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-        y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
-        z = math.sin(adjustedRotation.x)
-    }
-    return direction
+RegisterNetEvent("VP:INVENTORY:DROP:Delete")
+AddEventHandler(
+    "VP:INVENTORY:DROP:Delete",
+    function(index)
+        deleteDroppedEntityForIndex(index)
+
+        dropPopulation[index] = nil
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        prepareMyPrompt()
+
+        while true do
+            Citizen.Wait(1000)
+
+            local pedPosition = GetEntityCoords(PlayerPedId())
+
+            indexInPickupRange = nil
+
+            for index, d in pairs(dropPopulation) do
+                local inRange, distance = isCoordsInRenderRange(d.position, pedPosition)
+                if inRange then
+                    tryToCreateDroppedEntityForIndex(index)
+
+                    if distance <= 1.5 then
+                        indexInPickupRange = index
+                    end
+                else
+                    if d.entity ~= nil then
+                        deleteDroppedEntityForIndex(index)
+                    end
+                end
+            end
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
+            if indexInPickupRange ~= nil then
+                local d = dropPopulation[indexInPickupRange]
+
+                if d ~= nil and d.entity ~= nil then
+                    local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(d.entity))
+
+                    if dist <= 1.2 then
+                        local itemName = d.itemName
+                        local itemAmount = d.itemAmount
+                        local itemWeight = d.itemWeight
+
+                        PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", itemAmount .. " " .. itemName .. " | " .. itemWeight .. "kg"))
+                        if PromptHasHoldModeCompleted(prompt) then
+                            PromptSetEnabled(prompt, false)
+                            Citizen.CreateThread(
+                                function()
+                                    Citizen.Wait(1000)
+                                    PromptSetEnabled(prompt, true)
+                                end
+                            )
+
+                            TriggerServerEvent("VP:INVENTORY:PickedUpDroppedItem", indexInPickupRange)
+                        end
+                    else
+                        indexInPickupRange = nil
+                    end
+                else
+                    indexInPickupRange = nil
+                end
+            end
+        end
+    end
+)
+
+function tryToCreateDroppedEntityForIndex(index, optional_pedPosition)
+    local d = dropPopulation[index]
+
+    if d == nil then
+        return
+    end
+
+    if d.entity ~= nil then
+        if DoesEntityExist(d.entity) then
+            return
+        end
+    end
+
+    local droppedI_Position = d.position
+
+    -- local pedPosition = optional_pedPosition or GetEntityCoords(PlayerPedId())
+
+    -- if isCoordsInRenderRange(droppedI_Position) then
+
+    local droppedI_worldModel = d.worldModel or "p_cs_lootsack02x"
+    local droppedI_worldModelHash = GetHashKey(droppedI_worldModel)
+
+    if not HasModelLoaded(droppedI_worldModelHash) then
+        RequestModel(droppedI_worldModelHash)
+        while not HasModelLoaded(droppedI_worldModelHash) do
+            Citizen.Wait(0)
+        end
+    end
+
+    local entity = CreateObject(droppedI_worldModelHash, droppedI_Position, false, true, true)
+    PlaceObjectOnGroundProperly(entity)
+
+    dropPopulation[index].entity = entity
+    -- end
 end
+
+function deleteDroppedEntityForIndex(index)
+    local d = dropPopulation[index]
+
+    if d == nil then
+        return
+    end
+
+    if d.entity ~= nil then
+        if DoesEntityExist(d.entity) then
+            DeleteEntity(d.entity)
+            d.entity = nil
+        end
+    end
+end
+
+function isCoordsInRenderRange(position, optional_pedPosition)
+    local pedPosition = optional_pedPosition or GetEntityCoords(PlayerPedId())
+
+    local dist = #(pedPosition - position)
+    if #(pedPosition - position) <= 50.0 then
+        return true, dist
+    end
+    return false, dist
+end
+
+function prepareMyPrompt()
+    prompt = PromptRegisterBegin()
+    prompt_group = GetRandomIntInRange(0, 0xffffff)
+    PromptSetControlAction(prompt, 0xE8342FF2)
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Pegar"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, true)
+    PromptSetGroup(prompt, prompt_group)
+    PromptRegisterEnd(prompt)
+end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            for index, _ in pairs(dropPopulation) do
+                deleteDroppedEntityForIndex(index)
+            end
+
+            PromptDelete(prompt)
+        end
+    end
+)
+
+AddEventHandler(
+    "onResourceStart",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            TriggerServerEvent("VP:INVENTORY:DROP:Request")
+        end
+    end
+)
