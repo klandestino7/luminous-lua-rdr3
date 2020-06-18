@@ -29,7 +29,7 @@ Citizen.CreateThread(function()
         local retval, hashArma = GetCurrentPedWeapon(PlayerPedId(), 0, 0,0)
         local arma = Citizen.InvokeNative(0x705BE297EEBDB95D, hashArma)
 
-        if IsPedShooting(playerPed) then        
+        if IsPedShooting(playerPed) and GetCurrentPedWeapon(PlayerPedId(),0,0,0) ~= GetHashKey("WEAPON_BOW") then        
             if arma then
          --       local Policia = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff')
                 if CityName ~= nil and CityName ~= "Cidade Fantasma" then          
