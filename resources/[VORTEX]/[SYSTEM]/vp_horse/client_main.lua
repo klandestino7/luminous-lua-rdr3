@@ -296,7 +296,7 @@ function InitiatePrompts()
     -- 0x24978A28
 
     prompt_drink = PromptRegisterBegin()
-    PromptSetControlAction(prompt_drink, 0xB4E465B4)
+    PromptSetControlAction(prompt_drink, 0xEB2AC491)
     PromptSetText(prompt_drink, CreateVarString(10, "LITERAL_STRING", "Mandar Beber"))
     PromptSetEnabled(prompt_drink, 1)
     PromptSetVisible(prompt_drink, 0)
