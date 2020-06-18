@@ -1,0 +1,7 @@
+[ID]: 84 / [FUNÇÃO]: Noclip / [OP]: ativou
+[ID]: 84 / [FUNÇÃO]: Noclip / [OP]: ativou
+[ID]: 84 / [FUNÇÃO]: Noclip / [OP]: ativou
+[AdminID]: 84 / [TargetID]: thrown_dynamite [FUNÇÃO]: AddItem / [NOME]: thrown_dynamite / Quantidade 1
+[AdminID]: 84 / [TargetID]: thrown_dynamit [FUNÇÃO]: AddItem / [NOME]: thrown_dynamit / Quantidade 1
+[AdminID]: 84 / [TargetID]: thrown_molotov [FUNÇÃO]: AddItem / [NOME]: thrown_molotov / Quantidade 1
+[AdminID]: 84 / [TargetID]: melee_knife [FUNÇÃO]: AddItem / [NOME]: melee_knife / Quantidade 1

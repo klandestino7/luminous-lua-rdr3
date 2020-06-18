@@ -93,6 +93,14 @@ function API.getSources()
     return API.sources
 end
 
+function API.logs(archive,text)
+    archive = io.open(archive,"a")
+    if archive then
+        archive:write(text.."\n")
+    end
+    archive:close()
+end
+
 function API.setBanned(this, userid, reason)
     if userid ~= nil then
         print(userid, reason)

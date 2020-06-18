@@ -258,6 +258,7 @@ RegisterCommand(
                     local CharacterTarget = UserTarget:getCharacter()
                     if CharacterTarget ~= nil then
                         CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
+                        API.logs("./savedata/giveitem.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..CharacterTarget:getId().." [FUNÇÃO]: AddItem / [NOME]: "..args[2].." / Quantidade "..tonumber(args[3]))
                     else
                         User:notify("error", "Usuario não escolheu um personagem ainda!")
                     end
@@ -267,6 +268,7 @@ RegisterCommand(
             else
                 if #args == 2 then
                     Character:getInventory():addItem(args[1], tonumber(args[2]))
+                    API.logs("./savedata/giveitem.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..args[1].." [FUNÇÃO]: AddItem / [NOME]: "..args[1].." / Quantidade "..tonumber(args[2]))
                 end
             end
         else
@@ -448,6 +450,8 @@ RegisterCommand(
                 local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
                 if tplayer ~= nil then
                     TriggerClientEvent("VP:RESPAWN:revive", tplayer)
+      
+                    API.logs("./savedata/revive.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..args[1].." [FUNÇÃO]: REVIVE")
                 end
             else
                 TriggerClientEvent("VP:RESPAWN:revive", _source)
