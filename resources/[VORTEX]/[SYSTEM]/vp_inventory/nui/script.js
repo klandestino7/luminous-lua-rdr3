@@ -501,12 +501,12 @@ function drawHotbar() {
 
             if (itemId != 'lasso') {
                 $(`#primary .hotbar #${slotId}`).append(`
-                    <img src="images/items/${itemId}.png">
+                    <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                     <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
                 `);
             } else {
                 $(`#primary .hotbar #${slotId}`).append(`
-                    <img src="images/items/${itemId}.png">
+                    <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                 `);
             }
 
@@ -572,14 +572,14 @@ function drawPrimary() {
 
                         $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
+                        <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                     </div>
                 `);
                         displayItemAmount = true;
                     } else {
                         $(`#primary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
-                            <img src="images/items/${itemId}.png">
+                            <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                         </div>
                     `);
                     }
@@ -588,7 +588,7 @@ function drawPrimary() {
 
                     $(`#primary-inventory .slot-container`).append(`
                             <div class="slot" id="${slotId}" onclick="select(this)">
-                                <img src="images/items/${itemId}.png">
+                                <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                             </div>
                         `);
                     displayItemAmount = true;
@@ -597,7 +597,7 @@ function drawPrimary() {
             } else {
                 $(`#primary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
+                        <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                         <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
                     </div>
                 `);
@@ -747,7 +747,7 @@ function drawSecondary() {
                     if (itemId != "lasso") {
                         $(`#secondary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
+                        <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                         <div class="counter">${itemAmount}/${itemStackSize}</div>
                     </div>
                 `);
@@ -755,14 +755,14 @@ function drawSecondary() {
                     } else {
                         $(`#secondary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
-                            <img src="images/items/${itemId}.png">
+                            <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                         </div>
                     `);
                     }
                 } else {
                     $(`#secondary-inventory .slot-container`).append(`
                         <div class="slot" id="${slotId}" onclick="select(this)">
-                            <img src="images/items/${itemId}.png">
+                            <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                             <div class="counter">${itemAmount}</div>
                         </div>
                     `);
@@ -772,7 +772,7 @@ function drawSecondary() {
             } else {
                 $(`#secondary-inventory .slot-container`).append(`
                     <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png">
+                        <img src="images/items/${itemId}.png" onerror="this.src='images/type_all.png'">
                         <div class="counter">${ammoInClip}/${ammoInWeapon}</div>
                     </div>
                 `);
