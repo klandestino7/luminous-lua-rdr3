@@ -134,7 +134,7 @@ Citizen.CreateThread(
                         name = name .. " " .. targetedPlayerUserId
                     end
 
-                    SetPedPromptName(name)
+                    SetPedPromptName(entity, name)
                 end
 
                 local isANpc = not isAPlayer
