@@ -68,7 +68,6 @@ function load(interiorId)
 
                 if i == 5 then
                     pitch, roll, yaw = a, b, c
-                    print(pitch, roll, yaw)
                 end
 
                 createPrompt(d[4] .. "x " .. ItemList[d[1]].name, d[1], tonumber(string.format("%.2f", d[2] / 100)), tonumber(string.format("%.2f", d[3] / 100)), createProp(ItemList[d[1]].worldModel or d[5], x, y, z, pitch, roll, yaw))
@@ -464,137 +463,137 @@ function RotationToDirection(rotation)
     return direction
 end
 
--- - DEBBUGING
+-- -- - DEBBUGING
 
-function TxtAtWorldCoord(x, y, z, txt, size, font, alpha)
-    alpha = alpha or 255
-    local s, sx, sy = GetScreenCoordFromWorldCoord(x, y, z)
-    if (sx > 0 and sx < 1) or (sy > 0 and sy < 1) then
-        local s, sx, sy = GetHudScreenPositionFromWorldPosition(x, y, z)
-        DrawTxt(txt, sx, sy, size, true, 255, 255, 255, alpha, true, font) -- Font 2 has some symbol conversions ex. @ becomes the rockstar logo
-    end
-end
+-- function TxtAtWorldCoord(x, y, z, txt, size, font, alpha)
+--     alpha = alpha or 255
+--     local s, sx, sy = GetScreenCoordFromWorldCoord(x, y, z)
+--     if (sx > 0 and sx < 1) or (sy > 0 and sy < 1) then
+--         local s, sx, sy = GetHudScreenPositionFromWorldPosition(x, y, z)
+--         DrawTxt(txt, sx, sy, size, true, 255, 255, 255, alpha, true, font) -- Font 2 has some symbol conversions ex. @ becomes the rockstar logo
+--     end
+-- end
 
-function DrawTxt(str, x, y, size, enableShadow, r, g, b, a, centre, font)
-    local str = CreateVarString(10, "LITERAL_STRING", str)
-    SetTextScale(1, size)
-    SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
-    SetTextCentre(centre)
-    if enableShadow then
-        SetTextDropshadow(1, 0, 0, 0, 255)
-    end
-    SetTextFontForCurrentCommand(font)
-    DisplayText(str, x, y)
-end
+-- function DrawTxt(str, x, y, size, enableShadow, r, g, b, a, centre, font)
+--     local str = CreateVarString(10, "LITERAL_STRING", str)
+--     SetTextScale(1, size)
+--     SetTextColor(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
+--     SetTextCentre(centre)
+--     if enableShadow then
+--         SetTextDropshadow(1, 0, 0, 0, 255)
+--     end
+--     SetTextFontForCurrentCommand(font)
+--     DisplayText(str, x, y)
+-- end
 
-local _temp_prop
+-- local _temp_prop
 
-RegisterCommand(
-    "gstest",
-    function(source, args, rawCommand)
-        if #args > 0 then
-            local lastCoords
-            local lastHeading
+-- RegisterCommand(
+--     "gstest",
+--     function(source, args, rawCommand)
+--         if #args > 0 then
+--             local lastCoords
+--             local lastHeading
 
-            if _temp_prop ~= nil then
-                lastCoords = GetEntityCoords(_temp_prop)
-                lastHeading = GetEntityHeading(_temp_prop)
-                DeleteEntity(_temp_prop)
-                _temp_prop = nil
-            else
-                local ped = PlayerPedId()
+--             if _temp_prop ~= nil then
+--                 lastCoords = GetEntityCoords(_temp_prop)
+--                 lastHeading = GetEntityHeading(_temp_prop)
+--                 DeleteEntity(_temp_prop)
+--                 _temp_prop = nil
+--             else
+--                 local ped = PlayerPedId()
 
-                local pedVector = GetEntityCoords(ped)
+--                 local pedVector = GetEntityCoords(ped)
 
-                local cameraRotation = GetGameplayCamRot()
-                local cameraCoord = GetGameplayCamCoord()
-                local direction = RotationToDirection(cameraRotation)
-                lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
+--                 local cameraRotation = GetGameplayCamRot()
+--                 local cameraCoord = GetGameplayCamCoord()
+--                 local direction = RotationToDirection(cameraRotation)
+--                 lastCoords = vec3(cameraCoord.x + direction.x * aimMaxDistance, cameraCoord.y + direction.y * aimMaxDistance, cameraCoord.z + direction.z * aimMaxDistance)
 
-                local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
-                local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+--                 local rayHandle = StartShapeTestRay(pedVector, lastCoords, 1, ped, 0)
+--                 local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
-                if hit == 1 then
-                    lastCoords = endCoords
-                end
-            end
+--                 if hit == 1 then
+--                     lastCoords = endCoords
+--                 end
+--             end
 
-            if not HasModelLoaded(args[1]) then
-                RequestModel(args[1])
-                while not HasModelLoaded(args[1]) do
-                    Citizen.Wait(10)
-                end
-            end
+--             if not HasModelLoaded(args[1]) then
+--                 RequestModel(args[1])
+--                 while not HasModelLoaded(args[1]) do
+--                     Citizen.Wait(10)
+--                 end
+--             end
 
-            _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
-            SetEntityHeading(_temp_prop, lastHeading)
-            FreezeEntityPosition(_temp_prop, true)
-        end
-    end,
-    false
-)
+--             _temp_prop = CreateObject(args[1], lastCoords, false, false, true)
+--             SetEntityHeading(_temp_prop, lastHeading)
+--             FreezeEntityPosition(_temp_prop, true)
+--         end
+--     end,
+--     false
+-- )
 
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(10)
-            local ped = PlayerPedId()
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(10)
+--             local ped = PlayerPedId()
 
-            local pedVector = GetEntityCoords(ped)
+--             local pedVector = GetEntityCoords(ped)
 
-            local cameraRotation = GetGameplayCamRot()
-            local cameraCoord = GetGameplayCamCoord()
-            local direction = RotationToDirection(cameraRotation)
-            local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
+--             local cameraRotation = GetGameplayCamRot()
+--             local cameraCoord = GetGameplayCamCoord()
+--             local direction = RotationToDirection(cameraRotation)
+--             local aimingAt = vec3(cameraCoord.x + direction.x * 3.0, cameraCoord.y + direction.y * 3.0, cameraCoord.z + direction.z * 3.0)
 
-            local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
-            local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
+--             local rayHandle = StartShapeTestRay(cameraCoord, aimingAt, 1, ped, 0)
+--             local _, hit, endCoords, _, _ = GetShapeTestResult(rayHandle)
 
-            if hit == 1 then
-                aimingAt = endCoords
-            end
+--             if hit == 1 then
+--                 aimingAt = endCoords
+--             end
 
-            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
-            -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
+--             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, aimingAt, aimingAt + vec3(0, 0, 0.7), 252, 180, 131, 255)
+--             -- Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF, pedVector, lastCoords, 252, 180, 131, 255)
 
-            if IsControlJustPressed(2, 0xF84FA74F) then
-                print(aimingAt)
-                print(GetInteriorFromEntity(ped))
-            end
+--             if IsControlJustPressed(2, 0xF84FA74F) then
+--                 print(aimingAt)
+--                 print(GetInteriorFromEntity(ped))
+--             end
 
-            if _temp_prop ~= nil then
-                SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
+--             if _temp_prop ~= nil then
+--                 SetEntityCoords(_temp_prop, aimingAt, 0, 0, 0, false)
 
-                if IsControlPressed(1, 0x07CE1E61) then -- LMB
-                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
-                end
+--                 if IsControlPressed(1, 0x07CE1E61) then -- LMB
+--                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop) + 5.0, GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop), 1, true)
+--                 end
 
-                if IsControlPressed(0, 0x4AF4D473) then -- DEL
-                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
-                end
+--                 if IsControlPressed(0, 0x4AF4D473) then -- DEL
+--                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop) + 5.0, GetEntityHeading(_temp_prop), 1, true)
+--                 end
 
-                if IsControlPressed(1, 0xDFF812F9) then -- E
-                    SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
-                end
+--                 if IsControlPressed(1, 0xDFF812F9) then -- E
+--                     SetEntityRotation(_temp_prop, GetEntityPitch(_temp_prop), GetEntityRoll(_temp_prop), GetEntityHeading(_temp_prop) + 5.0, 1, true)
+--                 end
 
-                if IsControlJustPressed(1, 0xF84FA74F) then
-                    DeleteEntity(_temp_prop)
-                    _temp_prop = nil
-                end
+--                 if IsControlJustPressed(1, 0xF84FA74F) then
+--                     DeleteEntity(_temp_prop)
+--                     _temp_prop = nil
+--                 end
 
-                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.7, "" .. GetEntityCoords(_temp_prop), 0.6, 2)
-                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.6, "" .. GetEntityPitch(_temp_prop), 0.6, 2)
-                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.5, "" .. GetEntityRoll(_temp_prop), 0.6, 2)
-                TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.4, "" .. GetEntityHeading(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.7, "" .. GetEntityCoords(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.6, "" .. GetEntityPitch(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.5, "" .. GetEntityRoll(_temp_prop), 0.6, 2)
+--                 TxtAtWorldCoord(aimingAt.x, aimingAt.y, aimingAt.z + 0.4, "" .. GetEntityHeading(_temp_prop), 0.6, 2)
 
-            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
-            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
-            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
-            -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
-            end
-        end
-    end
-)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityCoords(_temp_prop)), 0.05, 0.05)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityPitch(_temp_prop)), 0.10, 0.10)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityRoll(_temp_prop)), 0.15, 0.15)
+--             -- DisplayText(CreateVarString(10, "LITERAL_STRING", "" .. GetEntityHeading(_temp_prop)), 0.20, 0.20)
+--             end
+--         end
+--     end
+-- )
 
 -- local lastGunsmithInterior
 
