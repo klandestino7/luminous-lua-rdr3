@@ -378,7 +378,7 @@ AddEventHandler(
             local bit = config_file_GROUPS[group:lower()]
 
             if bit ~= nil then
-                role = role + bit
+                role = role | bit
             end
         end
     end
@@ -392,7 +392,7 @@ AddEventHandler(
             local bit = config_file_GROUPS[group:lower()]
 
             if bit ~= nil then
-                role = role - bit
+                role = role & (~bit)
             end
         end
     end
