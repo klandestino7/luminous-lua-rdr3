@@ -405,6 +405,7 @@ AddEventHandler(
             PromptDelete(prompt_admin_revive)
             PromptDelete(prompt_trooper_cuff)
             PromptDelete(prompt_trooper_uncuff)
+            PromptDelete(prompt_player_senditem)
         end
     end
 )
