@@ -160,6 +160,9 @@ Citizen.CreateThread(
                 end
 
                 if isAPlayer then
+
+                    PromptSetVisible(prompt_patdown, true)
+
                     if isAlive then
                         if distance <= 1.5 then
                             if IsEntityPlayingAnim(entity, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
