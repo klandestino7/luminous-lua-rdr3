@@ -133,6 +133,8 @@ Citizen.CreateThread(
                     if options_isAnAdmin or options_isATrooper or options_isAMedic then
                         name = name .. " " .. targetedPlayerUserId
                     end
+
+                    SetPedPromptName(name)
                 end
 
                 local isANpc = not isAPlayer
