@@ -147,20 +147,21 @@ RegisterCommand(
 RegisterServerEvent("VP:SHERIFF:cuffing")
 AddEventHandler(
 	"VP:SHERIFF:cuffing",
-	function(source)
-		TriggerClientEvent("VP:SHERIFF:cuff", source)
+	function(target)
+		local _source = source
+		TriggerClientEvent("VP:SHERIFF:cuff", target)
 		--TriggerClientEvent("ic_sound:source",target,'cuff',0.1)
 		--TriggerClientEvent("ic_sound:source",source,'cuff',0.1)
 	end
 )
 
-RegisterServerEvent("VP:SHERIFF:unlocking")
-AddEventHandler(
-	"VP:SHERIFF:unlocking",
-	function(source)
-		TriggerClientEvent("VP:SHERIFF:uncuff", source)
-	end
-)
+-- RegisterServerEvent("VP:SHERIFF:unlocking")
+-- AddEventHandler(
+-- 	"VP:SHERIFF:unlocking",
+-- 	function(source)
+-- 		TriggerClientEvent("VP:SHERIFF:uncuff", source)
+-- 	end
+-- )
 
 RegisterServerEvent("VP:SHERIFF:soltar")
 AddEventHandler(
@@ -174,9 +175,10 @@ AddEventHandler(
 RegisterServerEvent("VP:SHERIFF:unlocking")
 AddEventHandler(
 	"VP:SHERIFF:unlocking",
-	function(source)
-		TriggerClientEvent("VP:SHERIFF:uncuff", source)
-		TriggerClientEvent("ic_sound:source", source, "uncuff", 0.1)
+	function(target)
+		local _source = source
+		TriggerClientEvent("VP:SHERIFF:uncuff", target)
+		TriggerClientEvent("ic_sound:source", target, "uncuff", 0.1)
 	end
 )
 
