@@ -12,11 +12,11 @@ function load(interiorId)
         {"revolver_lemat", 31700, 1300, 1, "w_revolver_lemat01"},
         {"revolver_cattleman", 5000, 200, 1, "w_revolver_cattleman01"},
         -- {"revolver_navy", 257, 11, 1, "w_revolver_schofield01"}, -- ERA PRA SER O NAVY
-        {"pistol_volcanic", 30000, 1400, 1, "w_pistol_volcanic01"},
-        {"shotgun_sawedoff", 6500, 1500, 1, "w_shotgun_sawed01"},
+      --  {"pistol_volcanic", 30000, 1400, 1, "w_pistol_volcanic01"},
+    --    {"shotgun_sawedoff", 6500, 1500, 1, "w_shotgun_sawed01"},
         {"repeater_carbine", 9000, 400, 1, "w_repeater_carbine01"},
-        {"repeater_henry", 23400, 1000, 1, "w_repeater_henry01"},
-        {"sniperrifle_rollingblock", 50000, 2000, 1, "w_rifle_rollingblock01"},
+    --    {"repeater_henry", 23400, 1000, 1, "w_repeater_henry01"},
+    --    {"sniperrifle_rollingblock", 50000, 2000, 1, "w_rifle_rollingblock01"},
         {"rifle_varmint", 7200, 300, 1, "w_repeater_pumpaction01"} -- NÃO ESTÁ CARREGANDO
         --    {"rifle_boltaction", 21600, 900, 1, "w_rifle_boltaction01"}
         -- {"thrown_throwing_knives", 250, 50, 1, "w_melee_tomahawk03"},
