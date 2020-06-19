@@ -31,6 +31,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // $("#primary-inventory").css('opacity', '1');
     // $("#primary #background-image").css('opacity', '0.98');
 
+    // $("#secondary").show();
+    // $("#secondary #background-image").css('opacity', '0.98');
+
     $('#range-input').on('input', function() {
 
         lastRangeValue = this.value;
@@ -180,7 +183,7 @@ function previousCategory() {
         if (secondaryCategoriesIndex != 1) {
             secondaryCategoriesIndex--;
         } else {
-            secondaryCategoriesIndex = 8;
+            secondaryCategoriesIndex = 9;
         }
         categoryElement = $(`#${parentInventoryId} .item-categories-container .icon:nth-child(${secondaryCategoriesIndex}`);
         $(`#${parentInventoryId} .slot-container`).html('');
@@ -213,7 +216,7 @@ function nextCategory() {
 
     if (!(isPrimary)) {
         parentInventoryId = 'secondary-inventory';
-        if (secondaryCategoriesIndex != 8) {
+        if (secondaryCategoriesIndex != 9) {
             secondaryCategoriesIndex++;
         } else {
             secondaryCategoriesIndex = 1;
@@ -723,7 +726,14 @@ function drawSecondary() {
     $(`#secondary-inventory .slot-container`).html('');
     var money = 0;
 
-    for (var slotId = (secondaryCategoriesIndex * 16) - 15; slotId < (secondaryCategoriesIndex * 16) + 1; slotId++) {
+    let firstSlot = (secondaryCategoriesIndex * 16) - 15;
+    let lastSlot = (secondaryCategoriesIndex * 16) + 1;
+
+    if (firstSlot == 129){
+        lastSlot = 132 + 1;
+    }
+
+    for (var slotId = firstSlot; slotId < lastSlot; slotId++) {
         var Slot = secondaryItemList[slotId];
         if (Slot !== undefined && Slot !== null) {
             var itemId = Slot[1];
@@ -895,7 +905,7 @@ function select(element) {
             step = 0.01;
         }
 
-        if (min == 0.01 && lastRangeValue == 1){
+        if (min == 0.01 && lastRangeValue == 1) {
             lastRangeValue = 0.01;
         }
 
