@@ -378,8 +378,16 @@ function newPrompt(control, text, hold, page)
 end
 
 function quickHoldModeToggle(prompt)
+    -- PromptSetHoldMode(prompt, false)
+    -- PromptSetHoldMode(prompt, true)
+
     PromptSetHoldMode(prompt, false)
-    PromptSetHoldMode(prompt, true)
+    Citizen.CreateThread(
+        function()
+            Citizen.Wait(500)
+            romptSetHoldMode(prompt, true)
+        end
+    )
 end
 
 function RotationToDirection(rotation)

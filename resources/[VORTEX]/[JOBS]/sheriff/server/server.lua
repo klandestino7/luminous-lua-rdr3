@@ -186,6 +186,11 @@ RegisterNetEvent("VP:SHERIFF:TryToPatDown")
 AddEventHandler(
 	"VP:SHERIFF:TryToPatDown",
 	function(playerToPatdown)
+
+		if playerToPatdown == nil then
+			return
+		end
+
 		local _source = source
 		local User = API.getUserFromSource(_source)
 		local Character = User:getCharacter()
@@ -195,6 +200,11 @@ AddEventHandler(
 		end
 
 		local UserTarget = API.getUserFromSource(playerToPatdown)
+
+		if UserTarget == nil then
+			return
+		end
+
 		local CharacterTarget = UserTarget:getCharacter()
 
 		if CharacterTarget == nil then
