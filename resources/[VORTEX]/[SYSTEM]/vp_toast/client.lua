@@ -36,6 +36,11 @@ AddEventHandler(
         --     text = nil
         -- end
 
+        if type == "xp" then
+            quantity = text
+            text = nil
+        end
+
         SendNUIMessage(
             {
                 type = type,

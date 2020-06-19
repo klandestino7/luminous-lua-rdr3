@@ -40,6 +40,8 @@ AddEventHandler(
                 if Inventory:addItem(FinalLoot, v.amountToGive) then
                     User:notify("item", FinalLoot, v.amountToGive)
                     Character:varyExp(0.1)
+                else
+                    User:notify("error", "Aforje sem espaço!")
                 end
                 break
             end
