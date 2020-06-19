@@ -2,7 +2,7 @@ function API.Inventory(id, capacity, slots)
     local self = {}
 
     self.id = id
-    self.capacity = capacity or 20
+    self.capacity = capacity or 40
     self.viewersSources = {}
 
     self.slots = {}

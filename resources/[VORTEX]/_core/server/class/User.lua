@@ -79,7 +79,7 @@ function API.User(source, id, ipAddress)
                 {
                     id = "char:" .. Character:getId(),
                     charid = Character:getId(),
-                    capacity = 20,
+                    capacity = 40,
                     slot = 0,
                     itemId = 0,
                     itemAmount = 0,
