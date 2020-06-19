@@ -214,21 +214,24 @@ ItemList = {
         name = "Pistola Volcanic",
         weight = 1.2,
         description = "Esta Pistola foi uma das mais utilizadas na guerra civil de Lemoyne, sua precisão e dano é inigualável.",
-        stackSize = 5
+        stackSize = 5,
+        worldModel = "w_pistol_volcanic01",
     },
     ["repeater_carbine"] = {
         type = "weapon",
         name = "Carabina de Repetição",
         weight = 2.0,
         description = "Carabina capaz de disparar vários tiros em poucos segundos, sua recarga é fácil e rápida.",
-        stackSize = 5
+        stackSize = 5,
+        worldModel = "w_repeater_carbine01",
     },
     ["repeater_henry"] = {
         type = "weapon",
         name = "Litchfield de Repetição",
         weight = 2.0,
         description = "Rifle longo de repetição, precisamente letal e lépida.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_repeater_henry01",
     },
     ["repeater_evans"] = {
         type = "weapon",
@@ -249,7 +252,8 @@ ItemList = {
         name = "Rifle Anti-pragas",
         weight = 1.5,
         description = "Rifle feito especialmente para caças, acertar uma bala de anti-pragas na cabeça de qualquer animal não-lendário certamente o matará.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_repeater_pumpaction01",
     },
     ["shotgun_repeating"] = {
         type = "weapon",
@@ -263,14 +267,16 @@ ItemList = {
         name = "Revolver de Vaqueiro",
         weight = 1.2,
         description = "Revólver simples e de porte livre, todos os peões possuem um.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_revolver_cattleman01",
     },
     ["revolver_cattleman_john"] = {
         type = "weapon",
         name = "Revolver do John",
         weight = 1.2,
         description = "Este revólver já esteve nas mãos de John Marston.",
-        stackSize = 1
+        stackSize = 1,
+        
     },
     ["revolver_cattleman_mexican"] = {
         type = "weapon",
@@ -312,7 +318,8 @@ ItemList = {
         name = "Revolver Lemat",
         weight = 1.2,
         description = "O revólver Lemat causa um dano desestrutural a inimigos alados, seja rápido e sua presa não resistirá.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_revolver_lemat01",
     },
     -- ['revolver_navy'] = {
     --     type = 'weapon',
@@ -361,7 +368,8 @@ ItemList = {
         name = "Rifle Rolling Block",
         weight = 4.5,
         description = "Um rifle capaz de executar disparos a longa distância. Uma bala já é o bastante para matar qualquer inimigo.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_rifle_rollingblock01",
     },
     ["sniperrifle_rollingblock_exotic"] = {
         type = "weapon",
@@ -417,7 +425,8 @@ ItemList = {
         name = "Escopeta Cano serrado",
         weight = 2.2,
         description = "Um armamento capaz de disparar vários projéteis ao mesmo tempo.",
-        stackSize = 1
+        stackSize = 1,
+        worldModel = "w_shotgun_sawed01",
     },
     ["shotgun_semiauto"] = {
         type = "weapon",
@@ -740,14 +749,16 @@ ItemList = {
         name = "Munição de Pistola",
         weight = 0.1,
         description = "Munição produzida especialmente para pistolas.",
-        stackSize = 60
+        stackSize = 60,
+        worldModel = "s_inv_pistolammo01x",
     },
     ["ammo_22"] = {
         type = "ammo",
         name = "Munição .22",
         weight = 0.1,
         description = "Munição produzida especialmente para o Rifle Anti-pragas.",
-        stackSize = 60
+        stackSize = 60,
+        worldModel = "s_inv_shotgunammo01x"
     },
     -- ['ammo_pistol_express'] = {
     --     type = 'ammo',
@@ -782,7 +793,8 @@ ItemList = {
         name = "Munição de Revolver",
         weight = 0.1,
         description = "Munição produzida especialmente para revólveres.",
-        stackSize = 60
+        stackSize = 60,
+        worldModel = "s_inv_revolverammo01x",
     },
     -- ['ammo_revolver_express'] = {
     --     type = 'ammo',
@@ -817,7 +829,8 @@ ItemList = {
         name = "Munição de Carabina",
         weight = 0.1,
         description = "Munição produzida especialmente para carabinas.",
-        stackSize = 45
+        stackSize = 45,
+        worldModel = "s_inv_repeat_rifleammo01x",
     },
     -- ['ammo_repeater_express'] = {
     --     type = 'ammo',
@@ -845,14 +858,8 @@ ItemList = {
         name = "Munição de Rifle",
         weight = 0.1,
         description = "Munição produzida especialmente para rifles.",
-        stackSize = 45
-    },
-    ["ammo_sniper"] = {
-        type = "ammo",
-        name = "Munição de Sniper",
-        weight = 0.1,
-        description = "Munição produzida especialmente para snipers.",
-        stackSize = 45
+        stackSize = 45,
+        worldModel = "s_inv_rifleammo01x",
     },
     -- ['ammo_rifle_express'] = {
     --     type = 'ammo',
@@ -894,7 +901,8 @@ ItemList = {
         name = "Munição de Shotgun",
         weight = 0.1,
         description = "Munição produzida especialmente para shotguns.",
-        stackSize = 35
+        stackSize = 35,
+        worldModel = "s_inv_shotgunammo01x",
     },
     -- ['ammo_shotgun_buckshot_incendiary'] = {
     --     type = 'ammo',

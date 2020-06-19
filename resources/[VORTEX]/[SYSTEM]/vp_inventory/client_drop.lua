@@ -170,7 +170,12 @@ function tryToCreateDroppedEntityForIndex(index, optional_pedPosition)
     PlaceObjectOnGroundProperly(entity)
 
     dropPopulation[index].entity = entity
+
+    -- while GetEntityVelocity(entity, false) ~= vec3(0, 0, 0) do
+    --     Citizen.Wait(0)
     -- end
+
+    FreezeEntityPosition(entity, true)
 end
 
 function deleteDroppedEntityForIndex(index)
