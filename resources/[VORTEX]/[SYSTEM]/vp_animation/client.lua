@@ -26,7 +26,7 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if IsControlPressed(1, 0x26E9DC00) then -- Z
+            if IsControlJustPressed(0, 0x26E9DC00) then -- Z
                 Citizen.InvokeNative(0xAE99FB955581844A, PlayerPedId(), 1000, 1000, 0, 0, 0, 0)
             end
 
@@ -38,7 +38,7 @@ Citizen.CreateThread(
                 TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
             end
 
-            if IsControlPressed(0, 0xD8F73058) then -- U | Cancelar animação
+            if IsControlPressed(1, 0x26E9DC00) then -- U | Cancelar animação
                 local ped = PlayerPedId()
 
                 if not IsPlayerFreeAiming(ped) then
@@ -69,19 +69,19 @@ RegisterCommand(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        local ply = PlayerPedId()
-        local plyped = GetPlayerPed(ply)
+-- Citizen.CreateThread(
+--     function()
+--         local ply = PlayerPedId()
+--         local plyped = GetPlayerPed(ply)
 
-        while true do
-            Citizen.Wait(0)
-            if IsControlJustPressed(0, 0xD8F73058) then --[U]
-                ClearPedTasks(ply)
-            end
-        end
-    end
-)
+--         while true do
+--             Citizen.Wait(0)
+--             if IsControlJustPressed(0, 0xD8F73058) then --[U]
+--                 ClearPedTasks(ply)
+--             end
+--         end
+--     end
+-- )
 
 RegisterCommand(
     "anotar",
