@@ -76,7 +76,9 @@ local doorStates = {
     [3439738919] = {true},
     -- STABLE VALENTINEVALENTINE
     [1132010214] = {true, 1876749464},
-    [1331491364] = {true, 1876749464}
+    [1331491364] = {true, 1876749464},
+
+    [3804893186] = {true}, -- store cloth saint denis
 }
 
 -- TALVEZ MUDAR O SISTEMA PARA O CLIENT SÓ PEDIR O SYNC
