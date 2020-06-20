@@ -65,100 +65,100 @@ Citizen.CreateThread(
     end
 )
 
-local currentlyTryingToSendItem = false
-local prompt_senditem
+-- local currentlyTryingToSendItem = false
+-- local prompt_senditem
 
-function startLookingForAPlayerToSend(slotId)
-    if currentlyTryingToSendItem then
-        return
-    end
+-- function startLookingForAPlayerToSend(slotId)
+--     if currentlyTryingToSendItem then
+--         return
+--     end
 
-    closeInv()
+--     closeInv()
 
-    currentlyTryingToSendItem = true
+--     currentlyTryingToSendItem = true
 
-    local lastTargetPlayerServerId = nil
+--     local lastTargetPlayerServerId = nil
 
-    prompt_senditem = PromptRegisterBegin()
-    PromptSetControlAction(prompt_senditem, 0x07CE1E61)
-    PromptSetText(prompt_senditem, CreateVarString(10, "LITERAL_STRING", "Enviar"))
-    PromptSetEnabled(prompt_senditem, true)
-    PromptSetVisible(prompt_senditem, false)
-    PromptSetHoldMode(prompt_senditem, true)
-    PromptRegisterEnd(prompt_senditem)
+--     prompt_senditem = PromptRegisterBegin()
+--     PromptSetControlAction(prompt_senditem, 0x07CE1E61)
+--     PromptSetText(prompt_senditem, CreateVarString(10, "LITERAL_STRING", "Enviar"))
+--     PromptSetEnabled(prompt_senditem, true)
+--     PromptSetVisible(prompt_senditem, false)
+--     PromptSetHoldMode(prompt_senditem, true)
+--     PromptRegisterEnd(prompt_senditem)
 
-    Citizen.CreateThread(
-        function()
-            local timeRemaining = 10
-            while currentlyTryingToSendItem do
-                local y, entity = GetPlayerTargetEntity(PlayerId())
+--     Citizen.CreateThread(
+--         function()
+--             local timeRemaining = 10
+--             while currentlyTryingToSendItem do
+--                 local y, entity = GetPlayerTargetEntity(PlayerId())
 
-                lastTargetPlayerServerId = nil
+--                 lastTargetPlayerServerId = nil
 
-                if y then
-                    for _, pid in pairs(GetActivePlayers()) do
-                        if NetworkIsPlayerActive(pid) then
-                            local pped = GetPlayerPed(pid)
-                            if entity == pped then
-                                local serverId = GetPlayerServerId(pid)
-                                if lastTargetPlayerServerId ~= serverId then
-                                    lastTargetPlayerServerId = serverId
-                                    PromptSetVisible(prompt_senditem, true)
-                                    PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
+--                 if y then
+--                     for _, pid in pairs(GetActivePlayers()) do
+--                         if NetworkIsPlayerActive(pid) then
+--                             local pped = GetPlayerPed(pid)
+--                             if entity == pped then
+--                                 local serverId = GetPlayerServerId(pid)
+--                                 if lastTargetPlayerServerId ~= serverId then
+--                                     lastTargetPlayerServerId = serverId
+--                                     PromptSetVisible(prompt_senditem, true)
+--                                     PromptSetGroup(prompt_senditem, PromptGetGroupIdForTargetEntity(entity))
 
-                                    local pPosition = GetEntityCoords(PlayerPedId())
-                                    local tPosition = GetEntityCoords(entity)
+--                                     local pPosition = GetEntityCoords(PlayerPedId())
+--                                     local tPosition = GetEntityCoords(entity)
 
-                                    local dist = #(pPosition - tPosition)
+--                                     local dist = #(pPosition - tPosition)
 
-                                    if dist <= 1.5 then
-                                        PromptSetEnabled(prompt_senditem, true)
-                                    else
-                                        PromptSetEnabled(prompt_senditem, false)
-                                    end
+--                                     if dist <= 1.5 then
+--                                         PromptSetEnabled(prompt_senditem, true)
+--                                     else
+--                                         PromptSetEnabled(prompt_senditem, false)
+--                                     end
 
-                                    break
-                                end
-                            end
-                        end
-                    end
-                end
+--                                     break
+--                                 end
+--                             end
+--                         end
+--                     end
+--                 end
 
-                if lastTargetPlayerServerId == nil then
-                    PromptSetVisible(prompt_senditem, false)
-                end
+--                 if lastTargetPlayerServerId == nil then
+--                     PromptSetVisible(prompt_senditem, false)
+--                 end
 
-                Citizen.Wait(250)
+--                 Citizen.Wait(250)
 
-                timeRemaining = timeRemaining - 0.25
+--                 timeRemaining = timeRemaining - 0.25
 
-                if timeRemaining <= 0 then
-                    currentlyTryingToSendItem = false
-                end
-            end
-        end
-    )
+--                 if timeRemaining <= 0 then
+--                     currentlyTryingToSendItem = false
+--                 end
+--             end
+--         end
+--     )
 
-    Citizen.CreateThread(
-        function()
-            while currentlyTryingToSendItem do
-                Citizen.Wait(0)
-                if lastTargetPlayerServerId ~= nil then
-                    if PromptHasHoldModeCompleted(prompt_senditem) then
-                        PromptDelete(prompt_senditem)
-                        prompt_senditem = nil
+--     Citizen.CreateThread(
+--         function()
+--             while currentlyTryingToSendItem do
+--                 Citizen.Wait(0)
+--                 if lastTargetPlayerServerId ~= nil then
+--                     if PromptHasHoldModeCompleted(prompt_senditem) then
+--                         PromptDelete(prompt_senditem)
+--                         prompt_senditem = nil
 
-                        currentlyTryingToSendItem = false
-                        TriggerServerEvent("VP:INVENTORY:SendToPlayer", slotId, lastTargetPlayerServerId)
-                    end
-                end
-            end
+--                         currentlyTryingToSendItem = false
+--                         TriggerServerEvent("VP:INVENTORY:SendToPlayer", slotId, lastTargetPlayerServerId)
+--                     end
+--                 end
+--             end
 
-            PromptDelete(prompt_senditem)
-            prompt_senditem = nil
-        end
-    )
-end
+--             PromptDelete(prompt_senditem)
+--             prompt_senditem = nil
+--         end
+--     )
+-- end
 
 RegisterNetEvent("VP:INVENTORY:ToggleHotbar")
 AddEventHandler(
@@ -262,13 +262,13 @@ RegisterNUICallback(
     end
 )
 
-RegisterNUICallback(
-    "startsendingslot",
-    function(cb)
-        -- startLookingForAPlayerToSend(cb.slotId)
-        TriggerEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget", cb.slotId)
-    end
-)
+-- RegisterNUICallback(
+--     "startsendingslot",
+--     function(cb)
+--         -- startLookingForAPlayerToSend(cb.slotId)
+--         TriggerEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget", cb.slotId)
+--     end
+-- )
 
 RegisterNUICallback(
     "moveSlotToPrimary",
@@ -418,4 +418,92 @@ function computeSlots(table, asPrimary)
     end
 
     return table
+end
+
+RegisterCommand(
+    "enviar",
+    function(source, args, raw)
+        if #args < 2 then
+            cAPI.notify("error", "Sintaxe: /enviar nomedoitem 2")
+            return
+        end
+
+        local targetPlayerServerId = cAPI.getNearestPlayer(1.5)
+
+        if targetPlayerServerId == nil then
+            cAPI.notify('error', 'Ninguem por perto')
+            return
+        end
+
+        local itemAmountArg
+        local itemAmount
+
+        for i = 1, #args do
+            if tonumber(args[i]) ~= nil then
+                itemAmountArg = i
+                itemAmount = tonumber(args[i])
+            end
+        end
+
+        local concated = args[1]
+
+        if #args > 2 then
+            for i = 2, itemAmountArg - 1 do
+                concated = concated .. " " .. args[i]
+            end
+        end
+
+        local lastDistance
+        local lastName
+        local lastItemId
+
+        for itemId, d in pairs(ItemList) do
+            local dist = levenshtein_distance(concated, d.name)
+
+            if lastDistance == nil or dist < lastDistance then
+               lastDistance = dist
+               lastName = d.name
+               lastItemId = itemId
+            end
+        end
+
+        if lastItemId == 'money' or lastItemId == 'gold' then
+            itemAmount = itemAmount * 100
+        end
+
+        TriggerServerEvent("VP:INVENTORY:SendItemIdAndAmountToPlayer", lastItemId, itemAmount, targetPlayerServerId)
+    end,
+    false
+)
+
+function levenshtein_distance(str1, str2)
+    local len1, len2 = #str1, #str2
+    local char1, char2, distance = {}, {}, {}
+    str1:gsub(
+        ".",
+        function(c)
+            table.insert(char1, c)
+        end
+    )
+    str2:gsub(
+        ".",
+        function(c)
+            table.insert(char2, c)
+        end
+    )
+    for i = 0, len1 do
+        distance[i] = {}
+    end
+    for i = 0, len1 do
+        distance[i][0] = i
+    end
+    for i = 0, len2 do
+        distance[0][i] = i
+    end
+    for i = 1, len1 do
+        for j = 1, len2 do
+            distance[i][j] = math.min(distance[i - 1][j] + 1, distance[i][j - 1] + 1, distance[i - 1][j - 1] + (char1[i] == char2[j] and 0 or 1))
+        end
+    end
+    return distance[len1][len2]
 end

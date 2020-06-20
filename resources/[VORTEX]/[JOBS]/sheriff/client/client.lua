@@ -266,6 +266,20 @@ local maleHash = GetHashKey("mp_male")
 local IsLockpicking = false
 local handcuffed = false
 
+RegisterCommand(
+	"revistar",
+	function()
+		local nearestPlayer = cAPI.getNearestPlayer(1.5)
+		if nearestPlayer ~= nil then
+			local nearestPed = GetPlayerPed(nearestPlayer)
+			if IsEntityPlayingAnim(entity, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+				TriggerServerEvent("VP:SHERIFF:TryToPatDown", nearestPlayer)
+			end
+		end
+	end,
+	false
+)
+
 RegisterNetEvent("VP:SHERIFF:putinvehicle")
 AddEventHandler(
 	"VP:SHERIFF:putinvehicle",
