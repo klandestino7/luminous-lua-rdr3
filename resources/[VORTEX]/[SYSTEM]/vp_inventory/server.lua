@@ -73,8 +73,6 @@ AddEventHandler(
             
             TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
-            print("Delete", json.encode(dropPopulation))
-
             if not User:hasInventoryOpen() then
                 User:notify("item", itemId, itemAmount)
             end
