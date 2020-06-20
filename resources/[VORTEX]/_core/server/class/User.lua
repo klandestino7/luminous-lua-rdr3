@@ -7,8 +7,19 @@ function API.User(source, id, ipAddress)
 
     self.source = source
     self.id = id
-    self.ipAddress = ipAddress or "0.0.0.0"
-    self.posseId = nil
+    self.ipAddress = ipAddress
+
+    -- .characterId
+    -- .characterExp
+    -- .characterLevel | re computed instead?
+    -- .characterName
+    -- .characterAge | not used?
+    -- .characterInventory
+    -- .primaryViewingInventory
+    -- .secondaryViewingInventory
+    -- .horse
+    -- .role
+    -- .posse
 
     -- @return The source or player server id
     self.getSource = function()
