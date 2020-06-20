@@ -8,6 +8,8 @@ local horseModel
 local horseName
 local horseComponents = {}
 
+local initializing = false
+
 -- ! REMOVE
 -- horseModel = "A_C_Horse_Turkoman_Gold"
 -- horseName = "Burrinho"
@@ -42,6 +44,13 @@ RegisterNetEvent("VP:HORSE:SetHorseInfo")
 AddEventHandler("VP:HORSE:SetHorseInfo", SetHorseInfo)
 
 function InitiateHorse(atCoords)
+
+    if initializing then
+        return
+    end
+
+    initializing = true
+
     cAPI.DestroyPlayerHorse()
 
     local ped = PlayerPedId()
@@ -80,6 +89,7 @@ function InitiateHorse(atCoords)
     end
 
     if spawnPosition == nil then
+        initializing =  false
         return
     end
 
@@ -90,6 +100,10 @@ function InitiateHorse(atCoords)
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
     cAPI.SetPlayerHorse(entity)
+
+    if prompt_inventory == nil then
+        InitiatePrompts()
+    end
 
     if horseModel == GetHashKey("A_C_Horse_MP_Mangy_Backup") then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
@@ -104,11 +118,7 @@ function InitiateHorse(atCoords)
     -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
     SetPedNameDebug(entity, horseModel)
     SetPedPromptName(entity, horseName)
-
-    if prompt_inventory == nil then
-        InitiatePrompts()
-    end
-
+    
     local prompt_group = PromptGetGroupIdForTargetEntity(entity)
 
     PromptSetGroup(prompt_inventory, prompt_group)
@@ -125,6 +135,8 @@ function InitiateHorse(atCoords)
     TaskGoToEntity(entity, ped, -1, 7.2, 2.0, 0, 0)
 
     SetPedConfigFlag(entity, 297, true) -- Enable_Horse_Leadin
+
+    initializing = false
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedMinValue", false)
