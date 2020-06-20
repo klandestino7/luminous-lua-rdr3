@@ -44,7 +44,6 @@ RegisterNetEvent("VP:HORSE:SetHorseInfo")
 AddEventHandler("VP:HORSE:SetHorseInfo", SetHorseInfo)
 
 function InitiateHorse(atCoords)
-
     if initializing then
         return
     end
@@ -89,7 +88,7 @@ function InitiateHorse(atCoords)
     end
 
     if spawnPosition == nil then
-        initializing =  false
+        initializing = false
         return
     end
 
@@ -118,7 +117,7 @@ function InitiateHorse(atCoords)
     -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
     SetPedNameDebug(entity, horseName)
     SetPedPromptName(entity, horseName)
-    
+
     local prompt_group = PromptGetGroupIdForTargetEntity(entity)
 
     PromptSetGroup(prompt_inventory, prompt_group)
@@ -278,7 +277,7 @@ function WhistleHorse(whistleTypeHash)
     else
         if not cAPI.IsPlayerHorseActivationBlocked() then
             -- DEBUGGGING
-            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0)) 
+            -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
             InitiateHorse()
         else
             cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
@@ -399,15 +398,51 @@ Citizen.CreateThread(
                 end
             end
 
-             --- bugado o cavalo não volta a correr
-           --[[ if IsControlJustPressed(0, 0xE16B9AAD) then
+            --- bugado o cavalo não volta a correr
+            --[[ if IsControlJustPressed(0, 0xE16B9AAD) then
                 local mount = GetMount(PlayerPedId())
                 if mount ~= 0 then
                     TaskHorseAction(mount, 3, 0, 0)
                 end
             end ]]
-
             -- drawBoundingBox()
+
+            if IsControlJustPressed(0, 0x60C81CDE) then
+                local ped = PlayerPedId()
+                if IsPedOnMount(ped) then
+                    local lassoedPlayerPed
+
+                    local itemSet = CreateItemset(true)
+                    FindAllAttachedCarriableEntities(GetMount(ped), itemSet)
+                    local size = GetItemsetSize(itemSet)
+
+                    if size > 0 then
+                        for index = 0, size - 1 do
+                            local entity = GetIndexedItemInItemset(index, itemSet)
+
+                            if IsEntityAPed(entity) and IsPedHuman(entity) and Citizen.InvokeNative(0x9682F850056C9ADE, entity) then
+                                lassoedPlayerPed = entity
+                            end
+                        end
+                    end
+
+                    if IsItemsetValid(itemSet) then
+                        DestroyItemset(itemSet)
+                    end
+
+                    if lassoedPlayerPed ~= nil then
+                        local animDict = "script_proc@bounty@riding_punch"
+                        RequestAnimDict(animDict)
+
+                        while not HasAnimDictLoaded(animDict) do
+                            Citizen.Wait(0)
+                        end
+
+                        TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+                        TaskPlayAnim(lassoedPlayerPed, "script_proc@bounty@riding_punch", "punch_ped", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+                    end
+                end
+            end
         end
     end
 )
