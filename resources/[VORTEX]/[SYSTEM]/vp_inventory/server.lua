@@ -77,7 +77,7 @@ AddEventHandler(
                 User:notify("item", itemId, itemAmount)
             end
         else
-            User:notify("Bolsa sem espaço!")
+            User:notify("error", "Aforje sem espaço!")
         end
     end
 )
