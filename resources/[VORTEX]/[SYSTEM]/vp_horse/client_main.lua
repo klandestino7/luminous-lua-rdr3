@@ -105,7 +105,7 @@ function InitiateHorse(atCoords)
         InitiatePrompts()
     end
 
-    if horseModel == GetHashKey("A_C_Horse_MP_Mangy_Backup") then
+    if horseModel == "A_C_Horse_MP_Mangy_Backup" then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
         NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
         PromptSetVisible(prompt_inventory, false)
@@ -116,7 +116,7 @@ function InitiateHorse(atCoords)
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
     -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
-    SetPedNameDebug(entity, horseModel)
+    SetPedNameDebug(entity, horseName)
     SetPedPromptName(entity, horseName)
     
     local prompt_group = PromptGetGroupIdForTargetEntity(entity)
