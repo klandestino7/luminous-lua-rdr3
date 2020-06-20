@@ -3,7 +3,7 @@ local Proxy = module("_core", "lib/Proxy")
 
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
-dbABI = Proxy.getInterface("API_DB")
+dbAPI = Proxy.getInterface("API_DB")
 
 local houses = {
     -- price_dollar, price_gold
@@ -19,15 +19,15 @@ local houses = {
 RegisterNetEvent("VP:HOUSING:TryToBuyHouse")
 AddEventHandler(
     "VP:HOUSING:TryToBuyHouse",
-    function(houseId, withGold)
+    function(house_id, withGold)
         local _source = source
 
-        if not houses[houseId] then
+        if not houses[house_id] then
             return
         end
 
-        local price_dollar = houses[houseId][1]
-        local price_gold = houses[houseId][2]
+        local price_dollar = houses[house_id][1]
+        local price_gold = houses[house_id][2]
 
         if price_dollar == nil or price_gold == nil then
             return
@@ -37,13 +37,13 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Inventory = Character:getInventory()
 
-        if Character:hasGroupOrInheritance(houseId) then
+        if Character:hasGroupOrInheritance(house_id) then
             User:notify("error", "Você já alugou esta residência")
             return
         end
 
-        -- if #API.getUsersByGroup(houseId) > 0 then
-        local rows = dbABI.query("SELECT:house_rent", {house_id = houseId})
+        -- if #API.getUsersByGroup(house_id) > 0 then
+        local rows = dbAPI.query("SELECT:house_rent", {house_id = house_id})
 
         if #rows > 0 then
             User:notify("error", "Está residência já foi alugada")
@@ -58,7 +58,7 @@ AddEventHandler(
 
             if Inventory:removeItem(-1, "money", price_dollar) then
                 User:notify("success", "Parábens! Agora essa residência está sobe sua gerência")
-                Character:addGroup(houseId)
+                Character:addGroup(house_id)
 
                 local date = os.date("*t")
 
@@ -68,7 +68,7 @@ AddEventHandler(
 
                 local sum_to_time = os.time(date_sum_sevendays)
 
-                dbABI.execute("INSERT:house_rent", {house_id = houseId, house_next_payment = sum_to_time})
+                dbAPI.execute("INSERT:house_rent", {house_id = house_id, house_next_payment = sum_to_time})
             end
         else
             if Inventory:getItemAmount("gold") < price_gold then
@@ -78,7 +78,7 @@ AddEventHandler(
 
             if Inventory:removeItem(-1, "gold", price_gold) then
                 User:notify("success", "Parábens! Agora essa residência está sobe sua gerência")
-                Character:addGroup(houseId)
+                Character:addGroup(house_id)
             end
         end
     end
@@ -102,7 +102,7 @@ Citizen.CreateThread(
 )
 
 function IsRentExpired(house_id)
-    local rows = dbABI.query("SELECT:house_rent", {house_id = house_id})
+    local rows = dbAPI.query("SELECT:house_rent", {house_id = house_id})
 
     if #rows > 0 then
         local date = os.date("*t")
