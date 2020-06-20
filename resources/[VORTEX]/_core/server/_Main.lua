@@ -93,10 +93,10 @@ function API.getSources()
     return API.sources
 end
 
-function API.logs(archive,text)
-    archive = io.open(archive,"a")
+function API.logs(archive, text)
+    archive = io.open(archive, "a")
     if archive then
-        archive:write(text.."\n")
+        archive:write(text .. "\n")
     end
     archive:close()
 end
@@ -171,3 +171,23 @@ function API.NotifyUsersWithGroup(group, message, checkForInheritance)
         end
     end
 end
+
+local debugginginventory = false
+
+function API.DebbugingInventory()
+    return debugginginventory
+end
+
+RegisterCommand(
+    "debuginv",
+    function(source, args, raw)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin")  then
+            debugginginventory = not debugginginventory
+            User:notify('debuginv ' .. tonumber(debugginginventory))
+        end
+    end,
+    false
+)
