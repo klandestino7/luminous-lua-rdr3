@@ -27,15 +27,15 @@ Citizen.CreateThread(function()
 
 			if isRobberyActive then
 
-				DrawText('Aperte '..Config.robberyCancelKey..' para cancelar o andamento do roubo', 0.85, 0.93, 0.4, 0.4, false, 255, 255, 255, 120, 1, 7)  
 				DrawText('Faltam '..robberyTime..' segundos~w~ para finalizar o roubo', 0.85, 0.96, 0.4, 0.4, false, 255, 255, 255, 120, 1, 7)
-
-				if IsControlJustPressed(0, 0xD8F73058) or GetEntityHealth(player) <= 100 then
-					isRobberyActive = 'fail'
-					ClearPedTasksImmediately(PlayerPedId())
-					FreezeEntityPosition(PlayerPedId() , false)
+				if robberyTime < 40 then
+					DrawText('Aperte '..Config.robberyCancelKey..' para cancelar o andamento do roubo', 0.85, 0.93, 0.4, 0.4, false, 255, 255, 255, 120, 1, 7)  
+					if IsControlJustPressed(0, 0xD8F73058) or GetEntityHealth(player) <= 100 then
+						isRobberyActive = 'fail'
+						ClearPedTasksImmediately(PlayerPedId())
+						FreezeEntityPosition(PlayerPedId() , false)
+					end
 				end
-
 			else
 								
 				if distance <= 1.2 then
@@ -113,7 +113,8 @@ AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
 
 	isRobberyActive = true
 	robberyTime = atmInfo[6]
-	robberyMoney = math.ceil( math.random(Config.moneyReward.min,Config.moneyReward.max) / robberyTime )
+	robberyMoney = math.ceil( math.random(Config.moneyReward.min, Config.moneyReward.max) / robberyTime )
+	print(robberyMoney)
 	robberyAmmount = 0
 
 	local id = atmInfo[1]
@@ -130,6 +131,7 @@ end)
 
 RegisterNetEvent('VP:ROBREG:warnThePolice')
 AddEventHandler('VP:ROBREG:warnThePolice', function(targetAtm)
+	Wait(10000)
 	if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
 		Citizen.InvokeNative(0x67C540AA08E4A6F5, "Match_End_Timer", "RDRO_Countdown_Sounds", true, 0)	
 
@@ -139,7 +141,7 @@ AddEventHandler('VP:ROBREG:warnThePolice', function(targetAtm)
 	--	TriggerEvent('chatMessage', _U('police_title'), Config.policeColor, string.format( Locales[Config.Locale]['police_warning_location'], location ) )
 		TriggerEvent('VP:NOTIFY:Simple', 'SHERIFF:<br>Roubo à uma Loja! Vá até o local e impeça os assaltantes em ' .. zone, 10000)
 		TriggerEvent('VP:ROBREG:InfoSheriff', x,y,z)
-	end	
+	end
 end)
 
 -- RegisterNetEvent('VP:ROBREG:createRobBlip')
@@ -160,10 +162,10 @@ end)
 
 RegisterNetEvent('VP:ROBREG:InfoSheriff')
 AddEventHandler('VP:ROBREG:InfoSheriff', function(x, y, z)
-
 		AllowSonarBlips(true)		
 		local time = 60		
 		Citizen.CreateThread(function()
+
 			while time > 0 do
 				Wait(1000)
 				ForceSonarBlipsThisFrame()
@@ -171,6 +173,8 @@ AddEventHandler('VP:ROBREG:InfoSheriff', function(x, y, z)
 				TriggerSonarBlip(348490638, x, y, z)
 				time = time - 1
 			end
+
+
 		end)
 
 end)
@@ -202,8 +206,9 @@ end
 
 RegisterNetEvent('VP:ROBREG:PlayAlarm')
 AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
-	Citizen.CreateThread(function()				
-		Wait(20000)
+	print(x, y, z)
+	Wait(20000)
+	Citizen.CreateThread(function()	
 		if isRobberyActive ~= 'fail' then
 			Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")			
 			local Alarm = Citizen.InvokeNative(0xE368E8422C860BA7, "BELL_ALARM", "BRT2_Sounds", -2)
@@ -211,11 +216,12 @@ AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
 				Citizen.Wait(10)
 				Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
 			end	
-			local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x,y,z, "BRT2_Sounds", 1, 1, 1, 0)
+			local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x , y, z, "BRT2_Sounds", 1, 1, 1, 0)
 			Wait(10000)
 			Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
 		end
 	end)
+
 end)
 
 function StartAnim1()
