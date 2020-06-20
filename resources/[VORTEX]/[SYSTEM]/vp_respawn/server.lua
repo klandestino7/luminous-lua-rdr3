@@ -46,7 +46,7 @@ AddEventHandler(
         local Character = User:getCharacter()
 
         if Character ~= nil then
-            Character:setDeath(bool)
+            Character:setDeath(tonumber(bool))
         end
     end
 )

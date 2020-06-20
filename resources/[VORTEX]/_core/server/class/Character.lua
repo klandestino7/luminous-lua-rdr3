@@ -255,6 +255,12 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         if #horseRows > 0 then
             -- local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "horse:" .. id})
+            
+            if API.DebbugingInventory() then
+                print("sethorse user_" .. self:getUserId() .. " char_" .. self:getId() .. "horse_" .. id .. " inv: " .. json.encode(inv_query))
+                print(" ")
+            end
+            
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)

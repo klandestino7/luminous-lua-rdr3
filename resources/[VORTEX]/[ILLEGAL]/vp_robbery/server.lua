@@ -27,13 +27,13 @@ local data = {
         staticMaxParticipants = 3,
         staticCooldown = 30 * 60
     },
-    -- [4] = {
-    --     staticName = "Banco Valentine",
-    --     staticReward = 10000,
-    --     staticSecondsToReward = 10 * 60,
-    --     staticMaxParticipants = 3,
-    --     staticCooldown = 30 * 60
-    -- }
+    [4] = {
+         staticName = "Banco Valentine",
+         staticReward = 50000,
+         staticSecondsToReward = 10 * 60,
+        staticMaxParticipants = 3,
+        staticCooldown = 30 * 60
+    }
 }
 
 local indexBeingRobbed = nil
@@ -48,6 +48,8 @@ AddEventHandler(
     "VP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
+
+
 
         if interiorIndexBeingRobbed ~= nil then
             -- print("Interior já está sendo roubado")

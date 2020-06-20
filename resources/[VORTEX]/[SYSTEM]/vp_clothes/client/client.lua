@@ -1112,29 +1112,6 @@ RegisterNUICallback(
 )
 
 
-local Bandana = false
-RegisterCommand(
-    "bandana",
-    function(source, args, rawCommand)
-        RequestAnimDict("mech_inventory@clothing@bandana")
-        while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
-            Citizen.Wait(100)
-        end
-
-        if not Bandana then
-            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
-            Wait(2000)
-            setcloth2(tonumber(879715242))
-            Bandana = true
-        else
-            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
-            Wait(2000)
-            setcloth2(tonumber(-972364774))
-            Bandana = false
-        end
-    end
-)
-
 local Badge = false
 RegisterCommand(
     "badge",

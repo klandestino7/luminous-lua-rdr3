@@ -70,10 +70,8 @@ AddEventHandler(
 
             dropPopulation[index] = nil
             dropPopulation_serveronly[index] = nil
-            
-            TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
-            print("Delete", json.encode(dropPopulation))
+            TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
             if not User:hasInventoryOpen() then
                 User:notify("item", itemId, itemAmount)
@@ -206,10 +204,78 @@ AddEventHandler(
     end
 )
 
-RegisterNetEvent("VP:INVENTORY:SendToPlayer")
+-- RegisterNetEvent("VP:INVENTORY:SendToPlayer")
+-- AddEventHandler(
+--     "VP:INVENTORY:SendToPlayer",
+--     function(slotId, playerTarget)
+--         local _source = source
+
+--         local UserTarget = API.getUserFromSource(playerTarget)
+
+--         if UserTarget == nil then
+--             return
+--         end
+
+--         local CharacterTarget = UserTarget:getCharacter()
+
+--         if CharacterTarget == nil then
+--             return
+--         end
+
+--         local InventoryTarget = CharacterTarget:getInventory()
+
+--         local User = API.getUserFromSource(_source)
+--         local Character = User:getCharacter()
+
+--         if Character == nil then
+--             return
+--         end
+--         local Inventory = Character:getInventory()
+
+--         local Slot = Inventory:getSlots()[tonumber(slotId)]
+
+--         if Slot == nil then
+--             -- User:notify("error", "Você não tem x" .. ItemData:getName())
+--             return
+--         end
+
+--         local itemAtSlot = Slot:getItemId()
+--         local amountAtSlot = Slot:getItemAmount()
+
+--         local ItemData = API.getItemDataFromId(itemAtSlot)
+--         -- if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
+--         if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
+--             Inventory:removeItem(tonumber(slotId), itemAtSlot, amountAtSlot)
+
+--             local amountToDisplay = amountAtSlot
+--             local toastType = "item"
+
+--             if itemAtSlot == "gold" then
+--                 toastType = "gold"
+--                 amountToDisplay = amountToDisplay / 100
+--             elseif itemAtSlot == "money" then
+--                 toastType = "dollar"
+--                 amountToDisplay = amountToDisplay / 100
+--             end
+
+--             User:notify(toastType, ItemData:getName(), -(amountToDisplay))
+
+--             if UserTarget:getPrimaryInventoryViewing() == nil then
+--                 UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
+--             end
+--         else
+--             User:notify("error", "Bolsa da pesssoa está sem espaço!")
+--         end
+--         -- -- else
+--         --     User:notify("error", "Você não tem x" .. ItemData:getName())
+--         -- end
+--     end
+-- )
+
+RegisterNetEvent("VP:INVENTORY:SendItemIdAndAmountToPlayer")
 AddEventHandler(
-    "VP:INVENTORY:SendToPlayer",
-    function(slotId, playerTarget)
+    "VP:INVENTORY:SendItemIdAndAmountToPlayer",
+    function(itemId, itemAmount, playerTarget)
         local _source = source
 
         local UserTarget = API.getUserFromSource(playerTarget)
@@ -232,45 +298,25 @@ AddEventHandler(
         if Character == nil then
             return
         end
+
         local Inventory = Character:getInventory()
 
-        local Slot = Inventory:getSlots()[tonumber(slotId)]
-
-        if Slot == nil then
-            -- User:notify("error", "Você não tem x" .. ItemData:getName())
+        if Inventory:getItemAmount(itemId) < itemAmount then
+            User:notify("error", "Você não tem items suficientes")
             return
         end
 
-        local itemAtSlot = Slot:getItemId()
-        local amountAtSlot = Slot:getItemAmount()
+        if InventoryTarget:addItem(itemId, itemAmount) then
+            Inventory:removeItem(tonumber(slotId), itemId, itemAmount)
 
-        local ItemData = API.getItemDataFromId(itemAtSlot)
-        -- if Inventory:getItemAmount(itemAtSlot) >= amountAtSlot then
-        if InventoryTarget:addItem(itemAtSlot, amountAtSlot) then
-            Inventory:removeItem(tonumber(slotId), itemAtSlot, amountAtSlot)
-
-            local amountToDisplay = amountAtSlot
-            local toastType = "item"
-
-            if itemAtSlot == "gold" then
-                toastType = "gold"
-                amountToDisplay = amountToDisplay / 100
-            elseif itemAtSlot == "money" then
-                toastType = "dollar"
-                amountToDisplay = amountToDisplay / 100
-            end
-
-            User:notify(toastType, ItemData:getName(), -(amountToDisplay))
+            User:notify("item", itemId, -(amountToDisplay))
 
             if UserTarget:getPrimaryInventoryViewing() == nil then
-                UserTarget:notify(toastType, ItemData:getName(), amountToDisplay)
+                UserTarget:notify("item", itemId, amountToDisplay)
             end
         else
             User:notify("error", "Bolsa da pesssoa está sem espaço!")
         end
-        -- -- else
-        --     User:notify("error", "Você não tem x" .. ItemData:getName())
-        -- end
     end
 )
 

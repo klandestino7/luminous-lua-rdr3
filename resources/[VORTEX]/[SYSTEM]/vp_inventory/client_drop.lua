@@ -156,7 +156,7 @@ function tryToCreateDroppedEntityForIndex(index, optional_pedPosition)
 
     -- if isCoordsInRenderRange(droppedI_Position) then
 
-    local droppedI_worldModel = d.worldModel or "p_cs_lootsack02x"
+    local droppedI_worldModel = d.itemWorldModel or "p_cs_lootsack02x"
     local droppedI_worldModelHash = GetHashKey(droppedI_worldModel)
 
     if not HasModelLoaded(droppedI_worldModelHash) then
@@ -168,6 +168,11 @@ function tryToCreateDroppedEntityForIndex(index, optional_pedPosition)
 
     local entity = CreateObject(droppedI_worldModelHash, droppedI_Position, false, true, true)
     PlaceObjectOnGroundProperly(entity)
+    SetEntityInvincible(entity, true)
+
+    if droppedI_worldModel ~= "p_cs_lootsack02x" then
+        Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, true)
+    end
 
     dropPopulation[index].entity = entity
 

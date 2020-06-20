@@ -101,6 +101,11 @@ function API.User(source, id, ipAddress)
             API.chars[id] = self:getId()
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
 
+            if API.DebbugingInventory() then
+                print("setcharacter user_" .. self:getId() .. " char_" .. id .. " inv: " .. json.encode(inv_query))
+                print(" ")
+            end
+
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
@@ -249,7 +254,7 @@ function API.User(source, id, ipAddress)
 
     self.setHorse = function(this, id)
         local Horse = self:getCharacter():setHorse(id)
-        TriggerClientEvent('VP:HORSE:SetHorseInfo', self:getSource(),Horse:getModel(), Horse:getName(), Horse:getComponents())
+        TriggerClientEvent("VP:HORSE:SetHorseInfo", self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
         -- cAPI.SetHorseInfo(self:getSource(), Horse:getModel(), Horse:getName(), Horse:getComponents())
     end
 

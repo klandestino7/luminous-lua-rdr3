@@ -185,7 +185,12 @@ AddEventHandler(
 RegisterNetEvent("VP:SHERIFF:TryToPatDown")
 AddEventHandler(
 	"VP:SHERIFF:TryToPatDown",
-	function(playerToPatdown)
+	function(playerToPatdows)
+
+		if playerToPatdown == nil then
+			return
+		end
+
 		local _source = source
 		local User = API.getUserFromSource(_source)
 		local Character = User:getCharacter()
@@ -194,7 +199,15 @@ AddEventHandler(
 			return
 		end
 
+		-- if Character:hasGroupOrInheritance("trooper") then
+		-- end
+
 		local UserTarget = API.getUserFromSource(playerToPatdown)
+
+		if UserTarget == nil then
+			return
+		end
+
 		local CharacterTarget = UserTarget:getCharacter()
 
 		if CharacterTarget == nil then
@@ -205,6 +218,8 @@ AddEventHandler(
 
 		User:viewInventory()
 		User:viewInventoryAsSecondary(InventoryTarget)
+
+		UserTarget:notify('alert', 'Você está sendo revistado!')
 	end
 )
 

@@ -350,7 +350,6 @@ function HandleAsInjured(fatal)
 	TookDamageToVitalOrgan = false
 	ClearPedLastDamageBone(ped)
 
-	isBadlyInjuried = true
 
 	CreateFakeCam()
 
@@ -435,6 +434,9 @@ function HandleAsInjured(fatal)
 			end
 		end
 	else
+		
+		isBadlyInjuried = true
+
 		-- print("Died of simple cause")
 
 		local timeTillFirstRevive = GetGameTimer() + 1000 * 60 * 1
@@ -528,6 +530,8 @@ function HandleAsInjured(fatal)
 						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", true)
 
 						PromptDelete(prompt_getup)
+
+						break
 					end
 				end
 
@@ -574,6 +578,7 @@ function HandleAsInjured(fatal)
 								]]
 						isBadlyInjuried = false
 						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", false)
+						break
 					end
 				end
 			end
