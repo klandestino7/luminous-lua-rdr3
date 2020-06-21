@@ -56,10 +56,9 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		-- 	return
 		-- end
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
-
+		
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
 
-		Wait(10000)
 		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
 		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4])
 		
