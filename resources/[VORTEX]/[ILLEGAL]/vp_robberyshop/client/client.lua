@@ -107,7 +107,6 @@ end)
 
 RegisterNetEvent('VP:ROBREG:startTheRobbery')
 AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
-
 --	
 	ClearPedTasks(PlayerPedId())	
 
@@ -206,19 +205,16 @@ end
 
 RegisterNetEvent('VP:ROBREG:PlayAlarm')
 AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
-	print(x, y, z)
 	Wait(20000)
 	Citizen.CreateThread(function()	
 		if isRobberyActive ~= 'fail' then
 			Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")			
 			local Alarm = Citizen.InvokeNative(0xE368E8422C860BA7, "BELL_ALARM", "BRT2_Sounds", -2)
 			while not Alarm do
-				Citizen.Wait(10)
+				Citizen.Wait(500)
 				Citizen.InvokeNative(0x0F2A2175734926D8, "BELL_ALARM", "BRT2_Sounds")
 			end	
-			local PlaySound = Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x , y, z, "BRT2_Sounds", 1, 1, 1, 0)
-			Wait(10000)
-			Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
+			Citizen.InvokeNative(0xCCE219C922737BFA, "BELL_ALARM", x, y, z, "BRT2_Sounds", 1, 1, 1, 0)
 		end
 	end)
 
@@ -269,13 +265,12 @@ function StartAnim2()
 		TaskPlayAnim(PlayerPedId(), dict, "ohho", 4.0, -4.0, -1, 32, 0.0, false, 0, false, 0, false)
 		Citizen.Wait(4600)
 	end
-
 end
 
 
 function GetCurrentTownName()
-    local pedCoords = GetEntityCoords(PlayerPedId())
-	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
+
+	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, x,y,z, 1)
 	
     if town_hash == GetHashKey("Annesburg") then
         return "Annesburg"
@@ -327,5 +322,6 @@ function GetCurrentTownName()
         return "Manicato"
     elseif town_hash == false then
         return "Cidade Fantasma"
-    end
+	end
+	
 end
