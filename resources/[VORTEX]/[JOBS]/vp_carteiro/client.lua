@@ -147,7 +147,7 @@ Citizen.CreateThread(
                 end
 
                 if blip["start" .. i] == nil then
-                    CreateBlip("start" .. i, WorkStations[i], "Emprego Carteiro", -592068833)
+                    CreateBlip("start" .. i, WorkStations[i], "Correio", 1861010125)
                 end
 
                 postUsing = i
