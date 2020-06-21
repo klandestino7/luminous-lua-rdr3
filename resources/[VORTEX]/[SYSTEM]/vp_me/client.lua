@@ -44,9 +44,10 @@ function Display(mePlayer, text)
             local coordsy = coordsMe.y
             local coordsz = coordsMe.z+1
 
-      
+            local PedBoneCoords = GetPedBoneCoords(PlayerPedId(), 21030, 0, 0, 0)
+
             if dist < 2500 then
-                DrawText3D(coordsx, coordsy, coordsz, text)
+                DrawText3D(PedBoneCoords.x, PedBoneCoords.y, PedBoneCoords.z+0.30, text)
             end
         end
     end)
