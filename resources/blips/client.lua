@@ -115,7 +115,7 @@ Citizen.CreateThread(
 		for _, info in pairs(blips) do
 			local blip = N_0x554d9d53f696d002(1664425300, info.x, info.y, info.z)
 			SetBlipSprite(blip, info.sprite, 1)
-			SetBlipScale(blip, 0.2)
+			SetBlipScale(blip, 0.1)
 			Citizen.InvokeNative(0x9CB1A1623062F402, blip, info.name)
 			table.insert(blips, blip)
 		end

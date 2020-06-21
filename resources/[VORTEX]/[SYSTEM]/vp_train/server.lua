@@ -34,10 +34,10 @@ AddEventHandler(
   end
 )
 
-RegisterNetEvent("VP:GHOSTRAIN:calltrain")
-AddEventHandler(
-  "VP:GHOSTRAIN:calltrain",
-  function()
-    TriggerClientEvent("VP:GHOST:Trainroute", GetHostId())
-  end
-)
+-- RegisterNetEvent("VP:GHOSTRAIN:calltrain")
+-- AddEventHandler(
+--   "VP:GHOSTRAIN:calltrain",
+--   function()
+--     TriggerClientEvent("VP:GHOST:Trainroute", GetHostId())
+--   end
+-- )
