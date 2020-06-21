@@ -48,19 +48,7 @@ AddEventHandler("VP:NOTIFY:Simple",function(mensagem, time)
 --	exports['vp_notify']:DisplayLocationNotification(text,locale,10000)	
 end)
 
-RegisterCommand('enviar', function()
-	local player = (GetEntityCoords(PlayerPedId()))
---	local street = GetStreetNameFromHashKey(GetStreetNameAtCoord(player.x, player.y, player.z))
---	local zonehash = GetNameOfZone(player.x, player.y, player.z)
---	local zonenome = tostring(nome.zonehash)
---	local num = GetZoneAtCoords(player.x, player.y, player.z)
---	local ruas = street .. " Nº" .. num .. ", " .. nome[zonehash]
-	TriggerEvent('VP:NOTIFY:Simple', 'Aqui é Blackwater, a primeira cidade na qual você vai conhecer. Nela você poderá encontrar diversas lojas de departamento, como a loja de roupas, cabeleireiro, departamento de polícia, entre outros. Mas lembre-se de que há um mundo imenso para você explorar!', 18000)
-	Wait(10000)
---	TriggerEvent('VP:NOTIFY:Toast','star', 'Roubo', 'Assalto a Joalheria')
---	TriggerEvent('blipALERTRED', player)
 
-end)
 
 RegisterNetEvent('blipALERTRED')
 AddEventHandler('blipALERTRED', function(targetCoords)
