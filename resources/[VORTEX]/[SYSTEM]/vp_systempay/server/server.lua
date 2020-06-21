@@ -10,21 +10,21 @@ cAPI = Tunnel.getInterface("API")
 -- 	{"medic", "0", 10}
 -- }
 
--- local xp = {
--- 	{"admin", 1},
--- 	{"user", 1},
--- 	{"vip1", 1.10},
--- 	{"vip2", 1.20},
--- 	{"vip3", 1.30}
--- }
+local xp = {
+	{"admin", 1},
+	{"user", 1},
+	{"vip1", 1.10},
+	{"vip2", 1.20},
+	{"vip3", 1.30}
+}
 
--- local perdaxp = {
--- 	{"admin", 20},
--- 	{"user", 20},
--- 	{"vip1", 20 * 1.10},
--- 	{"vip2", 20 * 1.20},
--- 	{"vip3", 20 * 1.30}
--- }
+local perdaxp = {
+	{"admin", 20},
+	{"user", 20},
+	{"vip1", 20 * 1.10},
+	{"vip2", 20 * 1.20},
+	{"vip3", 20 * 1.30}
+}
 
 -- RegisterServerEvent("VP:SYSTEMPAY:money")
 -- AddEventHandler(
@@ -51,26 +51,26 @@ cAPI = Tunnel.getInterface("API")
 -- 	end
 -- )
 
--- RegisterServerEvent("VP:SYSTEMPAY:xp")
--- AddEventHandler(
--- 	"VP:SYSTEMPAY:xp",
--- 	function(count)
--- 		local countxp = count
--- 		local _source = source
--- 		local User = API.getUserFromSource(_source)
--- 		local Character = User:getCharacter()
+RegisterServerEvent("VP:SYSTEMPAY:xp")
+AddEventHandler(
+	"VP:SYSTEMPAY:xp",
+	function(count)
+		local countxp = count
+		local _source = source
+		local User = API.getUserFromSource(_source)
+		local Character = User:getCharacter()
 
--- 		if Character ~= nil then
--- 			for i, v in pairs(xp) do
--- 				local group = Character:hasGroup(v[1])
--- 				if group then
--- 					Character:varyExp(tonumber(countxp * v[2]))
--- 				end
--- 			end
--- 			print("XP Distribuido com Sucesso.")
--- 		end
--- 	end
--- )
+		if Character ~= nil then
+			for i, v in pairs(xp) do
+				local group = Character:hasGroup(v[1])
+				if group then
+					Character:varyExp(tonumber(countxp * v[2]))
+				end
+			end
+			print("XP Distribuido com Sucesso.")
+		end
+	end
+)
 
 -- RegisterServerEvent("VP:SYSTEMPAY:removedeath")
 -- AddEventHandler(

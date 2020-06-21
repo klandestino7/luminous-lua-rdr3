@@ -1,3 +1,3 @@
 Config = {}
 
-Config.xpuser = 20 -- XP
+Config.xpuser = 5.0 -- XP
