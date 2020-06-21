@@ -1,3 +1,9 @@
+local Tunnel = module('_core', 'lib/Tunnel')
+local Proxy = module('_core', 'lib/Proxy')
+
+cAPI = Proxy.getInterface('API')
+API = Tunnel.getInterface('API')
+
 keys = {
     ['G'] = 0x760A9C6F,
     ['S'] = 0xD27782E3,
@@ -15,13 +21,14 @@ Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 		if WarMenu.IsMenuOpened('ShopBoat') then
+			
 				if WarMenu.Button('Canoa 15$') then
 				TriggerServerEvent('bberry:buyvehicle', 15, 'canoe')
 				elseif WarMenu.Button('Bote 2 Pessoas 20$') then
 				TriggerServerEvent('bberry:buyvehicle', 20, 'ROWBOATSWAMP02')
 				elseif WarMenu.Button('Bote 2 Pessoas 20$') then
 				TriggerServerEvent('bberry:buyvehicle', 20, 'rowboat')
-			
+
 			WarMenu.Display()	
 			end		
 			WarMenu.Display()	
@@ -36,6 +43,40 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
+
+Citizen.CreateThread(function()
+	WarMenu.CreateMenu('ShopBoat', 'Botes da Polícia')
+	WarMenu.SetSubTitle('ShopBoat', 'Lista de Botes')
+	
+	if cAPI.hasGroupOrInheritance("trooper") or cAPI.hasGroupOrInheritance("sheriff") then
+		while true do
+			Citizen.Wait(0)
+			local playerPed = PlayerPedId()
+			local coords = GetEntityCoords(playerPed)
+			if WarMenu.IsMenuOpened('ShopBoat') then
+					if WarMenu.Button('Canoa 15$') then
+					TriggerServerEvent('bberry:buyvehicle', 0, 'canoe')
+					elseif WarMenu.Button('Bote 2 Pessoas 20$') then
+					TriggerServerEvent('bberry:buyvehicle', 0, 'ROWBOATSWAMP02')
+					elseif WarMenu.Button('Bote 2 Pessoas 20$') then
+					TriggerServerEvent('bberry:buyvehicle', 0, 'rowboat')			   
+				WarMenu.Display()	
+				end		
+				WarMenu.Display()	
+			end
+
+			if Vdist(coords, 2902.989,-247.781,41.975) < 2 then
+				DrawTxt(Config.Shoptext,  0.78, 0.95, 0.4, 0.4, true, 255, 255, 255, 150, false)
+				if IsControlJustReleased(0, keys['E']) then
+					WarMenu.OpenMenu('ShopBoat')
+				end
+			end
+		end
+	end
+end)
+
+
 
 RegisterNetEvent('Message:cancel')	
 AddEventHandler('Message:cancel', function()
