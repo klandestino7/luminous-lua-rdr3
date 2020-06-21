@@ -9,12 +9,12 @@ local list = {}
 local bauId = {}
 
 local inventory_items = {
-  [1] = {["pigeonpost"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
-  [2] = {["pigeonpost"] = 5, ["rifle_boltaction"] = 1, ["raw_gold"] = 5, ["raw_copper"] = 2},
-  [3] = {["revolver_cattleman"] = 5, ["bow"] = 1, ["ammo_arrow"] = 20},
-  [4] = {["melee_lantern_electric"] = 1, ["thrown_dynamite"] = 2, ["gold"] = 100},
-  [5] = {["lasso"] = 5, ["shotgun_repeating"] = 1, ["money"] = 5000},
-  [6] = {["rifle_springfield"] = 5, ["shotgun_repeating"] = 1, ["money"] = 5000}
+  [1] = {["melee_hatchet_hunter_rusted"] = 2, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
+  [2] = {["melee_knife_vampire"] = 1, ["pistol_mauser_drunk"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
+  [3] = {["revolver_cattleman"] = 3, ["bow"] = 2, ["ammo_arrow"] = 20},
+  [4] = {["medicine_good"] = 1, ["thrown_dynamite"] = 2, ["gold"] = 100},
+  [5] = {["lasso"] = 3, ["shotgun_repeating"] = 1, ["money"] = 5000},
+  [6] = {["rifle_springfield"] = 1, ["shotgun_repeating"] = 1, ["money"] = 5000}
 }
 
 local TREASURE = {
@@ -71,8 +71,10 @@ AddEventHandler(
   "TREASURE:timeCall",
   function()
     local hora = 60000 * 60
-    local horas = 60000 * 180
-    local timeram = math.random(hora, horas)
+    local TimeSpawnMax = hora * 8
+    local TimeSpawnMin = hora * 4
+
+    local timeram = math.random(TimeSpawnMin, TimeSpawnMax)
 
     Wait(timeram)
 

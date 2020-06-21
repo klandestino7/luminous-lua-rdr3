@@ -5,9 +5,7 @@ local Proxy = module('_core', 'lib/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
-
 local keys = { ['G'] = 0x760A9C6F, ['S'] = 0xD27782E3, ['W'] = 0x8FD015D8, ['H'] = 0x24978A28, ['G'] = 0x5415BE48, ["ENTER"] = 0xC7B5340A, ['E'] = 0xDFF812F9, ["J"] = 0xF3830D8E }
-
 
 local blips = {
     { name = 'Animal Shelter', sprite = -1646261997,x = -273.51, y = 689.26, z = 113.41 }
@@ -23,7 +21,6 @@ local dogspawn = {}
 local Numberdogspawn = 0
 
 local CurrentZoneActive = 0
-
 local dogs = {
 	{
 		['Text'] = "$15 - Chesbay Retriever",
@@ -31,20 +28,20 @@ local dogs = {
 		['Desc'] = "Level Min: : ~pa~0",
 		['Param'] = {
 			['Price'] = 15,
-			['Model'] = "A_C_DogChesBayRetriever_011",
+			['Model'] = "A_C_DogChesBayRetriever_01",
 			['Level'] = 1
 		}
 	},
-	{
-		['Text'] = "$15 - Husky",
-		['SubText'] = "",
-		['Desc'] = "Level Min: : ~pa~0",
-		['Param'] = {
-			['Price'] = 15,
-			['Model'] = "A_C_DogHusky_01",
-			['Level'] = 1
-		}
-	},
+	-- {
+	-- 	['Text'] = "$15 - Husky",
+	-- 	['SubText'] = "",
+	-- 	['Desc'] = "Level Min: : ~pa~0",
+	-- 	['Param'] = {
+	-- 		['Price'] = 15,
+	-- 		['Model'] = "A_C_DogHusky_01",
+	-- 		['Level'] = 1
+	-- 	}
+	-- },
 	{
 		['Text'] = "$15 - Labrador Retriever",
 		['SubText'] = "",
@@ -115,7 +112,6 @@ local dogs = {
 			['Level'] = 1
 		}
 	},
-
 }
 
 

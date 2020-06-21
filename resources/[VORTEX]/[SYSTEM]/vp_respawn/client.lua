@@ -355,7 +355,7 @@ function HandleAsInjured(fatal)
 
 	-- print('Called HandleAsInjured', fatal)
 
-	TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", true)
+	TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 1)
 
 	if fatal == true then
 		-- print("Died of fatal cause", fatal)
@@ -428,7 +428,7 @@ function HandleAsInjured(fatal)
 						]]
 				-- print("Broke")
 
-				TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", false)
+				TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 0)
 
 				break
 			end
@@ -527,7 +527,7 @@ function HandleAsInjured(fatal)
 
 						HandleAsInjured(true)
 
-						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", true)
+						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 1)
 
 						PromptDelete(prompt_getup)
 
@@ -577,7 +577,7 @@ function HandleAsInjured(fatal)
 									acaba o thread
 								]]
 						isBadlyInjuried = false
-						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", false)
+						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 0)
 						break
 					end
 				end

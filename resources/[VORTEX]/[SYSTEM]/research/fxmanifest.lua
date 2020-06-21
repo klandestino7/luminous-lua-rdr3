@@ -16,4 +16,6 @@ client_scripts {
 exports {
 	'DataViewNativeGetEventData',
 	'DataViewNativeGetScenarioPointsCloseToCoords',
+	'NativeCreateComposite',
+	'NativeGetCompositeEntities',
 }
