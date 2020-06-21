@@ -46,13 +46,19 @@ AddEventHandler(
 
 Citizen.CreateThread(
 	function()
+
+		N_0xa657ec9dbc6cc900(1)
+		Citizen.InvokeNative(0x74E2261D2A66849A, 1)
+		Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
+
 		while true do
 			Citizen.Wait(0)
 			Citizen.InvokeNative(0xF808475FA571D823, true) --enable friendly fire
 			NetworkSetFriendlyFireOption(true)
 
 			SetRelationshipBetweenGroups(5, "PLAYER", "PLAYER")
-
+			SetRelationshipBetweenGroups(5, "PLAYER", "GANG_NIGHT_FOLK" )
+			SetRelationshipBetweenGroups(5, "GANG_NIGHT_FOLK", "PLAYER" )
 			local ped = PlayerPedId()
 
 			if IsPedOnMount(ped) or IsPedInAnyVehicle(ped, false) then
@@ -119,12 +125,13 @@ function cAPI.getSpeed()
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
 end
 
-function cAPI.CWanted(reward)
-	local Wanted = true
-	if reward == 0 then
+function cAPI.CWanted(IsWanted)
+
+	if IsWanted == nil then
 		return false
 	end
-	return reward
+
+	return true
 end
 
 function cAPI.GetCoordsFromCam(distance)

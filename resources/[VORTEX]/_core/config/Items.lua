@@ -604,6 +604,13 @@ ItemList = {
         description = "Carne obtida após esfolar o animal",
         stackSize = 6
     },
+    ["bones"] = {
+        type = "generic",
+        name = "Resto de Ossos",
+        weight = 0.8,
+        description = "Resto de Ossos obtida após esfolar o animal",
+        stackSize = 6
+    },
     ["meat_perfect"] = {
         type = "generic",
         name = "Carne Animal Perfeita",
@@ -639,6 +646,20 @@ ItemList = {
         description = "Carvão amontoado, precisa ser refinado para extrair seu sulfato inflamável.",
         stackSize = 45
     },
+    ["raw_rock"] = {
+        type = "generic",
+        name = "Pedra Bruta",
+        weight = 1.0,
+        description = "Agua mole medra dura, tanto bate até que fura.",
+        stackSize = 20
+    },
+    ["rock"] = {
+        type = "generic",
+        name = "Brita",
+        weight = 0.2,
+        description = "São pedras britadas.",
+        stackSize = 40
+    },
     ["coal"] = {
         type = "generic",
         name = "Carvão Refinado",
@@ -651,6 +672,27 @@ ItemList = {
         name = "Tora de Madeira",
         weight = 1.0,
         description = "Toco de madeira, pobrezito, arrancado de suas raízes tão cedo.",
+        stackSize = 20
+    },
+    ["roperoll"] = {
+        type = "generic",
+        name = "Rolo de Corda",
+        weight = 2.0,
+        description = "Utilizado para fazer diversos tipos de itens.",
+        stackSize = 5
+    },
+    ["ropecuted"] = {
+        type = "generic",
+        name = "Pedaço de Corda",
+        weight = 0.5,
+        description = "Pedaço de corda.",
+        stackSize = 5
+    },
+    ["stick"] = {
+        type = "generic",
+        name = "Graveto de Madeira",
+        weight = 1.0,
+        description = "Um graveto de madeira, pobrezito, arrancado de suas raízes tão cedo.",
         stackSize = 20
     },
     ["potassio"] = {
@@ -1032,6 +1074,27 @@ ItemList = {
         varOnUse = 100,
         description = "Baú de madeira fortificado com peças de metal. Serve para guardar grandes conteúdos.",
         stackSize = 2
+    },
+    ["campfiresmall"] = {
+        type = "kit",
+        name = "Fogueira Pequena",
+        weight = 1.5,
+        description = "Fogueira para iluminar e esquentar sua noite.",
+        stackSize = 1
+    },    
+    ["campfiremed"] = {
+        type = "kit",
+        name = "Fogueira Grande",
+        weight = 5.0,
+        description = "Fogueira para iluminar e esquentar sua noite.",
+        stackSize = 1
+    },
+    ["bedroll"] = {
+        type = "kit",
+        name = "Saco de Dormir",
+        weight = 0.7,
+        description = "Dormir é sempre bom para recuperar energia.",
+        stackSize = 1
     },
     ["money"] = {
         type = "valuable",

@@ -162,22 +162,29 @@ end)
 RegisterNetEvent('VP:ROBREG:InfoSheriff')
 AddEventHandler('VP:ROBREG:InfoSheriff', function(x, y, z)
 		AllowSonarBlips(true)		
+		StartGpsMultiRoute(76603059, true, true)
+		--StartGpsMultiRoute(76603059, true, true)					-- Add the points
+		AddPointToGpsMultiRoute(x, y, z)
+		SetGpsMultiRouteRender(true)
+		TriggerEvent('VP:ROBREG:ClearGps')
 		local time = 60		
 		Citizen.CreateThread(function()
-
 			while time > 0 do
-				Wait(1000)
+				Wait(1500)
 				ForceSonarBlipsThisFrame()
 				local coords = GetEntityCoords(PlayerPedId())
-				TriggerSonarBlip(348490638, x, y, z)
+				TriggerSonarBlip(348490638, x, y, z)			
 				time = time - 1
 			end
-
-
 		end)
-
 end)
 
+
+RegisterNetEvent('VP:ROBREG:ClearGps')
+AddEventHandler('VP:ROBREG:ClearGps', function()
+	Wait(60000)
+	ClearGpsMultiRoute()
+end)
 
 
 function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
@@ -222,6 +229,8 @@ AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
 	end)
 
 end)
+
+
 
 function StartAnim1()
 Citizen.CreateThread(function()		
