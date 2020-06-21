@@ -1,7 +1,7 @@
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(250)
+            Citizen.Wait(1500)
             local playerHorse = cAPI.GetPlayerHorse()
             if playerHorse ~= 0 then
                 local horseCoords = GetEntityCoords(playerHorse)
