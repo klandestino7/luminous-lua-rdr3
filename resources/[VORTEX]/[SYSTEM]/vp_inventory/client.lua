@@ -429,7 +429,7 @@ RegisterCommand(
         end
 
         local targetPlayerServerId = cAPI.getNearestPlayer(1.5)
-
+       
         if targetPlayerServerId == nil then
             cAPI.notify('error', 'Ninguem por perto')
             return

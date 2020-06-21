@@ -307,12 +307,12 @@ AddEventHandler(
         end
 
         if InventoryTarget:addItem(itemId, itemAmount) then
-            Inventory:removeItem(tonumber(slotId), itemId, itemAmount)
+            Inventory:removeItem(-1, itemId, itemAmount)
 
-            User:notify("item", itemId, -(amountToDisplay))
+            User:notify("item", itemId, -(itemAmount))
 
             if UserTarget:getPrimaryInventoryViewing() == nil then
-                UserTarget:notify("item", itemId, amountToDisplay)
+                UserTarget:notify("item", itemId, itemAmount)
             end
         else
             User:notify("error", "Bolsa da pesssoa está sem espaço!")
