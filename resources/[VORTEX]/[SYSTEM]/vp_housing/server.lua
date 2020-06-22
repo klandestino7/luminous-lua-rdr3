@@ -7,13 +7,13 @@ dbAPI = Proxy.getInterface("API_DB")
 
 local houses = {
     -- price_dollar, price_gold
-    ["house:1"] = {200000, 10000},
-    ["house:2"] = {200000, 10000},
-    ["house:3"] = {200000, 10000},
-    ["house:4"] = {200000, 10000},
-    ["house:5"] = {200000, 10000},
-    ["house:6"] = {200000, 10000},
-    ["house:7"] = {200000, 10000}
+    ["house:1"] = {20000, 8000},
+    ["house:2"] = {20000, 8000},
+    ["house:3"] = {20000, 8000},
+    ["house:4"] = {20000, 8000},
+    ["house:5"] = {20000, 8000},
+    ["house:6"] = {20000, 8000},
+    ["house:7"] = {20000, 8000}
 }
 
 RegisterNetEvent("VP:HOUSING:TryToBuyHouse")
