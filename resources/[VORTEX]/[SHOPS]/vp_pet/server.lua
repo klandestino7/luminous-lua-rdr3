@@ -65,6 +65,10 @@ AddEventHandler(
         local User = API.getUserFromSource(_src)
         local Character = User:getCharacter()
 
+        if Character == nil then
+            return
+        end
+        
         local Hasdogs = Character:getData(Character:getId(), "charTable", "dog")
 
         if Hasdogs ~= nil then
