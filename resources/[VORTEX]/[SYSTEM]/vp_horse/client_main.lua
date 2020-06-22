@@ -346,30 +346,13 @@ Citizen.CreateThread(
                 )
             end
 
-            if CanHorseEat() then
-                PromptSetVisible(prompt_eat, true)
-                if PromptIsJustPressed(prompt_eat) then
-                    ActionEat()
-                end
-            else
-                PromptSetVisible(prompt_eat, false)
+            if PromptIsJustPressed(prompt_eat) then
+                ActionEat()
             end
 
-            if CanHorseDrink() then
-                PromptSetVisible(prompt_drink, true)
-                if PromptIsJustPressed(prompt_drink) then
-                    ActionDrink()
-                end
-            else
-                PromptSetVisible(prompt_drink, false)
+            if PromptIsJustPressed(prompt_drink) then
+                ActionDrink()
             end
-
-            -- if IsControlPressed(0, 0xF8982F00) then
-            --     local mount = GetMount(PlayerPedId())
-            --     if mount ~= 0 and mount == cAPI.GetPlayerHorse() then
-            --         PromptSetActiveGroupThisFrame(PromptGetGroupIdForTargetEntity(mount), CreateVarString(10, 'LITERAL_STRING', "horseName"))
-            --     end
-            -- end
 
             -- if IsControlJustPressed(0, 0xE7EB9185) or IsControlJustPressed(1, 0x24978A28) then -- H, HistleHorseBack - H, Histle
             -- if GetScriptTaskStatus(PlayerPedId(), 0x1DE2A7BD, 0) ~= 1 then
@@ -407,40 +390,66 @@ Citizen.CreateThread(
             end ]]
             -- drawBoundingBox()
 
-            if IsControlJustPressed(0, 0x60C81CDE) then
-                local ped = PlayerPedId()
-                if IsPedOnMount(ped) then
-                    local lassoedPlayerPed
+            -- if IsControlJustPressed(0, 0x60C81CDE) then
+            --     local ped = PlayerPedId()
+            --     if IsPedOnMount(ped) then
+            --         local lassoedPlayerPed
 
-                    local itemSet = CreateItemset(true)
-                    FindAllAttachedCarriableEntities(GetMount(ped), itemSet)
-                    local size = GetItemsetSize(itemSet)
+            --         local itemSet = CreateItemset(true)
+            --         FindAllAttachedCarriableEntities(GetMount(ped), itemSet)
+            --         local size = GetItemsetSize(itemSet)
 
-                    if size > 0 then
-                        for index = 0, size - 1 do
-                            local entity = GetIndexedItemInItemset(index, itemSet)
+            --         if size > 0 then
+            --             for index = 0, size - 1 do
+            --                 local entity = GetIndexedItemInItemset(index, itemSet)
 
-                            if IsEntityAPed(entity) and IsPedHuman(entity) and Citizen.InvokeNative(0x9682F850056C9ADE, entity) then
-                                lassoedPlayerPed = entity
-                            end
-                        end
-                    end
+            --                 if IsEntityAPed(entity) and IsPedHuman(entity) and Citizen.InvokeNative(0x9682F850056C9ADE, entity) then
+            --                     lassoedPlayerPed = entity
+            --                 end
+            --             end
+            --         end
 
-                    if IsItemsetValid(itemSet) then
-                        DestroyItemset(itemSet)
-                    end
+            --         if IsItemsetValid(itemSet) then
+            --             DestroyItemset(itemSet)
+            --         end
 
-                    if lassoedPlayerPed ~= nil then
-                        local animDict = "script_proc@bounty@riding_punch"
-                        RequestAnimDict(animDict)
+            --         if lassoedPlayerPed ~= nil then
+            --             local animDict = "script_proc@bounty@riding_punch"
+            --             RequestAnimDict(animDict)
 
-                        while not HasAnimDictLoaded(animDict) do
-                            Citizen.Wait(0)
-                        end
+            --             while not HasAnimDictLoaded(animDict) do
+            --                 Citizen.Wait(0)
+            --             end
 
-                        TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
-                        TaskPlayAnim(lassoedPlayerPed, "script_proc@bounty@riding_punch", "punch_ped", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
-                    end
+            --             TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+            --             TaskPlayAnim(lassoedPlayerPed, "script_proc@bounty@riding_punch", "punch_ped", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+            --         end
+            --     end
+            -- end
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(500)
+
+            local eatVisible = CanHorseEat()
+            local drinkVisible = CanHorseDrink()
+
+            PromptSetVisible(prompt_eat, eatVisible)
+            PromptSetVisible(prompt_drink, drinkVisible)
+
+            if cAPI.IsPlayerHorseActive() then
+                local playerHorse = cAPI.GetPlayerHorse()
+
+                local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse))
+
+                if dist > 1.5 then
+                    PromptSetEnabled(prompt_inventory, false)
+                else
+                    PromptSetEnabled(prompt_inventory, true)
                 end
             end
         end

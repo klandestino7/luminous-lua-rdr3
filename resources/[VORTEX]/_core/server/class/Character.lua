@@ -77,13 +77,10 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
             return true
         else
             local lastParent = group
-            -- print('Trying inheritance for group ' .. group)
 
-            -- local nth = 1
             while lastParent ~= nil do
                 local inheritance = config_file_INHERITANCE[lastParent]
                 lastParent = inheritance
-                -- print(nth .. '* inheritance' .. inheritance)
 
                 if lastParent ~= nil and self:hasGroup(lastParent) then
                     return true

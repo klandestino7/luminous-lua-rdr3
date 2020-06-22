@@ -459,6 +459,15 @@ RegisterNetEvent("VP:INVENTORY:SecondarySwitchSlot")
 AddEventHandler(
     "VP:INVENTORY:SecondarySwitchSlot",
     function(slotFrom, slotTo, itemAmount)
+
+        slotFrom = tonumber(slotFrom)
+        slotTo = tonumber(slotTo)
+        itemAmount = tonumber(itemAmount)
+
+        if slotTo >= 129 and slotTo <= 132 then
+            return
+        end
+
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -468,10 +477,6 @@ AddEventHandler(
             User:closeInventory()
             return
         end
-
-        slotFrom = tonumber(slotFrom)
-        slotTo = tonumber(slotTo)
-        itemAmount = tonumber(itemAmount)
 
         if secondaryInventory:getSlots()[slotFrom] == nil then
             return
