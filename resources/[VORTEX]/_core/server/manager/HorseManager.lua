@@ -15,8 +15,6 @@ AddEventHandler('VP:HORSE:OpenInventory', function()
 
     local Horse, components = Character:getHorse()
 
-    print(Horse, components)
-
     if Horse ~= nil then
         User:viewInventory()
 
