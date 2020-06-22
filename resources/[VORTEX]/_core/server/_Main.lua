@@ -197,7 +197,7 @@ function API.AddTents(charid, model, position)
 end
 
 function API.GetTents(charid)
-    local rows = API_Database.query("FCRP/GetTents", {charid = @charid})
+    local rows = API_Database.query("FCRP/GetTents", {charid = charid})
     if #rows > 0 then
         return tonumber(rows)
     else
@@ -215,7 +215,7 @@ function API.GetAllTents()
 end
 
 function API.RemoveTents(id, itemId)
-    local rows = API_Database.query("FCRP/RemoveTents", {id = @id})
+    local rows = API_Database.query("FCRP/RemoveTents", {id = id})
 
     return Inventory:addItem(itemId, 1)
 end
