@@ -194,6 +194,12 @@ API_Database.prepare('FCRP/UpdQuest', 'UPDATE quest SET questSteps = @questSteps
 API_Database.prepare('FCRP/GetQuest', 'SELECT * from quest WHERE charid = @charid')
 API_Database.prepare('FCRP/RemQuest', 'DELETE FROM quest WHERE questId = @questId')
 
+-------- TENTS DATATABLE QUERIES --------
+API_Database.prepare('FCRP/AddTents', 'INSERT INTO tents(charid, model, position) VALUES (@charid, @model, @position); SELECT LAST_INSERT_ID() AS id')
+API_Database.prepare('FCRP/GetTents', 'SELECT * from tents WHERE charid = @charid')
+API_Database.prepare('FCRP/GetAllTents', 'SELECT * from tents')
+API_Database.prepare('FCRP/RemoveTents', 'DELETE FROM tents WHERE id = @id')
+
 -------- WANTED DATATABLE QUERIES --------
 API_Database.prepare('FCRP/SetCWanted', 'INSERT INTO characters(wanted) VALUES (@wanted); SELECT LAST_INSERT_ID() AS user_id')
 API_Database.prepare('FCRP/GetCWanted', 'SELECT wanted from characters WHERE charid = @charid')

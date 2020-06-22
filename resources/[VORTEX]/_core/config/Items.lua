@@ -1096,6 +1096,27 @@ ItemList = {
         description = "Dormir é sempre bom para recuperar energia.",
         stackSize = 1
     },
+    ["tentssmall"] = {
+        type = "kit",
+        name = "Tenda Pequena",
+        weight = 0.8,
+        description = "Arme sua tenda e descance.",
+        stackSize = 1
+    },
+    ["tentsmed"] = {
+        type = "kit",
+        name = "Tenda Media",
+        weight = 1.5,
+        description = "Arme sua tenda e descance.",
+        stackSize = 1
+    },
+    ["tentsbig"] = {
+        type = "kit",
+        name = "Tenda Grande",
+        weight = 2.5,
+        description = "Arme sua tenda e descance.",
+        stackSize = 1
+    },
     ["money"] = {
         type = "valuable",
         name = "Dólar",

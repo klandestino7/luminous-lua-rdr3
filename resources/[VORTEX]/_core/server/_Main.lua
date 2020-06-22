@@ -191,3 +191,31 @@ RegisterCommand(
     end,
     false
 )
+
+function API.AddTents(charid, model, position)
+    API_Database.query("FCRP/AddTents", {charid = charid, model = model, position = json.encode(position)}) 
+end
+
+function API.GetTents(charid)
+    local rows = API_Database.query("FCRP/GetTents", {charid = @charid})
+    if #rows > 0 then
+        return tonumber(rows)
+    else
+        return false
+    end
+end
+
+function API.GetAllTents()
+    local rows = API_Database.query("FCRP/GetAllTents")
+    if #rows > 0 then
+        return tonumber(rows)
+    else
+        return false
+    end
+end
+
+function API.RemoveTents(id, itemId)
+    local rows = API_Database.query("FCRP/RemoveTents", {id = @id})
+
+    return Inventory:addItem(itemId, 1)
+end
