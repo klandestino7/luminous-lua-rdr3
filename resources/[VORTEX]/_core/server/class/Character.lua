@@ -298,15 +298,10 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         if self.Horse == nil then
             local charHorsesRows = self:getHorses()
             if #charHorsesRows > 0 then
-                -- local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. horses[1].id, charid = 0, itemName = 0, itemCount = 0, typeInv = "select"})
-                local Inventory = nil
-                -- if #invRows > 0 then
-                --     -- Por algum motivo o decode tá retornando 2 valores?
-                --     local items, _ = json.decode(invRows[1].items)
-                --     Inventory = API.Inventory("horse:" .. charHorsesRows[1].id, tonumber(invRows[1].capacity), items)
-                -- end
 
-                self.Horse = API.Horse(tonumber(charHorsesRows[1]["id"]), charHorsesRows[1]["model"], charHorsesRows[1]["name"], Inventory)
+                self:setHorse(tonumber(charHorsesRows[1]["id"]))
+
+                -- self.Horse = API.Horse(tonumber(charHorsesRows[1]["id"]), charHorsesRows[1]["model"], charHorsesRows[1]["name"], Inventory)
 
                 return self.Horse, json.decode(charHorsesRows[1]["components"]) or {}
             else
