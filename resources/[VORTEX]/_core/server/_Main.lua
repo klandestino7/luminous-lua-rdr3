@@ -181,19 +181,23 @@ end
 RegisterCommand(
     "debuginv",
     function(source, args, raw)
-        local User = API.getUserFromSource(source)
-        local Character = User:getCharacter()
+        print(source)
+        if source ~= 0 then
+            local User = API.getUserFromSource(source)
+            local Character = User:getCharacter()
 
-        if Character:hasGroupOrInheritance("admin")  then
-            debugginginventory = not debugginginventory
-            User:notify('debuginv ' .. tonumber(debugginginventory))
+            if not Character:hasGroupOrInheritance("admin") then
+                return
+            end
         end
+
+        debugginginventory = not debugginginventory
     end,
     false
 )
 
 function API.AddTents(charid, model, position)
-    API_Database.query("FCRP/AddTents", {charid = charid, model = model, position = json.encode(position)}) 
+    API_Database.query("FCRP/AddTents", {charid = charid, model = model, position = json.encode(position)})
 end
 
 function API.GetTents(charid)
