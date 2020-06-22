@@ -98,9 +98,9 @@ AddEventHandler(
 -- )
 
 local r = {
-	["trooper"] = 1500,
-	["sheriff"] = 2500,
-	["medic"] = 1000
+	["trooper"] = 3000,
+	["sheriff"] = 4500,
+	["medic"] = 2500
 }
 
 local withHoldingPaymentToUsers = {}
