@@ -71,8 +71,8 @@ AddEventHandler(
   "TREASURE:timeCall",
   function()
     local hora = 60000 * 60
-    local TimeSpawnMax = hora * 8
-    local TimeSpawnMin = hora * 4
+    local TimeSpawnMax = hora * 10
+    local TimeSpawnMin = hora * 6
 
     local timeram = math.random(TimeSpawnMin, TimeSpawnMax)
 
