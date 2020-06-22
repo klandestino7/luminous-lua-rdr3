@@ -76,6 +76,8 @@ AddEventHandler(
 
     local timeram = math.random(TimeSpawnMin, TimeSpawnMax)
 
+    print(timeram)
+    
     Wait(timeram)
 
     local random = math.random(1, 6)
@@ -131,6 +133,7 @@ AddEventHandler(
 
     bauId[chest_id] = true
 
+    print('Tesouro Perdido Spawn ID'..chest_id)
     TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x + xram, y + yram, z)
     TriggerClientEvent("TREASURE:create", -1, x, y, z)
     TriggerEvent("TREASURE:timeCall")

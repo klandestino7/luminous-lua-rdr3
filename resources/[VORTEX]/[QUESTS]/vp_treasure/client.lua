@@ -5,10 +5,12 @@ local Proxy = module('_core', 'lib/Proxy')
 API = Proxy.getInterface('API')
 cAPI = Tunnel.getInterface('API')
 
+local blip 
+
 RegisterNetEvent('TREASURE:create')
 AddEventHandler('TREASURE:create', function(x,y,z)
 	TriggerEvent('VP:NOTIFY:Simple', 'Há um tesouro perdido no mapa, procure pela mancha vermelha.', 10000)
-	local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 693035517, x, y, z, 150.0)	
+	blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 693035517, x, y, z, 150.0)	
 	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Tesouro Perdido')		
 end)
 
