@@ -7,7 +7,7 @@ Config.Tents = {
         tentText = "Tenda",
         tentLabel = "Armando Tenda...",
         tentSpawnTime = 15000,
-        itemId = "tentssmall"
+        itemId = "tents_small"
     },
     {
         id = 2,
@@ -15,7 +15,7 @@ Config.Tents = {
         tentText = "Tenda",
         tentLabel = "Armando Tenda...",
         tentSpawnTime = 25000,
-        itemId = "tentsmed"
+        itemId = "tents_med"
     },
     {
         id = 3,
@@ -23,7 +23,7 @@ Config.Tents = {
         tentText = "Tenda",
         tentLabel = "Armando Tenda...",
         tentSpawnTime = 30000,
-        itemId = "tentsbig"
+        itemId = "tents_big"
     },
     {
         id = 4,

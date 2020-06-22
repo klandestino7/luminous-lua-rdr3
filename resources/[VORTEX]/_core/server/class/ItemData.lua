@@ -198,6 +198,10 @@ function triggerUse(User, itemData)
         return true
     end
 
+    if itemId:find("tents") then
+        TriggerClientEvent('VP:TENTS:usedItem', source, itemId)
+    end
+
     if itemId:find("_seed") then
         TriggerClientEvent("VP:FARM:StartPlacingSeed", source, itemId:sub(0, itemId:find("_") - 1))
         User:closeInventory()
