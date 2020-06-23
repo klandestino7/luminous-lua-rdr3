@@ -385,7 +385,7 @@ function quickHoldModeToggle(prompt)
     Citizen.CreateThread(
         function()
             Citizen.Wait(500)
-            romptSetHoldMode(prompt, true)
+            PromptSetHoldMode(prompt, true)
         end
     )
 end
