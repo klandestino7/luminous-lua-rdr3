@@ -16,18 +16,7 @@ local keys = {
 
 local prompts = {}
 
-RegisterCommand('dv', function()
-    local playerPed = PlayerPedId()
-    local vehicle   = GetVehiclePedIsIn(playerPed, false)
 
-    if IsPedInAnyVehicle(playerPed, true) then
-        vehicle = GetVehiclePedIsIn(playerPed, false)
-    end
-
-    if DoesEntityExist(vehicle) then
-        DeleteVehicle(vehicle)
-    end
-end)
 
 RegisterNetEvent('VP:FAROESTE:loadtenue')
 AddEventHandler('VP:FAROESTE:loadtenue', function(kek) 
