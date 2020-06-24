@@ -61,7 +61,7 @@ AddEventHandler(
             cooldownEndsAtTimeStamp = 0
         end
 
-        local numTroopers = #API.getUsersByGroup("trooper") + #API.getUsersByGroup("sheriff")
+        local numTroopers = #API.getUsersByGroup("trooper")
 
         if numTroopers < 5 then
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Este banco não pode ser roubado, polícia insuficiente.")

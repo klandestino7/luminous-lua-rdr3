@@ -19,7 +19,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
     local Inventory = Character:getInventory()    
 
 	local PoliceON = #API.getUsersByGroup("trooper")
-		
+		print(PoliceON)
 	-- local xPlayers = GetPlayers()
 
 	-- for i=1, #xPlayers, 1 do
