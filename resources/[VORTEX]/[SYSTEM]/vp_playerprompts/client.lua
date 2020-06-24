@@ -40,7 +40,7 @@ Citizen.CreateThread(
                     if IsPedAPlayer(entity) then
                         local playerId = GetPlayerIdFromPed(entity)
 
-                        _targetedPlayerEntity = entityHit
+                        _targetedPlayerEntity = entity
                         _targetedPlayerServerId = GetPlayerServerId(playerId)
                         _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
                     else
@@ -58,8 +58,8 @@ Citizen.CreateThread(
                 local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
                 if hit ~= 0 then
                     if IsEntityAPed(entityHit) and IsPedHuman(entityHit) then
-                        if IsPedAPlayer(ped) then
-                            if NativeIsPedLassod(entityHit) then
+                        if IsPedAPlayer(entityHit) then
+                            if NativeIsPedLassoed(entityHit) then
                                 local playerId = GetPlayerIdFromPed(entityHit)
 
                                 _targetedPlayerEntity = entityHit
@@ -421,7 +421,7 @@ AddEventHandler(
     end
 )
 
-function NativeIsPedLassod(ped)
+function NativeIsPedLassoed(ped)
     return Citizen.InvokeNative(0x9682F850056C9ADE, ped)
 end
 
