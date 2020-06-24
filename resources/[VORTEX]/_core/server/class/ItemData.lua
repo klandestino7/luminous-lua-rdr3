@@ -190,6 +190,10 @@ function triggerUse(User, itemData)
         return true
     end
 
+    if itemId == "pigeonpost" then
+        TriggerEvent("VP:PEAGLE:SendMessage")
+    end    
+
     if itemId == "chest_small" then
         local var = itemData.varOnUse
 

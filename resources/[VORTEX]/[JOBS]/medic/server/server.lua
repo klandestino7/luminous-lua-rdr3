@@ -119,7 +119,7 @@ AddEventHandler('VP:MEDIC:revive', function(source, target)
 		Wait(10000)
 		TriggerClientEvent('VP:RESPAWN:PlayerUp', target)
 		Character:varyExp(10)
-		Inventory:addItem('money', 5)	
+		Inventory:addItem('money', 500)	
 		TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Reanimado com sucesso.', 5000)
 		print('Reanimado com sucesso.')
 	else

@@ -47,9 +47,9 @@ AddEventHandler(
 Citizen.CreateThread(
 	function()
 
-		N_0xa657ec9dbc6cc900(1)
-		Citizen.InvokeNative(0x74E2261D2A66849A, 1)
-		Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
+		-- N_0xa657ec9dbc6cc900(1)
+		-- Citizen.InvokeNative(0x74E2261D2A66849A, 1)
+		-- Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
 
 		while true do
 			Citizen.Wait(0)
