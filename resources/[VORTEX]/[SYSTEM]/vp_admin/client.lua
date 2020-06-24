@@ -38,13 +38,6 @@ AddEventHandler(
 	end
 )
 
-RegisterCommand('setprocurado', function()
-	cAPI.SetWanted(true)
-
-	print(cAPI.GetWanted())
-
-end)
-
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
 	"VP:ADMIN:SpawnPed",

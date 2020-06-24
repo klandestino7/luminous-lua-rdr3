@@ -134,7 +134,7 @@ function cAPI.SetWanted(bool, time)
 		IsWanted = false
 		return
 	end
-	WantedTime = GetGameTimer() + 1000 * 60 * 1
+	WantedTime = GetGameTimer() + 1000 * 60 * time
 	--WantedTime = fastTimer + 60
 	fastTimer = WantedTime
 	IsWanted = bool

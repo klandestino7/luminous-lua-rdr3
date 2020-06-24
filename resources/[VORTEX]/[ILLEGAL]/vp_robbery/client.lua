@@ -250,8 +250,15 @@ AddEventHandler(
         end
 
         TriggerEvent("VP:TOAST:New", "alert", "O assalto acabará em " .. seconds .. " segundos")
+
+        cAPI.SetWanted(true, 30)
+
     end
 )
+
+
+
+
 
 RegisterNetEvent("VP:ROBBERY:StartRobberyAsBlocked")
 AddEventHandler(
@@ -290,8 +297,22 @@ AddEventHandler(
         secondsUntilRobberyEnds = nil
         secondsUntilAbandonRobbery = nil
         shootingToStartCooldown = false
+        if IsPedMale(PlayerPedId()) then		
+            setSatchel(0x47D2DD9D)
+        else
+            setSatchel(0x383DDE91)
+        end
     end
 )
+
+function setSatchel(model)
+    if HasModelLoaded(model) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC3, parseInt(model))
+    end
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), parseInt(model), true, true, true)
+end
+
+
 
 local lastDisplayedText
 local lastVarString
