@@ -27,21 +27,35 @@ exports('DataViewNativeGetScenarioPointsCloseToCoords', (x, y, z, radius, size) 
     return out;
 });
 
-exports('DataViewNetowrk', (comp) => {
-
-
+exports('DataViewNetowrk', () => {
     let buffer = new ArrayBuffer(256);
     let view = new DataView(buffer);
 
-    let w = Citizen.invokeNative("0x5B4BBE80AD5972DC", comp, GetEntityCoords(PlayerPedId()), 0.0, 0, view, -1);
+    // GET_TASK_FISHING_STATE
+    // GET_STATE_OF_FISHING
+    let w = Citizen.invokeNative("0xF3735ACD11ACD500", PlayerPedId(), view);
+    let outAsInt = new Int32Array(buffer);
+    let outAsFloat = new Float32Array(buffer);
 
-    // Citizen.invokeNative("0x5758B1EE0C3FD4AC", w, 0); // DELETE_PLANT
-    let z = Citizen.invokeNative("0x96C6ED22FB742C3E", w, GetEntityCoords(PlayerPedId()));
+    // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 36 34 35
+    // 1 - 2 - 3 - 4 - 5 -  6  -  7  -  8  -  9  - 10  - 11  - 12  - 13  - 14  - 15  - 16  -  17
 
-    let out = new Int32Array(buffer);
-    console.log(z);
-    console.log(w);
-    console.log(out);
+    // f_1   0      float
+    // f_2   2      float
+    // f_3   4      float
+    // f_5   8      flag?
+    // f_6   10     flag?
+    // f_7   12     entity
+    // f_11  20     entity
+    // f_12  22     entity
+    // f_13  24     entity
+    // f_14  26     float
+    // f_15  28     float
+
+    // console.log(outAsInt);
+    // console.log(outAsFloat);
+
+    return [w, outAsInt, outAsFloat];
 });
 
 exports('NativeCreateComposite', (compositeHash, x, y, z, onGround) => {

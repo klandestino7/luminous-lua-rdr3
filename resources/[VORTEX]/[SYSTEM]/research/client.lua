@@ -292,8 +292,8 @@ Citizen.CreateThread(
 -- 	false
 -- )
 
-local myFish
-local lastFishCoords
+-- local myFish
+-- local lastFishCoords
 
 -- RegisterCommand(
 -- 	"hook",
@@ -359,17 +359,17 @@ local lastFishCoords
 -- 	end
 -- )
 
-local prompt_grip
-local prompt_hook
-local prompt_reel_in
-local prompt_reset
+-- local prompt_grip
+-- local prompt_hook
+-- local prompt_reel_in
+-- local prompt_reset
 
-local promptGroup = GetRandomIntInRange(0, 0xffffff)
-local prompt_group_name = CreateVarString(10, "LITERAL_STRING", "Pesca")
+-- local promptGroup = GetRandomIntInRange(0, 0xffffff)
+-- local prompt_group_name = CreateVarString(10, "LITERAL_STRING", "Pesca")
 
-local carriedOnce = false
+-- local carriedOnce = false
 
-print(1.0 / (1.0 + 0.0))
+-- print(1.0 / (1.0 + 0.0))
 
 -- Citizen.CreateThread(
 -- 	function()
@@ -537,77 +537,77 @@ print(1.0 / (1.0 + 0.0))
 
 -- WATER::_0xF0FBF193F1F5C0EA(Ped fish)
 
-function prompts()
-	-- 0x05CA7C52
-	-- 0x6319DB71
-	-- 0xA65EBAB4
-	-- 0xDEB34313
+-- function prompts()
+-- 	-- 0x05CA7C52
+-- 	-- 0x6319DB71
+-- 	-- 0xA65EBAB4
+-- 	-- 0xDEB34313
 
-	prompt_grip = PromptRegisterBegin()
-	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_grip, 0)
-	PromptSetControlAction(prompt_grip, 0xCEFD9220)
-	PromptSetText(prompt_grip, "MGFSH_CTX_GRIP")
-	PromptSetEnabled(prompt_grip, 1)
-	PromptSetVisible(prompt_grip, 1)
-	-- PromptSetStandardMode(prompt_grip, 1)
-	PromptSetHoldIndefinitelyMode(prompt_grip, true)
-	-- PromptSetGroup(prompt_grip, promptGroup)
-	PromptRegisterEnd(prompt_grip)
-	PromptSetTag(prompt_grip, "CTX_GRIP")
+-- 	prompt_grip = PromptRegisterBegin()
+-- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_grip, 0)
+-- 	PromptSetControlAction(prompt_grip, 0xCEFD9220)
+-- 	PromptSetText(prompt_grip, "MGFSH_CTX_GRIP")
+-- 	PromptSetEnabled(prompt_grip, 1)
+-- 	PromptSetVisible(prompt_grip, 1)
+-- 	-- PromptSetStandardMode(prompt_grip, 1)
+-- 	PromptSetHoldIndefinitelyMode(prompt_grip, true)
+-- 	-- PromptSetGroup(prompt_grip, promptGroup)
+-- 	PromptRegisterEnd(prompt_grip)
+-- 	PromptSetTag(prompt_grip, "CTX_GRIP")
 
-	prompt_hook = PromptRegisterBegin()
-	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_hook, 0)
-	PromptSetControlAction(prompt_hook, 0x05CA7C52)
-	PromptSetText(prompt_hook, "MGFSH_CTX_HOOK")
-	PromptSetEnabled(prompt_hook, 1)
-	PromptSetVisible(prompt_hook, 1)
-	PromptSetStandardMode(prompt_hook, 0)
-	-- PromptSetGroup(prompt_hook, promptGroup)
-	PromptRegisterEnd(prompt_hook)
+-- 	prompt_hook = PromptRegisterBegin()
+-- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_hook, 0)
+-- 	PromptSetControlAction(prompt_hook, 0x05CA7C52)
+-- 	PromptSetText(prompt_hook, "MGFSH_CTX_HOOK")
+-- 	PromptSetEnabled(prompt_hook, 1)
+-- 	PromptSetVisible(prompt_hook, 1)
+-- 	PromptSetStandardMode(prompt_hook, 0)
+-- 	-- PromptSetGroup(prompt_hook, promptGroup)
+-- 	PromptRegisterEnd(prompt_hook)
 
-	prompt_reel_in = PromptRegisterBegin()
-	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_reel_in, 0)
-	PromptSetControlAction(prompt_reel_in, 0x6319DB71)
-	PromptSetText(prompt_reel_in, "MGFSH_CTX_REEL_IN")
-	PromptSetEnabled(prompt_reel_in, 1)
-	PromptSetVisible(prompt_reel_in, 1)
-	-- PromptSetRotateMode(prompt_reel_in, 0.0, 0)
-	PromptSetAttribute(prompt_reel_in, 10, 1)
-	PromptSetAttribute(prompt_reel_in, 11, 1)
-	PromptSetAttribute(prompt_reel_in, 18, 1)
-	PromptSetStandardMode(prompt_reel_in, 0)
-	-- PromptSetGroup(prompt_reel_in, promptGroup)
-	PromptRegisterEnd(prompt_reel_in)
-	PromptSetTag(prompt_reel_in, "CTX_REEL")
+-- 	prompt_reel_in = PromptRegisterBegin()
+-- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_reel_in, 0)
+-- 	PromptSetControlAction(prompt_reel_in, 0x6319DB71)
+-- 	PromptSetText(prompt_reel_in, "MGFSH_CTX_REEL_IN")
+-- 	PromptSetEnabled(prompt_reel_in, 1)
+-- 	PromptSetVisible(prompt_reel_in, 1)
+-- 	-- PromptSetRotateMode(prompt_reel_in, 0.0, 0)
+-- 	PromptSetAttribute(prompt_reel_in, 10, 1)
+-- 	PromptSetAttribute(prompt_reel_in, 11, 1)
+-- 	PromptSetAttribute(prompt_reel_in, 18, 1)
+-- 	PromptSetStandardMode(prompt_reel_in, 0)
+-- 	-- PromptSetGroup(prompt_reel_in, promptGroup)
+-- 	PromptRegisterEnd(prompt_reel_in)
+-- 	PromptSetTag(prompt_reel_in, "CTX_REEL")
 
-	prompt_reset = PromptRegisterBegin()
-	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_reset, 0)
-	PromptSetControlAction(prompt_reset, 0xE3BF959B)
-	PromptSetText(prompt_reset, "MGFSH_CTX_RESET")
-	PromptSetEnabled(prompt_reset, 1)
-	PromptSetVisible(prompt_reset, 1)
-	PromptSetStandardMode(prompt_reset, 0)
-	PromptRegisterEnd(prompt_reset)
+-- 	prompt_reset = PromptRegisterBegin()
+-- 	Citizen.InvokeNative(0xF4A5C4509BF923B1, prompt_reset, 0)
+-- 	PromptSetControlAction(prompt_reset, 0xE3BF959B)
+-- 	PromptSetText(prompt_reset, "MGFSH_CTX_RESET")
+-- 	PromptSetEnabled(prompt_reset, 1)
+-- 	PromptSetVisible(prompt_reset, 1)
+-- 	PromptSetStandardMode(prompt_reset, 0)
+-- 	PromptRegisterEnd(prompt_reset)
 
-	-- func_326
-end
+-- 	-- func_326
+-- end
 
-function delprompts()
-	PromptDelete(prompt_grip)
-	PromptDelete(prompt_hook)
-	PromptDelete(prompt_reel_in)
-	PromptDelete(prompt_reset)
-	DeletePed(myFish)
-end
+-- function delprompts()
+-- 	PromptDelete(prompt_grip)
+-- 	PromptDelete(prompt_hook)
+-- 	PromptDelete(prompt_reel_in)
+-- 	PromptDelete(prompt_reset)
+-- 	DeletePed(myFish)
+-- end
 
-AddEventHandler(
-	"onResourceStop",
-	function(resourceName)
-		if GetCurrentResourceName() == resourceName then
-			delprompts()
-		end
-	end
-)
+-- AddEventHandler(
+-- 	"onResourceStop",
+-- 	function(resourceName)
+-- 		if GetCurrentResourceName() == resourceName then
+-- 			delprompts()
+-- 		end
+-- 	end
+-- )
 
 function drawcircle()
 	local center = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 15.0, 0.0)

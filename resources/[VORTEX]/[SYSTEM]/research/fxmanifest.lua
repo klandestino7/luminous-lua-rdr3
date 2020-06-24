@@ -18,4 +18,5 @@ exports {
 	'DataViewNativeGetScenarioPointsCloseToCoords',
 	'NativeCreateComposite',
 	'NativeGetCompositeEntities',
+	'DataViewNetowrk',
 }
