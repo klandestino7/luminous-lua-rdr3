@@ -38,7 +38,7 @@ Citizen.CreateThread(
             if isTargetting then
                 if IsEntityAPed(entity) and IsPedHuman(entity) then
                     if IsPedAPlayer(entity) then
-                        local playerId = GetPlayerIdFromPed(entityHit)
+                        local playerId = GetPlayerIdFromPed(entity)
 
                         _targetedPlayerEntity = entityHit
                         _targetedPlayerServerId = GetPlayerServerId(playerId)
