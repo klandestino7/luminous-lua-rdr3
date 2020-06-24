@@ -60,7 +60,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
 
 		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
-		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4])
+		TriggerClientEvent('VP:ROBREG:PlayAlarm', source, atmInfo[2], atmInfo[3], atmInfo[4])
 		
 	end	
 end)
