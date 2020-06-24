@@ -298,6 +298,20 @@ AddEventHandler(
     end
 )
 
+
+
+Citizen.CreateThread(function()
+    getValJail()
+    getValSaloon()
+    getValBank()
+
+    for _,v in pairs(Imaps) do
+        RequestImap(v)        
+    end
+    
+end)
+
+
 function getValBank()
     local interior = GetInteriorAtCoords(-308.2578, 777.48, 117.7031)
     local isValid = IsValidInterior(interior)
@@ -346,16 +360,3 @@ function getValJail()
         end
     end
 end
-
-
-Citizen.CreateThread(function()
-    getValJail()
-    getValSaloon()
-    getValBank()
-
-    for _,v in pairs(Imaps) do
-        RequestImap(v)        
-    end
-    
-end)
-
