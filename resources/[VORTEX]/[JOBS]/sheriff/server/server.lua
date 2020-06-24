@@ -185,7 +185,7 @@ AddEventHandler(
 RegisterNetEvent("VP:SHERIFF:TryToPatDown")
 AddEventHandler(
 	"VP:SHERIFF:TryToPatDown",
-	function(playerToPatdows)
+	function(playerToPatdown)
 
 		if playerToPatdown == nil then
 			return

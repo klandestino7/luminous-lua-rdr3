@@ -16,7 +16,7 @@ AddEventHandler(
                 infos = data
             }
         )
-        Wait(30000)
+        Wait(15000)
         Showing = false
 end)
 
