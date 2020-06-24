@@ -12,6 +12,6 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Inventory = User:getCharacter():getInventory()
 
-        Inventory:addItem('money', 10*100)
+        Inventory:addItem('money', 20*100)
     end
 )

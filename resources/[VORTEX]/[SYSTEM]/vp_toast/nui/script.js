@@ -2,13 +2,13 @@ window.addEventListener("message", function(event) {
 
     var text, type, quantity, type_icon;
 
-    var duration = 5000;
+    var duration = 2500;
     var containerId = "with-icon";
 
     var red = false;
 
     if (event.data.type.includes('longer_')) {
-        duration = 12000;
+        duration = 5000;
         event.data.type = event.data.type.replace('longer_', '');
         containerId = 'no-icon';
     }

@@ -31,7 +31,7 @@ local prompts = {}
 
 local shops = {
     {-285.87, 805.07, 119.39}, --VALENTINE
-  -- {0.0,0.0,0.0}, --RHODES
+    {2730.295,-1231.783,50.376}, -- SAINT DENIS
 }
 
 Citizen.CreateThread(

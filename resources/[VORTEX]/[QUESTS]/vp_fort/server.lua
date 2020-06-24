@@ -38,14 +38,16 @@ AddEventHandler(
         indexBeingRobbed = index
         local Posse = API.getPosse(User:getPosseId())
         local Character = User:getCharacter()
-        local userRank = Posse:getMemberRank(Character:getId())
-        local fortbando = Posse:getData(indexBeingRobbed, "bando")
+
 
         if not User:isInAPosse() then
             User:notify("Você não está em um bando.")
             return
         end
 
+        local userRank = Posse:getMemberRank(Character:getId())
+        local fortbando = Posse:getData(indexBeingRobbed, "bando")
+        
         if userRank >= 2 then
             User:notify("error", "Somente um membro de cargo superior pode iniciar dominação.")
             return
