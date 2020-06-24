@@ -9,32 +9,30 @@ local data = {
         staticName = "Banco de BlackWater",
         staticReward = 35000,
         staticSecondsToReward = 10 * 60,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
-        -- cooldown
+        staticMaxParticipants = 3
     },
     [2] = {
         staticName = "Banco de Saint Dennis",
         staticReward = 50000,
         staticSecondsToReward = 15 * 60,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
+        staticMaxParticipants = 3
     },
     [3] = {
         staticName = "Banco Rhodes",
         staticReward = 35000,
         staticSecondsToReward = 10 * 60,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
+        staticMaxParticipants = 3
     },
     [4] = {
-         staticName = "Banco Valentine",
-         staticReward = 50000,
-         staticSecondsToReward = 10 * 60,
-        staticMaxParticipants = 3,
-        staticCooldown = 30 * 60
+        staticName = "Banco Valentine",
+        staticReward = 50000,
+        staticSecondsToReward = 10 * 60,
+        staticMaxParticipants = 3
     }
 }
+
+local cCooldown = 30
+local cooldownEndsAtTimeStamp = 0
 
 local indexBeingRobbed = nil
 local indexBeingRobbed_seconds = nil
@@ -49,25 +47,21 @@ AddEventHandler(
     function(index, participants)
         local _source = source
 
-
-
         if interiorIndexBeingRobbed ~= nil then
             -- print("Interior já está sendo roubado")
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Esse local já está sendo roubado")
             return
         end
 
-        if data[index] ~= nil and data[index].cooldown ~= nil then
-            if data[index].cooldown > os.time() then
-                -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
-                TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
-                return
-            else
-                data[index].cooldown = nil
-            end
+        if cooldownEndsAtTimeStamp > os.time() then
+            -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
+            TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
+            return
+        else
+            cooldownEndsAtTimeStamp = 0
         end
 
-        local numTroopers = #API.getUsersByGroup('trooper') + #API.getUsersByGroup("sheriff")
+        local numTroopers = #API.getUsersByGroup("trooper") + #API.getUsersByGroup("sheriff")
 
         if numTroopers < 5 then
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Este banco não pode ser roubado, polícia insuficiente.")
@@ -92,12 +86,12 @@ AddEventHandler(
                         numParticipantsToCheck = numParticipantsToCheck - 1
                         isParticipant = true
                         -- if numParticipants < maxParticipants then
-                            numParticipants = numParticipants + 1
-                            TriggerClientEvent("VP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
-                            participants[participantSource] = true
-                        -- else
-                        --     TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
-                        -- end
+                        numParticipants = numParticipants + 1
+                        TriggerClientEvent("VP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
+                        participants[participantSource] = true
+                    -- else
+                    --     TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
+                    -- end
                     end
                 end
             end
@@ -166,7 +160,7 @@ function endRobberyGiveReward()
         end
     end
 
-    data[indexBeingRobbed].cooldown = os.time() + (1000 * data[indexBeingRobbed].staticCooldown)
+    cooldownEndsAtTimeStamp = os.time() + (cCooldown * 60 * 1000)
 
     indexBeingRobbed = nil
     indexBeingRobbed_seconds = 0
@@ -194,7 +188,8 @@ AddEventHandler(
         indexBeingRobbed_participants[_source] = nil
 
         if #indexBeingRobbed_participants <= 0 and not robberyBeingEnded then
-            data[indexBeingRobbed].cooldown = os.time() + (1000 * data[indexBeingRobbed].staticCooldown)
+
+            cooldownEndsAtTimeStamp = os.time() + (cCooldown * 60 * 1000)
 
             indexBeingRobbed = nil
             indexBeingRobbed_seconds = 0
