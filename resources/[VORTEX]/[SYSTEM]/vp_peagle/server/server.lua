@@ -15,18 +15,50 @@ end)
 RegisterCommand(
     "peagle",
     function(source,args)
-    local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+ 
+    local IdTarget = cAPI.prompt(source, "ID do Destinatário:", "")
 
-    local idcart = math.random(111,999)
+      if IdTarget == "" then
+          return
+      end
     
-    local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
-
-    if Mensagem == "" then
-        return
-    end
+      local idcart = math.random(111,999)
+      
+      local tplayer = API.getUserFromUserId(parseInt(tonumber(IdTarget))):getSource()
+    
+      local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+    
+      if Mensagem == "" then
+          return
+      end
+      
 
     TriggerClientEvent("VP:PEAGLE:GetCoords", source, tplayer, Mensagem)
     --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
+end)
+
+
+RegisterNetEvent("VP:PEAGLE:SendMessage")
+AddEventHandler("VP:PEAGLE:SendMessage", function()
+ 
+  local IdTarget = cAPI.prompt(source, "ID do Destinatário:", "")
+
+  if IdTarget == "" then
+      return
+  end
+
+  local idcart = math.random(111,999)
+  
+  local tplayer = API.getUserFromUserId(parseInt(tonumber(IdTarget))):getSource()
+
+  local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+
+  if Mensagem == "" then
+      return
+  end
+
+  TriggerClientEvent("VP:PEAGLE:GetCoords", source, tplayer, Mensagem)
+  --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
 end)
 
 RegisterNetEvent("VP:PEAGLE:ReceiveCoords")
@@ -55,6 +87,19 @@ AddEventHandler("VP:PEAGLE:updateNote", function(noteID, text)
   savedMensage[noteID]["text"]=text
   TriggerEvent("VP:PEAGLE:LoadsNote")
 end)
+
+
+RegisterNetEvent("VP:PEAGLE:AddPombo")
+AddEventHandler("VP:PEAGLE:AddPombo", function()
+  local _source = source
+  local User = API.getUserFromSource(_source)
+  local Character = User:getCharacter()
+
+  local Inventory = Character:getInventory()
+
+  Inventory:addItem("pigeonpost", 1)
+end)
+
 
 RegisterNetEvent("VP:PEAGLE:destroyNote")
 AddEventHandler("VP:PEAGLE:destroyNote", function(noteID)
