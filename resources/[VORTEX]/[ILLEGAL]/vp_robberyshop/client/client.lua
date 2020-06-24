@@ -57,7 +57,8 @@ end)
 RegisterNetEvent('VP:ROBREG:cancelfreeze')
 AddEventHandler('VP:ROBREG:cancelfreeze',function()	
 	FreezeEntityPosition(PlayerPedId() , false)			
-	
+
+	cAPI.SetWanted(true, 30)
 	
 
 	-- local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
@@ -123,7 +124,20 @@ AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
 	SetCurrentPedWeapon(PlayerPedId(),GetHashKey('WEAPON_UNARMED'),true)
 
 	StartAnim1()
+
+	if IsPedMale(PlayerPedId()) then		
+		setSatchel(0x47D2DD9D)
+	else
+		setSatchel(0x383DDE91)
+	end
 end)
+
+function setSatchel(model)
+    if HasModelLoaded(model) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC3, parseInt(model))
+    end
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), parseInt(model), true, true, true)
+end
 
 RegisterNetEvent('VP:ROBREG:warnThePolice')
 AddEventHandler('VP:ROBREG:warnThePolice', function(AtmX,AtmY,AtmZ)
