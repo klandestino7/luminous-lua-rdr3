@@ -58,8 +58,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
 		
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
-
-		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
+		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo[2], atmInfo[3], atmInfo[4])
 		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4])
 		
 	end	
@@ -116,6 +115,7 @@ RegisterServerEvent('VP:ROBREG:giveRobbedMoney')
 AddEventHandler('VP:ROBREG:giveRobbedMoney', function(money)
 	local User = API.getUserFromSource(source)
     local Character = User:getCharacter()
-    local Inventory = Character:getInventory()
+	local Inventory = Character:getInventory()
+	print(money)
 	Inventory:addItem('money', money*100)	
 end)
