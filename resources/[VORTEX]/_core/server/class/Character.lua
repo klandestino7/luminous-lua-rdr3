@@ -99,6 +99,10 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         return self.charName
     end
 
+    self.getAge = function()
+        return self.charAge
+    end
+
     self.getLevel = function()
         return self.level
     end
