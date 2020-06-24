@@ -157,32 +157,72 @@ function cAPI.Target(Distance, Ped)
 	return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
 
+-- function cAPI.getNearestPlayers(radius)
+-- 	local r = {}
+-- 	local ped = PlayerPedId()
+-- 	local pid = PlayerId()
+-- 	local pCoords = GetEntityCoords(ped)
+
+-- 	for _, v in pairs(GetActivePlayers()) do
+-- 		local player = GetPlayerFromServerId(v)
+-- 		local pPed = GetPlayerPed(player)
+-- 		local pPCoords = GetEntityCoords(pPed)
+-- 		local distance = #(pCoords - pPCoords)
+-- 		if distance <= radius then
+-- 			r[GetPlayerServerId(player)] = distance
+-- 		end
+-- 	end
+-- 	return r
+-- end
+
+-- function cAPI.getNearestPlayer(radius)
+-- 	local p = nil
+-- 	local players = cAPI.getNearestPlayers(radius)
+-- 	local min = radius + 10.0
+-- 	for k, v in pairs(players) do
+-- 		if v < min then
+-- 			min = v
+-- 			p = k
+-- 		end
+-- 	end
+-- 	return p
+-- end
+
+
+-- return map of player id => distance
 function cAPI.getNearestPlayers(radius)
 	local r = {}
+  
 	local ped = PlayerPedId()
 	local pid = PlayerId()
-	local pCoords = GetEntityCoords(ped)
-
-	for _, v in pairs(GetActivePlayers()) do
-		local player = GetPlayerFromServerId(v)
-		local pPed = GetPlayerPed(player)
-		local pPCoords = GetEntityCoords(pPed)
-		local distance = #(pCoords - pPCoords)
+	local px,py,pz = GetEntityCoords(ped) 
+  
+	for k in pairs(GetActivePlayers()) do
+	  local player = GetPlayerFromServerId(k)
+  
+	  if player ~= pid and NetworkIsPlayerConnected(player) then
+		local oped = GetPlayerPed(player)
+		local x,y,z = table.unpack(GetEntityCoords(oped,true))
+		local distance = GetDistanceBetweenCoords(x,y,z,px,py,pz,true)
 		if distance <= radius then
-			r[GetPlayerServerId(player)] = distance
+		  r[GetPlayerServerId(player)] = distance
 		end
+	  end
 	end
+  
 	return r
-end
-
+  end
+  
+-- return player id or nil
 function cAPI.getNearestPlayer(radius)
 	local p = nil
+
 	local players = cAPI.getNearestPlayers(radius)
-	local min = radius + 10.0
-	for k, v in pairs(players) do
+	local min = radius+10.0
+	for k,v in pairs(players) do
 		if v < min then
-			min = v
-			p = k
+		min = v
+		p = k
 		end
 	end
 	return p
