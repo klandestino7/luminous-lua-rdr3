@@ -38,15 +38,11 @@ Citizen.CreateThread(
             if isTargetting then
                 if IsEntityAPed(entity) and IsPedHuman(entity) then
                     if IsPedAPlayer(entity) then
-                        for _, pid in pairs(GetActivePlayers()) do
-                            local pped = GetPlayerPed(pid)
-                            if pped == entity then
-                                _targetedPlayerEntity = entity
-                                _targetedPlayerServerId = GetPlayerServerId(pid)
-                                _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
-                                break
-                            end
-                        end
+                        local playerId = GetPlayerIdFromPed(entityHit)
+
+                        _targetedPlayerEntity = entityHit
+                        _targetedPlayerServerId = GetPlayerServerId(playerId)
+                        _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
                     else
                         _nonPlayer = entity
                     end
@@ -61,14 +57,21 @@ Citizen.CreateThread(
                 local rayHandle = StartShapeTestRay(cameraCoord, aimingAtVector, -1, ped, 0)
                 local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
                 if hit ~= 0 then
-                    if IsEntityAPed(entityHit) and IsPedHuman(entityHit) and IsEntityDead(entityHit) then -- and IsPedAPlayer(entityHit) then
-                        -- Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, GetEntityCoords(ped), endCoords, 0, 255, 20, 255)
-                        _nonPlayer = entityHit
-                    else
-                        -- Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, GetEntityCoords(ped), aimingAtVector, 255, 0, 0, 170)
+                    if IsEntityAPed(entityHit) and IsPedHuman(entityHit) then
+                        if IsPedAPlayer(ped) then
+                            if NativeIsPedLassod(entityHit) then
+                                local playerId = GetPlayerIdFromPed(entityHit)
+
+                                _targetedPlayerEntity = entityHit
+                                _targetedPlayerServerId = GetPlayerServerId(playerId)
+                                _targetedPlayerUserId = cAPI.GetUserIdFromServerId(_targetedPlayerServerId)
+                            end
+                        else
+                            if IsEntityDead(entityHit) then
+                                _nonPlayer = entityHit
+                            end
+                        end
                     end
-                else
-                    -- Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, GetEntityCoords(ped), aimingAtVector, 255, 0, 0, 170)
                 end
             end
 
@@ -417,6 +420,19 @@ AddEventHandler(
         end
     end
 )
+
+function NativeIsPedLassod(ped)
+    return Citizen.InvokeNative(0x9682F850056C9ADE, ped)
+end
+
+function GetPlayerIdFromPed(ped)
+    for _, playerId in pairs(GetActivePlayers()) do
+        local playerPed = GetPlayerPed(playerId)
+        if playerPed == ped then
+            return playerId
+        end
+    end
+end
 
 -- PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", itemAmount .. " " .. itemName .. " | " .. itemWeight .. "kg"))
 -- if PromptHasHoldModeCompleted(prompt) then
