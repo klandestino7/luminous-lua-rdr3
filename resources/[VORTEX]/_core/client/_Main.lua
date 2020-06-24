@@ -125,13 +125,57 @@ function cAPI.getSpeed()
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
 end
 
-function cAPI.CWanted(IsWanted)
+local IsWanted = false
+local WantedTime = 0
+local fastTimer = 0
 
+function cAPI.SetWanted(bool, time)
+	if IsWanted == nil then
+		IsWanted = false
+		return
+	end
+	WantedTime = GetGameTimer() + 1000 * 60 * 1
+	--WantedTime = fastTimer + 60
+	fastTimer = WantedTime
+	IsWanted = bool
+end
+
+Citizen.CreateThread(
+	function()
+	while true do
+		Citizen.Wait(0)
+		if fastTimer > 1 then
+			if IsWanted then
+				fastTimer = WantedTime - GetGameTimer()
+				cAPI.DrawText("Você está procurado por " .. string.format("%.0f", math.max(fastTimer / 1000, 0)) .. " segundos", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+			end
+		else
+			Citizen.Wait(1000)			
+			if fastTimer <= 0 and IsWanted then
+				IsWanted = false
+			end		
+		end
+	end
+end
+)
+
+function cAPI.DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    Citizen.InvokeNative(0xADA9255D, font)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
+end
+
+
+function cAPI.GetWanted()
 	if IsWanted == nil then
 		return false
 	end
-
-	return true
+	return IsWanted
 end
 
 function cAPI.GetCoordsFromCam(distance)

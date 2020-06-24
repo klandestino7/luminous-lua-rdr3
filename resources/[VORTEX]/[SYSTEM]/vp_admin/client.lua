@@ -14,26 +14,36 @@ AddEventHandler(
 		local pFaceFeatures = json.decode(pedInfo.features)
 		local pScale = tonumber(pedInfo.pedSize)
 		local pClothing
-
-		if json.decode(clothes).Outfit ~= nil then
-			if tonumber(json.decode(clothes).Outfit) <= 100 then
-				pClothing = tonumber(json.decode(clothes).Outfit)
+		if not cAPI.GetWanted() then
+			if json.decode(clothes).Outfit ~= nil then
+				if tonumber(json.decode(clothes).Outfit) <= 100 then
+					pClothing = tonumber(json.decode(clothes).Outfit)
+				end
+			else
+				pClothing = json.decode(clothes)
 			end
-		else
-			pClothing = json.decode(clothes)
-		end
 
-		cAPI.SetPlayerPed(pModel)
-		Wait(130)
-		cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
-		cAPI.SetSkin(PlayerPedId(), pSkin)
-		Wait(300)
-		cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
-		Wait(30)
-		cAPI.SetPedScale(PlayerPedId(), pScale)
-		cAPI.SetPedClothing(PlayerPedId(), pClothing)
+			cAPI.SetPlayerPed(pModel)
+			Wait(130)
+			cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
+			cAPI.SetSkin(PlayerPedId(), pSkin)
+			Wait(300)
+			cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
+			Wait(30)
+			cAPI.SetPedScale(PlayerPedId(), pScale)
+			cAPI.SetPedClothing(PlayerPedId(), pClothing)
+		else
+			TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode trocar de roupa. ', 10000)
+		end
 	end
 )
+
+RegisterCommand('setprocurado', function()
+	cAPI.SetWanted(true)
+
+	print(cAPI.GetWanted())
+
+end)
 
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
@@ -55,10 +65,40 @@ AddEventHandler(
 		local ped = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+
+        SetEntityAsMissionEntity(ped)
+		-- SetModelAsNoLongerNeeded(pedModelHash)
+		
+		SetPedAsGroupMember(ped, GetDefaultRelationshipGroupHash(pedModelHash))
+
+		Citizen.InvokeNative(0xC80A74AC829DDD92, ped, GetDefaultRelationshipGroupHash(pedModelHash))
+
+	
+		TaskCombatPed(ped ,PlayerPedId(), 0, 16)
+		Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey("Weapon_melee_knife"), 500, true, 0)
+		
 		-- Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, ped)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
 	end
 )
+
+RegisterCommand("guarma", function()
+	N_0xa657ec9dbc6cc900(1)
+	Citizen.InvokeNative(0x74E2261D2A66849A, 1)
+	Citizen.InvokeNative(0xE8770EE02AEE45C2 ,1 )
+
+end)
+
+function SET_PED_RELATIONSHIP_GROUP_HASH ( iVar0, iParam0 )
+
+	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iVar0, _GET_DEFAULT_RELATIONSHIP_GROUP_HASH( iParam0 ) )
+
+end
+
+function _GET_DEFAULT_RELATIONSHIP_GROUP_HASH ( iParam0 )
+	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iParam0 );
+end
+
 
 RegisterNetEvent("VP:ADMIN:SpawnObject")
 AddEventHandler(
@@ -88,18 +128,18 @@ AddEventHandler(
 	end
 )
 
-RegisterCommand(
-	"weapon",
-	function(source, args)
-		local modelw = args[1]
-		if modelw == nil then
-			print("Please set the specific name for weapon")
-		else
-			local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
-			Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey(modelw), 500, true, 0)
-		end
-	end
-)
+-- RegisterCommand(
+-- 	"weapon",
+-- 	function(source, args)
+-- 		local modelw = args[1]
+-- 		if modelw == nil then
+-- 			print("Please set the specific name for weapon")
+-- 		else
+-- 			local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
+-- 			Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey(modelw), 500, true, 0)
+-- 		end
+-- 	end
+-- )
 
 RegisterNetEvent("VP:ADMIN:outift")
 AddEventHandler(

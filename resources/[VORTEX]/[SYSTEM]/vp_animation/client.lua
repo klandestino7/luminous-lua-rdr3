@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+API = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+
 Citizen.CreateThread(
     function()
         while true do
@@ -112,19 +118,22 @@ RegisterCommand(
         while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
             Citizen.Wait(100)
         end
-
-        if not Bandana then
-            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
-            Wait(2000)
-            Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), 879715242)
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
-            Bandana = true
+        if not cAPI.GetWanted() then
+            if not Bandana then
+                TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+                Wait(2000)
+                Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), 879715242)
+                Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
+                Bandana = true
+            else
+                TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
+                Wait(2000)
+                Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), -972364774)
+                Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
+                Bandana = false
+            end
         else
-            TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
-            Wait(2000)
-            Citizen.InvokeNative(0x1902C4CFCC5BE57C, PlayerPedId(), -972364774)
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, false)
-            Bandana = false
+            TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode retirar a bandana. ', 10000)
         end
     end
 )
