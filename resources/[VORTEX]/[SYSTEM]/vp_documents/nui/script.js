@@ -16,14 +16,15 @@ window.addEventListener('message', function(event) {
 
         let formatedId = "";
 
-        for (i = 0; i < maxLength-2; i ++){
-            formatedId = formatedId + "0"
-            if (i == 2 || i == 4){
-                formatedId = formatedId + "-"
-            }
+        for (i = 0; i < digitToAdds; i ++){
+            formatedId = formatedId + "0"                   
         }
 
         formatedId = formatedId + id.toString();
+
+        formatedId = formatedId.substring(0, 3) + '-' + formatedId.substring(3);
+
+        formatedId = formatedId.substring(0, 6) + '-' + formatedId.substring(6);
 
         $('.body-document').html('');
 
@@ -41,9 +42,9 @@ window.addEventListener('message', function(event) {
         `);
 
         setTimeout(function(){  
-            $(".container").fadeOut(500);
             $('.body-document').html('');
-        }, 30000);
+            $(".container").fadeOut(500);
+        }, 15000);
 
     }
 
