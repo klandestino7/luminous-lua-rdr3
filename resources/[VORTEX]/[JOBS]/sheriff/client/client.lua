@@ -269,11 +269,13 @@ local handcuffed = false
 RegisterCommand(
 	"revistar",
 	function()
-		local nearestPlayer = cAPI.getNearestPlayer(1.5)
-		if nearestPlayer ~= nil then
-			local nearestPed = GetPlayerPed(nearestPlayer)
-			if IsEntityPlayingAnim(nearestPed, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
-				TriggerServerEvent("VP:SHERIFF:TryToPatDown", nearestPlayer)
+		local player, distance = GetClosestPlayer()
+		if player ~= nil then
+			local nearestPed = GetPlayerPed(player)		
+			if distance ~= -1 and distance <= 3.0 then
+				if IsEntityPlayingAnim(nearestPed, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+					TriggerServerEvent("VP:SHERIFF:TryToPatDown", GetPlayerServerId(player))
+				end	
 			end
 		end
 	end,
