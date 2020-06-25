@@ -63,68 +63,6 @@ local r = {
     "COMPOSITE_LOOTABLE_YARROW_DEF"
 }
 
-local g = {
-    "WB_HERB_ALASKAN_GINSENG",
-    "WB_HERB_AMERICAN_GINSENG",
-    "WB_HERB_BLACK_CURRANT",
-    "WB_HERB_BURDOCK_ROOT",
-    "WB_HERB_BURDOCK_ROOT_SINGLE",
-    "WB_HERB_DESERT_SAGE",
-    "WB_HERB_ENGLISH_MACE",
-    "WB_HERB_ENGLISH_MACE_SINGLE",
-    "WB_HERB_GOLDEN_CURRANT",
-    "WB_HERB_HUMMINGBIRD_SAGE",
-    "WB_HERB_INDIAN_TOBACCO",
-    "WB_HERB_MILKWEED",
-    "WB_HERB_MILKWEED_SINGLE",
-    "WB_HERB_OLEANDER_SAGE",
-    "WB_HERB_OLEANDER_SAGE_SINGLE",
-    "WB_HERB_PRAIRIE_POPPY",
-    "WB_HERB_RED_SAGE",
-    "WB_HERB_VANILLA_FLOWER",
-    "WB_HERB_VIOLET_SNOWDROP",
-    "WB_HERB_WILD_FEVERFEW",
-    "WB_HERB_YARROW",
-    "WB_HERB_YARROW_SINGLE",
-    "WB_HORSE_HERB_COMMON_BULRUSH",
-    "WB_HORSE_HERB_WILD_CARROTS",
-    "WB_EGG_NEST_CONDOR",
-    "WB_EGG_NEST_DUCK",
-    "WB_EGG_NEST_EAGLE",
-    "WB_EGG_NEST_EGRET",
-    "WB_EGG_NEST_GOOSE",
-    "WB_EGG_NEST_HAWK",
-    "WB_EGG_NEST_HERON",
-    "WB_EGG_NEST_LOON",
-    "WB_EGG_NEST_SPOONBILL",
-    "WB_EGG_NEST_VULTURE",
-    "WB_EXOTICS_INTERACT",
-    "WB_FLOWER_AGARITA",
-    "WB_FLOWER_AGARITA_SINGLE",
-    "WB_FLOWER_BITTERWEED",
-    "WB_FLOWER_BITTERWEED_SINGLE",
-    "WB_FLOWER_BLOOD_FLOWER",
-    "WB_FLOWER_BLOOD_FLOWER_SINGLE",
-    "WB_FLOWER_CARDINAL_FLOWER",
-    "WB_FLOWER_CARDINAL_FLOWER_SINGLE",
-    "WB_FLOWER_CHOCOLATE_DAISY",
-    "WB_FLOWER_CHOCOLATE_DAISY_SINGLE",
-    "WB_FLOWER_CREEK_PLUM",
-    "WB_FLOWER_CREEK_PLUM_SINGLE",
-    "WB_FLOWER_TEXAS_BLUE_BONNET",
-    "WB_FLOWER_TEXAS_BLUE_BONNET_SINGLE",
-    "WB_FLOWER_WILD_RHUBARB",
-    "WB_FLOWER_WILD_RHUBARB_SINGLE",
-    "WB_FLOWER_WISTERIA",
-    "WB_FLOWER_WISTERIA_SINGLE",
-    "WB_GATOR_EGG",
-    "WB_GATOR_EGG_NEST",
-    "WB_MUSHROOM_BAY_BOLETE",
-    "WB_MUSHROOM_CHANTERELLES",
-    "WB_MUSHROOM_PARASOL_MUSHROOM",
-    "WB_MUSHROOM_RAMS_HEAD"
-}
-
 Citizen.CreateThread(
     function()
         -- WBTOCOMPOSITE()
@@ -174,19 +112,6 @@ local ArrayWbToComposite = {
     ["WB_HERB_YARROW_SINGLE"] = "COMPOSITE_LOOTABLE_YARROW_DEF",
     ["WB_HORSE_HERB_COMMON_BULRUSH"] = "COMPOSITE_LOOTABLE_COMMON_BULRUSH_DEF",
     ["WB_HORSE_HERB_WILD_CARROTS"] = "COMPOSITE_LOOTABLE_WILD_CARROT_DEF",
-    --    ["WB_EGG_NEST_CONDOR"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_DUCK"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_EAGLE"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_EGRET"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_GOOSE"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_HAWK"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_HERON"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_LOON"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_SPOONBILL"] = "PLACEHOLDER",
-    --    ["WB_EGG_NEST_VULTURE"] = "PLACEHOLDER",
-    --    ["WB_EXOTICS_INTERACT"] = "PLACEHOLDER",
-    -- ["WB_GATOR_EGG"] = "PLACEHOLDER",
-    -- ["WB_GATOR_EGG_NEST"] = "PLACEHOLDER",
     ["WB_FLOWER_AGARITA"] = "COMPOSITE_LOOTABLE_AGARITA_DEF",
     ["WB_FLOWER_AGARITA_SINGLE"] = "COMPOSITE_LOOTABLE_AGARITA_DEF",
     ["WB_FLOWER_BITTERWEED"] = "COMPOSITE_LOOTABLE_BITTERWEED_DEF",
@@ -208,13 +133,33 @@ local ArrayWbToComposite = {
     ["WB_MUSHROOM_BAY_BOLETE"] = "COMPOSITE_LOOTABLE_BAY_BOLETE_DEF",
     ["WB_MUSHROOM_CHANTERELLES"] = "COMPOSITE_LOOTABLE_CHANTERELLES_DEF",
     ["WB_MUSHROOM_PARASOL_MUSHROOM"] = "COMPOSITE_LOOTABLE_PARASOL_MUSHROOM_DEF",
-    ["WB_MUSHROOM_RAMS_HEAD"] = "COMPOSITE_LOOTABLE_RAMS_HEAD_DEF"
+    ["WB_MUSHROOM_RAMS_HEAD"] = "COMPOSITE_LOOTABLE_RAMS_HEAD_DEF",
+    ["WB_BERRY_BLACK_BERRY"] = "COMPOSITE_LOOTABLE_BLACK_BERRY_DEF",
+    ["WB_BERRY_EVERGREEN_HUCKLEBERRY"] = "COMPOSITE_LOOTABLE_EVERGREEN_HUCKLEBERRY_DEF",
+    ["WB_BERRY_RED_RASPBERRY"] = "COMPOSITE_LOOTABLE_RED_RASPBERRY_DEF",
+    ["WB_BERRY_WINTERGREEN_BERRY"] = "COMPOSITE_LOOTABLE_WINTERGREEN_BERRY_DEF",
+    ["WB_SPICE_CREEPING_THYME"] = "COMPOSITE_LOOTABLE_CREEPING_THYME_DEF",
+    ["WB_SPICE_OREGANO"] = "COMPOSITE_LOOTABLE_OREGANO_DEF",
+    ["WB_SPICE_WILD_MINT"] = "COMPOSITE_LOOTABLE_WILD_MINT_DEF",
+    ["WB_ORCHID_ACUNAS_STAR"] = "COMPOSITE_LOOTABLE_ORCHID_ACUNA_STAR_DEF",
+    ["WB_ORCHID_CIGAR"] = "COMPOSITE_LOOTABLE_ORCHID_CIGAR_DEF",
+    ["WB_ORCHID_CLAMSHELL"] = "COMPOSITE_LOOTABLE_ORCHID_CLAM_SHELL_DEF",
+    ["WB_ORCHID_DRAGONS_MOUTH"] = "COMPOSITE_LOOTABLE_ORCHID_DRAGONS_DEF",
+    ["WB_ORCHID_GHOST"] = "COMPOSITE_LOOTABLE_ORCHID_GHOST_DEF",
+    ["WB_ORCHID_LADY_OF_NIGHT"] = "COMPOSITE_LOOTABLE_ORCHID_LADY_NIGHT_DEF",
+    ["WB_ORCHID_LADY_SLIPPER"] = "COMPOSITE_LOOTABLE_ORCHID_LADY_SLIPPER_DEF",
+    ["WB_ORCHID_MOCCASIN_FLOWER"] = "COMPOSITE_LOOTABLE_ORCHID_MOCCASIN_DEF",
+    ["WB_ORCHID_NIGHT_SCENTED"] = "COMPOSITE_LOOTABLE_ORCHID_NIGHT_SCENTED_DEF",
+    ["WB_ORCHID_QUEENS"] = "COMPOSITE_LOOTABLE_ORCHID_QUEENS_DEF",
+    ["WB_ORCHID_RAT_TAIL"] = "COMPOSITE_LOOTABLE_ORCHID_RAT_TAIL_DEF",
+    ["WB_ORCHID_SPARROWS_EGG"] = "COMPOSITE_LOOTABLE_ORCHID_SPARROWS_DEF",
+    ["WB_ORCHID_SPIDER"] = "COMPOSITE_LOOTABLE_ORCHID_SPIDER_DEF"
 }
 
 function ConvertHashToWb(Hash)
     Hash = tonumber(Hash)
 
-    for _, wbAsString in pairs(g) do
+    for wbAsString, _ in pairs(ArrayWbToComposite) do
         if GetHashKey(wbAsString) == Hash then
             return wbAsString
         end
@@ -229,8 +174,6 @@ local ArrayHerbFileVectors = {}
 
 function ReadHerbFile(fileName)
     local file = io.open(fileName, "r")
-
-    local maxline = 26
 
     local lastHash
 
@@ -251,7 +194,7 @@ function ReadHerbFile(fileName)
                 lastHash = Hash
             end
         else
-            local x, y, z = line:match('<UNK_MEMBER_0x00477CED x="(.-)" y="(.-)" z="(.-)" w="0.00000000"/>')
+            local x, y, z = line:match('<UNK_MEMBER_0x00477CED x="(.-)" y="(.-)" z="(.-)"')
             if x ~= nil and y ~= nil and z ~= nil then
                 if lastHash ~= nil then
                     local Wb = ConvertHashToWb(lastHash)
@@ -269,10 +212,10 @@ end
 function HerbVectorsToFile()
     local file = io.open("vectors.txt", "a")
 
-    file:write("local CompositeVectors = {")
+    file:write("CompositeVectors = {")
     file:write("\n")
     for Composite, v in pairs(ArrayHerbFileVectors) do
-        file:write("    [\"" .. Composite .. "\"] = {")
+        file:write('    ["' .. Composite .. '"] = {')
         file:write("\n")
         for _, vec in pairs(v) do
             local x, y, z = table.unpack(vec)
@@ -296,7 +239,7 @@ function HerbVectorsToFile2()
     for Composite, v in pairs(ArrayHerbFileVectors) do
         file:write("    {")
         file:write("\n")
-        file:write("        name = " .. "\"" .. Composite .. "\",")
+        file:write("        name = " .. '"' .. Composite .. '",')
         file:write("\n")
         file:write("        vectors = {")
         file:write("\n")

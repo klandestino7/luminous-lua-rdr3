@@ -1182,5 +1182,12 @@ ItemList = {
         weight = 0.007,
         description = "Com este papel você consegue escrever anotações ou uma carta.",
         stackSize = -1
+    },
+    ["herb_alaskan_ginseng"] = {
+        type = "generic",
+        name = "Alaskan Ginseng",
+        weight = 0.5,
+        description = '🌿',
+        stackSize = 3, 
     }
 }
