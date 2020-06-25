@@ -5,12 +5,12 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local data = {
-    [1] = {
-        staticName = "Banco de BlackWater",
-        staticReward = 35000,
-        staticSecondsToReward = 10 * 60,
-        staticMaxParticipants = 3
-    },
+    -- [1] = {
+    --     staticName = "Banco de BlackWater",
+    --     staticReward = 35000,
+    --     staticSecondsToReward = 10 * 60,
+    --     staticMaxParticipants = 3
+    -- },
     [2] = {
         staticName = "Banco de Saint Dennis",
         staticReward = 50000,
@@ -61,7 +61,7 @@ AddEventHandler(
             cooldownEndsAtTimeStamp = 0
         end
 
-        local numTroopers = #API.getUsersByGroup("trooper") + #API.getUsersByGroup("sheriff")
+        local numTroopers = #API.getUsersByGroup("trooper")
 
         if numTroopers < 5 then
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Este banco não pode ser roubado, polícia insuficiente.")

@@ -125,13 +125,57 @@ function cAPI.getSpeed()
 	return math.sqrt(vx * vx + vy * vy + vz * vz)
 end
 
-function cAPI.CWanted(IsWanted)
+local IsWanted = false
+local WantedTime = 0
+local fastTimer = 0
 
+function cAPI.SetWanted(bool, time)
+	if IsWanted == nil then
+		IsWanted = false
+		return
+	end
+	WantedTime = GetGameTimer() + 1000 * 60 * time
+	--WantedTime = fastTimer + 60
+	fastTimer = WantedTime
+	IsWanted = bool
+end
+
+Citizen.CreateThread(
+	function()
+	while true do
+		Citizen.Wait(0)
+		if fastTimer > 1 then
+			if IsWanted then
+				fastTimer = WantedTime - GetGameTimer()
+				cAPI.DrawText("Você está procurado por " .. string.format("%.0f", math.max(fastTimer / 1000, 0)) .. " segundos", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+			end
+		else
+			Citizen.Wait(1000)			
+			if fastTimer <= 0 and IsWanted then
+				IsWanted = false
+			end		
+		end
+	end
+end
+)
+
+function cAPI.DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    Citizen.InvokeNative(0xADA9255D, font)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
+end
+
+
+function cAPI.GetWanted()
 	if IsWanted == nil then
 		return false
 	end
-
-	return true
+	return IsWanted
 end
 
 function cAPI.GetCoordsFromCam(distance)
@@ -157,32 +201,72 @@ function cAPI.Target(Distance, Ped)
 	return Entity, farCoordsX, farCoordsY, farCoordsZ
 end
 
+-- function cAPI.getNearestPlayers(radius)
+-- 	local r = {}
+-- 	local ped = PlayerPedId()
+-- 	local pid = PlayerId()
+-- 	local pCoords = GetEntityCoords(ped)
+
+-- 	for _, v in pairs(GetActivePlayers()) do
+-- 		local player = GetPlayerFromServerId(v)
+-- 		local pPed = GetPlayerPed(player)
+-- 		local pPCoords = GetEntityCoords(pPed)
+-- 		local distance = #(pCoords - pPCoords)
+-- 		if distance <= radius then
+-- 			r[GetPlayerServerId(player)] = distance
+-- 		end
+-- 	end
+-- 	return r
+-- end
+
+-- function cAPI.getNearestPlayer(radius)
+-- 	local p = nil
+-- 	local players = cAPI.getNearestPlayers(radius)
+-- 	local min = radius + 10.0
+-- 	for k, v in pairs(players) do
+-- 		if v < min then
+-- 			min = v
+-- 			p = k
+-- 		end
+-- 	end
+-- 	return p
+-- end
+
+
+-- return map of player id => distance
 function cAPI.getNearestPlayers(radius)
 	local r = {}
+  
 	local ped = PlayerPedId()
 	local pid = PlayerId()
-	local pCoords = GetEntityCoords(ped)
-
-	for _, v in pairs(GetActivePlayers()) do
-		local player = GetPlayerFromServerId(v)
-		local pPed = GetPlayerPed(player)
-		local pPCoords = GetEntityCoords(pPed)
-		local distance = #(pCoords - pPCoords)
+	local px,py,pz = GetEntityCoords(ped) 
+  
+	for k in pairs(GetActivePlayers()) do
+	  local player = GetPlayerFromServerId(k)
+  
+	  if player ~= pid and NetworkIsPlayerConnected(player) then
+		local oped = GetPlayerPed(player)
+		local x,y,z = table.unpack(GetEntityCoords(oped,true))
+		local distance = GetDistanceBetweenCoords(x,y,z,px,py,pz,true)
 		if distance <= radius then
-			r[GetPlayerServerId(player)] = distance
+		  r[GetPlayerServerId(player)] = distance
 		end
+	  end
 	end
+  
 	return r
-end
-
+  end
+  
+-- return player id or nil
 function cAPI.getNearestPlayer(radius)
 	local p = nil
+
 	local players = cAPI.getNearestPlayers(radius)
-	local min = radius + 10.0
-	for k, v in pairs(players) do
+	local min = radius+10.0
+	for k,v in pairs(players) do
 		if v < min then
-			min = v
-			p = k
+		min = v
+		p = k
 		end
 	end
 	return p

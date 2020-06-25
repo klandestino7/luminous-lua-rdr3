@@ -428,6 +428,11 @@ RegisterCommand(
             return
         end
 
+        if cAPI.GetWanted() then
+            TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode transferir um item. ', 10000)
+            return
+        end
+
         local targetPlayerServerId = cAPI.getNearestPlayer(1.5)
        
         if targetPlayerServerId == nil then

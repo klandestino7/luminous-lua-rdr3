@@ -18,19 +18,20 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
     local Character = User:getCharacter()
     local Inventory = Character:getInventory()    
 
-    local PoliceON = #API.getUsersByGroup("trooper") 
-    local SheriffON = #API.getUsersByGroup("sheriff")
-	print(PoliceON+SheriffON)
+	local PoliceON = #API.getUsersByGroup("trooper")
+	
+	-- local xPlayers = GetPlayers()
 
 	-- for i=1, #xPlayers, 1 do
-	-- 	local checkPlayer = ESX.GetPlayerFromId(xPlayers[i])
-	-- 	if checkPlayer.job.name == 'police' then
+	-- 	local UserCheck = API.getUserFromSource(tonumber(xPlayers[i]))
+	-- 	local CharacterCheck = UserCheck:getCharacter()
+	-- 	if CharacterCheck:hasGroupOrInheritance('trooper') then
 	-- 		cops = math.floor(cops + 1)
 	-- 		copsIds[i] = xPlayers[i]
 	-- 	end
 	-- end
-	print(json.encode(atmInfo))
-	if PoliceON+SheriffON < Config.copsRequired then
+
+	if PoliceON < Config.copsRequired then
 
 		TriggerClientEvent('VP:NOTIFY:Simple', source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)		
 
@@ -58,9 +59,8 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
 		
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
-
-		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo)
-		TriggerClientEvent('VP:ROBREG:PlayAlarm', -1, atmInfo[2], atmInfo[3], atmInfo[4])
+		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo[2], atmInfo[3], atmInfo[4])
+		TriggerClientEvent('VP:ROBREG:PlayAlarm', source, atmInfo[2], atmInfo[3], atmInfo[4])
 		
 	end	
 end)
@@ -116,6 +116,6 @@ RegisterServerEvent('VP:ROBREG:giveRobbedMoney')
 AddEventHandler('VP:ROBREG:giveRobbedMoney', function(money)
 	local User = API.getUserFromSource(source)
     local Character = User:getCharacter()
-    local Inventory = Character:getInventory()
+	local Inventory = Character:getInventory()
 	Inventory:addItem('money', money*100)	
 end)

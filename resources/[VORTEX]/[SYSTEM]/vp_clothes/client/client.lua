@@ -288,6 +288,7 @@ RegisterCommand(
         hided = false
         CamActive = false
         cAPI.InFade(500)
+        Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), true)
       --||  SetEveryoneAsInvisible()
     end
 )
@@ -296,11 +297,16 @@ RegisterNetEvent("VP:STORECLOTHES:OpenClothingMenu")
 AddEventHandler(
     "VP:STORECLOTHES:OpenClothingMenu",
     function()
-        inCustomization = true
-        hided = false
-        CamActive = false
-        cAPI.InFade(500)
-       -- SetEveryoneAsInvisible()        
+        if not cAPI.GetWanted() then
+            inCustomization = true
+            hided = false
+            CamActive = false
+            cAPI.InFade(500)
+            Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), true)
+        -- SetEveryoneAsInvisible()        
+        else
+            TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode trocar de roupa. ', 10000)
+        end
     end
 )
 
@@ -1116,14 +1122,33 @@ local Badge = false
 RegisterCommand(
     "badge",
     function(source, args, rawCommand)
+        if cAPI.hasGroup('trooper') then
+            if not Badge then
+                setcloth2(0x1FC12C9C)
+            --  SetPedAsCop(PlayerPedId(),true)
+                Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), true)
+                Badge = true
+            else
+                Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), false)
 
-        if not Badge then
-            setcloth(0x1FC12C9C)
-            Badge = true
-        else
-            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xDB4C451D, 0) -- SPURS REMOVE
-            Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
-            Badge = false
+                Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xDB4C451D, 0) -- SPURS REMOVE
+                Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+                Badge = false
+            end
+        end
+        if cAPI.hasGroup('sheriff') then
+            if not Badge then
+                setcloth2(0x1FC12C9C)
+            --  SetPedAsCop(PlayerPedId(),true)
+                Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), true)
+                Badge = true
+            else
+                Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), false)
+
+                Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xDB4C451D, 0) -- SPURS REMOVE
+                Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
+                Badge = false
+            end
         end
     end
 )
@@ -1223,6 +1248,7 @@ RegisterNUICallback(
             SetEntityCoords(PlayerPedId(), positionBack)
         end
         Wait(4000)
+        Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), false)
        	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
        	 --SetEntityVisible(PlayerPedId(), true)
         cAPI.OutFade(500)

@@ -11,7 +11,8 @@ local robberyBlip = nil
 local robberyMoney = 0
 local robberyAmmount = 0
 local h 
-local x,y,z
+local atmCoords
+
 -- Detect Robbery
 Citizen.CreateThread(function()
 	while true do
@@ -28,7 +29,7 @@ Citizen.CreateThread(function()
 			if isRobberyActive then
 
 				DrawText('Faltam '..robberyTime..' segundos~w~ para finalizar o roubo', 0.85, 0.96, 0.4, 0.4, false, 255, 255, 255, 120, 1, 7)
-				if robberyTime < 40 then
+				if robberyTime < 30 then
 					DrawText('Aperte '..Config.robberyCancelKey..' para cancelar o andamento do roubo', 0.85, 0.93, 0.4, 0.4, false, 255, 255, 255, 120, 1, 7)  
 					if IsControlJustPressed(0, 0xD8F73058) or GetEntityHealth(player) <= 100 then
 						isRobberyActive = 'fail'
@@ -56,7 +57,8 @@ end)
 RegisterNetEvent('VP:ROBREG:cancelfreeze')
 AddEventHandler('VP:ROBREG:cancelfreeze',function()	
 	FreezeEntityPosition(PlayerPedId() , false)			
-	
+
+	cAPI.SetWanted(true, 30)
 	
 
 	-- local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)
@@ -78,12 +80,12 @@ Citizen.CreateThread(function()
 			if isRobberyActive ~= 'fail' then
 
 				robberyTime = math.floor(robberyTime-1)
-				robberyAmmount = math.floor(robberyAmmount + robberyMoney)
+				robberyAmmount = math.ceil(robberyAmmount + robberyMoney)
+				
 				TriggerServerEvent('VP:ROBREG:giveRobbedMoney', robberyMoney)	
 
 				if robberyTime <= 0 then
 					ClearPedTasks(PlayerPedId())
-
 					TriggerServerEvent('VP:ROBREG:finishedTheRobbery', robberyAmmount)
 					isRobberyActive = false
 					robberyMoney = 0
@@ -93,7 +95,6 @@ Citizen.CreateThread(function()
 				ClearPedTasks(PlayerPedId())
 				FreezeEntityPosition(PlayerPedId() , false)
 				TriggerServerEvent('VP:ROBREG:cancelTheRobbery', robberyAmmount)
-				
 				isRobberyActive = false
 				robberyMoney = 0
 				robberyAmmount = 0
@@ -103,17 +104,14 @@ Citizen.CreateThread(function()
 	end
 end)
 
-
-
 RegisterNetEvent('VP:ROBREG:startTheRobbery')
 AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
---	
-	ClearPedTasks(PlayerPedId())	
+	ClearPedTasks(PlayerPedId())
 
 	isRobberyActive = true
 	robberyTime = atmInfo[6]
-	robberyMoney = math.ceil( math.random(Config.moneyReward.min, Config.moneyReward.max) / robberyTime )
-	print(robberyMoney)
+	robberyMoney = math.ceil(math.random(Config.moneyReward.min, Config.moneyReward.max) / robberyTime)
+
 	robberyAmmount = 0
 
 	local id = atmInfo[1]
@@ -126,20 +124,32 @@ AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
 	SetCurrentPedWeapon(PlayerPedId(),GetHashKey('WEAPON_UNARMED'),true)
 
 	StartAnim1()
+
+	if IsPedMale(PlayerPedId()) then		
+		setSatchel(0x47D2DD9D)
+	else
+		setSatchel(0x383DDE91)
+	end
 end)
 
+function setSatchel(model)
+    if HasModelLoaded(model) then
+        Citizen.InvokeNative(0xFA28FE3A6246FC3, parseInt(model))
+    end
+    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), parseInt(model), true, true, true)
+end
+
 RegisterNetEvent('VP:ROBREG:warnThePolice')
-AddEventHandler('VP:ROBREG:warnThePolice', function(targetAtm)
+AddEventHandler('VP:ROBREG:warnThePolice', function(AtmX,AtmY,AtmZ)
 	Wait(10000)
 	if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
 		Citizen.InvokeNative(0x67C540AA08E4A6F5, "Match_End_Timer", "RDRO_Countdown_Sounds", true, 0)	
-
-		local x,y,z = targetAtm[2],targetAtm[3],targetAtm[4]		
+		atmCoords = vector3(AtmX,AtmY,AtmZ)
 
 		local zone = GetCurrentTownName()
 	--	TriggerEvent('chatMessage', _U('police_title'), Config.policeColor, string.format( Locales[Config.Locale]['police_warning_location'], location ) )
 		TriggerEvent('VP:NOTIFY:Simple', 'SHERIFF:<br>Roubo à uma Loja! Vá até o local e impeça os assaltantes em ' .. zone, 10000)
-		TriggerEvent('VP:ROBREG:InfoSheriff', x,y,z)
+		TriggerEvent('VP:ROBREG:InfoSheriff', AtmX,AtmY,AtmZ)
 	end
 end)
 
@@ -179,13 +189,11 @@ AddEventHandler('VP:ROBREG:InfoSheriff', function(x, y, z)
 		end)
 end)
 
-
 RegisterNetEvent('VP:ROBREG:ClearGps')
 AddEventHandler('VP:ROBREG:ClearGps', function()
 	Wait(60000)
 	ClearGpsMultiRoute()
 end)
-
 
 function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
     SetTextScale(w, h)
@@ -195,7 +203,6 @@ function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, fo
     Citizen.InvokeNative(0xADA9255D, font)
     DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
 end
-
 
 function DrawText3D(x, y, z, text)
     local onScreen,_x,_y=GetScreenCoordFromWorldCoord(x, y, z)
@@ -227,10 +234,7 @@ AddEventHandler('VP:ROBREG:PlayAlarm', function(x, y, z)
 			Citizen.InvokeNative(0x353FC880830B88FA, PlaySound)
 		end
 	end)
-
 end)
-
-
 
 function StartAnim1()
 Citizen.CreateThread(function()		
@@ -263,7 +267,6 @@ Citizen.CreateThread(function()
 	end)
 end
 
-
 function StartAnim2()
 	local anim2 = false
 	if isRobberyActive ~= 'fail' and not anim2 then
@@ -277,14 +280,11 @@ function StartAnim2()
 		TaskPlayAnim(PlayerPedId(), dict, "ohho", 4.0, -4.0, -1, 32, 0.0, false, 0, false, 0, false)
 		Citizen.Wait(4600)
 	end
-
 end
 
-
 function GetCurrentTownName()
+	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, atmCoords, 1)
 
-	local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, x,y,z, 1)
-	
     if town_hash == GetHashKey("Annesburg") then
         return "Annesburg"
     elseif town_hash == GetHashKey("Armadillo") then
