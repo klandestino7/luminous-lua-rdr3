@@ -125,23 +125,23 @@ function API.Chest(id)
             end
 
             if self.inventories == nil or self.inventories[targetId] == nil then
-                local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "chest:char" .. targetId})
+                local inventoryIdThisChestForTargetId = self:getId() .. ":" .. "charid:" .. targetId
 
-                local Inventory
+                local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = inventoryIdThisChestForTargetId})
+
+                local slots = {}
 
                 if #query >= 0 then
-                    local slots, _ = json.decode(query[1].inv_slots)
+                    slots, _ = json.decode(query[1].inv_slots)
 
                     for k, v in pairs(slots) do
                         slots[k] = json.decode(v)
                     end
-
-                    Inventory = API.Inventory("chest:char:" .. targetId, tonumber(query[1].inv_capacity), slots)
                 else
                     API_Database.execute(
                         "FCRP/Inventory",
                         {
-                            id = "chest:char:" .. targetId,
+                            id = inventoryIdThisChestForTargetId,
                             charid = targetId,
                             capacity = self:getCapacity(),
                             slot = 0,
@@ -150,9 +150,9 @@ function API.Chest(id)
                             procType = "insert"
                         }
                     )
-
-                    Inventory = API.Inventory("chest:char:" .. targetId, self:getCapacity(), {})
                 end
+
+                local Inventory = API.Inventory(inventoryIdThisChestForTargetId, self:getCapacity(), slots)
 
                 if self.inventories == nil then
                     self.inventories = {}
