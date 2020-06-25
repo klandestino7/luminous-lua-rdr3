@@ -33,9 +33,14 @@ end)
 RegisterServerEvent('VP:TENTS:spawnTents')
 AddEventHandler('VP:TENTS:spawnTents', function()
     local src = source 
-    Tents.getAllTents(src, function(tents)
-        TriggerClientEvent('VP:TENTS:spawnCliTents', src, tents, GetPlayerIdentifier(src))
-    end)
+    local User = API.getUserFromSource(src)
+
+
+    local Character = User:getCharacter()
+
+
+    TriggerClientEvent('VP:TENTS:spawnCliTents', src, Tents.getAllTents(), Character:getId())
+
 end)
 
 function Tents.addNew(src, model, pos, rot, heading)
@@ -79,7 +84,7 @@ end
 
 function Tents.removeTent(src, id, itemId)
 
-    return API.RemoveTents(id, itemId)
+    return API.RemoveTents(src, id, itemId)
 
     -- MySQL.Async.fetchAll("DELETE FROM VP:TENTS WHERE id = @id", {['@id'] = id}, function(rows)
     --     if rows then

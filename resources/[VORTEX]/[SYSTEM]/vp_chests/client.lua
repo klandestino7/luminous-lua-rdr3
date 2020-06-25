@@ -4,7 +4,7 @@ RegisterNetEvent("VP:CHESTS:SyncMultipleChests")
 
 AddEventHandler(
     "VP:CHESTS:StartPlayerPlacement",
-    function(source, capacity)
+    function(capacity)
         print("VP:CHESTS:StartPlayerPlacement")
         createTempEntity(capacity)
     end
@@ -34,7 +34,7 @@ function createTempEntity(capacity)
     if tempEntity ~= nil then
         DeleteEntity(tempEntity)
     end
-
+    print(capacity)
     local forwardVector = GetEntityForwardVector(ped)
     local vec = GetEntityCoords(ped) + forwardVector * 3.0
     tempEntity = CreateObject(getModelFromCapacity(capacity), vec, false, true, false)

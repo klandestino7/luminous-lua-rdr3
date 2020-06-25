@@ -119,25 +119,27 @@ function API.Chest(id)
 
         if self:isPublic() or (self:isPrivate() and charId == self:getOwnerCharId()) then
             local targetId = self:getOwnerCharId()
-
+            print('a')
             if self:isPublic() then
                 targetId = charId
             end
-
+            print('a1')
             if self.inventories == nil or self.inventories[targetId] == nil then
                 local inventoryIdThisChestForTargetId = self:getId() .. ":" .. "charid:" .. targetId
-
+                print('a2')
                 local query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = inventoryIdThisChestForTargetId})
-
+                print(inventoryIdThisChestForTargetId)
                 local slots = {}
+                print('a3')
 
-                if #query >= 0 then
+                if #query > 0 then
                     slots, _ = json.decode(query[1].inv_slots)
-
+                    print('a4')
                     for k, v in pairs(slots) do
                         slots[k] = json.decode(v)
                     end
                 else
+                    print('a5')
                     API_Database.execute(
                         "FCRP/Inventory",
                         {
@@ -150,6 +152,7 @@ function API.Chest(id)
                             procType = "insert"
                         }
                     )
+                    print('a6')
                 end
 
                 local Inventory = API.Inventory(inventoryIdThisChestForTargetId, self:getCapacity(), slots)

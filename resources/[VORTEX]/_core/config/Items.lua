@@ -1075,47 +1075,85 @@ ItemList = {
         description = "Baú de madeira fortificado com peças de metal. Serve para guardar grandes conteúdos.",
         stackSize = 2
     },
-    ["campfiresmall"] = {
+    ["acamp_firesmall"] = {
         type = "kit",
         name = "Fogueira Pequena",
         weight = 1.5,
         description = "Fogueira para iluminar e esquentar sua noite.",
-        stackSize = 1
-    },    
-    ["campfiremed"] = {
+        stackSize = 1,
+        varOnUse = 1946434792
+    }, 
+    ["acamp_firemed"] = {
+        type = "kit",
+        name = "Fogueira Grande",
+        weight = 2.5,
+        description = "Fogueira para iluminar e esquentar sua noite.",
+        stackSize = 1,
+        varOnUse = 634946146
+    },   
+    ["acamp_firebig"] = {
         type = "kit",
         name = "Fogueira Grande",
         weight = 5.0,
         description = "Fogueira para iluminar e esquentar sua noite.",
-        stackSize = 1
+        stackSize = 1,
+        varOnUse = 634946146
     },
-    ["bedroll"] = {
+    ["acamp_firesmal_pan"] = {
+        type = "kit",
+        name = "Fogueira Pequena Panela",
+        weight = 5.0,
+        description = "Fogueira para iluminar e esquentar sua noite.",
+        stackSize = 1,
+        varOnUse = -689630872
+    },    
+    ["acamp_bedroll"] = {
         type = "kit",
         name = "Saco de Dormir",
         weight = 0.7,
         description = "Dormir é sempre bom para recuperar energia.",
-        stackSize = 1
+        stackSize = 1,
+        varOnUse = 737690157
     },
-    ["tents_small"] = {
+    ["acamp_tents_small"] = {
         type = "kit",
         name = "Tenda Pequena",
         weight = 0.8,
         description = "Arme sua tenda e descance.",
-        stackSize = 1
+        stackSize = 1,
+        varOnUse = 615627222
     },
-    ["tents_med"] = {
+    ["acamp_tents_metal"] = {
+        type = "kit",
+        name = "Tenda Media de Lata",
+        weight = 1.5,
+        description = "Arme sua tenda e descance.",
+        stackSize = 1,
+        varOnUse = 1231676579
+    },
+    ["acamp_tents_med_open"] = {
         type = "kit",
         name = "Tenda Media",
         weight = 1.5,
-        description = "Arme sua tenda e descance.",
-        stackSize = 1
-    },
-    ["tents_big"] = {
+        description = "Tenda aberta aos lados, Arme sua tenda e descance.",
+        stackSize = 1,
+        varOnUse = -1223489959
+    }, 
+    ["acamp_tents_med_closed"] = {
+        type = "kit",
+        name = "Tenda Media",
+        weight = 1.5,
+        description = "Tenda aberta aos lados, Arme sua tenda e descance.",
+        stackSize = 1,
+        varOnUse = -1775023743
+    },     
+    ["acamp_tents_big"] = {
         type = "kit",
         name = "Tenda Grande",
         weight = 2.5,
         description = "Arme sua tenda e descance.",
-        stackSize = 1
+        stackSize = 1,
+        varOnUse = -838945132
     },
     ["money"] = {
         type = "valuable",

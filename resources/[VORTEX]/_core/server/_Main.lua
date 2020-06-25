@@ -211,15 +211,21 @@ end
 
 function API.GetAllTents()
     local rows = API_Database.query("FCRP/GetAllTents")
+
     if #rows > 0 then
-        return tonumber(rows)
+        return rows
     else
         return false
     end
 end
 
-function API.RemoveTents(id, itemId)
+function API.RemoveTents(source, id, itemId)
     local rows = API_Database.query("FCRP/RemoveTents", {id = id})
+    print(source)
+    local User = API.getUserFromSource(source)
+    
+    local Character = User:getCharacter()
+    local Inventory = Character:getInventory()
 
     return Inventory:addItem(itemId, 1)
 end
