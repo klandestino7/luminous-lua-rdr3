@@ -26,11 +26,59 @@ Config.Tents = {
         itemId = "tents_big"
     },
     {
-        id = 4,
-        tentModel = -1179266405,
+        id = 5,
+        tentModel = 1946434792,
         tentText = "Fogueira",
         tentLabel = "Armando Fogueira...",
         tentSpawnTime = 10000,
-        itemId = "campfiresmall"
-    }
+        itemId = "acamp_firesmall"
+    }, 
+    {
+        id = 6,
+        tentModel = 634946146,
+        tentText = "Fogueira",
+        tentLabel = "Armando Fogueira...",
+        tentSpawnTime = 10000,
+        itemId = "acamp_firemed"
+    }, 
+    {
+        id = 7,
+        tentModel = 634946146,
+        tentText = "Fogueira",
+        tentLabel = "Armando Fogueira...",
+        tentSpawnTime = 10000,
+        itemId = "acamp_firebig"
+    }, 
+    {
+        id = 8,
+        tentModel = -689630872,
+        tentText = "Fogueira",
+        tentLabel = "Armando Fogueira...",
+        tentSpawnTime = 10000,
+        itemId = "acamp_firesmal_pan"
+    }, 
+    {
+        id = 9,
+        tentModel = 737690157,
+        tentText = "Saco de Dormir",
+        tentLabel = "Armando Saco de Dormir...",
+        tentSpawnTime = 5000,
+        itemId = "acamp_bedroll"
+    }, 
+    {
+        id = 10,
+        tentModel = -1223489959,
+        tentText = "Tenda",
+        tentLabel = "Armando Tenda...",
+        tentSpawnTime = 30000,
+        itemId = "acamp_tents_med_open"
+    },  
+    {
+        id = 11,
+        tentModel = -1775023743,
+        tentText = "Tenda",
+        tentLabel = "Armando Tenda...",
+        tentSpawnTime = 30000,
+        itemId = "acamp_tents_med_closed"
+    },      
 }

@@ -158,7 +158,7 @@ function getModelFromCapacity(capacity)
     end
 
     if capacity >= 50 and capacity < 100 then
-        return "P_TRUNK04X"
+        return "P_TRUNK01X"
     end
 
     if capacity >= 100 then
