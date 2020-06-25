@@ -216,17 +216,13 @@ function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
     local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)
     -- print(componentHash, categoryHash, NativeGetMetapedType(ped))
 
-    NativeFixMeshIssues(ped, categoryHash)
-
     Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, componentHash, immediately, isMp, true)
+    NativeUpdatePedVariation(ped)
 end
 
 function NativeUpdatePedVariation(ped)
+    Citizen.InvokeNative(0x704C908E9C405136, ped)
     Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
-end
-
-function NativeFixMeshIssues(ped, categoryHash)
-    Citizen.InvokeNative(0x59BD177A1A48600A, ped, categoryHash)
 end
 
 function NativeIsPedComponentEquipped(ped, componentHash)
