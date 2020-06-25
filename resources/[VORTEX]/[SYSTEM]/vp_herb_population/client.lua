@@ -1,150 +1,231 @@
 local pop = {}
+local popSuppressed = {}
 
-Citizen.CreateThread(
-    function()
-        local upVector = vec3(0, 0, 1.5)
-
-        local DRAW_LINE = GetHashKey("DRAW_LINE")
-
-        while true do
-            Citizen.Wait(0)
-
-            --[[
-        for compositeHashAsString, v in pairs(popSpawns) do
-            -- local compositeHash = GetHashKey(compositeHashAsString)
-            compositeHash = compositeHashAsString
-            local onGround = v.onGround or true
-
-            print(compositeHash)
-            if not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) then
-                Citizen.InvokeNative(0x73F0D0327BFA0812, compositeHash)
-
-                while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) do
-                    Citizen.Wait(10)
-                end
-            end
-
-            for index, vect in pairs(v) do
-                if type(vect) == "vector3" then
-                    local x, y, z = table.unpack(vect)
-                    local composite = exports["vp_herb_population"]:NativeCreateComposite(compositeHash, x, y, z, onGround)
-
-                    print(compositeHashAsString, composite)
-
-                    if pop[compositeHashAsString] == nil then
-                        pop[compositeHashAsString] = {}
-                    end
-
-                    table.insert(pop[compositeHashAsString], composite)
-                end
-            end
-        end
-        -]]
-            -- for _, d in pairs(CompositeVectors2) do
-
-            local playerPosition = GetEntityCoords(PlayerPedId())
-
-            -- Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, playerPosition, playerPosition + upVector, 255, 0, 0, 255)
-
-            for i = 1, #CompositeVectors2 do
-                local d = CompositeVectors2[i]
-                for index, v in pairs(d.vectors) do
-                    local dist = #(playerPosition - v)
-                    if dist < 100.0 then
-                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 255, 0, 0, 255)
-
-                        local composite = GetCompositeAt(d.name, index)
-                        if composite then
-                            -- Citizen.InvokeNative(0x082C043C7AFC3747, composite, 1) -- DISPLAY_COMPOSITE_EAT_THIS_FRAME
-                            Citizen.InvokeNative(0x40D72189F46D2E15, composite, 1) -- DISPLAY_COMPOSITE_PICKUP_THIS_FRAME
-                        end
-                    end
-                end
-            end
-        end
-    end
-)
+local SCOPE_RANGE_LOAD = 100.0
+local SCOPE_RANGE_UNLOAD = 120.0
 
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(1000)
-
             local playerPosition = GetEntityCoords(PlayerPedId())
 
-            for i = 1, #CompositeVectors2 do
-                local d = CompositeVectors2[i]
-
-                local compositeHash = GetHashKey(d.name)
-
-                if not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) then
-                    Citizen.InvokeNative(0x73F0D0327BFA0812, compositeHash)
-
-                    while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) do
-                        Citizen.Wait(10)
-                    end
-                end
+            for indexComposite = 1, #CompositeVectors2 do
+                local d = CompositeVectors2[indexComposite]
 
                 local compositeType = d.name
 
-                for index, v in pairs(d.vectors) do
-                    local dist = #(playerPosition - v)
-                    if dist < 100.0 then
-                        if not HasCompositeActiveAt(compositeType, index) then
-                            CreateComposite(compositeType, index, v)
+                RequestAndWaitForComposite(GetHashKey(compositeType))
+
+                local vectors = d.vectors
+
+                for index = 1, #vectors do
+                    if not IsVectorIndexSuppressed() then
+                        local v = vectors[index]
+
+                        local dist = #(playerPosition - v)
+
+                        if not IsVectorIndexLoaded(indexComposite, index) then
+                            if dist <= SCOPE_RANGE_LOAD then
+                                LoadAtVectorIndex(indexComposite, index)
+                            end
+                        else
+                            if dist >= SCOPE_RANGE_UNLOAD then
+                                UnloadAtVectorIndex(indexComposite, index)
+                            end
                         end
-                    else
-                        DestroyCompositeAt(compositeType, index)
                     end
                 end
+            end
+
+            Citizen.Wait(60000)
+        end
+    end
+)
+
+function LoadAtVectorIndex(indexComposite, index)
+    if pop[indexComposite] == nil then
+        pop[indexComposite] = {}
+    end
+
+    local compositeType = LookupTableGetCompositeNameFromIndex(indexComposite)
+    local v = LookupTableGetVectorFromIndex(indexComposite, index)
+
+    local composite = exports["vp_herb_population"]:NativeCreateComposite(GetHashKey(compositeType), v.x, v.y, v.z, false)
+
+    pop[indexComposite][index] = composite
+end
+
+function UnloadAtVectorIndex(indexComposite, indexVector, sanityCheck)
+    local sanityCheck = sanityCheck or true
+
+    if pop[indexComposite] or sanityCheck == false then
+        if pop[indexComposite][indexVector] or sanityCheck == false then
+            NativeDeleteComposite(pop[indexComposite][indexVector])
+            pop[indexComposite][indexVector] = nil
+        end
+    end
+end
+
+function SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
+    if suppress then
+        if not IsVectorIndexSuppressed(indexComposite, indexVector) then
+            UnloadAtVectorIndex(indexComposite, indexVector)
+
+            if popSuppressed[indexComposite] == nil then
+                popSuppressed[indexComposite] = {}
+            end
+
+            popSuppressed[indexComposite][indexVector] = true
+        end
+    else
+        if IsVectorIndexSuppressed(indexComposite, indexVector) then
+            popSuppressed[indexComposite][indexVector] = nil
+        end
+    end
+end
+
+function UnloadAllVectorIndices()
+    for indexComposite, indices in pairs(pop) do
+        for index, composite in pairs(indices) do
+            UnloadAtVectorIndex(indexComposite, index, false)
+        end
+    end
+end
+
+function IsVectorIndexLoaded(indexComposite, index)
+    return pop[indexComposite] ~= nil and pop[indexComposite][index] ~= nil or false
+end
+
+function IsVectorIndexSuppressed(indexComposite, index)
+    return popSuppressed[indexComposite] ~= nil and popSuppressed[indexComposite][index] ~= nil or false
+end
+
+function LookupTableGetCompositeNameFromIndex(index)
+    return CompositeVectors2[indexComposite].name
+end
+
+function LookupTableGetVectorFromIndex(indexComposite, index)
+    return CompositeVectors2[indexComposite][index]
+end
+
+function RequestAndWaitForComposite(compositeHash)
+    if not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) then
+        Citizen.InvokeNative(0x73F0D0327BFA0812, compositeHash)
+
+        while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, compositeHash) do
+            Citizen.Wait(0)
+        end
+    end
+end
+
+RegisterNetEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed")
+AddEventHandler(
+    "VP:HERB_POPULATION:SetVectorIndexSuppressed",
+    function(indexComposite, index, suppress)
+        SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
+    end
+)
+
+RegisterNetEvent("VP:HERB_POPULATION:ForceVectorIndexReload")
+AddEventHandler(
+    "VP:HERB_POPULATION:ForceVectorIndexReload",
+    function(indexComposite, index)
+        if IsVectorIndexLoaded(indexComposite, index) then
+            UnloadAtVectorIndex(indexComposite, index)
+            LoadAtVectorIndex(indexComposite, index)
+        end
+    end
+)
+
+AddEventHandler(
+    "VP:EVENTS:PedFinishedGatheringEntity",
+    function(ped, entity, bool_unk)
+        if not IsEntityAPed(entity) then
+            -- Plantinhas
+            if ped == PlayerPedId() then
+                local closestCompositeType
+                local closestIndexComposite
+                local closestIndex
+
+                local lastDist
+
+                local playerPosition = GetEntityCoords(PlayerPedId())
+
+                for indexComposite, t in pairs(pop) do
+                    for index, v in pairs(t) do
+                        local dist = #(playerPosition - v)
+                        if lastDist == nil or dist < lastDist then
+                            lastDist = dist
+
+                            closestCompositeType = compositeType
+                            closestIndexComposite = indexComposite
+                            closestIndex = index
+                        end
+                    end
+                end
+
+                compositeType = compositeType:gsub("COMPOSITE_LOOTABLE_", "")
+
+                print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
+
+                TriggerServerEvent("VP:HERB_POPULATION:Gathered", compositeType, closestIndexComposite, closestIndex)
             end
         end
     end
 )
 
-function CreateComposite(compositeType, index, v)
-    if pop[compositeType] == nil then
-        pop[compositeType] = {}
-    end
-
-    local composite = exports["vp_herb_population"]:NativeCreateComposite(GetHashKey(compositeType), v.x, v.y, v.z, false)
-
-    pop[compositeType][index] = composite
-end
-
-function DestroyCompositeAt(compositeType, index)
-    if HasCompositeActiveAt(compositeType, index) then
-        NativeDeleteComposite(GetCompositeAt(compositeType, index))
-        pop[compositeType][index] = nil
-    end
-end
-
-function GetCompositeAt(compositeType, index)
-    return pop[compositeType] ~= nil and pop[compositeType][index] or nil
-end
-
-function HasCompositeActiveAt(compositeType, index)
-    return pop[compositeType] ~= nil and pop[compositeType][index] ~= nil
-end
-
-function DestroyHerbs()
-    for _, v in pairs(pop) do
-        for index, composite in pairs(v) do
-            NativeDeleteComposite(composite)
-        end
-    end
-    pop = {}
-end
-
 function NativeDeleteComposite(composite)
     Citizen.InvokeNative(0x5758B1EE0C3FD4AC, composite, 0)
+end
+
+function NativeDisplayCompositeEatThisFrame(composite, display)
+    Citizen.InvokeNative(0x082C043C7AFC3747, composite, display)
+end
+
+function NativeDisplayCompositePickuptThisFrame(composite, display)
+    Citizen.InvokeNative(0x40D72189F46D2E15, composite, display)
 end
 
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
         if GetCurrentResourceName() == resourceName then
-            DestroyHerbs()
+            UnloadAllVectorIndices()
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        local upVector = vec3(0.0, 0.0, 1.5)
+
+        local DRAW_LINE = GetHashKey("DRAW_LINE")
+
+        while true do
+            Citizen.Wait(0)
+
+            local playerPosition = GetEntityCoords(PlayerPedId())
+
+            for indexComposite = 1, #CompositeVectors2 do
+                -- local d = CompositeVectors2[indexComposite]
+
+                local vectors = CompositeVectors2[indexComposite].vectors
+
+                for index = 1, #vectors do
+                    local v = vectors[i]
+                    -- if IsVectorIndexLoaded(indexComposite, index) then
+
+                    print("a", v)
+
+                    local dist = #(playerPosition - v)
+                    if dist <= SCOPE_RANGE_LOAD then
+                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 0, 255, 0, 255)
+                    -- else
+                    -- Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 255, 0, 0, 255)
+                    -- end
+                    end
+                end
+            end
         end
     end
 )

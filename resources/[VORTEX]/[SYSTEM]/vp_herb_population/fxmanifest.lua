@@ -9,10 +9,10 @@ client_scripts {
     "client.lua"
 }
 
--- server_scripts {
--- 	"@_core/lib/utils.lua",
--- 	'server.lua'
--- }
+server_scripts {
+	"@_core/lib/utils.lua",
+	'server.lua'
+}
 
 exports {
     "NativeCreateComposite",
