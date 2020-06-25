@@ -6,6 +6,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_scripts {
     '@_core/lib/utils.lua',
+    'client_js.js',
     'client.lua'
 }
 
@@ -14,3 +15,7 @@ server_scripts {
     'server.lua'
 }
 
+exports {
+	'GET_TASK_FISHING_DATA',
+	'SET_TASK_FISHING_DATA',
+}
