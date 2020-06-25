@@ -19,4 +19,6 @@ exports {
 	'NativeCreateComposite',
 	'NativeGetCompositeEntities',
 	'DataViewNetowrk',
+	'GET_TASK_FISHING_DATA',
+	'SET_TASK_FISHING_DATA',
 }

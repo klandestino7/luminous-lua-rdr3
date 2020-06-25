@@ -1,0 +1,5376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<0x58FCEA50>
+  <UNK_MEMBER_0x4D0537BB value="518"/>
+  <UNK_MEMBER_0x886AA5E7>0x7EE53A5D</UNK_MEMBER_0x886AA5E7>
+  <Flags/>
+  <UNK_MEMBER_0x29E21837>
+    <UNK_MEMBER_0x45C8B3D0>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="194.57410000" y="729.10460000" z="184.34040000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="1012.17600000" y="750.18730000" z="111.10600000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="298.77910000" y="828.09790000" z="188.26760000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="297.85580000" y="822.35530000" z="187.86420000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="286.45840000" y="828.64580000" z="189.11430000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="364.40900000" y="818.65070000" z="159.70390000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="1265.31800000" y="821.56730000" z="99.87217000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="1300.25700000" y="817.01010000" z="99.96246000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="180.01470000" y="837.46870000" z="188.68240000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="171.23590000" y="851.43370000" z="190.36330000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="189.30080000" y="847.78060000" z="187.94520000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="168.94820000" y="833.36290000" z="189.77130000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="277.19510000" y="842.21610000" z="190.86890000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="357.71210000" y="833.32500000" z="163.71730000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="331.58440000" y="861.12380000" z="159.15080000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="30.69161000" y="893.20410000" z="210.18030000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2DF984EA</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="30.07793000" y="884.75620000" z="210.37960000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="50.65709000" y="895.86020000" z="210.24780000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="59.99520000" y="893.87210000" z="210.36830000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="208.50260000" y="864.29380000" z="185.83150000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="335.52040000" y="869.95990000" z="158.35890000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="348.48890000" y="895.51070000" z="159.07920000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="506.77920000" y="870.58440000" z="140.69950000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="523.03820000" y="873.96750000" z="141.91750000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="568.87830000" y="872.76660000" z="148.70030000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="576.06410000" y="877.02830000" z="148.00480000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="596.42420000" y="871.81310000" z="147.32910000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-54.23524000" y="909.43600000" z="207.72840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-16.55406000" y="903.40880000" z="210.92820000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-2.39720200" y="916.15860000" z="209.24680000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="10.96914000" y="903.95710000" z="209.48320000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="267.03120000" y="920.07240000" z="197.23700000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="268.45820000" y="913.79820000" z="197.28000000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="656.13590000" y="924.76610000" z="172.59840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="37.41287000" y="959.71170000" z="206.11870000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="26.89763000" y="958.17050000" z="206.35880000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="247.35700000" y="939.92230000" z="199.63800000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="271.11050000" y="947.60330000" z="198.12580000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="269.18020000" y="928.21010000" z="197.48150000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="637.16650000" y="942.43330000" z="174.79460000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="601.77640000" y="952.59780000" z="175.12310000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="626.20440000" y="948.34510000" z="174.88860000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="593.98150000" y="956.64800000" z="175.05780000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="621.69860000" y="943.61950000" z="174.73460000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="648.84630000" y="950.57650000" z="175.13530000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-10.47417000" y="990.86200000" z="207.36050000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="6.52377300" y="973.65370000" z="208.77850000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="2.17487100" y="985.60050000" z="208.10590000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="308.97640000" y="969.27100000" z="196.50390000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-11.71423000" y="1003.63900000" z="206.28840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="132.61270000" y="1004.94300000" z="208.18360000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="236.58910000" y="1013.17300000" z="188.05850000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="252.61690000" y="1009.74500000" z="188.37140000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2DF984EA</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="275.53310000" y="1012.08400000" z="188.08430000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="364.13160000" y="1009.32600000" z="189.16170000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x97DDE28E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="407.25170000" y="1020.43000000" z="183.04860000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags>0x33740B29 NoSpawn</Flags>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="435.81940000" y="1013.82500000" z="180.76870000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="607.77790000" y="1004.70800000" z="188.54900000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xE39B7193</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="632.73480000" y="1005.80500000" z="186.56350000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="610.80390000" y="1011.57500000" z="189.32200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="606.46210000" y="1020.93700000" z="190.22670000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="660.94620000" y="1013.75800000" z="181.64960000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="126.99810000" y="1047.20900000" z="202.19340000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="142.28330000" y="1035.83400000" z="202.53020000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="135.73040000" y="1041.21900000" z="202.35990000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="238.03500000" y="1029.99900000" z="188.36340000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="295.95950000" y="1047.03500000" z="184.53730000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="285.36720000" y="1049.39000000" z="184.42690000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="310.47850000" y="1049.79800000" z="184.53890000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="454.10580000" y="1055.20800000" z="197.22650000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="143.20550000" y="1062.08400000" z="200.38760000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="135.81560000" y="1068.89400000" z="200.58380000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="291.86940000" y="1057.72700000" z="185.12090000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="313.09700000" y="1057.86200000" z="184.48330000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="299.54290000" y="1057.89500000" z="184.56690000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="446.69860000" y="1081.99300000" z="196.63860000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="457.57860000" y="1071.01300000" z="196.67430000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="808.40900000" y="1078.80700000" z="121.47870000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="816.25190000" y="1069.39900000" z="121.48030000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="95.86610000" y="1106.74100000" z="179.58560000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="88.81279000" y="1110.84600000" z="179.78950000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="81.68419000" y="1113.07500000" z="180.27840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="172.18770000" y="1105.79500000" z="175.03350000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="255.39160000" y="1091.01900000" z="178.09940000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="222.26140000" y="1115.94600000" z="177.76330000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="202.11260000" y="1090.85000000" z="179.07300000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="230.69330000" y="1116.62300000" z="177.88940000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="225.90080000" y="1108.15200000" z="178.45730000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="260.67460000" y="1096.84100000" z="177.83510000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="434.03240000" y="1095.04700000" z="196.06510000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="481.94670000" y="1093.52500000" z="194.17780000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="474.18620000" y="1098.15300000" z="194.46490000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="461.04200000" y="1093.16300000" z="195.32500000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="491.73830000" y="1104.19000000" z="192.94980000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="514.20130000" y="1101.75400000" z="192.45210000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="534.43230000" y="1114.99900000" z="191.16890000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="529.59830000" y="1110.54900000" z="191.78030000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="518.35570000" y="1091.75700000" z="193.27190000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="531.88300000" y="1096.57800000" z="193.22670000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="635.29440000" y="1110.78100000" z="190.32710000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="656.70240000" y="1097.70100000" z="188.93850000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="659.24430000" y="1118.25100000" z="188.71650000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="642.58860000" y="1107.38700000" z="189.83530000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="282.43290000" y="1137.12800000" z="179.11490000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="278.23590000" y="1143.17200000" z="179.07500000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="307.73830000" y="1147.50200000" z="180.46050000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="275.23960000" y="1132.20800000" z="178.52410000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="298.04770000" y="1139.48300000" z="180.22850000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="293.65540000" y="1131.64700000" z="179.82930000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="542.68070000" y="1133.66500000" z="188.74690000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-111.59170000" y="1175.04600000" z="161.24500000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-118.05710000" y="1169.98100000" z="161.32200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="320.55080000" y="1168.88600000" z="180.45510000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="329.47330000" y="1167.28000000" z="180.26810000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="325.24180000" y="1176.22800000" z="180.24440000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="349.06080000" y="1161.54900000" z="179.29200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="491.77720000" y="1160.30900000" z="182.80980000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="510.42500000" y="1165.02000000" z="183.91630000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="632.89540000" y="1174.22200000" z="198.24060000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="627.14030000" y="1164.15700000" z="197.39390000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-132.45450000" y="1215.34400000" z="163.33510000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-143.17480000" y="1211.08700000" z="162.63120000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-120.29400000" y="1187.12300000" z="161.59540000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-106.37030000" y="1187.31000000" z="162.56680000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="37.15962000" y="1185.94100000" z="181.33450000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="28.63339000" y="1196.94100000" z="179.26860000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="49.78918000" y="1193.14700000" z="181.12630000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="123.44710000" y="1204.95200000" z="182.58080000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="129.60680000" y="1213.22500000" z="183.27650000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="146.16370000" y="1193.82400000" z="182.18460000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="139.30400000" y="1209.74600000" z="183.97740000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="541.53460000" y="1184.21600000" z="187.52770000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="556.68890000" y="1186.51000000" z="190.28640000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="605.67150000" y="1195.05900000" z="201.04200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="627.12070000" y="1210.76600000" z="204.05380000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="1066.70400000" y="1188.62000000" z="196.53220000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-135.23680000" y="1231.20700000" z="163.90490000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-122.61400000" y="1220.96600000" z="163.09690000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-127.58700000" y="1234.54100000" z="163.08550000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="35.43600000" y="1241.19100000" z="176.73590000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="131.95450000" y="1238.98000000" z="183.89380000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="220.03600000" y="1247.68900000" z="183.59630000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="240.01570000" y="1234.67100000" z="185.53320000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="564.78730000" y="1235.73100000" z="188.08610000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="530.19000000" y="1218.18700000" z="182.67450000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="533.27640000" y="1240.48500000" z="182.04860000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="1024.60100000" y="1221.41000000" z="186.52820000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-240.88520000" y="1277.90100000" z="102.89050000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="38.78753000" y="1249.71400000" z="176.58030000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="32.38544000" y="1277.85200000" z="173.18000000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="44.50312000" y="1271.13000000" z="173.65190000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="47.98252000" y="1261.14900000" z="174.57840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="3.43418600" y="1273.54000000" z="173.92420000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="26.28897000" y="1250.91400000" z="175.02460000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="17.74159000" y="1269.76700000" z="172.94020000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="203.42220000" y="1274.94800000" z="181.63190000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="381.70390000" y="1259.61500000" z="199.72270000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="438.54730000" y="1273.16100000" z="187.78970000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="446.32000000" y="1278.50900000" z="188.89680000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="463.80510000" y="1262.03800000" z="187.21350000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="467.31080000" y="1255.73100000" z="186.38980000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="83.50025000" y="1307.66800000" z="172.19670000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="212.84910000" y="1280.64400000" z="180.50720000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="216.33770000" y="1287.84000000" z="179.90310000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="380.51390000" y="1290.70800000" z="199.92220000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="433.61330000" y="1286.20700000" z="188.12260000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-84.69476000" y="1321.11700000" z="173.38200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-62.39505000" y="1328.21300000" z="174.22380000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-49.76579000" y="1332.50200000" z="175.54950000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-32.40289000" y="1340.85000000" z="177.53040000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="3.15140800" y="1320.62200000" z="173.03930000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="15.78740000" y="1341.40700000" z="173.31650000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="73.13551000" y="1315.73700000" z="172.37250000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="101.93180000" y="1313.85900000" z="172.15730000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="91.80901000" y="1317.83700000" z="171.76210000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="159.99480000" y="1315.00700000" z="179.54360000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="178.68700000" y="1323.97300000" z="179.04520000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="157.20990000" y="1322.24700000" z="178.71840000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="638.82070000" y="1325.05200000" z="195.66780000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="658.24680000" y="1312.66600000" z="193.08980000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="692.19840000" y="1338.86100000" z="190.02300000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="673.20730000" y="1333.10000000" z="189.66790000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="649.09680000" y="1314.70500000" z="193.35290000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="680.70530000" y="1323.30200000" z="190.64570000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="8.69861600" y="1348.40300000" z="173.53040000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="269.29620000" y="1364.99000000" z="171.45500000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="97.22330000" y="1407.15000000" z="166.68040000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="103.01620000" y="1398.02800000" z="166.94980000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="328.53600000" y="1391.09500000" z="176.26130000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x9003BD6E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="692.81690000" y="1407.73100000" z="178.83010000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-27.13604000" y="1423.88000000" z="183.18440000" w="-0.94102900"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="107.92670000" y="1421.37500000" z="166.63990000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="104.22540000" y="1425.94200000" z="166.62090000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="98.66319000" y="1419.19500000" z="166.68040000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="443.49640000" y="1433.74800000" z="165.24130000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="461.02450000" y="1438.93100000" z="165.73820000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="525.04180000" y="1427.75100000" z="170.46880000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="548.42700000" y="1427.70900000" z="176.06230000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="583.17570000" y="1439.95500000" z="185.16200000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="580.93690000" y="1418.53400000" z="184.97660000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="115.13790000" y="1440.42200000" z="164.18110000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="445.74680000" y="1471.96100000" z="166.82180000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="445.90540000" y="1449.17000000" z="165.73090000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="465.43280000" y="1450.88600000" z="166.35400000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="453.57010000" y="1453.16200000" z="166.28180000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="601.22920000" y="1460.81400000" z="190.06270000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x420E0F62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-29.66990000" y="1490.11500000" z="114.22340000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x24F5E9C8</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="-21.91206000" y="1498.32900000" z="113.84170000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x24F5E9C8</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="130.05630000" y="1494.30500000" z="115.16710000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="397.07030000" y="1496.53900000" z="173.08810000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="408.54050000" y="1493.59700000" z="172.55260000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x4D9C24F6</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="484.61960000" y="1481.05100000" z="171.89080000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="462.19570000" y="1484.11100000" z="169.71290000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xB0E6AC19</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x9A7524FF</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="492.30460000" y="1498.25300000" z="172.67600000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC6312B28</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="628.83520000" y="1473.51800000" z="187.01810000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x43B5F53E</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="610.69540000" y="1486.21900000" z="186.60930000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xBDE0DF62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x419E27C2</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="708.86640000" y="1491.26500000" z="191.41670000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x420E0F62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="120.08000000" y="1510.02700000" z="115.01120000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x018253DB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="135.76640000" y="1512.66800000" z="115.63360000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="444.54260000" y="1510.49000000" z="165.62480000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x420E0F62</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="15.17777000" y="1540.27800000" z="112.77380000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x018253DB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="31.25936000" y="1545.68900000" z="112.39490000" w="0.31369700"/>
+      </Item>
+      <Item>
+        <ScenarioType>0xC511F8BE</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="535.61950000" y="1545.67300000" z="175.40050000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="529.14230000" y="1540.41800000" z="175.23290000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x6D903CDB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xFAD2A591</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="532.58480000" y="1561.12900000" z="175.61160000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x023C83CF</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="524.48930000" y="1562.64600000" z="175.80050000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x2BFCA571</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0x51245DE1</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="458.87220000" y="1586.81800000" z="200.40770000" w="0.00000000"/>
+      </Item>
+      <Item>
+        <ScenarioType>0x018253DB</ScenarioType>
+        <ModelSet/>
+        <UNK_MEMBER_0x372C80BB>0xAE76A439</UNK_MEMBER_0x372C80BB>
+        <UNK_MEMBER_0x5F0CA28A/>
+        <UNK_MEMBER_0x1C33EAF8/>
+        <UNK_MEMBER_0x795DD083 value="0"/>
+        <UNK_MEMBER_0xB14CF610 value="0"/>
+        <UNK_MEMBER_0x2ACBAD2C value="0"/>
+        <iTimeStartOverride value="0"/>
+        <iTimeEndOverride value="0"/>
+        <UNK_MEMBER_0x772644D5 value="3"/>
+        <UNK_MEMBER_0x88DD0E3B value="0"/>
+        <UNK_MEMBER_0x895D3F14 value="0"/>
+        <UNK_MEMBER_0x0EE862A5 value="0"/>
+        <Pitch value="0"/>
+        <Flags/>
+        <UNK_MEMBER_0x720BD1A0 value="0"/>
+        <UNK_MEMBER_0x00477CED x="508.61790000" y="1681.88500000" z="128.27640000" w="0.31369700"/>
+      </Item>
+    </UNK_MEMBER_0x45C8B3D0>
+  </UNK_MEMBER_0x29E21837>
+  <UNK_MEMBER_0xDCFAC098/>
+  <UNK_MEMBER_0xDC4D2D41>
+    <UNK_MEMBER_0x635909D7>
+      <min x="-290.88520000" y="679.10460000" z="99.87217000" w="-75.00000000"/>
+      <max x="1350.25700000" y="1731.88500000" z="210.92820000" w="75.00000000"/>
+    </UNK_MEMBER_0x635909D7>
+    <UNK_MEMBER_0x2FEEA5D2/>
+    <UNK_MEMBER_0x56C94556/>
+    <UNK_MEMBER_0xC201F394/>
+    <UNK_MEMBER_0x9001E6E8/>
+    <UNK_MEMBER_0x7A0D5E4B>
+      <UNK_MEMBER_0xF15D68AF/>
+      <UNK_MEMBER_0x5265B342 value="0"/>
+      <UNK_MEMBER_0x44EC9850 value="0"/>
+    </UNK_MEMBER_0x7A0D5E4B>
+  </UNK_MEMBER_0xDC4D2D41>
+  <UNK_MEMBER_0xB5FB73CB>
+    <MinCellX value="-4"/>
+    <MaxCellX value="20"/>
+    <MinCellY value="22"/>
+    <MaxCellY value="52"/>
+    <CellDimX value="64.00000000"/>
+    <CellDimY value="32.00000000"/>
+  </UNK_MEMBER_0xB5FB73CB>
+  <UNK_MEMBER_0xE529D603 content="short_array">
+    0
+    0
+    0
+    0
+    0
+    0
+    0
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    1
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    2
+    5
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    6
+    7
+    8
+    8
+    8
+    8
+    8
+    8
+    8
+    12
+    12
+    13
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    15
+    19
+    19
+    19
+    20
+    20
+    22
+    22
+    23
+    25
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    27
+    30
+    31
+    31
+    31
+    31
+    33
+    33
+    33
+    33
+    33
+    33
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    34
+    36
+    36
+    36
+    37
+    39
+    39
+    39
+    39
+    39
+    44
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    45
+    46
+    48
+    48
+    48
+    48
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    49
+    50
+    50
+    50
+    51
+    53
+    54
+    55
+    57
+    57
+    57
+    61
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    62
+    63
+    65
+    66
+    69
+    69
+    69
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    70
+    72
+    72
+    75
+    75
+    76
+    77
+    77
+    77
+    77
+    77
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    79
+    82
+    83
+    88
+    89
+    89
+    90
+    94
+    99
+    100
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    103
+    109
+    109
+    109
+    109
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    110
+    112
+    112
+    112
+    112
+    112
+    112
+    112
+    116
+    116
+    118
+    118
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    120
+    122
+    124
+    124
+    127
+    128
+    131
+    131
+    131
+    131
+    131
+    131
+    133
+    135
+    135
+    135
+    135
+    135
+    135
+    135
+    136
+    136
+    136
+    136
+    136
+    136
+    137
+    139
+    139
+    140
+    140
+    141
+    143
+    143
+    143
+    143
+    143
+    146
+    146
+    146
+    146
+    146
+    146
+    146
+    146
+    147
+    147
+    147
+    147
+    147
+    148
+    148
+    148
+    148
+    155
+    155
+    155
+    156
+    156
+    157
+    159
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    161
+    162
+    162
+    164
+    164
+    165
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    166
+    167
+    170
+    172
+    175
+    178
+    178
+    178
+    178
+    178
+    178
+    178
+    179
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    184
+    185
+    185
+    185
+    185
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    186
+    188
+    188
+    188
+    188
+    189
+    189
+    189
+    189
+    189
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    190
+    191
+    191
+    194
+    194
+    194
+    194
+    194
+    195
+    196
+    198
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    200
+    201
+    201
+    201
+    201
+    201
+    203
+    205
+    205
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    206
+    208
+    208
+    208
+    209
+    209
+    209
+    209
+    211
+    214
+    214
+    216
+    216
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    217
+    218
+    219
+    219
+    219
+    219
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    220
+    222
+    222
+    222
+    222
+    222
+    222
+    222
+    222
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    226
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    227
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+    228
+  </UNK_MEMBER_0xE529D603>
+  <UNK_MEMBER_0xD5DC5BAA/>
+  <UNK_MEMBER_0x8D486A43>
+    <UNK_MEMBER_0x4E3FFAB9/>
+  </UNK_MEMBER_0x8D486A43>
+  <UNK_MEMBER_0x54C2D719/>
+</0x58FCEA50>
