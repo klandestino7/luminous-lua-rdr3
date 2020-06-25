@@ -191,19 +191,20 @@ function triggerUse(User, itemData)
     end
 
     if itemId == "pigeonpost" then
-        TriggerEvent("VP:PEAGLE:SendMessage")
+        TriggerEvent("VP:PEAGLE:SendMessage", source)
     end    
 
     if itemId == "chest_small" then
         local var = itemData.varOnUse
-
         TriggerEvent("VP:CHESTS:StartPlayerPlacement", source, var)
-
         return true
     end
 
-    if itemId:find("tents") then
-        TriggerClientEvent('VP:TENTS:usedItem', source, itemId)
+    if itemId:find("acamp") then
+        local var = itemData.varOnUse     
+        print(var)   
+        TriggerClientEvent('VP:TENTS:usedItem', source, var)
+        User:closeInventory()
     end
 
     if itemId:find("_seed") then

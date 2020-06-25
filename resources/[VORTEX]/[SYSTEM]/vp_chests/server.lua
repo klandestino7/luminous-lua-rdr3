@@ -22,7 +22,7 @@ AddEventHandler(
 
 AddEventHandler(
     'VP:CHESTS:StartPlayerPlacement',
-    function(source, capacity)
+    function(source, capacity)      
         local _source = source
         tempPCapacity[_source] = capacity
         TriggerClientEvent('VP:CHESTS:StartPlayerPlacement', _source, capacity)
