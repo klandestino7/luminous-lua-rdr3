@@ -66,20 +66,20 @@ function UnloadAtVectorIndex(indexComposite, indexVector, sanityCheck)
     end
 end
 
-function SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
+function SetVectorIndexSuppressed(indexComposite, index, suppress)
     if suppress then
-        if not IsVectorIndexSuppressed(indexComposite, indexVector) then
-            UnloadAtVectorIndex(indexComposite, indexVector)
+        if not IsVectorIndexSuppressed(indexComposite, index) then
+            UnloadAtVectorIndex(indexComposite, index)
 
             if popSuppressed[indexComposite] == nil then
                 popSuppressed[indexComposite] = {}
             end
 
-            popSuppressed[indexComposite][indexVector] = true
+            popSuppressed[indexComposite][index] = true
         end
     else
-        if IsVectorIndexSuppressed(indexComposite, indexVector) then
-            popSuppressed[indexComposite][indexVector] = nil
+        if IsVectorIndexSuppressed(indexComposite, index) then
+            popSuppressed[indexComposite][index] = nil
         end
     end
 end
@@ -122,7 +122,7 @@ RegisterNetEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed")
 AddEventHandler(
     "VP:HERB_POPULATION:SetVectorIndexSuppressed",
     function(indexComposite, index, suppress)
-        SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
+        SetVectorIndexSuppressed(indexComposite, index, suppress)
     end
 )
 
@@ -151,24 +151,39 @@ AddEventHandler(
 
                 local playerPosition = GetEntityCoords(PlayerPedId())
 
-                for indexComposite, t in pairs(pop) do
-                    for index, v in pairs(t) do
-                        local dist = #(playerPosition - v)
-                        if lastDist == nil or dist < lastDist then
-                            lastDist = dist
+          
 
-                            closestCompositeType = compositeType
-                            closestIndexComposite = indexComposite
-                            closestIndex = index
+                for indexComposite = 1, #CompositeVectors2 do
+                    local d = CompositeVectors2[indexComposite]
+                  --  print(d[1])
+                    local vectors = CompositeVectors2[indexComposite].vectors    
+    
+                    for index = 1, #vectors do
+
+                        local v = vectors[index]   
+    
+                        local dist = #(playerPosition - v)
+                        if dist <= SCOPE_RANGE_LOAD then
+                            
+                            if lastDist == nil or dist < lastDist then
+                                lastDist = dist
+    
+                                closestCompositeType = d.name
+                                closestIndexComposite = indexComposite
+                                closestIndex = index
+                            end
+          
                         end
                     end
                 end
-
+                
                 closestCompositeType = closestCompositeType:gsub("COMPOSITE_LOOTABLE_", "")
-
+                if closestIndexComposite == nil then
+                    return
+                end
           --      print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
 
-                TriggerServerEvent("VP:HERB_POPULATION:Gathered", compositeType, closestIndexComposite, closestIndex)
+                TriggerServerEvent("VP:HERB_POPULATION:Gathered", closestCompositeType, closestIndexComposite, closestIndex)
             end
         end
     end

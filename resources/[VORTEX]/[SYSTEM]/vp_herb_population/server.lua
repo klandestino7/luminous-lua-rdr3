@@ -69,7 +69,7 @@ local toItem = {
     "YARROW_DEF"
 }
 
-local SUPPRESSION_WEAROFF_SECONDS = 10 * 60
+local SUPPRESSION_WEAROFF_SECONDS = 1
 
 local popSuppressed = {}
 
@@ -78,10 +78,10 @@ AddEventHandler(
     "VP:HERB_POPULATION:Gathered",
     function(compositeTypeFormatted, indexComposite, index)
         local _source = source
-
-        if not IsVectorIndexLoaded(compositeType, index) then
+       -- print(compositeTypeFormatted, indexComposite, index)
+        if not IsVectorIndexSuppressed(compositeTypeFormatted, index) then
             local item = toItem[compositeTypeFormatted]
-
+         --   print(item)
             if item ~= nil then
                 local User = API.getUserFromSource(_source)
                 local Character = User:getCharacter()
@@ -108,24 +108,24 @@ function IsVectorIndexSuppressed(indexComposite, index)
     return popSuppressed[indexComposite] ~= nil and popSuppressed[indexComposite][index] ~= nil or false
 end
 
-function SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
+function SetVectorIndexSuppressed(indexComposite, index, suppress)
     if suppress then
-        if not IsVectorIndexSuppressed(indexComposite, indexVector) then
+        if not IsVectorIndexSuppressed(indexComposite, index) then
             if popSuppressed[indexComposite] == nil then
                 popSuppressed[indexComposite] = {}
             end
 
-            popSuppressed[indexComposite][indexVector] = os.time() + (SUPPRESSION_WEAROFF_SECONDS * 1000)
+            popSuppressed[indexComposite][index] = os.time() + (SUPPRESSION_WEAROFF_SECONDS * 1000)
         end
     else
-        if IsVectorIndexSuppressed(indexComposite, indexVector) then
-            popSuppressed[indexComposite][indexVector] = nil
+        if IsVectorIndexSuppressed(indexComposite, index) then
+            popSuppressed[indexComposite][index] = nil
         end
     end
 
-    print(indexComposite, indexVector, " is now suppressed(" .. (suppress and "true" or "false") .. ")")
-
-    TriggerClientEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed", -1, indexComposite, indexVector, suppress)
+    print(indexComposite, index, " is now suppressed(" .. (suppress and "true" or "false") .. ")")
+    print(indexComposite, index, suppress)
+    TriggerClientEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed", -1, indexComposite, index, suppress)
 end
 
 Citizen.CreateThread(
@@ -138,6 +138,7 @@ Citizen.CreateThread(
             for indexComposite, v in pairs(popSuppressed) do
                 for index, suppression_wearoff_timestamp in pairs(v) do
                     if suppression_wearoff_timestamp <= timestamp then
+                     --   print(indexComposite, index)
                         SetVectorIndexSuppressed(indexComposite, index, false)
                     end
                 end
