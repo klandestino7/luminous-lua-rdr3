@@ -7,6 +7,9 @@ local SCOPE_RANGE_UNLOAD = 120.0
 Citizen.CreateThread(
     function()
         while true do
+
+            Citizen.Wait(10 - 1000) -- 10 sec
+
             local playerPosition = GetEntityCoords(PlayerPedId())
 
             for indexComposite = 1, #CompositeVectors2 do
@@ -36,8 +39,6 @@ Citizen.CreateThread(
                     end
                 end
             end
-
-            Citizen.Wait(60000)
         end
     end
 )
@@ -68,7 +69,7 @@ end
 
 function SetVectorIndexSuppressed(indexComposite, index, suppress)
     if suppress then
-        if not IsVectorIndexSuppressed(indexComposite, index) then
+        -- if not IsVectorIndexSuppressed(indexComposite, index) then
             UnloadAtVectorIndex(indexComposite, index)
 
             if popSuppressed[indexComposite] == nil then
@@ -76,11 +77,11 @@ function SetVectorIndexSuppressed(indexComposite, index, suppress)
             end
 
             popSuppressed[indexComposite][index] = true
-        end
+        -- end
     else
-        if IsVectorIndexSuppressed(indexComposite, index) then
+        -- if IsVectorIndexSuppressed(indexComposite, index) then
             popSuppressed[indexComposite][index] = nil
-        end
+        -- end
     end
 end
 
@@ -126,6 +127,14 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("VP:HERB_POPULATION:SetPopSuppressed")
+AddEventHandler(
+    "VP:HERB_POPULATION:SetPopSuppressed",
+    function(ps)
+        popSuppressed = ps
+    end
+)
+
 RegisterNetEvent("VP:HERB_POPULATION:ForceVectorIndexReload")
 AddEventHandler(
     "VP:HERB_POPULATION:ForceVectorIndexReload",
@@ -151,37 +160,32 @@ AddEventHandler(
 
                 local playerPosition = GetEntityCoords(PlayerPedId())
 
-          
-
                 for indexComposite = 1, #CompositeVectors2 do
                     local d = CompositeVectors2[indexComposite]
-                  --  print(d[1])
-                    local vectors = CompositeVectors2[indexComposite].vectors    
-    
-                    for index = 1, #vectors do
+                    --  print(d[1])
+                    local vectors = CompositeVectors2[indexComposite].vectors
 
-                        local v = vectors[index]   
-    
+                    for index = 1, #vectors do
+                        local v = vectors[index]
+
                         local dist = #(playerPosition - v)
                         if dist <= SCOPE_RANGE_LOAD then
-                            
                             if lastDist == nil or dist < lastDist then
                                 lastDist = dist
-    
+
                                 closestCompositeType = d.name
                                 closestIndexComposite = indexComposite
                                 closestIndex = index
                             end
-          
                         end
                     end
                 end
-                
+
                 closestCompositeType = closestCompositeType:gsub("COMPOSITE_LOOTABLE_", "")
                 if closestIndexComposite == nil then
                     return
                 end
-          --      print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
+                --      print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
 
                 TriggerServerEvent("VP:HERB_POPULATION:Gathered", closestCompositeType, closestIndexComposite, closestIndex)
             end
@@ -210,40 +214,38 @@ AddEventHandler(
     end
 )
 
-Citizen.CreateThread(
-    function()
-        local upVector = vec3(0.0, 0.0, 1.5)
+-- Citizen.CreateThread(
+--     function()
+--         local upVector = vec3(0.0, 0.0, 1.5)
 
-        local DRAW_LINE = GetHashKey("DRAW_LINE")
+--         local DRAW_LINE = GetHashKey("DRAW_LINE")
 
-        while true do
-            Citizen.Wait(0)
+--         while true do
+--             Citizen.Wait(0)
 
-            local playerPosition = GetEntityCoords(PlayerPedId())
+--             local playerPosition = GetEntityCoords(PlayerPedId())
 
-            for indexComposite = 1, #CompositeVectors2 do
-                local d = CompositeVectors2[indexComposite]
-              --  print(d[1])
-                local vectors = CompositeVectors2[indexComposite].vectors
+--             for indexComposite = 1, #CompositeVectors2 do
+--                 local d = CompositeVectors2[indexComposite]
+--                 --  print(d[1])
+--                 local vectors = CompositeVectors2[indexComposite].vectors
 
+--                 for index = 1, #vectors do
+--                     local v = vectors[index]
+--                     -- if IsVectorIndexLoaded(indexComposite, index) then
 
-                for index = 1, #vectors do
-                    
-                    local v = vectors[index]
-                    -- if IsVectorIndexLoaded(indexComposite, index) then                  
-
-                    local dist = #(playerPosition - v)
-                    if dist <= SCOPE_RANGE_LOAD then
-                        Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 0, 255, 0, 255)
-                    -- else
-                    -- Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 255, 0, 0, 255)
-                    -- end
-                    end
-                end
-            end
-        end
-    end
-)
+--                     local dist = #(playerPosition - v)
+--                     if dist <= SCOPE_RANGE_LOAD then
+--                         Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 0, 255, 0, 255)
+--                     -- else
+--                     -- Citizen.InvokeNative(DRAW_LINE & 0xFFFFFFFF, v, v + upVector, 255, 0, 0, 255)
+--                     -- end
+--                     end
+--                 end
+--             end
+--         end
+--     end
+-- )
 
 -- RegisterCommand(
 --     "eagleeye",

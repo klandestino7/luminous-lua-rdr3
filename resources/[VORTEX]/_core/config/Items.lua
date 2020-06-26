@@ -215,7 +215,7 @@ ItemList = {
         weight = 1.2,
         description = "Esta Pistola foi uma das mais utilizadas na guerra civil de Lemoyne, sua precisão e dano é inigualável.",
         stackSize = 5,
-        worldModel = "w_pistol_volcanic01",
+        worldModel = "w_pistol_volcanic01"
     },
     ["repeater_carbine"] = {
         type = "weapon",
@@ -223,7 +223,7 @@ ItemList = {
         weight = 2.0,
         description = "Carabina capaz de disparar vários tiros em poucos segundos, sua recarga é fácil e rápida.",
         stackSize = 5,
-        worldModel = "w_repeater_carbine01",
+        worldModel = "w_repeater_carbine01"
     },
     ["repeater_henry"] = {
         type = "weapon",
@@ -231,7 +231,7 @@ ItemList = {
         weight = 2.0,
         description = "Rifle longo de repetição, precisamente letal e lépida.",
         stackSize = 1,
-        worldModel = "w_repeater_henry01",
+        worldModel = "w_repeater_henry01"
     },
     ["repeater_evans"] = {
         type = "weapon",
@@ -253,7 +253,7 @@ ItemList = {
         weight = 1.5,
         description = "Rifle feito especialmente para caças, acertar uma bala de anti-pragas na cabeça de qualquer animal não-lendário certamente o matará.",
         stackSize = 1,
-        worldModel = "w_repeater_pumpaction01",
+        worldModel = "w_repeater_pumpaction01"
     },
     ["shotgun_repeating"] = {
         type = "weapon",
@@ -268,15 +268,14 @@ ItemList = {
         weight = 1.2,
         description = "Revólver simples e de porte livre, todos os peões possuem um.",
         stackSize = 1,
-        worldModel = "w_revolver_cattleman01",
+        worldModel = "w_revolver_cattleman01"
     },
     ["revolver_cattleman_john"] = {
         type = "weapon",
         name = "Revolver do John",
         weight = 1.2,
         description = "Este revólver já esteve nas mãos de John Marston.",
-        stackSize = 1,
-        
+        stackSize = 1
     },
     ["revolver_cattleman_mexican"] = {
         type = "weapon",
@@ -319,7 +318,7 @@ ItemList = {
         weight = 1.2,
         description = "O revólver Lemat causa um dano desestrutural a inimigos alados, seja rápido e sua presa não resistirá.",
         stackSize = 1,
-        worldModel = "w_revolver_lemat01",
+        worldModel = "w_revolver_lemat01"
     },
     -- ['revolver_navy'] = {
     --     type = 'weapon',
@@ -369,7 +368,7 @@ ItemList = {
         weight = 4.5,
         description = "Um rifle capaz de executar disparos a longa distância. Uma bala já é o bastante para matar qualquer inimigo.",
         stackSize = 1,
-        worldModel = "w_rifle_rollingblock01",
+        worldModel = "w_rifle_rollingblock01"
     },
     ["sniperrifle_rollingblock_exotic"] = {
         type = "weapon",
@@ -426,7 +425,7 @@ ItemList = {
         weight = 2.2,
         description = "Um armamento capaz de disparar vários projéteis ao mesmo tempo.",
         stackSize = 1,
-        worldModel = "w_shotgun_sawed01",
+        worldModel = "w_shotgun_sawed01"
     },
     ["shotgun_semiauto"] = {
         type = "weapon",
@@ -792,7 +791,7 @@ ItemList = {
         weight = 0.1,
         description = "Munição produzida especialmente para pistolas.",
         stackSize = 60,
-        worldModel = "s_inv_pistolammo01x",
+        worldModel = "s_inv_pistolammo01x"
     },
     ["ammo_22"] = {
         type = "ammo",
@@ -836,7 +835,7 @@ ItemList = {
         weight = 0.1,
         description = "Munição produzida especialmente para revólveres.",
         stackSize = 60,
-        worldModel = "s_inv_revolverammo01x",
+        worldModel = "s_inv_revolverammo01x"
     },
     -- ['ammo_revolver_express'] = {
     --     type = 'ammo',
@@ -872,7 +871,7 @@ ItemList = {
         weight = 0.1,
         description = "Munição produzida especialmente para carabinas.",
         stackSize = 45,
-        worldModel = "s_inv_repeat_rifleammo01x",
+        worldModel = "s_inv_repeat_rifleammo01x"
     },
     -- ['ammo_repeater_express'] = {
     --     type = 'ammo',
@@ -901,7 +900,7 @@ ItemList = {
         weight = 0.1,
         description = "Munição produzida especialmente para rifles.",
         stackSize = 45,
-        worldModel = "s_inv_rifleammo01x",
+        worldModel = "s_inv_rifleammo01x"
     },
     -- ['ammo_rifle_express'] = {
     --     type = 'ammo',
@@ -944,7 +943,7 @@ ItemList = {
         weight = 0.1,
         description = "Munição produzida especialmente para shotguns.",
         stackSize = 35,
-        worldModel = "s_inv_shotgunammo01x",
+        worldModel = "s_inv_shotgunammo01x"
     },
     -- ['ammo_shotgun_buckshot_incendiary'] = {
     --     type = 'ammo',
@@ -1082,7 +1081,7 @@ ItemList = {
         description = "Fogueira para iluminar e esquentar sua noite.",
         stackSize = 1,
         varOnUse = 1946434792
-    }, 
+    },
     ["acamp_firemed"] = {
         type = "kit",
         name = "Fogueira Grande",
@@ -1090,7 +1089,7 @@ ItemList = {
         description = "Fogueira para iluminar e esquentar sua noite.",
         stackSize = 1,
         varOnUse = 634946146
-    },   
+    },
     ["acamp_firebig"] = {
         type = "kit",
         name = "Fogueira Grande",
@@ -1106,7 +1105,7 @@ ItemList = {
         description = "Fogueira para iluminar e esquentar sua noite.",
         stackSize = 1,
         varOnUse = -689630872
-    },    
+    },
     ["acamp_bedroll"] = {
         type = "kit",
         name = "Saco de Dormir",
@@ -1138,7 +1137,7 @@ ItemList = {
         description = "Tenda aberta aos lados, Arme sua tenda e descance.",
         stackSize = 1,
         varOnUse = -1223489959
-    }, 
+    },
     ["acamp_tents_med_closed"] = {
         type = "kit",
         name = "Tenda Media",
@@ -1146,7 +1145,7 @@ ItemList = {
         description = "Tenda aberta aos lados, Arme sua tenda e descance.",
         stackSize = 1,
         varOnUse = -1775023743
-    },     
+    },
     ["acamp_tents_big"] = {
         type = "kit",
         name = "Tenda Grande",
@@ -1183,11 +1182,60 @@ ItemList = {
         description = "Com este papel você consegue escrever anotações ou uma carta.",
         stackSize = -1
     },
+    ["herb_american_ginseng"] = {
+        type = "generic",
+        name = "Ginseng Americano",
+        weight = 0.3,
+        description = "Fruto folha, útil para sarar doenças.",
+        stackSize = 20
+    },
+    -- ["herb_"] = {
+    --     type = "generic",
+    --     name = "Orquídea Dama da Noite",
+    --     weight = 1.0,
+    --     description = "Extremamente rara, brota apenas durante a noite. É uma lenda ao mesmo tempo que poderosamente venenosa.",
+    --     stackSize = 45
+    -- },
     ["herb_alaskan_ginseng"] = {
         type = "generic",
-        name = "Alaskan Ginseng",
-        weight = 0.5,
-        description = '🌿',
-        stackSize = 3, 
-    }
+        name = "Ginseng do Alaska",
+        weight = 0.4,
+        description = "Reside em regiões montanosas e frias normalmente, é um ótimo ingrediente de um bom chá.",
+        stackSize = 45
+    },
+    ["herb_oregano"] = {
+        type = "generic",
+        name = "Orégano",
+        weight = 0.6,
+        description = "Uma erva perena, é utilizado normalmente para fins codimentares, como tempero. Ajuda a manter o fôlego por mais tempo.",
+        stackSize = 45
+    },
+    -- ["sugar"] = {
+    --     type = "generic",
+    --     name = "Orquídea Dragonesa",
+    --     weight = 0.6,
+    --     description = "A grande orquídea dragonesa, rara de se encontrar, só pode ser vista por aqueles que dela precisam. Seus fins são diversos, pode chegar a curar uma doença grave como a tuberculose.",
+    --     stackSize = 45
+    -- },
+    ["herb_oleander_sage"] = {
+        type = "generic",
+        name = "Sálvia Oleandro",
+        weight = 0.6,
+        description = "Pequena flor de flocos, é medicinal.",
+        stackSize = 45
+    },
+    ["herb_red_sage"] = {
+        type = "generic",
+        name = "Orquídea Diabo Vermelho",
+        weight = 0.6,
+        description = "A aparência encantadora desta bela flor rejuvesnece até a alma mais solitária, a sua beleza é uma camuflagem perfeita para matar o desconhecido que a toca. As propriedades desta flor servem especialmente para a fabricação de moonshines.",
+        stackSize = 45
+    },
+    -- ["herb_oregano"] = {
+    --     type = "generic",
+    --     name = "Semente de Orégano",
+    --     weight = 0.3,
+    --     description = "Semente de uma pequena muda de orégano que pode ser plantada.",
+    --     stackSize = 45
+    -- }
 }

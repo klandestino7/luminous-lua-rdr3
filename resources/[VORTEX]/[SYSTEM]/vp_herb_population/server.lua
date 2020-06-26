@@ -34,7 +34,7 @@ local toItem = {
     "INDIAN_TOBACCO_DEF",
     "LOON_EGG_3_DEF",
     "MILKWEED_DEF",
-    "OLEANDER_SAGE_DEF",
+    ["OLEANDER_SAGE_DEF"] = "herb_oleander_sage",
     "ORCHID_ACUNA_STAR_DEF",
     "ORCHID_CIGAR_DEF",
     "ORCHID_CLAM_SHELL_DEF",
@@ -49,12 +49,12 @@ local toItem = {
     "ORCHID_SPARROWS_DEF",
     "ORCHID_SPIDER_DEF",
     "ORCHID_VANILLA_DEF",
-    "OREGANO_DEF",
+    ["OREGANO_DEF"] = "herb_oregano",
     "PARASOL_MUSHROOM_DEF",
     "PRAIRIE_POPPY_DEF",
     "RAMS_HEAD_DEF",
     "RED_RASPBERRY_DEF",
-    "RED_SAGE_DEF",
+    ["RED_SAGE_DEF"] = "herb_red_sage",
     "TEXAS_BONNET_DEF",
     -- "TEXAS_BONNET_INTERACTABLE_DEF",
     "VIOLET_SNOWDROP_DEF",
@@ -69,7 +69,7 @@ local toItem = {
     "YARROW_DEF"
 }
 
-local SUPPRESSION_WEAROFF_SECONDS = 1
+local SUPPRESSION_WEAROFF_SECONDS = 10 * 60
 
 local popSuppressed = {}
 
@@ -78,10 +78,8 @@ AddEventHandler(
     "VP:HERB_POPULATION:Gathered",
     function(compositeTypeFormatted, indexComposite, index)
         local _source = source
-       -- print(compositeTypeFormatted, indexComposite, index)
-        if not IsVectorIndexSuppressed(compositeTypeFormatted, index) then
+        if not IsVectorIndexSuppressed(indexComposite, index) then
             local item = toItem[compositeTypeFormatted]
-         --   print(item)
             if item ~= nil then
                 local User = API.getUserFromSource(_source)
                 local Character = User:getCharacter()
@@ -93,8 +91,14 @@ AddEventHandler(
                 local Inventory = Character:getInventory()
 
                 if Inventory:addItem(item, 1) then
-                    User:notify("error", "YAY")
                     SetVectorIndexSuppressed(indexComposite, index, true)
+                    
+                    if not User:hasInventoryOpen() then
+                        User:notify("item", item, 1)
+                    end
+
+                    Character:varyExp(2)
+                    User:notify("xp", 2)
                 else
                     User:notify("error", "Sem espaço no aforje!")
                     TriggerClientEvent("VP:HERB_POPULATION:ForceVectorIndexReload", _source, indexComposite, index)
@@ -110,21 +114,19 @@ end
 
 function SetVectorIndexSuppressed(indexComposite, index, suppress)
     if suppress then
-        if not IsVectorIndexSuppressed(indexComposite, index) then
-            if popSuppressed[indexComposite] == nil then
-                popSuppressed[indexComposite] = {}
-            end
+        -- end
+        -- if not IsVectorIndexSuppressed(indexComposite, index) then
+        if popSuppressed[indexComposite] == nil then
+            popSuppressed[indexComposite] = {}
+        end
 
-            popSuppressed[indexComposite][index] = os.time() + (SUPPRESSION_WEAROFF_SECONDS * 1000)
-        end
+        popSuppressed[indexComposite][index] = os.time() + (SUPPRESSION_WEAROFF_SECONDS * 1000)
     else
-        if IsVectorIndexSuppressed(indexComposite, index) then
-            popSuppressed[indexComposite][index] = nil
-        end
+        -- end
+        -- if IsVectorIndexSuppressed(indexComposite, index) then
+        popSuppressed[indexComposite][index] = nil
     end
 
-    print(indexComposite, index, " is now suppressed(" .. (suppress and "true" or "false") .. ")")
-    print(indexComposite, index, suppress)
     TriggerClientEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed", -1, indexComposite, index, suppress)
 end
 
@@ -138,11 +140,20 @@ Citizen.CreateThread(
             for indexComposite, v in pairs(popSuppressed) do
                 for index, suppression_wearoff_timestamp in pairs(v) do
                     if suppression_wearoff_timestamp <= timestamp then
-                     --   print(indexComposite, index)
                         SetVectorIndexSuppressed(indexComposite, index, false)
                     end
                 end
             end
+        end
+    end
+)
+
+RegisterNetEvent("API:playerSpawned")
+AddEventHandler(
+    "API:playerSpawned",
+    function(source, user_id, isFirstSpawn)
+        if isFirstSpawn then
+            TriggerClientEvent("VP:HERB_POPULATION:SetPopSuppressed", source, popSuppressed)
         end
     end
 )
