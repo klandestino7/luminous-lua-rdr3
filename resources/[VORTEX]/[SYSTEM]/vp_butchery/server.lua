@@ -92,7 +92,9 @@ AddEventHandler(
 
         if Inventory:addItem("money", payment) then
             User:notify("dollar", payment / 100)
-
+            
+            Character:varyExp(5)
+            
             TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
         else
             TriggerClientEvent("VP:BUTCHER:EntityNotAccepted", _source, entity)
