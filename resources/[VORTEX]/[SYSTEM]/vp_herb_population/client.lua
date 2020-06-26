@@ -100,12 +100,12 @@ function IsVectorIndexSuppressed(indexComposite, index)
     return popSuppressed[indexComposite] ~= nil and popSuppressed[indexComposite][index] ~= nil or false
 end
 
-function LookupTableGetCompositeNameFromIndex(index)
+function LookupTableGetCompositeNameFromIndex(indexComposite)
     return CompositeVectors2[indexComposite].name
 end
 
 function LookupTableGetVectorFromIndex(indexComposite, index)
-    return CompositeVectors2[indexComposite][index]
+    return CompositeVectors2[indexComposite].vectors[index]
 end
 
 function RequestAndWaitForComposite(compositeHash)
@@ -164,9 +164,9 @@ AddEventHandler(
                     end
                 end
 
-                compositeType = compositeType:gsub("COMPOSITE_LOOTABLE_", "")
+                closestCompositeType = closestCompositeType:gsub("COMPOSITE_LOOTABLE_", "")
 
-                print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
+          --      print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
 
                 TriggerServerEvent("VP:HERB_POPULATION:Gathered", compositeType, closestIndexComposite, closestIndex)
             end
@@ -207,15 +207,15 @@ Citizen.CreateThread(
             local playerPosition = GetEntityCoords(PlayerPedId())
 
             for indexComposite = 1, #CompositeVectors2 do
-                -- local d = CompositeVectors2[indexComposite]
-
+                local d = CompositeVectors2[indexComposite]
+              --  print(d[1])
                 local vectors = CompositeVectors2[indexComposite].vectors
 
-                for index = 1, #vectors do
-                    local v = vectors[i]
-                    -- if IsVectorIndexLoaded(indexComposite, index) then
 
-                    print("a", v)
+                for index = 1, #vectors do
+                    
+                    local v = vectors[index]
+                    -- if IsVectorIndexLoaded(indexComposite, index) then                  
 
                     local dist = #(playerPosition - v)
                     if dist <= SCOPE_RANGE_LOAD then

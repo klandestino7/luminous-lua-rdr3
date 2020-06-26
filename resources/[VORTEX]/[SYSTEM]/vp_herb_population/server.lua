@@ -128,26 +128,20 @@ function SetVectorIndexSuppressed(indexComposite, indexVector, suppress)
     TriggerClientEvent("VP:HERB_POPULATION:SetVectorIndexSuppressed", -1, indexComposite, indexVector, suppress)
 end
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.CreateThread(
---                 function()
---                     while true do
---                         Citizen.Wait(1 * 60 * 1000) -- 1 Min
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(1 * 60 * 1000) -- 1 Min
 
---                         local timestamp = os.time()
+            local timestamp = os.time()
 
---                         for indexComposite, v in pairs(popSuppressed) do
---                             for index, suppression_wearoff_timestamp in pairs(v) do
---                                 if suppression_wearoff_timestamp <= timestamp then
---                                     SetVectorIndexSuppressed(indexComposite, index, false)
---                                 end
---                             end
---                         end
---                     end
---                 end
---             )
---         end
---     end
--- )
+            for indexComposite, v in pairs(popSuppressed) do
+                for index, suppression_wearoff_timestamp in pairs(v) do
+                    if suppression_wearoff_timestamp <= timestamp then
+                        SetVectorIndexSuppressed(indexComposite, index, false)
+                    end
+                end
+            end
+        end
+    end
+)
