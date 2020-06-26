@@ -10,7 +10,7 @@ local bauId = {}
 
 local inventory_items = {
   [1] = {["melee_hatchet_hunter_rusted"] = 2, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
-  [2] = {["melee_knife_vampire"] = 1, ["pistol_mauser_drunk"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
+  [2] = {["melee_knife_vampire"] = 1, ["WEAPON_REVOLVER_CATTLEMAN_JOHN"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
   [3] = {["revolver_cattleman"] = 3, ["bow"] = 2, ["ammo_arrow"] = 20},
   [4] = {["medicine_good"] = 1, ["shotgun_semiauto"] = 2, ["gold"] = 100},
   [5] = {["lasso"] = 3, ["shotgun_repeating"] = 1, ["money"] = 5000},
