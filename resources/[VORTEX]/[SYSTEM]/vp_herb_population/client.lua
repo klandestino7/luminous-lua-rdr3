@@ -8,7 +8,7 @@ Citizen.CreateThread(
     function()
         while true do
 
-            Citizen.Wait(10 - 1000) -- 10 sec
+            Citizen.Wait(10 * 1000) -- 10 sec
 
             local playerPosition = GetEntityCoords(PlayerPedId())
 
@@ -22,7 +22,7 @@ Citizen.CreateThread(
                 local vectors = d.vectors
 
                 for index = 1, #vectors do
-                    if not IsVectorIndexSuppressed() then
+                    if not IsVectorIndexSuppressed(indexComposite, index) then
                         local v = vectors[index]
 
                         local dist = #(playerPosition - v)
