@@ -76,7 +76,7 @@ window.addEventListener("message", function(event) {
 
         if (quantity < 1.0) {
             quantity *= 100;
-            quantity = "¢" + quantity.toFixed(0);
+            quantity = quantity.toFixed(0) + "¢";
         } else {
             quantity = "$" + quantity.toFixed(2);
         }
