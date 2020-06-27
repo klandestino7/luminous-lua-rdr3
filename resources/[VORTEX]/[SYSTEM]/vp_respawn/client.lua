@@ -360,7 +360,7 @@ function HandleAsInjured(fatal)
 	if fatal == true then
 		-- print("Died of fatal cause", fatal)
 
-		fullDeathAtGameTime = GetGameTimer() + 1000 * 60 * 5
+		fullDeathAtGameTime = GetGameTimer() + 1000 * 60 * 10
 		-- fullDeathAtGameTime = GetGameTimer() + 1000
 
 		InitiateRespawnPrompt()
