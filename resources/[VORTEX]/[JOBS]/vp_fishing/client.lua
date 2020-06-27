@@ -56,7 +56,15 @@ Citizen.CreateThread(
                             if dist <= 1.0 then
                                 -- Citizen.InvokeNative(0x978AA2323ED32209, bobberHandle, 0.0)
                                 -- Citizen.InvokeNative(0x978AA2323ED32209, hookHandle, 0.0)
-                                ClearPedTasksImmediately(fishHandle)
+
+                                Citizen.InvokeNative(0xF0FBF193F1F5C0EA, fishHandle)
+
+                                SetPedConfigFlag(fishHandle, 17, true)
+
+                                -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 512)
+
+                                Citizen.InvokeNative(0x1F298C7BD30D1240, playerPed)
+                                ClearPedTasksImmediately(fishHandle, false, true)
                                 Citizen.InvokeNative(0x1A52076D26E09004, playerPed, fishHandle)
 
                                 FISHING_SET_FISH_HANDLE(fishHandle)
@@ -64,7 +72,9 @@ Citizen.CreateThread(
 
                                 -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 8196)
 
-                                FISHING_SET_TRANSITION_FLAG(4)
+                                -- FISHING_SET_TRANSITION_FLAG(64)
+                                -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 8192)
+                                -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 16384)
 
                                 local bobberHandle = FISHING_GET_BOBBER_HANDLE()
                                 break
@@ -99,7 +109,7 @@ Citizen.CreateThread(
                     --     FISHING_SET_F_14(1.0)
                     -- end
 
-                    FISHING_SET_F_14(1.0)
+                    -- FISHING_SET_F_14(1.0)
 
                     -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 2048)
 
@@ -122,7 +132,7 @@ Citizen.CreateThread(
                     -- end
 
                     if not IsPedFleeing(fishHandle) then
-                        print('flee')
+                        print("flee")
                         -- ClearPedTasks(fishHandle, 1, 0)
                         TaskSmartFleePed(fishHandle, playerPed, 40.0, 20000, 8, 1077936128)
                     end
@@ -474,7 +484,7 @@ Any _GET_TASK_FISHING_DATA(Ped ped, Any* structData);
     f_15 = float
     f_16 = Unk int. (Some state?)
     f_17 = Going to fight shake? (float)
-    f_18 = Fish size index. (0 - 4 or so). / REEL (4) WHEN ON STATE 7
+    f_18 = Fish size index. (0 - 4 or so). / Setting to 4 when on state 7, will make you reel slowly
     f_19 = Unk.
     f_20 = Unk float.
     f_21 = Line break apart float.
