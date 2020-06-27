@@ -319,7 +319,9 @@ RegisterCommand(
         local Character = User:getCharacter()
 
         if args[2] ~= nil then
-            cAPI.SetPlayerPed(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
+            if Character:hasGroupOrInheritance("admin") then
+                cAPI.SetPlayerPed(API.getUserFromUserId(parseInt(args[1])):getSource(), args[2])
+            end
         else
             if Character:hasGroupOrInheritance("admin") then
                 cAPI.SetPlayerPed(source, args[1])
@@ -625,7 +627,7 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
 
-        if Character:hasGroup("admin") then
+        if Character:hasGroupOrInheritance("admin") then
             if args[2] ~= nil then
                 local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
                 if tplayer ~= nil then
