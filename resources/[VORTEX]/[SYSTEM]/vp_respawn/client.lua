@@ -342,6 +342,7 @@ local Locations = {
 
 local prompt_getup
 local prompt_respawn
+local prompt_giveup
 local prompt_group
 
 function HandleAsInjured(fatal)
@@ -349,7 +350,6 @@ function HandleAsInjured(fatal)
 
 	TookDamageToVitalOrgan = false
 	ClearPedLastDamageBone(ped)
-
 
 	CreateFakeCam()
 
@@ -434,7 +434,6 @@ function HandleAsInjured(fatal)
 			end
 		end
 	else
-		
 		isBadlyInjuried = true
 
 		-- print("Died of simple cause")
@@ -447,6 +446,7 @@ function HandleAsInjured(fatal)
 		PlayDice()
 
 		InitiateGetUpPrompt()
+
 		PromptSetEnabled(prompt_getup, false)
 
 		while isBadlyInjuried do
@@ -482,6 +482,17 @@ function HandleAsInjured(fatal)
 					CreateFakeCam()
 				end
 
+				if PromptIsEnabled(prompt_giveup) == 1 and PromptHasHoldModeCompleted(prompt_giveup) == 1 then
+					isBadlyInjuried = false
+
+					TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 1)
+
+					PromptDelete(prompt_getup)
+					PromptDelete(prompt_giveup)
+
+					HandleAsInjured(true)
+				end
+
 				if PromptIsEnabled(prompt_getup) and NativePromptHasMashModeCompleted(prompt_getup) then
 					--[[
 								O player tem o prompt de levantar ativo na tela
@@ -491,6 +502,9 @@ function HandleAsInjured(fatal)
 							]]
 					PromptSetEnabled(prompt_getup, false)
 					PromptSetVisible(prompt_getup, false)
+
+					PromptSetEnabled(prompt_giveup, false)
+					PromptSetVisible(prompt_giveup, false)
 
 					-- print("Dice decided you should get up", lastDiceChance)
 					NetworkResurrectLocalPlayer(GetEntityCoords(ped), true, true, false)
@@ -511,6 +525,9 @@ function HandleAsInjured(fatal)
 									então se verifica se o prompt tá ativo, caso nao esteja
 								]]
 						PromptSetVisible(prompt_getup, true)
+
+						PromptSetVisible(prompt_giveup, true)
+
 						if PromptIsEnabled(prompt_getup) == 0 then
 							if timeTillfirstReviveDiff <= 0 then
 								PromptSetEnabled(prompt_getup, true)
@@ -518,6 +535,9 @@ function HandleAsInjured(fatal)
 
 								PromptSetMashWithResistanceMode(prompt_getup, 10, 7.0 - (timesLeftPlayerCanGetUp * 0.75), 0)
 								-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
+
+								PromptSetEnabled(prompt_giveup, true)
+								PromptSetVisible(prompt_giveup, true)
 							end
 						end
 					else
@@ -525,11 +545,12 @@ function HandleAsInjured(fatal)
 
 						isBadlyInjuried = false
 
-						HandleAsInjured(true)
-
 						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 1)
 
 						PromptDelete(prompt_getup)
+						PromptDelete(prompt_giveup)
+
+						HandleAsInjured(true)
 
 						break
 					end
@@ -565,6 +586,9 @@ function HandleAsInjured(fatal)
 						PromptSetMashWithResistanceMode(prompt_getup, 10, 7.0 - (timesLeftPlayerCanGetUp * 0.75), 0)
 						-- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
 
+						PromptSetEnabled(prompt_giveup, true)
+						PromptSetVisible(prompt_giveup, true)
+
 						RollDice()
 					end
 				else
@@ -576,8 +600,9 @@ function HandleAsInjured(fatal)
 
 									acaba o thread
 								]]
-						isBadlyInjuried = false
 						TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 0)
+
+						isBadlyInjuried = false
 						break
 					end
 				end
@@ -629,6 +654,9 @@ function newDestroy()
 	PromptDelete(prompt_getup)
 	prompt_getup = nil
 
+	PromptDelete(prompt_giveup)
+	prompt_giveup = nil
+
 	ClearTimecycleModifier()
 
 	DisplayHud(true)
@@ -662,6 +690,10 @@ function InitiateGetUpPrompt()
 		PromptDelete(prompt_getup)
 	end
 
+	if prompt_giveup ~= nil then
+		PromptDelete(prompt_giveup)
+	end
+
 	prompt_getup = PromptRegisterBegin()
 	-- 0xE8342FF2
 	PromptSetControlAction(prompt_getup, 0xDFF812F9)
@@ -676,19 +708,17 @@ function InitiateGetUpPrompt()
 
 	PromptRegisterEnd(prompt_getup)
 
-	-- prompt_giveup = PromptRegisterBegin()
-	-- -- 0xE8342FF2
-	-- PromptSetControlAction(prompt_getup, 0xDFF812F9)
-	-- PromptSetText(prompt_getup, CreateVarString(10, "LITERAL_STRING", "Levantar"))
-	-- PromptSetStandardMode(prompt_getup, true)
-	-- PromptSetEnabled(prompt_getup, 1)
-	-- PromptSetVisible(prompt_getup, 1)
-	-- PromptSetHoldMode(prompt_getup, 1)
+	prompt_giveup = PromptRegisterBegin()
+	PromptSetControlAction(prompt_giveup, 0x7F8D09B8)
+	PromptSetText(prompt_giveup, CreateVarString(10, "LITERAL_STRING", "Desistir"))
+	PromptSetStandardMode(prompt_giveup, true)
+	PromptSetEnabled(prompt_giveup, 1)
+	PromptSetVisible(prompt_giveup, 1)
+	PromptSetHoldMode(prompt_giveup, 1)
+	PromptRegisterEnd(prompt_giveup)
 
 	-- PromptSetMashWithResistanceMode(prompt_getup, 10, 5.5, 0)
 	-- -- PromptSetMashWithResistanceMode(prompt_getup, 10, 1.0, 0)
-
-	-- PromptRegisterEnd(prompt_getup)
 end
 
 function CreateFakeCam()
@@ -757,7 +787,7 @@ function CreateFakeCam()
 				local shapeTest = StartShapeTestRay(boneCoords, camCoords, -1, ped)
 				local rtnVal, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(shapeTest)
 
-				if hit ~= 0 then
+				if hit ~= 0 and not IsEntityAPed(entityHit) then
 					camCoords = endCoords
 				end
 
