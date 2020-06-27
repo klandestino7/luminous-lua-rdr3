@@ -373,21 +373,21 @@ RegisterNUICallback(
     end
 )
 
-RegisterNUICallback(
-    "Sobrancelha",
-    function(value)
-        interpCamera2("Rosto", pedSelected)
-        if sex == "mp_male" then
-            -- print(N_0xfd1ba1eef7985bb8(pedSelected, 0xD266))
-            N_0x5653ab26c82938cf(pedSelected, 0xD266, value)
-            HairUsing = value
-        else
-            --print(value)
-            N_0x5653ab26c82938cf(pedSelected, 0x03F5, value)
-            HairUsing = value
-        end
-    end
-)
+-- RegisterNUICallback(
+--     "Sobrancelha",
+--     function(value)
+--         interpCamera2("Rosto", pedSelected)
+--         if sex == "mp_male" then
+--             -- print(N_0xfd1ba1eef7985bb8(pedSelected, 0xD266))
+--             N_0x5653ab26c82938cf(pedSelected, 0xD266, value)
+--             HairBrownHairUsing = value
+--         else
+--             --print(value)
+--             N_0x5653ab26c82938cf(pedSelected, 0x03F5, value)
+--             HairUsing = value
+--         end
+--     end
+-- )
 
 RegisterCommand(
     "deleteped",
@@ -401,7 +401,7 @@ RegisterNUICallback(
     function(data)
         interpCamera("Rosto", pedSelected)
         if data.id == 0 then
-            HairUsing = 0
+            MustacheUsing = 0
             Citizen.InvokeNative(0xD710A5007C2AC539, pedSelected, 0xF8016BCA, 0) -- Set target category, here the hash is for hats
             Citizen.InvokeNative(0xCC8CA3E88256E58F, pedSelected, 0, 1, 1, 1, 0) -- Actually remove the component
         else
