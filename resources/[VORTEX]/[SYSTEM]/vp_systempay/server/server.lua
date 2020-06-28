@@ -67,7 +67,6 @@ AddEventHandler(
 					Character:varyExp(tonumber(countxp * v[2]))
 				end
 			end
-			print("XP Distribuido com Sucesso.")
 		end
 	end
 )
