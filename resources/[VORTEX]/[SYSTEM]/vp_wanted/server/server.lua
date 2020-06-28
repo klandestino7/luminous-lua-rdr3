@@ -19,14 +19,19 @@ AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords, CityName, 
     local _source = source
     local User = API.getUserFromSource(_source)      
     local Character = User:getCharacter()
-        if playerGender == -171876066 then
-            playerGender = 'homem'
-        else
-            playerGender = 'mulher'
-        end
-        TriggerClientEvent('VP:WANTED:outlawNotify', -1, 'Disparos por ' .. playerGender .. ' foram relatados em ' .. CityName)
-        TriggerClientEvent('VP:WANTED:gunshotInProgress', -1, targetCoords)
- 
+
+    if playerGender == -171876066 then
+        playerGender = 'homem'
+    else
+        playerGender = 'mulher'
+    end
+
+    local PoliceON = API.getUsersByGroup("trooper")
+
+    for i = 1, #PoliceON do
+        TriggerClientEvent('VP:WANTED:outlawNotify', PoliceON[i].getSource(), 'Disparos por ' .. playerGender .. ' foram relatados em ' .. CityName)
+        TriggerClientEvent('VP:WANTED:gunshotInProgress', PoliceON[i].getSource(), targetCoords)
+    end
 
 end)
 
@@ -41,19 +46,21 @@ AddEventHandler('VP:WANTED:RewardNotify', function(id, reward, city)
     local charid = Character:getId()
     local wan = Character:getData(charid, "wanted", city)
 
-    if wan ~= nil then 
-        if wan == "{}" then 
-            local wantedvalue = 0
-            TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+    local PoliceON = API.getUsersByGroup("trooper")
+
+    for i = 1, #PoliceON do
+        if wan ~= nil then 
+            if wan == "{}" then 
+                local wantedvalue = 0
+                TriggerClientEvent('VP:WANTED:RewardNotify', PoliceON[i].getSource(), reward+wantedvalue, pname, city)
+            else
+                local wantedvalue = json.decode(wan)
+                TriggerClientEvent('VP:WANTED:RewardNotify', PoliceON[i].getSource(), reward+wantedvalue, pname, city)
+            end
         else
-            local wantedvalue = json.decode(wan)
-            TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward+wantedvalue, pname, city)
+            TriggerClientEvent('VP:WANTED:RewardNotify', PoliceON[i].getSource(), reward, pname, city) 
         end
-    else
-        TriggerClientEvent('VP:WANTED:RewardNotify', -1, reward, pname, city) 
     end
-
-
 end)
 
 RegisterServerEvent('VP:WANTED:RewardSERVER')
