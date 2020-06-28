@@ -18,7 +18,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
     local Character = User:getCharacter()
     local Inventory = Character:getInventory()    
 
-	local PoliceON = #API.getUsersByGroup("trooper")
+	local PoliceON = API.getUsersByGroup("trooper")
 	
 	-- local xPlayers = GetPlayers()
 
@@ -31,7 +31,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 	-- 	end
 	-- end
 
-	if PoliceON < Config.copsRequired then
+	if #PoliceON < Config.copsRequired then
 
 		TriggerClientEvent('VP:NOTIFY:Simple', source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)		
 
@@ -46,6 +46,9 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 			timeInterval = math.floor(timeInterval/60)
 			timeUnit = 'm'
 		end
+		
+		print(timeInterval)
+		
 
 		TriggerClientEvent('VP:NOTIFY:Simple', source, "Este caixa está vazio, aguarde " .. timeInterval .. timeUnit, 10000)
 	--	TriggerClientEvent('Notify', source, 'negado',  Locales[Config.Locale]['empty_atm'] .. timeInterval .. timeUnit )
@@ -59,8 +62,13 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 		Config.ATMS[atmInfo[1]]['wasRobbed'] = os.time()
 		
 		TriggerClientEvent('VP:ROBREG:startTheRobbery', source, atmInfo)
-		TriggerClientEvent('VP:ROBREG:warnThePolice', -1, atmInfo[2], atmInfo[3], atmInfo[4])
-		TriggerClientEvent('VP:ROBREG:PlayAlarm', source, atmInfo[2], atmInfo[3], atmInfo[4])
+		
+
+		for i = 1, #PoliceON do			
+			TriggerClientEvent('VP:ROBREG:warnThePolice', PoliceON[i].getSource(), atmInfo[2], atmInfo[3], atmInfo[4])
+		end
+
+		--TriggerClientEvent('VP:ROBREG:PlayAlarm', source, atmInfo[2], atmInfo[3], atmInfo[4])
 		
 	end	
 end)
