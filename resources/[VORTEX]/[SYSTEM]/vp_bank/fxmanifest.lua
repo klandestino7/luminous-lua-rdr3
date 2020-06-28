@@ -1,4 +1,5 @@
 client_scripts{
+    '@_core/lib/utils.lua',
     'client.lua'
 }
 
