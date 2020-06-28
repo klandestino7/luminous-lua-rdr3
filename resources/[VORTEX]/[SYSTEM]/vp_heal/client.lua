@@ -101,11 +101,21 @@ AddEventHandler('heal:player', function()
     Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
         Wait(1000)
+
+        if IsEntityDead(PlayerPedId()) then
+            NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+            DestroyAllCams(true)
+            SetEntityHealth(PlayerPedId(), 2)
+            return
+        end
+
 		local maxHealth = GetEntityMaxHealth(playerPed)
         Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)
         Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 1, 100)
 		SetEntityHealth(playerPed, 250)
 		SetPlayerHealthRechargeMultiplier(playerPed, 2000)
+
+     
     end)
 end)
 
@@ -114,7 +124,14 @@ AddEventHandler('heal:playeritem', function()
     Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
 
-	local ped = Citizen.InvokeNative(0x275F255ED201B937, 0);
+        if IsEntityDead(PlayerPedId()) then
+            NetworkResurrectLocalPlayer(GetEntityCoords(PlayerPedId()), true, true, false)
+            DestroyAllCams(true)
+            SetEntityHealth(PlayerPedId(), 2)
+            return
+        end
+
+	   local ped = Citizen.InvokeNative(0x275F255ED201B937, 0);
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_DRINK_FLASK"), 5000, true,false, false, false)	
         Wait(1000)
 		local maxHealth = GetEntityMaxHealth(playerPed)

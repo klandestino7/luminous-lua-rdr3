@@ -370,6 +370,43 @@ RegisterCommand(
     end
 )
 
+
+RegisterCommand(
+    "recrutar",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("sheriff") then
+            if args[1] ~= nil then
+                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                UserTarget:getCharacter():addGroup("trooper")    
+            else
+                User:notify("error", "Usuario invalido!")
+            end
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
+RegisterCommand(
+    "demitir",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("sheriff") then
+            if args[1] ~= nil then
+                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                UserTarget:getCharacter():removeGroup("trooper")    
+            else
+                User:notify("error", "Usuario invalido!")
+            end
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
 -- RegisterCommand(
 --     "groups",
 --     function(source, args, rawCommand)
