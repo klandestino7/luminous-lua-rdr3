@@ -678,11 +678,11 @@ function createPeds()
             if peds[k].genrer == "mp_female" then
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10F5497A, true, true, true) -- PANTS
                 Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x14511493, true, true, true) -- COAT
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0xD03D522, true, true, true) -- BOOT
+        --        Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0xD03D522, true, true, true) -- BOOT
             else
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10051C7, true, true, true) -- PANTS
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x12E51663, true, true, true) -- COAT
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x192C2A4B, true, true, true) -- BOOT
+     --           Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x10051C7, true, true, true) -- PANTS
+    --            Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x12E51663, true, true, true) -- COAT
+       --         Citizen.InvokeNative(0xD3A7B003ED343FD9, choosePed[k], 0x192C2A4B, true, true, true) -- BOOT
             end
 
             if DeletePed then
