@@ -1,19 +1,22 @@
 local IsJailed = false
 local unjail = false
-local JailTime = 0
-local fastTimer = 0
+JailTime = 0
+fastTimer = 0
 local JailLocation = 3372.48, -667.09, 46.41
 
 RegisterNetEvent('VP:JAIL:jail')
 AddEventHandler('VP:JAIL:jail', function(jailTime)
+
 	if IsJailed then -- don't allow multiple jails
 		return
 	end
+
 
 	JailTime = jailTime
 	local playerPed = PlayerPedId()
 	if DoesEntityExist(playerPed) then
 		Citizen.CreateThread(function()
+			print('a2')
 			local pP = PlayerPedId()
 			local entity = GetPlayerPed()
 			local pedplayer = GetEntityModel(entity)
@@ -50,6 +53,7 @@ AddEventHandler('VP:JAIL:jail', function(jailTime)
 				Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x9B2C8B89, 0) -- Set target category, here the hash is for hats
 				Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0) -- Actually remove the component
 				Wait(100)
+
 				if pedplayer == maleped then
 					--print('HOMEM SKIN')	
 					Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x5BA76CCF,true,true,true) -- CAMISA	
@@ -73,6 +77,7 @@ AddEventHandler('VP:JAIL:jail', function(jailTime)
 			unjail = false
 
 			while JailTime > 0 and not unjail do
+				print('a3')
 				playerPed = PlayerPedId()
 				SetEntityInvincible(PlayerPed, false)				
 				RemoveAllPedWeapons(PlayerPedId(), false, true)

@@ -12,5 +12,7 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'client/main.lua'
+	'client/main.lua',
+	'client/Util.lua',
+	'client/jobjail.lua'
 }
