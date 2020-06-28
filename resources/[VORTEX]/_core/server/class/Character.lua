@@ -37,8 +37,6 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     self.hasGroup = function(this, group)
         local bit = config_file_GROUPS[group:lower()]
 
-        print("hasGroup", group, bit, self.role, self.role & bit)
-
         if bit ~= nil then
             return (self.role & bit) ~= 0
         end
