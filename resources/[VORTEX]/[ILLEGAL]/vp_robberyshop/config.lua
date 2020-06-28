@@ -3,7 +3,7 @@ Config = {}
 Config.copsRequired = 2
 Config.policeColor = {0,200,255}
 
-Config.robberyInterval = 21600 * 60 -- time in seconds
+Config.robberyInterval = 21600 -- time in seconds
 
 Config.robberyStartKey = 'ENTER' -- X
 Config.robberyCancelKey = 'U' -- Z

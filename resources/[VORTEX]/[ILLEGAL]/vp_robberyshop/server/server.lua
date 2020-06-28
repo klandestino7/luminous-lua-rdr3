@@ -30,7 +30,7 @@ AddEventHandler('VP:ROBREG:checkTheRobbery', function(atmInfo)
 	-- 		copsIds[i] = xPlayers[i]
 	-- 	end
 	-- end
-
+	
 	if #PoliceON < Config.copsRequired then
 
 		TriggerClientEvent('VP:NOTIFY:Simple', source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)		
