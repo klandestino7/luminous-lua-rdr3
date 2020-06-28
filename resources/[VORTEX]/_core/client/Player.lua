@@ -414,7 +414,7 @@ function cAPI.hasGroupOrInheritance(group)
     else
         for superGroup, childrenGroup in pairs(config_file_INHERITANCE) do
             if childrenGroup == group then
-                if self:hasGroup(superGroup) then
+                if cAPI.hasGroup(superGroup) then
                     return true
                 end
             end
