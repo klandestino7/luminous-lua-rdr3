@@ -37,6 +37,8 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     self.hasGroup = function(this, group)
         local bit = config_file_GROUPS[group:lower()]
 
+        print("hasGroup", group, bit, self.role, self.role & bit)
+
         if bit ~= nil then
             return (self.role & bit) ~= 0
         end
@@ -76,14 +78,11 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         if self:hasGroup(group) then
             return true
         else
-            local lastParent = group
-
-            while lastParent ~= nil do
-                local inheritance = config_file_INHERITANCE[lastParent]
-                lastParent = inheritance
-
-                if lastParent ~= nil and self:hasGroup(lastParent) then
-                    return true
+            for superGroup, childrenGroup in pairs(config_file_INHERITANCE) do
+                if childrenGroup == group then
+                    if self:hasGroup(superGroup) then
+                        return true
+                    end
                 end
             end
         end
@@ -256,12 +255,12 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         if #horseRows > 0 then
             -- local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "horse:" .. id})
-            
+
             if API.DebbugingInventory() then
                 print("sethorse user_" .. self:getUserId() .. " char_" .. self:getId() .. "horse_" .. id .. " inv: " .. json.encode(inv_query))
                 print(" ")
             end
-            
+
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
@@ -299,7 +298,6 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         if self.Horse == nil then
             local charHorsesRows = self:getHorses()
             if #charHorsesRows > 0 then
-
                 self:setHorse(tonumber(charHorsesRows[1]["id"]))
 
                 -- self.Horse = API.Horse(tonumber(charHorsesRows[1]["id"]), charHorsesRows[1]["model"], charHorsesRows[1]["name"], Inventory)

@@ -412,17 +412,11 @@ function cAPI.hasGroupOrInheritance(group)
     if cAPI.hasGroup(group) then
         return true
     else
-        local lastParent = group
-        -- print('Trying inheritance for group ' .. group)
-
-        -- local nth = 1
-        while lastParent ~= nil do
-            local inheritance = config_file_INHERITANCE[lastParent]
-            lastParent = inheritance
-            -- print(nth .. '* inheritance' .. inheritance)
-
-            if lastParent ~= nil and cAPI.hasGroup(lastParent) then
-                return true
+        for superGroup, childrenGroup in pairs(config_file_INHERITANCE) do
+            if childrenGroup == group then
+                if self:hasGroup(superGroup) then
+                    return true
+                end
             end
         end
     end
