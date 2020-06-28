@@ -8,7 +8,7 @@ Citizen.CreateThread(
     function()
         while true do
 
-            Citizen.Wait(10 * 1000) -- 10 sec
+            Citizen.Wait(1000) -- 10 sec
 
             local playerPosition = GetEntityCoords(PlayerPedId())
 
