@@ -15,9 +15,18 @@ end)
 RegisterCommand(
     "peagle",
     function(source,args)
- 
-    local IdTarget = cAPI.prompt(source, "ID do Destinatário:", "")
+      local _source = source
 
+      local User = API.getUserFromSource(_source)
+      local Character = User:getCharacter()
+      local Inventory = Character:getInventory()
+    
+    --  User:closeInventory()  
+    local item = Inventory:getItemAmount("pigeonpost") 
+  
+    if item > 0 then
+      local IdTarget = cAPI.prompt(_source, "ID do Destinatário:", "")
+    
       if IdTarget == "" then
           return
       end
@@ -26,22 +35,34 @@ RegisterCommand(
       
       local tplayer = API.getUserFromUserId(parseInt(tonumber(IdTarget))):getSource()
     
-      local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+      local Mensagem = cAPI.prompt(_source, "Mensagem:", "")
     
       if Mensagem == "" then
           return
       end
-      
-
-    TriggerClientEvent("VP:PEAGLE:GetCoords", source, tplayer, Mensagem)
-    --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
+    
+      TriggerClientEvent("VP:PEAGLE:GetCoords", _source, tplayer, Mensagem)
+      Inventory:removeItem("pigeonpost", 1)
+    else
+      TriggerClientEvent('VP:TOAST:New', _source, "error", "Você não pussi uma pombo correio.")
+    end
+      --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
 end)
 
 
 RegisterNetEvent("VP:PEAGLE:SendMessage")
-AddEventHandler("VP:PEAGLE:SendMessage", function()
- 
-  local IdTarget = cAPI.prompt(source, "ID do Destinatário:", "")
+AddEventHandler("VP:PEAGLE:SendMessage", function(source)
+  local _source = source
+
+  local User = API.getUserFromSource(_source)
+  local Character = User:getCharacter()
+  local Inventory = Character:getInventory()
+
+  User:closeInventory()
+
+  Wait(1000)
+
+  local IdTarget = cAPI.prompt(_source, "ID do Destinatário:", "")
 
   if IdTarget == "" then
       return
@@ -51,13 +72,15 @@ AddEventHandler("VP:PEAGLE:SendMessage", function()
   
   local tplayer = API.getUserFromUserId(parseInt(tonumber(IdTarget))):getSource()
 
-  local Mensagem = cAPI.prompt(source, "Mensagem:", "")
+  local Mensagem = cAPI.prompt(_source, "Mensagem:", "")
 
   if Mensagem == "" then
       return
   end
 
-  TriggerClientEvent("VP:PEAGLE:GetCoords", source, tplayer, Mensagem)
+  TriggerClientEvent("VP:PEAGLE:GetCoords", _source, tplayer, Mensagem)
+  Inventory:removeItem("pigeonpost", 1)
+  
   --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
 end)
 
