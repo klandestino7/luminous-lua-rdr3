@@ -290,6 +290,15 @@ AddEventHandler(
     "VP:ROBBERY:EndRobbery",
     function()
         interiorIndexBeingRobbed = nil
+        
+        if asParticipant then
+            if IsPedMale(PlayerPedId()) then		
+                setSatchel(0x47D2DD9D)
+            else
+                setSatchel(0x383DDE91)
+            end
+        end
+
 
         isParticipantOfRobbery = false
         isBlockedByRobbery = false
@@ -297,11 +306,6 @@ AddEventHandler(
         secondsUntilRobberyEnds = nil
         secondsUntilAbandonRobbery = nil
         shootingToStartCooldown = false
-        if IsPedMale(PlayerPedId()) then		
-            setSatchel(0x47D2DD9D)
-        else
-            setSatchel(0x383DDE91)
-        end
     end
 )
 

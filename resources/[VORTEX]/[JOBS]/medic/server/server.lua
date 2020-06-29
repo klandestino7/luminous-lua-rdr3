@@ -31,11 +31,12 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
 		local Character = User:getCharacter()
 		local medic = Character:hasGroupOrInheritance("medic")
+		local police = Character:hasGroupOrInheritance("trooper")
 		local Inventory = User:getCharacter():getInventory()
 
 		sort = math.random(1,2)
 
-		if medic then
+		if medic and police then
 			--if ReviveEnable then
 				TriggerClientEvent('VP:MEDIC:revivecheck', _source)
 		--	else

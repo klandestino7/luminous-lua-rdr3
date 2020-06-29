@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+API = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+
 local displayBankBlips = true
 local enableBankingGui = true -- Enables the banking GUI (Default: true) // MAY HAVE SOME ISSUES
 
@@ -36,10 +42,14 @@ Citizen.CreateThread(
           if weaponHash == hashUnarmed then
             DrawTxt("Aperte (ALT) para acessar seu cofre", 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
             if IsControlJustPressed(0, 0xE8342FF2) then
-              inMenu = true
-              SetNuiFocus(true, true)
-              SendNUIMessage({type = "openGeneral"})
-              TriggerServerEvent("VP:BANKING:balance2")
+              if not cAPI.GetWanted() then
+                inMenu = true
+                SetNuiFocus(true, true)
+                SendNUIMessage({type = "openGeneral"})
+                TriggerServerEvent("VP:BANKING:balance2")
+              else
+                TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode acessar seu banco. ', 10000)
+              end
             end
           end
         end

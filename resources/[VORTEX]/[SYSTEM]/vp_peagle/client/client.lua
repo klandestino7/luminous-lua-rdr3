@@ -90,8 +90,8 @@ Citizen.CreateThread(
             local playc = GetEntityCoords(PlayerPedId())
             if pigeon ~= nil then
                 if not IsPedAir and Notified and dst > 4 then
-                    TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
-                --TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
+                  --  TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
+                    TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
                 end
             end
         end
