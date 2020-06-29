@@ -85,7 +85,6 @@ Citizen.CreateThread(
                             end
 
                             if lured == false then
-                                print("lured")
                                 lured = true
                             end
                         end
@@ -471,7 +470,7 @@ Any _GET_TASK_FISHING_DATA(Ped ped, Any* structData);
     f_2 = Float distance (?). Always 0.2 when not throwed.
     f_3 = Float something. / Fishing line curvature
     f_4 = Unk float.
-    f_5 = Is picking. / Is trying to hook
+    f_5 = Is picking. / Flag
     f_6 = Transition flag (4 if for 6 -> 7, 512 is unknown for now).
     f_7 = Fish entity handle.
     f_8 = Calculated fish weight (value / 54.25).

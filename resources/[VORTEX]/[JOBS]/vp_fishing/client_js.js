@@ -24,7 +24,7 @@ exports('SET_TASK_FISHING_DATA', (struct) => {
         console.log(k);
 
         if (v != undefined){
-            view.setInt32(i * 4, v);
+            view.setInt32(i * 4, v, true);
         }
     }
 

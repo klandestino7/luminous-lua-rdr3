@@ -21,4 +21,5 @@ exports {
 	'DataViewNetowrk',
 	'GET_TASK_FISHING_DATA',
 	'SET_TASK_FISHING_DATA',
+	'N_0x04019AE4956D4393',
 }

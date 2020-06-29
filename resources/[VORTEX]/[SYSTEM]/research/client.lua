@@ -33,8 +33,17 @@ API = Tunnel.getInterface("API")
 -- NetworkSendTransitionGamerInstruction
 
 RegisterCommand(
+	"createmm",
+	function(source, args, rawCommand)
+	end
+)
+
+RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
+
+		exports['research']:N_0x04019AE4956D4393()
+
 		-- SetObjectTextureVariation(5765379, 5)
 
 		-- Citizen.InvokeNative(0xB35370D5353995CB,PlayerPedId(), GetHashKey("MP_MOONSHINE_DRINKING_SOBER_TABLE_LH_HOLD"), 1048576000)
