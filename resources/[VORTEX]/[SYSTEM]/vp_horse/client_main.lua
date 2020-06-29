@@ -10,11 +10,6 @@ local horseComponents = {}
 
 local initializing = false
 
--- ! REMOVE
--- horseModel = "A_C_Horse_Turkoman_Gold"
--- horseName = "Burrinho"
--- ! REMOVE
-
 local prompt_inventory
 local prompt_eat
 local prompt_brush
@@ -49,6 +44,21 @@ function InitiateHorse(atCoords)
     end
 
     initializing = true
+
+    if horseModel == nil and horseName == nil then
+        TriggerServerEvent("VP:HORSE:RequestMyHorseInfo")
+
+        local timeoutatgametimer = GetGameTimer() + (3 * 1000)
+
+        while horseModel == nil and timeoutatgametimer > GetGameTimer() do
+            Citizen.Wait(0)
+        end
+
+        if horseModel == nil and horseName == nil then
+            horseModel = "A_C_Horse_Turkoman_Gold"
+            horseName = "Pangaré"
+        end
+    end
 
     cAPI.DestroyPlayerHorse()
 
@@ -95,7 +105,31 @@ function InitiateHorse(atCoords)
     local entity = CreatePed(modelHash, spawnPosition, GetEntityHeading(ped), true, true)
     SetModelAsNoLongerNeeded(modelHash)
 
-    TaskAnimalUnalerted(entity, 0, 0, 0, 0)
+    Citizen.InvokeNative(0x9587913B9E772D29, entity, 0)
+    Citizen.InvokeNative(0x4DB9D03AC4E1FA84, entity, -1, -1, 0)
+
+    Citizen.InvokeNative(0xBCC76708E5677E1D9, entity, 0)
+    Citizen.InvokeNative(0xB8B6430EAD2D2437, entity, GetHashKey("PLAYER_HORSE"))
+    Citizen.InvokeNative(0xFD6943B6DF77E449, entity, false)
+
+    SetPedConfigFlag(entity, 324, true)
+    SetPedConfigFlag(entity, 211, true)
+    SetPedConfigFlag(entity, 208, true)
+    SetPedConfigFlag(entity, 209, true)
+    SetPedConfigFlag(entity, 400, true)
+    SetPedConfigFlag(entity, 297, true)
+    SetPedConfigFlag(entity, 136, false)
+    SetPedConfigFlag(entity, 312, false)
+    SetPedConfigFlag(entity, 113, false)
+    SetPedConfigFlag(entity, 301, false)
+    SetPedConfigFlag(entity, 277, true)
+    SetPedConfigFlag(entity, 319, true)
+    SetPedConfigFlag(entity, 6, true)
+
+    SetAnimalTuningBoolParam(entity, 25, false )
+    SetAnimalTuningBoolParam(entity, 24, false )
+
+    TaskAnimalUnalerted(entity, -1, false, 0, 0)
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
     cAPI.SetPlayerHorse(entity)
@@ -105,8 +139,8 @@ function InitiateHorse(atCoords)
     end
 
     if horseModel == "A_C_Horse_MP_Mangy_Backup" then
-        -- NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
-        -- NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
+        NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
+        NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
         PromptSetVisible(prompt_inventory, false)
     else
         PromptSetVisible(prompt_inventory, true)
@@ -275,7 +309,7 @@ function WhistleHorse(whistleTypeHash)
             end
         end
     else
-        if not cAPI.IsPlayerHorseActivationBlocked() then
+        if not cAPI.IsPlayerHorseActivationBlocked() and cAPI.IsPlayerInitialized() then
             -- DEBUGGGING
             -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
             InitiateHorse()

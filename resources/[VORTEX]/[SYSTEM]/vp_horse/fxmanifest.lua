@@ -12,10 +12,11 @@ client_scripts {
     'client_js.js',
 }
 
--- server_scripts {
--- 	"@_core/lib/utils.lua",
--- 	'server.lua'
--- }
+server_scripts {
+    "@_core/lib/utils.lua",
+    "server.lua"
+}
+
 
 exports {
 	'js_native',
