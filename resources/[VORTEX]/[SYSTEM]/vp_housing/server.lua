@@ -35,7 +35,11 @@ AddEventHandler(
 
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-        local Inventory = Character:getInventory()
+
+        if true then
+            User:notify("error", "Não disponivel :P")
+            return
+        end
 
         if Character:hasGroupOrInheritance(house_id) then
             User:notify("error", "Você já alugou esta residência")
@@ -49,6 +53,8 @@ AddEventHandler(
             User:notify("error", "Está residência já foi alugada")
             return
         end
+
+        local Inventory = Character:getInventory()
 
         if not withGold then
             if Inventory:getItemAmount("money") < price_dollar then
@@ -67,6 +73,9 @@ AddEventHandler(
                 local date_sum_sevendays = os.date("*t", time_sum_sevendays)
 
                 local sum_to_time = os.time(date_sum_sevendays)
+
+
+                -- MUDA NA DB house_next_payment PARA INT
 
                 dbAPI.execute("INSERT:house_rent", {house_id = house_id, house_next_payment = sum_to_time})
             end
@@ -117,3 +126,10 @@ function IsRentExpired(house_id)
 
     return false
 end
+
+-- AddEventHandler(
+--     "VP:HOUSING:RequestAvailableHouses",
+--     function()
+
+--     end
+-- )
