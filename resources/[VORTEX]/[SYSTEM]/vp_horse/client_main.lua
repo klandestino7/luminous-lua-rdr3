@@ -418,7 +418,7 @@ Citizen.CreateThread(
             end
 
             if _tempplayerhorse then
-                if IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_REAR")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_LEFT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_RIGHT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_FRONT")) then
+                if IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_REAR")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_LEFT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_RIGHT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_FRONT")) then
                     if GetMeleeTargetForPed(_tempplayerhorse) == PlayerPedId() then
                         ClearPedTasks(_tempplayerhorse)
                     end
