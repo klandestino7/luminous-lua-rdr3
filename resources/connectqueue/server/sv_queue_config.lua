@@ -4,7 +4,6 @@ Config = {}
 -- a lot of the steamid converting websites are broken rn and give you the wrong steamid. I use https://steamid.xyz/ with no problems.
 -- you can also give priority through the API, read the examples/readme.
 Config.Priority = {
-
     ["steam:11000010596ee06"] = 99, -- KLAN
     ["steam:110000115598f8c"] = 99, -- GASHEX
     ["steam:1100001349014c1"] = 99, -- BELA
@@ -45,7 +44,6 @@ Config.Priority = {
     ["steam:110000113393044"] = 15, -- Andrade#1920 / 11.06 
 
 }
-
 -- require people to run steam
 Config.RequireSteam = true
 
@@ -53,7 +51,7 @@ Config.RequireSteam = true
 Config.PriorityOnly = false
 
 -- disables hardcap, should keep this true
-Config.DisableHardCap = false
+Config.DisableHardCap = true
 
 -- will remove players from connecting if they don't load within: __ seconds; May need to increase this if you have a lot of downloads.
 -- i have yet to find an easy way to determine whether they are still connecting and downloading content or are hanging in the loadscreen.
@@ -65,7 +63,7 @@ Config.ConnectTimeOut = 600
 Config.QueueTimeOut = 90
 
 -- will give players temporary priority when they disconnect and when they start loading in
-Config.EnableGrace = false
+Config.EnableGrace = true
 
 -- how much priority power grace time will give
 Config.GracePower = 5
@@ -78,17 +76,17 @@ Config.GraceTime = 480
 Config.JoinDelay = 30000
 
 -- will show how many people have temporary priority in the connection message
-Config.ShowTemp = true
+Config.ShowTemp = false
 
 -- simple localization
 Config.Language = {
     joining = "\xF0\x9F\x8E\x89Entrando...",
-    connecting = "\xE2\x8F\xB3Conectando...",
-    idrr = "\xE2\x9D\x97Erro: não foi possível recuperar nenhum dos seus IDs, tente reiniciar.",
-    err = "\xE2\x9D\x97Havia um erro",
-    pos = "\xF0\x9F\x90\x8CVocê está em %d/%d na fila \xF0\x9F\x95\x9C%s",
-    connectingerr = "\xE2\x9D\x97Erro: Erro ao adicionar você à lista de conexão",
-    timedout = "\xE2\x9D\x97Erro: Tempo Esgotado",
-    wlonly = "\xE2\x9D\x97Você precisa estar na lista de permissões para participar desse servidor",
-    steam = "\xE2\x9D\x97Erro: A steam deve estar em execução"
+    connecting = "\xE2\x8F\xB3Carregando...",
+    idrr = "\xE2\x9D\x97[Queue] Error: Não foi identificado seu id, por favor, relogue.",
+    err = "\xE2\x9D\x97[Queue] Temos um erro",
+    pos = "\xF0\x9F\x90\x8CVocê é %d/%d na fila \xF0\x9F\x95\x9C%s",
+    connectingerr = "\xE2\x9D\x97[Queue] Error: Erro ao adicionar você a fila de espera.",
+    timedout = "\xE2\x9D\x97[Queue] Error: O tempo de espera esgotou?!",
+    wlonly = "\xE2\x9D\x97[Queue] Você não está na whitelist deste servidor.",
+    steam = "\xE2\x9D\x97 [Queue] Error: Sua steam precisa estar aberta."
 }

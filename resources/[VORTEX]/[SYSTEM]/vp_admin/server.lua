@@ -376,9 +376,10 @@ RegisterCommand(
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
+
         if Character:hasGroupOrInheritance("sheriff") then
             if args[1] ~= nil then
-                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
                 UserTarget:getCharacter():addGroup("trooper")    
             else
                 User:notify("error", "Usuario invalido!")
@@ -396,7 +397,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("sheriff") then
             if args[1] ~= nil then
-                local UserTarget = API.getUserFromUserId(tonumber(args[2]))
+                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
                 UserTarget:getCharacter():removeGroup("trooper")    
             else
                 User:notify("error", "Usuario invalido!")
