@@ -120,7 +120,7 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
         for i, minxp in pairs(config_file_LEVELSTEPS) do
             local maxxp = config_file_LEVELSTEPS[i + 1] or 999999
 
-            if currentExp >= minxp and currentExp < maxxp then
+            if currentExp >= minxp and currentExp <= maxxp then
                 if self:getLevel() ~= i then
                     self:setLevel(i)
                 end
