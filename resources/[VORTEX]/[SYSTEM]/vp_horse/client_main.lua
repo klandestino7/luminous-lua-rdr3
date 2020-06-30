@@ -434,7 +434,7 @@ Citizen.CreateThread(
             end ]]
             -- drawBoundingBox()
 
-            if IsControlJustPressed(0, 0x60C81CDE) then
+            if IsControlJustPressed(0, 0x60C81CDE) then -- Horse attack F
                 local ped = PlayerPedId()
                 local mount = GetMount(ped)
                 if mount ~= 0 then
@@ -461,7 +461,8 @@ Citizen.CreateThread(
                     -- local carriedPed = Citizen.InvokeNative(0xB676EFDA03DADA52, mount, true)
 
                     -- if carriedPed ~= nil and IsPedAPlayer(carriedPed) then
-                    --     local carriedPlayer
+
+                    local carriedPlayer
 
                     for _, pid in pairs(GetActivePlayers()) do
                         local pped = GetPlayerPed(pid)
@@ -474,7 +475,10 @@ Citizen.CreateThread(
                     end
 
                     if carriedPlayer then
-                        TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayer)
+
+                        local carriedPlayerServerId = GetPlayerServerId(carriedPlayer)
+
+                        TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayerServerId)
 
                         local animDict = "script_proc@bounty@riding_punch"
                         RequestAnimDict(animDict)
