@@ -67,8 +67,6 @@ Citizen.CreateThread(
                             if IsPedShooting(ped) then
                                 initShootingCountdown()
 
-                                print("Roubo começo!!")
-
                                 local playerId = PlayerId()
                                 local interiorIdPlayerIsIn = inposition
 
@@ -94,7 +92,7 @@ Citizen.CreateThread(
                     else
                         if IsPedShooting(ped) then
                            --notify('Roubo em andamento, aguarde...')
-                            print("Roubo em andamento, aguarde")
+                         --   print("Roubo em andamento, aguarde")
                         end
                     end
                 -- Block player actions if they are not an active participant
