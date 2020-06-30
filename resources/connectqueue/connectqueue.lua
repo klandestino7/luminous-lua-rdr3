@@ -2,7 +2,7 @@ Queue = {}
 Queue.Ready = false
 Queue.Exports = nil
 Queue.ReadyCbs = {}
-Queue.CurResource = '[LISTA]'--GetCurrentResourceName()
+Queue.CurResource = GetCurrentResourceName()
 
 if Queue.CurResource == "connectqueue" then return end
 

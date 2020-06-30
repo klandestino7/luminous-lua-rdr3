@@ -1,13 +1,15 @@
 if not IsDuplicityVersion() then
-    Citizen.CreateThread(function()
-        while true do
-            Citizen.Wait(0)
-            if NetworkIsSessionStarted() then
-                TriggerServerEvent("Queue:playerActivated")
-                return
+    Citizen.CreateThread(
+        function()
+            while true do
+                Citizen.Wait(0)
+                if NetworkIsSessionStarted() then
+                    TriggerServerEvent("Queue:playerActivated")
+                    return
+                end
             end
         end
-    end)
+    )
     return
 end
 
@@ -17,7 +19,6 @@ Queue.MaxPlayers = GetConvarInt("sv_maxclients", 32)
 Queue.Debug = GetConvar("sv_debugqueue", "true") == "true" and true or false
 Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or false
 Queue.InitHostName = GetConvar("sv_hostname")
-
 
 -- This is needed because msgpack will break when tables are too large
 local _Queue = {}
@@ -61,10 +62,10 @@ end
 
 function Queue:HexIdToSteamId(hexId)
     local cid = math_floor(tonumber(string_sub(hexId, 7), 16))
-	local steam64 = math_floor(tonumber(string_sub( cid, 2)))
-	local a = steam64 % 2 == 0 and 0 or 1
-	local b = math_floor(math_abs(6561197960265728 - steam64 - a) / 2)
-	local sid = "steam_0:"..a..":"..(a == 1 and b -1 or b)
+    local steam64 = math_floor(tonumber(string_sub(cid, 2)))
+    local a = steam64 % 2 == 0 and 0 or 1
+    local b = math_floor(math_abs(6561197960265728 - steam64 - a) / 2)
+    local sid = "steam_0:" .. a .. ":" .. (a == 1 and b - 1 or b)
     return sid
 end
 
@@ -74,7 +75,7 @@ function Queue:IsSteamRunning(src)
             return true
         end
     end
-    
+
     return false
 end
 
@@ -119,10 +120,15 @@ function Queue:IsInQueue(ids, rtnTbl, bySource, connecting)
 
         if not bySource then
             for genericKey2, genericValue2 in ipairs(genericValue1.ids) do
-                if inQueue then break end
+                if inQueue then
+                    break
+                end
 
                 for genericKey3, genericValue3 in ipairs(ids) do
-                    if genericValue3 == genericValue2 then inQueue = true break end
+                    if genericValue3 == genericValue2 then
+                        inQueue = true
+                        break
+                    end
                 end
             end
         else
@@ -149,11 +155,17 @@ function Queue:IsPriority(ids)
     for _, id in ipairs(ids) do
         id = string_lower(id)
 
-        if prioList[id] then prio = prioList[id] break end
+        if prioList[id] then
+            prio = prioList[id]
+            break
+        end
 
         if string_sub(id, 1, 5) == "steam" then
             local steamid = Queue:HexIdToSteamId(id)
-            if prioList[steamid] then prio = prioList[steamid] break end
+            if prioList[steamid] then
+                prio = prioList[steamid]
+                break
+            end
         end
     end
 
@@ -174,11 +186,15 @@ function Queue:HasTempPriority(ids)
     for _, id in pairs(ids) do
         id = string_lower(id)
 
-        if tmpPrio[id] then return tmpPrio[id].power, tmpPrio[id].endTime, id end
+        if tmpPrio[id] then
+            return tmpPrio[id].power, tmpPrio[id].endTime, id
+        end
 
         if string_sub(id, 1, 5) == "steam" then
             local steamid = Queue:HexIdToSteamId(id)
-            if tmpPrio[steamid] then return tmpPrio[steamid].power, tmpPrio[steamid].endTime, id end
+            if tmpPrio[steamid] then
+                return tmpPrio[steamid].power, tmpPrio[steamid].endTime, id
+            end
         end
     end
 
@@ -186,7 +202,9 @@ function Queue:HasTempPriority(ids)
 end
 
 function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
-    if Queue:IsInQueue(ids) then return end
+    if Queue:IsInQueue(ids) then
+        return
+    end
 
     local tmp = {
         source = src,
@@ -196,7 +214,9 @@ function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
         timeout = 0,
         deferrals = deferrals,
         firstconnect = connectTime,
-        queuetime = function() return (os_time() - connectTime) end
+        queuetime = function()
+            return (os_time() - connectTime)
+        end
     }
 
     local _pos = false
@@ -249,7 +269,9 @@ function Queue:TempSize()
     local count = 0
 
     for _pos, data in pairs(Queue:GetQueueList()) do
-        if Queue:HasTempPriority(data.ids) then count = count +1 end
+        if Queue:HasTempPriority(data.ids) then
+            count = count + 1
+        end
     end
 
     return count > 0 and count or false
@@ -258,7 +280,9 @@ end
 function Queue:IsInConnecting(ids, bySource, refresh)
     local inConnecting, tbl = Queue:IsInQueue(ids, refresh and true or false, bySource and true or false, true)
 
-    if not inConnecting then return false end
+    if not inConnecting then
+        return false
+    end
 
     if refresh and inConnecting and tbl then
         Queue:GetConnectingList()[inConnecting].timeout = 0
@@ -283,10 +307,15 @@ function Queue:RemoveFromConnecting(ids, bySource, byIndex)
 
         if not bySource then
             for genericKey2, genericValue2 in ipairs(genericValue1.ids) do
-                if inConnecting then break end
+                if inConnecting then
+                    break
+                end
 
                 for genericKey3, genericValue3 in ipairs(ids) do
-                    if genericValue3 == genericValue2 then inConnecting = true break end
+                    if genericValue3 == genericValue2 then
+                        inConnecting = true
+                        break
+                    end
                 end
             end
         else
@@ -304,7 +333,9 @@ end
 
 function Queue:AddToConnecting(ids, ignorePos, autoRemove, done)
     local function remove()
-        if not autoRemove then return end
+        if not autoRemove then
+            return
+        end
 
         done(Config.Language.connectingerr)
         Queue:RemoveFromConnecting(ids)
@@ -314,17 +345,25 @@ function Queue:AddToConnecting(ids, ignorePos, autoRemove, done)
 
     local connList = Queue:GetConnectingList()
 
-    if Queue:ConnectingSize() + Queue:GetPlayerCount() + 1 > Queue.MaxPlayers then remove() return false end
-    
+    if Queue:ConnectingSize() + Queue:GetPlayerCount() + 1 > Queue.MaxPlayers then
+        remove()
+        return false
+    end
+
     if ids[1] == "debug" then
         table_insert(connList, {source = ids[1], ids = ids, name = ids[1], firstconnect = ids[1], priority = ids[1], timeout = 0})
         return true
     end
 
-    if Queue:IsInConnecting(ids) then Queue:RemoveFromConnecting(ids) end
+    if Queue:IsInConnecting(ids) then
+        Queue:RemoveFromConnecting(ids)
+    end
 
     local pos, data = Queue:IsInQueue(ids, true)
-    if not ignorePos and (not pos or pos > 1) then remove() return false end
+    if not ignorePos and (not pos or pos > 1) then
+        remove()
+        return false
+    end
 
     table_insert(connList, data)
     Queue:RemoveFromQueue(ids)
@@ -341,7 +380,9 @@ function Queue:GetIds(src)
 
     if ids and #ids > 1 then
         for k, id in ipairs(ids) do
-            if string_sub(id, 1, 3) == "ip:" and not Queue:IsPriority({id}) then table_remove(ids, k) end
+            if string_sub(id, 1, 3) == "ip:" and not Queue:IsPriority({id}) then
+                table_remove(ids, k)
+            end
         end
     end
 
@@ -349,7 +390,9 @@ function Queue:GetIds(src)
 end
 
 function Queue:AddPriority(id, power, temp)
-    if not id then return false end
+    if not id then
+        return false
+    end
 
     if type(id) == "table" then
         for _id, power in pairs(id) do
@@ -370,16 +413,18 @@ function Queue:AddPriority(id, power, temp)
         local tempPower, tempEnd, tempId = Queue:HasTempPriority({id})
         id = tempId or id
 
-        Queue:GetTempPriorityList()[string_lower(id)] = {power = power, endTime = os_time() + temp} 
+        Queue:GetTempPriorityList()[string_lower(id)] = {power = power, endTime = os_time() + temp}
     else
         Queue:GetPriorityList()[string_lower(id)] = power
     end
-    
+
     return true
 end
 
 function Queue:RemovePriority(id)
-    if not id then return false end
+    if not id then
+        return false
+    end
     id = string_lower(id)
     Queue:GetPriorityList()[id] = nil
     return true
@@ -397,12 +442,22 @@ end
 
 function Queue:NotFull(firstJoin)
     local canJoin = Queue:GetPlayerCount() + Queue:ConnectingSize() < Queue.MaxPlayers
-    if firstJoin and canJoin then canJoin = Queue:GetSize() <= 1 end
+    if firstJoin and canJoin then
+        canJoin = Queue:GetSize() <= 1
+    end
+
+    -- if Queue.SessionIsFull or  then
+    if Queue.playerSourceEnteringLastSession ~= nil or Queue.sessionmanager_numslotsused == 1 then
+        canJoin = false
+    end
+
     return canJoin
 end
 
 function Queue:SetPos(ids, newPos)
-    if newPos <= 0 or newPos > Queue:GetSize() then return false end
+    if newPos <= 0 or newPos > Queue:GetSize() then
+        return false
+    end
 
     local pos, data = Queue:IsInQueue(ids, true)
     local queueList = Queue:GetQueueList()
@@ -417,29 +472,62 @@ function Queue:CanJoin(src, cb)
     for _, data in ipairs(_Queue.JoinCbs) do
         local await = true
 
-        data.func(src, function(reason)
-            if reason and type(reason) == "string" then allow = false cb(reason) end
-            await = false
-        end)
+        data.func(
+            src,
+            function(reason)
+                if reason and type(reason) == "string" then
+                    allow = false
+                    cb(reason)
+                end
+                await = false
+            end
+        )
 
-        while await do Citizen.Wait(0) end
+        while await do
+            Citizen.Wait(0)
+        end
 
-        if not allow then return end
+        if not allow then
+            return
+        end
     end
 
-    if allow then cb(false) end
+    if allow then
+        cb(false)
+    end
 end
 
 function Queue:OnJoin(cb, resource)
-    if not cb then return end
+    if not cb then
+        return
+    end
 
     local tmp = {resource = resource, func = cb}
     table_insert(_Queue.JoinCbs, tmp)
 end
 
-exports("GetQueueExports", function()
-    return Queue
-end)
+exports(
+    "GetQueueExports",
+    function()
+        return Queue
+    end
+)
+
+-- RegisterNetEvent("connectqueue:SetSessionFull")
+-- AddEventHandler(
+--     "connectqueue:SetSessionFull",
+--     function(v)
+--         Queue.SessionIsFull = full
+--     end
+-- )
+
+RegisterNetEvent("connectqueue:sessionmanager_numslotsused")
+AddEventHandler(
+    "connectqueue:sessionmanager_numslotsused",
+    function(v)
+        Queue.sessionmanager_numslotsused = v
+    end
+)
 
 local function playerConnect(name, setKickReason, deferrals)
     local src = source
@@ -450,30 +538,65 @@ local function playerConnect(name, setKickReason, deferrals)
 
     deferrals.defer()
 
-    Citizen.CreateThread(function()
-        while connecting do
-            Citizen.Wait(100)
-            if not connecting then return end
-            deferrals.update(Config.Language.connecting)
+    Citizen.CreateThread(
+        function()
+            while connecting do
+                Citizen.Wait(100)
+                if not connecting then
+                    return
+                end
+                deferrals.update(Config.Language.connecting)
+            end
         end
-    end)
+    )
 
-    Citizen.Wait(1500)
+    Citizen.Wait(500)
 
     local function done(msg, _deferrals)
         connecting = false
 
         local deferrals = _deferrals or deferrals
 
-        if msg then deferrals.update(tostring(msg) or "") end
+        if msg then
+            deferrals.update(tostring(msg) or "")
+        end
 
-        Citizen.Wait(1500)
+        Citizen.Wait(500)
 
         if not msg then
             deferrals.done()
-            if Config.EnableGrace then Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime) end
+
+            if Queue.sessionmanager_numslotsused ~= nil and Queue.sessionmanager_numslotsused == 31 then
+                Queue.playerSourceEnteringLastSession = src
+
+                Citizen.CreateThread(
+                    function()
+                        local timeoutIn = 3 * 60
+
+                        while Queue.playerSourceEnteringLastSession do
+                            Citizen.Wait(1000)
+
+                            if Queue.sessionmanager_numslotsused == 32 then
+                                break
+                            elseif timeoutIn == 0 then
+                                DropPlayer(src, "Demorou demais pra logar")
+                            end
+
+                            timeoutIn = timeoutIn - 1
+                        end
+                        
+                        Queue.playerSourceEnteringLastSession = nil
+
+                    end
+                )
+            end
+
+            if Config.EnableGrace then
+                Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
+            end
         else
-            deferrals.done(tostring(msg) or "") CancelEvent()
+            deferrals.done(tostring(msg) or "")
+            CancelEvent()
         end
 
         return
@@ -489,11 +612,6 @@ local function playerConnect(name, setKickReason, deferrals)
         -- prevent joining
         done(Config.Language.iderr)
         CancelEvent()
-
-        if name == nil then
-            name = 'nil'
-        end
-
         Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
         return
     end
@@ -507,28 +625,43 @@ local function playerConnect(name, setKickReason, deferrals)
 
     local allow
 
-    Queue:CanJoin(src, function(reason)
-        if reason == nil or allow ~= nil then return end
-        if reason == false or #_Queue.JoinCbs <= 0 then allow = true return end
+    Queue:CanJoin(
+        src,
+        function(reason)
+            if reason == nil or allow ~= nil then
+                return
+            end
+            if reason == false or #_Queue.JoinCbs <= 0 then
+                allow = true
+                return
+            end
 
-        if reason then
-            -- prevent joining
-            allow = false
-            done(reason and tostring(reason) or "You were blocked from joining")
-            Queue:RemoveFromQueue(ids)
-            Queue:RemoveFromConnecting(ids)
-            Queue:DebugPrint(string_format("%s[%s] was blocked from joining; Reason: %s", name, ids[1], reason))
-            CancelEvent()
-            return
+            if reason then
+                -- prevent joining
+                allow = false
+                done(reason and tostring(reason) or "You were blocked from joining")
+                Queue:RemoveFromQueue(ids)
+                Queue:RemoveFromConnecting(ids)
+                Queue:DebugPrint(string_format("%s[%s] was blocked from joining; Reason: %s", name, ids[1], reason))
+                CancelEvent()
+                return
+            end
+
+            allow = true
         end
+    )
 
-        allow = true
-    end) 
+    while allow == nil do
+        Citizen.Wait(0)
+    end
+    if not allow then
+        return
+    end
 
-    while allow == nil do Citizen.Wait(0) end
-    if not allow then return end
-
-    if Config.PriorityOnly and not Queue:IsPriority(ids) then done(Config.Language.wlonly) return end
+    if Config.PriorityOnly and not Queue:IsPriority(ids) then
+        done(Config.Language.wlonly)
+        return
+    end
 
     local rejoined = false
 
@@ -543,7 +676,10 @@ local function playerConnect(name, setKickReason, deferrals)
             end
 
             local added = Queue:AddToConnecting(ids, true, true, done)
-            if not added then CancelEvent() return end
+            if not added then
+                CancelEvent()
+                return
+            end
             done()
 
             return
@@ -566,7 +702,7 @@ local function playerConnect(name, setKickReason, deferrals)
     end
 
     local pos, data = Queue:IsInQueue(ids, true)
-    
+
     if not pos or not data then
         done(Config.Language.err .. " [1]")
 
@@ -580,17 +716,22 @@ local function playerConnect(name, setKickReason, deferrals)
     if Queue:NotFull(true) and _Queue.JoinDelay <= GetGameTimer() then
         -- let them in the server
         local added = Queue:AddToConnecting(ids, true, true, done)
-        if not added then CancelEvent() return end
+        if not added then
+            CancelEvent()
+            return
+        end
 
         done()
         Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
 
         return
     end
-    
+
     update(string_format(Config.Language.pos .. ((Queue:TempSize() and Config.ShowTemp) and " (" .. Queue:TempSize() .. " temp)" or "00:00:00"), pos, Queue:GetSize(), ""))
 
-    if rejoined then return end
+    if rejoined then
+        return
+    end
 
     while true do
         Citizen.Wait(500)
@@ -618,7 +759,11 @@ local function playerConnect(name, setKickReason, deferrals)
         end
 
         local endPoint = GetPlayerEndpoint(data.source)
-        if not endPoint then data.timeout = data.timeout + 0.5 else data.timeout = 0 end
+        if not endPoint then
+            data.timeout = data.timeout + 0.5
+        else
+            data.timeout = 0
+        end
 
         if data.timeout >= Config.QueueTimeOut and os_time() - connectTime > 5 then
             remove("[Queue] Removed due to timeout")
@@ -641,7 +786,9 @@ local function playerConnect(name, setKickReason, deferrals)
 
             done(nil, data.deferrals)
 
-            if Config.EnableGrace then Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime) end
+            if Config.EnableGrace then
+                Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
+            end
 
             Queue:RemoveFromQueue(ids)
             Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
@@ -657,102 +804,126 @@ local function playerConnect(name, setKickReason, deferrals)
 end
 AddEventHandler("playerConnecting", playerConnect)
 
-Citizen.CreateThread(function()
-    local function remove(data, pos, msg)
-        if data and data.source then
-            Queue:RemoveFromQueue(data.source, true)
-            Queue:RemoveFromConnecting(data.source, true)
-        elseif pos then
-            table_remove(Queue:GetQueueList(), pos)
+Citizen.CreateThread(
+    function()
+        local function remove(data, pos, msg)
+            if data and data.source then
+                Queue:RemoveFromQueue(data.source, true)
+                Queue:RemoveFromConnecting(data.source, true)
+            elseif pos then
+                table_remove(Queue:GetQueueList(), pos)
+            end
+        end
+
+        while true do
+            Citizen.Wait(1000)
+
+            local i = 1
+
+            while i <= Queue:ConnectingSize() do
+                local data = Queue:GetConnectingList()[i]
+
+                local endPoint = GetPlayerEndpoint(data.source)
+
+                data.timeout = data.timeout + 1
+
+                if ((data.timeout >= 300 and not endPoint) or data.timeout >= Config.ConnectTimeOut) and data.source ~= "debug" and os_time() - data.firstconnect > 5 then
+                    remove(data)
+                    Queue:DebugPrint(data.name .. "[" .. data.ids[1] .. "] was removed from the connecting queue because they timed out")
+                else
+                    i = i + 1
+                end
+            end
+
+            for id, data in pairs(Queue:GetTempPriorityList()) do
+                if os_time() >= data.endTime then
+                    Queue:GetTempPriorityList()[id] = nil
+                end
+            end
+
+            Queue.MaxPlayers = GetConvarInt("sv_maxclients", 32)
+            Queue.Debug = GetConvar("sv_debugqueue", "true") == "true" and true or false
+            Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or false
+
+            local qCount = Queue:GetSize()
+
+            if Queue.DisplayQueue then
+                if Queue.InitHostName then
+                    SetConvar("sv_hostname", (qCount > 0 and "[" .. tostring(qCount) .. "] " or "") .. Queue.InitHostName)
+                else
+                    Queue.InitHostName = GetConvar("sv_hostname")
+                    Queue.InitHostName = Queue.InitHostName ~= "default FXServer" and Queue.InitHostName or false
+                end
+            end
         end
     end
-
-    while true do
-        Citizen.Wait(1000)
-    
-        local i = 1
-    
-        while i <= Queue:ConnectingSize() do
-            local data = Queue:GetConnectingList()[i]
-    
-            local endPoint = GetPlayerEndpoint(data.source)
-    
-            data.timeout = data.timeout + 1
-    
-            if ((data.timeout >= 300 and not endPoint) or data.timeout >= Config.ConnectTimeOut) and data.source ~= "debug" and os_time() - data.firstconnect > 5 then
-                remove(data)
-                Queue:DebugPrint(data.name .. "[" .. data.ids[1] .. "] was removed from the connecting queue because they timed out")
-            else
-                i = i + 1
-            end
-        end
-
-        for id, data in pairs(Queue:GetTempPriorityList()) do
-            if os_time() >= data.endTime then
-                Queue:GetTempPriorityList()[id] = nil
-            end
-        end
-    
-        Queue.MaxPlayers = GetConvarInt("sv_maxclients", 32)
-        Queue.Debug = GetConvar("sv_debugqueue", "true") == "true" and true or false
-        Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or false
-
-        local qCount = Queue:GetSize()
-
-        if Queue.DisplayQueue then
-            if Queue.InitHostName then
-                SetConvar("sv_hostname", (qCount > 0 and "[" .. tostring(qCount) .. "] " or "") .. Queue.InitHostName)
-            else
-                Queue.InitHostName = GetConvar("sv_hostname")
-                Queue.InitHostName = Queue.InitHostName ~= "default FXServer" and Queue.InitHostName or false
-            end
-        end
-    end
-end)
+)
 
 RegisterServerEvent("Queue:playerActivated")
-AddEventHandler("Queue:playerActivated", function()
-    local src = source
-    local ids = Queue:GetIds(src)
+AddEventHandler(
+    "Queue:playerActivated",
+    function()
+        local src = source
+        local ids = Queue:GetIds(src)
 
-    if not Queue:GetPlayerList()[src] then
-        _Queue.PlayerCount = Queue:GetPlayerCount() + 1
-        Queue:GetPlayerList()[src] = true
-        Queue:RemoveFromQueue(ids)
-        Queue:RemoveFromConnecting(ids)
-    end
-end)
-
-AddEventHandler("playerDropped", function()
-    local src = source
-    local ids = Queue:GetIds(src)
-
-    if Queue:GetPlayerList()[src] then
-        _Queue.PlayerCount = Queue:GetPlayerCount() - 1
-        Queue:GetPlayerList()[src] = nil
-        Queue:RemoveFromQueue(ids)
-        Queue:RemoveFromConnecting(ids)
-        if Config.EnableGrace then Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime) end
-    end
-end)
-
-AddEventHandler("onResourceStop", function(resource)
-    if Queue.DisplayQueue and Queue.InitHostName and resource == GetCurrentResourceName() then SetConvar("sv_hostname", Queue.InitHostName) end
-    
-    for k, data in ipairs(_Queue.JoinCbs) do
-        if data.resource == resource then
-            table_remove(_Queue.JoinCbs, k)
+        if not Queue:GetPlayerList()[src] then
+            _Queue.PlayerCount = Queue:GetPlayerCount() + 1
+            Queue:GetPlayerList()[src] = true
+            Queue:RemoveFromQueue(ids)
+            Queue:RemoveFromConnecting(ids)
         end
     end
-end)
+)
+
+AddEventHandler(
+    "playerDropped",
+    function()
+        local src = source
+        local ids = Queue:GetIds(src)
+
+        if Queue:GetPlayerList()[src] then
+            _Queue.PlayerCount = Queue:GetPlayerCount() - 1
+            Queue:GetPlayerList()[src] = nil
+            Queue:RemoveFromQueue(ids)
+            Queue:RemoveFromConnecting(ids)
+            if Config.EnableGrace then
+                Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
+            end
+        end       
+        if Queue.playerSourceEnteringLastSession == src then
+            Queue.playerSourceEnteringLastSession = nil
+        end
+    end
+)
+
+AddEventHandler(
+    "onResourceStop",
+    function(resource)
+        if Queue.DisplayQueue and Queue.InitHostName and resource == GetCurrentResourceName() then
+            SetConvar("sv_hostname", Queue.InitHostName)
+        end
+
+        for k, data in ipairs(_Queue.JoinCbs) do
+            if data.resource == resource then
+                table_remove(_Queue.JoinCbs, k)
+            end
+        end
+    end
+)
 
 if Config.DisableHardCap then
     Queue:DebugPrint("^1 [connectqueue] Disabling hardcap ^7")
 
-    AddEventHandler("onResourceStarting", function(resource)
-        if resource == "hardcap" then CancelEvent() return end
-    end)
-    
+    AddEventHandler(
+        "onResourceStarting",
+        function(resource)
+            if resource == "hardcap" then
+                CancelEvent()
+                return
+            end
+        end
+    )
+
     StopResource("hardcap")
 end
 
@@ -761,7 +932,7 @@ local commands = {}
 
 commands.addq = function()
     Queue:DebugPrint("ADDED DEBUG QUEUE")
-    Queue:AddToQueue({"steam:110000103fd1bb1"..testAdds}, os_time(), "TestAdd: " .. testAdds, "debug")
+    Queue:AddToQueue({"steam:110000103fd1bb1" .. testAdds}, os_time(), "TestAdd: " .. testAdds, "debug")
     testAdds = testAdds + 1
 end
 
@@ -827,14 +998,18 @@ commands.printtp = function()
 end
 
 commands.removetp = function(args)
-    if not args[1] then return end
+    if not args[1] then
+        return
+    end
 
     Queue:GetTempPriorityList()[args[1]] = nil
     Queue:DebugPrint("REMOVED " .. args[1] .. " FROM THE TEMP PRIORITY LIST")
 end
 
 commands.setpos = function(args)
-    if not args[1] or not args[2] then return end
+    if not args[1] or not args[2] then
+        return
+    end
 
     args[1], args[2] = tonumber(args[1]), tonumber(args[2])
 
@@ -846,7 +1021,9 @@ commands.setpos = function(args)
 end
 
 commands.setdata = function(args)
-    if not args[1] or not args[2] or not args[3] then return end
+    if not args[1] or not args[2] or not args[3] then
+        return
+    end
     args[1] = tonumber(args[1])
 
     local num = tonumber(args[3])
@@ -857,7 +1034,9 @@ commands.setdata = function(args)
         local dif = time - num
 
         data.firstconnect = data.firstconnect + dif
-        data.queuetime = function() return (os_time() - data.firstconnect) end
+        data.queuetime = function()
+            return (os_time() - data.firstconnect)
+        end
     else
         data[args[2]] = num and num or args[3]
     end
@@ -871,11 +1050,14 @@ commands.commands = function()
     end
 end
 
-AddEventHandler("rconCommand", function(command, args)
-    if command == "queue" and commands[args[1]] then
-        command = args[1]
-        table_remove(args, 1)
-        commands[command](args)
-        CancelEvent()
+AddEventHandler(
+    "rconCommand",
+    function(command, args)
+        if command == "queue" and commands[args[1]] then
+            command = args[1]
+            table_remove(args, 1)
+            commands[command](args)
+            CancelEvent()
+        end
     end
-end)
+)
