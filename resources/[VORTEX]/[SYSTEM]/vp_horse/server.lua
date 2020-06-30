@@ -13,7 +13,7 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
 
         local Character = User:getCharacter()
-        
+
         if Character == nil then
             return
         end
@@ -23,5 +23,15 @@ AddEventHandler(
         if Horse ~= nil then
             TriggerClientEvent("VP:HORSE:SetHorseInfo", _source, Horse:getModel(), Horse:getName(), Horse:getComponents())
         end
+    end
+)
+
+RegisterNetEvent("VP:HORSE:HitCarriedPlayer")
+AddEventHandler(
+    "VP:HORSE:HitCarriedPlayer",
+    function(playerServerId)
+        local _source = source
+
+        TriggerClientEvent("VP:HORSE:PlayBeingHitAnim", playerServerId)
     end
 )

@@ -126,8 +126,8 @@ function InitiateHorse(atCoords)
     SetPedConfigFlag(entity, 319, true)
     SetPedConfigFlag(entity, 6, true)
 
-    SetAnimalTuningBoolParam(entity, 25, false )
-    SetAnimalTuningBoolParam(entity, 24, false )
+    SetAnimalTuningBoolParam(entity, 25, false)
+    SetAnimalTuningBoolParam(entity, 24, false)
 
     TaskAnimalUnalerted(entity, -1, false, 0, 0)
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
@@ -359,6 +359,8 @@ function InitiatePrompts()
     PromptRegisterEnd(prompt_brush)
 end
 
+local _tempplayerhorse
+
 Citizen.CreateThread(
     function()
         while true do
@@ -415,6 +417,14 @@ Citizen.CreateThread(
                 end
             end
 
+            if _tempplayerhorse then
+                if IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_REAR")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_LEFT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_RIGHT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, joaat("AR_HORSE_KICK_FRONT")) then
+                    if GetMeleeTargetForPed(_tempplayerhorse) == PlayerPedId() then
+                        ClearPedTasks(_tempplayerhorse)
+                    end
+                end
+            end
+
             --- bugado o cavalo não volta a correr
             --[[ if IsControlJustPressed(0, 0xE16B9AAD) then
                 local mount = GetMount(PlayerPedId())
@@ -424,42 +434,56 @@ Citizen.CreateThread(
             end ]]
             -- drawBoundingBox()
 
-            -- if IsControlJustPressed(0, 0x60C81CDE) then
-            --     local ped = PlayerPedId()
-            --     if IsPedOnMount(ped) then
-            --         local lassoedPlayerPed
+            if IsControlJustPressed(0, 0x60C81CDE) then
+                local ped = PlayerPedId()
+                local mount = GetMount(ped)
+                if mount ~= 0 then
+                    -- local lassoedPlayerPed
 
-            --         local itemSet = CreateItemset(true)
-            --         FindAllAttachedCarriableEntities(GetMount(ped), itemSet)
-            --         local size = GetItemsetSize(itemSet)
+                    -- local itemSet = CreateItemset(true)
+                    -- FindAllAttachedCarriableEntities(GetMount(ped), itemSet)
+                    -- local size = GetItemsetSize(itemSet)
 
-            --         if size > 0 then
-            --             for index = 0, size - 1 do
-            --                 local entity = GetIndexedItemInItemset(index, itemSet)
+                    -- if size > 0 then
+                    --     for index = 0, size - 1 do
+                    --         local entity = GetIndexedItemInItemset(index, itemSet)
 
-            --                 if IsEntityAPed(entity) and IsPedHuman(entity) and Citizen.InvokeNative(0x9682F850056C9ADE, entity) then
-            --                     lassoedPlayerPed = entity
-            --                 end
-            --             end
-            --         end
+                    --         if IsEntityAPed(entity) and IsPedHuman(entity) and Citizen.InvokeNative(0x9682F850056C9ADE, entity) then
+                    --             lassoedPlayerPed = entity
+                    --         end
+                    --     end
+                    -- end
 
-            --         if IsItemsetValid(itemSet) then
-            --             DestroyItemset(itemSet)
-            --         end
+                    -- if IsItemsetValid(itemSet) then
+                    --     DestroyItemset(itemSet)
+                    -- end
 
-            --         if lassoedPlayerPed ~= nil then
-            --             local animDict = "script_proc@bounty@riding_punch"
-            --             RequestAnimDict(animDict)
+                    local carriedPed = Citizen.InvokeNative(0xB676EFDA03DADA52, mount, true)
 
-            --             while not HasAnimDictLoaded(animDict) do
-            --                 Citizen.Wait(0)
-            --             end
+                    if carriedPed ~= nil and IsPedAPlayer(carriedPed) then
+                        local carriedPlayer
 
-            --             TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
-            --             TaskPlayAnim(lassoedPlayerPed, "script_proc@bounty@riding_punch", "punch_ped", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
-            --         end
-            --     end
-            -- end
+                        for _, pid in pairs(GetActivePlayers()) do
+                            if GetPlayerPed(pid) == carriedPed then
+                                carriedPlayer = pid
+                            end
+                        end
+
+                        if carriedPlayer then
+                            TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayer)
+
+                            local animDict = "script_proc@bounty@riding_punch"
+                            RequestAnimDict(animDict)
+
+                            while not HasAnimDictLoaded(animDict) do
+                                Citizen.Wait(0)
+                            end
+
+                            TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+                        end
+                    end
+                end
+            end
         end
     end
 )
@@ -478,6 +502,8 @@ Citizen.CreateThread(
             if cAPI.IsPlayerHorseActive() then
                 local playerHorse = cAPI.GetPlayerHorse()
 
+                _tempplayerhorse = playerHorse
+
                 local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse))
 
                 if dist > 1.5 then
@@ -487,6 +513,21 @@ Citizen.CreateThread(
                 end
             end
         end
+    end
+)
+
+RegisterNetEvent("VP:HORSE:PlayBeingHitAnim")
+AddEventHandler(
+    "VP:HORSE:PlayBeingHitAnim",
+    function()
+        local animDict = "script_proc@bounty@riding_punch"
+        RequestAnimDict(animDict)
+
+        while not HasAnimDictLoaded(animDict) do
+            Citizen.Wait(0)
+        end
+
+        TaskPlayAnim(PlayerPedId(), "script_proc@bounty@riding_punch", "punch_ped", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
     end
 )
 
