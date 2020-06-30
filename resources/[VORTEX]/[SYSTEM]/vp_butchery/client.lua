@@ -41,7 +41,9 @@ Citizen.CreateThread(
             if lastCarriable ~= nil then
                 local ped = PlayerPedId()
 
-                if not DoesEntityExist(lastCarriable) or NativeGetCarrierAsPed(lastCarriable) ~= ped then
+                local carrier = NativeGetCarrierAsPed(lastCarriable)
+
+                if not DoesEntityExist(lastCarriable) or (carrier ~= 0 and carrier ~= ped) then
                     lastCarriable = nil
                 else
                     local pedVec = GetEntityCoords(ped)
