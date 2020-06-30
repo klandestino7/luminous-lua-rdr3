@@ -119,7 +119,7 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 
                 emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
 
-                console.log('Session is not full anymore');
+                console.log('Sessionmanager | SessionSize: ' + playerIdLength);
             }
 
             for (const [id, data] of Object.entries(playerDatas)) {
@@ -194,15 +194,11 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
             playerDatas[source].id = req.requestId.requestor;
             playerDatas[source].slot = assignSlotId();
 
-            console.log('playerIdLength', playerIdLength);
-
             if (playerIdLength == 32) {
-                // emit("connectqueue:SetSessionFull", true);
-
                 emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
-
-                console.log('Session is now full');
             }
+
+            console.log('Sessionmanager | SessionSize: ' + playerIdLength);
 
             emit("connectqueue:LastPlayerEnteredTheSession");
 
