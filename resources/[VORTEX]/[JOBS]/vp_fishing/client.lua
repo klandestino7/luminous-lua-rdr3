@@ -67,7 +67,7 @@ Citizen.CreateThread(
                                 ClearPedTasksImmediately(fishHandle, false, true)
                                 Citizen.InvokeNative(0x1A52076D26E09004, playerPed, fishHandle)
 
-                                FISHING_SET_FISH_HANDLE(fishHandle)
+                                -- FISHING_SET_FISH_HANDLE(fishHandle)
                                 -- FISHING_SET_TRANSITION_FLAG(4) -- 8196
 
                                 -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 8196)
@@ -474,7 +474,7 @@ Any _GET_TASK_FISHING_DATA(Ped ped, Any* structData);
     f_6 = Transition flag (4 if for 6 -> 7, 512 is unknown for now).
     f_7 = Fish entity handle.
     f_8 = Calculated fish weight (value / 54.25).
-    f_9 = Fish current power?
+    f_9 = Fish current power? / Heading?
     f_10 = Script timer.
     f_11 = Bobber Entity
     f_12 = Hook Entity

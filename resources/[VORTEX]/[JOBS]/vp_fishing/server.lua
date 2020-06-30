@@ -29,6 +29,6 @@ AddEventHandler(
         end
 
         Inventory:removeItem(-1, "money", price)
-        User:notify("dollar", -price)
+        User:notify("item", "money", -price)
     end
 )

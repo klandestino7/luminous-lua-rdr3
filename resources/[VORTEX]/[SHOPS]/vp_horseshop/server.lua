@@ -91,7 +91,7 @@ AddEventHandler(
 
         if Character:getInventory():removeItem("money", priceMoney) or Character:getInventory():removeItem("generic_gold", priceGold) then
             Character:createHorse(model, name)
-            User:notify("dollar", -priceMoney)
+            User:notify("item", "money", -priceMoney)
             User:notify("success", "Você comprou o " .. name .. " por " .. priceMoney or priceGold)
         else
             User:notify("error", "Você não tem dolar ou ouro suficiente.")

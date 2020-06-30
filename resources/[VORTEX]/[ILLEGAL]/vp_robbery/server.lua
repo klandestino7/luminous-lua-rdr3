@@ -156,7 +156,7 @@ function endRobberyGiveReward()
             local reward = data[indexBeingRobbed].staticReward
             Character:getInventory():addItem("money", reward)
             -- User:notify("success", "Você recebeu R$ " .. reward .. " pelo assalto")
-            User:notify("dollar", reward / 100)
+            User:notify("item", "money", reward / 100)
         end
     end
 

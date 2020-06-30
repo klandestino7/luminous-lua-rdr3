@@ -110,7 +110,7 @@ AddEventHandler(
         if Inventory:addItem("money", reward) then
             onGoingHunting[characterId] = nil
 
-            User:notify("dollar", reward)
+            User:notify("item", "money", reward)
             Character:varyExp(5)
 
             TriggerClientEvent("VP:BUTCHER:EntityAccepted", _source, entity)
