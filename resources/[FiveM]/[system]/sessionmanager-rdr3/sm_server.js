@@ -112,10 +112,12 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
                 slotsUsed &= ~(1 << oData.slot);
             }
 
-            if (slotsUsed < 32) {
+            const playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
+
+            if (playerIdLength < 32) {
                 // emit("connectqueue:SetSessionFull", false);
 
-                emit("connectqueue:sessionmanager_numslotsused", slotsUsed);
+                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
 
                 console.log('Session is not full anymore');
             }
@@ -179,7 +181,9 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 
         async QueueForSession_Seamless(source, data) {
 
-            if (slotsUsed == 32) {
+            const playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
+
+            if (playerIdLength == 32) {
                 DropPlayer(source, 'Sessão cheia, como que você conseguiu entrar?');
                 return
             }
@@ -190,12 +194,12 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
             playerDatas[source].id = req.requestId.requestor;
             playerDatas[source].slot = assignSlotId();
 
-            console.log('Slotsused', slotsUsed);
+            console.log('playerIdLength', playerIdLength);
 
-            if (slotsUsed == 32) {
+            if (playerIdLength == 32) {
                 // emit("connectqueue:SetSessionFull", true);
 
-                emit("connectqueue:sessionmanager_numslotsused", slotsUsed);
+                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
 
                 console.log('Session is now full');
             }
