@@ -7,7 +7,6 @@ local SCOPE_RANGE_UNLOAD = 120.0
 Citizen.CreateThread(
     function()
         while true do
-
             Citizen.Wait(1000) -- 10 sec
 
             local playerPosition = GetEntityCoords(PlayerPedId())
@@ -69,19 +68,19 @@ end
 
 function SetVectorIndexSuppressed(indexComposite, index, suppress)
     if suppress then
+        -- end
         -- if not IsVectorIndexSuppressed(indexComposite, index) then
-            UnloadAtVectorIndex(indexComposite, index)
+        UnloadAtVectorIndex(indexComposite, index)
 
-            if popSuppressed[indexComposite] == nil then
-                popSuppressed[indexComposite] = {}
-            end
+        if popSuppressed[indexComposite] == nil then
+            popSuppressed[indexComposite] = {}
+        end
 
-            popSuppressed[indexComposite][index] = true
-        -- end
+        popSuppressed[indexComposite][index] = true
     else
-        -- if IsVectorIndexSuppressed(indexComposite, index) then
-            popSuppressed[indexComposite][index] = nil
         -- end
+        -- if IsVectorIndexSuppressed(indexComposite, index) then
+        popSuppressed[indexComposite][index] = nil
     end
 end
 
@@ -181,10 +180,12 @@ AddEventHandler(
                     end
                 end
 
-                closestCompositeType = closestCompositeType:gsub("COMPOSITE_LOOTABLE_", "")
                 if closestIndexComposite == nil then
                     return
                 end
+
+                closestCompositeType = closestCompositeType:gsub("COMPOSITE_LOOTABLE_", "")
+
                 --      print(closestCompositeType, closestIndexComposite, closestIndex, compositeType)
 
                 TriggerServerEvent("VP:HERB_POPULATION:Gathered", closestCompositeType, closestIndexComposite, closestIndex)
