@@ -114,13 +114,11 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
 
             const playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
 
-            if (playerIdLength < 32) {
-                // emit("connectqueue:SetSessionFull", false);
-
+            // if (playerIdLength < 32) {
                 emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
+            // }
 
-                console.log('Sessionmanager | SessionSize: ' + playerIdLength);
-            }
+            console.log('Sessionmanager | SessionSize: ' + playerIdLength);
 
             for (const [id, data] of Object.entries(playerDatas)) {
                 emitRemovePlayer(id, {
@@ -194,11 +192,11 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
             playerDatas[source].id = req.requestId.requestor;
             playerDatas[source].slot = assignSlotId();
 
-            if (playerIdLength == 32) {
-                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
-            }
-
             console.log('Sessionmanager | SessionSize: ' + playerIdLength);
+
+            // if (playerIdLength == 32) {
+                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
+            // }
 
             emit("connectqueue:LastPlayerEnteredTheSession");
 
