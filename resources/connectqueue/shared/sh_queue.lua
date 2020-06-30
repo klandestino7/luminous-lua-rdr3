@@ -767,7 +767,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
         if data.timeout >= Config.QueueTimeOut and os_time() - connectTime > 5 then
             remove("[Queue] Removed due to timeout")
-            Queue:DebugPrint(name .. "[" .. ids[1] .. "] was removed from the queue because they timed out")
+            -- Queue:DebugPrint(name .. "[" .. ids[1] .. "] was removed from the queue because they timed out")
             return
         end
 
