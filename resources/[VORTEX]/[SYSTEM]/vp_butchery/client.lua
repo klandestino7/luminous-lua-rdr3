@@ -2,8 +2,8 @@ local butchers = {
     vec3(-1753.07, -394.78, 156.18), --Cabana de Açougue de Strawberry
     vec3(-341.08, 767.16, 116.71), --Cabana de Açougue de Valentine
     vec3(1296.28, -1279.22, 75.84), --Cabana de Açougue de Rhodes
-    vec3(-5507.733,-2947.984,-1.861), --Cabana de Açougue de Tumbleweed
-    vec3(-930.643, -1392.803, 50.365),
+    vec3(-5507.733, -2947.984, -1.861), --Cabana de Açougue de Tumbleweed
+    vec3(-930.643, -1392.803, 50.365)
 }
 
 local closestButcherIndex
@@ -39,10 +39,11 @@ Citizen.CreateThread(
             Citizen.Wait(0)
 
             if lastCarriable ~= nil then
-                if not DoesEntityExist(lastCarriable) then
+                local ped = PlayerPedId()
+
+                if not DoesEntityExist(lastCarriable) or NativeGetCarrierAsPed(lastCarriable) ~= ped then
                     lastCarriable = nil
                 else
-                    local ped = PlayerPedId()
                     local pedVec = GetEntityCoords(ped)
 
                     local carriableVec = GetEntityCoords(lastCarriable)
@@ -122,5 +123,5 @@ function GetAnimalCarcassQuality(Ped)
 end
 
 function NativeGetCarrierAsPed(entity)
-    return Citizen.InvokeNative(0x09B83E68DE004CD4 , entity, Citizen.ResultAsInteger())
+    return Citizen.InvokeNative(0x09B83E68DE004CD4, entity, Citizen.ResultAsInteger())
 end
