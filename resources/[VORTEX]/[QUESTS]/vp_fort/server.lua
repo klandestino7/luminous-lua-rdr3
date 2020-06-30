@@ -6,16 +6,14 @@ cAPI = Tunnel.getInterface("API")
 
 local data = {
     [1] = {
-        staticReward = 10000,
-        staticSecondsToReward = 7,
-        staticMaxParticipants = 3,
+        staticSecondsToReward = 600,
+        staticMaxParticipants = 8,
         staticCooldown = 30 * 60,
         staticName = "Mercer"
     },
     [2] = {
-        staticReward = 10000,
-        staticSecondsToReward = 7,
-        staticMaxParticipants = 3,
+        staticSecondsToReward = 600,
+        staticMaxParticipants = 8,
         staticCooldown = 30 * 60,
         staticName = "Wallace"
     }
@@ -28,11 +26,13 @@ local indexBeingRobbed_playerSourceWhoStarted = nil
 
 local robberyBeingEnded = false
 local index = nil
+local _source
+
 RegisterNetEvent("VP:FORT:TryToStartRobbery")
 AddEventHandler(
     "VP:FORT:TryToStartRobbery",
     function(index, participants)
-        local _source = source
+        _source = source
         local User = API.getUserFromSource(_source)
 
         indexBeingRobbed = index
@@ -65,7 +65,7 @@ AddEventHandler(
 
         if data[index].cooldown ~= nil then
             if data[index].cooldown > os.time() then
-                User:notify("speech", "Fomos assaltados a pouco tempo, não temos dinheiro!")
+                User:notify("speech", "Este forte foi dominado a pouco tempo, tente novamente em breve.")
                 return
             else
                 data[index].cooldown = nil
@@ -103,7 +103,6 @@ AddEventHandler(
             if isParticipant == false then
                 TriggerClientEvent("VP:FORT:StartRobbery", playerSource, index, false, nil)
             end
-
             isParticipant = nil
         end
     end
@@ -118,10 +117,10 @@ function countdownRobberyTime()
                 Citizen.Wait(1000)
                 if indexBeingRobbed ~= nil then
                     indexBeingRobbed_seconds = indexBeingRobbed_seconds - 1
-
+                    print(_source)
                     if indexBeingRobbed_seconds == 0 then
                         print("Robbery seconds is now 0")
-                        TriggerClientEvent("VP:TOAST:New", _source, "alert", "O tempo do roubo é de 0s")
+                        TriggerClientEvent("VP:TOAST:New", _source, "alert", "Forte conquistado com sucesso.")
                         endRobberyGiveReward()
                     end
                 end
