@@ -17,7 +17,7 @@ AddEventHandler(
             return
         end
         User:notify("successo", "Você foi curado")
-        User:notify("dollar", -price) 
+        User:notify("item", "money", -price) 
         Inventory:removeItem(-1, "money", price)
         TriggerClientEvent("heal:player", _source)
     end
