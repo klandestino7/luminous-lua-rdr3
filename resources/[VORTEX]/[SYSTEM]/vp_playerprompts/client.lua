@@ -116,7 +116,7 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
-            DisableControlAction(0, 0xF8982F00, true)
+            -- DisableControlAction(0, 0xF8982F00, true)
 
             if targetedNonPlayerEntity ~= nil or targetedPlayerEntity ~= nil then
                 local ped = PlayerPedId()
@@ -363,7 +363,7 @@ function quickPromptEnabledToggle(prompt)
     PromptSetEnabled(prompt, false)
     Citizen.CreateThread(
         function()
-            Citizen.Wait(100)
+            Citizen.Wait(1000)
             PromptSetEnabled(prompt, true)
             promptsEnabledBlocked[prompt] = nil
         end
