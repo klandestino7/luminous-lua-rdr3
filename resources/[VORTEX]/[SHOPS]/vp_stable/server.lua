@@ -26,7 +26,6 @@ RegisterNetEvent("VP:STABLE:AskForMyHorses")
 AddEventHandler(
     "VP:STABLE:AskForMyHorses",
     function()
-        print('VP:STABLE:AskForMyHorses')
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -51,9 +50,9 @@ AddEventHandler(
             data.charid = nil
         end
 
-        for k,v in pairs(horses) do
+        -- for k,v in pairs(horses) do
            -- print(k,v)
-        end        
+        -- end        
         TriggerClientEvent("VP:STABLE:ReceiveHorsesData", _source, horses)
         -- TriggerClientEvent("VP:STABLE:callhorse", _source)
     end
