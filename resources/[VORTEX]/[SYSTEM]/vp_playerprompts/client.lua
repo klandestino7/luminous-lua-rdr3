@@ -116,9 +116,14 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
+            local entityLockedOn = GetPlayerTargetEntity(PlayerId())
+            if IsEntityAPed(entityLockedOn) and IsPedHuman(entityLockedOn) then
+                DisableControlAction(0, 0xF8982F00, true)
+            end
+
+
             if targetedNonPlayerEntity ~= nil or targetedPlayerEntity ~= nil then
 
-                DisableControlAction(0, 0xF8982F00, true)
 
                 local ped = PlayerPedId()
 
