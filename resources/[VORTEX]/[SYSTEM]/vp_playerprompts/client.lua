@@ -59,7 +59,7 @@ Citizen.CreateThread(
                 if hit ~= 0 then
                     if IsEntityAPed(entityHit) and IsPedHuman(entityHit) then
                         if IsPedAPlayer(entityHit) then
-                            if NativeIsPedLassoed(entityHit) then
+                            if NativeIsPedLassoed(entityHit) or IsEntityDead(entityHit) then
                                 local playerId = GetPlayerIdFromPed(entityHit)
 
                                 _targetedPlayerEntity = entityHit
@@ -96,6 +96,8 @@ Citizen.CreateThread(
     end
 )
 
+local promptsEnabledBlocked = {}
+
 Citizen.CreateThread(
     function()
         -- local animDict = "script_re@mech_patdown"
@@ -114,9 +116,14 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
-            DisableControlAction(0, 0xF8982F00, true)
+            -- local _, entityLockedOn = GetPlayerTargetEntity(PlayerId())
+            -- if IsEntityAPed(entityLockedOn) and IsPedHuman(entityLockedOn) then
+            -- end
 
             if targetedNonPlayerEntity ~= nil or targetedPlayerEntity ~= nil then
+
+                DisableControlAction(0, 0xF8982F00, true)
+
                 local ped = PlayerPedId()
 
                 local entity
@@ -165,12 +172,12 @@ Citizen.CreateThread(
                 if isAPlayer then
                     PromptSetVisible(prompt_patdown, true)
 
-                    PromptSetVisible(prompt_player_senditem, false)
-
                     if isAlive then
                         if distance <= 1.5 then
                             if IsEntityPlayingAnim(entity, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
-                                PromptSetEnabled(prompt_patdown, true)
+                                if not promptsEnabledBlocked[prompt_patdown] then
+                                    PromptSetEnabled(prompt_patdown, true)
+                                end
                             end
 
                             if not options_isATrooper then
@@ -201,20 +208,18 @@ Citizen.CreateThread(
                                         PromptSetVisible(prompt_trooper_uncuff, false)
 
                                         PromptSetVisible(prompt_trooper_cuff, true)
-                                        PromptSetEnabled(prompt_trooper_cuff, true)
+                                        if not promptsEnabledBlocked[prompt_trooper_cuff] then
+                                            PromptSetEnabled(prompt_trooper_cuff, true)
+                                        end
                                     else
                                         PromptSetVisible(prompt_trooper_cuff, false)
 
                                         PromptSetVisible(prompt_trooper_uncuff, true)
-                                        PromptSetEnabled(prompt_trooper_uncuff, true)
+                                        if not promptsEnabledBlocked[prompt_trooper_uncuff] then
+                                            PromptSetEnabled(prompt_trooper_uncuff, true)
+                                        end
                                     end
                                 end
-                            end
-
-                            if options_itemSendSlotId then
-                                PromptSetVisible(prompt_player_senditem, true)
-
-                                PromptSetEnabled(prompt_player_senditem, true)
                             end
                         end
 
@@ -238,17 +243,13 @@ Citizen.CreateThread(
                                     PromptSetVisible(prompt_trooper_uncuff, true)
                                 end
                             end
-
-                            if options_itemSendSlotId then
-                                PromptSetVisible(prompt_player_senditem, true)
-
-                                PromptSetEnabled(prompt_player_senditem, false)
-                            end
                         end
                     end
 
                     if isDead then
-                        PromptSetEnabled(prompt_patdown, true)
+                        if not promptsEnabledBlocked[prompt_patdown] then
+                            PromptSetEnabled(prompt_patdown, true)
+                        end
 
                         PromptSetVisible(prompt_trooper_cuff, false)
                         PromptSetVisible(prompt_trooper_uncuff, false)
@@ -260,8 +261,6 @@ Citizen.CreateThread(
 
                     PromptSetVisible(prompt_trooper_cuff, false)
                     PromptSetVisible(prompt_trooper_uncuff, false)
-
-                    PromptSetVisible(prompt_player_senditem, false)
 
                     if isDead then
                     end
@@ -285,28 +284,32 @@ Citizen.CreateThread(
                 end
 
                 if PromptHasHoldModeCompleted(prompt_patdown) then
-                    quickHoldModeToggle(prompt_patdown)
+                    quickPromptEnabledToggle(prompt_patdown)
 
                     TriggerServerEvent("VP:SHERIFF:TryToPatDown", targetedPlayerServerId)
                 end
 
                 if PromptHasHoldModeCompleted(prompt_dead_pickup) then
-                    quickHoldModeToggle(prompt_dead_pickup)
+                    quickPromptEnabledToggle(prompt_dead_pickup)
 
                     TaskPickupCarriableEntity(ped, entity)
                 end
 
                 if PromptHasHoldModeCompleted(prompt_admin_revive) then
-                    quickHoldModeToggle(prompt_admin_revive)
+                    quickPromptEnabledToggle(prompt_admin_revive)
 
-                    SetEntityAsMissionEntity(entity, true, true)
-                    ResurrectPed(entity)
-                    SetEntityHealth(entity, GetEntityMaxHealth(entity))
-                    SetEntityAsMissionEntity(entity, false, false)
+                    if isAPlayer then
+                        TriggerServerEvent("VP:MEDIC:TreatmentCallback", targetedPlayerServerId)
+                    else
+                        SetEntityAsMissionEntity(entity, true, true)
+                        ResurrectPed(entity)
+                        SetEntityHealth(entity, GetEntityMaxHealth(entity))
+                        SetEntityAsMissionEntity(entity, false, false)
+                    end
                 end
 
                 if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
-                    quickHoldModeToggle(prompt_trooper_uncuff)
+                    quickPromptEnabledToggle(prompt_trooper_uncuff)
 
                     -- SetEnableHandcuffs(entity, false, false)
 
@@ -314,35 +317,14 @@ Citizen.CreateThread(
                 end
 
                 if PromptHasHoldModeCompleted(prompt_trooper_cuff) then
-                    quickHoldModeToggle(prompt_trooper_cuff)
+                    quickPromptEnabledToggle(prompt_trooper_cuff)
 
                     -- SetEnableHandcuffs(entity, true, false)
 
                     TriggerServerEvent("VP:SHERIFF:unlocking", targetedPlayerServerId)
                 end
-
-                if PromptHasHoldModeCompleted(prompt_player_senditem) then
-                    PromptSetVisible(prompt_player_senditem, true)
-
-                    TriggerServerEvent("VP:INVENTORY:SendToPlayer", options_itemSendSlotId, targetedPlayerServerId)
-                end
             end
         end
-    end
-)
-
-RegisterNetEvent("VP:PLAYERPROMPTS:TryToSendItemSlotToTarget")
-AddEventHandler(
-    "VP:PLAYERPROMPTS:TryToSendItemSlotToTarget",
-    function(slotId)
-        options_itemSendSlotId = slotId
-
-        Citizen.CreateThread(
-            function()
-                Citizen.Wait(10000)
-                options_itemSendSlotId = nil
-            end
-        )
     end
 )
 
@@ -358,8 +340,6 @@ function CreatePrompts()
     prompt_trooper_cuff = newPrompt(0xEB2AC491, "Algemar", true, 1)
 
     prompt_trooper_uncuff = newPrompt(0x7F8D09B8, "Desalgemar", true, 1)
-
-    prompt_player_senditem = newPrompt(0x07CE1E61, "Enviar Item", true, 0)
 end
 
 function newPrompt(control, text, hold, page)
@@ -380,15 +360,17 @@ function newPrompt(control, text, hold, page)
     return prompt
 end
 
-function quickHoldModeToggle(prompt)
+function quickPromptEnabledToggle(prompt)
     -- PromptSetHoldMode(prompt, false)
     -- PromptSetHoldMode(prompt, true)
 
-    PromptSetHoldMode(prompt, false)
+    promptsEnabledBlocked[prompt] = true
+    PromptSetEnabled(prompt, false)
     Citizen.CreateThread(
         function()
-            Citizen.Wait(500)
-            PromptSetHoldMode(prompt, true)
+            Citizen.Wait(1000)
+            PromptSetEnabled(prompt, true)
+            promptsEnabledBlocked[prompt] = nil
         end
     )
 end
@@ -416,7 +398,6 @@ AddEventHandler(
             PromptDelete(prompt_admin_revive)
             PromptDelete(prompt_trooper_cuff)
             PromptDelete(prompt_trooper_uncuff)
-            PromptDelete(prompt_player_senditem)
         end
     end
 )
@@ -433,19 +414,6 @@ function GetPlayerIdFromPed(ped)
         end
     end
 end
-
--- PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", itemAmount .. " " .. itemName .. " | " .. itemWeight .. "kg"))
--- if PromptHasHoldModeCompleted(prompt) then
---     PromptSetEnabled(prompt, false)
---     Citizen.CreateThread(
---         function()
---             Citizen.Wait(1000)
---             PromptSetEnabled(prompt, true)
---         end
---     )
-
---     TriggerServerEvent("VP:INVENTORY:PickedUpDroppedItem", indexInPickupRange)
--- end
 
 --[[
     MEDIC:

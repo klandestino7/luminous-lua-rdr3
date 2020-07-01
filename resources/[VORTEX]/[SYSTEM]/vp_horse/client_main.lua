@@ -417,13 +417,13 @@ Citizen.CreateThread(
                 end
             end
 
-            if _tempplayerhorse then
-                if IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_REAR")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_LEFT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_RIGHT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_FRONT")) then
-                    if GetMeleeTargetForPed(_tempplayerhorse) == PlayerPedId() then
-                        ClearPedTasks(_tempplayerhorse)
-                    end
-                end
-            end
+            -- if _tempplayerhorse then
+            --     if IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_REAR")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_LEFT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_RIGHT")) or IsPedPerformingMeleeAction(_tempplayerhorse, 32768, GetHashKey("AR_HORSE_KICK_FRONT")) then
+            --         if GetMeleeTargetForPed(_tempplayerhorse) == PlayerPedId() then
+            --             ClearPedTasks(_tempplayerhorse)
+            --         end
+            --     end
+            -- end
 
             --- bugado o cavalo não volta a correr
             --[[ if IsControlJustPressed(0, 0xE16B9AAD) then
@@ -434,7 +434,7 @@ Citizen.CreateThread(
             end ]]
             -- drawBoundingBox()
 
-            if IsControlJustPressed(0, 0x60C81CDE) then
+            if IsControlJustPressed(0, 0x60C81CDE) then -- Horse attack F
                 local ped = PlayerPedId()
                 local mount = GetMount(ped)
                 if mount ~= 0 then
@@ -458,30 +458,38 @@ Citizen.CreateThread(
                     --     DestroyItemset(itemSet)
                     -- end
 
-                    local carriedPed = Citizen.InvokeNative(0xB676EFDA03DADA52, mount, true)
+                    -- local carriedPed = Citizen.InvokeNative(0xB676EFDA03DADA52, mount, true)
 
-                    if carriedPed ~= nil and IsPedAPlayer(carriedPed) then
-                        local carriedPlayer
+                    -- if carriedPed ~= nil and IsPedAPlayer(carriedPed) then
 
-                        for _, pid in pairs(GetActivePlayers()) do
-                            if GetPlayerPed(pid) == carriedPed then
-                                carriedPlayer = pid
-                            end
-                        end
+                    local carriedPlayer
 
-                        if carriedPlayer then
-                            TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayer)
+                    for _, pid in pairs(GetActivePlayers()) do
+                        local pped = GetPlayerPed(pid)
+                        local carrier = Citizen.InvokeNative(0xA033D7E4BBF9844D, pped)
 
-                            local animDict = "script_proc@bounty@riding_punch"
-                            RequestAnimDict(animDict)
-
-                            while not HasAnimDictLoaded(animDict) do
-                                Citizen.Wait(0)
-                            end
-
-                            TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+                        if carrier == mount then
+                            carriedPlayer = pid
+                            break
                         end
                     end
+
+                    if carriedPlayer then
+
+                        local carriedPlayerServerId = GetPlayerServerId(carriedPlayer)
+
+                        TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayerServerId)
+
+                        local animDict = "script_proc@bounty@riding_punch"
+                        RequestAnimDict(animDict)
+
+                        while not HasAnimDictLoaded(animDict) do
+                            Citizen.Wait(0)
+                        end
+
+                        TaskPlayAnim(ped, "script_proc@bounty@riding_punch", "punch_player", 4.0, -4.0, -1, 24, 0.0, false, 0, false, 0, false)
+                    end
+                -- end
                 end
             end
         end
