@@ -59,7 +59,7 @@ Citizen.CreateThread(
                 if hit ~= 0 then
                     if IsEntityAPed(entityHit) and IsPedHuman(entityHit) then
                         if IsPedAPlayer(entityHit) then
-                            if NativeIsPedLassoed(entityHit) then
+                            if NativeIsPedLassoed(entityHit) or IsEntityDead(entityHit) then
                                 local playerId = GetPlayerIdFromPed(entityHit)
 
                                 _targetedPlayerEntity = entityHit
