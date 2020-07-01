@@ -299,10 +299,14 @@ Citizen.CreateThread(
                 if PromptHasHoldModeCompleted(prompt_admin_revive) then
                     quickHoldModeToggle(prompt_admin_revive)
 
-                    SetEntityAsMissionEntity(entity, true, true)
-                    ResurrectPed(entity)
-                    SetEntityHealth(entity, GetEntityMaxHealth(entity))
-                    SetEntityAsMissionEntity(entity, false, false)
+                    if isAPlayer then
+                        TriggerServerEvent("VP:MEDIC:TreatmentCallback", targetedPlayerServerId)
+                    else
+                        SetEntityAsMissionEntity(entity, true, true)
+                        ResurrectPed(entity)
+                        SetEntityHealth(entity, GetEntityMaxHealth(entity))
+                        SetEntityAsMissionEntity(entity, false, false)
+                    end
                 end
 
                 if PromptHasHoldModeCompleted(prompt_trooper_uncuff) then
