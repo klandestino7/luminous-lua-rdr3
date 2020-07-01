@@ -8,7 +8,7 @@ function connectUser(source, user_id)
     end
 
     if #GetPlayers() == 32 then
-        API.dropPlayer(source, 'Quase bugou a instancia')
+        API.dropPlayer(source, "Quase bugou a instancia")
         return
     end
 
@@ -22,11 +22,11 @@ function connectUser(source, user_id)
     cAPI._clientConnected(source, true)
 
     print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
-    
+
     TriggerEvent("VP:IDENTITY:DisplayCharSelection", User)
 
-    TriggerClientEvent('VP:_CORE:SetServerIdAsUserId', -1, source, user_id)
-    TriggerClientEvent('VP:_CORE:SetServerIdAsUserIdPacked', source, API.sources)
+    TriggerClientEvent("VP:_CORE:SetServerIdAsUserId", -1, source, user_id)
+    TriggerClientEvent("VP:_CORE:SetServerIdAsUserIdPacked", source, API.sources)
 
     return User
 end
@@ -41,7 +41,7 @@ AddEventHandler(
         --     return
         -- end
 
-    --    deferrals.defer()
+        --    deferrals.defer()
 
         local _source = source
         local ids = GetPlayerIdentifiers(_source)
@@ -66,38 +66,38 @@ AddEventHandler(
 
                             API.onFirstSpawn[user_id] = true
 
-                        -- table.insert(sessionQueue, _source)
+                            -- table.insert(sessionQueue, _source)
 
-                        -- local index = indexOf(_source)
+                            -- local index = indexOf(_source)
 
-                        -- local seconds = 15
+                            -- local seconds = 15
 
-                        -- while index ~= nil do
-                        --     Citizen.Wait(1000)
+                            -- while index ~= nil do
+                            --     Citizen.Wait(1000)
 
-                        --     index = indexOf(_source)
+                            --     index = indexOf(_source)
 
-                        --     -- print("user_id" .. user_id .. " source: " .. source, index)
+                            --     -- print("user_id" .. user_id .. " source: " .. source, index)
 
-                        --     if index ~= nil then
-                        --         deferrals.update("Conectando em " .. (index * seconds) .. " segundos. Aguarde!")
+                            --     if index ~= nil then
+                            --         deferrals.update("Conectando em " .. (index * seconds) .. " segundos. Aguarde!")
 
-                        --         -- print(_source, index)
+                            --         -- print(_source, index)
 
-                        --         if index == 1 then
-                        --             Citizen.Wait(seconds * 1000)
+                            --         if index == 1 then
+                            --             Citizen.Wait(seconds * 1000)
 
-                        --             -- sessionQueue = splice(sessionQueue, index, 1)
-                        --             table.remove(sessionQueue, index)
+                            --             -- sessionQueue = splice(sessionQueue, index, 1)
+                            --             table.remove(sessionQueue, index)
 
-                        --             if #GetPlayers() > 30 then
-                        --                 seconds = 30
-                        --             else
-                        --                 seconds = 15
-                        --             end
+                            --             if #GetPlayers() > 30 then
+                            --                 seconds = 30
+                            --             else
+                            --                 seconds = 15
+                            --             end
 
-                        --             if #GetPlayers() < 31 and #API.users < 31 then
-                                        TriggerEvent("API:playerJoin", user_id, _source, playerName)
+                            --             if #GetPlayers() < 31 and #API.users < 31 then
+                            TriggerEvent("API:playerJoin", user_id, _source, playerName)
                         --                 deferrals.done()
                         --             else
                         --                 print("Authentication: " .. _source .. " Erro ao autenticar, limite de players alcançado!")
@@ -113,10 +113,13 @@ AddEventHandler(
                     else
                         -- deferrals.done("Você está banido do servidor.")
 
-                        -- CancelEvent()
 
-                        exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-                        exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+                        -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+                        -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+                        DropPlayer(_source, "Você está banido do servidor.")
+
+                        CancelEvent()
                     end
                 else
                     -- deferrals.done("Erro de identificação.")
@@ -134,19 +137,25 @@ AddEventHandler(
                     end
                 )
 
-                print(playerName .. " (" .. ids[1] .. ") tentou conectar sem whitelist")
+                -- print(playerName .. " (" .. ids[1] .. ") tentou conectar sem whitelist")
                 -- deferrals.done("Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
-                -- CancelEvent()
 
-                exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-                exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+                -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+                -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+                DropPlayer(_source, "Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
+
+                CancelEvent()
             end
         else
             -- deferrals.done("Aguarde um minuto e você logo conseguira entrar.")
-            -- CancelEvent()
 
-            exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-            exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+            -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+            -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+            DropPlayer("Aguarde um minuto e você logo conseguira entrar.")
+
+            CancelEvent()
         end
     end
 )
