@@ -127,6 +127,9 @@ window.addEventListener('message', function(event) {
                         <div class="col s6 panel-col item" onclick="SelectHorse(${HorseID})">
                             <h6 class="grey-text title">Escolher</h6>
                         </div>
+                        <div class="col s6 panel-col item" onclick="SellHorse(${HorseID})">
+                            <h6 class="grey-text title">Vender por $10</h6>
+                        </div>
                     </div>
                 </li> 
             `);
@@ -255,4 +258,9 @@ function buyHorse(Modelhor, price, isGold) {
 
 function SelectHorse(IdHorse) {    
     $.post('http://vp_stable/selectHorse', JSON.stringify({ horseID: IdHorse }))    
+}
+
+
+function SellHorse(IdHorse) {    
+    $.post('http://vp_stable/sellHorse', JSON.stringify({ horseID: IdHorse }))    
 }
