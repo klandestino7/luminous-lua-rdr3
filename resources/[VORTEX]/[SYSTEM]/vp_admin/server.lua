@@ -69,9 +69,9 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") and args[1] then
-            local User = API.getUserFromUserId(parseInt(args[1]))
-            if User ~= nil then
-                local tplayer = User:getSource()
+            local UserTarget = API.getUserFromUserId(parseInt(args[1]))
+            if UserTarget ~= nil then
+                local tplayer = UserTarget:getSource()
                 if tplayer then
                     cAPI.SetPlayerPosition(source, cAPI.getPosition(tplayer))
                 end
