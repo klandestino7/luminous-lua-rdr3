@@ -142,7 +142,7 @@ end
 RegisterNetEvent('VP:ROBREG:warnThePolice')
 AddEventHandler('VP:ROBREG:warnThePolice', function(AtmX,AtmY,AtmZ)
 	Wait(10000)
-	if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+--	if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
 		Citizen.InvokeNative(0x67C540AA08E4A6F5, "Match_End_Timer", "RDRO_Countdown_Sounds", true, 0)	
 		atmCoords = vector3(AtmX,AtmY,AtmZ)
 
@@ -150,7 +150,7 @@ AddEventHandler('VP:ROBREG:warnThePolice', function(AtmX,AtmY,AtmZ)
 	--	TriggerEvent('chatMessage', _U('police_title'), Config.policeColor, string.format( Locales[Config.Locale]['police_warning_location'], location ) )
 		TriggerEvent('VP:NOTIFY:Simple', 'SHERIFF:<br>Roubo à uma Loja! Vá até o local e impeça os assaltantes em ' .. zone, 10000)
 		TriggerEvent('VP:ROBREG:InfoSheriff', AtmX,AtmY,AtmZ)
-	end
+--	end
 end)
 
 -- RegisterNetEvent('VP:ROBREG:createRobBlip')
