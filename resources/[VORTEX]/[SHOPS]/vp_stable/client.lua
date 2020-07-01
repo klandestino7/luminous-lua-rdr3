@@ -424,6 +424,14 @@ RegisterNUICallback(
     end
 )
 
+RegisterNUICallback(
+    "sellHorse",
+    function(data)
+        print(data.horseID)
+        TriggerServerEvent("VP:STABLE:SellHorseWithId", tonumber(data.horseID))
+    end
+)
+
 RegisterNetEvent("VP:STABLE:ReceiveHorsesData")
 AddEventHandler(
     "VP:STABLE:ReceiveHorsesData",

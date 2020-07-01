@@ -109,3 +109,22 @@ AddEventHandler(
         TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo selecionado', 5000)
     end
 )
+
+
+RegisterNetEvent("VP:STABLE:SellHorseWithId")
+AddEventHandler(
+    "VP:STABLE:SellHorseWithId",
+    function(id)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+        local Inventory = Character:getInventory()     
+        
+        TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo vendido com sucesso.', 5000)  
+        
+        Character:removeHorse(id)
+
+        Inventory:addItem("money", 1000)
+    end
+)
+

@@ -6,12 +6,12 @@ API = Tunnel.getInterface("API")
 
 RegisterNetEvent('VP:WANTED:gunshotInProgress')
 AddEventHandler('VP:WANTED:gunshotInProgress', function(targetCoords) 
-    if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+ --   if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
         local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 408396114, targetCoords.x, targetCoords.y, targetCoords.z, 60.0)	
         Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Disparo de Tiro')
         Wait(8000)
         RemoveBlip(blip)  
-    end
+   -- end
 end)
 
 
@@ -95,9 +95,9 @@ end)
 
 RegisterNetEvent('VP:WANTED:outlawNotify')
 AddEventHandler('VP:WANTED:outlawNotify', function(alert)
-    if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+  --  if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
         TriggerEvent('VP:NOTIFY:Simple', "Sheriff: ".. (alert), 5000)
-    end
+ --   end
 end)
 
 
