@@ -1,5 +1,5 @@
 farmsRows = {
-    ["tobacco"] = {
+    {
         numSpots = 50,
         type = "tobacco",
         {
@@ -51,7 +51,7 @@ farmsRows = {
             vec3(1215.296, -1909.439, 52.792)
         }
     },
-    ["corn"] = {
+    {
         numSpots = 20,
         type = "corn",
         {
@@ -183,7 +183,7 @@ farmsRows = {
             vec3(982.428, -1993.542, 47.167)
         }
     },
-    ["sugarcane"] = {
+    {
         numSpots = 20,
         type = "sugarcane",
         {

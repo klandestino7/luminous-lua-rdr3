@@ -5,7 +5,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 client_scripts {
 	'@_core/lib/utils.lua',
 	'_cfg.lua',
-	'client.lua'
+	'client2.lua'
 }
 
 server_scripts {
