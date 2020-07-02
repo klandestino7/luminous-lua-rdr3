@@ -152,6 +152,9 @@ Citizen.CreateThread(
 
                                                 local humanNpcPosition = GetEntityCoords(humanNpc)
 
+                                                SetEntityAsMissionEntity(humanNpc, true, true)
+                                                NetworkRequestControlOfEntity(humanNpc)
+
                                                 taskSequence = OpenSequenceTask()
                                                 TaskSetBlockingOfNonTemporaryEvents(0, true)
                                                 TaskGoToEntity(0, playerPed, -1, 1.2, 1.5, 2.0, 0)
@@ -182,6 +185,7 @@ Citizen.CreateThread(
                 else
                     if GetSequenceProgress(saviorHumanNpc) == -1 then
                         saviorHumanNpc = nil
+                        SetEntityAsMissionEntity(humanNpc, false, false)
                     end
                 end
             end
