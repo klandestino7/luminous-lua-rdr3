@@ -31,134 +31,174 @@ function connectUser(source, user_id)
     return User
 end
 
-AddEventHandler(
-    "playerConnecting",
-    function(playerName, kickReason, deferrals)
-        -- if #GetPlayers() >= 31 or #API.users >= 31 then
-        --     print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
-        --     deferrals.done("32/32")
-        --     CancelEvent()
-        --     return
-        -- end
+--[[
+    INICIAR _CORE DEPOIS DO CONNECTQUEUE
+]]
 
-        --    deferrals.defer()
+Queue.OnReady(
+    function()
+        Queue.OnJoin(
+            function(source, allow)
+                local ids = GetPlayerIdentifiers(source)
 
-        local _source = source
-        local ids = GetPlayerIdentifiers(_source)
+                local steamId = ids[1]
 
-        -- if ids[1] == nil then
-        --     deferrals.done("Abra a Steam.")
-        --     CancelEvent()
-        --     return
-        -- end
+                if API.isWhitelisted(steamId) then
+                    local playerName = GetPlayerName(source)
 
-        if LoginCooldown[ids[1]] == nil then
-            -- deferrals.update("Verificando sua whitelist...")
+                    local user_id = API.getUserIdByIdentifiers(ids, playerName)
 
-            if API.isWhitelisted(ids[1]) then
-                local user_id = API.getUserIdByIdentifiers(ids, playerName)
-                if user_id then
-                    -- deferrals.update("Checando lista de banimentos...")
-
-                    if API.isBanned(user_id) == 0 then
-                        if API.users[user_id] == nil then
-                            -- deferrals.update("Tudo encontrado, carregando seus dados...")
-
+                    if user_id then
+                        if API.isBanned(user_id) == 0 then
                             API.onFirstSpawn[user_id] = true
-
-                            -- table.insert(sessionQueue, _source)
-
-                            -- local index = indexOf(_source)
-
-                            -- local seconds = 15
-
-                            -- while index ~= nil do
-                            --     Citizen.Wait(1000)
-
-                            --     index = indexOf(_source)
-
-                            --     -- print("user_id" .. user_id .. " source: " .. source, index)
-
-                            --     if index ~= nil then
-                            --         deferrals.update("Conectando em " .. (index * seconds) .. " segundos. Aguarde!")
-
-                            --         -- print(_source, index)
-
-                            --         if index == 1 then
-                            --             Citizen.Wait(seconds * 1000)
-
-                            --             -- sessionQueue = splice(sessionQueue, index, 1)
-                            --             table.remove(sessionQueue, index)
-
-                            --             if #GetPlayers() > 30 then
-                            --                 seconds = 30
-                            --             else
-                            --                 seconds = 15
-                            --             end
-
-                            --             if #GetPlayers() < 31 and #API.users < 31 then
-                            TriggerEvent("API:playerJoin", user_id, _source, playerName)
-                        --                 deferrals.done()
-                        --             else
-                        --                 print("Authentication: " .. _source .. " Erro ao autenticar, limite de players alcançado!")
-                        --                 deferrals.done("32/32")
-                        --                 CancelEvent()
-                        --                 return
-                        --             end
-                        --             break
-                        --         end
-                        --     end
-                        -- end
+                            TriggerEvent("API:playerJoin", user_id, source, playerName)
+                            allow()
+                        else
+                            allow("ERROR: Você está banido!")
                         end
                     else
-                        -- deferrals.done("Você está banido do servidor.")
-
-
-                        -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-                        -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
-
-                        DropPlayer(_source, "Você está banido do servidor.")
-
-                        CancelEvent()
+                        allow("ERROR: Falha ao encontrar ou criar o seu usúario, contate a STAFF!")
                     end
                 else
-                    -- deferrals.done("Erro de identificação.")
-                    -- CancelEvent()
-
-                    exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-                    exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+                    allow("ERROR: Você não tem whitelist. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
                 end
-            else
-                LoginCooldown[ids[1]] = true
-                Citizen.CreateThread(
-                    function()
-                        Citizen.Wait(60000)
-                        LoginCooldown[ids[1]] = nil
-                    end
-                )
-
-                -- print(playerName .. " (" .. ids[1] .. ") tentou conectar sem whitelist")
-                -- deferrals.done("Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
-
-                -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-                -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
-
-                DropPlayer(_source, "Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
-
-                CancelEvent()
             end
-        else
-            -- deferrals.done("Aguarde um minuto e você logo conseguira entrar.")
-
-            -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
-            -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
-
-            DropPlayer("Aguarde um minuto e você logo conseguira entrar.")
-
-            CancelEvent()
-        end
+        )
     end
 )
+
+-- AddEventHandler(
+--     "playerConnecting",
+--     function(playerName, kickReason, deferrals)
+--         -- if #GetPlayers() >= 31 or #API.users >= 31 then
+--         --     print("Authentication: " .. source .. " Erro ao autenticar, limite de players alcançado!")
+--         --     deferrals.done("32/32")
+--         --     CancelEvent()
+--         --     return
+--         -- end
+
+--         --    deferrals.defer()
+
+--         local _source = source
+--         local ids = GetPlayerIdentifiers(_source)
+
+--         -- if ids[1] == nil then
+--         --     deferrals.done("Abra a Steam.")
+--         --     CancelEvent()
+--         --     return
+--         -- end
+
+--         if LoginCooldown[ids[1]] == nil then
+--             -- deferrals.update("Verificando sua whitelist...")
+
+--             if API.isWhitelisted(ids[1]) then
+--                 local user_id = API.getUserIdByIdentifiers(ids, playerName)
+--                 if user_id then
+--                     -- deferrals.update("Checando lista de banimentos...")
+
+--                     if API.isBanned(user_id) == 0 then
+--                         if API.users[user_id] == nil then
+--                             -- deferrals.update("Tudo encontrado, carregando seus dados...")
+
+--                             API.onFirstSpawn[user_id] = true
+
+--                             -- table.insert(sessionQueue, _source)
+
+--                             -- local index = indexOf(_source)
+
+--                             -- local seconds = 15
+
+--                             -- while index ~= nil do
+--                             --     Citizen.Wait(1000)
+
+--                             --     index = indexOf(_source)
+
+--                             --     -- print("user_id" .. user_id .. " source: " .. source, index)
+
+--                             --     if index ~= nil then
+--                             --         deferrals.update("Conectando em " .. (index * seconds) .. " segundos. Aguarde!")
+
+--                             --         -- print(_source, index)
+
+--                             --         if index == 1 then
+--                             --             Citizen.Wait(seconds * 1000)
+
+--                             --             -- sessionQueue = splice(sessionQueue, index, 1)
+--                             --             table.remove(sessionQueue, index)
+
+--                             --             if #GetPlayers() > 30 then
+--                             --                 seconds = 30
+--                             --             else
+--                             --                 seconds = 15
+--                             --             end
+
+--                             --             if #GetPlayers() < 31 and #API.users < 31 then
+--                             TriggerEvent("API:playerJoin", user_id, _source, playerName)
+--                         --                 deferrals.done()
+--                         --             else
+--                         --                 print("Authentication: " .. _source .. " Erro ao autenticar, limite de players alcançado!")
+--                         --                 deferrals.done("32/32")
+--                         --                 CancelEvent()
+--                         --                 return
+--                         --             end
+--                         --             break
+--                         --         end
+--                         --     end
+--                         -- end
+--                         end
+--                     else
+--                         -- deferrals.done("Você está banido do servidor.")
+
+--                         -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+--                         -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+--                         DropPlayer(_source, "Você está banido do servidor.")
+
+--                         CancelEvent()
+--                     end
+--                 else
+--                     -- deferrals.done("Erro de identificação.")
+--                     -- CancelEvent()
+
+--                     exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+--                     exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+--                 end
+--             else
+--                 LoginCooldown[ids[1]] = true
+--                 Citizen.CreateThread(
+--                     function()
+--                         Citizen.Wait(60000)
+--                         LoginCooldown[ids[1]] = nil
+--                     end
+--                 )
+
+--                 -- print(playerName .. " (" .. ids[1] .. ") tentou conectar sem whitelist")
+--                 -- deferrals.done("Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
+
+--                 -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+--                 -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+--                 DropPlayer(_source, "Sem permissão para entrar. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
+
+--                 CancelEvent()
+--             end
+--         else
+--             -- deferrals.done("Aguarde um minuto e você logo conseguira entrar.")
+
+--             -- exports["connectqueue"].GetQueueExports:RemoveFromQueue(_source, true)
+--             -- exports["connectqueue"].GetQueueExports:RemoveFromConnecting(_source, true)
+
+--             DropPlayer("Aguarde um minuto e você logo conseguira entrar.")
+
+--             CancelEvent()
+--         end
+
+--         exports["connectqueue"].GetQueueExports:OnJoin(
+--             function(source, allow)
+--             end
+--         )
+--     end
+-- )
 
 AddEventHandler(
     "playerDropped",
@@ -169,7 +209,6 @@ AddEventHandler(
             Salvar arma a munição quando o User desconectar do servidor
             Por enquanto executa a query para cada arma
         ]]
-        print(reason)
         API.dropPlayer(_source, reason)
 
         local index = indexOf(_source)

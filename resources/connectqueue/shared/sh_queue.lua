@@ -55,7 +55,8 @@ end
 
 function Queue:DebugPrint(msg)
     if Queue.Debug then
-        msg = "^3QUEUE: ^0" .. tostring(msg) .. "^7"
+        -- msg = "^3QUEUE: ^0" .. tostring(msg) .. "^7"
+        msg = "^0" .. tostring(msg) .. "^7"
         print(msg)
     end
 end
@@ -234,7 +235,7 @@ function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
             end
 
             if _pos then
-                Queue:DebugPrint(string_format("%s[%s] was prioritized and placed %d/%d in queue", tmp.name, ids[1], _pos, queueCount))
+                Queue:DebugPrint(string_format("%s[%s][prioridade] %d/%d", tmp.name, ids[1], _pos, queueCount))
                 break
             end
         end
@@ -242,7 +243,7 @@ function Queue:AddToQueue(ids, connectTime, name, src, deferrals)
 
     if not _pos then
         _pos = Queue:GetSize() + 1
-        Queue:DebugPrint(string_format("%s[%s] was placed %d/%d in queue", tmp.name, ids[1], _pos, queueCount))
+        Queue:DebugPrint(string_format("%s[%s] %d/%d", tmp.name, ids[1], _pos, queueCount))
     end
 
     table_insert(queueList, _pos, tmp)
@@ -447,7 +448,7 @@ function Queue:NotFull(firstJoin)
     end
 
     -- if Queue.SessionIsFull or  then
-    if Queue.playerSourceEnteringLastSession ~= nil or Queue.sessionmanager_numslotsused == 1 then
+    if Queue.playerSourceEnteringLastSession ~= nil or Queue.sessionmanager_numslotsused == 32 then
         canJoin = false
     end
 
@@ -612,7 +613,7 @@ local function playerConnect(name, setKickReason, deferrals)
         -- prevent joining
         done(Config.Language.iderr)
         CancelEvent()
-        Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
+        Queue:DebugPrint(name .. " foi kickado, não foi possivel achar nenhuma identificaçao do mesmo.")
         return
     end
 
@@ -639,10 +640,10 @@ local function playerConnect(name, setKickReason, deferrals)
             if reason then
                 -- prevent joining
                 allow = false
-                done(reason and tostring(reason) or "You were blocked from joining")
+                done(reason and tostring(reason) or "Você não pode entrar no servidor. Tente mais tarde!")
                 Queue:RemoveFromQueue(ids)
                 Queue:RemoveFromConnecting(ids)
-                Queue:DebugPrint(string_format("%s[%s] was blocked from joining; Reason: %s", name, ids[1], reason))
+                Queue:DebugPrint(string_format("%s[%s] bloqueado de entrar; Razao: %s", name, ids[1], reason))
                 CancelEvent()
                 return
             end
@@ -691,7 +692,7 @@ local function playerConnect(name, setKickReason, deferrals)
     if Queue:IsInQueue(ids) then
         rejoined = true
         Queue:UpdatePosData(src, ids, deferrals)
-        Queue:DebugPrint(string_format("%s[%s] has rejoined queue after cancelling", name, ids[1]))
+        Queue:DebugPrint(string_format("%s[%s] rapidamente reentrou na fila após sair dela", name, ids[1]))
     else
         Queue:AddToQueue(ids, connectTime, name, src, deferrals)
 
@@ -722,7 +723,7 @@ local function playerConnect(name, setKickReason, deferrals)
         end
 
         done()
-        Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
+        Queue:DebugPrint(name .. "[" .. ids[1] .. "] está entrando na sessão.")
 
         return
     end
@@ -791,7 +792,7 @@ local function playerConnect(name, setKickReason, deferrals)
             end
 
             Queue:RemoveFromQueue(ids)
-            Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
+            Queue:DebugPrint(name .. "[" .. ids[1] .. "] está entrando na sessão.")
             return
         end
 
@@ -829,7 +830,7 @@ Citizen.CreateThread(
 
                 if ((data.timeout >= 300 and not endPoint) or data.timeout >= Config.ConnectTimeOut) and data.source ~= "debug" and os_time() - data.firstconnect > 5 then
                     remove(data)
-                    Queue:DebugPrint(data.name .. "[" .. data.ids[1] .. "] was removed from the connecting queue because they timed out")
+                    -- Queue:DebugPrint(data.name .. "[" .. data.ids[1] .. "] was removed from the connecting queue because they timed out")
                 else
                     i = i + 1
                 end

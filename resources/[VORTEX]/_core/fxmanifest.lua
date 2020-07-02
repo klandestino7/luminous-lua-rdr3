@@ -22,6 +22,8 @@ client_scripts {
 }
 
 server_scripts {
+	"@connectqueue/connectqueue.lua",
+	---------------------
 	"lib/utils.lua",
 	---------------------
 	"config/Items.lua",
