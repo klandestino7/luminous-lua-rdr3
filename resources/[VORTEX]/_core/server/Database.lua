@@ -219,7 +219,8 @@ API_Database.prepare('SELECT:inv_select_slots_and_capacity', 'SELECT inv_slots, 
 API_Database.prepare('FCRP/CreateHorse', 'INSERT INTO horses(charid, model, name) VALUES (@charid, @model, @name); SELECT LAST_INSERT_ID() AS id')
 API_Database.prepare('FCRP/GetHorses', 'SELECT * from horses WHERE charid = @charid')
 API_Database.prepare('FCRP/GetHorse', 'SELECT * from horses WHERE id = @id')
-API_Database.prepare('FCRP/DeleteHorse', 'DELETE FROM horses WHERE charid = @charid')
+API_Database.prepare('FCRP/DeleteHorse', 'DELETE FROM horses WHERE id = @id')
+
 
 API_Database.prepare('UpdateHorseComponents', 'UPDATE horses SET components = @components WHERE id = @id')
 API_Database.prepare('SelectHorseComponents', 'SELECT components FROM horses WHERE id = @id')
