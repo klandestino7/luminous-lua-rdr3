@@ -89,7 +89,6 @@ AddEventHandler(
                         isParticipant = true
                         if numParticipants < maxParticipants then
                             numParticipants = numParticipants + 1
-                            print(indexBeingRobbed_seconds)
                             TriggerClientEvent("VP:FORT:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
                             TriggerClientEvent("VP:TOAST:New", -1, "priority", "O Forte " .. data[indexBeingRobbed].staticName .. " está sendo disputado.")
                             participants[participantSource] = true
@@ -118,7 +117,7 @@ function countdownRobberyTime()
                 if indexBeingRobbed ~= nil then
                     indexBeingRobbed_seconds = indexBeingRobbed_seconds - 1
                     if indexBeingRobbed_seconds == 0 then
-                        print("Robbery seconds is now 0")
+                        -- print("Robbery seconds is now 0")
                         TriggerClientEvent("VP:TOAST:New", _source, "alert", "Forte conquistado com sucesso.")
                         endRobberyGiveReward()
                     end
@@ -129,7 +128,7 @@ function countdownRobberyTime()
 end
 
 function endRobberyGiveReward()
-    print("endRobberyGiveReward")
+    -- print("endRobberyGiveReward")
 
     if indexBeingRobbed == nil then
         return
@@ -159,7 +158,7 @@ function endRobberyGiveReward()
         end
     end
 
-    print("indexBeingRobbed", indexBeingRobbed)
+    -- print("indexBeingRobbed", indexBeingRobbed)
     data[indexBeingRobbed].cooldown = os.time() + (1000 * data[indexBeingRobbed].staticCooldown)
 
     indexBeingRobbed = nil
