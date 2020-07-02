@@ -45,6 +45,19 @@ Config.ShopDatas = {
 			{"bow", 1, 7000, 2800},
 			{"ammo_arrow", 1, 100, 40}
 		}
+	},
+	{
+		name = "Mercado Clandestino",
+		{
+			{"medicine_poor", 1, 1000, 100},
+			{"stimulant_poor", 1, 1000, 100},
+			{"pigeonpost", 1, 500, 30},
+			{"acamp_tents_small", 1, 3000, 200},
+			{"acamp_tents_med_closed", 1, 5000, 350},
+			{"acamp_bedroll", 1, 500, 40},
+			{"acamp_firesmall", 1, 500, 40},
+			{"acamp_firesmal_pan", 1, 800, 60}
+		}
 	}
 }
 
@@ -64,7 +77,7 @@ Config.ShopLocations = {
 		{2494.231, -1304.628, 48.954}, -- Saint Denis
 		{2494.392, -1312.568, 48.954}, -- Saint Denis
 		{2907.258, 1308.845, 44.938}, -- annes
-		{1361.155, -1306.013, 77.761} -- Rhodes
+		{1361.610,-1302.085,77.773} -- Rhodes
 	},
 	-- ["Mercadinho"] = {
 	-- 	{373.875, 325.896, 103.566},
@@ -81,6 +94,12 @@ Config.ShopLocations = {
 	-- ["PlanetaSemente"] = {
 	-- 	{1296.121, -1279.396, 75.834}
 	-- },
+
+	["Mercado Clandestino"] = {
+		{2859.706,-1200.646,49.590}
+	},
+
+
 	["Mercado Geral"] = {
 		{1327.907, -1292.865, 77.023},
 		{-785.338, -1323.850, 43.884}

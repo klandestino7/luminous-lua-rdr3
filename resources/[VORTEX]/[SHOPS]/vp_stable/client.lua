@@ -16,6 +16,9 @@ DeleteeEntity = true
 local InterP = true
 local adding = true
 
+local showroomHorse_entity
+local showroomHorse_model
+
 local MyHorse_entity
 local IdMyHorse
 cameraUsing = {
@@ -428,7 +431,9 @@ RegisterNUICallback(
     "sellHorse",
     function(data)
         print(data.horseID)
+        DeleteEntity(showroomHorse_entity)
         TriggerServerEvent("VP:STABLE:SellHorseWithId", tonumber(data.horseID))
+        TriggerServerEvent("VP:STABLE:AskForMyHorses")
     end
 )
 
@@ -505,9 +510,6 @@ function getShopData()
 
     return ret
 end
-
-local showroomHorse_entity
-local showroomHorse_model
 
 
 RegisterNUICallback(

@@ -277,11 +277,18 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
     self.removeHorse = function(this, id)
         if self.Horse ~= nil then
-            if self.Horse:getId() == id then
+            if self.Horse:getId() == id then           
+                
                 self.Horse = nil
             end
         end
     end
+
+    self.deleteHorse = function(this, id)
+        API_Database.execute("FCRP/DeleteHorse", {id = id})
+    end
+
+    
 
     self.getHorses = function()
         local rows = API_Database.query("FCRP/GetHorses", {charid = self.id})
