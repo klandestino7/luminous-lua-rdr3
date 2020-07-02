@@ -122,7 +122,7 @@ AddEventHandler(
         
         TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo vendido com sucesso.', 5000)  
         
-        Character:removeHorse(id)
+        Character:removeHorse(tonumber(id))
 
         Inventory:addItem("money", 1000)
     end
