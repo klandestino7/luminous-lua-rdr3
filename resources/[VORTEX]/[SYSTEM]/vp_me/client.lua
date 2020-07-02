@@ -21,7 +21,7 @@ AddEventHandler(
                 Citizen.CreateThread(
                     function()
                         while shouldDisplay do
-                            Citiizen.Wait(0)
+                            Citizen.Wait(0)
 
                             targetPlayerPed = GetPlayerPed(targetPlayer)
 
