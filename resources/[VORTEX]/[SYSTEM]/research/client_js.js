@@ -104,7 +104,7 @@ exports('SET_TASK_FISHING_DATA', (struct) => {
     let buffer = new ArrayBuffer(256);
     let view = new DataView(buffer);
 
-    for (i = 0; i <= 21; i++) {
+    for (i = 0; i <= 27; i++) {
         let k = `f_${i}`;
         v = struct[k];
 
@@ -121,6 +121,12 @@ exports('SET_TASK_FISHING_DATA', (struct) => {
             case 17:
             case 20:
             case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
                 v = Float32ToInt32(v);
                 break;
         }
@@ -246,7 +252,8 @@ exports('N_0x04019AE4956D4393_J', () => {
 
     NetworkSessionLeave();
 
-    let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, matchmaking_struct);
+    // let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, matchmaking_struct);
+    let r = Citizen.invokeNative("0x04019AE4956D4393", 0, 0, matchmaking_struct);
 
     let out = new Int32Array(matchmaking_buffer);
 
@@ -296,11 +303,11 @@ function N_0x04019AE4956D4393() {
     mm_view.setInt32(4 * 0, 0, true); // accId
     mm_view.setInt32(4 * 1, 0, true); // platId
     mm_view.setInt32(4 * 2, 0, true); // Session id / index
-    mm_view.setInt32(4 * 3, 0, true); // Your response id? [0: Clear?, 2: Enter?, 5: f_26 has to be set to 2]
-    mm_view.setInt32(4 * 4, 3, true); // Matchmaking type? [1, 2, 3, 4, 5]
+    mm_view.setInt32(4 * 3, 4, true); // Your response id? [0: Clear?, 2: Enter?, 5: f_26 has to be set to 2]
+    mm_view.setInt32(4 * 4, 2, true); // Matchmaking type? [1, 2, 3, 4, 5]
     mm_view.setInt32(4 * 5, 0, true); // [ =| 16, =| 8, =| 4]
     mm_view.setInt32(4 * 6, 0, true);
-    mm_view.setInt32(4 * 7, 4, true);
+    mm_view.setInt32(4 * 7, 8, true);
     mm_view.setInt32(4 * 8, 2, true);
     mm_view.setInt32(4 * 9, 2, true);
     mm_view.setInt32(4 * 10, 1, true); // flag
@@ -315,10 +322,10 @@ function N_0x04019AE4956D4393() {
     mm_view.setInt32(4 * 19, 0, true);
     mm_view.setInt32(4 * 20, 101, true); // 100 101 102 103
     mm_view.setInt32(4 * 21, 1, true);
-    mm_view.setInt32(4 * 22, -1, true); // -1 / GetGameTimer()
+    mm_view.setInt32(4 * 22, GetGameTimer(), true); // -1 / GetGameTimer()
     mm_view.setInt32(4 * 23, -1, true); // -1 / GetGameTimer()
     mm_view.setInt32(4 * 24, -1, true); // -1 / GetGameTimer()
-    mm_view.setInt32(4 * 25, 1, true); // BOOl
+    mm_view.setInt32(4 * 25, 0, true); // BOOl
     mm_view.setInt32(4 * 26, 0, true); // Recreate-matchmaking type? [2: No retry?]
     mm_view.setInt32(4 * 27, -1, true); // [-1, 1]
     mm_view.setInt32(4 * 28, -1, true); // -1 / GetGameTimer()
@@ -327,10 +334,12 @@ function N_0x04019AE4956D4393() {
 
     // NetworkSessionLeave();
 
-    let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, mm_view);
+    // let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, mm_view);
+    let r = Citizen.invokeNative("0x04019AE4956D4393", 0, 0, mm_view);
+
     mm_out = new Int32Array(mm_buffer);
 
-    console.log(mm_out);
+    console.log(r, mm_out);
 }
 
 // IS_VALID
