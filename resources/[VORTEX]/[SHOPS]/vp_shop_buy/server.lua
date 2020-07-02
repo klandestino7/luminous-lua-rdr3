@@ -38,6 +38,16 @@ local verificationData = {
     -- ["Planeta Semente'"] = {
     --     ["tobacco_seed"] = {1, 100, 10}
     -- }
+    ["Mercado Clandestino"] = {			
+        ["medicine_poor"] = {0, 1000, 100, 1},
+        ["stimulant_poor"] = {0, 1000, 100, 1},
+        ["pigeonpost"] = {0, 500, 30, 1},
+        ["acamp_tents_small"] = {0, 3000, 200, 1},
+        ["acamp_tents_med_closed"] = {0, 5000, 350, 1},
+        ["acamp_bedroll"] = {0, 500, 40, 1},
+        ["acamp_firesmall"] = {0, 500, 40, 1},
+        ["acamp_firesmal_pan"] = {0, 800, 60, }		
+	},
 
     ["Mercado Geral"] = {
         ["tobacco_seed"] = {0, 10, 4, 5},
