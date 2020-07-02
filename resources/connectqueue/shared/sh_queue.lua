@@ -585,9 +585,8 @@ local function playerConnect(name, setKickReason, deferrals)
 
                             timeoutIn = timeoutIn - 1
                         end
-                        
-                        Queue.playerSourceEnteringLastSession = nil
 
+                        Queue.playerSourceEnteringLastSession = nil
                     end
                 )
             end
@@ -829,8 +828,8 @@ Citizen.CreateThread(
                 data.timeout = data.timeout + 1
 
                 if ((data.timeout >= 300 and not endPoint) or data.timeout >= Config.ConnectTimeOut) and data.source ~= "debug" and os_time() - data.firstconnect > 5 then
-                    remove(data)
                     -- Queue:DebugPrint(data.name .. "[" .. data.ids[1] .. "] was removed from the connecting queue because they timed out")
+                    remove(data)
                 else
                     i = i + 1
                 end
@@ -890,7 +889,7 @@ AddEventHandler(
             if Config.EnableGrace then
                 Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
             end
-        end       
+        end
         if Queue.playerSourceEnteringLastSession == src then
             Queue.playerSourceEnteringLastSession = nil
         end
@@ -1049,6 +1048,11 @@ commands.commands = function()
     for cmd, func in pairs(commands) do
         Queue:DebugPrint(tostring(cmd))
     end
+end
+
+commands.printsess = function()
+    Queue:DebugPrint(Queue.playerSourceEnteringLastSession == nil and "false" or "true")
+    Queue:DebugPrint(Queue.sessionmanager_numslotsused)
 end
 
 AddEventHandler(
