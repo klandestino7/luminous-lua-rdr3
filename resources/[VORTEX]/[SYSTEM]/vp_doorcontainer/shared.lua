@@ -4,82 +4,79 @@ local CLIENT = not SERVER
 -- doorHash { isOpen | doorPair | doorMinGroup }
 local doorStates = {
     -- MANSÃO
-    -- [1595076728] = {false, 1439227364},
-    -- [1439227364] = {false, 1595076728},
-    -- [530930529] = {false, 1299101427},
-    -- [1299101427] = {false, 530930529},
-    -- [764233269] = {false},
-    -- [2504431014] = {false},
+    -- [1595076728] = {isOpen = false, pair =1439227364},
+    -- [1439227364] = {isOpen = false, pair =1595076728},
+    -- [530930529] = {isOpen = false, pair =1299101427},
+    -- [1299101427] = {isOpen = false, pair =530930529},
+    -- [764233269] = {isOpen = false},
+    -- [2504431014] = {isOpen = false},
     -- HOUSE:1
-    [1282705079] = {false},
-    [1511858696] = {false},
+    [1282705079] = {isOpen = false},
+    [1511858696] = {isOpen = false},
     -- HOUSE:2
-    [3929468747] = {false},
+    [3929468747] = {isOpen = false},
     -- HOUSE:3
-    [2847752952] = {false, 1963415953},
-    [1963415953] = {false, 2847752952},
+    [2847752952] = {isOpen = false, pair = 1963415953},
+    [1963415953] = {isOpen = false, pair = 2847752952},
     -- HOUSE:4
-    [52014802] = {false},
+    [52014802] = {isOpen = false},
     -- HOUSE:5
-    [3268076220] = {false},
+    [3268076220] = {isOpen = false},
     -- HOUSE:6
-    [1434140379] = {false},
+    [1434140379] = {isOpen = false},
     -- HOUSE:7
-    [1934463007] = {false},
+    [1934463007] = {isOpen = false},
     -----------------------------------
     -- OFFICER/JAIL
-    [1207903970] = {false},
-    [902070893] = {false},
-    [831345624] = {false},
-    [2677989449] = {false},
-    [2984805596] = {false},
-    [1711767580] = {false},
-    [1995743734] = {false},
-    [2515591150] = {false},
-    [3365520707] = {false},
-    [2167775834] = {false},
-    [2514996158] = {false},
-    [2810801921] = {false},
-    [3410720590] = {false, 3821185084},
-    [3821185084] = {false, 3410720590},
-    [1878514758] = {false},
-    [1147152658] = {false},
-    [1514359658] = {false},
-    [1821044729] = {false},
-    [1508776842] = {false},
-    [295355979] = {false},
-    [193903155] = {false},
-    [395506985] = {false},
-    [1988748538] = {false},
-    [1657401918] = {false},
-    [1502928852] = {false},
-    [2212368673] = {false},
-    [1614494720] = {false},
+    [1207903970] = {isOpen = false},
+    [902070893] = {isOpen = false},
+    [831345624] = {isOpen = false},
+    [2677989449] = {isOpen = false},
+    [2984805596] = {isOpen = false},
+    [1711767580] = {isOpen = false},
+    [1995743734] = {isOpen = false},
+    [2515591150] = {isOpen = false},
+    [3365520707] = {isOpen = false},
+    [2167775834] = {isOpen = false},
+    [2514996158] = {isOpen = false},
+    [2810801921] = {isOpen = false},
+    [3410720590] = {isOpen = false, pair = 3821185084},
+    [3821185084] = {isOpen = false, pair = 3410720590},
+    [1878514758] = {isOpen = false},
+    [1147152658] = {isOpen = false},
+    [1514359658] = {isOpen = false},
+    [1821044729] = {isOpen = false},
+    [1508776842] = {isOpen = false},
+    [295355979] = {isOpen = false},
+    [193903155] = {isOpen = false},
+    [395506985] = {isOpen = false},
+    [1988748538] = {isOpen = false},
+    [1657401918] = {isOpen = false},
+    [1502928852] = {isOpen = false},
+    [2212368673] = {isOpen = false},
+    [1614494720] = {isOpen = false},
     -----------------------------------
     -- SHERIFF
-    [349074475] = {false},
+    [349074475] = {isOpen = false},
     -- BANKS DOORS
-    [3317756151] = {true, 3088209306},
-    [3088209306] = {true, 3317756151},
-    [2158285782] = {true, 1733501235},
-    [1733501235] = {true, 2158285782},
-    [2089945615] = {true, 2817024187},
-    [2817024187] = {true, 2089945615},
-    
-    [3886827663] = {true,   2642457609},
-
-    [1751238140] = {true},
-    [531022111] = {true},
+    [3317756151] = {isOpen = true, pair = 3088209306},
+    [3088209306] = {isOpen = true, pair = 3317756151},
+    [2158285782] = {isOpen = true, pair = 1733501235},
+    [1733501235] = {isOpen = true, pair = 2158285782},
+    [2089945615] = {isOpen = true, pair = 2817024187},
+    [2817024187] = {isOpen = true, pair = 2089945615},
+    [3886827663] = {isOpen = true, pair = 2642457609},
+    [1751238140] = {isOpen = true},
+    [531022111] = {isOpen = true},
     -- GUNSMITH VALENTINE
-    [2042647667] = {true},
-    [475159788] = {true},
+    [2042647667] = {isOpen = true},
+    [475159788] = {isOpen = true},
     -- MEDIC VALENTINE
-    [3439738919] = {true},
-    -- STABLE VALENTINE 
-    [1132010214] = {true, 1876749464},
-    [1331491364] = {true, 1876749464},
-
-    [3804893186] = {true}, -- store cloth saint denis
+    [3439738919] = {isOpen = true},
+    -- STABLE VALENTINE
+    [1132010214] = {isOpen = true, pair = 1876749464},
+    [1331491364] = {isOpen = true, pair = 1876749464},
+    [3804893186] = {isOpen = true} -- store cloth saint denis
 }
 
 -- TALVEZ MUDAR O SISTEMA PARA O CLIENT SÓ PEDIR O SYNC
@@ -97,7 +94,7 @@ Citizen.CreateThread(
             function setControllableDoorsForGroup(group, doorHashArray)
                 for _, doorHash in pairs(doorHashArray) do
                     if doorStates[doorHash] then
-                        doorStates[doorHash][3] = group
+                        doorStates[doorHash].permGroup = group
                     end
                 end
             end
@@ -227,8 +224,8 @@ Citizen.CreateThread(
 
                     local doorGroup = "admin"
 
-                    if doorStates[doorHash][3] ~= nil then
-                        doorGroup = doorStates[doorHash][3]
+                    if doorStates[doorHash].permGroup ~= nil then
+                        doorGroup = doorStates[doorHash].permGroup
                     end
 
                     local Character = User:getCharacter()
@@ -237,14 +234,14 @@ Citizen.CreateThread(
                         return
                     end
 
-                    local newDoorState = not doorStates[doorHash][1]
-                    doorStates[doorHash][1] = newDoorState
+                    local newDoorState = not doorStates[doorHash].isOpen
+                    doorStates[doorHash] = newDoorState
 
-                    if doorStates[doorHash][2] ~= nil then
-                        local doorPair = doorStates[doorHash][2]
+                    if doorStates[doorHash].pair ~= nil then
+                        local doorPair = doorStates[doorHash].pair
                         print("Porta " .. doorHash .. " com par, porém o par não foi definido ...")
-                        if doorStates[doorPair][1] then
-                            doorStates[doorPair][1] = newDoorState
+                        if doorStates[doorPair].isOpen then
+                            doorStates[doorPair].isOpen = newDoorState
                         end
                     end
 
@@ -258,7 +255,8 @@ Citizen.CreateThread(
                     if isFirstSpawn then
                         local _temp = deepcopy(doorStates)
                         for _, v in pairs(_temp) do
-                            v[3] = nil
+                            v.permGroup = nil
+                            v.pair = nil
                         end
 
                         TriggerClientEvent("VP:DOORSTATECONTAINER:SetMultipleDoorsState", source, _temp)
@@ -272,7 +270,8 @@ Citizen.CreateThread(
 
                     local _temp = deepcopy(doorStates)
                     for _, v in pairs(_temp) do
-                        v[3] = nil
+                        v.permGroup = nil
+                        v.pair = nil
                     end
 
                     TriggerClientEvent("VP:DOORSTATECONTAINER:SetMultipleDoorsState", -1, _temp)
@@ -283,14 +282,14 @@ Citizen.CreateThread(
             AddEventHandler(
                 "VP:DOORSTATECONTAINER:SetDoorState",
                 function(doorHash, doorState)
-                    doorStates[doorHash][1] = doorState
+                    doorStates[doorHash].isOpen = doorState
 
                     RegisterDoorSomething(doorHash)
                     DoorSystemSetDoorState(doorHash, doorState == true and 0 or 1)
 
-                    if doorStates[doorHash][2] ~= nil then
-                        local doorPair = doorStates[doorHash][2]
-                        doorStates[doorPair][1] = doorState
+                    if doorStates[doorHash].pair ~= nil then
+                        local doorPair = doorStates[doorHash].pair
+                        doorStates[doorPair].isOpen = doorState
 
                         RegisterDoorSomething(doorPair)
                         DoorSystemSetDoorState(doorPair, doorState == true and 0 or 1)
@@ -302,11 +301,14 @@ Citizen.CreateThread(
             AddEventHandler(
                 "VP:DOORSTATECONTAINER:SetMultipleDoorsState",
                 function(_doorStates)
-                    doorStates = _doorStates
+                    for doorHash, d in pairs(_doorStates) do
+                        doorStates[doorHash].isOpen = d.isOpen
+                    end
                 end
             )
 
             local closestDoorHash
+            local closestDoor_displayasclosed = false
 
             Citizen.CreateThread(
                 function()
@@ -319,10 +321,24 @@ Citizen.CreateThread(
                             local doorEntity = GetDoorEntity(doorHash)
 
                             if DoesEntityExist(doorEntity) then
-                                local doorState = values[1]
+                                local doorIsOpen = values.isOpen
+
+                                if not doorIsOpen then
+                                    local doorPermGroup = values.permGroup
+
+                                    if doorPermGroup then
+                                        if not cAPI.hasGroupOrInheritance(doorPermGroup) then
+                                            closestDoor_displayasclosed = true
+                                        else
+                                            closestDoor_displayasclosed = true
+                                        end
+                                    end
+                                else
+                                    closestDoor_displayasclosed = false
+                                end
 
                                 RegisterDoorSomething(doorHash)
-                                DoorSystemSetDoorState(doorHash, doorState == true and 0 or 1)
+                                DoorSystemSetDoorState(doorHash, doorIsOpen == true and 0 or 1)
 
                                 local _dist = #(pCoords - GetEntityCoords(doorEntity))
 
@@ -370,10 +386,26 @@ Citizen.CreateThread(
 
                                 -- drawHandle(doorEntity)
 
-                                if HasEntityClearLosToEntityInFront(ped, doorEntity, 0) and not playingUnlockAnimation then
-                                    local doorState = doorStates[closestDoorHash][1]
+                                local hourCloseAt, hourOpenAt = doorStates[closestDoorHash].closeAt, doorStates[closestDoorHash].openAt
 
-                                    if doorState == true then
+                                local isOpen = doorStates[closestDoorHash].isOpen
+
+                                if hourCloseAt and hourOpenAt then
+                                    local hour = GetClockHours()
+
+                                    if hour >= hourCloseAt and house < hourOpenAt then
+                                        if isOpen then
+                                            TriggerClientEvent("VP:DOORSTATECONTAINER:SetDoorState", closestDoorHash, false)
+                                        end
+                                    else
+                                        if not isOpen then
+                                            TriggerClientEvent("VP:DOORSTATECONTAINER:SetDoorState", closestDoorHash, true)
+                                        end
+                                    end
+                                end
+
+                                if HasEntityClearLosToEntityInFront(ped, doorEntity, 0) and not playingUnlockAnimation then
+                                    if isOpen == true then
                                         PromptSetActiveGroupThisFrame(prompt_group_close, CreateVarString(10, "LITERAL_STRING", "Porta"))
 
                                         if PromptHasHoldModeCompleted(prompt_close) then
@@ -389,19 +421,29 @@ Citizen.CreateThread(
                                             TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
                                         end
                                     else
-                                        PromptSetActiveGroupThisFrame(prompt_group_open, CreateVarString(10, "LITERAL_STRING", "Porta"))
+                                        if closestDoor_displayasclosed == false then
+                                            PromptSetActiveGroupThisFrame(prompt_group_open, CreateVarString(10, "LITERAL_STRING", "Porta"))
 
-                                        if PromptHasHoldModeCompleted(prompt_open) then
-                                            PromptSetEnabled(prompt_open, false)
-                                            Citizen.CreateThread(
-                                                function()
-                                                    Citizen.Wait(250)
-                                                    PromptSetEnabled(prompt_open, true)
-                                                end
-                                            )
+                                            if PromptHasHoldModeCompleted(prompt_open) then
+                                                PromptSetEnabled(prompt_open, false)
+                                                Citizen.CreateThread(
+                                                    function()
+                                                        Citizen.Wait(250)
+                                                        PromptSetEnabled(prompt_open, true)
+                                                    end
+                                                )
 
-                                            unlockAnimation()
-                                            TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
+                                                unlockAnimation()
+                                                TriggerServerEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState", closestDoorHash)
+                                            end
+                                        else
+                                            if hourOpenAt then
+                                                PromptSetActiveGroupThisFrame(prompt_group_open, CreateVarString(10, "LITERAL_STRING", "Fechado, Abre às " .. hourOpenAt))
+                                            else
+                                                PromptSetActiveGroupThisFrame(prompt_group_open, CreateVarString(10, "LITERAL_STRING", "Fechado"))
+                                            end
+
+                                            DisableControlAction(0, 0xDFF812F9, true) -- Abrir/Fechar
                                         end
                                     end
                                 end
