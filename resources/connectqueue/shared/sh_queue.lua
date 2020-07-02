@@ -448,7 +448,7 @@ function Queue:NotFull(firstJoin)
     end
 
     -- if Queue.SessionIsFull or  then
-    if Queue.playerSourceEnteringLastSession ~= nil or Queue.sessionmanager_numslotsused == 32 then
+    if Queue.sessionmanager_playerenteringsession ~= nil or Queue.sessionmanager_numslotsused == 32 then
         canJoin = false
     end
 
@@ -530,6 +530,14 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("connectqueue:sessionmanager_playerenteredsession")
+AddEventHandler(
+    "connectqueue:sessionmanager_playerenteredsession",
+    function()
+        Queue.sessionmanager_playerenteringsession = nil
+    end
+)
+
 local function playerConnect(name, setKickReason, deferrals)
     local src = source
     local ids = Queue:GetIds(src)
@@ -567,29 +575,27 @@ local function playerConnect(name, setKickReason, deferrals)
         if not msg then
             deferrals.done()
 
-            if Queue.sessionmanager_numslotsused ~= nil and Queue.sessionmanager_numslotsused == 31 then
-                Queue.playerSourceEnteringLastSession = src
+            -- if Queue.sessionmanager_numslotsused and Queue.sessionmanager_numslotsused == 31 then
+            Queue.sessionmanager_playerenteringsession = src
 
-                Citizen.CreateThread(
-                    function()
-                        local timeoutIn = 3 * 60
+            Citizen.CreateThread(
+                function()
+                    local timeout = 5 * 60
 
-                        while Queue.playerSourceEnteringLastSession do
-                            Citizen.Wait(1000)
+                    while Queue.sessionmanager_playerenteringsession do
+                        Citizen.Wait(1000)
 
-                            if Queue.sessionmanager_numslotsused == 32 then
-                                break
-                            elseif timeoutIn == 0 then
-                                DropPlayer(src, "Demorou demais pra logar")
-                            end
-
-                            timeoutIn = timeoutIn - 1
+                        timeout = timeout - 1
+                        if timeout <= 0 then
+                            DropPlayer(src, "Demorou demais pra logar")
+                            break
                         end
-
-                        Queue.playerSourceEnteringLastSession = nil
                     end
-                )
-            end
+
+                    Queue.sessionmanager_playerenteringsession = nil
+                end
+            )
+            -- end
 
             if Config.EnableGrace then
                 Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
@@ -890,8 +896,8 @@ AddEventHandler(
                 Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
             end
         end
-        if Queue.playerSourceEnteringLastSession == src then
-            Queue.playerSourceEnteringLastSession = nil
+        if Queue.sessionmanager_playerenteringsession == src then
+            Queue.sessionmanager_playerenteringsession = nil
         end
     end
 )
@@ -1051,7 +1057,7 @@ commands.commands = function()
 end
 
 commands.printsess = function()
-    Queue:DebugPrint(Queue.playerSourceEnteringLastSession == nil and "false" or "true")
+    Queue:DebugPrint(Queue.sessionmanager_playerenteringsession == nil and "false" or "true")
     Queue:DebugPrint(Queue.sessionmanager_numslotsused)
 end
 
