@@ -68,6 +68,12 @@ local doorStates = {
     [3886827663] = {isOpen = true, pair = 2642457609},
     [1751238140] = {isOpen = true},
     [531022111] = {isOpen = true},
+    [2058564250] = {isOpen = true},
+    
+    [1634115439] = {isOpen = true, pair = 3445627749},
+    [3445627749] = {isOpen = true, pair = 1634115439},
+
+
     -- GUNSMITH VALENTINE
     [2042647667] = {isOpen = true},
     [475159788] = {isOpen = true},
@@ -235,7 +241,7 @@ Citizen.CreateThread(
                     end
 
                     local newDoorState = not doorStates[doorHash].isOpen
-                    doorStates[doorHash] = newDoorState
+                    doorStates[doorHash].isOpen = newDoorState
 
                     if doorStates[doorHash].pair ~= nil then
                         local doorPair = doorStates[doorHash].pair
