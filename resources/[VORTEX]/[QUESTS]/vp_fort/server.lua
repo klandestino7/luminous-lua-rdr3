@@ -117,7 +117,6 @@ function countdownRobberyTime()
                 Citizen.Wait(1000)
                 if indexBeingRobbed ~= nil then
                     indexBeingRobbed_seconds = indexBeingRobbed_seconds - 1
-                    print(_source)
                     if indexBeingRobbed_seconds == 0 then
                         print("Robbery seconds is now 0")
                         TriggerClientEvent("VP:TOAST:New", _source, "alert", "Forte conquistado com sucesso.")
