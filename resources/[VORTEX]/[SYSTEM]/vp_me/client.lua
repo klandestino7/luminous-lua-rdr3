@@ -11,7 +11,7 @@ end)
 
 RegisterNetEvent('3dme:triggerDisplay')
 AddEventHandler('3dme:triggerDisplay', function(text, source)
-    Display(GetPlayerFromServerId(source), text)
+    Display(GetPlayerServerId(source), text)
 end)
 
 function Display(mePlayer, text)
