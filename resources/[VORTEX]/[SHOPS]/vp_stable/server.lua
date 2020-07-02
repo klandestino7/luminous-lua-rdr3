@@ -122,8 +122,9 @@ AddEventHandler(
         
         TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo vendido com sucesso.', 5000)  
         
-      --  Character:deleteHorse(tonumber(id))
-        API_Database.execute("FCRP/DeleteHorse", {id = id})
+        Character:removeHorse(tonumber(id))
+        Character:deleteHorse(tonumber(id))
+                
         Inventory:addItem("money", 1000)
     end
 )
