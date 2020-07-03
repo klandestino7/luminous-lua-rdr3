@@ -750,6 +750,13 @@ ItemList = {
         description = "Entrega mensagems a longas distâncias",
         stackSize = 1
     },
+    ["lockpick"] = {
+        type = "kit",
+        name = "Lockpick",
+        weight = 0.3,
+        description = "Item para destravar portas, algemas e etc...",
+        stackSize = 10
+    },
     ["tobacco_seed"] = {
         type = "planting",
         name = "Semente de Tabaco",
