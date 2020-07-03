@@ -78,8 +78,8 @@ RegisterCommand(
 
 RegisterCommand(
     "c",
-        local ped = PlayerPedId()
-
+    function(source)
+        local ped = PlayerPedId()     
         if not IsPlayerFreeAiming(ped) then
             ClearPedTasks(ped)
             ClearPedSecondaryTask(ped)
