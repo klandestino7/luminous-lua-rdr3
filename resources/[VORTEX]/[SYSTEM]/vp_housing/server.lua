@@ -103,7 +103,11 @@ Citizen.CreateThread(
                     for _, User in pairs(API.getUsersByGroup(house_id)) do
                         User:removeGroup(house_id)
                     end
+                    
                     dbAPI.execute("DELETE:house_rent", {house_id = house_id})
+
+                    local houseGroupBit = API.GroupNameToBit(house_id)
+                    dbAPI.execute("UPDATE:character_remove_role", {role = houseGroupBit})
                 end
             end
         end

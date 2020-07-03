@@ -112,10 +112,10 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
                 slotsUsed &= ~(1 << oData.slot);
             }
 
-            const playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
+            let playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
 
             // if (playerIdLength < 32) {
-                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
+            emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
             // }
 
             console.log('Sessionmanager | SessionSize: ' + playerIdLength);
@@ -178,10 +178,7 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
         },
 
         async QueueForSession_Seamless(source, data) {
-
-            const playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
-
-            if (playerIdLength == 32) {
+            if ( Object.entries(playerDatas).filter(a => a[1].id).length == 32) {
                 DropPlayer(source, 'Sessão cheia, como que você conseguiu entrar?');
                 return
             }
@@ -192,13 +189,13 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
             playerDatas[source].id = req.requestId.requestor;
             playerDatas[source].slot = assignSlotId();
 
+            let playerIdLength = Object.entries(playerDatas).filter(a => a[1].id).length;
+
             console.log('Sessionmanager | SessionSize: ' + playerIdLength);
 
-            // if (playerIdLength == 32) {
-                emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
-            // }
+            emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
 
-            emit("connectqueue:LastPlayerEnteredTheSession");
+            emit("connectqueue:sessionmanager_playerenteredsession");
 
             setTimeout(() => {
                 emitMsg(source, RpcMessage.encode({

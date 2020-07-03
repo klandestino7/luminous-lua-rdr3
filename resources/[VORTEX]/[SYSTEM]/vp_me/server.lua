@@ -1,17 +1,14 @@
-local logEnabled = true
+RegisterCommand(
+	"me",
+	function(source, args)
+		-- local text = "* "
+		-- for i = 1, #args do
+		-- 	text = text .. " " .. args[i]
+		-- end
+		-- text = text .. " *"
 
-RegisterServerEvent('3dme:shareDisplay')
-AddEventHandler('3dme:shareDisplay', function(text)
-	TriggerClientEvent('3dme:triggerDisplay', -1, text, source)
-	-- if logEnabled then
-	-- 	setLog(text, source)
-	-- end
-end)
+		local message = table.concat(args, " ")
 
-function setLog(text, source)
-	local time = os.date("%d/%m/%Y %X")
-	local name = GetPlayerName(source)
-	local identifier = GetPlayerIdentifiers(source)
-	local data = time .. ' : ' .. name .. ' - ' .. identifier[1] .. ' : ' .. text
-
-end
+		TriggerClientEvent("VP:ME:DisplayAboveHeadText", -1, message, source)
+	end
+)
