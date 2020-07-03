@@ -442,7 +442,11 @@ RegisterCommand(
             local User = API.getUserFromSource(source)
             local Character = User:getCharacter()
             if Character:hasGroupOrInheritance("admin") then
-                TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
+                if args[2] ~= nil then
+                    TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1], tonumber(args[2]))
+                else
+                    TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
+                end 
             else
                 User:notify("error", "Você não tem permissão!")
             end
