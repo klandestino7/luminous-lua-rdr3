@@ -32,17 +32,77 @@ API = Tunnel.getInterface("API")
 -- // 0xE47001B7CB8B98AE
 -- NetworkSendTransitionGamerInstruction
 
-RegisterCommand(
-	"createmm",
-	function(source, args, rawCommand)
-	end
-)
+-- RegisterCommand(
+-- 	"dig",
+-- 	function(source, args, rawCommand)
+-- 		local chestModelHash = GetHashKey("P_STRONGBOX_MUDDY_01X")
+-- 		local lootModelHash = GetHashKey("s_pickup_goldbar01x")
+-- 		local dressingModelHash = GetHashKey("MP005_P_DRESSINGLBMHAY04X")
+-- 		local moundModelHash = GetHashKey("MP005_P_DIRTPILE_BIG01_BURIED")
 
-RegisterCommand(
-	"teste",
-	function(source, args, rawCommand)
+-- 		RequestModel(chestModelHash)
+-- 		RequestModel(lootModelHash)
+-- 		RequestModel(dressingModelHash)
+-- 		RequestModel(moundModelHash)
 
-		exports['research']:N_0x04019AE4956D4393()
+-- 		while not HasModelLoaded(dressingModelHash) or not HasModelLoaded(lootModelHash) or not HasModelLoaded(chestModelHash) or not HasModelLoaded(moundModelHash) do
+-- 			Wait(0)
+-- 		end
+
+-- 		local ped = PlayerPedId()
+
+-- 		local pedPosition = GetOffsetFromEntityInWorldCoords(ped, 2.0, 0.0, 0.0)
+
+-- 		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(pedPosition.x, pedPosition.y, pedPosition.z)
+-- 		pedPosition = vec3(pedPosition.xy, groundZ - 0.05)
+
+-- 		local chest = CreateObjectNoOffset(chestModelHash, pedPosition + vec3(0.0, 0.0, -1.0), true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
+-- 		local loot = CreateObjectNoOffset(lootModelHash, pedPosition, false, true, false, true) -- + vec3(-15.0, 0.0, 0.0)
+-- 		local dressing = CreateObjectNoOffset(dressingModelHash, pedPosition, true, true, false, true) -- + vec3(-20.0, 0.0, 0.0)
+-- 		local mound = CreateObjectNoOffset(moundModelHash, pedPosition, true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
+
+-- 		local animscene = CreateAnimScene("script@mech@treasure_hunting@chest", 64, "PBL_CHEST_01", true, true)
+
+-- 		LoadAnimScene(animscene)
+
+-- 		SetAnimSceneOrigin(animscene, pedPosition, 0.0, 0.0, 0.0, 2)
+-- 		SetAnimSceneEntity(animscene, "player", ped, 0)
+-- 		SetAnimSceneEntity(animscene, "CHEST", chest, 0)
+-- 		SetAnimSceneEntity(animscene, "LOOT", loot, 0)
+-- 		SetAnimSceneEntity(animscene, "DRESSING", dressing, 0)
+-- 		SetAnimSceneEntity(animscene, "MOUND", mound, 0)
+-- 		StartAnimScene(animscene)
+
+-- 		Wait(2000)
+
+-- 		Citizen.InvokeNative(0x8245C1F3262F4AC2, animscene)
+
+-- 		TaskEnterAnimScene(ped, animscene, "player", "PBL_CHEST_01", 1069379748, 1, 128, 20000, -1082130432)
+
+-- 		while true do
+-- 			Citizen.Wait(0)
+
+-- 			local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
+
+-- 			if hasEnded == 1 then
+-- 				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 1) -- SET_RANSACK_AS_OPEN
+
+-- 				SetEntityAsNoLongerNeeded(chest)
+-- 				SetEntityAsNoLongerNeeded(dressing)
+-- 				SetEntityAsNoLongerNeeded(mound)
+
+-- 				DeleteEntity(loot)
+
+-- 				break
+-- 			end
+-- 		end
+-- 	end
+-- )
+
+-- RegisterCommand(
+-- 	"teste",
+	-- function(source, args, rawCommand)
+		-- exports["research"]:N_0x04019AE4956D4393()
 
 		-- SetObjectTextureVariation(5765379, 5)
 
@@ -162,12 +222,20 @@ RegisterCommand(
 		-- -- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, ojb, wb, 0.0, -0.25, 0.0, 0, 0, 0, 0)
 		-- print(scenario)
 		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
-	end
-)
+-- 	end
+-- )
 
 RegisterNetEvent("VP:EVENTS:PedFinishedGatheringEntity")
 RegisterNetEvent("VP:EVENTS:PedWhistle")
 RegisterNetEvent("VP:EVENTS:PedInteractionRansackScenario")
+
+-- RegisterCommand(
+-- 	"ye",
+-- 	function()
+-- 		print(Citizen.InvokeNative(0x13D234A2A3F66E63, PlayerPedId()))
+-- 	end,
+-- 	false
+-- )
 
 Citizen.CreateThread(
 	function()
@@ -181,10 +249,55 @@ Citizen.CreateThread(
 		-- Citizen.InvokeNative(0x18FF3110CF47115D, obj, 2, true)
 		-- Citizen.InvokeNative(0x18FF3110CF47115D, obj, 4, true)
 
+		-- INDEX 1: WEAPON_WEEL
+
+		-- ! INVENTORY::_0x
+
+		-- // 0x6A564540FAC12211
+		-- * void _INVENTORY_ENABLE_ITEM_FOR_INVENTORY_INDEX(int index, Hash item)
+		-- ? Indices:
+		-- ? 1: Weapon Wheel
+
+		-- // 0x766315A564594401
+		-- * void _INVENTORY_DISABLE_ITEM_FOR_INVENTORY_INDEX(int index, Hash item, BOOL p2)
+
+		-- for i = 0, 5 do
+			-- Citizen.InvokeNative(0x6A564540FAC12211, i, GetHashKey("WEAPON_PISTOL_VOLCANIC")) -- ENABLE_WEAPON
+			-- Citizen.InvokeNative(0x766315A564594401, i, GetHashKey("WEAPON_PISTOL_VOLCANIC"), 0) -- DISABLE_WEAPON
+			-- print(Citizen.InvokeNative(0xE787F05DFC977BDE, i, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), 0))
+		-- end
+
+		-- GiveWeaponToPed_2(PlayerPedId(), GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD"), 100, false, true, GetWeapontypeGroup(GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD")), true, 0.5, 1.0, 0, true, 0, 0)
+		-- Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD"), 0, false, true)
+		-- Citizen.InvokeNative(0x5FD1E1F011E76D7E, PlayerPedId(), GetPedAmmoTypeFromWeapon(PlayerPedId(), GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD")), 100)
+
+		-- print(Citizen.InvokeNative(0x13D234A2A3F66E63, PlayerPedId())) -- Return current inventory index?
+
+		-- CONSUMABLE_MEDICINE
+
+		-- ! func_916 : cash_balance
+		-- ! func_516 : get_item_fillout_info
+
+		-- * _ITEM_DATABASE_FILLOUT_ITEM_INFO
+		-- ? f_1: slot_id
+		-- ? f_2: item_type [CLOTHING, HORSE, WEAPON_MOD, WEAPON, WEAPON_DECORATION, ...]
+		-- ? f_4: world_model
+
+		-- 0xE9BD19F8121ADE3E
+
+		-- local lastMount = Citizen.InvokeNative(0x4C8B59171957BCF7, PlayerPedId()) -- lastmount
+		-- SetEntityHealth(lastMount, 0)
+
+		-- print(Citizen.InvokeNative(0x13D234A2A3F66E63, lastMount)) -- GET_INVENTORY_ID_FOR_ENTITY?
+
 		while true do
 			Citizen.Wait(0)
 
+			-- DrawText("VOZ : Faliteando", 0.5, 0.5, 0.25, 0.25, false, 252, 240, 192, 145, 0, 7)
+
 			local size = GetNumberOfEvents(0)
+
+			-- print(Citizen.InvokeNative(0x13D234A2A3F66E63, PlayerPedId())) 
 
 			if size > 0 then
 				for i = 0, size - 1 do
@@ -292,6 +405,17 @@ Citizen.CreateThread(
 		end
 	end
 )
+
+function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+	SetTextScale(w, h)
+	SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+	SetTextCentre(centre)
+	if enableShadow then
+		SetTextDropshadow(1, 0, 0, 0, 255)
+	end
+	Citizen.InvokeNative(0xADA9255D, font)
+	DisplayText(CreateVarString(8, 220200945, GetLabelTextByHash(GetHashKey("CONSUMABLE_AGED_PIRATE_RUM"))), x, y)
+end
 
 function drawcircle()
 	local center = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 15.0, 0.0)

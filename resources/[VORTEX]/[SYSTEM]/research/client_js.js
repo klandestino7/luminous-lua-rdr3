@@ -397,24 +397,24 @@ function N_0xE72E5C1289BD1F40() {
 //     return [buffer, view];
 // }
 
-RegisterCommand('mcreate', (source, args) => {
-    N_0x04019AE4956D4393();
-});
+// RegisterCommand('mcreate', (source, args) => {
+//     N_0x04019AE4956D4393();
+// });
 
-RegisterCommand('mset', (source, args) => {
-    mm_view.setInt32(4 * parseInt(args[0]), parseInt(args[1]), true);
+// RegisterCommand('mset', (source, args) => {
+//     mm_view.setInt32(4 * parseInt(args[0]), parseInt(args[1]), true);
 
-    let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, mm_view);
-    mm_out = new Int32Array(mm_buffer);
-});
+//     let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, mm_view);
+//     mm_out = new Int32Array(mm_buffer);
+// });
 
-RegisterCommand('mdel', (source, args) => {
-    N_0xE72E5C1289BD1F40();
-});
+// RegisterCommand('mdel', (source, args) => {
+//     N_0xE72E5C1289BD1F40();
+// });
 
-RegisterCommand('mstatus', (source, args) => {
-    N_0x0DD051B1BF4B8BD6();
-});
+// RegisterCommand('mstatus', (source, args) => {
+//     N_0x0DD051B1BF4B8BD6();
+// });
 
 // setTick(() => {
 //     if (mm_view != undefined) {
@@ -439,6 +439,126 @@ function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre) {
     Citizen.invokeNative(0xADA9255D, 2)
     DisplayText(str, x, y)
 }
+
+// RegisterCommand('iteminfo', (source, args) => {
+//     let buffer = new ArrayBuffer(512);
+//     let view = new DataView(buffer);
+//     // dataView.setInt32(0, 3);
+//     // dataView.setInt32(3, );
+
+//     let itemHash = GetHashKey("WEAPON_PISTOL_VOLCANIC");
+//     // itemHash = 856287005;
+//     let r = Citizen.invokeNative("0xFE90ABBCBFDC13B2", itemHash, view, Citizen.returnResultAnyway());
+//     let out = new Int32Array(buffer);
+
+//     console.log(out[4] == GetHashKey("WEAPON"))
+//     console.log(out[8] == GetWeapontypeModel("WEAPON_PISTOL_VOLCANIC"));
+//     console.log(out[2] == GetHashKey("SLOTID_HORSE_SADDLE"));
+
+//     console.log(r, out);
+// });
+
+RegisterCommand('invinfo', (source, args) => {
+    let buffer = new ArrayBuffer(512);
+    let a2 = new DataView(buffer);
+    // a2.setInt32(8 * 0, 2147483648, true);
+    // a2.setInt32(8 * 1, 0, true);
+    // a2.setInt32(8 * 2, 0, true);
+    // a2.setInt32(8 * 3, 0, true);
+    // a2.setInt32(8 * 4, 1728382685, true);
+    // a2.setInt32(8 * 5, 0, true);
+    // a2.setInt32(8 * 6, 4150375216, true);
+    // a2.setInt32(8 * 7, 0, true);
+    // a2.setInt32(8 * 8, 3554810750, true);
+    // a2.setInt32(8 * 9, 636, true);
+    // a2.setInt32(8 * 10, 0, true);
+    // a2.setInt32(8 * 11, 0, true);
+
+    let buffer2 = new ArrayBuffer(512);
+    let a5 = new DataView(buffer2);
+    // a3.setBigInt64(8 * 0, BigInt(2147483648), true);
+    // a3.setInt32(8 * 1, 0, true);
+    // a3.setInt32(8 * 2, 0, true);
+    // a3.setInt32(8 * 3, 0, true);
+    // a3.setBigInt64(8 * 4, BigInt(1901291885), true);
+    // a3.setInt32(8 * 5, 0, true);
+    // a3.setBigInt64(8 * 6, BigInt(4150375216), true);
+    // a3.setInt32(8 * 7, 0, true);
+    // a3.setBigInt64(8 * 8, BigInt(1034665895), true);
+    // a3.setInt32(8 * 9, 0, true);
+    // a3.setInt32(8 * 10, 0, true);
+    // a3.setInt32(8 * 11, 0, true);
+
+    // 1999506840
+
+    // 0x886DFD3E185C8A89
+    // BOOL _INVENTORY_HAS_ITEM_AT_SLOTID(int inventory, Any* out1, Hash itemId, Hash slotId, Any out2)
+    // slotId: -1591664384 (ALL?)
+    // out2->f_4: something
+
+    let r = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a2, GetHashKey("WEAPON_PISTOL_VOLCANIC"), -1591664384, a5, Citizen.returnResultAnyway());
+    let out = new Int32Array(buffer);
+
+    console.log(r, out);
+
+    let out2 = new Int32Array(buffer2);
+    console.log(out2);
+
+    // let b = Citizen.invokeNative("0xC04F47D488EF9EBA", 1, 1999521480, a5, 0);
+    // console.log(b);
+
+    // Citizen.invokeNative("0x5D6182F3BCE1333B", 0, -142743235); // CLEARS THE INV?
+});
+
+RegisterCommand('additem', (source, args) => {
+    let buffer = new ArrayBuffer(512);
+    let var17 = new DataView(buffer);
+    var17.setInt32(8 * 0, -1, true);
+    var17.setInt32(8 * 1, -1, true);
+    var17.setInt32(8 * 2, -1, true);
+    var17.setInt32(8 * 3, -1, true);
+    var17.setBigInt64(8 * 4, BigInt(-999503751), true);
+    var17.setInt32(8 * 5, -1, true);
+    var17.setInt32(8 * 6, -1, true);
+    var17.setInt32(8 * 7, -1, true);
+    var17.setInt32(8 * 8, -1, true);
+    // var17.setInt32(8 * 9, -2147483648, true);
+    // var17.setInt32(4 * 10, 0, true);
+    // var17.setInt32(8 * 11, 2119059394, true);
+    // var17.setInt32(8 * 12, -1703215172, true);
+    var17.setInt32(8 * 13, -1, true);
+
+    let buffer2 = new ArrayBuffer(512);
+    let var1 = new DataView(buffer2);
+    // a3.setBigInt64(8 * 0, BigInt(2147483648), true);
+    // a3.setInt32(8 * 1, 0, true);
+    // a3.setInt32(8 * 2, 0, true);
+    // a3.setInt32(8 * 3, 0, true);
+    // a3.setBigInt64(8 * 4, BigInt(1901291885), true);
+    // a3.setInt32(8 * 5, 0, true);
+    // a3.setBigInt64(8 * 6, BigInt(4150375216), true);
+    // a3.setInt32(8 * 7, 0, true);
+    // a3.setBigInt64(8 * 8, BigInt(1034665895), true);
+    // a3.setInt32(8 * 9, 0, true);
+    // a3.setInt32(8 * 10, 0, true);
+    // a3.setInt32(8 * 11, 0, true);
+
+    // 1999506840
+
+    // let r = Citizen.invokeNative("0xB881CA836CC4B6D4", var17, Citizen.returnResultAnyway());
+
+    let r2 = Citizen.invokeNative("0x640F890C3E5A3FFD", 1, var17, var1, Citizen.returnResultAnyway());
+    let out2 = new Int32Array(buffer2);
+    console.log(r2, out2);
+
+    let out = new Int32Array(buffer);
+
+    console.log( out);
+
+
+});
+
+
 
 
 // levels3.rpf/levels/rdr3/scenario/herbs_*.ymt
