@@ -29,7 +29,7 @@
 Config = {
     {
         -- position = vec3(0, 0, 0) -- No position, its global
-        campfire = true,
+      --  campfire = true,
         craftings = {
             {
                 -- ! cIndex (crafting index)
@@ -50,6 +50,53 @@ Config = {
                 },
                 output = {
                     {item = "meat_oregano_cooked", amount = 1}
+                }
+            }
+        }
+    },
+    { 
+       -- position = vec3(0, 0, 0), -- No position, its global
+        crafting = {
+            {
+                time = 15,
+                input = {
+                    {item = "bones", amount = 1},
+                    {item = "stick", amount = 1},
+                    {item = "melee_knife", amount = 0},
+                },
+                output = {
+                    {item = "ammo_arrow", amount = 1}
+                }
+            },
+            {
+                time = 40,
+                input = {
+                    {item = "stick", amount = 2},
+                    {item = "ropecut", amount = 1},
+                    {item = "melee_knife", amount = 0},
+                },
+                output = {
+                    {item = "bow", amount = 1}
+                }
+            },
+            {
+                time = 30,
+                input = {
+                    {item = "rope", amount = 1},
+                    {item = "melee_knife", amount = 0},
+                },
+                output = {
+                    {item = "ropecut", amount = 5}
+                }
+            },
+            {
+                time = 30,
+                input = {
+                    {item = "rope", amount = 1},
+                    {item = "melee_knife", amount = 0},
+                },
+                output = {
+                    {item = "ropecut", amount = 5}
                 }
             }
         }
