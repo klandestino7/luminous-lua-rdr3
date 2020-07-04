@@ -291,7 +291,7 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     
 
     self.getHorses = function()
-        local rows = API_Database.query("FCRP/GetHorses", {charid = self.id})
+        local rows = API_Database.query("FCRP/GetHorses", {charid = self:getId()})
         if #rows > 0 then
             return rows
         else
