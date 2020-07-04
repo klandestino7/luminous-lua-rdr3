@@ -181,6 +181,14 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("VP:INVENTORY:NUICloseNoCallback")
+AddEventHandler(
+    "VP:INVENTORY:NUICloseNoCallback",
+    function()
+        closeInv(false)
+    end
+)
+
 RegisterNetEvent("VP:INVENTORY:openAsPrimary")
 AddEventHandler(
     "VP:INVENTORY:openAsPrimary",
@@ -344,7 +352,7 @@ AddEventHandler(
     end
 )
 
-function closeInv()
+function closeInv(callback)
     SetNuiFocus(false, false)
     SendNUIMessage(
         {
@@ -352,7 +360,9 @@ function closeInv()
         }
     )
     opened = false
+    if callback == nil or callback == true then
     TriggerServerEvent("VP:INVENTORY:Close")
+    end
 end
 
 function computeSlots(table, asPrimary)
