@@ -495,6 +495,14 @@ function API.Inventory(id, capacity, slots)
             amount = amount + _amount
         end
 
+        for i = 129, 132 do
+            if self.slots[i] then
+                if itemId == self.slots[i]:getItemId() then
+                    amount = amount + self.slots[i]:getItemAmount()
+                end
+            end
+        end
+
         return amount
     end
 
@@ -660,7 +668,7 @@ function getAmmoTypeFromWeaponType(weapon)
         ammo = "AMMO_REVOLVER"
     end
 
-    if weapon:find("_RIFLE_") or weapon:find("SNIPERRIFLE_")then
+    if weapon:find("_RIFLE_") or weapon:find("SNIPERRIFLE_") then
         ammo = "AMMO_RIFLE"
     end
 
