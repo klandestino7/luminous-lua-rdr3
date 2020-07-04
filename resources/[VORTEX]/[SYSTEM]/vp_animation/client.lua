@@ -76,6 +76,18 @@ RegisterCommand(
     end
 )
 
+RegisterCommand(
+    "c",
+    function(source)
+        local ped = PlayerPedId()     
+        if not IsPlayerFreeAiming(ped) then
+            ClearPedTasks(ped)
+            ClearPedSecondaryTask(ped)
+            SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+        end
+    end
+)
+
 -- Citizen.CreateThread(
 --     function()
 --         local ply = PlayerPedId()

@@ -41,7 +41,7 @@ AddEventHandler(
 RegisterNetEvent("VP:ADMIN:SpawnPed")
 AddEventHandler(
 	"VP:ADMIN:SpawnPed",
-	function(pedModel)
+	function(pedModel, outfit)
 		local pedModelHash = GetHashKey(pedModel)
 		if not IsModelValid(pedModelHash) then
 			print("model is not valid")
@@ -67,9 +67,14 @@ AddEventHandler(
 		Citizen.InvokeNative(0xC80A74AC829DDD92, ped, GetDefaultRelationshipGroupHash(pedModelHash))
 
 	
-		TaskCombatPed(ped ,PlayerPedId(), 0, 16)
-		Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey("Weapon_melee_knife"), 500, true, 0)
-		
+	--	TaskCombatPed(ped ,PlayerPedId(), 0, 16)
+	--	Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey("Weapon_melee_knife"), 500, true, 0)
+
+
+		if outfit ~= nil then
+			SetPedOutfitPreset(ped, tonumber(outfit))
+			Citizen.InvokeNative(0x7528720101A807A5, ped, 2) 
+		end
 		-- Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, ped)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
 	end

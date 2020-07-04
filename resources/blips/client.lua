@@ -51,6 +51,7 @@ local blips = {
 	--{name = "Saloon", sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68}, -- blackwater
 	{name = "Saloon", sprite = 1879260108, x = 2794.566, y = -1168.784, z = 47.933},   -- saint denis  
 	{name = "Saloon", sprite = 1879260108, x = 2632.096, y = -1224.096, z = 53.386},   -- saint denis
+	{name = "Saloon", sprite = 1879260108, x = 1347.172, y = -1374.833, z = 80.494},   -- rhodes
 
 	--BANCOS
 	{name = "Banco", sprite = -2128054417, x = -308.52, y = 775.99, z = 118.7}, -- valentine

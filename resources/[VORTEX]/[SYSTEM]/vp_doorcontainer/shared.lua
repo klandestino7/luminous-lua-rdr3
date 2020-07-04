@@ -74,11 +74,41 @@ local doorStates = {
     [3445627749] = {isOpen = true, pair = 1634115439},
 
 
+    -- DP SAINT DENIS
+    [417663242] = {isOpen = true, pair = 1611175760},
+    [1611175760] = {isOpen = true, pair = 417663242},
+
+
+
+
+    [3124713594] = {isOpen = false, pair = 1879655431},
+    [1879655431] = {isOpen = false, pair = 3124713594},
+
+    [3601535313] = {isOpen = false, pair = 3430284519},
+    [3430284519] = {isOpen = false, pair = 3601535313},
+    
+    [1674105116] = {isOpen = false, pair = 1979938193},
+    [1979938193] = {isOpen = false, pair = 1674105116},
+
+    [1694749582] = {isOpen = false, pair = 1992193795},
+    [1992193795] = {isOpen = false, pair = 1694749582},
+    
+    [2503834054] = {isOpen = false, pair = 305296302},
+    [305296302] = {isOpen = false, pair = 2503834054},
+
+    [603068205] = {isOpen = false, pair = 1020479727},
+    [1020479727] = {isOpen = false, pair = 603068205},   
+
+    
+
+    
     -- GUNSMITH VALENTINE
     [2042647667] = {isOpen = true},
     [475159788] = {isOpen = true},
     -- MEDIC VALENTINE
     [3439738919] = {isOpen = true},
+
+    [-302968547] = {isOpen = true},
     -- STABLE VALENTINE
     [1132010214] = {isOpen = true, pair = 1876749464},
     [1331491364] = {isOpen = true, pair = 1876749464},
@@ -204,7 +234,21 @@ Citizen.CreateThread(
                     1657401918,
                     1502928852,
                     2212368673,
-                    1614494720
+                    1614494720,
+                    417663242,
+                    1611175760,
+                    3124713594,
+                    1879655431,
+                    3601535313,
+                    3430284519,
+                    1674105116,
+                    1979938193,
+                    1694749582,
+                    1992193795,
+                    2503834054,
+                    305296302,
+                    603068205,
+                    1020479727
                 }
             )
 
