@@ -184,6 +184,11 @@ function ContainerGetItemHashAtIndex(container, index)
     return ret
 end
 
+function ContainerGetItemAmountAtIndex(container, index)
+    local itemAtIndex = ContainerGetItemAtIndex(container, index)
+    return 
+end
+
 function ContainerGetWeight(container)
     local total = 0
 
