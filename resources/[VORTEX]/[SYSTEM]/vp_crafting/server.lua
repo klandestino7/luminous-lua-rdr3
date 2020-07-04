@@ -162,19 +162,18 @@ AddEventHandler(
                     local item = x.item
                     local amount = x.amount
                     local alias = x.alias
+                    local remove = x.remove or true
 
-                    if Inventory:getItemAmount(item) >= amount then
-                        Inventory:removeItem(-1, item, amount)
-                        print("removed " .. item)
-                    else
-                        print("couldnt have", item)
-                        if alias then
-                            print("has alias")
-                            for _, a_item in pairs(alias) do
-                                if Inventory:getItemAmount(a_item) >= amount then
-                                    print("removed " .. a_item .. " instead")
-                                    Inventory:removeItem(-1, a_item, amount)
-                                    break
+                    if remove then
+                        if Inventory:getItemAmount(item) >= amount then
+                            Inventory:removeItem(-1, item, amount)
+                        else
+                            if alias then
+                                for _, a_item in pairs(alias) do
+                                    if Inventory:getItemAmount(a_item) >= amount then
+                                        Inventory:removeItem(-1, a_item, amount)
+                                        break
+                                    end
                                 end
                             end
                         end
