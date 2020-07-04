@@ -121,7 +121,8 @@ AddEventHandler(
         local Inventory = Character:getInventory()     
         local Horse = Character:getHorse()
 
-        if Horse ~= nil then
+        if Horse == nil then            
+            TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Você já vendeu este cavalo.', 5000)
             return
         end
 
