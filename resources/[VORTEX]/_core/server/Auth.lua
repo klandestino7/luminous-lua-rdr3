@@ -210,12 +210,12 @@ AddEventHandler(
         ]]
         API.dropPlayer(_source, reason)
 
-        local index = indexOf(_source)
+        -- local index = indexOf(_source)
 
-        if index ~= nil then
+        -- if index ~= nil then
             -- sessionQueue = splice(sessionQueue, index, 1)
-            table.remove(sessionQueue, index)
-        end
+        --     table.remove(sessionQueue, index)
+        -- end
     end
 )
 
@@ -286,10 +286,10 @@ AddEventHandler(
     end
 )
 
-function indexOf(v)
-    for i, s in pairs(sessionQueue) do
-        if s == v then
-            return i
-        end
-    end
-end
+-- function indexOf(v)
+--     for i, s in pairs(sessionQueue) do
+--         if s == v then
+--             return i
+--         end
+--     end
+-- end
