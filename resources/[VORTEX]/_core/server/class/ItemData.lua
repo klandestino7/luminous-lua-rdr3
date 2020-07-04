@@ -192,7 +192,7 @@ function triggerUse(User, itemData)
 
     if itemId == "pigeonpost" then
         TriggerEvent("VP:PEAGLE:SendMessage", source)
-    end    
+    end
 
     if itemId == "chest_small" then
         local var = itemData.varOnUse
@@ -201,9 +201,9 @@ function triggerUse(User, itemData)
     end
 
     if itemId:find("acamp") then
-        local var = itemData.varOnUse     
-        print(var)   
-        TriggerClientEvent('VP:TENTS:usedItem', source, var)
+        local var = itemData.varOnUse
+        print(var)
+        TriggerClientEvent("VP:TENTS:usedItem", source, var)
         User:closeInventory()
     end
 
@@ -219,6 +219,24 @@ function triggerUse(User, itemData)
 
     if itemId == "pan" then
         TriggerClientEvent("FrankieGoldPanner:StartGoldPan", source)
+    end
+
+    if itemId == "meat_cooked" then
+        cAPI.VaryPlayerHealth(source, 10)
+        -- cAPI.VaryPlayerStamina(source, 15)
+        cAPI.VaryPlayerCore(source, 1, 15)
+        cAPI.TaskScriptedAnim(source, "eat")
+        User:closeInventory()
+        return true
+    end
+
+    if itemId == "meat_oregano_cooked" then
+        cAPI.VaryPlayerHealth(source, 30)
+        -- cAPI.VaryPlayerStamina(source, 30)
+        cAPI.VaryPlayerCore(source, 1, 70)
+        cAPI.TaskScriptedAnim(source, "eat")
+        User:closeInventory()
+        return true
     end
 
     return false

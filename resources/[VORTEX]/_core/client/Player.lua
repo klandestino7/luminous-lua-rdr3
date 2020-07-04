@@ -17,7 +17,6 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
         end
     else
         pClothing = json.decode(clothing)
-        print(pClothing)
     end
 
     local pStats = stats
@@ -278,10 +277,6 @@ end
 
 Citizen.CreateThread(
     function()
-        -- print(GetHashKey("BASE"))
-        -- print(GetHashKey("CUSTOM"))
-        -- print(GetHashKey("COMPONENT"))
-
         while true do
             Citizen.Wait(0)
 

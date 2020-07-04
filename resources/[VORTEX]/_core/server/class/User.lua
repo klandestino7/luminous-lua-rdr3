@@ -101,11 +101,6 @@ function API.User(source, id, ipAddress)
             API.chars[id] = self:getId()
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
 
-            if API.DebbugingInventory() then
-                print("setcharacter user_" .. self:getId() .. " char_" .. id .. " inv: " .. json.encode(inv_query))
-                print(" ")
-            end
-
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
@@ -120,27 +115,6 @@ function API.User(source, id, ipAddress)
             self.Character = API.Character(id, charRow[1].characterName, charRow[1].level, charRow[1].xp, tonumber(charRow[1].groups), charRow[1].age, Inventory)
             self.Character:setUserId(self:getId())
             self.Character:setSource(self:getSource())
-            -- Enviar informaçoes da Hotbar
-            -- print(#Inventory:getItems(), Inventory:getItems())
-            -- if #Inventory:getItems() > 0 then
-            --     local items = Inventory:getItems()
-            --     local found = false
-            --     for i = 129, 132 do
-            --         if items[stringd] ~= nil then
-            --             found = true
-            --             parsedSlots[i] = {
-            --                 items[i][1],
-            --                 items[i][2]
-            --             }
-            --         end
-            --     end
-            --     if found == true then
-            --         TriggerClientEvent("VP:INVENTORY:PrimarySyncSlots", self:getSource(), parsedSlots)
-            --     end
-            -- end
-
-            -- local weapons = json.decode(charRow[1].weapons) or {}
-            -- cAPI.replaceWeapons(self:getSource(), weapons)
 
             -- Vai retornar o cavalo atual do Character, caso não tenha, vai buscar pelo bancao de dados e carregar ele
 
@@ -225,7 +199,7 @@ function API.User(source, id, ipAddress)
     end
 
     self.closeInventory = function()
-        -- TriggerClientEvent('fcrp_inventory:closeInv', self:getSource())
+        TriggerClientEvent("VP:INVENTORY:NUICloseNoCallback", self:getSource())
 
         if self.primaryViewingInventory ~= nil then
             self.primaryViewingInventory:removeViewer(self)

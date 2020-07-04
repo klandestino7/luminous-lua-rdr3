@@ -103,7 +103,6 @@ end
 
 function API.setBanned(this, userid, reason)
     if userid ~= nil then
-        print(userid, reason)
         API_Database.query("FCRP/SetBanned", {user_id = userid, reason = reason})
         DropPlayer(this, reason)
     end
@@ -172,29 +171,9 @@ function API.NotifyUsersWithGroup(group, message, checkForInheritance)
     end
 end
 
-local debugginginventory = false
-
-function API.DebbugingInventory()
-    return debugginginventory
+function API.GroupNameToBit(g)
+    return config_file_GROUPS[g] or 0
 end
-
-RegisterCommand(
-    "debuginv",
-    function(source, args, raw)
-        print(source)
-        if source ~= 0 then
-            local User = API.getUserFromSource(source)
-            local Character = User:getCharacter()
-
-            if not Character:hasGroupOrInheritance("admin") then
-                return
-            end
-        end
-
-        debugginginventory = not debugginginventory
-    end,
-    false
-)
 
 function API.AddTents(charid, model, position)
     API_Database.query("FCRP/AddTents", {charid = charid, model = model, position = json.encode(position)})
@@ -221,9 +200,8 @@ end
 
 function API.RemoveTents(source, id, itemId)
     local rows = API_Database.query("FCRP/RemoveTents", {id = id})
-    print(source)
     local User = API.getUserFromSource(source)
-    
+
     local Character = User:getCharacter()
     local Inventory = Character:getInventory()
 

@@ -582,27 +582,6 @@ ItemList = {
         description = "Ouro !!!",
         stackSize = 12
     },
-    ["meat"] = {
-        type = "generic",
-        name = "Carne Animal",
-        weight = 1.0,
-        description = "Carne obtida após esfolar o animal",
-        stackSize = 6
-    },
-    ["meat_poor"] = {
-        type = "generic",
-        name = "Carne Animal Péssima",
-        weight = 1.0,
-        description = "Carne obtida após esfolar o animal",
-        stackSize = 6
-    },
-    ["meat_good"] = {
-        type = "generic",
-        name = "Carne Animal Boa",
-        weight = 1.0,
-        description = "Carne obtida após esfolar o animal",
-        stackSize = 6
-    },
     ["bones"] = {
         type = "generic",
         name = "Resto de Ossos",
@@ -610,12 +589,41 @@ ItemList = {
         description = "Resto de Ossos obtida após esfolar o animal",
         stackSize = 6
     },
+    ["meat_poor"] = {
+        type = "generic",
+        name = "Carne Animal Péssima",
+        weight = 0.5,
+        description = "Carne obtida após esfolar o animal.",
+        stackSize = 3
+    },
+    ["meat_good"] = {
+        type = "generic",
+        name = "Carne Animal Boa",
+        weight = 0.5,
+        description = "Carne obtida após esfolar o animal.",
+        stackSize = 3
+    },
+   
     ["meat_perfect"] = {
         type = "generic",
         name = "Carne Animal Perfeita",
-        weight = 1.0,
-        description = "Carne obtida após esfolar o animal",
-        stackSize = 6
+        weight = 0.5,
+        description = "Carne obtida após esfolar o animal.",
+        stackSize = 3
+    },
+    ["meat_cooked"] = {
+        type = "generic",
+        name = "Carne Assada",
+        weight = 0.5,
+        description = "Perfeita para uma tarde ensolarada.",
+        stackSize = 3
+    },
+    ["meat_oregano_cooked"] = {
+        type = "generic",
+        name = "Carne Assada temperada à Oregano",
+        weight = 0.5,
+        description = "Cozinhada com o mais fino oregano.",
+        stackSize = 3
     },
     ["raw_iron"] = {
         type = "generic",
@@ -1230,7 +1238,7 @@ ItemList = {
         weight = 0.6,
         description = "A aparência encantadora desta bela flor rejuvesnece até a alma mais solitária, a sua beleza é uma camuflagem perfeita para matar o desconhecido que a toca. As propriedades desta flor servem especialmente para a fabricação de moonshines.",
         stackSize = 45
-    },
+    }
     -- ["herb_oregano"] = {
     --     type = "generic",
     --     name = "Semente de Orégano",

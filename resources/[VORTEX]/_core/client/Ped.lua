@@ -130,9 +130,9 @@ function cAPI.SetPedClothing(ped, clothingArray)
                     SetModelAsNoLongerNeeded(modelHash)
                     numComponents = numComponents + 1
                 end
-            else                
+            else
                 if clothingArray <= 100 then
-                    SetPedOutfitPreset(ped, clothingArray)                
+                    SetPedOutfitPreset(ped, clothingArray)
                 end
             end
         end
@@ -150,13 +150,12 @@ function cAPI.SetPedClothing(ped, clothingArray)
                 NativeSetPedComponentEnabled(ped, 0x141281DC, true, true)
                 NativeSetPedComponentEnabled(ped, 0x1945CE44, true, true)
             end
-    
+
             while not NativeHasPedComponentLoaded(ped) do
                 Wait(10)
             end
         end
     end
-   
 end
 
 function cAPI.TaskAnimalInteraction(interaction)
@@ -200,6 +199,28 @@ function cAPI.TaskInteraction(interaction)
         end
 
         TaskItemInteraction_2(ped, GetHashKey(v[2]), propEntity, GetHashKey(v[3]), GetHashKey(v[4]), unk1, unk2, unk3)
+    end
+end
+
+function cAPI.TaskScriptedAnim(scriptedAnimName)
+    local playerPed = PlayerPedId()
+
+    local animDict
+    local animName
+
+    if scriptedAnimName == "eat" then
+        animDict = "mech_inventory@eating@multi_bite@sphere_d8-4_fruit"
+        animName = "quick_right_hand_throw"
+
+        if not HasAnimDictLoaded(animDict) then
+            RequestAnimDict(animDict)
+            while not HasAnimDictLoaded(animDict) do
+                Citizen.Wait(0)
+            end
+        end
+
+        SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), true, 0, 0, 0)
+        TaskPlayAnim(playerPed, animDict, animName, 8.0, -8.0, -1, 32, 0.0, false, 0, false, "", false)
     end
 end
 
@@ -253,7 +274,7 @@ function cAPI.playAnim(upper, seq, looping)
             TaskStartScenarioInPlace(ped, seq.task, 0, not seq.play_exit)
         end
     else -- a regular animation sequence
-        cAPI.stopAnim(self, upper)
+        cAPI.stopAnim(upper)
 
         local flags = 0
         if upper then
@@ -356,14 +377,16 @@ end
 --     -1000.0 - 1000.0
 function cAPI.VaryPedStamina(ped, variation, variationTime)
     if variationTime == nil or variationTime <= 1 then
-        Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, variation) -- _CHARGE_PED_STAMINA
+        -- Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, variation) -- _CHARGE_PED_STAMINA
+        Citizen.InvokeNative(0x675680D089BFA21F, ped, variation) -- _RESTORE_PED_STAMINA
     else
         Citizen.CreateThread(
             function()
                 variationPerTick = variation / variationTime
                 while variationTime > 0 do
                     local oldValue = GetPedStamina(ped)
-                    Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, oldValue + variationPerTick) -- _CHARGE_PED_STAMINA
+                    -- Citizen.InvokeNative(0xC3D4B754C0E86B9E, ped, oldValue + variationPerTick) -- _CHARGE_PED_STAMINA
+                    Citizen.InvokeNative(0x675680D089BFA21F, ped, variationPerTick) -- _RESTORE_PED_STAMINA
 
                     variationTime = variationTime - 1
 
