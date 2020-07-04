@@ -119,9 +119,14 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Inventory = Character:getInventory()     
-        
+        local Horse = Character:getHorse()
+
+        if Horse ~= nil then
+            return
+        end
+
         TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Cavalo vendido com sucesso.', 5000)  
-        
+
         Character:removeHorse(tonumber(id))
         Character:deleteHorse(tonumber(id))
                 
