@@ -1,25 +1,24 @@
-local sessionQueue = {}
+-- local sessionQueue = {}
 
-LoginCooldown = {}
+-- LoginCooldown = {}
 
 function connectUser(source, user_id)
     if API.users[user_id] then
         return
     end
 
-    if #GetPlayers() == 32 then
-        API.dropPlayer(source, "Quase bugou a instancia")
-        return
-    end
+    -- if #GetPlayers() == 32 then
+    --     API.dropPlayer(source, "Quase bugou a instancia")
+    --     return
+    -- end
 
-    local steamID = GetPlayerIdentifiers(source)[1]
+    local steamId = GetPlayerIdentifiers(source)[1]
 
     local User = API.User(source, user_id, GetPlayerEndpoint(source))
 
     API.users[user_id] = User
     API.sources[source] = user_id
-    API.identifiers[steamID] = GetPlayerIdentifiers(source)
-    cAPI._clientConnected(source, true)
+    API.identifiers[steamId] = GetPlayerIdentifiers(source)
 
     print(#GetPlayers() .. "/32 | " .. GetPlayerName(source) .. " (" .. User:getIpAddress() .. ") entrou (user_id = " .. user_id .. ", source = " .. source .. ")")
 
@@ -34,7 +33,6 @@ end
 --[[
     INICIAR _CORE DEPOIS DO CONNECTQUEUE
 ]]
-
 Queue.OnReady(
     function()
         Queue.OnJoin(
@@ -51,6 +49,7 @@ Queue.OnReady(
                     if user_id then
                         if API.isBanned(user_id) == 0 then
                             API.onFirstSpawn[user_id] = true
+
                             TriggerEvent("API:playerJoin", user_id, source, playerName)
                             allow()
                         else
