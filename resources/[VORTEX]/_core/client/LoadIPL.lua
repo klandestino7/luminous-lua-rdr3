@@ -1,13 +1,15 @@
-RequestImap(1879779330)-- sign outside tent version 1
-RequestImap(1104143966)-- sign outside tent version 2
+RequestImap(1879779330)
+-- sign outside tent version 1
+RequestImap(1104143966)
+-- sign outside tent version 2
 RequestImap(1027093524) --sign outside tent version 3
 RequestImap(-1617847332) -- sign outside tent version 4
-RequestImap(-763477089)  -- partial door flap open
+RequestImap(-763477089) -- partial door flap open
 RequestImap(317070801) -- full closed flap
 RequestImap(619024057) -- Saint Denis Doctors office full interior with doors
 
 ------------------------------------- Green House Valentine
-RequestImap(903666582)  
+RequestImap(903666582)
 ------------------------------------- #### END Green House ####
 
 ------------------------------------- Railroad Stuff
@@ -26,12 +28,12 @@ RequestImap(-1022518533) --Section 7 2201
 RequestImap(691955519) --Section 8 with bridge 2203
 RequestImap(-142900294) --Section 9 2229.82
 
-RequestImap(-84516711)  --Run Down Closed Station
-RequestImap(-657241692)  --Oil Pipe
-RequestImap(-1112373128)  --Oil Tower
+RequestImap(-84516711) --Run Down Closed Station
+RequestImap(-657241692) --Oil Pipe
+RequestImap(-1112373128) --Oil Tower
 ------------------------------------- #### Heartland Oil Station ####
 ------------------------------------- Hole Near Rhodes - Woman's Rights Mission Start
-RequestImap(1277540472)  -- 1433 -1591 69
+RequestImap(1277540472) -- 1433 -1591 69
 ------------------------------------- #### END OF WOMAN'S RIGHTS ####
 ------------------------------------- Story Camp Near Rhodes
 -- GRASS and GROUND
@@ -40,7 +42,7 @@ RequestImap(-61896664) -- Worn Brown Ground 670 -1236 44
 RequestImap(-648893593) -- Version 1 of Grass and Ferns
 RequestImap(1534006738) -- Version 2 of Grass and Ferns
 RequestImap(-376056363) -- Version 3 of Grass and Ferns
-RequestImap(519091847)  -- Version 4 of Grass and Ferns
+RequestImap(519091847) -- Version 4 of Grass and Ferns
 RequestImap(-1225606266) -- Adds bush to 692 -1263 44
 RequestImap(-1874720370) -- Lots of ferns, weeds and tall grass
 RequestImap(-1936937394) -- Grass, Flowers and weeds]]
@@ -53,14 +55,14 @@ RequestImap(1169958167) -- Red Table Cloth German Wagon
 
 --Arthurs Wagon
 RequestImap(2072112547) --  Wagon v1 with Canopy
-RequestImap(1601820048) -- Hide Rug 
-RequestImap(2025485344) -- Table Top 
-RequestImap(901520480) -- Table 
+RequestImap(1601820048) -- Hide Rug
+RequestImap(2025485344) -- Table Top
+RequestImap(901520480) -- Table
 RequestImap(-1999465365) -- Right Skull  Wagon
 RequestImap(853723410) -- Left Alligator Skull  Wagon
 RequestImap(-1774140220) --  Chest v1
 RequestImap(102652153) --  Shaving Kit
-RequestImap(-1739164071) -- Book on Small Table 
+RequestImap(-1739164071) -- Book on Small Table
 RequestImap(-1331617405) --  Book
 RequestImap(-959814975) -- Box by Book v1
 RequestImap(1096093290) -- Quiver on Ground
@@ -75,7 +77,7 @@ RequestImap(1742990618) -- Provisions Wagon v2
 RequestImap(-751959361) -- Provisons Wagon v3
 RequestImap(-492479795) -- Skull Provisions Wagon
 RequestImap(-320577790) -- Barrel with Lantern
-RequestImap(-850189983)  --Table - Cutting Board - Barrel of Salt v2
+RequestImap(-850189983) --Table - Cutting Board - Barrel of Salt v2
 RequestImap(-1291679096) -- Potato Bags for Wagon v3
 RequestImap(1309652195) -- Water and Dishes
 RequestImap(-112364237) --Ammo Tools
@@ -108,7 +110,7 @@ RequestImap(-1663177928) --Lure Kit
 RequestImap(1084869405) -- Two Wagons v1 Supplies 674 -1267 43
 -- Dutchs tent
 RequestImap(539843907) -- Tent v2 Empty Right Side Opened
-RequestImap(1049842342) -- Inside Tent Bear Rug Stove Books Barrels and Canopy 
+RequestImap(1049842342) -- Inside Tent Bear Rug Stove Books Barrels and Canopy
 RequestImap(2119205605) -- Cash Box behind Dutchs Tent 1
 
 -- Base
@@ -152,13 +154,12 @@ RequestImap(-2144587490) -- Covers small plot hole with mound of dirt
 --Mansion Interior
 -- RequestImap(1149195254)  --Brathwaite House Shell
 -- RequestImap(58066174)  -- Interior
--- -- Mansion Exterior 
+-- -- Mansion Exterior
 -- RequestImap(-1521525254)  --Green House Valentine -- Exterior Trees and Flowers 1(Run 1 and 2 together)
 -- RequestImap(-761186147)  --Green House Valentine -- Exterior Trees and Flowers 2(Run 1 and 2 together)
 -- RequestImap(-2137633069)  -- Shudders Close Upstairs Bedroom and Downstairs Library
 -- RequestImap(-880373663)  -- Front Balcony Lantern Added
 -- RequestImap(-70021332)  -- Adds Working tools and supplies to upper balcony
-
 
 ------------------------------------- #### END OF BRAITHWAITE MANSION ####
 
@@ -171,15 +172,15 @@ RequestImap(-1229109520) -- Green Plants
 ------------------------------------- #### END OF GREY ESTATES ####
 
 ------------------------------------- Black Water Town Hall
-RequestImap(-2082201137)  --Blackwater Ground Town Hall
-RequestImap(1343343014)  --Black Water Town Hall Addons Construction
-RequestImap(739412171)  -- Two Boards in front of city hall (Goes with Town Hall Construction)
-RequestImap(-5339556)  --Bank Under Construction
+RequestImap(-2082201137) --Blackwater Ground Town Hall
+RequestImap(1343343014) --Black Water Town Hall Addons Construction
+RequestImap(739412171) -- Two Boards in front of city hall (Goes with Town Hall Construction)
+RequestImap(-5339556) --Bank Under Construction
 
 ------------------------------------- #### END OF BLACKWATER TOWN HALL ####
 
 ------------------------------------- First Camp - Winter Area -1346 2407 311
-RequestImap(-1331012521) -- Ground After Snowfall Winter 
+RequestImap(-1331012521) -- Ground After Snowfall Winter
 RequestImap(-1991237877) -- Boxes
 RequestImap(-1670453688) -- Broken Wagons
 RequestImap(-743781837) -- Fire in Pit
@@ -195,10 +196,11 @@ RequestImap(2028590076) -- Cash Box Interior
 ------------------------------------- #### END OF FARM HOUSE ####
 
 ------------------------------------- Strawberry
-RequestImap(131323483)  -- Doctors House Interior and Unlocked Front Door
-RequestImap(270920361) -- Crates on Doctors Porch 
+RequestImap(131323483) -- Doctors House Interior and Unlocked Front Door
+RequestImap(270920361) -- Crates on Doctors Porch
 
-RequestImap(1892122519)-- Locked Door Micahs Gun House (No Interior) -1773 -431 154
+RequestImap(1892122519)
+-- Locked Door Micahs Gun House (No Interior) -1773 -431 154
 RequestImap(-130638369) -- Micahs Gun House Interior with Unlocked Front Door (Upstairs does not work, other doors are locked)
 
 RequestImap(2137790641) -- Jail Cell Window Fixed
@@ -209,115 +211,124 @@ RequestImap(-515396642) -- Jail Cell Window Fixed
 RequestImap(62512826)
 RequestImap(1234648758)
 
+RequestImap(0xF45D1590) -- hrt_camp_hunting2 880.68676757812,418.41735839844,111.8219909668
+RequestImap(0x3495DDB5) -- {hashname="k_11_p_mary1_camp",dec_hash=882236853,x=889.330078125,y=1273.5966796875,z=235.19036865234,h=16.22875213623},
+RequestImap(0xE1B566FB) -- {hashname="m_08_odr3_camp",dec_hash=-508205317,x=-547.51879882812,y=391.17834472656,z=87.722747802734,h=10.151049613952},
 
+RequestImap(0x163894EE) -- {hashname="mp001_mp_jessicacamp_blackwater",dec_hash=372806894,x=-1573.7749023438,y=-1677.5676269532,z=80.145538330078,h=29.991483688354},
+RequestImap(0xD54D0CC1)
+RequestImap(0xA488338E)
+RequestImap(0x8594FFC1) -- {hashname="mp001_mp_jessicacamp_val",dec_hash=-2053832767,x=-320.53036499024,y=176.88012695312,z=64.359954833984,h=25.622871398926},
 
-local Imaps ={
+RequestImap(0x0794C8D4) -- {hashname="mp004_campdef_bluewater",dec_hash=127191252,x=2274.7954101562,y=-375.12606811524,z=42.75267791748,h=15.696235656738},
+RequestImap(0x748D3FFD) -- {hashname="mp004_campdef_gap_breach",dec_hash=1955414013,x=-5908.0395507812,y=-3030.3217773438,z=1.7819174528122,h=13.382509231568},
+RequestImap(0x1C8B4360) -- {hashname="mp004_campdef_gap_ridge",dec_hash=478888800,x=-5690.12890625,y=-3358.6984863282,z=-22.163902282714,h=15.149020195008},
+RequestImap(0x6EA5EF28) -- {hashname="mp004_campdef_grt_plains",dec_hash=1856368424,x=-1399.8801269532,y=-1078.4494628906,z=76.98176574707,h=14.69657421112},
+RequestImap(0x0D80FCF1) -- {hashname="mp004_campdef_heartlands",dec_hash=226557169,x=504.10552978516,y=-246.14918518066,z=145.15127563476,h=16.202768325806},
+RequestImap(0xECE7095B) -- {hashname="mp004_campdef_hennigans",dec_hash=-320403109,x=-2561.1997070312,y=-2865.0463867188,z=71.746398925782,h=15.02048110962},
+RequestImap(0xDDA07366) -- {hashname="mp004_campdef_hrt_hilltop",dec_hash=-576687258,x=123.52725219726,y=415.05337524414,z=137.20059204102,h=10.580787658692},
+RequestImap(0xDBE417BC) -- {hashname="mp004_campdef_little_creek",dec_hash=-605808708,x=-2547.8442382812,y=557.31701660156,z=141.65718078614,h=12.7883644104},
+RequestImap(0xEC369A30) -- {hashname="mp004_campdef_new_hanover",dec_hash=-331965904,x=1881.9177246094,y=126.48085784912,z=98.841903686524,h=15.773805618286},
+RequestImap(0xFA07D510) -- {hashname="mp004_campdef_radleys",dec_hash=-100150000,x=752.95739746094,y=-919.14709472656,z=51.874645233154,h=14.310437202454},
 
--- -- /// valentine closed IPLS
--- 731209239,
--- 724436573,
--- -1475403379,
--- -518785376,
--- -1878882174,
--- 1202020135,
--- -1989899190,
--- 951314072,
--- -780819048,
--- -52140817,
--- 1081087978,
--- 696143352,
--- -981203673,
--- 1228600352,
--- -1301569116,
--- 282485265,
--- 56708243,
--- 199047531,
--- -776975047,
--- 2095116685,
--- -892659042,
--- 1136898294,
--- 897455211,
--- 1804593020,
--- -1049500949,
--- 1325716092,
+local Imaps = {
+    -- -- /// valentine closed IPLS
+    -- 731209239,
+    -- 724436573,
+    -- -1475403379,
+    -- -518785376,
+    -- -1878882174,
+    -- 1202020135,
+    -- -1989899190,
+    -- 951314072,
+    -- -780819048,
+    -- -52140817,
+    -- 1081087978,
+    -- 696143352,
+    -- -981203673,
+    -- 1228600352,
+    -- -1301569116,
+    -- 282485265,
+    -- 56708243,
+    -- 199047531,
+    -- -776975047,
+    -- 2095116685,
+    -- -892659042,
+    -- 1136898294,
+    -- 897455211,
+    -- 1804593020,
+    -- -1049500949,
+    -- 1325716092,
 
---// CONVENTO IPLS
-1405627586,
--1889108254, 
+    --// CONVENTO IPLS
+    1405627586,
+    -1889108254,
+    --// POKER SHIP SAINT DENIS IPL
+    1347068672,
+    943998860,
+    1056170594,
+    -873881483,
+    881979872,
+    1157695860,
+    1859948183,
+    -1688366042,
+    -929277449,
+    -723094901,
+    -801609437,
+    -278745837,
+    -41173958,
+    1160690623,
+    -- /// SAINT DENIS IPL, CONSTRUCTION DECK
+    165972019, -- NEW
+    -- -1036688493, -- OLD
 
---// POKER SHIP SAINT DENIS IPL 
-1347068672,
-943998860,
-1056170594,
--873881483,
-881979872,
-1157695860,
-1859948183,
--1688366042,
--929277449,
--723094901,
--801609437,
--278745837,
--41173958,
-1160690623,
-
--- /// SAINT DENIS IPL, CONSTRUCTION DECK
-165972019, -- NEW
--- -1036688493, -- OLD
-
--- // FIX GROUND JOHN
--284612948,
-
--- /// MANSÃO DESTRUIDA 
--1643869063,
--1220264217,
--1108618313,
--1508467572,
--990258606, 
-
--- // FIX GROUND EMERALD
--1377975054, 
-
--- // HOUSE EMERALD    
--574996782,
-1169511062,
--2111718052,
--1266106154,
-1192526031,
-
+    -- // FIX GROUND JOHN
+    -284612948,
+    -- /// MANSÃO DESTRUIDA
+    -1643869063,
+    -1220264217,
+    -1108618313,
+    -1508467572,
+    -990258606,
+    -- // FIX GROUND EMERALD
+    -1377975054,
+    -- // HOUSE EMERALD
+    -574996782,
+    1169511062,
+    -2111718052,
+    -1266106154,
+    1192526031
 }
 
 AddEventHandler(
     "onResourceStop",
     function(resourceName)
         if resourceName == GetCurrentResourceName() then
-            for _,v in pairs(Imaps) do
+            for _, v in pairs(Imaps) do
                 RemoveImap(v)
             end
         end
     end
 )
 
+Citizen.CreateThread(
+    function()
+        getValJail()
+        getValSaloon()
+        getValBank()
 
-
-Citizen.CreateThread(function()
-    getValJail()
-    getValSaloon()
-    getValBank()
-
-    for _,v in pairs(Imaps) do
-        RequestImap(v)        
+        for _, v in pairs(Imaps) do
+            RequestImap(v)
+        end
     end
-    
-end)
-
+)
 
 function getValBank()
     local interior = GetInteriorAtCoords(-308.2578, 777.48, 117.7031)
     local isValid = IsValidInterior(interior)
     if isValid then
         if IsInteriorReady(interior) then
-                        if IsInteriorEntitySetActive(interior, "val_bank_front_windows") then
+            if IsInteriorEntitySetActive(interior, "val_bank_front_windows") then
                 print("Valentine Bank Interior Already Active")
             else
                 ActivateInteriorEntitySet(interior, "val_bank_int_curtainsopen")
