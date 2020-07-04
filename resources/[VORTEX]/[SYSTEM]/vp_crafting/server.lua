@@ -4,70 +4,189 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-RegisterNetEvent("VP:CRAFTING:Open")
+RegisterNetEvent("VP:CRAFTING:TryToOpenCrafting")
 AddEventHandler(
-    "VP:CRAFTING:Open",
-    function()
+    "VP:CRAFTING:TryToOpenCrafting",
+    function(craftingGroups)
         local _source = source
 
         local User = API.getUserFromSource(_source)
+
         local Character = User:getCharacter()
 
-        if Character == nil then
-            return
+        if Character ~= nil then
+            local Inventory = Character:getInventory()
+
+            local cachedItemAmounts = {}
+
+            local char_level = Character:getLevel()
+
+            local r = {}
+
+            for _, cGroup in pairs(craftingGroups) do
+                local d = Config[cGroup]
+
+                local level = d.craftings.level or 0
+
+                if level ~= nil or level <= char_level then
+                    for cIndex, d in pairs(d.craftings) do
+                        local inputlist = d.input
+
+                        -- ? lê todo os meus inputs necessários para esse cIndex
+                        for cInputIndex, inp_d in pairs(inputlist) do
+                            local item = inp_d.item
+                            local amount = inp_d.amount
+                            local alias = inp_d.alias
+
+                            local inventory_item_amount = cachedItemAmounts[item] or Inventory:getItemAmount(item)
+
+                            if inventory_item_amount <= 0 and alias then
+                                for _, a_item in pairs(alias) do
+                                    a_amount = Inventory:getItemAmount(a_item)
+                                    if a_amount >= amount then
+                                        item = a_item
+                                        inventory_item_amount = a_amount
+                                        break
+                                    end
+                                end
+                            end
+
+                            -- ? Cache o número de items já calculado, para não ter que calcular denovo
+                            if not cachedItemAmounts[item] then
+                                cachedItemAmounts[item] = inventory_item_amount
+                            end
+
+                            if not r[cGroup] then
+                                r[cGroup] = {}
+                            end
+
+                            if not r[cGroup][cIndex] then
+                                r[cGroup][cIndex] = {}
+                            end
+
+                            if inventory_item_amount >= amount then
+                                -- ? Nós temos a quantidade necessário desse input, então será true
+                                r[cGroup][cIndex][cInputIndex] = true
+                            else
+                                -- ? Não temos a quantidade necessário desse input, então será bloqueado
+                                r[cGroup][cIndex][cInputIndex] = false
+                            end
+                        end
+                    end
+                end
+            end
+
+            --[[
+            {
+                crafting = {
+                    {    -- ! cIndex
+                        input = {
+                            true/false !
+                        }
+                    },
+                    {
+                        input = true/false
+                    }
+                }
+            }
+            ]]
+            TriggerClientEvent("VP:CRAFTING:OpenCrafting", _source, r)
         end
-
-        local Inventory = Character:getInventory()
-
-        local ownedItems = Inventory:getItemsAndAmount()
-
-        -- local parsedItems = {}
-
-        -- for _, v in pairs(slots) do
-        --     parsedItems[v[1]] = v[2]
-        -- end
-
-        TriggerClientEvent("VP:CRAFTING:OpenMenu", _source, ownedItems)
     end
 )
 
-RegisterNetEvent("VP:CRAFTING:Craft")
+RegisterNetEvent("VP:CRAFTING:FinishedCrafting")
 AddEventHandler(
-    "VP:CRAFTING:Craft",
-    function(id)
+    "VP:CRAFTING:FinishedCrafting",
+    function(cGroup, cIndex)
         local _source = source
 
         local User = API.getUserFromSource(_source)
-        local Inventory = User:getCharacter():getInventory()
 
-        local ItemData = API.getItemDataFromId(id)
+        local Character = User:getCharacter()
 
-        print(Inventory:getWeight(), ItemData:getWeight())
+        if Character ~= nil then
+            local Inventory = Character:getInventory()
 
-        if (Inventory:getWeight() + ItemData:getWeight()) > Inventory:getCapacity() then
-            User:notify("error", "Bolsa sem espaço")
-            return
-        end
+            local d = Config[cGroup].craftings[cIndex]
 
-        local craftingParts = Config[id]
+            local inputs = Config[cGroup].craftings[cIndex].input
 
-        for cid, amount in pairs(craftingParts) do
-            if Inventory:getItemAmount(cid) < amount then
-                local cItemData = API.getItemDataFromId(cid)
-                User:notify("error", "Você não tem x" .. amount .. " " .. cItemData:getName() .. ".")
+            local output = Config[cGroup].craftings[cIndex].output[1]
+
+            local o_item = output.item
+            local o_amount = output.amount
+
+            local ItemData = API.getItemDataFromId(o_item)
+
+            if ItemData == nil or (ItemData:getWeight() * o_amount) > Inventory:getCapacity() then
+                if ItemData == nil then
+                    User:notify("error", "Output não registrado corretamente, notifique a staff")
+                end
+
+                User:notify("error", "Sem espaço no aforje!")
+
                 return
             end
+
+            local hasInputs = true
+
+            for _, x in pairs(inputs) do
+                local item = x.item
+                local amount = x.amount
+                local alias = x.alias
+
+                if Inventory:getItemAmount(item) < amount then
+                    if not alias then
+                        hasInputs = false
+                        break
+                    else
+                        local hasAnyOfTheAliases = false
+
+                        for _, a_item in pairs(alias) do
+                            if Inventory:getItemAmount(a_item) >= amount then
+                                hasAnyOfTheAliases = true
+                                break
+                            end
+                        end
+
+                        print("hasAnyOfTheAliases", hasAnyOfTheAliases)
+
+                        hasInputs = hasAnyOfTheAliases
+                    end
+                end
+            end
+
+            if hasInputs then
+                for _, x in pairs(inputs) do
+                    local item = x.item
+                    local amount = x.amount
+                    local alias = x.alias
+
+                    if Inventory:getItemAmount(item) >= amount then
+                        Inventory:removeItem(-1, item, amount)
+                        print("removed " .. item)
+                    else
+                        print("couldnt have", item)
+                        if alias then
+                            print("has alias")
+                            for _, a_item in pairs(alias) do
+                                if Inventory:getItemAmount(a_item) >= amount then
+                                    print("removed " .. a_item .. " instead")
+                                    Inventory:removeItem(-1, a_item, amount)
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+
+                Inventory:addItem(o_item, o_amount)
+
+                if not User:hasInventoryOpen() then
+                    User:notify("item", o_item, o_amount)
+                end
+            end
         end
-
-        local ownedParts = {}
-        for cid, amount in pairs(craftingParts) do
-            Inventory:removeItem(cid, amount)
-            ownedParts[cid] = Inventory:getItemAmount(cid) or 0
-        end
-
-        Inventory:addItem(id, 1)
-        User:notify("item", id, 1)
-
-        TriggerClientEvent("VP:CRAFTING:SyncOnCraft", _source, ownedParts)
     end
 )

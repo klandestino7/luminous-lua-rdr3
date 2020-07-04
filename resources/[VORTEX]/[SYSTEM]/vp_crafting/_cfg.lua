@@ -1,43 +1,98 @@
+-- Config = {
+--     ["gold"] = {
+--         ["gold_nugget"] = 36
+--     },
+--     ["campfiresmall"] = {
+--         ["row_rock"] = 3,
+--         ["log"] = 3
+--     },
+--     ["campfiremed"] = {
+--         ["row_rock"] = 5,
+--         ["log"] = 5
+--     },
+--     ["bow"] = {
+--         ["stick"] = 2,
+--         ["ropecuted"] = 1
+--     },
+--     ["ammo_arrow"] = {
+--         ["stick"] = 2,
+--         ["bones"] = 1
+--     },
+--     ["ropecuted"] = {
+--         ["roperoll"] = 1
+--     },
+--     ["ropecuted"] = {
+--         ["roperoll"] = 1
+--     }
+-- }
+
 Config = {
-    ["gold"] = {
-        ["gold_nugget"] = 36,
-    },
-    ["campfiresmall"] ={
-        ["row_rock"] = 3,
-        ["log"] = 3
-    },
-    ["campfiremed"] ={
-        ["row_rock"] = 5,
-        ["log"] = 5
-    },
-    ["bow"] = {
-        ["stick"] = 2,
-        ["ropecuted"] = 1
-    },
-    ["ammo_arrow"] = {
-        ["stick"] = 2,
-        ["bones"] = 1
-    },
-    ["ropecuted"] = {
-        ["roperoll"] = 1,
-    },
-    
-    ["ropecuted"] = {
-        ["roperoll"] = 1,
-    },
-
-    
-
-    -- ["shotgun_pump"] = {
-    --     ["raw_gold"] = 10,
-    --     ["gold"] = 10
+    {
+        -- position = vec3(0, 0, 0) -- No position, its global
+        campfire = true,
+        craftings = {
+            {
+                -- ! cIndex (crafting index)
+                time = 40,
+                input = {
+                    {item = "meat_poor", amount = 1, alias = {"meat_good", "meat_perfect"}} -- ! cInputIndex (crafting input index)
+                },
+                output = {
+                    -- {item = "money", amount = 1, name = "Na fogueira"} -- ! cInputIndex (crafting input index)
+                    {item = "meat_cooked", amount = 1}
+                }
+            },
+            {
+                time = 60,
+                input = {
+                    {item = "meat_poor", amount = 1, alias = {"meat_good", "meat_perfect"}},
+                    {item = "herb_oregano", amount = 1}
+                },
+                output = {
+                    {item = "meat_oregano_cooked", amount = 1}
+                }
+            }
+        }
+    }
+    -- {
+    --     craftings = {
+    --         {
+    --             time = 0,
+    --             input = {
+    --                 {item = "fishingrod", amount = 1},
+    --                 {item = "gold", amount = 1}
+    --             },
+    --             output = {
+    --                 {item = "money", amount = 1}
+    --             }
+    --         }
+    --     }
     -- },
-    -- ["sulfur"] = {
-    --     ["raw_gold"] = 5,
-    --     ["gold"] = 2
-    -- },
-    -- ["pickaxe"] = {
-    --     ["raw_gold"] = 5,
-    --     ["gold"] = 2
+    -- {
+    --     position = vec3(-93.260, 399.647, 113.579),
+    --     distance = 20.0,
+    --     craftings = {
+    --         {
+    --             time = 25,
+    --             input = {
+    --                 {item = "money", amount = 1}
+    --             },
+    --             output = {
+    --                 {item = "ammo_arrow", amount = 10}
+    --             }
+    --         }
+    --     }
     -- }
 }
+
+--[[
+
+CRAFTING
+
+CARCANO
+DESATIVAR ROLLINGBLOCK
+LANCHESTER
+WHINCESTER
+REVOLVER MOUSER
+
+--]]
