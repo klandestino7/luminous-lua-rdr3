@@ -63,7 +63,7 @@ AddEventHandler(
             Character:setDeath(0)
 
             local Inventory = Character:getInventory()
-            Inventory:clear()
+         --   Inventory:clear()
         end
     end
 )

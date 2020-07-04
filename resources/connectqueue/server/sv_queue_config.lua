@@ -10,6 +10,9 @@ Config.Priority = {
     ["steam:110000106321dbf"] = 99, -- SORAM
     ["steam:110000109766c18"] = 99, -- KEY
 
+    ["steam:110000101b89514"] = 99, -- gabe peixe
+    ["steam:110000102190921"] = 99, -- gabe peixe
+    ["steam:1100001014c2ccf"] = 99,
      -- ///////////////// APOIADORES //////////////////
     ["steam:110000107156247"] = 45, -- Miojo#0001 / 11.06
     ["steam:110000114c155cc"] = 45, -- ELÉ JUNIOR / 11.06
@@ -69,7 +72,7 @@ Config.EnableGrace = true
 Config.GracePower = 5
 
 -- how long grace time lasts in seconds
-Config.GraceTime = 480
+Config.GraceTime = 600
 
 -- on resource start, players can join the queue but will not let them join for __ milliseconds
 -- this will let the queue settle and lets other resources finish initializing

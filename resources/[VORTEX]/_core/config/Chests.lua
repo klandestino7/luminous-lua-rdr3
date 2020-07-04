@@ -28,7 +28,8 @@ config_file_STATICCHESTS = {
     {"static:public:4", 1351.093,   -1380.077, 84.287-0.89, 259.999, 1, 100},    
 
 
-    {"static:trooper:1", 2506.955, -1301.881, 48.954-0.89, 49.59, 0, 60, "trooper"}, -- saint dennis
-    {"static:trooper:2", 1361.919,-1305.239,77.761-0.89, 64.999, 0, 60, "trooper"}, --- rhodes
-    {"static:trooper:3", -279.592,808.447,119.380-0.89, 93.51, 0, 60, "trooper"},  -- VALENTINE
+    {"static:trooper:1", 2506.955, -1301.881, 48.954-0.89, 49.59, 0, 100, "trooper"}, -- saint dennis
+    {"static:trooper:2", 1361.919,-1305.239,77.761-0.89, 246.999, 0, 100, "trooper"}, --- rhodes
+    {"static:trooper:3", -279.592,808.447,119.380-0.89, 93.51, 0, 100, "trooper"},  -- VALENTINE
 }
+

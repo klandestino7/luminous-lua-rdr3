@@ -1,9 +1,9 @@
 local weatherPerRegion = {
     ["Heartlands"] = {
-        ["rain"] = 0.1,
+      --  ["rain"] = 0.1,
         ["highpressure"] = 0.3,
         ["sunny"] = 0.45,
-        ["clouds"] = 0.3,
+      --  ["clouds"] = 0.3,
         ["sleet"] = 0.2,
     },
     ["GuarmaD"] = {
