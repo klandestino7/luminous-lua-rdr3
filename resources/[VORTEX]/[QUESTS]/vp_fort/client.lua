@@ -126,12 +126,14 @@ Citizen.CreateThread(
                        -- local hours = secondsUntilRobberyEnds / 3600
                         local minutes = math.floor((secondsUntilRobberyEnds % 3600) / 60)
                         local seconds = secondsUntilRobberyEnds % 60
-                        drawText('Dominando em: ' ..minutes .. " minutos e " .. seconds .. " segundos" , true)
+                        cAPI.DrawText('Dominando em: ' ..minutes .. " minutos e " .. seconds .. " segundos" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+
                     end
                 end
             else
                 if secondsUntilAbandonRobbery ~= nil then
-                    drawText("~r~Volte para do forte em " .. math.floor((secondsUntilAbandonRobbery / 10)) .. " segundos", true)
+                    cAPI.DrawText("~r~Volte para do forte em " .. math.floor((secondsUntilAbandonRobbery / 10)) .. " segundos", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+      
                 end
             end
             --print(secondsUntilAbandonRobbery)

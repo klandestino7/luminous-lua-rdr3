@@ -36,7 +36,7 @@ RegisterCommand(
 
 		sort = math.random(1,2)
 
-		if medic and police then
+		if medic or police then
 			--if ReviveEnable then
 				TriggerClientEvent('VP:MEDIC:revivecheck', _source)
 		--	else

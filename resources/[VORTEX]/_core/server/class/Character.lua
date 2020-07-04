@@ -249,15 +249,11 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     end
 
     self.setHorse = function(this, id)
+
         local horseRows = API_Database.query("FCRP/GetHorse", {id = id})
         if #horseRows > 0 then
             -- local invRows = API_Database.query("FCRP/Inventory", {id = "horse:" .. id, charid = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "select"})
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "horse:" .. id})
-
-            if API.DebbugingInventory() then
-                print("sethorse user_" .. self:getUserId() .. " char_" .. self:getId() .. "horse_" .. id .. " inv: " .. json.encode(inv_query))
-                print(" ")
-            end
 
             local Inventory = nil
             if #inv_query > 0 then
@@ -300,14 +296,16 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     end
 
     self.getHorse = function()
-        if self.Horse == nil then
-            local charHorsesRows = self:getHorses()
-            if #charHorsesRows > 0 then
+        if self.Horse == nil then   
+            local charHorsesRows = self:getHorses()        
+            if #charHorsesRows > 0 then                
                 self:setHorse(tonumber(charHorsesRows[1]["id"]))
 
+     
                 -- self.Horse = API.Horse(tonumber(charHorsesRows[1]["id"]), charHorsesRows[1]["model"], charHorsesRows[1]["name"], Inventory)
 
                 return self.Horse, json.decode(charHorsesRows[1]["components"]) or {}
+                
             else
                 return
             end
