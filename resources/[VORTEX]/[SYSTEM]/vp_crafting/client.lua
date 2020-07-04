@@ -121,70 +121,72 @@ Citizen.CreateThread(
             if not craftingNuiIsOpen then
                 if not isCrafting then
                     if IsControlJustPressed(0, 0x5966D52A) then
-                        local scenarioTypeHash = GetHashKey("WORLD_PLAYER_CAMP_FIRE_KNEEL4")
-                        -- WORLD_PLAYER_DYNAMIC_KNEEL
+                        if not Citizen.InvokeNative(0x1BE19185B8AFE299, 0x5966D52A) then
+                            local scenarioTypeHash = GetHashKey("WORLD_PLAYER_CAMP_FIRE_KNEEL4")
+                            -- WORLD_PLAYER_DYNAMIC_KNEEL
 
-                        local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
-                        if typePedIsUsing ~= scenarioTypeHash then
-                            local playerPedPosition = GetEntityCoords(playerPed)
+                            local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
+                            if typePedIsUsing ~= scenarioTypeHash then
+                                local playerPedPosition = GetEntityCoords(playerPed)
 
-                            local retval, groundZ, normal = GetGroundZAndNormalFor_3dCoord(playerPedPosition.x, playerPedPosition.y, playerPedPosition.z)
+                                local retval, groundZ, normal = GetGroundZAndNormalFor_3dCoord(playerPedPosition.x, playerPedPosition.y, playerPedPosition.z)
 
-                            local scenarioPosition = vec3(playerPedPosition.xy, groundZ)
+                                local scenarioPosition = vec3(playerPedPosition.xy, groundZ)
 
-                            local campfireModels = {
-                                "s_cookfire01x",
-                                "p_campfirecombined03x"
-                            }
+                                local campfireModels = {
+                                    "s_cookfire01x",
+                                    "p_campfirecombined03x"
+                                }
 
-                            local campfireEntity = 0
+                                local campfireEntity = 0
 
-                            for _, cmodel in pairs(campfireModels) do
-                                local e = GetClosestObjectOfType(playerPedPosition, 1.0, GetHashKey(cmodel), 0, 0, 0)
-                                if e ~= 0 then
-                                    campfireEntity = e
-                                    break
+                                for _, cmodel in pairs(campfireModels) do
+                                    local e = GetClosestObjectOfType(playerPedPosition, 1.0, GetHashKey(cmodel), 0, 0, 0)
+                                    if e ~= 0 then
+                                        campfireEntity = e
+                                        break
+                                    end
                                 end
-                            end
 
-                            local isNearCampfire = campfireEntity ~= 0
+                                local isNearCampfire = campfireEntity ~= 0
 
-                            local scenario_heading = GetEntityHeading(playerPed)
+                                local scenario_heading = GetEntityHeading(playerPed)
 
-                            local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenarioTypeHash, scenarioPosition, scenario_heading, 0, 0, 0)
+                                local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenarioTypeHash, scenarioPosition, scenario_heading, 0, 0, 0)
 
-                            local scenarioTransition = ""
+                                local scenarioTransition = ""
 
-                            -- if IsPedMale(playerPed) then
-                            --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_ARTHUR"
-                            -- else
-                            --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_MP_FEMALE_A"
-                            -- end
+                                -- if IsPedMale(playerPed) then
+                                --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_ARTHUR"
+                                -- else
+                                --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_MP_FEMALE_A"
+                                -- end
 
-                            TaskUseScenarioPoint(playerPed, scenario, scenarioTransition, -1.0, true, false, 0, false, -1.0, true)
+                                TaskUseScenarioPoint(playerPed, scenario, scenarioTransition, -1.0, true, false, 0, false, -1.0, true)
 
-                            local craftingGroups = {}
+                                local craftingGroups = {}
 
-                            for cGroup, d in pairs(Config) do
-                                local position = d.position
-                                if position == nil then
-                                    if d.campfire then
-                                        if isNearCampfire then
+                                for cGroup, d in pairs(Config) do
+                                    local position = d.position
+                                    if position == nil then
+                                        if d.campfire then
+                                            if isNearCampfire then
+                                                table.insert(craftingGroups, cGroup)
+                                            end
+                                        else
                                             table.insert(craftingGroups, cGroup)
                                         end
                                     else
-                                        table.insert(craftingGroups, cGroup)
-                                    end
-                                else
-                                    local dist = #(playerPedPosition - position)
+                                        local dist = #(playerPedPosition - position)
 
-                                    if (dist <= (d.distance or 1.0)) then
-                                        table.insert(craftingGroups, cGroup)
+                                        if (dist <= (d.distance or 1.0)) then
+                                            table.insert(craftingGroups, cGroup)
+                                        end
                                     end
                                 end
-                            end
 
-                            TriggerServerEvent("VP:CRAFTING:TryToOpenCrafting", craftingGroups)
+                                TriggerServerEvent("VP:CRAFTING:TryToOpenCrafting", craftingGroups)
+                            end
                         end
                     end
                 else
