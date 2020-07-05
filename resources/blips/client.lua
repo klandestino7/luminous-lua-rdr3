@@ -10,14 +10,14 @@ local blips = {
 	{name = "Departamento de Polícia", sprite = 1047294027, x = 2512.04, y = -1308.5, z = 48.95}, --SAINT DENIS
 
 	-- LOJA DE ARMAS
-	{name = "Loja de Armas", sprite = -145868367, x = -281.27, y = 780.74, z = 119.53}, -- valentine
+--	{name = "Loja de Armas", sprite = -145868367, x = -281.27, y = 780.74, z = 119.53}, -- valentine
 --	{name = "Loja de Armas", sprite = -145868367, x = -5508.14, y = -2964.33, z = -0.628},  -- tumbleweed
 	{name = "Loja de Armas", sprite = -145868367, x = 2716.42, y = -1285.42, z = 49.63}, -- saint dennis
 	{name = "Loja de Armas", sprite = -145868367, x = 1322.67, y = -1323.16, z = 77.88}, -- rhodes
 	{name = "Loja de Armas", sprite = -145868367, x = 2946.50, y = 1319.53, z = 44.82}, -- annesburg
 
 	-- ESTABULO
-	{name = "Estábulo", sprite = 1938782895, x = -366.08, y = 787.01, z = 116.17}, -- valentine
+--	{name = "Estábulo", sprite = 1938782895, x = -366.08, y = 787.01, z = 116.17}, -- valentine
 --	{name = "Estábulo", sprite = 1938782895, x = -874.02, y = -1364.78, z = 43.53}, -- blackwater
 --	{name = "Estábulo", sprite = 1938782895, x = -1777.02, y = -440.15, z = 154.96}, -- strawberry
 	{name = "Estábulo", sprite = 1938782895, x = 2502.5, y = -1455.33, z = 46.31}, -- saint dennis
@@ -40,21 +40,21 @@ local blips = {
 	-- LOJA DE ROUPAS
 	{name = "Loja de Roupas", sprite = 1195729388, x = 2549.83, y = -1160.05, z = 53.73}, -- saint dennis
 --	{name = "Loja de Roupas", sprite = 1195729388, x = -762.85, y = -1291.94, z = 270.42}, -- blackwater
-	{name = "Loja de Roupas", sprite = 1195729388, x = -322.25, y = 803.97, z = 116.95}, -- valentine
+--	{name = "Loja de Roupas", sprite = 1195729388, x = -322.25, y = 803.97, z = 116.95}, -- valentine
 
 	--DOCTOR
-	{name = "Doctor", sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39}, -- valentine
+--	{name = "Doctor", sprite = -1739686743, x = -288.0, y = 804.56, z = 119.39}, -- valentine
 	{name = "Doctor", sprite = -1739686743, x = 2725.525, y = -1233.167, z = 50.437}, -- saint denni
 
 	--SALOON
-	{name = "Saloon", sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98}, -- valentine
+--	{name = "Saloon", sprite = 1879260108, x = -311.67, y = 806.43, z = 118.98}, -- valentine
 	--{name = "Saloon", sprite = 1879260108, x = -817.69, y = -1318.75, z = 43.68}, -- blackwater
 	{name = "Saloon", sprite = 1879260108, x = 2794.566, y = -1168.784, z = 47.933},   -- saint denis  
 	{name = "Saloon", sprite = 1879260108, x = 2632.096, y = -1224.096, z = 53.386},   -- saint denis
 	{name = "Saloon", sprite = 1879260108, x = 1347.172, y = -1374.833, z = 80.494},   -- rhodes
 
 	--BANCOS
-	{name = "Banco", sprite = -2128054417, x = -308.52, y = 775.99, z = 118.7}, -- valentine
+	--{name = "Banco", sprite = -2128054417, x = -308.52, y = 775.99, z = 118.7}, -- valentine
 	--{name = "Banco", sprite = -2128054417, x = -813.09, y = -1277.52, z = 43.64}, -- blackwater
 	{name = "Banco", sprite = -2128054417, x = 2642.879, y = -1296.995, z = 52.252}, -- saint DENIS
 	{name = "Banco", sprite = -2128054417, x = 1299.520, y = -1300.899, z = 77.625}, -- rhodes
@@ -63,7 +63,7 @@ local blips = {
 
 	-- CORREIOS
 --	{name = "Correio", sprite = 1861010125, x = -872.21, y = -1334.13, z = 43.97},
-	{name = "Correio", sprite = 1861010125, x = -178.02, y = 635.27, z = 114.09}, -- valentine
+	--{name = "Correio", sprite = 1861010125, x = -178.02, y = 635.27, z = 114.09}, -- valentine
 	{name = "Correio", sprite = 1861010125, x = 1233.23, y = -1294.56, z = 76.65}, -- rhodes
 
 	--FORTES
@@ -81,7 +81,7 @@ local blips = {
 --	{name = "Posto de Troca", sprite = -242384756, x = 3050.231, y = 553.261, z = 46.125}, 
 
 	--loja de carroça
-	{name = "Loja de aluguel de Carroça", sprite = 1012165077, x = -396.48, y = 654.25, z = 114.66}, -- valentine
+--	{name = "Loja de aluguel de Carroça", sprite = 1012165077, x = -396.48, y = 654.25, z = 114.66}, -- valentine
 	{name = "Loja de aluguel de Carroça", sprite = 1012165077, x = 1889.65, y = -1343.7, z = 42.51}, -- saint dennis
 	--{name = "Loja de aluguel de Carroça", sprite = 1012165077, x = -5514.86, y = -3044.4, z = -2.39},
 
