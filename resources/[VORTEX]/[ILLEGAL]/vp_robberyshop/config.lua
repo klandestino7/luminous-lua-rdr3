@@ -25,4 +25,6 @@ Config.ATMS = {
 	{ id = 2,		x =		1330.086,		y =		-1293.583,		z = 77.021,		h = 59.0,		seconds = 60,	wasRobbed = 60 },
 	{ id = 3,		x =		2639.819,		y =		-1227.647,		z = 53.380,		h = 84.22,		seconds = 60,	wasRobbed = 60 },
 	{ id = 4,		x =		2512.297,		y =		-1455.925,		z = 46.312,		h = 85.99,		seconds = 60,	wasRobbed = 60 },
+	{ id = 5,		x =		2860.185,		y =		-1202.169,		z = 49.591,		h = 85.99,		seconds = 60,	wasRobbed = 60 },
+	{ id = 6,		x =		1338.829,		y =		-1375.116,		z = 80.486,		h = 169.00,		seconds = 60,	wasRobbed = 60 },
 }
