@@ -342,7 +342,7 @@ AddEventHandler(
                     if f[cGroup].craftings[cIndex].output[1].name == nil then
                         local item = output.item
 
-                        local name = ItemList[item].name
+                        local name = ItemList[item] and ItemList[item].name or item
 
                         -- ? 1 Porque a gente só usa o primeiro output, já que não pode fazer mais de um item
                         f[cGroup].craftings[cIndex].output[1].name = name
