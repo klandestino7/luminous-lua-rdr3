@@ -32,72 +32,81 @@ API = Tunnel.getInterface("API")
 -- // 0xE47001B7CB8B98AE
 -- NetworkSendTransitionGamerInstruction
 
--- RegisterCommand(
--- 	"dig",
--- 	function(source, args, rawCommand)
--- 		local chestModelHash = GetHashKey("P_STRONGBOX_MUDDY_01X")
--- 		local lootModelHash = GetHashKey("s_pickup_goldbar01x")
--- 		local dressingModelHash = GetHashKey("MP005_P_DRESSINGLBMHAY04X")
--- 		local moundModelHash = GetHashKey("MP005_P_DIRTPILE_BIG01_BURIED")
+RegisterCommand(
+	"dig",
+	function(source, args, rawCommand)
+		local chestModelHash = GetHashKey("P_TRUNK02X")
+		local lootModelHash = GetHashKey("s_pickup_goldbar01x")
+		local dressingModelHash = GetHashKey("MP005_P_DRESSINGLBMHAY04X")
+		local moundModelHash = GetHashKey("MP005_P_DIRTPILE_BIG01_BURIED")
 
--- 		RequestModel(chestModelHash)
--- 		RequestModel(lootModelHash)
--- 		RequestModel(dressingModelHash)
--- 		RequestModel(moundModelHash)
+		RequestModel(chestModelHash)
+		RequestModel(lootModelHash)
+		RequestModel(dressingModelHash)
+		RequestModel(moundModelHash)
 
--- 		while not HasModelLoaded(dressingModelHash) or not HasModelLoaded(lootModelHash) or not HasModelLoaded(chestModelHash) or not HasModelLoaded(moundModelHash) do
--- 			Wait(0)
--- 		end
+		while not HasModelLoaded(dressingModelHash) or not HasModelLoaded(lootModelHash) or not HasModelLoaded(chestModelHash) or not HasModelLoaded(moundModelHash) do
+			Wait(0)
+		end
 
--- 		local ped = PlayerPedId()
+		local ped = PlayerPedId()
 
--- 		local pedPosition = GetOffsetFromEntityInWorldCoords(ped, 2.0, 0.0, 0.0)
+		local pedPosition = GetOffsetFromEntityInWorldCoords(ped, 2.0, 0.0, 0.0)
 
--- 		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(pedPosition.x, pedPosition.y, pedPosition.z)
--- 		pedPosition = vec3(pedPosition.xy, groundZ - 0.05)
+		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(pedPosition.x, pedPosition.y, pedPosition.z)
+		pedPosition = vec3(pedPosition.xy, groundZ - 0.05)
 
--- 		local chest = CreateObjectNoOffset(chestModelHash, pedPosition + vec3(0.0, 0.0, -1.0), true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
--- 		local loot = CreateObjectNoOffset(lootModelHash, pedPosition, false, true, false, true) -- + vec3(-15.0, 0.0, 0.0)
--- 		local dressing = CreateObjectNoOffset(dressingModelHash, pedPosition, true, true, false, true) -- + vec3(-20.0, 0.0, 0.0)
--- 		local mound = CreateObjectNoOffset(moundModelHash, pedPosition, true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
+		local chest = CreateObjectNoOffset(chestModelHash, pedPosition + vec3(0.0, 0.0, -1.0), true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
+		local loot = CreateObjectNoOffset(lootModelHash, pedPosition, false, true, false, true) -- + vec3(-15.0, 0.0, 0.0)
+		local dressing = CreateObjectNoOffset(dressingModelHash, pedPosition, true, true, false, true) -- + vec3(-20.0, 0.0, 0.0)
+		local mound = CreateObjectNoOffset(moundModelHash, pedPosition, true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
 
--- 		local animscene = CreateAnimScene("script@mech@treasure_hunting@chest", 64, "PBL_CHEST_01", true, true)
+		local animscene = CreateAnimScene("script@mech@treasure_hunting@chest", 64, "PBL_CHEST_01", true, true)
 
--- 		LoadAnimScene(animscene)
+		LoadAnimScene(animscene)
 
--- 		SetAnimSceneOrigin(animscene, pedPosition, 0.0, 0.0, 0.0, 2)
--- 		SetAnimSceneEntity(animscene, "player", ped, 0)
--- 		SetAnimSceneEntity(animscene, "CHEST", chest, 0)
--- 		SetAnimSceneEntity(animscene, "LOOT", loot, 0)
--- 		SetAnimSceneEntity(animscene, "DRESSING", dressing, 0)
--- 		SetAnimSceneEntity(animscene, "MOUND", mound, 0)
--- 		StartAnimScene(animscene)
+		SetAnimSceneOrigin(animscene, pedPosition, 0.0, 0.0, 0.0, 2)
+		SetAnimSceneEntity(animscene, "player", ped, 0)
+		SetAnimSceneEntity(animscene, "CHEST", chest, 0)
+		SetAnimSceneEntity(animscene, "LOOT", loot, 0)
+		SetAnimSceneEntity(animscene, "DRESSING", dressing, 0)
+		SetAnimSceneEntity(animscene, "MOUND", mound, 0)
+		StartAnimScene(animscene)
 
--- 		Wait(2000)
+		Wait(2000)
 
--- 		Citizen.InvokeNative(0x8245C1F3262F4AC2, animscene)
+		Citizen.InvokeNative(0x8245C1F3262F4AC2, animscene)
 
--- 		TaskEnterAnimScene(ped, animscene, "player", "PBL_CHEST_01", 1069379748, 1, 128, 20000, -1082130432)
+		TaskEnterAnimScene(ped, animscene, "player", "PBL_CHEST_01", 1069379748, 1, 128, 20000, -1082130432)
 
--- 		while true do
--- 			Citizen.Wait(0)
+		while true do
+			Citizen.Wait(0)
+			local AnimTime = Citizen.InvokeNative(0x61BE7D6186260002, animscene, Citizen.ResultAsFloat())
+			local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
 
--- 			local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
+			if AnimTime >= 5 then
+				ClearPedTasks(ped)
+				ClearPedSecondaryTask(ped)
+				SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+			--	Citizen.InvokeNative(0xD6824B7D24DC0CE0 , animscene, 1)
+			end
+			if hasEnded == 1 then
+				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 0) -- SET_RANSACK_AS_OPEN
 
--- 			if hasEnded == 1 then
--- 				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 1) -- SET_RANSACK_AS_OPEN
+				SetEntityAsNoLongerNeeded(chest)
+				SetEntityAsNoLongerNeeded(dressing)
+				SetEntityAsNoLongerNeeded(mound)
 
--- 				SetEntityAsNoLongerNeeded(chest)
--- 				SetEntityAsNoLongerNeeded(dressing)
--- 				SetEntityAsNoLongerNeeded(mound)
+				DeleteEntity(loot)
 
--- 				DeleteEntity(loot)
+				break
+			end
+		end
 
--- 				break
--- 			end
--- 		end
--- 	end
--- )
+
+
+	end
+)
 
 -- RegisterCommand(
 -- 	"teste",

@@ -56,13 +56,13 @@ Config = {
     },
     { 
        -- position = vec3(0, 0, 0), -- No position, its global
-        craftings = {
+       craftings = {
             {
                 time = 15,
                 input = {
                     {item = "bones", amount = 1},
                     {item = "stick", amount = 1},
-                    {item = "melee_knife", amount = 0},
+                    {item = "melee_knife", amount = 1, remove = false},
                 },
                 output = {
                     {item = "ammo_arrow", amount = 1}
@@ -72,8 +72,8 @@ Config = {
                 time = 40,
                 input = {
                     {item = "stick", amount = 2},
-                    {item = "ropecuted", amount = 1},
-                    {item = "melee_knife", amount = 0},
+                    {item = "ropecut", amount = 1},
+                    {item = "melee_knife", amount = 1, remove = false},
                 },
                 output = {
                     {item = "bow", amount = 1}
@@ -83,20 +83,20 @@ Config = {
                 time = 30,
                 input = {
                     {item = "rope", amount = 1},
-                    {item = "melee_knife", amount = 0},
+                    {item = "melee_knife", amount = 1, remove = false},
                 },
                 output = {
-                    {item = "ropecuted", amount = 5}
+                    {item = "ropecut", amount = 5}
                 }
             },
             {
                 time = 30,
                 input = {
                     {item = "rope", amount = 1},
-                    {item = "melee_knife", amount = 0},
+                    {item = "melee_knife", amount = 1, remove = false},
                 },
                 output = {
-                    {item = "ropecuted", amount = 5}
+                    {item = "ropecut", amount = 5}
                 }
             }
         }

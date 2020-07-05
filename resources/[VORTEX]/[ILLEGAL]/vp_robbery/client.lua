@@ -16,7 +16,7 @@ local interiors = {
  --   [1] = 72962, -- BANCO BLACKWATER
     [2] = 42754, -- BANCO SAINT DENNIS
     [3] = 29442, -- BANCO RHODES
-     [4] = 12290 -- BANCO VALENTINE
+   --  [4] = 12290 -- BANCO VALENTINE
 }
 
 local interiorIndexBeingRobbed = nil

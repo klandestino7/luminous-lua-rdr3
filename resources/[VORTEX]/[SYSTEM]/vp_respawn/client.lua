@@ -377,7 +377,7 @@ function HandleAsInjured(fatal)
 
 				if fullDeathTimeDiff <= 0 then
 					DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.08, 0.8, 0, 0, 0, 250, 1)
-					DrawTxt("~e~MORTO", 0.50, 0.07, 0.8, 0.8, true, 255, 255, 255, 255, true)
+					DrawTxt("~e~INCONSCIENTE", 0.50, 0.07, 0.8, 0.8, true, 255, 255, 255, 255, true)
 
 					if PromptIsEnabled(prompt_respawn) == 0 then
 						PromptSetEnabled(prompt_respawn, true)
@@ -417,7 +417,7 @@ function HandleAsInjured(fatal)
 					end
 				else
 					DrawSprite("menu_textures", "translate_bg_1a", 0.50, 0.10, 0.20, 0.15, 0.8, 0, 0, 0, 250, 1)
-					DrawTxt("~e~MORTO", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
+					DrawTxt("~e~INCONSCIENTE", 0.50, 0.04, 0.8, 0.8, true, 255, 255, 255, 255, true)
 					DrawTxt(Config.LocaleTimer, 0.50, 0.095, 0.4, 0.4, true, 255, 255, 255, 255, true)
 					DrawTxt("" .. string.format("%.0f", math.max(fullDeathTimeDiff / 1000, 0)), 0.50, 0.12, 0.5, 0.5, true, 255, 255, 255, 255, true)
 				end
