@@ -29,7 +29,7 @@
 Config = {
     {
         -- position = vec3(0, 0, 0) -- No position, its global
-      --  campfire = true,
+        campfire = true,
         craftings = {
             {
                 -- ! cIndex (crafting index)
