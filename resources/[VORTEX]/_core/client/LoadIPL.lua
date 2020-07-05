@@ -297,7 +297,27 @@ local Imaps = {
     1169511062,
     -2111718052,
     -1266106154,
-    1192526031
+    1192526031,
+    -- Buracão que tinha no mapa
+    0xB4E395F8,
+    0x6AD10BA4,
+    0x4BCCD070,
+    0x54DBA89E,
+    0xEEFF7F86,
+    0x7F65DF33,
+    0xEE46F0B1,
+    0xFE3F310C,
+    0xF26E644C,
+    0xB4E395F8,
+    0x54DBA89E,
+    0x158F9F9F,
+    0x3D7DED12,
+    0xDC11BF4E,
+    0xDEAEDD0A,
+    0x763EA1E0,
+    0x7E321430,
+    0x4D22125C
+    -- Buracão que tinha no mapa
 }
 
 AddEventHandler(
