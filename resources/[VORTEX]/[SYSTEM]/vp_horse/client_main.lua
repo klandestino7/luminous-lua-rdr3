@@ -141,9 +141,9 @@ function InitiateHorse(atCoords)
     if horseModel == "A_C_Horse_MP_Mangy_Backup" then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
         NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
-        PromptSetVisible(prompt_inventory, false)
+        PromptSetEnabled(prompt_inventory, false)
     else
-        PromptSetVisible(prompt_inventory, true)
+        PromptSetEnabled(prompt_inventory, true)
     end
 
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
