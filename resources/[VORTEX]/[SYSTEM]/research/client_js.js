@@ -511,54 +511,68 @@ RegisterCommand('invinfo', (source, args) => {
 });
 
 RegisterCommand('additem', (source, args) => {
-    let buffer = new ArrayBuffer(512);
-    let var17 = new DataView(buffer);
-    var17.setInt32(8 * 0, -1, true);
-    var17.setInt32(8 * 1, -1, true);
-    var17.setInt32(8 * 2, -1, true);
-    var17.setInt32(8 * 3, -1, true);
-    var17.setBigInt64(8 * 4, BigInt(-999503751), true);
-    var17.setInt32(8 * 5, -1, true);
-    var17.setInt32(8 * 6, -1, true);
-    var17.setInt32(8 * 7, -1, true);
-    var17.setInt32(8 * 8, -1, true);
-    // var17.setInt32(8 * 9, -2147483648, true);
-    // var17.setInt32(4 * 10, 0, true);
-    // var17.setInt32(8 * 11, 2119059394, true);
-    // var17.setInt32(8 * 12, -1703215172, true);
-    var17.setInt32(8 * 13, -1, true);
+    let b1 = new ArrayBuffer(512);
+    let a1 = new DataView(b1);
+    // a1.setInt32(8 * 0, -1, true);
+    // a1.setInt32(8 * 1, -1, true);
+    // a1.setInt32(8 * 2, -1, true);
+    // a1.setInt32(8 * 3, -1, true);
+    // a1.setBigInt64(8 * 4, BigInt(-999503751), true);
+    // a1.setInt32(8 * 5, -1, true);
+    // a1.setInt32(8 * 6, -1, true);
+    // a1.setInt32(8 * 7, -1, true);
+    // a1.setInt32(8 * 8, -1, true);
+    // a1.setInt32(8 * 9, -2147483648, true);
+    // a1.setInt32(4 * 10, 0, true);
+    // a1.setInt32(8 * 11, 2119059394, true);
+    // a1.setInt32(8 * 12, -1703215172, true);
+    // a1.setInt32(8 * 13, -1, true);
 
-    let buffer2 = new ArrayBuffer(512);
-    let var1 = new DataView(buffer2);
-    // a3.setBigInt64(8 * 0, BigInt(2147483648), true);
-    // a3.setInt32(8 * 1, 0, true);
-    // a3.setInt32(8 * 2, 0, true);
-    // a3.setInt32(8 * 3, 0, true);
-    // a3.setBigInt64(8 * 4, BigInt(1901291885), true);
-    // a3.setInt32(8 * 5, 0, true);
-    // a3.setBigInt64(8 * 6, BigInt(4150375216), true);
-    // a3.setInt32(8 * 7, 0, true);
-    // a3.setBigInt64(8 * 8, BigInt(1034665895), true);
-    // a3.setInt32(8 * 9, 0, true);
-    // a3.setInt32(8 * 10, 0, true);
-    // a3.setInt32(8 * 11, 0, true);
+    let b2 = new ArrayBuffer(512);
+    let a2 = new DataView(b2);
+    // a2.setBigInt64(8 * 0, BigInt(2147483648), true);
+    // a2.setInt32(8 * 1, 0, true);
+    // a2.setInt32(8 * 2, 0, true);
+    // a2.setInt32(8 * 3, 0, true);
+    // a2.setBigInt64(8 * 4, BigInt(1901291885), true);
+    // a2.setInt32(8 * 5, 0, true);
+    // a2.setBigInt64(8 * 6, BigInt(4150375216), true);
+    // a2.setInt32(8 * 7, 0, true);
+    // a2.setBigInt64(8 * 8, BigInt(1034665895), true);
+    // a2.setInt32(8 * 9, 0, true);
+    // a2.setInt32(8 * 10, 0, true);
+    // a2.setInt32(8 * 11, 0, true);
 
-    // 1999506840
+    let b3 = new ArrayBuffer(512);
+    let a3 = new DataView(b3);
 
-    // let r = Citizen.invokeNative("0xB881CA836CC4B6D4", var17, Citizen.returnResultAnyway());
+    // struct<4> func_2047(int iParam0, var uParam1, int iParam2, bool bParam3, var uParam4, int iParam5, bool bParam6)
+    // struct<4> Var0;
+    // INVENTORY::_0x886DFD3E185C8A89(func_1683(bParam6), &uParam1, iParam0, iParam5, &Var0);
 
-    let r2 = Citizen.invokeNative("0x640F890C3E5A3FFD", 1, var17, var1, Citizen.returnResultAnyway());
-    let out2 = new Int32Array(buffer2);
-    console.log(r2, out2);
+    // func_2052
 
-    let out = new Int32Array(buffer);
+    let r1 = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a1, GetHashKey("CHARACTER"), -1591664384, a2, Citizen.returnResultAnyway());
 
-    console.log( out);
+    a2.setInt32(8 * 4, 1034665895, true);
 
+    let r2 = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a2,  GetHashKey("WARDROBE"), 1034665895, a3, Citizen.returnResultAnyway());
 
+    console.log(r1);
+    console.log(r2);
+    console.log(new Int32Array(b1))
+    console.log(new Int32Array(b2))
+    console.log(new Int32Array(b3))
+
+    // let r = Citizen.invokeNative("0xB881CA836CC4B6D4", a1, Citizen.returnResultAnyway());
+    // let r2 = Citizen.invokeNative("0x3112ADB9D5F3426B", a1, 1, Citizen.returnResultAnyway());
+    // let out2 = new Int32Array(buffer2);
+    // console.log(r2, out2);
+
+    // let out = new Int32Array(buffer);
+
+    // console.log( out);
 });
-
-
 
 
 // levels3.rpf/levels/rdr3/scenario/herbs_*.ymt

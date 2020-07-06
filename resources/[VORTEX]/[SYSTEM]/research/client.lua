@@ -36,7 +36,8 @@ RegisterCommand(
 	"dig",
 	function(source, args, rawCommand)
 		local chestModelHash = GetHashKey("P_TRUNK02X")
-		local lootModelHash = GetHashKey("s_pickup_goldbar01x")
+		chestModelHash = GetHashKey("P_STRONGBOX_MUDDY_01X")
+		local lootModelHash = GetHashKey("p_cs_ropehandssplit_sml_2")
 		local dressingModelHash = GetHashKey("MP005_P_DRESSINGLBMHAY04X")
 		local moundModelHash = GetHashKey("MP005_P_DIRTPILE_BIG01_BURIED")
 
@@ -56,7 +57,7 @@ RegisterCommand(
 		local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(pedPosition.x, pedPosition.y, pedPosition.z)
 		pedPosition = vec3(pedPosition.xy, groundZ - 0.05)
 
-		local chest = CreateObjectNoOffset(chestModelHash, pedPosition + vec3(0.0, 0.0, -1.0), true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
+		local chest = CreateObjectNoOffset(chestModelHash, pedPosition + vec3(0.0, 0.0, -1.5), true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
 		local loot = CreateObjectNoOffset(lootModelHash, pedPosition, false, true, false, true) -- + vec3(-15.0, 0.0, 0.0)
 		local dressing = CreateObjectNoOffset(dressingModelHash, pedPosition, true, true, false, true) -- + vec3(-20.0, 0.0, 0.0)
 		local mound = CreateObjectNoOffset(moundModelHash, pedPosition, true, true, false, true) -- + vec3(-10.0, 0.0, 0.0)
@@ -84,14 +85,14 @@ RegisterCommand(
 			local AnimTime = Citizen.InvokeNative(0x61BE7D6186260002, animscene, Citizen.ResultAsFloat())
 			local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
 
-			if AnimTime >= 5 then
-				ClearPedTasks(ped)
-				ClearPedSecondaryTask(ped)
-				SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+			-- if AnimTime >= 5 then
+			-- 	ClearPedTasks(ped)
+			-- 	ClearPedSecondaryTask(ped)
+			-- 	SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
 			--	Citizen.InvokeNative(0xD6824B7D24DC0CE0 , animscene, 1)
-			end
+			-- end
 			if hasEnded == 1 then
-				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 0) -- SET_RANSACK_AS_OPEN
+				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 1) -- SET_RANSACK_AS_OPEN
 
 				SetEntityAsNoLongerNeeded(chest)
 				SetEntityAsNoLongerNeeded(dressing)
@@ -99,18 +100,50 @@ RegisterCommand(
 
 				DeleteEntity(loot)
 
+				cAPI.notify('item', 'gold', 20)
+
 				break
 			end
 		end
-
-
-
 	end
 )
 
--- RegisterCommand(
--- 	"teste",
-	-- function(source, args, rawCommand)
+RegisterCommand(
+	"teste",
+	function(source, args, rawCommand)
+		local animDict = "script_re@treasure_hunter"
+		RequestAnimDict(animDict)
+
+		while not HasAnimDictLoaded(animDict) do
+			Citizen.Wait(0)
+		end
+
+		-- mini_games@fishing@shore@hooked_med@struggle
+		-- struggle_pullup
+		-- struggle_a
+
+		TaskPlayAnim(PlayerPedId(), animDict, "breakout", 8.0, -8.0, -1, 32, 0.0, false, 0, false, 0, false)
+
+		-- Citizen.InvokeNative(0x644CCB76A76CFBD6, 0, 0, 0, 0, 0, 0)
+		-- Citizen.InvokeNative(0x83B8D50EB9446BBA, PlayerPedId(), 1)
+		-- print(Citizen.InvokeNative(0xE80E50BEE276A54A, 1412640604, -2047978619))
+
+		-- // 0xE3A46370F70F3607
+		-- INVENTORY_HIDE_INVENTORY_INDEX(int index, Any p1)
+
+		-- Citizen.InvokeNative(0xE3A46370F70F3607, 1, 0)
+
+		-- // 0xD5D72F1624F3BA7C
+		-- INVENTORY_SHOW_INVENTORY_INDEX(int index)
+
+		-- Citizen.InvokeNative(0xD5D72F1624F3BA7C, 1)
+
+		-- Citizen.InvokeNative(0xBA8818212633500A, 6528527, 6, 0)
+		-- Citizen.InvokeNative(0xBA8818212633500A, 6528527, 3, 0)
+
+		-- print(Citizen.InvokeNative(0xF49F14462F0AE27C, PlayerId()))
+		-- Citizen.InvokeNative(0xE6D4E435B56D5BD0, PlayerId(), 392223)
+		-- INVENTORY::_0x2BAE4880DCDD560B(iVar0, 0))
 		-- exports["research"]:N_0x04019AE4956D4393()
 
 		-- SetObjectTextureVariation(5765379, 5)
@@ -147,92 +180,8 @@ RegisterCommand(
 		-- Global_1572887->f_342.f_6 = 0;
 		-- Global_1572887->f_342.f_25 = 0;
 		-- Global_1572887->f_342.f_26 = 0;
-		-- for i = 8, 8 * 32, 8 do
-		-- 	print(i)
-		-- end
-		-- exports.research:DataViewNetowrk()
-		-- local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 0.0, 0.0)
-		-- local _, groundZ, normal = GetGroundZAndNormalFor_3dCoord(coords.x, coords.y, coords.z)
-		-- coords = vec3(coords.xy, groundZ)
-		-- TaskSwapFishingBait(PlayerPedId(), "p_baitWorm01x", 1)
-		-- Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "p_baitWorm01x", 0, 1)
-		-- local objHash = GetHashKey("P_CARCASSHANGFISH01A")
-		-- if IsModelValid(objHash) then
-		-- 	if not HasModelLoaded(objHash) then
-		-- 		RequestModel(objHash)
-		-- 		while not HasModelLoaded(objHash) do
-		-- 			Citizen.Wait(10)
-		-- 		end
-		-- 	end
-		-- end
-		-- WB_HERB_ALASKAN_GINSENG
-		-- S_INDIANTOBACCO01X
-		-- WB_HERB_INDIAN_TOBACCO
-		-- 		WB_HERB_AMERICAN_GINSENG, 6
-		-- WB_HERB_BLACK_CURRANT, 6
-		-- WB_HERB_BURDOCK_ROOT, 6
-		-- WB_HERB_BURDOCK_ROOT_SINGLE, 2
-		-- WB_HERB_DESERT_SAGE, 6
-		-- WB_HERB_ENGLISH_MACE, 6
-		-- WB_HERB_ENGLISH_MACE_SINGLE, 2
-		-- WB_HERB_GOLDEN_CURRANT, 6
-		-- WB_HERB_HUMMINGBIRD_SAGE, 6
-		-- WB_HERB_INDIAN_TOBACCO, 6
-		-- WB_HERB_MILKWEED, 6
-		-- WB_HERB_MILKWEED_SINGLE, 2
-		-- WB_HERB_OLEANDER_SAGE, 6
-		-- WB_HERB_OLEANDER_SAGE_SINGLE, 2
-		-- WB_HERB_PRAIRIE_POPPY, 6
-		-- 		S_INV_WILDCARROT01BX, 4
-		-- S_INV_WILDCARROT01CX, 4
-		-- S_INV_WILDCARROT01DX, 4
-		-- S_INV_WILDCARROT01X, 4
-		-- local obj = CreateObject("S_INDIANTOBACCO01X", coords, 1, 1, 1)
-		-- Wait(1000)
-		-- local scenario_type = 0xB5800B30
-		-- print(scenario_type)
-		-- -- // 0x19A6BE7D9C6884D3
-		-- -- void _REQUEST_SCENARIO_TYPE(Hash scenarioType, int prompt_grip, Hash prompt_hook, Hash prompt_reel_in)
-		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, scenario_type, 3, GetEntityModel(obj), 0)
-		-- while not Citizen.InvokeNative(0x9427C94D2E4094A4, scenario_type, 0) do
-		-- 	print("scenario not loaded")
-		-- 	Wait(10)
-		-- end
-		-- -- func_1963
-		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenario_type, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
-		-- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, scenario_type, obj, GetEntityHeading(obj), 0.0, 0, 0)
-		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, 0, 0, 0, 0, 0)
-		-- Citizen.InvokeNative(0xEEE4829304F93EEE, scenario, true)
-		-- print(scenario)
-		-- Wait(250)
-		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_FLOURISH_TABLE_SMASH"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
-		-- local scenario2 = Citizen.InvokeNative(0x94B745CE41DB58A1, GetHashKey("WORLD_PLAYER_CHORES_SACK_PUT_DOWN_1"), coords, GetEntityHeading(PlayerPedId()), 0.0, 0, 1)
-		-- TaskStartScenarioInPlace(PlayerPedId(), GetHashKey("WORLD_HUMAN_STERNGUY_IDLES"), 0, true, 0, 0, 0)
-		-- Citizen.InvokeNative(0x19A6BE7D9C6884D3, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 15, 0, 0)
-		-- if (Citizen.InvokeNative(0x9427C94D2E4094A4, GetHashKey("WB_HERB_INDIAN_TOBACCO"), 0)) then
-		-- // 0x2056AB38DF06825C
-		-- void _SET_SCENARIO_POINT_COORDS(int scenario, number xPos, number yPos, number zPos, BOOL p4)
-		-- // 0xD3A0DA8F91612C6E
-		-- void _SET_SCENARIO_POINT_HEADING(int scenario, float heading, BOOL prompt_hook)
-		-- // 0xB8E213D02F37947D
-		-- void _GET_SCENARIO_POINTS_INSIDE_VOLUME
-		--
-		-- local ojb = CreateObject("P_CABINET13X", coords, true, true, true)
-		-- local wb = GetHashKey(args[1])
-		-- wb = GetHashKey("HERB_CREEPING_THYME")
-		-- -- WB_HERB_AMERICAN_GINSENG
-		-- if not Citizen.InvokeNative(0x9427C94D2E4094A4, wb, 0) then
-		-- 	Citizen.InvokeNative(0x19A6BE7D9C6884D3, wb, 15, 0, 0)
-		-- 	print("requested")
-		-- end
-		-- -- print(Citizen.InvokeNative(0x9427C94D2E4094A4, wb, 0))
-		-- Citizen.InvokeNative(0xD00E50E673802D71, wb, true)
-		-- local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, wb, coords, 0.0, 0.0, 0, 1)
-		-- -- local scenario = Citizen.InvokeNative(0x794AB1379A74064D, ojb, wb, 0.0, -0.25, 0.0, 0, 0, 0, 0)
-		-- print(scenario)
-		-- TaskUseScenarioPoint(PlayerPedId(), scenario, "", -1.0, true, 0, 0, 0, true)
--- 	end
--- )
+	end
+)
 
 RegisterNetEvent("VP:EVENTS:PedFinishedGatheringEntity")
 RegisterNetEvent("VP:EVENTS:PedWhistle")
@@ -271,9 +220,9 @@ Citizen.CreateThread(
 		-- * void _INVENTORY_DISABLE_ITEM_FOR_INVENTORY_INDEX(int index, Hash item, BOOL p2)
 
 		-- for i = 0, 5 do
-			-- Citizen.InvokeNative(0x6A564540FAC12211, i, GetHashKey("WEAPON_PISTOL_VOLCANIC")) -- ENABLE_WEAPON
-			-- Citizen.InvokeNative(0x766315A564594401, i, GetHashKey("WEAPON_PISTOL_VOLCANIC"), 0) -- DISABLE_WEAPON
-			-- print(Citizen.InvokeNative(0xE787F05DFC977BDE, i, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), 0))
+		-- Citizen.InvokeNative(0x6A564540FAC12211, i, GetHashKey("WEAPON_PISTOL_VOLCANIC")) -- ENABLE_WEAPON
+		-- Citizen.InvokeNative(0x766315A564594401, i, GetHashKey("WEAPON_PISTOL_VOLCANIC"), 0) -- DISABLE_WEAPON
+		-- print(Citizen.InvokeNative(0xE787F05DFC977BDE, i, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), 0))
 		-- end
 
 		-- GiveWeaponToPed_2(PlayerPedId(), GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD"), 100, false, true, GetWeapontypeGroup(GetHashKey("WEAPON_REVOLVER_CATTLEMAN_DUALWIELD")), true, 0.5, 1.0, 0, true, 0, 0)
@@ -306,7 +255,7 @@ Citizen.CreateThread(
 
 			local size = GetNumberOfEvents(0)
 
-			-- print(Citizen.InvokeNative(0x13D234A2A3F66E63, PlayerPedId())) 
+			-- print(Citizen.InvokeNative(0x13D234A2A3F66E63, PlayerPedId()))
 
 			if size > 0 then
 				for i = 0, size - 1 do

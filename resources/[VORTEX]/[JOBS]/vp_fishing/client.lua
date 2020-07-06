@@ -21,8 +21,10 @@ Citizen.CreateThread(
     function()
         Citizen.InvokeNative(0x1096603B519C905F, "MMFSH")
 
+        local sleep = 100
+
         while true do
-            Citizen.Wait(0)
+
 
             GET_TASK_FISHING_DATA()
 
@@ -41,6 +43,9 @@ Citizen.CreateThread(
             end
 
             if hasMinigameOn then
+
+                sleep = 0
+
                 local playerPed = PlayerPedId()
 
                 if FISHING_GET_MINIGAME_STATE() == 1 then
@@ -243,6 +248,8 @@ Citizen.CreateThread(
                     FISHING_SET_TRANSITION_FLAG(8)
                 end
             end
+
+            Citizen.Wait(sleep)
         end
     end
 )
