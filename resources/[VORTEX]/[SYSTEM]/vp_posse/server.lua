@@ -16,11 +16,13 @@ RegisterCommand(
                 local name = API.getNameById(memberCharId)
                 local isOnline = false
                 local UserMember = API.getUserFromCharId(memberCharId)
-                local CharLevel = UserMember:getCharacter():getLevel()
+                -- local CharLevel = UserMember:getCharacter():getLevel()
+                local CharLevel = 0
 
                 if UserMember ~= nil and UserMember:getCharacter():getId() == tonumber(memberCharId) then
                     isOnline = true
                 end
+
                 data[memberCharId] = {
                     UserID = UserMember:getId(),
                     rank = rank,
@@ -28,7 +30,7 @@ RegisterCommand(
                     level = CharLevel,
                     isOnline = isOnline
                 }
-            end 
+            end
             TriggerClientEvent("VP:POSSE:OpenMenu", source, data, Posse:getName())
         else
             -- else
@@ -41,11 +43,13 @@ RegisterCommand(
     false
 )
 
-
-RegisterCommand('convidar', function(source, args)
-    local arg = args[1]
-    TriggerEvent('VP:POSSE:Invite', source, arg)
-end)
+RegisterCommand(
+    "convidar",
+    function(source, args)
+        local arg = args[1]
+        TriggerEvent("VP:POSSE:Invite", source, arg)
+    end
+)
 
 RegisterNetEvent("VP:POSSE:checkBando")
 AddEventHandler(
@@ -61,9 +65,9 @@ AddEventHandler(
                 User:notify("Para criar um bando você precisa ter level maior que 10")
                 return
             end
-            TriggerEvent('VP:POSSE:createBando', _source)
+            TriggerEvent("VP:POSSE:createBando", _source)
         else
-            TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Você já está em um bando, para criar um novo deve sair do atual.', 5000)
+            TriggerClientEvent("VP:NOTIFY:Simple", _source, "Você já está em um bando, para criar um novo deve sair do atual.", 5000)
         end
     end
 )
@@ -73,16 +77,16 @@ AddEventHandler(
     "VP:POSSE:createBando",
     function(source)
         local _source = source
-        local PosseName = cAPI.prompt(source,"Nome do seu Bando", "")
-            
+        local PosseName = cAPI.prompt(source, "Nome do seu Bando", "")
+
         local User = API.getUserFromSource(_source)
 
         if PosseName == "" then
-            TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Você não digitou um nome válido', 5000)
+            TriggerClientEvent("VP:NOTIFY:Simple", _source, "Você não digitou um nome válido", 5000)
             return
         end
         API.createPosse(User:getCharacter():getId(), PosseName)
-        TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Registro do '.. PosseName .. ' efetuado com Sucesso.', 5000)
+        TriggerClientEvent("VP:NOTIFY:Simple", _source, "Registro do " .. PosseName .. " efetuado com Sucesso.", 5000)
     end
 )
 
@@ -93,14 +97,14 @@ AddEventHandler(
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-        
+
         if not User:isInAPosse() then
             User:notify("Você não está em um bando")
             TriggerClientEvent("VP:POSSE:CloseMenu", _source)
             return
         end
 
-        local Posse = API.getPosse(User:getPosseId())           
+        local Posse = API.getPosse(User:getPosseId())
 
         local TargetSource = API.getUserFromUserId(parseInt(targetUserId)):getSource()
         local UserTarget = API.getUserFromSource(TargetSource)
@@ -110,7 +114,7 @@ AddEventHandler(
             User:notify("Somente um membro de cargo superior pode conviar para o bando")
             return
         end
-        
+
         if UserTarget == nil then
             User:notify("Usuario de id " .. targetUserId .. " não está online")
             return
@@ -156,7 +160,6 @@ AddEventHandler(
         local TCharacter = UserT:getCharacter()
         local Posse = API.getPosse(User:getPosseId())
 
-
         if not Posse:isAMember(TCharacter:getId()) then
             User:notify(TCharacter:getName() .. " não faz mais parte do bando")
             return
@@ -201,7 +204,6 @@ AddEventHandler(
         local Character = User:getCharacter()
         local TCharacter = UserT:getCharacter()
         local Posse = API.getPosse(User:getPosseId())
-
 
         if not Posse:isAMember(TCharacter:getId()) then
             User:notify(TCharacter:getName() .. " não faz mais parte do bando")
@@ -251,13 +253,10 @@ AddEventHandler(
     end
 )
 
-
-
 RegisterNetEvent("VP:POSSE:Kick")
 AddEventHandler(
     "VP:POSSE:Kick",
     function(targetUserId)
-
         local TargetSource = API.getUserFromUserId(parseInt(targetUserId)):getSource()
         local User = API.getUserFromSource(TargetSource)
 
@@ -270,10 +269,9 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Posse = API.getPosse(User:getPosseId())
 
-        Posse:removeMember(Character:getId())    
+        Posse:removeMember(Character:getId())
         Posse:notifyMembers(Character:getName() .. " foi removido do bando!")
 
         User:notify("Você foi removido do bando!")
     end
 )
-
