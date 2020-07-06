@@ -30,6 +30,7 @@ local verificationData = {
         ["melee_torch"] = {0, 0, 0, 1},
         ["lasso"] = {0, 0, 0, 1},
         ["melee_knife"] = {0, 0, 0, 1},
+        ["eagleeye"] = {0, 200, 80, 1},
     },
     -- ["Mercadinho"] = {
     --     -- Level, Price, Amount(optional)
@@ -46,7 +47,7 @@ local verificationData = {
         ["acamp_tents_med_closed"] = {0, 5000, 350, 1},
         ["acamp_bedroll"] = {0, 500, 40, 1},
         ["acamp_firesmall"] = {0, 500, 40, 1},
-        ["acamp_firesmal_pan"] = {0, 800, 60, }		
+        ["acamp_firesmal_pan"] = {0, 800, 60, 1}		
 	},
 
     ["Mercado Geral"] = {
