@@ -101,7 +101,6 @@ function API.Posse(id, charid, name, members)
                 end
 
                 API.deletePosse(self.id)
-                API_Database.query('FCRP/PosseRoutine', {id = id, charid = 0, rank = 0, type = 'delete'}) -- Deletar a Row da Posse
             else
                 local UserMember = API.getUserFromCharId(charid)
 
