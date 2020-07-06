@@ -220,6 +220,7 @@ function cAPI.TaskScriptedAnim(scriptedAnimName)
         end
 
         SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), true, 0, 0, 0)
+        ClearPedTasks(playerPed)
         TaskPlayAnim(playerPed, animDict, animName, 8.0, -8.0, -1, 32, 0.0, false, 0, false, "", false)
     end
 end
