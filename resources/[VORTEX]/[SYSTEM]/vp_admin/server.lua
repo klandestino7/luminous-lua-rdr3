@@ -408,6 +408,19 @@ RegisterCommand(
     end
 )
 
+RegisterCommand(
+    "policia",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        local PoliceON = API.getUsersByGroup("trooper")
+        if #PoliceON <= 0 then
+        	User:notify("alert", "Não há Oficiais, em serviço!")
+        end
+		User:notify("alert", "No momento há " .. #PoliceON .." Oficiais, em serviço!")
+    end
+)
+
 -- RegisterCommand(
 --     "groups",
 --     function(source, args, rawCommand)
