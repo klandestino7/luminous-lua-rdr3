@@ -535,6 +535,13 @@ ItemList = {
         description = "Ajuda a melhorar a disposição física de seu cavalo e ílegal...",
         stackSize = 1
     },
+    ["eagleeye"] = {
+        type = "tonic",
+        name = "Estimulante Olho de Águia",
+        weight = 0.4,
+        description = "O que é aquilo ali dentro do mato, depois dessa montanha? Um rato?",
+        stackSize = 1
+    },
     ---------------------------------------------
     ["ginseng_elixier"] = {
         type = "beverage",
@@ -603,7 +610,6 @@ ItemList = {
         description = "Carne obtida após esfolar o animal.",
         stackSize = 3
     },
-   
     ["meat_perfect"] = {
         type = "generic",
         name = "Carne Animal Perfeita",
@@ -612,14 +618,14 @@ ItemList = {
         stackSize = 3
     },
     ["meat_cooked"] = {
-        type = "generic",
+        type = "edible",
         name = "Carne Assada",
         weight = 0.5,
         description = "Perfeita para uma tarde ensolarada.",
         stackSize = 3
     },
     ["meat_oregano_cooked"] = {
-        type = "generic",
+        type = "edible",
         name = "Carne Assada temperada à Oregano",
         weight = 0.5,
         description = "Cozinhada com o mais fino oregano.",

@@ -36,16 +36,10 @@ function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     cAPI.SetPedScale(PlayerPedId(), pScale)
     cAPI.SetPedClothing(PlayerPedId(), pClothing)
 
-    -- local pHealth = 250
-    -- local pStamina = 34.0
-    -- local pHealthCore = 100
-    -- local pStaminaCore = 100
-    -- if #pStats > 0 then
     pHealth = pStats[1] or 250
     pStamina = pStats[2] or 34.0
     pHealthCore = pStats[3] or 100
     pStaminaCore = pStats[3] or 100
-    -- end
 
     cAPI.VaryPlayerHealth(pHealth)
     cAPI.VaryPlayerStamina(pStamina)
@@ -134,71 +128,6 @@ function cAPI.TeleportPlayerToWaypoint()
     -- end
 
     SetEntityCoordsNoOffset(ped, x, y, z, 0, 0, 1)
-end
-
--- ///////////// DEATH SYSTEM
-local isPlayerDead = false
-
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-
-            local player = PlayerId()
-
-            if NetworkIsPlayerActive(player) then
-                local playerPed = PlayerPedId()
-
-                if IsPedFatallyInjured(playerPed) and not isPlayerDead then
-                    isPlayerDead = true
-                    --NetworkResurrectLocalPlayer(GetEntityCoords(playerPed), GetEntityHeading(playerPed, 2), true, false)
-                    local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
-                    local killerServerId = NetworkGetPlayerIndexFromPed(killer)
-
-                    if killer ~= playerPed and killerServerId ~= nil and NetworkIsPlayerActive(killerServerId) then
-                        PlayerKilledByPlayer(GetPlayerServerId(killerServerId), killerServerId, killerWeapon)
-                    else
-                        PlayerKilled()
-                    end
-                elseif not IsPedFatallyInjured(playerPed) then
-                    isPlayerDead = false
-                end
-            end
-        end
-    end
-)
-
-function PlayerKilledByPlayer(killerServerId, killerClientId, killerWeapon)
-    local victimCoords = GetEntityCoords(PlayerPedId())
-    local killerCoords = GetEntityCoords(GetPlayerPed(killerClientId))
-    local distance = GetDistanceBetweenCoords(victimCoords, killerCoords, true)
-
-    local data = {
-        killedByPlayer = true,
-        deathCause = killerWeapon,
-        distance = tonumber(distance),
-        killerServerId = killerServerId,
-        killerClientId = killerClientId
-    }
-    TriggerEvent("VP:onPlayerDeath", data)
-    -- TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
-end
-
-function PlayerKilled()
-    local playerPed = PlayerPedId()
-    local victimCoords = GetEntityCoords(PlayerPedId())
-
-    local data = {
-        killedByPlayer = false,
-        deathCause = GetPedCauseOfDeath(playerPed)
-    }
-
-    TriggerEvent("VP:onPlayerDeath", data)
-    -- TriggerServerEvent("VP:RESPAWN:onPlayerDeath", data)
-end
-
-function cAPI.isPlayerDead()
-    return isPlayerDead
 end
 
 function cAPI.IsPlayerMountedOnOwnHorse()
@@ -418,3 +347,145 @@ function cAPI.hasGroupOrInheritance(group)
 
     return false
 end
+
+local isWanted = false
+local wantedEndTimestamp = 0
+
+function cAPI.AddWantedTime(wanted, time)
+    if wanted then
+        local add = 1000 * 60 * time
+
+        if wantedEndTimestamp >= GetGameTimer() then
+            wantedEndTimestamp = wantedEndTimestamp + add
+        else
+            wantedEndTimestamp = GetGameTimer() + add
+        end
+    end
+
+    if wanted ~= isWanted then
+        TriggerServerEvent("VP:WANTED:MarkAsWanted", wanted)
+    end
+
+    isWanted = wanted
+end
+
+function cAPI.IsWanted()
+    return isWanted ~= nil and Wanted or false
+end
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
+
+            local diff = wantedEndTimestamp - GetGameTimer()
+
+            if diff > 1 then
+                if isWanted then
+                    DrawText("Você está procurado por " .. string.format("%.0f", math.max(diff / 1000, 0)) .. " segundos", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+                end
+            else
+                if isWanted then
+                    isWanted = false
+                end
+
+                Citizen.Wait(1000)
+            end
+        end
+    end
+)
+
+function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    if enableShadow then
+        SetTextDropshadow(1, 0, 0, 0, 255)
+    end
+    Citizen.InvokeNative(0xADA9255D, font)
+    DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
+end
+
+local sickness = 0
+
+function cAPI.VarySickness(variation)
+    sickness = math.min(100, sickness + variation)
+    print("API.VarySickness", sickness)
+end
+
+function cAPI.GetSickness()
+    return sickness
+end
+
+Citizen.CreateThread(
+    function()
+        local sleep = 1000
+
+        local animDict = "amb_misc@world_human_vomit@male_a@idle_a"
+        local animName = "idle_b"
+
+        local isVomiting = true
+        local vomitingTime = 10000
+
+        while true do
+            sleep = 1000
+
+            if cAPI.GetSickness() > 0 then
+                sleep = 100
+
+                sickness = math.max(0, sickness - 0.025)
+
+                if sickness > 50 then
+                    local playerPed = PlayerPedId()
+                    local v = GetEntityVelocity(playerPed)
+
+                    -- ? 8.3m/s = 30.0km/h
+
+                    if (math.abs(v.x) >= 2.5 or math.abs(v.y) >= 2.5 or math.abs(v.z) >= 2.5) or (sickness >= 95) then
+                        if not isVomiting then
+                            isVomiting = true
+
+                            Citizen.CreateThread(
+                                function()
+                                    Citizen.Wait(vomitingTime)
+                                    isVomiting = false
+                                end
+                            )
+                        end
+                    end
+
+                    if isVomiting then
+                        local moveBlendTarget = playerPed
+                        local flag = 31
+
+                        if IsPedOnFoot(playerPed) then
+                            -- if not IsPedWalking(playerPed) then
+                            --     flag = 32
+                            -- end
+                        else
+                            local mount = GetMount(playerPed)
+
+                            if mount ~= 0 then
+                                moveBlendTarget = mount
+                            end
+                        end
+
+                        SetPedMaxMoveBlendRatio(moveBlendTarget, 0.2)
+
+                        if not IsEntityPlayingAnim(playerPed, animDict, animName, 3) then
+                            if not HasAnimDictLoaded(animDict) then
+                                RequestAnimDict(animDict)
+                                while not HasAnimDictLoaded(animDict) do
+                                    Citizen.Wait(0)
+                                end
+                            end
+                            TaskPlayAnim(playerPed, animDict, animName, 4.0, 4.0, vomitingTime, flag, 0, true, 0, false, 0, false)
+                        end
+                    end
+                end
+            end
+
+            Citizen.Wait(sleep)
+        end
+    end
+)
