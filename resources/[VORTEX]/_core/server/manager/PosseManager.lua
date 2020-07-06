@@ -33,4 +33,5 @@ end
 
 function API.deletePosse(id)
     posses[id] = nil
+    API_Database.execute('FCRP/PosseRoutine', {id = id, charid = 0, rank = 0, type = 'delete'})
 end
