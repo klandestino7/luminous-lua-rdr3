@@ -1197,60 +1197,123 @@ ItemList = {
         description = "Com este papel você consegue escrever anotações ou uma carta.",
         stackSize = -1
     },
-    ["herb_american_ginseng"] = {
+    ["herb_black_current"] = {
         type = "generic",
-        name = "Ginseng Americano",
-        weight = 0.3,
-        description = "Fruto folha, útil para sarar doenças.",
-        stackSize = 20
-    },
-    -- ["herb_"] = {
-    --     type = "generic",
-    --     name = "Orquídea Dama da Noite",
-    --     weight = 1.0,
-    --     description = "Extremamente rara, brota apenas durante a noite. É uma lenda ao mesmo tempo que poderosamente venenosa.",
-    --     stackSize = 45
-    -- },
-    ["herb_alaskan_ginseng"] = {
-        type = "generic",
-        name = "Ginseng do Alaska",
+        name = "Cassis",
         weight = 0.4,
-        description = "Reside em regiões montanosas e frias normalmente, é um ótimo ingrediente de um bom chá.",
-        stackSize = 45
+        description = "",
+        stackSize = 10
     },
     ["herb_oregano"] = {
         type = "generic",
         name = "Orégano",
         weight = 0.6,
         description = "Uma erva perena, é utilizado normalmente para fins codimentares, como tempero. Ajuda a manter o fôlego por mais tempo.",
-        stackSize = 45
+        stackSize = 10
     },
-    -- ["sugar"] = {
+    ["herb_american_ginseng"] = {
+        type = "generic",
+        name = "Ginseng Americano",
+        weight = 0.3,
+        description = "Fruto folha, útil para sarar doenças.",
+        stackSize = 10
+    },
+    ["herb_black_berry"] = {
+        type = "generic",
+        name = "Amora",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_desert_sage"] = {
+        type = "generic",
+        name = "Sálvia do Deserto",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_burdock_root"] = {
+        type = "generic",
+        name = "Bardana",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_common_bullrush"] = {
+        type = "generic",
+        name = "Taboa Comum",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_wild_mint"] = {
+        type = "generic",
+        name = "Menta-Silvestre",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_parasol_mushroom"] = {
+        type = "generic",
+        name = "Cogumelo Guarda-Sol",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_rams_head"] = {
+        type = "generic",
+        name = "Maitake",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_wild_feverfew"] = {
+        type = "generic",
+        name = "Quinina Silvestre",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_prairie_poppy"] = {
+        type = "generic",
+        name = "Papoula da Pradaria",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_wild_carrot"] = {
+        type = "generic",
+        name = "Cenoura Selvagem",
+        weight = 0.4,
+        description = "",
+        stackSize = 10
+    },
+    ["herb_alaskan_ginseng"] = {
+        type = "generic",
+        name = "Ginseng do Alaska",
+        weight = 0.4,
+        description = "Reside em regiões montanosas e frias normalmente, é um ótimo ingrediente de um bom chá.",
+        stackSize = 10
+    },
+    -- ["herb_orchid_dragon"] = {
     --     type = "generic",
     --     name = "Orquídea Dragonesa",
     --     weight = 0.6,
     --     description = "A grande orquídea dragonesa, rara de se encontrar, só pode ser vista por aqueles que dela precisam. Seus fins são diversos, pode chegar a curar uma doença grave como a tuberculose.",
-    --     stackSize = 45
+    --     stackSize = 10
     -- },
-    ["herb_oleander_sage"] = {
-        type = "generic",
-        name = "Sálvia Oleandro",
-        weight = 0.6,
-        description = "Pequena flor de flocos, é medicinal.",
-        stackSize = 45
-    },
-    ["herb_red_sage"] = {
-        type = "generic",
-        name = "Orquídea Diabo Vermelho",
-        weight = 0.6,
-        description = "A aparência encantadora desta bela flor rejuvesnece até a alma mais solitária, a sua beleza é uma camuflagem perfeita para matar o desconhecido que a toca. As propriedades desta flor servem especialmente para a fabricação de moonshines.",
-        stackSize = 45
-    }
-    -- ["herb_oregano"] = {
+    -- ["herb_oleander_sage"] = {
     --     type = "generic",
-    --     name = "Semente de Orégano",
-    --     weight = 0.3,
-    --     description = "Semente de uma pequena muda de orégano que pode ser plantada.",
-    --     stackSize = 45
+    --     name = "Sálvia Oleandro",
+    --     weight = 0.6,
+    --     description = "Pequena flor de flocos, é medicinal.",
+    --     stackSize = 10
+    -- },
+    -- ["herb_red_sage"] = {
+    --     type = "generic",
+    --     name = "Orquídea Diabo Vermelho",
+    --     weight = 0.6,
+    --     description = "A aparência encantadora desta bela flor rejuvesnece até a alma mais solitária, a sua beleza é uma camuflagem perfeita para matar o desconhecido que a toca. As propriedades desta flor servem especialmente para a fabricação de moonshines.",
+    --     stackSize = 10
     -- }
 }
