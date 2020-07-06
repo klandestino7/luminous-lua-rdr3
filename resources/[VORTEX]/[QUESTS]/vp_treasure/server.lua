@@ -12,18 +12,22 @@ local inventory_items = {
   [1] = {["melee_hatchet_hunter_rusted"] = 2, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
   [2] = {["melee_knife_vampire"] = 1, ["WEAPON_REVOLVER_CATTLEMAN_JOHN"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
   [3] = {["revolver_cattleman"] = 3, ["bow"] = 2, ["ammo_arrow"] = 20},
-  [4] = {["medicine_good"] = 1, ["shotgun_semiauto"] = 2, ["gold"] = 100},
-  [5] = {["lasso"] = 3, ["shotgun_repeating"] = 1, ["money"] = 5000},
-  [6] = {["rifle_springfield"] = 1, ["shotgun_repeating"] = 1, ["money"] = 5000}
+  [4] = {["medicine_good"] = 1, ["repeater_henry"] = 2, ["gold"] = 100},
+  [5] = {["lasso"] = 3, ["repeater_winchester"] = 1, ["money"] = 5000},
+  [6] = {["rifle_springfield"] = 1, ["repeater_winchester"] = 1, ["money"] = 5000}
 }
 
 local TREASURE = {
-  [1] = {-921.25, -1577.69, 66.03}, --blackwater
-  [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
-  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
-  [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
-  [5] = {1887.26, 279.11, 77.11}, -- EMERALD STATION
-  [6] = {-758.89, -380.43, 41.96} -- dakota river
+  [1] = {-1629.949,-394.500,178.458}, --strawberry
+ -- [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
+--  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
+ -- [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
+  [2] = {1887.26, 279.11, 77.11}, -- EMERALD STATION
+  [3] = {-758.89, -380.43, 41.96}, -- dakota river
+  [4] = {1829.993, -1633.500, 45.707},
+  [5] = {2336.198,-751.916,41.709},
+  [6] = {1399.832,1320.947,164.975}
+  
 }
 
 RegisterServerEvent("TREASURE:playerActivated")
@@ -142,7 +146,7 @@ AddEventHandler(
 
 AddEventHandler(
   "VP:CHESTS:Open",
-  function()
+  function(chestId)
     if bauId[chest_id] ~= nil then
       TriggerClientEvent("TREASURE:killblip", GetHostId())
     end

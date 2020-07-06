@@ -16,8 +16,8 @@ end)
 
 RegisterNetEvent('TREASURE:createPedDefender')
 AddEventHandler('TREASURE:createPedDefender', function(x,y,z)
-	local pedModelHash = GetHashKey('A_C_Wolf_Medium')
-	local pedModelHash2 = GetHashKey('A_C_Wolf')
+	local pedModelHash = GetHashKey('A_C_BearBlack_01')
+	local pedModelHash2 = GetHashKey('A_C_Bear_01')
 	
 	if not HasModelLoaded(pedModelHash) then
 		RequestModel(pedModelHash)
@@ -54,15 +54,8 @@ AddEventHandler('TREASURE:createPedDefender', function(x,y,z)
 	Citizen.InvokeNative(0xE054346CA3A0F315, ped3, x, y, z, 10, 0, 0)
     ClearPedSecondaryTask(ped3)
 	SetEntityAsMissionEntity(ped3)
-	SetRelationshipBetweenGroups(5, ped3, `PLAYER`)
-	
-	local ped4 = CreatePed(pedModelHash2, x-2.5,y ,z, GetEntityHeading(PlayerPedId()), 1, 0)
-	Citizen.InvokeNative(0x283978A15512B2FE, ped4, true)
-	Citizen.InvokeNative(0x58A850EAEE20FAA3, ped4)
-	Citizen.InvokeNative(0xE054346CA3A0F315, ped4, x, y, z, 10, 0, 0)
-    ClearPedSecondaryTask(ped4)
-	SetEntityAsMissionEntity(ped4)
-	SetRelationshipBetweenGroups(5, ped4, `PLAYER`)
+	SetRelationshipBetweenGroups(5, ped3, `PLAYER`)	
+
 end)
 
 RegisterNetEvent('TREASURE:killblip')
