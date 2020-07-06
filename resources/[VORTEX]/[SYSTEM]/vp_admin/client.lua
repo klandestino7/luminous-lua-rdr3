@@ -14,7 +14,7 @@ AddEventHandler(
 		local pFaceFeatures = json.decode(pedInfo.features)
 		local pScale = tonumber(pedInfo.pedSize)
 		local pClothing
-		if not cAPI.GetWanted() then
+		if not cAPI.IsWanted() then
 			if json.decode(clothes).Outfit ~= nil then
 				if tonumber(json.decode(clothes).Outfit) <= 100 then
 					pClothing = tonumber(json.decode(clothes).Outfit)
