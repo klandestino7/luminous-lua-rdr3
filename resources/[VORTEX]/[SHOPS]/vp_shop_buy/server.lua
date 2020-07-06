@@ -22,10 +22,10 @@ local verificationData = {
         -- Level, Price, Amount(optional)
         ["revolver_doubleaction"] = {0, 0, 0},
         ["rifle_springfield"] = {0, 0, 0},
-        ["shotgun_pump"] = {0, 0, 0},
+        ["repeater_evans"] = {0, 0, 0},
         ["ammo_revolver"] = {0, 0, 0, 100},
         ["ammo_rifle"] = {0, 0, 0, 75},
-        ["ammo_shotgun"] = {0, 0, 0, 50},
+        ["ammo_repeater"] = {0, 0, 0, 50},
         ["melee_lantern_electric"] = {0, 0, 0, 1},
         ["melee_torch"] = {0, 0, 0, 1},
         ["lasso"] = {0, 0, 0, 1},
