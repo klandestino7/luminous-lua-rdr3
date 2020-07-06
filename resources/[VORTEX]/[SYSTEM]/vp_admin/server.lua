@@ -421,6 +421,21 @@ RegisterCommand(
     end
 )
 
+
+RegisterCommand(
+    "callbau",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("admin") then
+            local random = math.random(1, 6)
+    		TriggerEvent("TREASURE:create", random)
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
 -- RegisterCommand(
 --     "groups",
 --     function(source, args, rawCommand)
