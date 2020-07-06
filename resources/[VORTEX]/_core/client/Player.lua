@@ -410,7 +410,6 @@ local sickness = 0
 
 function cAPI.VarySickness(variation)
     sickness = math.min(100, sickness + variation)
-    print("API.VarySickness", sickness)
 end
 
 function cAPI.GetSickness()
@@ -424,7 +423,7 @@ Citizen.CreateThread(
         local animDict = "amb_misc@world_human_vomit@male_a@idle_a"
         local animName = "idle_b"
 
-        local isVomiting = true
+        local isVomiting = false
         local vomitingTime = 10000
 
         while true do
@@ -472,7 +471,7 @@ Citizen.CreateThread(
 
                         SetPedMaxMoveBlendRatio(moveBlendTarget, 0.2)
 
-                        if not IsEntityPlayingAnim(playerPed, animDict, animName, 3) then
+                        if not IsEntityPlayingAnim(playerPed, animDict, animName, 3) and Citizen.InvokeNative(0x6AA3DCA2C6F5EB6D, playerPed) == false then
                             if not HasAnimDictLoaded(animDict) then
                                 RequestAnimDict(animDict)
                                 while not HasAnimDictLoaded(animDict) do
