@@ -4,7 +4,7 @@ local blips = {
 	--{name = "Sheriff (DP)", sprite = 1047294027, x = -5527.6, y = -2953.36, z = -0.7}, --TUMBLEWEED
 	--{name = "Sheriff (DP)", sprite = 1047294027, x = -759.17, y = -1266.61, z = 44.06}, --BLAKCWATER
 	--{name = "Sheriff (DP)", sprite = 1047294027, x = -1808.51, y = -348.13, z = 164.65}, --STRAWBERRY
-	{name = "Sheriff (DP)", sprite = 1047294027, x = -275.95, y = 804.97, z = 119.38}, --ARMADILLO
+	--{name = "Sheriff (DP)", sprite = 1047294027, x = -275.95, y = 804.97, z = 119.38}, --VALENTINE
 	{name = "Sheriff (DP)", sprite = 1047294027, x = 1359.64, y = -1304.43, z = 77.77}, --RHODES
 	{name = "Sheriff (DP)", sprite = 1047294027, x = 2908.20, y = 1311.53, z = 44.94}, -- ANNESBURGS
 	{name = "Departamento de Polícia", sprite = 1047294027, x = 2512.04, y = -1308.5, z = 48.95}, --SAINT DENIS
@@ -14,18 +14,18 @@ local blips = {
 --	{name = "Loja de Armas", sprite = -145868367, x = -5508.14, y = -2964.33, z = -0.628},  -- tumbleweed
 	{name = "Loja de Armas", sprite = -145868367, x = 2716.42, y = -1285.42, z = 49.63}, -- saint dennis
 	{name = "Loja de Armas", sprite = -145868367, x = 1322.67, y = -1323.16, z = 77.88}, -- rhodes
-	{name = "Loja de Armas", sprite = -145868367, x = 2946.50, y = 1319.53, z = 44.82}, -- annesburg
+--	{name = "Loja de Armas", sprite = -145868367, x = 2946.50, y = 1319.53, z = 44.82}, -- annesburg
 
 	-- ESTABULO
 --	{name = "Estábulo", sprite = 1938782895, x = -366.08, y = 787.01, z = 116.17}, -- valentine
 --	{name = "Estábulo", sprite = 1938782895, x = -874.02, y = -1364.78, z = 43.53}, -- blackwater
 --	{name = "Estábulo", sprite = 1938782895, x = -1777.02, y = -440.15, z = 154.96}, -- strawberry
 	{name = "Estábulo", sprite = 1938782895, x = 2502.5, y = -1455.33, z = 46.31}, -- saint dennis
-	{name = "Estábulo", sprite = 1938782895, x = 2970.73, y = 1427.97, z = 44.71},
+--	{name = "Estábulo", sprite = 1938782895, x = 2970.73, y = 1427.97, z = 44.71}, -- annesburg
 
 	-- ACOUGUE
 --	{name = "Açougue", sprite = -1665418949, x = -1753.07, y = -394.78, z = 156.18}, --Cabana de Açougue de Strawberry
-	{name = "Açougue", sprite = -1665418949, x = -341.08, y = 767.16, z = 116.71}, --Cabana de Açougue de Valentine
+--	{name = "Açougue", sprite = -1665418949, x = -341.08, y = 767.16, z = 116.71}, --Cabana de Açougue de Valentine
 	{name = "Açougue", sprite = -1665418949, x = 1296.28, y = -1279.22, z = 75.84}, --Cabana de Açougue de Rhodes
 --	{name = "Açougue", sprite = -1665418949, x = -5508.29, y = -2948.16, z = -1.87}, --Cabana de Açougue de Tumbleweed
 
@@ -75,7 +75,7 @@ local blips = {
 
 	--Loja de itens
 	{name = "Loja de itens", sprite = 249721687, x = 1327.907, y = -1292.865, z = 77.023}, -- rhodes
-	{name = "Loja de itens", sprite = 249721687, x = -785.338, y = -1323.850, z = 43.884}, -- blackwater
+	--{name = "Loja de itens", sprite = 249721687, x = -785.338, y = -1323.850, z = 43.884}, -- blackwater
 
 	{name = "Posto de Troca", sprite = -242384756, x = 3027.058, y = 561.334, z = 44.794}, -- van horn
 --	{name = "Posto de Troca", sprite = -242384756, x = 3050.231, y = 553.261, z = 46.125}, 
