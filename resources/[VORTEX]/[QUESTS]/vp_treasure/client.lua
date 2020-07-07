@@ -24,25 +24,68 @@ AddEventHandler('TREASURE:createPedDefender', function(x,y,z, animal, qtd)
 			Citizen.Wait(10)
 		end
 	end
-	if not HasModelLoaded(pedModelHash2) then
-		RequestModel(pedModelHash2)
-		while not HasModelLoaded(pedModelHash2) do
-			Citizen.Wait(10)
-		end
-	end
 
-	for i = 1, qtd do
+	for i = 1, tonumber(qtd) do
 		local ped = CreatePed(pedModelHash, x+2, y, z, GetEntityHeading(PlayerPedId()), 1, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
-		Citizen.InvokeNative(0xE054346CA3A0F315, ped, x, y, z, 10, 0, 0)
-		ClearPedSecondaryTask(ped)
+	--	Citizen.InvokeNative(0xE054346CA3A0F315, ped, x, y, z, 10, 0, 0)
+	--	ClearPedSecondaryTask(ped)
 		SetEntityAsMissionEntity(ped)
-		SetRelationshipBetweenGroups(5, ped, `PLAYER`)
-		SetPedOutfitPreset(ped, math.random(1,5))
-	end
+		--SetRelationshipBetweenGroups(5, ped, `PLAYER`)
+		ClearPedSecondaryTask(ped)
+		SetPedOutfitPreset(ped, math.random(1,8))
 
+		if animal == "G_M_M_UNISWAMP_01" then
+
+			SetPedAsGroupMember(ped, GetDefaultRelationshipGroupHash("G_M_M_UNISWAMP_01"))
+			AddRelationshipGroup("GANG_NIGHT_FOLK")
+			SetPedRelationshipGroupHash(ped, GetHashKey("GANG_NIGHT_FOLK"))
+	
+			local weapons = {
+				[1] = {["WEAPON_MELEE_KNIFE_JAWBONE"] = 3},
+				[2] = {["WEAPON_MELEE_MACHETE"] = 3},
+				[3] = {["WEAPON_MELEE_CLEAVER"] = 10},
+				[4] = {["WEAPON_MELEE_KNIFE"]= 3}
+		   }
+
+		   for WeaponHash, Quantity in pairs(weapons[math.random(1,4)]) do
+			Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey(WeaponHash), 500, true, 0)
+		   end
+		end
+		 
+		SetPedFleeAttributes(ped, 0, 0)
+		SetPedCombatAttributes(ped, 46, 1)
+		SetPedCombatAbility(ped, 100)
+		SetPedCombatMovement(ped, 2)
+		SetPedCombatRange(ped, 2)
+		SetAmbientVoiceName(ped, "ALIENS")
+		DisablePedPainAudio(ped, true)
+	 
+		--SetPedIsDrunk(ped, true)
+		--RequestAnimSet("move_m@drunk@verydrunk")
+		--while not HasAnimSetLoaded("move_m@drunk@verydrunk") do
+			--Wait(1)
+		--end
+		Citizen.Trace("Load animation set\n")
+		--SetPedMovementClipset(ped, "move_m@drunk@verydrunk", 1.0)	
+
+		TaskCombatHatedTargets(ped , 16)
+		
+		Wait(500)
+
+	end
 end)
+
+Citizen.CreateThread(
+	function()
+	while true do
+		Citizen.Wait(1)
+		SetRelationshipBetweenGroups(5, "PLAYER", "GANG_NIGHT_FOLK")
+		SetRelationshipBetweenGroups(5, "GANG_NIGHT_FOLK", "PLAYER")
+	end
+end
+)
 
 RegisterNetEvent('TREASURE:killblip')
 AddEventHandler('TREASURE:killblip', function()
@@ -59,4 +102,3 @@ Citizen.CreateThread(function()
 		end
     end
 end)
-
