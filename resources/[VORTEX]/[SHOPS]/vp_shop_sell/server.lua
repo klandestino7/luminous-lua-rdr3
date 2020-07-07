@@ -9,15 +9,13 @@ local verificationData = {
         ["tobacco"] = {1, 1, 10},
         ["corn"] = {1, 1, 10},
         ["sugarcane"] = {1, 1, 10},
-        ["feather_1"] = {100, 25, 5}
     },
     ["Acogueiro"] = {
-        ["meat"] = {75, 1, 1},
         ["meat_poor"] = {75, 1, 1},
         ["meat_good"] = {137, 1, 1},
         ["meat_perfect"] = {356, 1, 1},
-        ["feather_1"] = {100, 1, 5},
-        ["feather_2"] = {100, 1, 5}
+        -- ["feather_1"] = {100, 25, 5}
+        -- ["feather_2"] = {100, 1, 5}
     },
     ["Posto de Troca"] = {
         ["raw_coal"] = {100, 40, 2},
