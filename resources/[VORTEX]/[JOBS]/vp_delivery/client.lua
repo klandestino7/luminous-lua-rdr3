@@ -96,7 +96,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
             goliv(livpt,livr)
             nbDelivery = math.random(3,5)
 
-            TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
+           -- TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
         end
       end
     end
@@ -127,7 +127,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
           posibilidad = math.random(1, 100)
           afaitunepizzamin = true
 
-          TriggerServerEvent("VP:DELIVERY:itemrm")
+         -- TriggerServerEvent("VP:DELIVERY:itemrm")
           nbDelivery = nbDelivery - 1
 
           if (posibilidad > 70) and (posibilidad < 90) then
@@ -136,7 +136,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
             TriggerEvent('VP:NOTIFY:Simple', 'Você recebeu $'.. pourboire, 10000)
 
-            TriggerServerEvent("VP:DELIVERY:pourboire", pourboire)
+            TriggerServerEvent("VP:DELIVERY:pay", pourboire)
 
           end
 
@@ -193,7 +193,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
               TriggerEvent('VP:NOTIFY:Simple', 'Obrigado pelo seu trabalho, aqui está seu pagamento $'.. paie, 10000)
 
-              TriggerServerEvent("VP:DELIVERY:pourboire", paie)
+              TriggerServerEvent("VP:DELIVERY:pay", paie)
 
               isInJobDelivery = true
               isToHouse = true
@@ -209,7 +209,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
               goliv(livpt,livr)
               nbDelivery = math.random(3, 5)
 
-              TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
+        --      TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
 
            --[[ else
               notifmoto1 = true
@@ -264,7 +264,7 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
         DrawText("Aperte ALT para cancelar as entregas.", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 
         if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
-          TriggerServerEvent('VP:DELIVERY:deleteAllPizz')
+     --     TriggerServerEvent('VP:DELIVERY:deleteAllPizz')
           isInJobDelivery = false
           livr = 0
           isToHouse = false
