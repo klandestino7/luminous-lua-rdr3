@@ -694,7 +694,7 @@ ItemList = {
         description = "Utilizado para fazer diversos tipos de itens.",
         stackSize = 5
     },
-    ["ropecuted"] = {
+    ["ropecut"] = {
         type = "generic",
         name = "Pedaço de Corda",
         weight = 0.5,
