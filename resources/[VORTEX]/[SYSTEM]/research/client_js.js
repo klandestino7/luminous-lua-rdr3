@@ -166,6 +166,8 @@ exports('N_0x04019AE4956D4393_J', () => {
 
     const nh = outnh[0];
 
+    console.log(nh);
+
     // console.log(nh);
 
     // console.log(NetworkGetLocalHandle(viewnh));
@@ -457,6 +459,21 @@ function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre) {
 
 //     console.log(r, out);
 // });
+
+
+/*
+? INVENTORY::_0x
+* Return item amount stuff?
+* _0xE787F05DFC977BDE -- deff
+* _0xC97E0D2302382211
+* _0x033EE4B89F3AC545
+
+* Return itm slot id?
+* _0x6452B1D357D81742
+
+* Return whether the item accepts this slot id?
+* _0x780C5B9AE2819807
+*/
 
 RegisterCommand('invinfo', (source, args) => {
     let buffer = new ArrayBuffer(512);
