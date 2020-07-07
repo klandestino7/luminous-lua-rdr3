@@ -36,23 +36,50 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         if tempObj ~= nil then
             local coords  = GetEntityCoords(PlayerPedId())
+
             local forward = GetEntityForwardVector(PlayerPedId())
+
+            
+
             local x, y, z = table.unpack(coords + forward * 1.6)
+
+            local retval, groundZ, normal = GetGroundZAndNormalFor_3dCoord(x,y,z)
+
+            z = groundZ
+
             SetEntityAlpha(tempObj, 127)
-            SetEntityHeading(tempObj, GetGameplayCamRelativeHeading())
             SetEntityCollision(tempObj, false, false)
-            SetEntityCoords(tempObj, x+2,y,z-1)
-       --     SetEntityRotation(tempObj, GetGameplayCamRot(1))
+            SetEntityCoords(tempObj, x,y,z)           
+
+            local gmRotation = GetGameplayCamRot(2)
+
+         --   if IsControlJustPressed(2, 0x62800C92) then -- SCROLL UP
+
+                SetEntityRotation(tempObj, vector3(gmRotation.x, GetEntityRotation(tempObj).yz))
+         --   end
+
+            if IsControlJustPressed(2, 0x62800C92) then -- SCROLL UP
+                SetEntityHeading(tempObj, GetEntityHeading(tempObj) + 10)
+                
+            end
+
+            if IsControlJustPressed(2, 0x8BDE7443) then -- SCROLL DOWN
+                SetEntityHeading(tempObj, GetEntityHeading(tempObj) - 10)
+               
+            end
+
             if Citizen.InvokeNative(0x50F940259D3841E6, 1, 0x07CE1E61) then
                 for k,v in pairs(Config.Tents) do
                     if Config.Tents[k].tentModel == GetEntityModel(tempObj) then
+
                         local pPos = GetEntityCoords(tempObj)
                         local pRot = GetEntityRotation(tempObj)
                         local pHea = GetEntityHeading(tempObj)  
+
                         TriggerServerEvent('VP:TENTS:createdTent', Config.Tents[k].itemId, Config.Tents[k].tentModel, pPos, pRot, pHea)
                         DeleteObject(tempObj)
                         tempObj = nil                                 
-                        exports['mythic_progbar']:Progress({
+                        exports['vp_progbar']:Progress({
                             name = "creating_tents",
                             duration = Config.Tents[k].tentSpawnTime,
                             label = Config.Tents[k].tentLabel,
@@ -87,14 +114,17 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
+Citizen.CreateThread(function()    
     TriggerServerEvent('VP:TENTS:spawnTents')
 end)
 
 
 RegisterNetEvent('VP:TENTS:spawnCliTents')
-AddEventHandler('VP:TENTS:spawnCliTents', function(tents, identifier)  
+AddEventHandler('VP:TENTS:spawnCliTents', function(tents, identifier)
     myIdentifier = identifier
+
+    print(myIdentifier)
+
     for k,v in pairs(tents) do
         if TentsSpawned[k] == nil then
             position[k] = json.decode(tents[k].position)
