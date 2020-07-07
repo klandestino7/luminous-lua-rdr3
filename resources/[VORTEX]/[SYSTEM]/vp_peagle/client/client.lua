@@ -26,7 +26,6 @@ local blip
 
 RegisterNetEvent('VP:PEAGLE:ReceiveMenssage')
 AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
-        print("spawn peagle 1")
         pigeon = CreatePed("A_C_Pigeon", PlayerCoords, 92.0, true, true, true, true)
         Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
         message = text
@@ -41,7 +40,6 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
         local playc = GetEntityCoords(PlayerPedId())
         TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z+30, 1, 0)
         Citizen.InvokeNative(0xA5C38736C426FCB8, pigeon, true)
-        print("spawn peagle 2")
 
         local blipname = "Pombo Correio"
         local bliphash = 587827268
@@ -61,7 +59,7 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
                 if back then
                     TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z+30, 1, 0)
                 end                
-               
+              
                 if dst < 25 then  
                     if not Notified then
                         TriggerEvent('VP:NOTIFY:Simple', 'Você recebeu um pombo correio, espere até o pombo se aproximar de ti.', 5000)
@@ -85,13 +83,13 @@ AddEventHandler('VP:PEAGLE:ReceiveMenssage', function(PlayerCoords, text)
 Citizen.CreateThread(
     function()
         while true do
-            Citizen.Wait(15000)
+            Citizen.Wait(8000)
             local IsPedAir = IsEntityInAir(pigeon, 1)
             local playc = GetEntityCoords(PlayerPedId())
             if pigeon ~= nil then
                 if not IsPedAir and Notified and dst > 4 then
-                  --  TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
-                    TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
+                    TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
+                 --   TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
                 end
             end
         end
@@ -144,8 +142,9 @@ function HandlePrompts()
             TaskPickupCarriableEntity(PlayerPedId(), carriable)  
             openGuiRead(message)
             TriggerServerEvent("VP:PEAGLE:AddPombo")
+            Wait(2500)
             DeleteEntity(pigeon)
-            Citizen.InvokeNative(0xF2C3C9DA47AAA54A, blip)     
+            RemoveBlip(blip)     
         end
     end
 end

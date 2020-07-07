@@ -572,7 +572,7 @@ RegisterNUICallback(
 
         SetNuiFocus(false, false)   
         cAPI.StartFade(500)
-        Wait(10000)
+        Wait(12000)
         cAPI.EndFade(500)
     end
 )

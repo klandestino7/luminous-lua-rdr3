@@ -125,10 +125,10 @@ AddEventHandler('VP:ROBREG:startTheRobbery',function(atmInfo)
 
 	StartAnim1()
 
-	if IsPedMale(PlayerPedId()) then		
-		setSatchel(0x47D2DD9D)
+	if IsPedMale(PlayerPedId()) then
+		setSatchel(0xEA272E11)
 	else
-		setSatchel(0x383DDE91)
+		setSatchel(0xFCAF241B)
 	end
 end)
 

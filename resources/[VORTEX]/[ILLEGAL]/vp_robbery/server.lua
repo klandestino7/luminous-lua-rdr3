@@ -14,7 +14,7 @@ local data = {
     [2] = {
         staticName = "Banco de Saint Dennis",
         staticReward = 50000,
-        staticSecondsToReward = 15 * 60,
+        staticSecondsToReward = 10 * 2,
         staticMaxParticipants = 3
     },
     [3] = {
@@ -63,7 +63,7 @@ AddEventHandler(
 
         local numTroopers = #API.getUsersByGroup("trooper")
 
-        if numTroopers < 5 then
+        if 6 < 5 then
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Este banco não pode ser roubado, polícia insuficiente.")
             return
         end
@@ -131,6 +131,8 @@ function countdownRobberyTime()
 end
 
 function endRobberyGiveReward()
+    local _source = nil
+
     if indexBeingRobbed == nil then
         return
     end
@@ -141,9 +143,13 @@ function endRobberyGiveReward()
 
     if indexBeingRobbed_playerSourceWhoStarted ~= nil then
         User = API.getUserFromSource(indexBeingRobbed_playerSourceWhoStarted)
+        _source = indexBeingRobbed_playerSourceWhoStarted
+        TriggerClientEvent('VP:ROBBERY:Bolsa', _source)
     else
         for participantSource, _ in pairs(indexBeingRobbed_participants) do
             User = API.getUserFromSource(participantSource)
+            _source = participantSource
+            TriggerClientEvent('VP:ROBBERY:Bolsa', _source)
             if User ~= nil then
                 break
             end
@@ -153,7 +159,7 @@ function endRobberyGiveReward()
     if User ~= nil then
         local Character = User:getCharacter()
         if Character ~= nil then
-            local reward = data[indexBeingRobbed].staticReward
+            local reward = math.random(20000,data[indexBeingRobbed].staticReward)
             Character:getInventory():addItem("money", reward)
             -- User:notify("success", "Você recebeu R$ " .. reward .. " pelo assalto")
             User:notify("item", "money", reward / 100)

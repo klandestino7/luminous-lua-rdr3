@@ -222,9 +222,9 @@ function triggerUse(User, itemData)
     end
 
     if itemId == "meat_cooked" then
-        cAPI.VaryPlayerHealth(source, 10)
+        cAPI.VaryPlayerHealth(source, 15)
         -- cAPI.VaryPlayerStamina(source, 15)
-        cAPI.VaryPlayerCore(source, 1, 15)
+        cAPI.VaryPlayerCore(source, 1, 20)
         cAPI.TaskScriptedAnim(source, "eat")
 
         cAPI.VarySickness(source, 10)

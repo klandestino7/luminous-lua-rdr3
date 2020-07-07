@@ -135,7 +135,9 @@ Citizen.CreateThread(
 
                                 local campfireModels = {
                                     "s_cookfire01x",
-                                    "p_campfirecombined03x"
+                                    "p_campfirecombined03x",
+                                    "p_campfire04x",
+                                    "p_campfire03x"
                                 }
 
                                 local campfireEntity = 0

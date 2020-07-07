@@ -7,13 +7,13 @@ API = Tunnel.getInterface("API")
 local FirstSpawn = false
 local car = nil
 local ped = nil
-local coords = vector3(-746.465,-1294.942,43.244)
+local coords = vector3(2538.675,-1144.211,50.175)
 
---[[
+
 RegisterCommand('first', function()
     TriggerEvent('VP:CREATOR:FirstSpawn')
 end)
-
+--[[
 RegisterCommand('goped', function()
    -- TriggerMusicEvent("REDLP_START")
   --  TriggerMusicEvent("REHR_START") -- MELHOR
@@ -32,7 +32,7 @@ AddEventHandler(
             TriggerMusicEvent("REHR_START")
             NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)           
             Wait(100)
-            SetEntityCoords(PlayerPedId(), -1099.470,-1839.129,60.327)
+            SetEntityCoords(PlayerPedId(), 2541.934,-363.564,41.574)
             Wait(2500)
             TriggerEvent('VP:CREATOR:CreateVehicle', 'STAGECOACH001X')
             Wait(1000)
@@ -62,17 +62,14 @@ Citizen.CreateThread(
                     SetCinematicModeActive(0)                    
                     FirstSpawn = false
                     N_0x69d65e89ffd72313(false)    
-                    Wait(2000)
+                    Wait(1000)
                     TaskLeaveVehicle(PlayerPedId(), car, 0, 0) 
-                    Wait(3000)
-                         
-                    TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), -848.584,-1252.746,43.559, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
-                    
+                    Wait(2000)                         
+                    TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), 2600.436,-1205.932,53.323, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
                     TriggerEvent('VP:NOTIFY:Simple', 'Você perdeu todas as suas roupas, tem uma loja de roupa do outro lado da rua, que tal ir lá se trocar?', 10000)
                     TriggerMusicEvent("MC_MUSIC_STOP")                    
                     Wait(10000)
-
-                    TriggerEvent('VP:NOTIFY:Simple', 'Digite /guiainiciante ver o Jornal Guia de Iniciante.', 10000)
+                  --  TriggerEvent('VP:NOTIFY:Simple', 'Digite /guiainiciante ver o Jornal Guia de Iniciante.', 10000)
                     DeleteVehicle(car)
                     DeleteEntity(ped)
                 else               
@@ -117,7 +114,7 @@ AddEventHandler(
     Wait(15000)
     TriggerEvent('VP:NOTIFY:Simple', 'Tome cuidado ao andejar pelo anoitecer no faroeste, somente os verdadeiramente aventureiros ficam depois do escurecer... dizem que é um mundo totalmente diferente sob a luz da Lua.', 12000)
     Wait(18000)
-    TriggerEvent('VP:NOTIFY:Simple', 'Aqui é Blackwater, a primeira cidade na qual você vai conhecer. Nela você poderá encontrar diversas lojas de departamento, como a loja de roupas, cabeleireiro, departamento de polícia, entre outros. Mas lembre-se de que há um mundo imenso para você explorar!', 18000)
+    TriggerEvent('VP:NOTIFY:Simple', 'Aqui é Saint Dennis, a primeira cidade na qual você vai conhecer. Nela você poderá encontrar diversas lojas de departamento, como a loja de roupas, cabeleireiro, departamento de polícia, entre outros. Mas lembre-se de que há um mundo imenso para você explorar!', 18000)
 end)
 
 RegisterNetEvent("VP:CREATOR:CreatePedOnVehicle")
@@ -142,9 +139,12 @@ AddEventHandler(
         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
         SetEntityAsMissionEntity(ped)
         -- SetModelAsNoLongerNeeded(pedModelHash)
+        Citizen.Wait(500)
+
         SetPedAsGroupMember(ped, GetPedGroupIndex(PlayerPedId()))
+
         SetPedIntoVehicle(ped, car, -1)   
-        TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), -746.465,-1294.942,43.244, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
+        TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), 2538.675,-1144.211,50.175, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
 	end
 )
 

@@ -1,8 +1,8 @@
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface("API")
-cAPI = Tunnel.getInterface("API")
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
 -- RegisterCommand(
 --     "interiss",
@@ -139,7 +139,7 @@ Citizen.CreateThread(
                         -- local hours = secondsUntilRobberyEnds / 3600
                         local minutes = math.floor((secondsUntilRobberyEnds % 3600) / 60)
                         local seconds = secondsUntilRobberyEnds % 60
-                        drawText(minutes .. " minutos e " .. seconds .. " segundos", true)
+                        drawText(minutes .. " minutos e " .. seconds .. " segundos", true)                                          
                     end
                 end
             else
@@ -247,18 +247,11 @@ AddEventHandler(
         if asParticipant then
             initCheckPedIsOutside()
             initSecondsCountdown(seconds)
+            cAPI.AddWantedTime(true, 30)
         end
-
         TriggerEvent("VP:TOAST:New", "alert", "O assalto acabará em " .. seconds .. " segundos")
-
-        cAPI.AddWantedTime(true, 30)
-
     end
 )
-
-
-
-
 
 RegisterNetEvent("VP:ROBBERY:StartRobberyAsBlocked")
 AddEventHandler(
@@ -289,16 +282,8 @@ RegisterNetEvent("VP:ROBBERY:EndRobbery")
 AddEventHandler(
     "VP:ROBBERY:EndRobbery",
     function()
-        interiorIndexBeingRobbed = nil
-        
-        if asParticipant then
-            if IsPedMale(PlayerPedId()) then		
-                setSatchel(0x47D2DD9D)
-            else
-                setSatchel(0x383DDE91)
-            end
-        end
 
+        interiorIndexBeingRobbed = nil
 
         isParticipantOfRobbery = false
         isBlockedByRobbery = false
@@ -316,7 +301,20 @@ function setSatchel(model)
     Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), parseInt(model), true, true, true)
 end
 
+RegisterNetEvent("VP:ROBBERY:Bolsa")
+AddEventHandler(
+    "VP:ROBBERY:Bolsa",
+    function()
+        
+ --   cAPI.AddWantedTime(true, 30)
 
+    if IsPedMale(PlayerPedId()) then
+        setSatchel(0xEA272E11)
+    else
+        setSatchel(0xFCAF241B)
+    end
+
+end)
 
 local lastDisplayedText
 local lastVarString

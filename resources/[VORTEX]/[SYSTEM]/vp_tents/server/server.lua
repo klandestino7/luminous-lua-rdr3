@@ -30,17 +30,20 @@ AddEventHandler('VP:TENTS:removeTents', function(tentId, id)
     Tents.removeTent(src, tonumber(tentId), tonumber(id))
 end)
 
+
+
 RegisterServerEvent('VP:TENTS:spawnTents')
 AddEventHandler('VP:TENTS:spawnTents', function()
-    local src = source 
+    local src = source
     local User = API.getUserFromSource(src)
-
-
     local Character = User:getCharacter()
+    local NotSpawned = false
 
-
-    TriggerClientEvent('VP:TENTS:spawnCliTents', src, Tents.getAllTents(), Character:getId())
-
+    while not NotSpawned do  
+        Citizen.Wait(1000)
+        TriggerClientEvent('VP:TENTS:spawnCliTents', GetHostId(), Tents.getAllTents(), Character:getId())
+        NotSpawned = true
+    end
 end)
 
 function Tents.addNew(src, model, pos, rot, heading)
