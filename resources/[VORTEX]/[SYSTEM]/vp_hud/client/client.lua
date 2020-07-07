@@ -83,48 +83,6 @@ Citizen.CreateThread(
     end
 )
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(1000)
---             -- for _, i in pairs(GetActivePlayers()) do
---             --     local ped = GetPlayerPed(i)
---             --     if ped ~= 0 then
---             --         SetPedPromptName(ped, 'Desconhecido')
---             --     end
---             -- end
-
---             -- if cAPI.HasKnownPlayersChanged() then
-
---                 local canSeeIds = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('admin')
-
---                 for _, i in pairs(GetActivePlayers()) do
---                     local ped = GetPlayerPed(i)
---                     if ped ~= 0 then
---                         if not canSeeIds then
---                             SetPedPromptName(ped, "Desconhecido")
---                         else
---                             local serverId = GetPlayerServerId(i)
---                             local userId = cAPI.GetUserIdFromServerId(serverId) or '?'
---                             SetPedPromptName(ped, "Desconhecido ~ " .. userId)
---                         end
---                     end
---                 end
---             -- end
---         end
---     end
--- )
-
-
-RegisterCommand(
-    "testb",
-    function(source, args)
-        local a = Citizen.InvokeNative(0x935A30AA88FB1014, PlayerPedId(), Citizen.ResultAsVector())
-        local b = Citizen.InvokeNative(0x6BFBDC46139C45AB, GetEntityCoords(PlayerPedId()))
-        print(a, b)
-    end
-)
-
 RegisterCommand(
     "cinema",
     function(source, args)

@@ -42,7 +42,7 @@ Citizen.CreateThread(
           if weaponHash == hashUnarmed then
             DrawTxt("Aperte (ALT) para acessar seu cofre", 0.85, 0.95, 0.4, 0.4, true, 255, 255, 255, 255, true, 10000)
             if IsControlJustPressed(0, 0xE8342FF2) then
-              if not cAPI.GetWanted() then
+              if not cAPI.IsWanted() then
                 inMenu = true
                 SetNuiFocus(true, true)
                 SendNUIMessage({type = "openGeneral"})

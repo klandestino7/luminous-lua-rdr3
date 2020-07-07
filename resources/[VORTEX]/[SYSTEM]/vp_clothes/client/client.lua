@@ -297,7 +297,7 @@ RegisterNetEvent("VP:STORECLOTHES:OpenClothingMenu")
 AddEventHandler(
     "VP:STORECLOTHES:OpenClothingMenu",
     function()
-        if not cAPI.GetWanted() then
+        if not cAPI.IsWanted() then
             inCustomization = true
             hided = false
             CamActive = false

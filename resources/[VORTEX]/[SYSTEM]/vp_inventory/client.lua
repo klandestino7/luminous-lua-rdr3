@@ -438,7 +438,7 @@ RegisterCommand(
             return
         end
 
-        if cAPI.GetWanted() then
+        if cAPI.IsWanted() then
             TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode transferir um item. ', 10000)
             return
         end

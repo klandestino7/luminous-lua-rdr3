@@ -251,7 +251,7 @@ AddEventHandler(
 
         TriggerEvent("VP:TOAST:New", "alert", "O assalto acabará em " .. seconds .. " segundos")
 
-        cAPI.SetWanted(true, 30)
+        cAPI.AddWantedTime(true, 30)
 
     end
 )

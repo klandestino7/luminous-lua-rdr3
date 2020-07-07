@@ -58,7 +58,7 @@ RegisterNetEvent('VP:ROBREG:cancelfreeze')
 AddEventHandler('VP:ROBREG:cancelfreeze',function()	
 	FreezeEntityPosition(PlayerPedId() , false)			
 
-	cAPI.SetWanted(true, 30)
+	cAPI.AddWantedTime(true, 30)
 	
 
 	-- local coords = GetEntityCoords(PlayerPedId()) + (GetEntityForwardVector(PlayerPedId()) * 0.7)

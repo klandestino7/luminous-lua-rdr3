@@ -130,7 +130,7 @@ RegisterCommand(
         while not HasAnimDictLoaded("mech_inventory@clothing@bandana") do
             Citizen.Wait(100)
         end
-        if not cAPI.GetWanted() then
+        if not cAPI.IsWanted() then
             if not Bandana then
                 TaskPlayAnim(PlayerPedId(), "mech_inventory@clothing@bandana", "NECK_2_FACE_RH", 8.0, 8.0, 2300, 31, 0, true, 0, false, 0, false)
                 Wait(2000)

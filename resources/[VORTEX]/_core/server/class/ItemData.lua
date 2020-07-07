@@ -226,6 +226,9 @@ function triggerUse(User, itemData)
         -- cAPI.VaryPlayerStamina(source, 15)
         cAPI.VaryPlayerCore(source, 1, 15)
         cAPI.TaskScriptedAnim(source, "eat")
+
+        cAPI.VarySickness(source, 10)
+
         User:closeInventory()
         return true
     end
@@ -235,7 +238,18 @@ function triggerUse(User, itemData)
         -- cAPI.VaryPlayerStamina(source, 30)
         cAPI.VaryPlayerCore(source, 1, 70)
         cAPI.TaskScriptedAnim(source, "eat")
+
+        cAPI.VarySickness(source, 10)
+
         User:closeInventory()
+        return true
+    end
+
+    if itemId == "eagleeye" then
+
+        cAPI.TaskInteraction(source, "drink_tonic")
+        TriggerClientEvent("VP:WANTED:UsedEagleEye", source)
+
         return true
     end
 

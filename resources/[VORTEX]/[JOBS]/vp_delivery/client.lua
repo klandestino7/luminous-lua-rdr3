@@ -78,7 +78,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
 
       if GetDistanceBetweenCoords(place.x, place.y, place.z, GetEntityCoords(PlayerPedId(),true)) < 1.5 then
-        cAPI.DrawText("Aperte ALT para pegar as cartas" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+        DrawText("Aperte ALT para pegar as cartas" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 
         if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
             notif = true
@@ -119,7 +119,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
       if GetDistanceBetweenCoords(px,py,pz, GetEntityCoords(PlayerPedId(),true)) < 3 then
     --    HelpText("Appuyez sur ~INPUT_CONTEXT~ pour livrer la pizza",0,1,0.5,0.8,0.6,255,255,255,255)
 
-        cAPI.DrawText("Aperte ALT para entregar" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+        DrawText("Aperte ALT para entregar" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 
         if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
 
@@ -180,7 +180,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
 
       if GetDistanceBetweenCoords(place.x,place.y,place.z, GetEntityCoords(PlayerPedId(),true)) < 3 and afaitunepizzamin == true then
-        cAPI.DrawText("Aperte ALT para pegar as cartas" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+        DrawText("Aperte ALT para pegar as cartas" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 
         -- local CoordsCarroca = GetEntityCoords(GetPlayersLastVehicle(PlayerPedId()))
       --  if IsVehicleModel(GetVehiclePedIsIn(PlayerPedId(), true), GetHashKey("UTILLIWAG"))  then
@@ -261,7 +261,7 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
      -- DrawMarker(1,placefin.x,placefin.y,placefin.z, 0, 0, 0, 0, 0, 0, 1.5001, 1.5001, 0.6001,255,0,0, 200, 0, 0, 0, 0)
 
       if GetDistanceBetweenCoords(placefin.x, placefin.y, placefin.z, GetEntityCoords(PlayerPedId(),true)) < 1.5 then
-        cAPI.DrawText("Aperte ALT para cancelar as entregas.", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
+        DrawText("Aperte ALT para cancelar as entregas.", 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 
         if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
           TriggerServerEvent('VP:DELIVERY:deleteAllPizz')
@@ -368,4 +368,15 @@ function playAnim(dict, anim, speed)
       -- end
       TaskPlayAnim(PlayerPedId(), dict, anim, speed, 1.0, -1, 0, 0, 0, 0, 0, 0, 0)
   end
+end
+
+function DrawText(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre, font)
+  SetTextScale(w, h)
+  SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+  SetTextCentre(centre)
+  if enableShadow then
+      SetTextDropshadow(1, 0, 0, 0, 255)
+  end
+  Citizen.InvokeNative(0xADA9255D, font)
+  DisplayText(CreateVarString(10, "LITERAL_STRING", str), x, y)
 end

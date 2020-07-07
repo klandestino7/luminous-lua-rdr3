@@ -170,6 +170,8 @@ function cAPI.TaskAnimalInteraction(interaction)
         if cAPI.IsPlayerHorseActive() then
             local playerHorse = cAPI.GetPlayerHorse()
             local v = interactions[interaction]
+
+            SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true, 0, 0, 0)
             TaskAnimalInteraction(ped, playerHorse, GetHashKey(v[1]), v[2] ~= nil and GetHashKey(v[2]) or 0, 0)
         end
     end
@@ -198,6 +200,7 @@ function cAPI.TaskInteraction(interaction)
             propEntity = CreateObject(GetHashKey(v[1]), GetEntityCoords(ped), false, true, false, false, true)
         end
 
+        SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true, 0, 0, 0)
         TaskItemInteraction_2(ped, GetHashKey(v[2]), propEntity, GetHashKey(v[3]), GetHashKey(v[4]), unk1, unk2, unk3)
     end
 end
