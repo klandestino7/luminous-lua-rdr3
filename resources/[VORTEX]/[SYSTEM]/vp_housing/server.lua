@@ -36,10 +36,10 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
 
-        if true then
-            User:notify("error", "Não disponivel :P")
-            return
-        end
+        -- if true then
+        --     User:notify("error", "Não disponivel :P")
+        --     return
+        -- end
 
         if Character:hasGroupOrInheritance(house_id) then
             User:notify("error", "Você já alugou esta residência")
