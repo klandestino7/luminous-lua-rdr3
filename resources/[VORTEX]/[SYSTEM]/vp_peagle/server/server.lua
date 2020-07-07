@@ -79,14 +79,13 @@ AddEventHandler("VP:PEAGLE:SendMessage", function(source)
   end
 
   TriggerClientEvent("VP:PEAGLE:GetCoords", _source, tplayer, Mensagem)
-  Inventory:removeItem("pigeonpost", 1)
+  Inventory:removeItem(-1, "pigeonpost", 1)
   
   --TriggerEvent("VP:PEAGLE:newNote", -1, Mensagem, "CART"..idcart)
 end)
 
 RegisterNetEvent("VP:PEAGLE:ReceiveCoords")
 AddEventHandler("VP:PEAGLE:ReceiveCoords", function(coords, tplayer, Mensagem)
-  print( tplayer, coords, Mensagem)
   TriggerClientEvent("VP:PEAGLE:ReceiveMenssage", tplayer, coords, Mensagem)
 end)
 
