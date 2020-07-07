@@ -26,7 +26,7 @@ AddEventHandler('TREASURE:createPedDefender', function(x,y,z, animal, qtd)
 	end
 
 	for i = 1, tonumber(qtd) do
-		local ped = CreatePed(pedModelHash, x+2, y, z, GetEntityHeading(PlayerPedId()), 1, 0)
+		local ped = CreatePed(pedModelHash, x+math.random(1,8), y, z, GetEntityHeading(PlayerPedId()), 1, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
 	--	Citizen.InvokeNative(0xE054346CA3A0F315, ped, x, y, z, 10, 0, 0)
@@ -86,6 +86,23 @@ Citizen.CreateThread(
 	end
 end
 )
+
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(8000)
+            local IsPedAir = IsEntityInAir(pigeon, 1)
+            local playc = GetEntityCoords(PlayerPedId())
+            if pigeon ~= nil then
+                if not IsPedAir and Notified and dst > 4 then
+                    TaskFlyToCoord(pigeon, 0, playc.x, playc.y, playc.z, 1, 0)
+                 --   TaskGoToEntity(pigeon, PlayerPedId(), -1, 2.5, 2, 0, 0)    
+                end
+            end
+        end
+    end
+)       
 
 RegisterNetEvent('TREASURE:killblip')
 AddEventHandler('TREASURE:killblip', function()
