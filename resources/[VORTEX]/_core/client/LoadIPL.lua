@@ -316,8 +316,114 @@ local Imaps = {
     0xDEAEDD0A,
     0x763EA1E0,
     0x7E321430,
-    0x4D22125C
+    0x4D22125C,
     -- Buracão que tinha no mapa
+
+
+    0x34DE81E3,
+    0x4E2966BD,
+    0xD6FDC694,
+    0x6C59FC22,
+    0x1CB53284 ,-- grade do banco rhodes
+    0xE04C16B6 ,-- AÇOUGUE RHODES
+    0xF2808F6B ,-- procurado saint denis
+    0xDC7F11FC ,-- CORREÇÃO SAIN DENNIS
+    0xEFA9DBBB,
+    0x8B669DF, -- BARCO POKER
+    0x11637AE7,
+
+    0xD8053169,  --CADEIRA ELETRICA
+    0xA3F562DB, -- CADEIRA ELETRICA
+    0x815FFED3, --  CADEIRA  ELETRICA
+    0xA8ED236, --AÇOUQUE SANT DENIS
+    0x59F3ABC7,
+    0xE3FDC047,
+    0xFE33D422,  -- AÇOUGUE SANT DENIS
+
+    0xC33DA16B, --staw procurado
+    0x399A5F54, 
+    0xB586076, --AÇOUGUE STRAW
+    0xF8369DDF, 
+    0x70C77F97, --CASA STRAW
+
+    0xC8E7D9C1,--    INDIO 
+    0xDD82A5F4,
+    0xE86B4C35,
+    0x3BD21365,
+    0x3BD21365,
+    0x2C1889F7,
+    0xA5CFD507,
+    0x61B03448,
+    0x5F6E2172,
+    0x92544FE ,
+    0x3A365E34,
+    0x5DE27A80,
+
+
+    --Banco Sant denis
+    0x3B5649C4,
+    0x472AB68D,
+    0x3CA39CE3,
+    0xC92232A0,
+    0x10CB82DD,
+    0XDBFE4AC2,
+    ----
+    --Cinema
+    0x830F5B56,
+    0xCA785D9C,
+    0x43CF1C37,
+    0x9C9F8C62,
+    0x9BF02141,
+    -----
+   -- Correçao paredes Saint Denis
+    0xDC7F11FC,
+    0xEFA9DBBB,
+    ------
+    --Bar saint denis
+    0xD602C52F,
+    -----
+   -- Museu Saint Denis
+    0x6E6463C4,
+    0xCC51ABED,
+    0xA72FE0A6,
+    ----
+    --Lojinha consutorio Saint danis
+    0x87DD7432,
+    0xCE2508DF,
+    ----
+    --Porto
+    0x367A7709,
+    0x64164BD7,
+    0xA5D4978E,
+    0x87DC3EA,
+    0x11637AE7,
+    0x54803066,
+    0xE32C1775,
+
+    0x5DA2C09B,
+    0x471E0BA7,
+    0xAF4D90FD,
+    0x2B241C76,
+    0xF289E278,
+
+    --fix rhoads
+    0x2DC45AC4,
+    0xE2BEb5B6,
+    0x33EA030D,
+    0x33D5AF43,
+    0xBB4E8E0D,
+    0x6557862D,
+
+    0x78CBEF02,
+    0xFA362050,
+
+    0xC2383FE3,
+    0xB2EBEBD4,
+    0xCBCBEC02,
+    0x8952FFB,
+    0x322C913F,
+    0xC3013498,
+    0x49D8934A
 }
 
 AddEventHandler(
