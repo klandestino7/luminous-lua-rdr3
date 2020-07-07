@@ -7,14 +7,23 @@ cAPI = Tunnel.getInterface("API")
 local PlayerCount = 0
 local list = {}
 local bauId = {}
+local chest_id = nil
 
 local inventory_items = {
   [1] = {["melee_hatchet_hunter_rusted"] = 2, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
-  [2] = {["melee_knife_vampire"] = 1, ["WEAPON_REVOLVER_CATTLEMAN_JOHN"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
+  [2] = {["melee_knife_vampire"] = 1, ["revolver_cattleman_john"] = 1, ["raw_gold"] = 5, ["stimulant_good"] = 2},
   [3] = {["revolver_cattleman"] = 3, ["bow"] = 2, ["ammo_arrow"] = 20},
   [4] = {["medicine_good"] = 1, ["repeater_henry"] = 2, ["gold"] = 100},
   [5] = {["lasso"] = 3, ["repeater_winchester"] = 1, ["money"] = 5000},
   [6] = {["rifle_springfield"] = 1, ["repeater_winchester"] = 1, ["money"] = 5000}
+}
+
+local animals = {
+ 	[1] = {["A_C_Bear_01"] = 3},
+	[2] = {["A_C_Alligator_02"] = 3},
+	[3] = {["A_C_Wolf"] = 10},
+  [4] = {["A_C_Panther_01"] = 3},
+  [5] = {["G_M_M_UNISWAMP_01"] = 8}
 }
 
 local TREASURE = {
@@ -80,8 +89,8 @@ AddEventHandler(
 
     local timeram = math.random(TimeSpawnMin, TimeSpawnMax)
 
-    print(timeram)
-    
+    print(timeram)    
+
     Wait(timeram)
 
     local random = math.random(1, 6)
@@ -126,7 +135,7 @@ AddEventHandler(
       end
     end
 
-    local chest_id = "e:" .. math.random(9999)
+    chest_id = "e:" .. math.random(9999)
     local chest_Inventory = API.Inventory("chest:" .. chest_id, 20, parsed)
     chest_Inventory:setAutoSort(false)
 
@@ -136,19 +145,29 @@ AddEventHandler(
     Chest:cache() -- Se torna disponivel para sync com os clients
 
     bauId[chest_id] = true
+ 
 
     print('Tesouro Perdido Spawn ID'..chest_id)
-    TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x + xram, y + yram, z)
     TriggerClientEvent("TREASURE:create", -1, x, y, z)
+    for AnimalHash, Quantity in pairs(animals[math.random(1,5)]) do
+      TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x + xram, y + yram, z, AnimalHash, Quantity)      
+    end
     TriggerEvent("TREASURE:timeCall")
   end
 )
 
+RegisterCommand('testtable', function()
+
+  print(chest_id)
+end)
+
 AddEventHandler(
   "VP:CHESTS:Open",
   function(chestId)
-    if bauId[chest_id] ~= nil then
-      TriggerClientEvent("TREASURE:killblip", GetHostId())
+    if chest_id ~= nil then
+      TriggerClientEvent("TREASURE:killblip", -1)
     end
   end
 )
+
+
