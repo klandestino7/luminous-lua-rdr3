@@ -575,9 +575,8 @@ local function playerConnect(name, setKickReason, deferrals)
         if not msg then
             deferrals.done()
 
-            -- if Queue.sessionmanager_numslotsused and Queue.sessionmanager_numslotsused == 31 then
             Queue.sessionmanager_playerenteringsession = src
-            Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
+            -- Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
 
             Citizen.CreateThread(
                 function()
@@ -588,7 +587,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
                         local diff = (timeoutAt - os.time())
 
-                        Queue:DebugPrint("Timeout do connectqueue em " .. diff .. " segundos")
+                        -- Queue:DebugPrint("Timeout do connectqueue em " .. diff .. " segundos")
 
                         if os.time() >= timeoutAt then
                             DropPlayer(src, "Você entrou em solo? Caso aconteça novamente, contate a staff!")
@@ -598,10 +597,9 @@ local function playerConnect(name, setKickReason, deferrals)
                     end
 
                     Queue.sessionmanager_playerenteringsession = nil
-                    Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: nil")
+                    -- Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: nil")
                 end
             )
-            -- end
 
             if Config.EnableGrace then
                 Queue:AddPriority(ids[1], Config.GracePower, Config.GraceTime)
@@ -804,6 +802,9 @@ local function playerConnect(name, setKickReason, deferrals)
 
             Queue:RemoveFromQueue(ids)
             Queue:DebugPrint(name .. "[" .. ids[1] .. "] está entrando na sessão.")
+
+            -- WaitForSessionManagerResponse()
+
             return
         end
 
