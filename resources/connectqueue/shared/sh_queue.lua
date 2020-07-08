@@ -784,7 +784,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
             update(Config.Language.joining, data.deferrals)
 
-            Queue.sessionmanager_playerenteringsession = data.src
+            Queue.sessionmanager_playerenteringsession = data.source
             Queue:DebugPrint("playerenteringsession set, queue should be blocked: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
 
             Citizen.Wait(500)
