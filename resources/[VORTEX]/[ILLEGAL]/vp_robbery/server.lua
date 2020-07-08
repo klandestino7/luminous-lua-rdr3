@@ -14,7 +14,7 @@ local data = {
     [2] = {
         staticName = "Banco de Saint Dennis",
         staticReward = 50000,
-        staticSecondsToReward = 10 * 2,
+        staticSecondsToReward = 10 * 60,
         staticMaxParticipants = 3
     },
     [3] = {
