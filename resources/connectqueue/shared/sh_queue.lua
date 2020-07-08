@@ -586,7 +586,7 @@ local function playerConnect(name, setKickReason, deferrals)
                     while Queue.sessionmanager_playerenteringsession ~= nil do
                         Citizen.Wait(1000)
 
-                        local diff = (timeoutAt - os.time()) / 1000
+                        local diff = (timeoutAt - os.time())
 
                         Queue:DebugPrint("Timeout do connectqueue em " .. diff .. " segundos")
 
