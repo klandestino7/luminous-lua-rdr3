@@ -194,7 +194,7 @@ protobuf.load(GetResourcePath(GetCurrentResourceName()) + "/rline.proto", functi
             console.log('Sessionmanager | SessionSize: up ' + playerIdLength);
 
             emit("connectqueue:sessionmanager_numslotsused", playerIdLength);
-🡡
+
             emit("connectqueue:sessionmanager_playerenteredsession");
 
             setTimeout(() => {
