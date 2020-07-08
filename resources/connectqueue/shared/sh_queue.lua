@@ -571,10 +571,6 @@ local function playerConnect(name, setKickReason, deferrals)
         end
 
         if not msg then
-
-            Queue.sessionmanager_playerenteringsession = src
-            -- Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
-
             Citizen.Wait(500)
 
             deferrals.done()
@@ -787,9 +783,16 @@ local function playerConnect(name, setKickReason, deferrals)
             local added = Queue:AddToConnecting(ids)
 
             update(Config.Language.joining, data.deferrals)
+
+            Queue.sessionmanager_playerenteringsession = data.src
+            Queue:DebugPrint("playerenteringsession set, queue should be blocked: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
+
             Citizen.Wait(500)
 
             if not added then
+
+                Queue.sessionmanager_playerenteringsession = nil
+
                 done(Config.Language.connectingerr)
                 CancelEvent()
                 return
