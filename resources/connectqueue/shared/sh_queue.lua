@@ -577,6 +577,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
             -- if Queue.sessionmanager_numslotsused and Queue.sessionmanager_numslotsused == 31 then
             Queue.sessionmanager_playerenteringsession = src
+            Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
 
             Citizen.CreateThread(
                 function()
@@ -587,7 +588,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
                         local diff = (timeoutAt - os.time()) / 1000
 
-                        print("Timeout do connectqueue em " .. diff .. " segundos")
+                        Queue:DebugPrint("Timeout do connectqueue em " .. diff .. " segundos")
 
                         if os.time() >= timeoutAt then
                             DropPlayer(src, "Você entrou em solo? Caso aconteça novamente, contate a staff!")
@@ -597,6 +598,7 @@ local function playerConnect(name, setKickReason, deferrals)
                     end
 
                     Queue.sessionmanager_playerenteringsession = nil
+                    Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: nil")
                 end
             )
             -- end
