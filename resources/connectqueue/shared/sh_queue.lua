@@ -580,14 +580,14 @@ local function playerConnect(name, setKickReason, deferrals)
 
             Citizen.CreateThread(
                 function()
-                    local timeout = 5 * 60
+                    local timeoutAt = os.time() + (3 * 1000)
 
-                    while Queue.sessionmanager_playerenteringsession do
+                    while Queue.sessionmanager_playerenteringsession ~= nil do
                         Citizen.Wait(1000)
 
-                        timeout = timeout - 1
-                        if timeout <= 0 then
-                            DropPlayer(src, "Demorou demais pra logar")
+                        if os.time() >= timeoutAt then
+                            DropPlayer(src, "Você entrou em solo? Caso aconteça novamente, contate a staff!")
+                            Queue:DebugPrint(name .. " foi kickado, connectqueue não recebeu resposta do sessionmanager")
                             break
                         end
                     end
