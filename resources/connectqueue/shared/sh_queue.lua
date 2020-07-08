@@ -585,6 +585,10 @@ local function playerConnect(name, setKickReason, deferrals)
                     while Queue.sessionmanager_playerenteringsession ~= nil do
                         Citizen.Wait(1000)
 
+                        local diff = (timeoutAt - os.time()) / 1000
+
+                        print("Timeout do connectqueue em " .. diff .. " segundos")
+
                         if os.time() >= timeoutAt then
                             DropPlayer(src, "Você entrou em solo? Caso aconteça novamente, contate a staff!")
                             Queue:DebugPrint(name .. " foi kickado, connectqueue não recebeu resposta do sessionmanager")
