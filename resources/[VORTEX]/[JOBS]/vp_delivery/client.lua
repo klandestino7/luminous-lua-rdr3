@@ -294,6 +294,9 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
 
             SetWaypointOff()
 
+            RemoveBlip(blip) 
+            ClearGpsMultiRoute()
+
             afaitunepizzamin = false
 
           else
@@ -304,6 +307,9 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
             deleteCar( vehicleu )
 
             TriggerEvent('VP:NOTIFY:Simple', 'Obrigado pelos seus serviços.', 10000)
+
+            RemoveBlip(blip) 
+            ClearGpsMultiRoute()
 
           end
         end
