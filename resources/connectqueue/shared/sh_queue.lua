@@ -570,13 +570,14 @@ local function playerConnect(name, setKickReason, deferrals)
             deferrals.update(tostring(msg) or "")
         end
 
-        Citizen.Wait(500)
-
         if not msg then
-            deferrals.done()
 
             Queue.sessionmanager_playerenteringsession = src
             -- Queue:DebugPrint("Queue.sessionmanager_playerenteringsession: [" .. ids[1] .. "] source " .. Queue.sessionmanager_playerenteringsession)
+
+            Citizen.Wait(500)
+
+            deferrals.done()
 
             Citizen.CreateThread(
                 function()
