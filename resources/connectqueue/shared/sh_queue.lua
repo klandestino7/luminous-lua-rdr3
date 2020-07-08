@@ -580,7 +580,7 @@ local function playerConnect(name, setKickReason, deferrals)
 
             Citizen.CreateThread(
                 function()
-                    local timeoutAt = os.time() + (3 * 1000)
+                    local timeoutAt = os.time() + (3 * 60 * 1000)
 
                     while Queue.sessionmanager_playerenteringsession ~= nil do
                         Citizen.Wait(1000)
