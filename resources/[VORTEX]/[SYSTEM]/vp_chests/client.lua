@@ -225,35 +225,35 @@ Citizen.CreateThread(
     end
 )
 
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(0)
 
---             if closestChestId ~= nil then
---                 -- print("bau")
---                 local ped = PlayerPedId()
---                 local pCoords = GetEntityCoords(ped)
+            if closestChestId ~= nil then
+                -- print("bau")
+                local ped = PlayerPedId()
+                local pCoords = GetEntityCoords(ped)
 
---                 local x = closestChest.x
---                 local y = closestChest.y
---                 local z = closestChest.z
---                 local dist = #(pCoords - vec3(x, y, z))
+                local x = closestChest.x
+                local y = closestChest.y
+                local z = closestChest.z
+                local dist = #(pCoords - vec3(x, y, z))
 
---                 if dist > 1.5 then
---                     closestChestId = nil
---                 else
---                     if IsControlJustPressed(0, 0xCEFD9220) then -- E
---                         -- print("Opened")
---                         TriggerServerEvent("VP:CHESTS:Open", closestChestId)
---                     end
---                 end
---             end
+                if dist > 1.5 then
+                    closestChestId = nil
+                else
+                    if IsControlJustPressed(0, 0xCEFD9220) then -- E
+                        -- print("Opened")
+                        TriggerServerEvent("VP:CHESTS:Open", closestChestId)
+                    end
+                end
+            end
 
---             drawTempEntity()
---         end
---     end
--- )
+            -- drawTempEntity()
+        end
+    end
+)
 
 AddEventHandler(
     "VP:EVENTS:PedInteractionRansackScenario",
