@@ -55,6 +55,7 @@ AddEventHandler(
 
         if cooldownEndsAtTimeStamp > os.time() then
             -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
+            print('VP_ROBBERY', cooldownEndsAtTimeStamp, cooldownEndsAtTimeStamp - os.time())
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
             return
         else
