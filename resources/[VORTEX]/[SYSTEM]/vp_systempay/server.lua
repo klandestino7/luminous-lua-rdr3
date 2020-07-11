@@ -13,7 +13,7 @@ local r = {
 	-- ["vip3"] = {payment = 0, xp = 1.30},
 }
 
-local withHoldingPaymentToUsers = {}
+-- local withHoldingPaymentToUsers = {}
 
 Citizen.CreateThread(
 	function()
@@ -27,30 +27,21 @@ Citizen.CreateThread(
 				local exp = d.exp
 
 				for _, User in pairs(API.getUsersByGroup(group, false)) do
-					local Character = User:getCharacter()
-
 					local user_id = User:getId()
 
-					if Character ~= nil then
-						local Inventory = Character:getInventory()
+					local Inventory = Character:getInventory()
 
-						if Inventory:addItem("money", payment) then
-							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
-						else
-							if withHoldingPaymentToUsers[user_id] then
-								payment = payment + withHoldingPaymentToUsers[user_id]
-							end
-							withHoldingPaymentToUsers[user_id] = payment
-						end
-
-						if exp ~= nil then
-							userIdWithExpMultiplier[user_id] = exp
-						end
+					if Inventory:addItem("money", payment) then
+						User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
 					else
-						if withHoldingPaymentToUsers[user_id] then
-							payment = payment + withHoldingPaymentToUsers[user_id]
-						end
-						withHoldingPaymentToUsers[user_id] = payment
+						-- if withHoldingPaymentToUsers[user_id] then
+						-- 	payment = payment + withHoldingPaymentToUsers[user_id]
+						-- end
+						-- withHoldingPaymentToUsers[user_id] = payment
+					end
+
+					if exp ~= nil then
+						userIdWithExpMultiplier[user_id] = exp
 					end
 				end
 			end
@@ -72,26 +63,26 @@ Citizen.CreateThread(
 	end
 )
 
-Citizen.CreateThread(
-	function()
-		while true do
-			Citizen.Wait(1000 * 60 * 1)
+-- Citizen.CreateThread(
+-- 	function()
+-- 		while true do
+-- 			Citizen.Wait(1000 * 60 * 1)
 
-			for user_id, totalpayment in pairs(withHoldingPaymentToUsers) do
-				local User = API.getUserFromId(user_id)
-				if User ~= nil then
-					local Character = User:getCharacter()
-					if Character ~= nil then
-						local Inventory = Character:getInventory()
-						if Inventory:addItem("money", totalpayment) then
-							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
-							withHoldingPaymentToUsers[user_id] = nil
-						else
-							User:notify("error", "Sem espaço na Bolsa para receber salário!")
-						end
-					end
-				end
-			end
-		end
-	end
-)
+-- 			for user_id, totalpayment in pairs(withHoldingPaymentToUsers) do
+-- 				local User = API.getUserFromId(user_id)
+-- 				if User ~= nil then
+-- 					local Character = User:getCharacter()
+-- 					if Character ~= nil then
+-- 						local Inventory = Character:getInventory()
+-- 						if Inventory:addItem("money", totalpayment) then
+-- 							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
+-- 							withHoldingPaymentToUsers[user_id] = nil
+-- 						else
+-- 							User:notify("error", "Sem espaço na Bolsa para receber salário!")
+-- 						end
+-- 					end
+-- 				end
+-- 			end
+-- 		end
+-- 	end
+-- )
