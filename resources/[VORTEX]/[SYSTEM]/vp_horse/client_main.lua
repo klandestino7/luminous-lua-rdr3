@@ -305,7 +305,7 @@ function WhistleHorse(whistleTypeHash)
             -- InitiateHorse(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 1.0, 1.0, 0.0))
             InitiateHorse()
         else
-            cAPI.notify("error", "Seu cavalo está ferido, aguarde " .. horseActivationSeconds .. " segundos")
+            cAPI.notify("error", "Seu cavalo está ferido, aguarde 2 minutos.")
         end
     end
 end
