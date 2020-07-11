@@ -128,6 +128,22 @@ function API.isWhitelisted(identifier)
     return #rows > 0
 end
 
+function API.setAsWhitelisted(steamId, whitelisted)
+    if whitelisted then
+        if not API.isWhitelisted(steamId) then
+            API_Database.execute("AddIdentifierWhitelist", {identifier = steamId})
+            return true
+        end
+    else
+        if API.isWhitelisted(steamId) then
+            API_Database.execute("RemoveIdentifierWhitelist", {identifier = steamId})
+            return true
+        end
+    end
+
+    return false
+end
+
 function API.dropPlayer(source, reason)
     local User = API.getUserFromSource(source)
     if User then

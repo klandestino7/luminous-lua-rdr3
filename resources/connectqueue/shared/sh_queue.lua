@@ -514,14 +514,6 @@ exports(
     end
 )
 
--- RegisterNetEvent("connectqueue:SetSessionFull")
--- AddEventHandler(
---     "connectqueue:SetSessionFull",
---     function(v)
---         Queue.SessionIsFull = full
---     end
--- )
-
 RegisterNetEvent("connectqueue:sessionmanager_numslotsused")
 AddEventHandler(
     "connectqueue:sessionmanager_numslotsused",
