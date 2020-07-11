@@ -134,10 +134,6 @@ function InitiateHorse(atCoords)
 
     cAPI.SetPlayerHorse(entity)
 
-    if prompt_inventory == nil then
-        InitiatePrompts()
-    end
-
     if horseModel == "A_C_Horse_MP_Mangy_Backup" then
         NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
         NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
@@ -152,12 +148,7 @@ function InitiateHorse(atCoords)
     SetPedNameDebug(entity, horseName)
     SetPedPromptName(entity, horseName)
 
-    local prompt_group = PromptGetGroupIdForTargetEntity(entity)
-
-    PromptSetGroup(prompt_inventory, prompt_group)
-    PromptSetGroup(prompt_eat, prompt_group)
-    PromptSetGroup(prompt_brush, prompt_group)
-    PromptSetGroup(prompt_drink, prompt_group)
+    CreatePrompts(PromptGetGroupIdForTargetEntity(entity))
 
     if horseComponents ~= nil then
         for _, componentHash in pairs(horseComponents) do
@@ -319,13 +310,30 @@ function WhistleHorse(whistleTypeHash)
     end
 end
 
-function InitiatePrompts()
+function CreatePrompts(prompt_group)
+    if prompt_inventory ~= nil then
+        PromptDelete(prompt_inventory)
+    end
+
+    if prompt_eat ~= nil then
+        PromptDelete(prompt_eat)
+    end
+
+    if prompt_drink ~= nil then
+        PromptDelete(prompt_drink)
+    end
+
+    if prompt_brush ~= nil then
+        PromptDelete(prompt_brush)
+    end
+
     prompt_inventory = PromptRegisterBegin()
     PromptSetControlAction(prompt_inventory, 0x5966D52A)
     PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Abrir Aforje"))
     PromptSetEnabled(prompt_inventory, 1)
     PromptSetVisible(prompt_inventory, 1)
     PromptSetStandardMode(prompt_inventory, 1)
+    PromptSetGroup(prompt_inventory, prompt_group)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_inventory, 1.5)
     PromptRegisterEnd(prompt_inventory)
 
@@ -335,6 +343,7 @@ function InitiatePrompts()
     PromptSetEnabled(prompt_eat, 1)
     PromptSetVisible(prompt_eat, 0)
     PromptSetStandardMode(prompt_eat, 1)
+    PromptSetGroup(prompt_eat, prompt_group)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_eat, 1.5)
     PromptRegisterEnd(prompt_eat)
 
@@ -346,6 +355,7 @@ function InitiatePrompts()
     PromptSetEnabled(prompt_drink, 1)
     PromptSetVisible(prompt_drink, 0)
     PromptSetStandardMode(prompt_drink, 1)
+    PromptSetGroup(prompt_drink, prompt_group)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_drink, 1.5)
     PromptRegisterEnd(prompt_drink)
 
@@ -355,6 +365,7 @@ function InitiatePrompts()
     PromptSetEnabled(prompt_brush, 1)
     PromptSetVisible(prompt_brush, 1)
     PromptSetStandardMode(prompt_brush, 1)
+    PromptSetGroup(prompt_brush, prompt_group)
     -- Citizen.InvokeNative(0x0C718001B77CA468, prompt_brush, 1.5)
     PromptRegisterEnd(prompt_brush)
 end
@@ -475,7 +486,6 @@ Citizen.CreateThread(
                     end
 
                     if carriedPlayer then
-
                         local carriedPlayerServerId = GetPlayerServerId(carriedPlayer)
 
                         TriggerServerEvent("VP:HORSE:HitCarriedPlayer", carriedPlayerServerId)
