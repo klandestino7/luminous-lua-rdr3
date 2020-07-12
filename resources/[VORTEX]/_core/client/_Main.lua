@@ -443,6 +443,17 @@ function cAPI.toggleNoclip()
 	end
 end
 
+local Invinsible 
+
+function cAPI.toggleInvinsible()
+	Invinsible = not Invinsible
+	if Invinsible then
+		SetEntityInvincible(PlayerPedId(), true)
+	else
+		SetEntityInvincible(PlayerPedId(), false)
+	end
+end
+
 local function getCamDirection()
 	local heading = GetGameplayCamRelativeHeading() + GetEntityHeading(PlayerPedId())
 	local pitch = GetGameplayCamRelativePitch()

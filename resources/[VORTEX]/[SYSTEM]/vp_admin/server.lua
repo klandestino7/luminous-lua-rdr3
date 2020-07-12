@@ -178,6 +178,19 @@ RegisterCommand(
 )
 
 RegisterCommand(
+    "god",
+    function(source, args, rawCommand)
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+        if Character:hasGroupOrInheritance("admin") then
+            cAPI.toggleInvinsible(source)
+        else
+            User:notify("error", "Você não tem permissão!")
+        end
+    end
+)
+
+RegisterCommand(
     "addxp",
     function(source, args, rawCommand)
         local User = API.getUserFromSource(source)
