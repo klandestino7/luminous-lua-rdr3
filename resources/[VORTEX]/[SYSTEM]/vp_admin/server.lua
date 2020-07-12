@@ -585,46 +585,46 @@ RegisterCommand(
     end
 )
 
-RegisterCommand(
-    "givehorse",
-    function(source, args, rawCommand)
-        local _source = source
-        local User = API.getUserFromSource(source)
-        local Character = User:getCharacter()
+-- RegisterCommand(
+--     "givehorse",
+--     function(source, args, rawCommand)
+--         local _source = source
+--         local User = API.getUserFromSource(source)
+--         local Character = User:getCharacter()
 
-        if Character:hasGroupOrInheritance("admin") then
-            -- cAPI.SetPlayerPosition(-1, cAPI.getPosition(_source))
-            if args[1] ~= nil then
-                local UserTarget = API.getUserFromUserId(tonumber(args[1]))
-                if UserTarget ~= nil then
-                    local CharacterTarget = UserTarget:getCharacter()
+--         if Character:hasGroupOrInheritance("admin") then
+--             -- cAPI.SetPlayerPosition(-1, cAPI.getPosition(_source))
+--             if args[1] ~= nil then
+--                 local UserTarget = API.getUserFromUserId(tonumber(args[1]))
+--                 if UserTarget ~= nil then
+--                     local CharacterTarget = UserTarget:getCharacter()
 
-                    if CharacterTarget ~= nil then
-                        if #args >= 2 then
-                            local name = args[2]
+--                     if CharacterTarget ~= nil then
+--                         if #args >= 2 then
+--                             local name = args[2]
 
-                            for i = 3, #args do
-                                if args[i] ~= nil then
-                                    name = name .. " " .. args[i]
-                                end
-                            end
+--                             for i = 3, #args do
+--                                 if args[i] ~= nil then
+--                                     name = name .. " " .. args[i]
+--                                 end
+--                             end
 
-                            CharacterTarget:createHorse("A_C_Horse_Arabian_White", name)
-                            User:notify("success", "Cavalo setado!")
-                        else
-                            User:notify("error", "/givehorse id nomedocavalo")
-                        end
-                    else
-                        User:notify("error", "Usuário ainda não escolheu um char")
-                    end
-                else
-                    User:notify("error", "Usuário não existe ou não está logado")
-                end
-            end
-        end
-    end,
-    false
-)
+--                             CharacterTarget:createHorse("A_C_Horse_Arabian_White", name)
+--                             User:notify("success", "Cavalo setado!")
+--                         else
+--                             User:notify("error", "/givehorse id nomedocavalo")
+--                         end
+--                     else
+--                         User:notify("error", "Usuário ainda não escolheu um char")
+--                     end
+--                 else
+--                     User:notify("error", "Usuário não existe ou não está logado")
+--                 end
+--             end
+--         end
+--     end,
+--     false
+-- )
 
 -- RegisterCommand(
 --     "idfromsource",

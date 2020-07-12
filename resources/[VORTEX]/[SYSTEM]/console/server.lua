@@ -24,7 +24,7 @@ end
 commands.addwhitelist = function(source, args)
     local steamId = args[1]
 
-    if steamId  then
+    if steamId then
         if API.setAsWhitelisted(steamId, true) then
             commands.print(source, name .. " [" .. steamId .. "] Adicionado a whitelist!")
         else
@@ -54,6 +54,22 @@ commands.players = function(source, args)
 
     commands.print(source, "Conectados " .. #users .. "/32")
 
+    listusers(users)
+end
+
+commands.playersbygroup = function(source, args)
+    local group = args[1]
+
+    if group then
+        local users = API.getUsersByGroup(group)
+
+        commands.print(source, "Conectados " .. #users .. "/32 GRUPO: " .. group)
+
+        listusers(users)
+    end
+end
+
+function listusers(users)
     for user_id, User in pairs(users) do
         local d = {}
 
@@ -79,7 +95,9 @@ commands.players = function(source, args)
             end
         end
 
-        commands.print(source, table.concat(d, "\n"))
+        for k, v in pairs(d) do
+            commands.print(source, k .. ": " .. v)
+        end
     end
 end
 
