@@ -22,7 +22,7 @@ AddEventHandler("VP:DELIVERY:paiefinale", function()
     local User = API.getUserFromSource(_source)
     local Inventory = User:getCharacter():getInventory()
 
-    local payment = math.random(10, 100)
+    local payment = math.random(5, 30)
     
     Inventory:addItem('money', payment*100)
 

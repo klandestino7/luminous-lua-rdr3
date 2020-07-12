@@ -46,6 +46,7 @@ AddEventHandler(
     "VP:ROBBERY:TryToStartRobbery",
     function(index, participants)
         local _source = source
+        local User = API.getUserFromSource(_source)
 
         if interiorIndexBeingRobbed ~= nil then
             -- print("Interior já está sendo roubado")
@@ -90,6 +91,7 @@ AddEventHandler(
                         numParticipants = numParticipants + 1
                         TriggerClientEvent("VP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
                         participants[participantSource] = true
+                   --      API.logs("./savedata/roubobanco.txt","[USUARIOID]: "..Character:getId().. "Iniciou o roubo")
                     -- else
                     --     TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
                     -- end

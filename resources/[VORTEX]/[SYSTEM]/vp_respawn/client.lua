@@ -294,6 +294,8 @@ RegisterCommand(
 	end
 )
 
+
+
 RegisterNetEvent("VP:RESPAWN:revive")
 AddEventHandler(
 	"VP:RESPAWN:revive",

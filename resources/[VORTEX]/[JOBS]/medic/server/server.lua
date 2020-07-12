@@ -14,10 +14,11 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
 		local Character = User:getCharacter()
 		local medic = Character:hasGroupOrInheritance("medic")
+		local police = Character:hasGroupOrInheritance("trooper")
 		local Inventory = User:getCharacter():getInventory()
 
 		sort = math.random(1,2)
-        if medic then
+        if medic or police then
 			TriggerClientEvent('VP:MEDIC:checkdeath', _source)
 			ReviveEnable = false
 		end
@@ -39,7 +40,7 @@ RegisterCommand(
 		if medic or police then
 			--if ReviveEnable then
 				TriggerClientEvent('VP:MEDIC:revivecheck', _source)
-		--	else
+			--else
    			--	TriggerClientEvent('VP:NOTIFY:Simple', _source, 'Esta pessoa já está morta.', 5000)
 			--end
 		end
@@ -57,8 +58,7 @@ RegisterCommand(
 
 		if medic then
 			TriggerClientEvent('VP:MEDIC:TreatmentCheck', _source)
-		end
-		
+		end		
     end
 )
 
@@ -86,9 +86,10 @@ end)
 
 RegisterServerEvent('VP:MEDIC:ReceiveStatus')
 AddEventHandler('VP:MEDIC:ReceiveStatus', function(target, data)
+	print(json.encode(data))
 	if data[2] ~= nil then
 		if data[2] then					
-			TriggerClientEvent('VP:NOTIFY:Simple', target, 'Esta pessoa está sem batimentos.', 5000)
+			TriggerClientEvent('VP:NOTIFY:Simple', target, 'Esta pessoa falaceu.', 5000)
 			ReviveEnable = false
 			return
 		else
@@ -96,7 +97,7 @@ AddEventHandler('VP:MEDIC:ReceiveStatus', function(target, data)
 			ReviveEnable = true	
 		end
 	else
-		TriggerClientEvent('VP:NOTIFY:Simple', target, 'Não identificado a causa da morte. Possível Combatlog', 5000)
+		TriggerClientEvent('VP:NOTIFY:Simple', target, 'Não identificado a causa da morte.', 5000)
 		ReviveEnable = false
 	end	
 	--TriggerClientEvent('VP:MEDIC:ReceiveStatus', target, data)
@@ -109,7 +110,7 @@ AddEventHandler('VP:MEDIC:revive', function(source, target)
 	local User = API.getUserFromSource(_source)
 	local Character = User:getCharacter()
 	local Inventory = User:getCharacter():getInventory()	
-	print(sort)
+
 	if sort == 1 and ReviveEnable == false then
 		ReviveEnable = true
 		print('na sorte')

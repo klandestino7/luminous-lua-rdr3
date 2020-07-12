@@ -47,7 +47,7 @@ local livpt = { --Configuration des points de livraisons (repris ceux de Maykell
 
 local blip
 
-local coefflouze = 0.01 --Coeficient multiplicateur qui en fonction de la distance definit la paie
+local coefflouze = 0.1 --Coeficient multiplicateur qui en fonction de la distance definit la paie
 
 --INIT--
 
@@ -90,7 +90,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
             py = livpt[livr].y
             pz = livpt[livr].z
             distance = round(GetDistanceBetweenCoords(place.x, place.y, place.z, px,py,pz))
-          -- paie = distance * coefflouze
+            paie = distance * coefflouze
 
           --  spawn_faggio()
             goliv(livpt,livr)
@@ -107,7 +107,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
       while notif == true do
 
-        TriggerEvent('VP:NOTIFY:Simple', 'Entregue a carta no novo destino', 10000)
+        TriggerEvent('VP:NOTIFY:Simple', 'Entregue as cartas no destino marcado', 10000)
         notif = false
 
         i = 1
@@ -132,14 +132,13 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
           if (posibilidad > 70) and (posibilidad < 90) then
 
-            pourboire = math.random(3, 10)
+            pourboire = math.random(100, 200)
 
             TriggerEvent('VP:NOTIFY:Simple', 'Você recebeu $'.. pourboire, 10000)
 
             TriggerServerEvent("VP:DELIVERY:pay", pourboire)
 
           end
-
 
           RemoveBlip(blip) 
           ClearGpsMultiRoute()
@@ -192,25 +191,20 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
               afaitunepizzamin = false
 
-
-
               TriggerEvent('VP:NOTIFY:Simple', 'Obrigado pelo seu trabalho, aqui está seu pagamento $'.. paie, 10000)
-              
+
+              TriggerServerEvent("VP:DELIVERY:pay", paie)
+
               isInJobDelivery = true
               isToHouse = true
-              livr = math.random(1, 30)
+              livr = math.random(1, 48)
 
               px = livpt[livr].x
               py = livpt[livr].y
               pz = livpt[livr].z
 
               distance = round(GetDistanceBetweenCoords(place.x, place.y, place.z, px,py,pz))
-
               paie = distance * coefflouze
-
-
-
-              TriggerServerEvent("VP:DELIVERY:pay", paie)
 
               goliv(livpt,livr)
               nbDelivery = math.random(3, 5)
@@ -294,9 +288,6 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
 
             SetWaypointOff()
 
-            RemoveBlip(blip) 
-            ClearGpsMultiRoute()
-
             afaitunepizzamin = false
 
           else
@@ -307,9 +298,6 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
             deleteCar( vehicleu )
 
             TriggerEvent('VP:NOTIFY:Simple', 'Obrigado pelos seus serviços.', 10000)
-
-            RemoveBlip(blip) 
-            ClearGpsMultiRoute()
 
           end
         end
@@ -329,11 +317,10 @@ function goliv(livpt,livr)
   liv = AddPointToGpsMultiRoute(livpt[livr].x,livpt[livr].y, livpt[livr].z)
   SetGpsMultiRouteRender(true) 
 
-  blip = N_0x554d9d53f696d002(1664425300, livpt[livr].x,livpt[livr].y, livpt[livr].z)
-  SetBlipSprite(blip, 1974270787, 1)
+  blip = N_0x554d9d53f696d002(408396114, livpt[livr].x,livpt[livr].y, livpt[livr].z)
+  SetBlipSprite(blip, 408396114, 1)
   SetBlipScale(blip, 0.1)
   Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Entrega')
-
 end
 
 function spawn_faggio() -- Thread spawn faggio

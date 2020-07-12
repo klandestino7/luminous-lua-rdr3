@@ -13,7 +13,12 @@ Config.Priority = {
     ["steam:110000101b89514"] = 99, -- gabe peixe
     ["steam:110000102190921"] = 99, -- gabe peixe
     ["steam:1100001014c2ccf"] = 99,
+    ["steam:1100001053cb788"] = 99, -- Marcobc
+
+    ["steam:11000011b6dcf70"] = 50, -- clonado
+    
      -- ///////////////// APOIADORES //////////////////
+    ["steam:11000010760ea7e"] = 30, -- thiago neves
     ["steam:110000107156247"] = 45, -- Miojo#0001 / 11.06
     ["steam:110000114c155cc"] = 45, -- ELÉ JUNIOR / 11.06
     ["steam:110000106ff1cbd"] = 25, -- Supla Games#1480 / 11.06

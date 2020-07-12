@@ -471,7 +471,7 @@ function getShopData()
     local ret = {
         {
             name = "Cavalos de Equitação",
-            ["A_C_HORSE_MORGAN_FLAXENCHESTNUT"] = {"Burrinho", 5, 17},
+            ["A_C_HORSEMULE_01"] = {"Mula", 5, 17},
             ["A_C_Horse_KentuckySaddle_Grey"] = {"Kentucky Saddle (Cinza)", 20, 50},
             ["A_C_Horse_Morgan_Palomino"] = {"Morgan", 21, 55},
 

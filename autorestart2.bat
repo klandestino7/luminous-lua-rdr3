@@ -1,0 +1,1 @@
+..\run.cmd +exec server2.cfg +set gamename rdr3 +exec license2.cfg 
