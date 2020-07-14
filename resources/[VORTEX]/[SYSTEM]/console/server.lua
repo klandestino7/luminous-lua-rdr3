@@ -54,7 +54,7 @@ commands.players = function(source, args)
 
     commands.print(source, "Conectados " .. #users .. "/32")
 
-    listusers(users)
+    listusers(source, users)
 end
 
 commands.playersbygroup = function(source, args)
@@ -65,11 +65,11 @@ commands.playersbygroup = function(source, args)
 
         commands.print(source, "Conectados " .. #users .. "/32 GRUPO: " .. group)
 
-        listusers(users)
+        listusers(source, users)
     end
 end
 
-function listusers(users)
+function listusers(source, users)
     for user_id, User in pairs(users) do
         local d = {}
 
