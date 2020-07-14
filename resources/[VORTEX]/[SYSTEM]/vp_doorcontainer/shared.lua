@@ -248,17 +248,19 @@ Citizen.CreateThread(
                     2503834054,
                     305296302,
                     603068205,
-                    1020479727
-                }
-            )
-
-            setControllableDoorsForGroup(
-                "sheriff",
-                {
+                    1020479727,
                     349074475,
                     1751238140
                 }
             )
+
+            -- setControllableDoorsForGroup(
+            --     "sheriff",
+            --     {
+            --         349074475,
+            --         1751238140
+            --     }
+            -- )
 
             RegisterNetEvent("VP:DOORSTATECONTAINER:TryToToggleDoorState")
             AddEventHandler(
