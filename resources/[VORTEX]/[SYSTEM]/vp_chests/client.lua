@@ -5,7 +5,6 @@ RegisterNetEvent("VP:CHESTS:SyncMultipleChests")
 AddEventHandler(
     "VP:CHESTS:StartPlayerPlacement",
     function(capacity)
-        print("VP:CHESTS:StartPlayerPlacement")
         createTempEntity(capacity)
     end
 )
@@ -13,7 +12,6 @@ AddEventHandler(
 AddEventHandler(
     "VP:CHESTS:SyncChest",
     function(chestId, capacity, x, y, z, h)
-        print(chestId, capacity, x, y, z, h)
         Chest(chestId, capacity, x, y, z, h)
     end
 )
