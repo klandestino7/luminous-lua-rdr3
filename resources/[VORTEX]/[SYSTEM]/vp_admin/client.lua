@@ -279,7 +279,7 @@ Citizen.CreateThread(
 				for _, pid in pairs(GetActivePlayers()) do
 					local ply = GetPlayerPed(pid)
 
-					if #(GetEntityCoords(ply) - playerPosition <= 100.0) then
+					if #(GetEntityCoords(ply) - playerPosition) <= 100.0 then
 						local pelvis = GetPedBoneCoords(ply, 33219, 0, 0, 0)
 						local spine = GetPedBoneCoords(ply, 6757, 0, 0, 0)
 						local neck = GetPedBoneCoords(ply, 14283, 0, 0, 0)
