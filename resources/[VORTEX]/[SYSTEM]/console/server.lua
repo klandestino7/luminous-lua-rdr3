@@ -71,6 +71,8 @@ end
 
 function listusers(source, users)
     for user_id, User in pairs(users) do
+        Wait(0)
+
         local d = {}
 
         d.src = User:getSource()
@@ -98,7 +100,7 @@ function listusers(source, users)
         local s = "USER: " .. User:getId()
 
         for k, v in pairs(d) do
-            s = " | " .. k .. ": " .. v  
+            s = s .. " | " .. k .. ": " .. v  
         end
 
         commands.print(source, s)
