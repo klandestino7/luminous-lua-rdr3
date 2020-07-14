@@ -82,7 +82,8 @@ AddEventHandler(
         local _source = source
 
         print(chestId, chestId:match("house"), chestId:find("house"))
-        if chestId:match("house") then
+        if chestId:match("house") ~= nil then
+            print('match')
             return
         end
 
