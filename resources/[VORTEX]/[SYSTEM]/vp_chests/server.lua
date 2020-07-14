@@ -82,6 +82,10 @@ AddEventHandler(
     function(chestId)
         local _source = source
 
+        if chestId:find("house") then
+            return
+        end
+
         local Chest = API.getChestFromChestId(chestId)
         local User = API.getUserFromSource(_source)
         -- local Character = User:getCharacter()

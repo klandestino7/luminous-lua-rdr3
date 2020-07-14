@@ -196,6 +196,7 @@ function SetWindowsInvincible()
         local window = GetClosestObjectOfType(windowVec3, 1.0, windowModel, false, 0, 0)
         if window ~= 0 then
             SetEntityInvincible(window, true)
+            SetEntityHealth(window, 100)
         end
         -- end
     end
