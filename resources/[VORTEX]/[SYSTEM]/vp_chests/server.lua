@@ -82,6 +82,7 @@ AddEventHandler(
     function(chestId)
         local _source = source
 
+        print(chestId)
         if chestId:find("house") then
             return
         end
