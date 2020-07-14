@@ -33,7 +33,7 @@ AddEventHandler(
 			cAPI.SetPedScale(PlayerPedId(), pScale)
 			cAPI.SetPedClothing(PlayerPedId(), pClothing)
 		else
-			TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode trocar de roupa. ', 10000)
+			TriggerEvent("VP:NOTIFY:Simple", "Você ainda está como procurado, não pode trocar de roupa. ", 10000)
 		end
 	end
 )
@@ -59,44 +59,41 @@ AddEventHandler(
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
 
-        SetEntityAsMissionEntity(ped)
+		SetEntityAsMissionEntity(ped)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
-		
+
 		SetPedAsGroupMember(ped, GetDefaultRelationshipGroupHash(pedModelHash))
 
 		Citizen.InvokeNative(0xC80A74AC829DDD92, ped, GetDefaultRelationshipGroupHash(pedModelHash))
 
-	
-	--	TaskCombatPed(ped ,PlayerPedId(), 0, 16)
-	--	Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey("Weapon_melee_knife"), 500, true, 0)
-
+		--	TaskCombatPed(ped ,PlayerPedId(), 0, 16)
+		--	Citizen.InvokeNative(0xB282DC6EBD803C75, ped, GetHashKey("Weapon_melee_knife"), 500, true, 0)
 
 		if outfit ~= nil then
 			SetPedOutfitPreset(ped, tonumber(outfit))
-			Citizen.InvokeNative(0x7528720101A807A5, ped, 2) 
+			Citizen.InvokeNative(0x7528720101A807A5, ped, 2)
 		end
 		-- Citizen.InvokeNative(0x23f74c2fda6e7c61, -1230993421, ped)
 		-- SetModelAsNoLongerNeeded(pedModelHash)
 	end
 )
 
-RegisterCommand("guarma", function()
-	N_0xa657ec9dbc6cc900(1)
-	Citizen.InvokeNative(0x74E2261D2A66849A, 1)
-	Citizen.InvokeNative(0xE8770EE02AEE45C2 ,1 )
+RegisterCommand(
+	"guarma",
+	function()
+		N_0xa657ec9dbc6cc900(1)
+		Citizen.InvokeNative(0x74E2261D2A66849A, 1)
+		Citizen.InvokeNative(0xE8770EE02AEE45C2, 1)
+	end
+)
 
-end)
-
-function SET_PED_RELATIONSHIP_GROUP_HASH ( iVar0, iParam0 )
-
-	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iVar0, _GET_DEFAULT_RELATIONSHIP_GROUP_HASH( iParam0 ) )
-
+function SET_PED_RELATIONSHIP_GROUP_HASH(iVar0, iParam0)
+	return Citizen.InvokeNative(0xC80A74AC829DDD92, iVar0, _GET_DEFAULT_RELATIONSHIP_GROUP_HASH(iParam0))
 end
 
-function _GET_DEFAULT_RELATIONSHIP_GROUP_HASH ( iParam0 )
-	return Citizen.InvokeNative( 0xC80A74AC829DDD92, iParam0 );
+function _GET_DEFAULT_RELATIONSHIP_GROUP_HASH(iParam0)
+	return Citizen.InvokeNative(0xC80A74AC829DDD92, iParam0)
 end
-
 
 RegisterNetEvent("VP:ADMIN:SpawnObject")
 AddEventHandler(
@@ -272,25 +269,83 @@ Citizen.CreateThread(
 	end
 )
 
--- Citizen.CreateThread(
--- 	function()
--- 		while true do
--- 			Citizen.Wait(0)
--- 			if showGamerTags then
--- 				if #gamerTags > 0 then
+Citizen.CreateThread(
+	function()
+		while true do
+			Citizen.Wait(0)
+			if showGamerTags then
+				for _, pid in pairs(GetActivePlayers()) do
+					local ply = GetPlayerPed(pid)
+					local pelvis = GetPedBoneCoords(ply, 33219, 0, 0, 0)
+					local spine = GetPedBoneCoords(ply, 6757, 0, 0, 0)
+					local neck = GetPedBoneCoords(ply, 14283, 0, 0, 0)
+					local head = GetPedBoneCoords(ply, 21030, 0, 0, 0)
+					local leftEye = GetPedBoneCoords(ply, 47668, 0, 0, 0)
+					local rightEye = GetPedBoneCoords(ply, 47668, 0, 0, 0)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, pelvis.x, pelvis.y, pelvis.z, spine.x, spine.y, spine.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, spine.x, spine.y, spine.z, neck.x, neck.y, neck.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, neck.x, neck.y, neck.z, head.x, head.y, head.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, head.x, head.y, head.z, leftEye.x, leftEye.y, leftEye.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, head.x, head.y, head.z, rightEye.x, rightEye.y, rightEye.z, 255, 0, 0, 255)
+					local leftFoot = GetPedBoneCoords(ply, 45454, 0, 0, 0)
+					local leftThigh = GetPedBoneCoords(ply, 65478, 0, 0, 0)
+					local leftToes = GetPedBoneCoords(ply, 53081, 0, 0, 0)
+					local leftKnee = GetPedBoneCoords(ply, 22173, 0, 0, 0)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftKnee.x, leftKnee.y, leftKnee.z, leftThigh.x, leftThigh.y, leftThigh.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftToes.x, leftToes.y, leftToes.z, leftFoot.x, leftFoot.y, leftFoot.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftFoot.x, leftFoot.y, leftFoot.z, leftKnee.x, leftKnee.y, leftKnee.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftThigh.x, leftThigh.y, leftThigh.z, pelvis.x, pelvis.y, pelvis.z, 255, 0, 0, 255)
+					local rightFoot = GetPedBoneCoords(ply, 52301, 0, 0, 0)
+					local rightThigh = GetPedBoneCoords(ply, 51826, 0, 0, 0)
+					local rightToes = GetPedBoneCoords(ply, 20781, 0, 0, 0)
+					local rightKnee = GetPedBoneCoords(ply, 16335, 0, 0, 0)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightKnee.x, rightKnee.y, rightKnee.z, rightThigh.x, rightThigh.y, rightThigh.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightToes.x, rightToes.y, rightToes.z, rightFoot.x, rightFoot.y, rightFoot.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightFoot.x, rightFoot.y, rightFoot.z, rightKnee.x, rightKnee.y, rightKnee.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightThigh.x, rightThigh.y, rightThigh.z, pelvis.x, pelvis.y, pelvis.z, 255, 0, 0, 255)
+					local leftHand = GetPedBoneCoords(ply, 34606, 0, 0, 0)
+					local leftFinger1 = GetPedBoneCoords(ply, 41403, 0, 0, 0)
+					local leftFinger2 = GetPedBoneCoords(ply, 41323, 0, 0, 0)
+					local leftFinger3 = GetPedBoneCoords(ply, 41307, 0, 0, 0)
+					local leftFinger4 = GetPedBoneCoords(ply, 41355, 0, 0, 0)
+					local leftFinger5 = GetPedBoneCoords(ply, 41339, 0, 0, 0)
+					local leftForearm = GetPedBoneCoords(ply, 53675, 0, 0, 0)
+					local leftUpperarm = GetPedBoneCoords(ply, 37873, 0, 0, 0)
+					local leftClavicle = GetPedBoneCoords(ply, 30226, 0, 0, 0)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftFinger1.x, leftFinger1.y, leftFinger1.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftFinger2.x, leftFinger2.y, leftFinger2.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftFinger3.x, leftFinger3.y, leftFinger3.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftFinger4.x, leftFinger4.y, leftFinger4.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftFinger5.x, leftFinger5.y, leftFinger5.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftHand.x, leftHand.y, leftHand.z, leftForearm.x, leftForearm.y, leftForearm.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftForearm.x, leftForearm.y, leftForearm.z, leftUpperarm.x, leftUpperarm.y, leftUpperarm.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftUpperarm.x, leftUpperarm.y, leftUpperarm.z, leftClavicle.x, leftClavicle.y, leftClavicle.z, 255, 0, 0, 255)
+					local rightHand = GetPedBoneCoords(ply, 22798, 0, 0, 0)
+					local rightFinger1 = GetPedBoneCoords(ply, 16827, 0, 0, 0)
+					local rightFinger2 = GetPedBoneCoords(ply, 16747, 0, 0, 0)
+					local rightFinger3 = GetPedBoneCoords(ply, 16731, 0, 0, 0)
+					local rightFinger4 = GetPedBoneCoords(ply, 16779, 0, 0, 0)
+					local rightFinger5 = GetPedBoneCoords(ply, 16763, 0, 0, 0)
+					local rightForearm = GetPedBoneCoords(ply, 54187, 0, 0, 0)
+					local rightUpperarm = GetPedBoneCoords(ply, 46065, 0, 0, 0)
+					local rightClavicle = GetPedBoneCoords(ply, 54802, 0, 0, 0)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightFinger1.x, rightFinger1.y, rightFinger1.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightFinger2.x, rightFinger2.y, rightFinger2.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightFinger3.x, rightFinger3.y, rightFinger3.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightFinger4.x, rightFinger4.y, rightFinger4.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightFinger5.x, rightFinger5.y, rightFinger5.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightHand.x, rightHand.y, rightHand.z, rightForearm.x, rightForearm.y, rightForearm.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightForearm.x, rightForearm.y, rightForearm.z, rightUpperarm.x, rightUpperarm.y, rightUpperarm.z, 255, 0, 0, 255)
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, rightUpperarm.x, rightUpperarm.y, rightUpperarm.z, rightClavicle.x, rightClavicle.y, rightClavicle.z, 255, 0, 0, 255)
 
--- 					for playerId, gamerTagId in pairs(gamerTags) do
--- 						if IsMpGamerTagActive(gamerTagId) and NetworkIsPlayerActive(playerId) then
-
--- 						end
--- 					end
--- 				end
--- 			else
--- 				Citizen.Wait(1000)
--- 			end
--- 		end
--- 	end
--- )
+					Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, leftClavicle.x, leftClavicle.y, leftClavicle.z, rightClavicle.x, rightClavicle.y, rightClavicle.z, 255, 0, 0, 255)
+				end
+			else
+				Citizen.Wait(1000)
+			end
+		end
+	end
+)
 
 RegisterNetEvent("VP:ADMIN:CreateVehicle")
 AddEventHandler(
@@ -424,9 +479,9 @@ RegisterCommand(
 	function()
 		if cAPI.hasGroup("admin") then
 			adminModeOn = not adminModeOn
-			cAPI.notify('error', 'ADMIN :o')
+			cAPI.notify("error", "ADMIN :o")
 		else
-			cAPI.notify('error', 'Não não')
+			cAPI.notify("error", "Não não")
 		end
 	end,
 	false
