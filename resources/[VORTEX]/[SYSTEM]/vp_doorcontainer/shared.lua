@@ -290,7 +290,7 @@ Citizen.CreateThread(
                     if doorStates[doorHash].pair ~= nil then
                         local doorPair = doorStates[doorHash].pair
                         print("Porta " .. doorHash .. " com par, porém o par não foi definido ...")
-                        if doorStates[doorPair].isOpen then
+                        if doorStates[doorPair] and doorStates[doorPair].isOpen then
                             doorStates[doorPair].isOpen = newDoorState
                         end
                     end
@@ -339,7 +339,10 @@ Citizen.CreateThread(
 
                     if doorStates[doorHash].pair ~= nil then
                         local doorPair = doorStates[doorHash].pair
-                        doorStates[doorPair].isOpen = doorState
+
+                        if doorStates[doorPair] then
+                            doorStates[doorPair].isOpen = doorState
+                        end
 
                         RegisterDoorSomething(doorPair)
                         DoorSystemSetDoorState(doorPair, doorState == true and 0 or 1)
