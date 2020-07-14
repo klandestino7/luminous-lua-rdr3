@@ -64,7 +64,7 @@ Citizen.CreateThread(
             for _, prompt in pairs(prompts) do
                 if PromptHasHoldModeCompleted(prompt) then
 					Citizen.Wait(0)					
-                    TriggerServerEvent('frp_heal:heallife', 2)
+                    TriggerServerEvent('frp_heal:heallife', 4000)
                 end
             end
         end
