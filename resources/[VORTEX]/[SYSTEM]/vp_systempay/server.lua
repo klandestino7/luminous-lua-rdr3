@@ -29,19 +29,23 @@ Citizen.CreateThread(
 				for _, User in pairs(API.getUsersByGroup(group, false)) do
 					local user_id = User:getId()
 
-					local Inventory = Character:getInventory()
+					local Character = User:getCharacter()
 
-					if Inventory:addItem("money", payment) then
-						User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
-					else
-						-- if withHoldingPaymentToUsers[user_id] then
-						-- 	payment = payment + withHoldingPaymentToUsers[user_id]
-						-- end
-						-- withHoldingPaymentToUsers[user_id] = payment
-					end
+					if Character then
+						local Inventory = Character:getInventory()
 
-					if exp ~= nil then
-						userIdWithExpMultiplier[user_id] = exp
+						if Inventory:addItem("money", payment) then
+							User:notify("alert", "Você acabou de receber o seu salário. Aproveite!")
+						else
+							-- if withHoldingPaymentToUsers[user_id] then
+							-- 	payment = payment + withHoldingPaymentToUsers[user_id]
+							-- end
+							-- withHoldingPaymentToUsers[user_id] = payment
+						end
+
+						if exp ~= nil then
+							userIdWithExpMultiplier[user_id] = exp
+						end
 					end
 				end
 			end
@@ -53,7 +57,7 @@ Citizen.CreateThread(
 
 				local Character = User:getCharacter()
 
-				if Character ~= nil then
+				if Character then
 					local exp = baseExp * (userIdWithExpMultiplier[user_id] or 1.0)
 
 					Character:varyExp(exp)
