@@ -32,6 +32,7 @@ Config.Priority = {
     ["steam:1100001063df198"] = 10, -- nhish#4982 / 11.06
     ["steam:11000010593d219"] = 10, -- ALPHAIAT#6345 / 11.07
     ["steam:11000010760ea7e"] = 30, -- Rent#7650 / 11.07
+    ["steam:11000011cdcba80"] = 30,  -- Diamante brutalfatal_zétafé#469 (244) / 29.06
 
    -- ///////////////// NITRO BOOSTERS //////////////////
     ["steam:1100001128e0a15"] = 15, -- Revolvi38#0038 / 11.06
@@ -52,6 +53,7 @@ Config.Priority = {
     ["steam:1100001062dd384"] = 15, -- nery#8195 / 11.06
     ["steam:110000134b230b1"] = 15, -- Velma Dricky#4393 / 11.06
     ["steam:110000113393044"] = 15, -- Andrade#1920 / 11.06 
+    ["steam:110000107275cee"] = 15, -- Bunny Style#0001 (292) / 11.06
 
 }
 -- require people to run steam
