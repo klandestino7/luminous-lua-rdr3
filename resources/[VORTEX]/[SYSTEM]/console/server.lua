@@ -95,9 +95,13 @@ function listusers(source, users)
             end
         end
 
+        local s = "USER: " .. User:getId()
+
         for k, v in pairs(d) do
-            commands.print(source, k .. ": " .. v)
+            s = " | " .. k .. ": " .. v  
         end
+
+        commands.print(source, s)
     end
 end
 
