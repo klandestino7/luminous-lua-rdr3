@@ -81,27 +81,23 @@ AddEventHandler(
     function(chestId)
         local _source = source
 
-        print(chestId, chestId:match("house"), chestId:find("house"))
-        if chestId:match("house") ~= nil then
-            print('match')
-            return
+        if chestId:match("house") == nil then
+            local Chest = API.getChestFromChestId(chestId)
+            local User = API.getUserFromSource(_source)
+            -- local Character = User:getCharacter()
+            -- local primaryInventory = User:getPrimaryInventoryViewing()
+            -- local secondaryInventory = User:getSecondaryInventoryViewing()
+
+            local chestInventory = Chest:getInventory(User)
+
+            if chestInventory == nil then
+                User:notify("Você não pode abrir este baú")
+                return
+            end
+
+            User:viewInventory()
+            User:viewInventoryAsSecondary(chestInventory)
         end
-
-        local Chest = API.getChestFromChestId(chestId)
-        local User = API.getUserFromSource(_source)
-        -- local Character = User:getCharacter()
-        -- local primaryInventory = User:getPrimaryInventoryViewing()
-        -- local secondaryInventory = User:getSecondaryInventoryViewing()
-
-        local chestInventory = Chest:getInventory(User)
-
-        if chestInventory == nil then
-            User:notify("Você não pode abrir este baú")
-            return
-        end
-
-        User:viewInventory()
-        User:viewInventoryAsSecondary(chestInventory)
     end
 )
 
