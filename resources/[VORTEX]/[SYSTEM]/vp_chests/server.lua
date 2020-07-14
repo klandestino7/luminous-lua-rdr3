@@ -83,7 +83,7 @@ AddEventHandler(
         local _source = source
 
         print(chestId)
-        if chestId:find("house") then
+        if chestId:match("house") then
             return
         end
 
