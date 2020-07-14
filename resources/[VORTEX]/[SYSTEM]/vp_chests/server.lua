@@ -1,19 +1,19 @@
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 dbAPI = Proxy.getInterface("API_DB")
 
 local tempPCapacity = {}
 
-RegisterNetEvent('VP:CHESTS:AskForSync')
-RegisterNetEvent('VP:CHESTS:StartPlayerPlacement')
-RegisterNetEvent('VP:CHESTS:EndPlayerPlacement1')
-RegisterNetEvent('VP:CHESTS:Open')
+RegisterNetEvent("VP:CHESTS:AskForSync")
+RegisterNetEvent("VP:CHESTS:StartPlayerPlacement")
+RegisterNetEvent("VP:CHESTS:EndPlayerPlacement1")
+RegisterNetEvent("VP:CHESTS:Open")
 
 AddEventHandler(
-    'VP:CHESTS:AskForSync',
+    "VP:CHESTS:AskForSync",
     function()
         local _source = source
         API.syncChestsWithPlayer(_source)
@@ -21,16 +21,16 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'VP:CHESTS:StartPlayerPlacement',
-    function(source, capacity)      
+    "VP:CHESTS:StartPlayerPlacement",
+    function(source, capacity)
         local _source = source
         tempPCapacity[_source] = capacity
-        TriggerClientEvent('VP:CHESTS:StartPlayerPlacement', _source, capacity)
+        TriggerClientEvent("VP:CHESTS:StartPlayerPlacement", _source, capacity)
     end
 )
 
 AddEventHandler(
-    'VP:CHESTS:EndPlayerPlacement1',
+    "VP:CHESTS:EndPlayerPlacement1",
     function(capacity, x, y, z, h)
         local _source = source
 
@@ -64,24 +64,24 @@ AddEventHandler(
 
         local charid = Character:getId()
         local position = {x, y, z, h}
-        local query = dbAPI.query('FCRP/CreateChest', {charid = charid, position = json.encode(position), type = 1, capacity = capacity})
+        local query = dbAPI.query("FCRP/CreateChest", {charid = charid, position = json.encode(position), type = 1, capacity = capacity})
         if #query > 0 then
             local chestId = rowsWithId[1].id
             local Chest = API.Chest(chestId)
             Chest.owner_char_id = charid
             Chest.position = position
             Chest.type = 1
-            Chest.capacity = capacity,
-            API.cacheChest(Chest)
+            Chest.capacity = capacity, API.cacheChest(Chest)
         end
     end
 )
 
 AddEventHandler(
-    'VP:CHESTS:Open',
+    "VP:CHESTS:Open",
     function(chestId)
         local _source = source
 
+        print(chestId, chestId:match("house"), chestId:find("house"))
         if chestId:match("house") then
             return
         end
@@ -95,7 +95,7 @@ AddEventHandler(
         local chestInventory = Chest:getInventory(User)
 
         if chestInventory == nil then
-            User:notify('Você não pode abrir este baú')
+            User:notify("Você não pode abrir este baú")
             return
         end
 
@@ -105,7 +105,7 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'playerDropped',
+    "playerDropped",
     function(reason)
         local _source = source
         tempPCapacity[_source] = nil
@@ -114,15 +114,15 @@ AddEventHandler(
 )
 
 AddEventHandler(
-    'playerConnecting',
+    "playerConnecting",
     function(name, setReason)
         local _source = source
-        TriggerClientEvent('VP:CHESTS:SyncMultipleChests', _source, tempChests)
+        TriggerClientEvent("VP:CHESTS:SyncMultipleChests", _source, tempChests)
     end
 )
 
 AddEventHandler(
-    'VP:playerSpawned',
+    "VP:playerSpawned",
     function(source, user_id, isFirstSpawn)
         if isFirstSpawn then
             API.syncChestsWithPlayer(source)
@@ -132,15 +132,15 @@ AddEventHandler(
 
 function getItemIdFromCapacity(capacity)
     if capacity == 25 then
-        return 'chest_small'
+        return "chest_small"
     end
 
     if capacity == 50 then
-        return 'chest_medium'
+        return "chest_medium"
     end
 
     if capacity == 100 then
-        return 'chest_large'
+        return "chest_large"
     end
 
     return nil
