@@ -70,6 +70,26 @@ commands.playersbygroup = function(source, args)
 end
 
 function listusers(source, users)
+
+    local colors = {
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+    }
+
+    local ci = 1
+
     for user_id, User in pairs(users) do
         Wait(0)
 
@@ -97,13 +117,19 @@ function listusers(source, users)
             end
         end
 
-        local s = "USER: " .. User:getId()
+        local s = "^" .. colors[ci] .. "USER: " .. User:getId()
 
         for k, v in pairs(d) do
-            s = s .. " | " .. k .. ": " .. v  
+            s = s .. " |" .. k .. ": " .. v  
         end
 
         commands.print(source, s)
+
+        ci = ci + 1
+
+        if ci > #colors then
+            ci = 1
+        end
     end
 end
 
