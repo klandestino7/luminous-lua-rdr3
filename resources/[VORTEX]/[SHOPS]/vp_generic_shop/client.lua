@@ -60,10 +60,12 @@ Citizen.CreateThread(
                         closestShopVector = foundShopVector
 
                         PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", foundShopName))
+                        PromptSetEnabled(prompt_open, true)
                     end
                 end
             else
                 PromptSetVisible(prompt_open, false)
+                PromptSetEnabled(prompt_open, false)
             end
         end
     end
@@ -103,6 +105,7 @@ Citizen.CreateThread(
                         end
                     else
                         PromptSetVisible(prompt_open, false)
+                        PromptSetEnabled(prompt_open, false)
                     end
                 end
             else
@@ -168,7 +171,7 @@ function InitiatePrompts()
     prompt_open = PromptRegisterBegin()
     PromptSetControlAction(prompt_open, 0xDFF812F9)
     PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", "Abrir"))
-    PromptSetEnabled(prompt_open, true)
+    PromptSetEnabled(prompt_open, false)
     PromptSetVisible(prompt_open, false)
     PromptSetHoldMode(prompt_open, true)
     -- PromptSetGroup(prompt_open, prompt_group)
