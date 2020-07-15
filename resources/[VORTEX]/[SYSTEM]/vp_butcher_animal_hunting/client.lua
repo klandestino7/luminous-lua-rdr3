@@ -26,15 +26,18 @@ Citizen.CreateThread(
             closeToButcher = false
 
             local ped = PlayerPedId()
-            local pedVec = GetEntityCoords(ped)
 
-            local closestDist
+            if NativeGetItemInteractionFromPed(ped) ~= GetHashKey("MP_CATALOGUE_UNHOLSTER_S1") then
+                local pedVec = GetEntityCoords(ped)
 
-            for _, v in pairs(spotPool) do
-                local dist = #(pedVec - v)
-                if (dist <= 50 and closestDist == nil) or (closestDist ~= nil and dist < closestDist) then
-                    closestDist = dist
-                    closestSpotIndex = _
+                local closestDist
+
+                for _, v in pairs(spotPool) do
+                    local dist = #(pedVec - v)
+                    if (dist <= 50 and closestDist == nil) or (closestDist ~= nil and dist < closestDist) then
+                        closestDist = dist
+                        closestSpotIndex = _
+                    end
                 end
             end
         end
@@ -151,6 +154,10 @@ end
 function GetAnimalCarcassQuality(Ped)
     local ret = Citizen.InvokeNative(0x88EFFED5FE8B0B4A, Ped)
     return ret ~= false and ret or 0
+end
+
+function NativeGetItemInteractionFromPed(ped)
+    return Citizen.InvokeNative(0x6AA3DCA2C6F5EB6D, ped)
 end
 
 function HandlePrompts()

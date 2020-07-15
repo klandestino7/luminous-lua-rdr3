@@ -62,7 +62,6 @@ Config.Shops = {
 			-- {"meat", 80, 32, 1},
 			-- {"feather_1", 100, 40, 5},
 			-- {"feather_2", 100, 40, 5}
-			{item = "meat", dollar = 0.78},
 			{item = "meat_poor", dollar = 0.78},
 			{item = "meat_good", dollar = 1.37},
 			{item = "meat_perfect", dollar = 3.56},
