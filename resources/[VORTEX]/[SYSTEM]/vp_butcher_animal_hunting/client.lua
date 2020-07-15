@@ -71,7 +71,7 @@ Citizen.CreateThread(
                 local pedPosition = GetEntityCoords(PlayerPedId())
                 local carriedEntity = GetPedCarriedEntity()
 
-                if #(pedPosition - spotPosition) <= 1.5 and carriedEntity == 0  then
+                if #(pedPosition - spotPosition) <= 1.5 and carriedEntity == 0 then
                     PromptSetActiveGroupThisFrame(prompt_group, prompt_name)
                     HandlePrompts()
                 end
@@ -162,7 +162,8 @@ function HandlePrompts()
     end
 
     if PromptIsJustPressed(prompt_shop) then
-        TriggerEvent("VP:SHOP:SELL:OpenShop", "Acogueiro")
+        -- TriggerEvent("VP:SHOP:SELL:OpenShop", "Acogueiro")
+        TriggerEvent("VP:SHOP:OpenShopByName", "Acogueiro")
     end
 end
 

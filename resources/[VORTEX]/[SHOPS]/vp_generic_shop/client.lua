@@ -50,17 +50,15 @@ Citizen.CreateThread(
             closestShopVector = nil
 
             if foundShopName then
-                for shopIndex, shop_data in pairs(Config.Shops) do
-                    local shop_name = shop_data.name
+                local shopIndex = getShopIndexByName(foundShopName)
 
-                    if shop_name == foundShopName then
-                        closestShopIndex = shopIndex
-                        closestShopVector = foundShopVector
+                if shopIndex then
+                    closestShopIndex = shopIndex
+                    closestShopVector = foundShopVector
 
-                        PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", shop_name))
+                    PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", foundShopName))
 
-                        break
-                    end
+                    break
                 end
             else
                 PromptSetVisible(prompt_open, false)
@@ -191,6 +189,57 @@ function InitiatePrompts()
     PromptRegisterEnd(prompt_transaction_extra)
 end
 
+RegisterNetEvent("VP:SHOP:OpenNUI")
+AddEventHandler(
+    "VP:SHOP:OpenNUI",
+    function(shopIndex, activeTransactions)
+        NUIOpen = true
+
+        local shop_data = deepcopy(Config.Shops[shopIndex])
+
+        SendNUIMessage(
+            {
+                type = "show",
+                shop_data = shop_data,
+                activeTransations = activeTransactions
+            }
+        )
+
+        SetNuiFocusKeepInput(true)
+        SetNuiFocus(true, true)
+
+        PromptSetVisible(prompt_open, false)
+
+        selected_shop_index = shopIndex
+
+        ClearPedTasks(PlayerPedId())
+        TaskItemInteraction(PlayerPedId(), GetHashKey("KIT_HANDHELD_CATALOG"), GetHashKey("MP_CATALOGUE_UNHOLSTER_S1"), 1, 0, -1082130432)
+    end
+)
+
+RegisterNetEvent("VP:SHOP:OpenShopByName")
+
+AddEventHandler(
+    "VP:SHOP:OpenShopByName",
+    function(shopName)
+        local shopIndex = getShopIndexByName(shopName)
+
+        if shopIndex then
+            TriggerServerEvent("VP:SHOP:TryToOpen", shopIndex)
+        end
+    end
+)
+
+function getShopIndexByName(shopName)
+    for shopIndex, shop_data in pairs(Config.Shops) do
+        local shop_name = shop_data.name
+
+        if shop_name == shopName then
+            return shopIndex
+        end
+    end
+end
+
 RegisterNUICallback(
     "select",
     function(cb)
@@ -256,19 +305,6 @@ RegisterNUICallback(
     end
 )
 
-AddEventHandler(
-    "onResourceStop",
-    function(resourceName)
-        if resourceName == GetCurrentResourceName() then
-            destroy()
-
-            PromptDelete(prompt_open)
-            PromptDelete(prompt_transaction)
-            PromptDelete(prompt_transaction_extra)
-        end
-    end
-)
-
 function destroy()
     SendNUIMessage(
         {
@@ -291,30 +327,15 @@ function destroy()
     ClearPedTasks(PlayerPedId())
 end
 
-RegisterNetEvent("VP:SHOP:OpenNUI")
 AddEventHandler(
-    "VP:SHOP:OpenNUI",
-    function(shopIndex, activeTransactions)
-        NUIOpen = true
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            destroy()
 
-        local shop_data = deepcopy(Config.Shops[shopIndex])
-
-        SendNUIMessage(
-            {
-                type = "show",
-                shop_data = shop_data,
-                activeTransations = activeTransactions
-            }
-        )
-
-        SetNuiFocusKeepInput(true)
-        SetNuiFocus(true, true)
-
-        PromptSetVisible(prompt_open, false)
-
-        selected_shop_index = shopIndex
-
-        ClearPedTasks(PlayerPedId())
-        TaskItemInteraction(PlayerPedId(), GetHashKey("KIT_HANDHELD_CATALOG"), GetHashKey("MP_CATALOGUE_UNHOLSTER_S1"), 1, 0, -1082130432)
+            PromptDelete(prompt_open)
+            PromptDelete(prompt_transaction)
+            PromptDelete(prompt_transaction_extra)
+        end
     end
 )
