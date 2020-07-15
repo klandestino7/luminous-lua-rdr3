@@ -33,6 +33,7 @@ Config.Priority = {
     ["steam:11000010593d219"] = 10, -- ALPHAIAT#6345 / 11.07
     ["steam:11000010760ea7e"] = 30, -- Rent#7650 / 11.07
     ["steam:11000011cdcba80"] = 30,  -- Diamante brutalfatal_zétafé#469 (244) / 29.06
+    ["steam:110000105a713f4"] = 5, -- Richard.Grawe#1438 (166) / Setando em 14.07
 
    -- ///////////////// NITRO BOOSTERS //////////////////
     ["steam:1100001128e0a15"] = 15, -- Revolvi38#0038 / 11.06
