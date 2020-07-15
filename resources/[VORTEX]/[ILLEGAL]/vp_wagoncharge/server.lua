@@ -17,28 +17,27 @@ local reward_itens = {
 }
 
 local SPAWNWAGON = {
-  [1] = {-1629.949,-394.500,178.458}, --strawberry
+  [1] = {487.083,-548.132,69.308}, --strawberry
  -- [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
 --  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
  -- [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
-  [2] = {1887.26, 279.11, 77.11}, -- EMERALD STATION
-  [3] = {-758.89, -380.43, 41.96}, -- dakota river
-  [4] = {1829.993, -1633.500, 45.707},
-  [5] = {2336.198,-751.916,41.709},
-  [6] = {1399.832,1320.947,164.975}  
+  [2] = {487.083,-548.132,69.308}, -- EMERALD STATION
+  [3] = {487.083,-548.132,69.308}, -- dakota river
+  [4] = {487.083,-548.132,69.308},
+  [5] = {487.083,-548.132,69.308},
+  [6] = {487.083,-548.132,69.308}  
 }
 
 local DESTINYWAGON = {
-  [1] = {-1629.949,-394.500,178.458}, --strawberry
- -- [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
---  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
- -- [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
-  [2] = {1887.26, 279.11, 77.11}, -- EMERALD STATION
-  [3] = {-758.89, -380.43, 41.96}, -- dakota river
-  [4] = {1829.993, -1633.500, 45.707},
-  [5] = {2336.198,-751.916,41.709},
-  [6] = {1399.832,1320.947,164.975}
-  
+  [1] = {-1311.280,382.569,95.536}, --strawberry
+  [2] = {-1311.280,382.569,95.536}, -- montain tempest rim
+  [3] = {-1311.280,382.569,95.536}, -- CHOLLA SPRINGS
+  [5] = {-1311.280,382.569,95.536}, --   benedict point
+  [6] = {-1311.280,382.569,95.536}, -- EMERALD STATION
+  [7] = {-1311.280,382.569,95.536}, -- dakota river
+  [8] = {-1311.280,382.569,95.536},
+  [9] = {-1311.280,382.569,95.536},
+  [10] = {-1311.280,382.569,95.536}  
 }
 
 RegisterServerEvent("VP:WAGONCHARGE:playerActivated")
@@ -73,14 +72,6 @@ AddEventHandler(
   end
 )
 
--- RegisterCommand(
---   "callbau",
---   function()
---     local random = math.random(1, 6)
---     TriggerEvent("VP:WAGONCHARGE:create", random)
---   end
--- )
-
 RegisterNetEvent("VP:WAGONCHARGE:timeCall")
 AddEventHandler(
   "VP:WAGONCHARGE:timeCall",
@@ -95,29 +86,49 @@ AddEventHandler(
 
     Wait(timeram)
 
-    local random = math.random(1, 6)
-    TriggerEvent("VP:WAGONCHARGE:create", random)
+
   end
 )
+
+RegisterCommand('testeWagon', function()
+  math.randomseed(GetGameTimer())
+  local r1 = math.random(1, 6)
+  local r2 = math.random(1, 10)
+  TriggerEvent("VP:WAGONCHARGE:create", r1, r2)
+
+end)
+
 
 RegisterNetEvent("VP:WAGONCHARGE:create")
 AddEventHandler(
   "VP:WAGONCHARGE:create",
+  function(id, r2)
+
+    if not SPAWNWAGON[id] then
+      return      
+    end
+
+    if not DESTINYWAGON[r2] then
+      return
+    end
+        --print(vector3(json.encode(SPAWNWAGON[id])), DESTINYWAGON[r2])
+
+   --local itensram = math.random(1, 6)
+    
+    TriggerClientEvent("VP:WAGONCHARGE:StartNotify", -1)
+    TriggerClientEvent("VP:WAGONCHARGE:StartMission", GetHostId(), vector3(table.unpack(SPAWNWAGON[id])), vector3(table.unpack(DESTINYWAGON[r2])))
+  --  TriggerEvent("VP:WAGONCHARGE:timeCall")
+  end
+)
+
+RegisterNetEvent("VP:WAGONCHARGE:finished")
+AddEventHandler(
+  "VP:WAGONCHARGE:finished",
   function(id)
 
     if not SPAWNWAGON[id] then
       return
     end
 
-    local x = SPAWNWAGON[id][1]
-    local y = SPAWNWAGON[id][2]
-    local z = SPAWNWAGON[id][3]
-
-    local itensram = math.random(1, 6)
-    
-    TriggerClientEvent("VP:WAGONCHARGE:startMission", -1, x, y, z)
-    TriggerClientEvent("VP:WAGONCHARGE:createWagon", GetHostId(), x + xram, y + yram, z, AnimalHash, Quantity)
-    TriggerEvent("VP:WAGONCHARGE:timeCall")
   end
-
 )

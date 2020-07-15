@@ -9,39 +9,43 @@ local Banditos = {}
 local wagon
 local FinishedSpawn = false
 
+local CoordsInitial = vector3(0,0,0)
+local CoordsDestiny = vector3(0,0,0)
+
+local FinishedDelivery = false
+
 RegisterNetEvent('VP:WAGONCHARGE:StartNotify')
-AddEventHandler('VP:WAGONCHARGE:StartNotify', function(x,y,z)
+AddEventHandler('VP:WAGONCHARGE:StartNotify', function(x,y,z)	
+	Wait(3000)               
 	TriggerEvent('VP:NOTIFY:Simple', 'Há uma carroça de contrabando sendo transportada, intercepte-á e entregue no destino.', 10000)
 	-- iniciar blip aqui!
 end)
 
-
--- RegisterCommand('testeWagon', function()
--- 	local x,y,z = GetEntityCoords(PlayerPedId())
--- 	print(x,y,z)
---   	TriggerEvent('VP:WAGONCHARGE:StartMission', x,y,z)
--- end)
-
-
 RegisterNetEvent("VP:WAGONCHARGE:StartMission")
 AddEventHandler(
     "VP:WAGONCHARGE:StartMission",
-	function(x,y,z)		
+	function(CoordsSpawn, Destiny)		
+		CoordsInitial = CoordsSpawn
+
+		CoordsDestiny = Destiny
+		
 		Banditos = {}
-		TriggerEvent('VP:WAGONCHARGE:createWagon', x,y,z)
+
+		TriggerEvent('VP:WAGONCHARGE:createWagon')
 		Wait(1000)
-		TriggerEvent('VP:WAGONCHARGE:spawnped', x,y,z)
-		Wait(2000)               
-		TriggerEvent('VP:WAGONCHARGE:StartNotify', x,y,z)
+		TriggerEvent('VP:WAGONCHARGE:spawnped')
+		Wait(3000)
 		SetPedsOnWagon()
     end
 )
 
-
 RegisterNetEvent('VP:WAGONCHARGE:spawnped')
-AddEventHandler('VP:WAGONCHARGE:spawnped', function(x,y,z)
-	local x,y,z = GetEntityCoords(PlayerPedId())
+AddEventHandler('VP:WAGONCHARGE:spawnped', function()
+
+	--local x,y,z = GetEntityCoords(PlayerPedId())
 	local pedModelHash = GetHashKey("G_M_M_UniBanditos_01")
+
+	local FinishedDelivery = false
 	
 	if not HasModelLoaded(pedModelHash) then
 		RequestModel(pedModelHash)
@@ -51,12 +55,12 @@ AddEventHandler('VP:WAGONCHARGE:spawnped', function(x,y,z)
 	end
 
 	for i = 1, 5 do
-		local ped = CreatePed(pedModelHash, x+math.random(1,8), y, z, GetEntityHeading(PlayerPedId()), 1, 0)
+		local ped = CreatePed(pedModelHash, CoordsInitial.x+math.random(2,8), CoordsInitial.y+math.random(2,8), CoordsInitial.z, GetEntityHeading(PlayerPedId()), 1, 0)
 		Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
 		Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
 	--	Citizen.InvokeNative(0xE054346CA3A0F315, ped, x, y, z, 10, 0, 0)
 	--	ClearPedSecondaryTask(ped)
-		SetEntityAsMissionEntity(ped)
+		SetEntityAsMissionEntity(ped, true, true)
 		--SetRelationshipBetweenGroups(5, ped, `PLAYER`)
 		ClearPedSecondaryTask(ped)
 		SetPedOutfitPreset(ped, math.random(1,8))
@@ -84,30 +88,16 @@ AddEventHandler('VP:WAGONCHARGE:spawnped', function(x,y,z)
 		SetPedCombatAttributes(ped, 46, 1)
 		SetPedCombatAbility(ped, 100)
 		SetPedCombatMovement(ped, 2)
-		SetPedCombatRange(ped, 2)
-	--	SetAmbientVoiceName(ped, "ALIENS")
-	--	DisablePedPainAudio(ped, true)
-	 
-		--SetPedIsDrunk(ped, true)
-		--RequestAnimSet("move_m@drunk@verydrunk")
-		--while not HasAnimSetLoaded("move_m@drunk@verydrunk") do
-			--Wait(1)
-		--end
+		SetPedCombatRange(ped, 10)
 
-		Citizen.Trace("Load animation set\n")
-		--SetPedMovementClipset(ped, "move_m@drunk@verydrunk", 1.0)	
+		
 
-		TaskCombatHatedTargets(ped , 16)	
-
-		table.insert(Banditos, ped)
-
-
-	
+		table.insert(Banditos, ped)	
 	end
 end)
 
 RegisterNetEvent('VP:WAGONCHARGE:createWagon')
-AddEventHandler('VP:WAGONCHARGE:createWagon', function(x,y,z)
+AddEventHandler('VP:WAGONCHARGE:createWagon', function()
 	local veh = GetHashKey("STAGECOACH004X")
 
 	Citizen.CreateThread(
@@ -117,12 +107,13 @@ AddEventHandler('VP:WAGONCHARGE:createWagon', function(x,y,z)
 				Wait(1000)                    
 			end
 			if HasModelLoaded(veh) then
-				wagon = CreateVehicle(veh, x,y,z, 264.0, false, true, false, true)
-				
-				blip = Citizen.InvokeNative(0x23f74c2fda6e7c61, 1664425300, wagon) -- BLIPADDFORENTITY
-				SetBlipSprite(blip, -1546805641, 1)
-				SetBlipScale(blip, 0.1)
-				Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Contrabando de Armas")
+				wagon = CreateVehicle(veh, CoordsInitial.x,CoordsInitial.y,CoordsInitial.z, 114.59, false, true, false, true)
+				if not cAPI.hasGroupOrInheritance('trooper') or not cAPI.hasGroupOrInheritance('sheriff') then
+					blip = Citizen.InvokeNative(0x23f74c2fda6e7c61, 1664425300, wagon) -- BLIPADDFORENTITY
+					SetBlipSprite(blip, -1546805641, 1)
+					SetBlipScale(blip, 0.1)
+					Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Contrabando de Armas")
+				end
 			end
 		end
 	)
@@ -131,21 +122,28 @@ end)
 function SetPedsOnWagon()
 	for i = 1, 5 do
 		if i == 1 then
-			print(Banditos[1])
+			ClearPedSecondaryTask(Banditos[1])
+			TaskSetBlockingOfNonTemporaryEvents(Banditos[1], 1)
 			SetPedIntoVehicle(Banditos[1], wagon, -1)   
-			TaskVehicleDriveToCoord(Banditos[1], GetVehiclePedIsIn(Banditos[1], false), 2538.675,-1144.211,50.175, 20.0, 1.0, GetEntityModel(GetVehiclePedIsIn(Banditos[1])), 67633207, 5.0, false)
+		--TaskEnterVehicle(Banditos[1], wagon, 8, -1, 2, 1, 0)
+			TaskVehicleDriveToCoord(Banditos[1], GetVehiclePedIsIn(Banditos[1], false), CoordsDestiny.x,CoordsDestiny.y,CoordsDestiny.z, 20.0, 1.0, GetEntityModel(GetVehiclePedIsIn(Banditos[1])), 67633207, 7.0, false)
+			Citizen.InvokeNative(0x7BF835BB9E2698C8, Banditos[1], 20, 0, 16)
 		elseif i == 2 then
-			print(Banditos[2])
-			SetPedIntoVehicle(Banditos[2], wagon, 0)   
+			print(Banditos[2])					
+			SetPedIntoVehicle(Banditos[2], wagon, 0)   			
+			Citizen.InvokeNative(0x7BF835BB9E2698C8, Banditos[2], 20, 0, 16)	
 		elseif i == 3 then
-			print(Banditos[3])
-			SetPedIntoVehicle(Banditos[3], wagon, 6)   
+			print(Banditos[3])						
+			SetPedIntoVehicle(Banditos[3], wagon, 6)   		
+			Citizen.InvokeNative(0x7BF835BB9E2698C8, Banditos[3], 20, 0, 16)	
 		elseif i == 4 then
 			print(Banditos[4])
-			SetPedIntoVehicle(Banditos[4], wagon, 7) 
+			SetPedIntoVehicle(Banditos[4], wagon, 7)	
+			Citizen.InvokeNative(0x7BF835BB9E2698C8, Banditos[4], 20, 0, 16)
 		elseif i == 5 then
 			print(Banditos[5])
-			SetPedIntoVehicle(Banditos[5], wagon, 8) 	
+			SetPedIntoVehicle(Banditos[5], wagon, 8) 		
+			Citizen.InvokeNative(0x7BF835BB9E2698C8, Banditos[5], 20, 0, 16)		
 		end
 	end
 end
@@ -154,88 +152,105 @@ Citizen.CreateThread(
 	function()
 	while true do		
 		Citizen.Wait(1)
-		SetRelationshipBetweenGroups(5, "PLAYER", -1663301869)
-		SetRelationshipBetweenGroups(5, -1663301869, "PLAYER")
+		SetRelationshipBetweenGroups(5, GetHashKey('PLAYER'), -1663301869)
+		SetRelationshipBetweenGroups(5, -1663301869, GetHashKey('PLAYER'))
 	end
 end)
-
-
 
 Citizen.CreateThread(
 function()
 	while true do
 		Citizen.Wait(0)
-
-
-		-- if wagon == nil then	
-		-- 	RemoveBlip(blip)
-		-- end
-
-
 		local VehiclePed, retval = GetVehiclePedIsIn(PlayerPedId(), false)
 		if VehiclePed == wagon then	
-			print('igual')
-			if not MultiRoute then		
-				print('multiroute')
+			if not MultiRoute then
 				--local x,y,z = GetEntityCoords(wagon)
-				SetCoordsMultiRoute(2538.675,-1144.211,50.175)				
+				SetCoordsMultiRoute(CoordsDestiny)
+				TriggerEvent('VP:NOTIFY:Simple', 'Entregue a carroça no destino.', 10000)
 			end
 			MultiRoute = true
 		else
 			MultiRoute = false
 			ClearGpsMultiRoute()
 		end
-
 	end
 end
 )
 
+Citizen.CreateThread(
+    function()
+        while true do
+			Wait(10)
+			
+			local wagonCoords = GetEntityCoords(wagon)
+			local dst = #(CoordsDestiny - wagonCoords)
 
-function SetCoordsMultiRoute(x,y,z)
-	StartGpsMultiRoute(76603059, true, true)
-	--StartGpsMultiRoute(76603059, true, true)					-- Add the points
-	AddPointToGpsMultiRoute(x, y, z)
-	SetGpsMultiRouteRender(true)
-	TriggerEvent('VP:ROBREG:ClearGps')
-end
+			local PlayerCoords = GetEntityCoords(PlayerPedId())
+			local PlayerIsClosed = #(wagonCoords - PlayerCoords)
 
-
+			local VehiclePlayer, retval = GetVehiclePedIsIn(PlayerPedId(), false)
+			if VehiclePlayer == wagon then
+				if dst < 7 then
+					if not FinishedDelivery then		
+						TaskEveryoneLeaveVehicleInOrder(wagon, 1)
+						SetVehicleUndriveable(wagon, 1)
+						BringVehicleToHalt(wagon, 7, 8, 1)
+						FinishedDelivery = true
+					end					
+				end
+			end
+			if FinishedDelivery then
+				if PlayerIsClosed > 50 then
+					DeleteVehicle(wagon)
+					for i = 1, 5 do
+						DeleteEntity(Banditos[i])
+					end
+				end	
+			end
+        end
+	end
+)
 
 Citizen.CreateThread(
     function()
         while true do
             Wait(10)
-            if FirstSpawn then	
-                local pcoords = GetEntityCoords(PlayerPedId())                
-                local dst = #(coords - pcoords)	   
-                if dst < 5 then
-                    RemovePedFromGroup(ped, GetPedGroupIndex(PlayerPedId()))
-                    Wait(100)
-                    DisableAllControlActions(0)                  
-                    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
-                    SetEntityInvincible(PlayerPedId(), false)  
-                    SetCinematicModeActive(0)                    
-                    FirstSpawn = false
-                    N_0x69d65e89ffd72313(false)    
-                    Wait(1000)
-                    TaskLeaveVehicle(PlayerPedId(), car, 0, 0) 
-                    Wait(2000)                         
-                    TaskVehicleDriveToCoord(ped, GetVehiclePedIsIn(ped, false), 2600.436,-1205.932,53.323, 10.0, 1.0, GetEntityModel(GetVehiclePedIsIn(PlayerPedId())), 67633207, 5.0, false)
-                    TriggerEvent('VP:NOTIFY:Simple', 'Você perdeu todas as suas roupas, tem uma loja de roupa do outro lado da rua, que tal ir lá se trocar?', 10000)
-                    TriggerMusicEvent("MC_MUSIC_STOP")                    
-                    Wait(10000)
-                  --  TriggerEvent('VP:NOTIFY:Simple', 'Digite /guiainiciante ver o Jornal Guia de Iniciante.', 10000)
-                    DeleteVehicle(car)
-                    DeleteEntity(ped)
-                else               
-                    N_0x69d65e89ffd72313(true)
-                    SetCinematicModeActive(1)
-                    DisableAllControlActions(1)
-                end 
-            end	
+			local wagonCoords = GetEntityCoords(wagon)
+			local dst = #(CoordsDestiny - wagonCoords)		
+			
+			local PlayerCoords = GetEntityCoords(PlayerPedId())
+			local PlayerIsClosed = #(wagonCoords - PlayerCoords)
+
+			local VehiclePed, retval = GetVehiclePedIsIn(Banditos[1], false)			
+			if VehiclePed == wagon then
+				if dst < 10 then
+					-- for i = 1, 5 do
+					-- 	TaskLeaveVehicle(Banditos[i], wagon, 0, 0)						
+					-- end
+					TaskEveryoneLeaveVehicleInOrder(wagon, 1)
+					if not FinishedDelivery then
+						SetVehicleUndriveable(wagon)
+						FinishedDelivery = true			
+					end					
+					Wait(2000)
+					if PlayerIsClosed > 50 then
+						DeleteVehicle(wagon)
+						for i = 1, 5 do
+							DeleteEntity(Banditos[i])
+						end
+					end				
+				end
+			end
         end
-    end
+	end
 )
+
+function SetCoordsMultiRoute(Coords)
+	StartGpsMultiRoute(76603059, true, true)
+	--StartGpsMultiRoute(76603059, true, true)					-- Add the points
+	AddPointToGpsMultiRoute(Coords)
+	SetGpsMultiRouteRender(true)
+end
 
 RegisterNetEvent('VP:WAGONCHARGE:killblip')
 AddEventHandler('VP:WAGONCHARGE:killblip', function()
