@@ -120,6 +120,9 @@ Citizen.CreateThread(
 
             if not craftingNuiIsOpen then
                 if not isCrafting then
+                    -- 0x5966D52A
+                    -- 0x2EAB0795
+
                     if IsControlJustPressed(0, 0x5966D52A) then
                         if not Citizen.InvokeNative(0x1BE19185B8AFE299, 0x5966D52A) then
                             local scenarioTypeHash = GetHashKey("WORLD_PLAYER_CAMP_FIRE_KNEEL4")
@@ -169,21 +172,22 @@ Citizen.CreateThread(
                                 local craftingGroups = {}
 
                                 for cGroup, d in pairs(Config) do
-                                    local position = d.position
-                                    if position == nil then
-                                        if d.campfire then
-                                            if isNearCampfire then
-                                                table.insert(craftingGroups, cGroup)
-                                            end
-                                        else
-                                            table.insert(craftingGroups, cGroup)
-                                        end
-                                    else
-                                        local dist = #(playerPedPosition - position)
+                                    local hasPermission = true
 
-                                        if (dist <= (d.distance or 1.0)) then
-                                            table.insert(craftingGroups, cGroup)
-                                        end
+                                    if d.position and (#(playerPedPosition - d.position) > (d.distance or 1.0)) then
+                                        hasPermission = false
+                                    end
+
+                                    if d.campfire and not isNearCampfire then
+                                        hasPermission = false
+                                    end
+
+                                    if d.group and not cAPI.hasGroupOrInheritance(d.group) then
+                                        hasPermission = false
+                                    end
+
+                                    if hasPermission then
+                                        table.insert(craftingGroups, cGroup)
                                     end
                                 end
 

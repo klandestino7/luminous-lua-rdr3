@@ -1,31 +1,3 @@
--- Config = {
---     ["gold"] = {
---         ["gold_nugget"] = 36
---     },
---     ["campfiresmall"] = {
---         ["row_rock"] = 3,
---         ["log"] = 3
---     },
---     ["campfiremed"] = {
---         ["row_rock"] = 5,
---         ["log"] = 5
---     },
---     ["bow"] = {
---         ["stick"] = 2,
---         ["ropecuted"] = 1
---     },
---     ["ammo_arrow"] = {
---         ["stick"] = 2,
---         ["bones"] = 1
---     },
---     ["ropecuted"] = {
---         ["roperoll"] = 1
---     },
---     ["ropecuted"] = {
---         ["roperoll"] = 1
---     }
--- }
-
 Config = {
     {
         -- position = vec3(0, 0, 0) -- No position, its global
@@ -54,82 +26,110 @@ Config = {
             }
         }
     },
-    { 
-       -- position = vec3(0, 0, 0), -- No position, its global
-       craftings = {
+    {
+        -- position = vec3(0, 0, 0), -- No position, its global
+        craftings = {
             {
                 time = 15,
                 input = {
                     {item = "bones", amount = 1},
                     {item = "stick", amount = 1},
-                    {item = "melee_knife", amount = 1, remove = false},
+                    {item = "melee_knife", amount = 1, remove = false}
                 },
                 output = {
                     {item = "ammo_arrow", amount = 1}
                 }
-            },
+            }
+            -- {
+            --     time = 40,
+            --     input = {
+            --         {item = "stick", amount = 2},
+            --         {item = "ropecut", amount = 1},
+            --         {item = "melee_knife", amount = 1, remove = false}
+            --     },
+            --     output = {
+            --         {item = "bow", amount = 1}
+            --     }
+            -- },
+            -- {
+            --     time = 30,
+            --     input = {
+            --         {item = "rope", amount = 1},
+            --         {item = "melee_knife", amount = 1, remove = false}
+            --     },
+            --     output = {
+            --         {item = "ropecut", amount = 5}
+            --     }
+            -- },
+            -- {
+            --     time = 30,
+            --     input = {
+            --         {item = "rope", amount = 1},
+            --         {item = "melee_knife", amount = 1, remove = false}
+            --     },
+            --     output = {
+            --         {item = "ropecut", amount = 5}
+            --     }
+            -- }
+        }
+    },
+    {
+        group = "medic",
+        craftings = {
             {
-                time = 40,
+                time = 30,
                 input = {
-                    {item = "stick", amount = 2},
-                    {item = "ropecut", amount = 1},
-                    {item = "melee_knife", amount = 1, remove = false},
+                    {item = "herb_american_ginseng", amount = 1},
+                    {item = "herb_yarrow", amount = 1}
                 },
                 output = {
-                    {item = "bow", amount = 1}
+                    {item = "medicine_poor", amount = 1}
                 }
             },
             {
                 time = 30,
                 input = {
-                    {item = "rope", amount = 1},
-                    {item = "melee_knife", amount = 1, remove = false},
+                    {item = "herb_sage", amount = 1},
+                    {item = "herb_burdock_root", amount = 1}
                 },
                 output = {
-                    {item = "ropecut", amount = 5}
+                    {item = "stimulant_poor", amount = 1}
                 }
             },
             {
-                time = 30,
+                time = 90,
                 input = {
-                    {item = "rope", amount = 1},
-                    {item = "melee_knife", amount = 1, remove = false},
+                    {item = "herb_american_ginseng", amount = 2},
+                    {item = "herb_yarrow", amount = 2},
+                    {item = "herb_english_mace", amount = 2, alias = {"herb_milkweed"}}
                 },
                 output = {
-                    {item = "ropecut", amount = 5}
+                    {item = "medicine_good", amount = 1}
+                }
+            },
+            {
+                time = 90,
+                input = {
+                    {item = "herb_sage", amount = 2},
+                    {item = "herb_burdock_root", amount = 1}
+                },
+                output = {
+                    {item = "stimulant_good", amount = 1}
                 }
             }
+            -- {
+            --     time = 90,
+            --     input = {
+            --         {item = "herb_indian_tobacco", amount = 4},
+            --         {item = "herb_american_ginseng", amount = 4},
+            --         {item = "herb_sage", amount = 4}
+            --     },
+            --     output = {
+            --         {item = "horse_stimulant_poor", amount = 1}
+            --     }
+            -- }
         }
     }
-    -- {
-    --     craftings = {
-    --         {
-    --             time = 0,
-    --             input = {
-    --                 {item = "fishingrod", amount = 1},
-    --                 {item = "gold", amount = 1}
-    --             },
-    --             output = {
-    --                 {item = "money", amount = 1}
-    --             }
-    --         }
-    --     }
-    -- },
-    -- {
-    --     position = vec3(-93.260, 399.647, 113.579),
-    --     distance = 20.0,
-    --     craftings = {
-    --         {
-    --             time = 25,
-    --             input = {
-    --                 {item = "money", amount = 1}
-    --             },
-    --             output = {
-    --                 {item = "ammo_arrow", amount = 10}
-    --             }
-    --         }
-    --     }
-    -- }
 }
 
 --[[
