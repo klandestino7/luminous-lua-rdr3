@@ -1,4 +1,4 @@
-+local Tunnel = module('_core', 'lib/Tunnel')
+local Tunnel = module('_core', 'lib/Tunnel')
 local Proxy = module('_core', 'lib/Proxy')
 
 API = Proxy.getInterface('API')
@@ -16,11 +16,11 @@ AddEventHandler('VP:WAGONCHARGE:StartNotify', function(x,y,z)
 end)
 
 
-RegisterCommand('testeWagon', function()
-	local x,y,z = GetEntityCoords(PlayerPedId())
-	print(x,y,z)
-  	TriggerEvent('VP:WAGONCHARGE:StartMission', x,y,z)
-end)
+-- RegisterCommand('testeWagon', function()
+-- 	local x,y,z = GetEntityCoords(PlayerPedId())
+-- 	print(x,y,z)
+--   	TriggerEvent('VP:WAGONCHARGE:StartMission', x,y,z)
+-- end)
 
 
 RegisterNetEvent("VP:WAGONCHARGE:StartMission")
@@ -105,18 +105,6 @@ AddEventHandler('VP:WAGONCHARGE:spawnped', function(x,y,z)
 	
 	end
 end)
-
-
-RegisterCommand('groupPed', function()
-			
-	for i = 1, 5 do
-		print(GetRelationshipBetweenPeds(Banditos[i], Banditos[i+1]))
-	end
-	
-	
-end)
-	
-
 
 RegisterNetEvent('VP:WAGONCHARGE:createWagon')
 AddEventHandler('VP:WAGONCHARGE:createWagon', function(x,y,z)

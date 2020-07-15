@@ -143,29 +143,23 @@ AddEventHandler('TRAIN:create', function()
 	TriggerEvent('Distress', 'sucesso', 'Um trem carregado de materias está no mapa.')	
 end)
 
-RegisterCommand('deletartrain', function()
-    DeleteEntity(CURRENT_TRAIN)
-end)
+-- RegisterCommand('deletartrain', function()
+--     DeleteEntity(CURRENT_TRAIN)
+-- end)
 
-RegisterCommand('change', function(source,args)
-    Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Crafting_SatchelUpgrade", 1, -1);    
-end)
+-- RegisterCommand('change', function(source,args)
+--     Citizen.InvokeNative(0xCB9401F918CB0F75 , PlayerPedId(), "Crafting_SatchelUpgrade", 1, -1);    
+-- end)
 
-RegisterCommand('int', function(source,args)
-    --TaskItemInteraction(PlayerPedId(), -569063887, GetHashKey('PROVISION_OLD_BRASS_COMPASS'), 1, 1, -1082130432)
+-- RegisterCommand('int', function(source,args)
+--     --TaskItemInteraction(PlayerPedId(), -569063887, GetHashKey('PROVISION_OLD_BRASS_COMPASS'), 1, 1, -1082130432)
 
-    SetAnimSceneEntity(PlayerPedId(), "s_moneysackbig01x", N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_cs_sackCorn01x_PH_R_HAND", 0), 0)
+--     SetAnimSceneEntity(PlayerPedId(), "s_moneysackbig01x", N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_cs_sackCorn01x_PH_R_HAND", 0), 0)
 
-    N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_bottleBeer01x_PH_R_HAND", 1)
-    TaskItemInteraction(PlayerPedId(), -24362764, GetHashKey("p_bottlebeer01x_ph_r_hand"), 1587785400, 1, 0, -1082130432)
-    print( GetHashKey('PROVISION_OLD_BRASS_COMPASS'))
-end)
-
-
-
-RegisterCommand("explosao", function()
-    explosion(PlayerPedId())
-end)
+--     N_0x4d0d2e3d8bc000eb(PlayerPedId(), "p_bottleBeer01x_PH_R_HAND", 1)
+--     TaskItemInteraction(PlayerPedId(), -24362764, GetHashKey("p_bottlebeer01x_ph_r_hand"), 1587785400, 1, 0, -1082130432)
+--     print( GetHashKey('PROVISION_OLD_BRASS_COMPASS'))
+-- end)
 
 local SwitchTrack = {
     -1739625337,    -- 13
@@ -218,16 +212,6 @@ local SwitchTrack = {
 --     Citizen.InvokeNative(0x3ABFA128F5BF5A70 , -1467515357, 1 ,1)
 -- end)
 
-
-RegisterCommand('acentos', function(source,args)
-    print(GetVehicleModelNumberOfSeats(CURRENT_TRAIN))
-end)
-
-
-
-
-
-
 local seguranca = GetHashKey("S_M_M_UniTrainGuards_01")
 
 
@@ -272,43 +256,41 @@ AddEventHandler('TRAIN:createPedDefender', function()
 end)
 
 
-RegisterCommand('criarped2', function(source,args)    
+-- RegisterCommand('criarped2', function(source,args)    
 
-    local pedModel = "S_M_M_UniTrainGuards_01"
+--     local pedModel = "S_M_M_UniTrainGuards_01"
 
-    local pedModelHash = GetHashKey(pedModel)
-    if not IsModelValid(pedModelHash) then
-        print('model is not valid')
-        return
-    end
+--     local pedModelHash = GetHashKey(pedModel)
+--     if not IsModelValid(pedModelHash) then
+--         print('model is not valid')
+--         return
+--     end
 
-    if not HasModelLoaded(pedModelHash) then
-        RequestModel(pedModelHash)
-        while not HasModelLoaded(pedModelHash) do
-            Citizen.Wait(10)
-        end
-    end
+--     if not HasModelLoaded(pedModelHash) then
+--         RequestModel(pedModelHash)
+--         while not HasModelLoaded(pedModelHash) do
+--             Citizen.Wait(10)
+--         end
+--     end
 
-    local ped = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
-    Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
-    Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+--     local ped = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
+--     Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
+--     Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
 
-    ClearPedTasks(ped)
-    ClearPedSecondaryTask(ped)
-    ClearPedTasksImmediately(ped)
-    SetPedFleeAttributes(ped, 0,0)
-    TaskWanderStandard(ped, 1, 0)
-    TaskSetBlockingOfNonTemporaryEvents(ped, 1)
-    SetEntityAsMissionEntity(ped)
+--     ClearPedTasks(ped)
+--     ClearPedSecondaryTask(ped)
+--     ClearPedTasksImmediately(ped)
+--     SetPedFleeAttributes(ped, 0,0)
+--     TaskWanderStandard(ped, 1, 0)
+--     TaskSetBlockingOfNonTemporaryEvents(ped, 1)
+--     SetEntityAsMissionEntity(ped)
 
-    guardasinfo(ped)
+--     guardasinfo(ped)
         
-    N_0x841475ac96e794d1(0)
-    TaskRideTrain(CURRENT_TRAIN, seguranca_spw, 0, 0);
+--     N_0x841475ac96e794d1(0)
+--     TaskRideTrain(CURRENT_TRAIN, seguranca_spw, 0, 0);
 
-end)
-
-
+-- end)
 
 
 function setupModelo(modelo)

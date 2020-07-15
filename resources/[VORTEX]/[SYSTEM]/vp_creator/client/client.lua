@@ -146,19 +146,6 @@ Citizen.CreateThread(
     end
 )
 
-RegisterCommand(
-    "creatormod",
-    function(source, args)
-        vpcreator = true
-        inCustomization = false
-        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
-        SetEntityVisible(PlayerPedId(), false)
-        SetEntityCoords(PlayerPedId(), -561.8157, -3780.966, 239.0805)
-        DeletePed = false
-        DoScreenFadeIn(3000)
-    end
-)
-
 RegisterNetEvent("VP:CHARCREATION:starting")
 AddEventHandler(
     "VP:CHARCREATION:starting",

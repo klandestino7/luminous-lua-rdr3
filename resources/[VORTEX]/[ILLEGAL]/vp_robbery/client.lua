@@ -267,17 +267,6 @@ AddEventHandler(
     end
 )
 
-RegisterCommand(
-    "iplrq",
-    function(source, args)
-        RequestImap(995510724)
-        RequestImap(1193981581)
-        RequestImap(-1026473536)
-        RequestImap(1829082995)
-        -- print("loaded")
-    end
-)
-
 RegisterNetEvent("VP:ROBBERY:EndRobbery")
 AddEventHandler(
     "VP:ROBBERY:EndRobbery",
