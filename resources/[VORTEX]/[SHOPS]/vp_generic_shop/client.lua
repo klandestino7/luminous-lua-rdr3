@@ -76,9 +76,10 @@ Citizen.CreateThread(
         while true do
             Citizen.Wait(0)
 
+            local ped = PlayerPedId()
+
             if NUIOpen == false then
                 if closestShopIndex ~= nil then
-                    local ped = PlayerPedId()
                     local playerPosition = GetEntityCoords(ped)
 
                     if #(playerPosition - closestShopVector) <= 1.5 then
@@ -111,6 +112,11 @@ Citizen.CreateThread(
                 DisableAllControlActions(2)
                 EnableControlAction(0, 0x07B8BEAF, true)
                 EnableControlAction(0, 0xC13A6564, true)
+
+                if Citizen.InvokeNative(0x6AA3DCA2C6F5EB6D, ped) ~= GetHashKey("MP_CATALOGUE_UNHOLSTER_S1") then
+                    ClearPedTasks(ped)
+                    TaskItemInteraction(ped, GetHashKey("KIT_HANDHELD_CATALOG"), GetHashKey("MP_CATALOGUE_UNHOLSTER_S1"), 1, 0, -1082130432)
+                end
 
                 if selected_shop_index and selected_transaction_index then
                     local transaction_data = Config.Shops[selected_shop_index].transactions[selected_transaction_index]
