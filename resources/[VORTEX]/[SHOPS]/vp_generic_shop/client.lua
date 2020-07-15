@@ -114,7 +114,9 @@ Citizen.CreateThread(
                 EnableControlAction(0, 0xC13A6564, true)
 
                 if Citizen.InvokeNative(0x6AA3DCA2C6F5EB6D, ped) ~= GetHashKey("MP_CATALOGUE_UNHOLSTER_S1") then
+                    print("Applying catalog task")
                     ClearPedTasks(ped)
+                    ClearPedSecondaryTask(ped)
                     TaskItemInteraction(ped, GetHashKey("KIT_HANDHELD_CATALOG"), GetHashKey("MP_CATALOGUE_UNHOLSTER_S1"), 1, 0, -1082130432)
                 end
 
