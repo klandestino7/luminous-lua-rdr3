@@ -29,9 +29,9 @@ Config.Shops = {
 		name = "Mercado Geral",
 		type = "buy",
 		transactions = {
-			{item = "tobacco_seed", dollar = 0.10, gold = 0.04},
-			{item = "corn_seed", dollar = 0.10, gold = 0.04},
-			{item = "sugarcane_seed", dollar = 0.10, gold = 0.04},
+			-- {item = "tobacco_seed", dollar = 0.10, gold = 0.04},
+			-- {item = "corn_seed", dollar = 0.10, gold = 0.04},
+			-- {item = "sugarcane_seed", dollar = 0.10, gold = 0.04},
 			-- { item = "pickaxe", 1, 100, 40},
 			{item = "lasso", dollar = 30.00, gold = 12.00},
 			{item = "melee_knife", dollar = 20.00, gold = 8.00},
