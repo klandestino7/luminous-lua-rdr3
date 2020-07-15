@@ -53,12 +53,14 @@ Citizen.CreateThread(
                 local shopIndex = getShopIndexByName(foundShopName)
 
                 if shopIndex then
-                    closestShopIndex = shopIndex
-                    closestShopVector = foundShopVector
+                    local shop_group = Config.Shops[shopIndex].group
 
-                    PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", foundShopName))
+                    if shop_group == nil or cAPI.hasGroupOrInheritance(shop_group) then
+                        closestShopIndex = shopIndex
+                        closestShopVector = foundShopVector
 
-                    break
+                        PromptSetText(prompt_open, CreateVarString(10, "LITERAL_STRING", foundShopName))
+                    end
                 end
             else
                 PromptSetVisible(prompt_open, false)
@@ -82,7 +84,7 @@ Citizen.CreateThread(
                     if #(playerPosition - closestShopVector) <= 1.5 then
                         PromptSetVisible(prompt_open, true)
 
-                        local shop_name = Config.Shops[closestShopIndex].name
+                        -- local shop_name = Config.Shops[closestShopIndex].name
 
                         -- PromptSetActiveGroupThisFrame(prompt_group, CreateVarString(10, "LITERAL_STRING", shop_name))
 
