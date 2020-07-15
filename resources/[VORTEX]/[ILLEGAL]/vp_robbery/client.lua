@@ -13,10 +13,10 @@ API = Tunnel.getInterface("API")
 -- )
 
 local interiors = {
- --   [1] = 72962, -- BANCO BLACKWATER
+    --   [1] = 72962, -- BANCO BLACKWATER
     [2] = 42754, -- BANCO SAINT DENNIS
-    [3] = 29442, -- BANCO RHODES
-   --  [4] = 12290 -- BANCO VALENTINE
+    [3] = 29442 -- BANCO RHODES
+    --  [4] = 12290 -- BANCO VALENTINE
 }
 
 local interiorIndexBeingRobbed = nil
@@ -94,7 +94,12 @@ Citizen.CreateThread(
                                         end
                                     end
                                 end
-                                TriggerServerEvent("VP:ROBBERY:TryToStartRobbery", interiorIndexPlayerIsIn, participants)
+
+                                if NetworkIsInSession() then
+                                    TriggerServerEvent("VP:ROBBERY:TryToStartRobbery", interiorIndexPlayerIsIn, participants)
+                                else
+                                    cAPI.notify("error", "Sessão solo!")
+                                end
                             end
                         else
                             -- notify('Aguarde 10 segundos...')
@@ -129,7 +134,7 @@ Citizen.CreateThread(
                         if weaponHash ~= hashUnarmed then
                             SetCurrentPedWeapon(ped, hashUnarmed, true)
                         end
-                        if not IsEntityPlayingAnim(ped,  "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+                        if not IsEntityPlayingAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
                             TaskPlayAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 8.0, 1.0, -1, 63, 0, 0, 0, 0)
                         end
                     end
@@ -139,7 +144,7 @@ Citizen.CreateThread(
                         -- local hours = secondsUntilRobberyEnds / 3600
                         local minutes = math.floor((secondsUntilRobberyEnds % 3600) / 60)
                         local seconds = secondsUntilRobberyEnds % 60
-                        drawText(minutes .. " minutos e " .. seconds .. " segundos", true)                                          
+                        drawText(minutes .. " minutos e " .. seconds .. " segundos", true)
                     end
                 end
             else
@@ -271,7 +276,6 @@ RegisterNetEvent("VP:ROBBERY:EndRobbery")
 AddEventHandler(
     "VP:ROBBERY:EndRobbery",
     function()
-
         interiorIndexBeingRobbed = nil
 
         isParticipantOfRobbery = false
@@ -294,16 +298,15 @@ RegisterNetEvent("VP:ROBBERY:Bolsa")
 AddEventHandler(
     "VP:ROBBERY:Bolsa",
     function()
-        
- --   cAPI.AddWantedTime(true, 30)
+        --   cAPI.AddWantedTime(true, 30)
 
-    if IsPedMale(PlayerPedId()) then
-        setSatchel(0xEA272E11)
-    else
-        setSatchel(0xFCAF241B)
+        if IsPedMale(PlayerPedId()) then
+            setSatchel(0xEA272E11)
+        else
+            setSatchel(0xFCAF241B)
+        end
     end
-
-end)
+)
 
 local lastDisplayedText
 local lastVarString
