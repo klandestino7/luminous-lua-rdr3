@@ -95,7 +95,7 @@ Citizen.CreateThread(
                                     end
                                 end
 
-                                if NetworkIsInSession() then
+                                if NetworkIsSessionActive() == 1 then
                                     TriggerServerEvent("VP:ROBBERY:TryToStartRobbery", interiorIndexPlayerIsIn, participants)
                                 else
                                     cAPI.notify("error", "Sessão solo!")

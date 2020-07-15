@@ -40,7 +40,7 @@ Citizen.CreateThread(
 						DrawText3D(v.x, v.y, v.z + 0.5, "Aperte [ENTER] para roubar")
 
 						if IsControlJustPressed(0, 0xC7B5340A) and not IsPedInAnyVehicle(player) then
-							if NetworkIsInSession() then
+							if NetworkIsSessionActive() == 1 then
 								TriggerServerEvent("VP:ROBREG:checkTheRobbery", {v.id, v.x, v.y, v.z, v.h, v.seconds})
 							else
 								cAPI.notify("error", "Sessão solo!")
