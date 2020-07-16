@@ -31,10 +31,9 @@ AddEventHandler(
 		-- 	end
 		-- end
 
-		-- if #PoliceON < Config.copsRequired then
-		-- 	TriggerClientEvent("VP:NOTIFY:Simple", source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)
-		-- else
-		if (os.time() - Config.ATMS[atmInfo[1]]["wasRobbed"]) <= Config.robberyInterval then
+		if #PoliceON < Config.copsRequired then
+			TriggerClientEvent("VP:NOTIFY:Simple", source, "Esta loja não pode ser roubada, não há policiais disponíveis.", 10000)
+		elseif (os.time() - Config.ATMS[atmInfo[1]]["wasRobbed"]) <= Config.robberyInterval then
 			--	TriggerClientEvent('Notify', source, 'negado',  Locales[Config.Locale]['empty_atm'] .. timeInterval .. timeUnit )
 			local timeInterval = Config.robberyInterval - (os.time() - Config.ATMS[atmInfo[1]]["wasRobbed"])
 			local timeUnit
