@@ -8,19 +8,26 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if (IsControlJustPressed(0, 0x8CC9CD42)) then
-                local ped = PlayerPedId()
-                if (DoesEntityExist(ped) and not IsEntityDead(ped)) then
-                    RequestAnimDict("script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs")
+            if IsControlJustPressed(0, 0x8CC9CD42) then
+                local playerPed = PlayerPedId()
+                if not IsEntityDead(playerPed) and not Citizen.InvokeNative(0x9682F850056C9ADE, playerPed) then
+                    local animDict = "script_proc@robberies@homestead@lonnies_shack@deception"
 
-                    while (not HasAnimDictLoaded("script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs")) do
-                        Citizen.Wait(100)
-                    end
+                    if not IsEntityPlayingAnim(playerPed, animDict, "hands_up_loop", 3) then
+                        if not HasAnimDictLoaded(animDict) then
+                            RequestAnimDict(animDict)
 
-                    if IsEntityPlayingAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
-                        ClearPedSecondaryTask(ped)
+                            while not HasAnimDictLoaded(animDict) do
+                                Citizen.Wait(0)
+                            end
+                        end
+
+                        TaskPlayAnim(playerPed, animDict, "hands_up_loop", 2.0, -2.0, -1, 67109393, 0.0, false, 1245184, false, "UpperbodyFixup_filter", false)
+
+                        RequestAnimDict(animDict)
                     else
-                        TaskPlayAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 8.0, -8.0, 120000, 31, 0, true, 0, false, 0, false)
+                        -- ClearPedTasks(playerPed)
+                        ClearPedSecondaryTask(playerPed)
                     end
                 end
             end
@@ -32,7 +39,7 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            
+
             if IsControlPressed(0, 0x26E9DC00) then -- Z
                 Citizen.InvokeNative(0xAE99FB955581844A, PlayerPedId(), 1000, 1000, 0, 0, 0, 0)
             end
@@ -44,7 +51,7 @@ Citizen.CreateThread(
                 end
                 TaskPlayAnim(PlayerPedId(), "mech_loco_m@generic@reaction@pointing@unarmed@stand", "point_fwd_0", 8.0, 8.0, 3000, 31, 0, true, 0, false, 0, false)
             end
-            
+
             if IsControlPressed(0, 0x43CDA5B0) then -- U | Cancelar animação
                 local ped = PlayerPedId()
 
@@ -79,7 +86,7 @@ RegisterCommand(
 RegisterCommand(
     "c",
     function(source)
-        local ped = PlayerPedId()     
+        local ped = PlayerPedId()
         if not IsPlayerFreeAiming(ped) then
             ClearPedTasks(ped)
             ClearPedSecondaryTask(ped)
@@ -145,7 +152,7 @@ RegisterCommand(
                 Bandana = false
             end
         else
-            TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode retirar a bandana. ', 10000)
+            TriggerEvent("VP:NOTIFY:Simple", "Você ainda está como procurado, não pode retirar a bandana. ", 10000)
         end
     end
 )
@@ -190,7 +197,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "afumar5",
     function(source, args, rawCommand)
@@ -214,7 +220,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_SIT_GROUND_READING_JOURNAL"), 100000, true, false, false, false)
     end
 )
-
 
 RegisterCommand(
     "awhisky",
@@ -308,7 +313,7 @@ RegisterCommand(
     "asentar2",
     function(source, args, rawCommand)
         local ped = Citizen.InvokeNative(0x275F255ED201B937, 0)
-        Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("PROP_CAMP_FIRE_SEATED"),  -1, true, false, false, false)
+        Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("PROP_CAMP_FIRE_SEATED"), -1, true, false, false, false)
     end
 )
 
@@ -319,8 +324,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_PLAYER_CAMP_FIRE_SIT"), -1, true, false, false, false)
     end
 )
-
-
 
 RegisterCommand(
     "ainspecionar",
@@ -354,7 +357,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "adormir2",
     function(source, args, rawCommand)
@@ -378,7 +380,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_STRAW_BROOM_WORKING"), -1, true, false, false, false)
     end
 )
-
 
 RegisterCommand(
     "atrompete",
@@ -404,7 +405,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "aencherbalde",
     function(source, args, rawCommand)
@@ -429,7 +429,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "acomidadegalinha",
     function(source, args, rawCommand)
@@ -437,7 +436,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_PLAYER_CHORES_FEED_CHICKENS"), -1, true, false, false, false)
     end
 )
-
 
 RegisterCommand(
     "atest",
@@ -463,7 +461,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "acafenochao",
     function(source, args, rawCommand)
@@ -471,15 +468,6 @@ RegisterCommand(
         Citizen.InvokeNative(0x524B54361229154F, PlayerPedId(), GetHashKey("WORLD_HUMAN_SIT_GROUND_COFFEE_DRINK"), -1, true, false, false, false)
     end
 )
-
-
-
-
-
-
-
-
-
 
 RegisterCommand(
     "anim3",
