@@ -100,8 +100,10 @@ Config = {
                 time = 90,
                 input = {
                     {item = "herb_american_ginseng", amount = 2},
-                    {item = "herb_yarrow", amount = 2},
-                    {item = "herb_english_mace", amount = 2, alias = {"herb_milkweed"}}
+                    -- {item = "herb_yarrow", amount = 2},
+                    -- {item = "herb_english_mace", amount = 2, alias = {"herb_milkweed"}}
+                    {item = "herb_common_bullrush", amount = 2},
+                    {item = "herb_parasol_mushroom", amount = 2}
                 },
                 output = {
                     {item = "medicine_good", amount = 1}
@@ -110,7 +112,8 @@ Config = {
             {
                 time = 90,
                 input = {
-                    {item = "herb_sage", amount = 2},
+                    -- {item = "herb_sage", amount = 2},
+                    {item = "herb_desert_sage", amount = 2},
                     {item = "herb_burdock_root", amount = 1}
                 },
                 output = {
