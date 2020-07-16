@@ -76,26 +76,26 @@ Config = {
     {
         group = "medic",
         craftings = {
-            {
-                time = 30,
-                input = {
-                    {item = "herb_american_ginseng", amount = 1},
-                    {item = "herb_yarrow", amount = 1}
-                },
-                output = {
-                    {item = "medicine_poor", amount = 1}
-                }
-            },
-            {
-                time = 30,
-                input = {
-                    {item = "herb_sage", amount = 1},
-                    {item = "herb_burdock_root", amount = 1}
-                },
-                output = {
-                    {item = "stimulant_poor", amount = 1}
-                }
-            },
+            -- {
+            --     time = 30,
+            --     input = {
+            --         {item = "herb_american_ginseng", amount = 1},
+            --         {item = "herb_yarrow", amount = 1}
+            --     },
+            --     output = {
+            --         {item = "medicine_poor", amount = 1}
+            --     }
+            -- },
+            -- {
+            --     time = 30,
+            --     input = {
+            --         {item = "herb_sage", amount = 1},
+            --         {item = "herb_burdock_root", amount = 1}
+            --     },
+            --     output = {
+            --         {item = "stimulant_poor", amount = 1}
+            --     }
+            -- },
             {
                 time = 90,
                 input = {
