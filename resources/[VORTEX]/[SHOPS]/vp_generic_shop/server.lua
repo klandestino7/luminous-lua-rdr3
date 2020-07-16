@@ -159,7 +159,7 @@ AddEventHandler(
                 Inventory:removeItem(-1, transaction_item, transaction_amount)
 
                 User:notify("item", transaction_item, -(transaction_amount))
-                User:notify("item", "money", -(transaction_price))
+                User:notify("item", "money", transaction_price)
             end
         end
     end
