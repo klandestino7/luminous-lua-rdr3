@@ -56,7 +56,7 @@ AddEventHandler(
 
         if cooldownEndsAtTimeStamp > os.time() then
             -- print("Fomos assaltados a pouco tempo, não temos dinheiro")
-            print('VP_ROBBERY', cooldownEndsAtTimeStamp, cooldownEndsAtTimeStamp - os.time())
+            print("VP_ROBBERY", cooldownEndsAtTimeStamp, cooldownEndsAtTimeStamp - os.time())
             TriggerClientEvent("VP:NOTIFY:Simple", _source, "Fomos assaltados a pouco tempo, não temos dinheiro")
             return
         else
@@ -91,7 +91,7 @@ AddEventHandler(
                         numParticipants = numParticipants + 1
                         TriggerClientEvent("VP:ROBBERY:StartRobbery", participantSource, index, true, indexBeingRobbed_seconds)
                         participants[participantSource] = true
-                   --      API.logs("./savedata/roubobanco.txt","[USUARIOID]: "..Character:getId().. "Iniciou o roubo")
+                    --      API.logs("./savedata/roubobanco.txt","[USUARIOID]: "..Character:getId().. "Iniciou o roubo")
                     -- else
                     --     TriggerClientEvent("VP:ROBBERY:StartRobberyAsBlocked", participantSource, index)
                     -- end
@@ -147,22 +147,29 @@ function endRobberyGiveReward()
     if indexBeingRobbed_playerSourceWhoStarted ~= nil then
         User = API.getUserFromSource(indexBeingRobbed_playerSourceWhoStarted)
         _source = indexBeingRobbed_playerSourceWhoStarted
-        TriggerClientEvent('VP:ROBBERY:Bolsa', _source)
-    else
-        for participantSource, _ in pairs(indexBeingRobbed_participants) do
-            User = API.getUserFromSource(participantSource)
+        TriggerClientEvent("VP:ROBBERY:Bolsa", _source)
+    end
+
+    for participantSource, _ in pairs(indexBeingRobbed_participants) do
+        local p_User = API.getUserFromSource(participantSource)
+
+        local user_id = p_User:getId()
+
+        TriggerEvent("VP:COMBATLOG:AddUserCombatReason", user_id, 300, "Roubo a Banco")
+
+        if User == nil then
             _source = participantSource
-            TriggerClientEvent('VP:ROBBERY:Bolsa', _source)
-            if User ~= nil then
-                break
-            end
+            User = p_User
         end
     end
 
     if User ~= nil then
+        TriggerClientEvent("VP:ROBBERY:Bolsa", _source)
+
         local Character = User:getCharacter()
+
         if Character ~= nil then
-            local reward = math.random(20000,data[indexBeingRobbed].staticReward)
+            local reward = math.random(20000, data[indexBeingRobbed].staticReward)
             Character:getInventory():addItem("money", reward)
             -- User:notify("success", "Você recebeu R$ " .. reward .. " pelo assalto")
             User:notify("item", "money", reward / 100)
@@ -197,7 +204,6 @@ AddEventHandler(
         indexBeingRobbed_participants[_source] = nil
 
         if #indexBeingRobbed_participants <= 0 and not robberyBeingEnded then
-
             cooldownEndsAtTimeStamp = os.time() + (cCooldown * 60 * 1000)
 
             indexBeingRobbed = nil
