@@ -174,7 +174,7 @@ Citizen.CreateThread(
 
                     if isAlive then
                         if distance <= 1.5 then
-                            if IsEntityPlayingAnim(entity, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+                            if IsEntityPlayingAnim(entity, "script_proc@robberies@homestead@lonnies_shack@deception", "hands_up_loop", 3) then
                                 if not promptsEnabledBlocked[prompt_patdown] then
                                     PromptSetEnabled(prompt_patdown, true)
                                 end
