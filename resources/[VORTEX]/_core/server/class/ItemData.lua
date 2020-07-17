@@ -102,8 +102,8 @@ function triggerUse(User, itemData)
             local variationCore = 15.0
 
             if itemId:find("poor") then
-                local variation = 5.0
-                local variationCore = 5.0
+                variation = 5.0
+                variationCore = 5.0
             end
 
             if cAPI.IsPlayerMountedOnOwnHorse(source) then
@@ -119,21 +119,21 @@ function triggerUse(User, itemData)
         else
             local variation = 25.0
             local variationCore = 25.0
-            local canBeSick = false
+            local variationSickness = 0
 
             if itemId:find("poor") then
-                local variation = 15.0
-                local variationCore = 15.0
-                canBeSick = true
+                variation = 5.0
+                variationCore = 5.0
+                variationSickness = 15
             end
 
-            Citizen.CreateThread(
-                function()
-                    cAPI.TaskInteraction(source, "drink_tonic")
-                    cAPI.VaryPlayerHealth(source, variation)
-                    cAPI.VaryPlayerCore(source, 0, variationCore)
-                end
-            )
+            cAPI.TaskInteraction(source, "drink_tonic")
+            cAPI.VaryPlayerHealth(source, variation)
+            cAPI.VaryPlayerCore(source, 0, variationCore)
+            if variationSickness > 0 then
+                cAPI.VarySickness(source, variationSickness)
+            end
+
             return true
         end
 
@@ -147,38 +147,35 @@ function triggerUse(User, itemData)
             local variationCore = 15.0
 
             if itemId:find("poor") then
-                local variation = 5.0
-                local variationCore = 5.0
+                variation = 5.0
+                variationCore = 5.0
             end
 
             if cAPI.IsPlayerMountedOnOwnHorse(source) then
-                Citizen.CreateThread(
-                    function()
-                        cAPI.TaskAnimalInteraction(source, "injection")
-                        cAPI.VaryHorseStamina(source, variation)
-                        cAPI.VaryHorseCore(source, 1, variationCore)
-                    end
-                )
+                cAPI.TaskAnimalInteraction(source, "injection")
+                cAPI.VaryHorseStamina(source, variation)
+                cAPI.VaryHorseCore(source, 1, variationCore)
+
                 return true
             end
         else
             local variation = 25.0
             local variationCore = 25.0
-            local canBeSick = false
+            local variationSickness = 0
 
             if itemId:find("poor") then
-                local variation = 15.0
-                local variationCore = 15.0
-                canBeSick = true
+                variation = 4.0
+                variationCore = 5.0
+                variationSickness = 15
             end
 
-            Citizen.CreateThread(
-                function()
-                    cAPI.TaskInteraction(source, "injection")
-                    cAPI.VaryPlayerStamina(source, variation)
-                    cAPI.VaryPlayerCore(source, 1, variationCore)
-                end
-            )
+            cAPI.TaskInteraction(source, "injection")
+            cAPI.VaryPlayerStamina(source, variation)
+            cAPI.VaryPlayerCore(source, 1, variationCore)
+            if variationSickness > 0 then
+                cAPI.VarySickness(source, variationSickness)
+            end
+
             return true
         end
 
@@ -202,7 +199,6 @@ function triggerUse(User, itemData)
 
     if itemId:find("acamp") then
         local var = itemData.varOnUse
-        print(var)
         TriggerClientEvent("VP:TENTS:usedItem", source, var)
         User:closeInventory()
     end
@@ -246,7 +242,6 @@ function triggerUse(User, itemData)
     end
 
     if itemId == "eagleeye" then
-
         cAPI.TaskInteraction(source, "drink_tonic")
         TriggerClientEvent("VP:WANTED:UsedEagleEye", source)
 
