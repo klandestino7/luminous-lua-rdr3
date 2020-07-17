@@ -9,27 +9,44 @@ RegisterCommand(
     function(source, args, raw)
         local listingType = args[1]
 
-        if listingType then
-            local groupToList
-            local groupName
+        local types = {
+            ["medico"] = {group = "medic", displayName = "Medicos"},
+            ["policia"] = {group = "trooper", displayName = "Policiais"}
+        }
 
-            if listingType == "policia" then
-                groupToList = "trooper"
-                groupName = "Policiais"
+        local User = API.getUserFromSource(source)
+
+        if args[1] then
+            local d = types[args[1]]
+
+            if d then
+                local group = d.group
+                local displayName = d.displayName
+
+                local users = API.getUsersByGroup(group)
+
+                User:notify("alert", #users .. " " .. displayName .. " online!")
+            else
+                local s = "["
+
+                for type, _ in pairs(types) do
+                    s = s .. type .. ", "
+                end
+
+                s = s .. "]"
+
+                User:notify("error", "/o " .. s)
+            end
+        else
+            local s = "["
+
+            for type, _ in pairs(types) do
+                s = s .. type .. ", "
             end
 
-            if listingType == "medico" then
-                groupToList = "medic"
-                groupName = "Medicos"
-            end
+            s = s .. "]"
 
-            if groupToList then
-                local User = API.getUserFromSource(source)
-
-                local users = API.getUsersByGroup(groupToList)
-
-                User:notify("dev_longer", #users .. " " .. groupName .. " online!")
-            end
+            User:notify("error", "/o " .. s)
         end
     end,
     false

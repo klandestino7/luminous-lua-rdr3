@@ -273,9 +273,9 @@ RegisterCommand(
 		if player ~= nil then
 			local nearestPed = GetPlayerPed(player)		
 			if distance ~= -1 and distance <= 3.0 then
-				if IsEntityPlayingAnim(nearestPed, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
+				if IsEntityPlayingAnim(nearestPed, "script_proc@robberies@homestead@lonnies_shack@deception", "hands_up_loop", 3) then
 					TriggerServerEvent("VP:SHERIFF:TryToPatDown", GetPlayerServerId(player))
-				end	
+				end
 			end
 		end
 	end,

@@ -134,8 +134,8 @@ Citizen.CreateThread(
                         if weaponHash ~= hashUnarmed then
                             SetCurrentPedWeapon(ped, hashUnarmed, true)
                         end
-                        if not IsEntityPlayingAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 3) then
-                            TaskPlayAnim(ped, "script_proc@robberies@shop@rhodes@gunsmith@inside_upstairs", "handsup_register_owner", 8.0, 1.0, -1, 63, 0, 0, 0, 0)
+                        if not IsEntityPlayingAnim(ped, "script_proc@robberies@homestead@lonnies_shack@deception", "hands_up_loop", 3) then
+                            TaskPlayAnim(ped, "script_proc@robberies@homestead@lonnies_shack@deception", "hands_up_loop",  2.0, -2.0, -1, 67109393, 0.0, false, 1245184, false, "UpperbodyFixup_filter", false)
                         end
                     end
                 end
