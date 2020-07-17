@@ -77,7 +77,7 @@ AddEventHandler(
             oncombat[user_id] = {}
         end
 
-        print("New player combat reason", user_id, reason)
+        print("^9_vp__internal_COMBATLOG  ^7| (" .. user_id .. ") ^1" .. reason)
 
         table.insert(oncombat[user_id], l)
     end
