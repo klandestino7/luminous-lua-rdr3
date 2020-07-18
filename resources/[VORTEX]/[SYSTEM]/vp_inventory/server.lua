@@ -183,7 +183,7 @@ AddEventHandler(
             local d_serveronly = {
                 itemWeaponAmmoInClip = itemAmmoInClip or 0,
                 itemWeaponAmmoInWeapon = itemAmmoInWeapon or 0,
-                deletionTimestamp = os.time() + 1000 * 60 * 10
+                deletionTimestamp = os.time() + (60 * 10)
             }
 
             while dropPopulation[index] ~= nil do
