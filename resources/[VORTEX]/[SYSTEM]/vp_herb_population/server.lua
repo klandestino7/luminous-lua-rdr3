@@ -120,7 +120,7 @@ function SetVectorIndexSuppressed(indexComposite, index, suppress)
             popSuppressed[indexComposite] = {}
         end
 
-        popSuppressed[indexComposite][index] = os.time() + (SUPPRESSION_WEAROFF_SECONDS * 1000)
+        popSuppressed[indexComposite][index] = os.time() + SUPPRESSION_WEAROFF_SECONDS
     else
         -- end
         -- if IsVectorIndexSuppressed(indexComposite, index) then
