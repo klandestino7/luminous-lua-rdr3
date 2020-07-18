@@ -83,31 +83,29 @@ AddEventHandler(
     end
 )
 
-RegisterCommand(
-    "fakedrop",
-    function(source, args, raw)
-        local User = API.getUserFromSource(source)
-        local user_id = User:getId()
-        local character_id = User:getCharacter() and User:getCharacter():getId() or 0
-        local reason = "Disconnected."
+-- RegisterCommand(
+--     "fakedrop",
+--     function(source, args, raw)
+--         local User = API.getUserFromSource(source)
+--         local user_id = User:getId()
+--         local character_id = User:getCharacter() and User:getCharacter():getId() or 0
+--         local reason = "Disconnected."
 
-        TriggerEvent("VP:UserDropped", source, user_id, character_id, reason)
-    end,
-    false
-)
+--         TriggerEvent("VP:UserDropped", source, user_id, character_id, reason)
+--     end,
+--     false
+-- )
 
-RegisterCommand(
-    "reason",
-    function(source, args, raw)
-        local User = API.getUserFromSource(source)
-        local user_id = User:getId()
+-- RegisterCommand(
+--     "reason",
+--     function(source, args, raw)
+--         local User = API.getUserFromSource(source)
+--         local user_id = User:getId()
 
-        TriggerEvent("VP:COMBATLOG:AddUserCombatReason", user_id, 300, "Roubo a Loja")
-    end,
-    false
-)
-
--- Made by Tazio
+--         TriggerEvent("VP:COMBATLOG:AddUserCombatReason", user_id, 300, "Roubo a Loja")
+--     end,
+--     false
+-- )
 
 local DISCORD_WEBHOOK = "https://discordapp.com/api/webhooks/733148246049816616/dhm40WccPu5CBd5XvcXH7ePqJa-EZl9zKwlA41mie08VXWQprpWuQBQo1T9sq33oHCrJ"
 local DISCORD_NAME = "_vp__internal"
