@@ -132,7 +132,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
           if (posibilidad > 70) and (posibilidad < 90) then
 
-            pourboire = math.random(100, 200)
+            pourboire = math.random(10, 150)
 
             TriggerEvent('VP:NOTIFY:Simple', 'Você recebeu $'.. pourboire, 10000)
 
