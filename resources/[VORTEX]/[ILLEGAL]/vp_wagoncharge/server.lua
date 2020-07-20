@@ -6,6 +6,7 @@ cAPI = Tunnel.getInterface("API")
 
 local PlayerCount = 0
 local list = {}
+local FinishedDelivery
 
 local reward_itens = {
   [1] = {["melee_hatchet_hunter_rusted"] = 2, ["bow"] = 1, ["ammo_arrow"] = 20, ["medicine_good"] = 3},
@@ -17,15 +18,15 @@ local reward_itens = {
 }
 
 local SPAWNWAGON = {
-  [1] = {487.083,-548.132,69.308}, --strawberry
+  [1] = {-1247.230,418.908,83.747}, --strawberry
  -- [2] = {-575.34, 2033.95, 289.66}, -- montain tempest rim
 --  [3] = {-4360.701, -2511.478, 1.832}, -- CHOLLA SPRINGS
  -- [4] = {-5110.177, -3745.233, -3.292}, --   benedict point
-  [2] = {487.083,-548.132,69.308}, -- EMERALD STATION
-  [3] = {487.083,-548.132,69.308}, -- dakota river
-  [4] = {487.083,-548.132,69.308},
-  [5] = {487.083,-548.132,69.308},
-  [6] = {487.083,-548.132,69.308}  
+  [2] = {-1247.230,418.908,83.747}, -- EMERALD STATION
+  [3] = {-1247.230,418.908,83.747}, -- dakota river
+  [4] = {-1247.230,418.908,83.747},
+  [5] = {-1247.230,418.908,83.747},
+  [6] = {-1247.230,418.908,83.747}  
 }
 
 local DESTINYWAGON = {
@@ -103,6 +104,7 @@ RegisterNetEvent("VP:WAGONCHARGE:create")
 AddEventHandler(
   "VP:WAGONCHARGE:create",
   function(id, r2)
+    FinishedDelivery = false
 
     if not SPAWNWAGON[id] then
       return      
@@ -112,23 +114,36 @@ AddEventHandler(
       return
     end
         --print(vector3(json.encode(SPAWNWAGON[id])), DESTINYWAGON[r2])
+    TriggerClientEvent("VP:WAGONCHARGE:StartNotify", -1, vector3(table.unpack(SPAWNWAGON[id])), vector3(table.unpack(DESTINYWAGON[r2])))
+    Wait(200)
+    TriggerClientEvent("VP:WAGONCHARGE:StartMission", GetHostId())
+     
 
-   --local itensram = math.random(1, 6)
-    
-    TriggerClientEvent("VP:WAGONCHARGE:StartNotify", -1)
-    TriggerClientEvent("VP:WAGONCHARGE:StartMission", GetHostId(), vector3(table.unpack(SPAWNWAGON[id])), vector3(table.unpack(DESTINYWAGON[r2])))
   --  TriggerEvent("VP:WAGONCHARGE:timeCall")
   end
 )
 
-RegisterNetEvent("VP:WAGONCHARGE:finished")
+RegisterNetEvent("VP:WAGONCHARGE:Finished")
 AddEventHandler(
-  "VP:WAGONCHARGE:finished",
-  function(id)
+  "VP:WAGONCHARGE:Finished",
+  function()
+    local User = API.getUserFromSource(source)
+    local Character = User:getCharacter()
+    local Inventory = Character:getInventory()
 
-    if not SPAWNWAGON[id] then
-      return
+
+    local itensram = math.random(1, 6)
+
+
+
+    if not FinishedDelivery then
+      for k, v in pairs(reward_itens[itensram]) do
+        Inventory:addItem(k, tonumber(v))
+      end
+      FinishedDelivery = true
     end
 
+    TriggerClientEvent("VP:WAGONCHARGE:killblip", source)
+    print('sumiu')
   end
 )
