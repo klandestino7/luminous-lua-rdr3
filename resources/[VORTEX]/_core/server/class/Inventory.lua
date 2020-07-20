@@ -620,7 +620,7 @@ function API.Inventory(id, capacity, slots)
     end
 
     self.clear = function(self)
-        API_Database.execute("FCRP/Inventory", {id = self:getId(), charid = self:getCharId(), capacity = 0, slot = 0, itemId = 0, itemAmount = 0, procType = "clear"})
+        API_Database.execute("UPDATE:inv_clear", {id = self:getId()})
         self.slots = {}
     end
 

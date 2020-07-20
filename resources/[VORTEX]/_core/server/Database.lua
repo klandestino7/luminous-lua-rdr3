@@ -217,6 +217,7 @@ API_Database.prepare("FCRP/Inventory", "CALL procInventory(@id, @charid, @capaci
 API_Database.prepare("UPDATE:inv_update_slot", "CALL inv_update_slot(@inv_id, @slot_id, @slot_value)")
 API_Database.prepare("UPDATE:inv_remove_slot", "CALL inv_remove_slot(@inv_id, @slot_id);")
 API_Database.prepare("SELECT:inv_select_slots_and_capacity", "SELECT inv_slots, inv_capacity FROM inventories WHERE id = @inv_id")
+API_Database.prepare("UPDATE:inv_clear", "UPDATE inventories SET inv_slot = `{}` WHERE inv_id = @inv_id")
 
 ---------- HORSE QUERIES -------------
 API_Database.prepare("FCRP/CreateHorse", "INSERT INTO horses(charid, model, name) VALUES (@charid, @model, @name); SELECT LAST_INSERT_ID() AS id")
@@ -250,3 +251,7 @@ API_Database.prepare("DELETE:house_rent", "DELETE FROM house_rent WHERE house_id
 API_Database.prepare("UPDATE:character_remove_role", "UPDATE characters SET groups = groups & ~@role")
 
 -- API_Database.prepare("SELECT:house_rent_with_group", "SELECT charid FROM characters WHERE groups & @role = @role")
+
+API_Database.prepare("queue:set", "INSERT INTO queue_priority(id, priority, start, end) VALUES (@user_id, @priority, @start, @end)")
+API_Database.prepare("queue:get", "SELECT priority, start, end from queue_priority WHERE id = @user_id")
+API_Database.prepare("queue:remove", "DELETE FROM queue_priority WHERE id = @user_id")
