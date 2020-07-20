@@ -236,30 +236,29 @@ local Imaps = {
     731209239,
     724436573,
     -1475403379,
-     -518785376,
-     -1878882174,
-     1202020135,
-     -1989899190,
-     951314072,
-     -780819048,
-     -52140817,
-     1081087978,
-     696143352,
-     -981203673,
-     1228600352,
-     -1301569116,
-     282485265,
-     56708243,
-     199047531,
-     -776975047,
-     2095116685,
-     -892659042,
-     1136898294,
-     897455211,
-     1804593020,
-     -1049500949,
-     1325716092,
-
+    -518785376,
+    -1878882174,
+    1202020135,
+    -1989899190,
+    951314072,
+    -780819048,
+    -52140817,
+    1081087978,
+    696143352,
+    -981203673,
+    1228600352,
+    -1301569116,
+    282485265,
+    56708243,
+    199047531,
+    -776975047,
+    2095116685,
+    -892659042,
+    1136898294,
+    897455211,
+    1804593020,
+    -1049500949,
+    1325716092,
     --// CONVENTO IPLS
     1405627586,
     -1889108254,
@@ -319,34 +318,35 @@ local Imaps = {
     0x4D22125C,
     -- Buracão que tinha no mapa
 
-
     0x34DE81E3,
     0x4E2966BD,
     0xD6FDC694,
     0x6C59FC22,
-    0x1CB53284 ,-- grade do banco rhodes
-    0xE04C16B6 ,-- AÇOUGUE RHODES
-    0xF2808F6B ,-- procurado saint denis
-    0xDC7F11FC ,-- CORREÇÃO SAIN DENNIS
+    0x1CB53284,
+    -- grade do banco rhodes
+    0xE04C16B6,
+    -- AÇOUGUE RHODES
+    0xF2808F6B,
+    -- procurado saint denis
+    0xDC7F11FC,
+    -- CORREÇÃO SAIN DENNIS
     0xEFA9DBBB,
     0x8B669DF, -- BARCO POKER
     0x11637AE7,
-
-    0xD8053169,  --CADEIRA ELETRICA
+    0xD8053169, --CADEIRA ELETRICA
     0xA3F562DB, -- CADEIRA ELETRICA
     0x815FFED3, --  CADEIRA  ELETRICA
     0xA8ED236, --AÇOUQUE SANT DENIS
     0x59F3ABC7,
     0xE3FDC047,
-    0xFE33D422,  -- AÇOUGUE SANT DENIS
-
+    0xFE33D422, -- AÇOUGUE SANT DENIS
     0xC33DA16B, --staw procurado
-    0x399A5F54, 
+    0x399A5F54,
     0xB586076, --AÇOUGUE STRAW
-    0xF8369DDF, 
+    0xF8369DDF,
     0x70C77F97, --CASA STRAW
-
-    0xC8E7D9C1,--    INDIO 
+    0xC8E7D9C1,
+    --    INDIO
     0xDD82A5F4,
     0xE86B4C35,
     0x3BD21365,
@@ -355,11 +355,9 @@ local Imaps = {
     0xA5CFD507,
     0x61B03448,
     0x5F6E2172,
-    0x92544FE ,
+    -- 0x92544FE ,
     0x3A365E34,
     0x5DE27A80,
-
-
     --Banco Sant denis
     0x3B5649C4,
     0x472AB68D,
@@ -375,14 +373,14 @@ local Imaps = {
     0x9C9F8C62,
     0x9BF02141,
     -----
-   -- Correçao paredes Saint Denis
+    -- Correçao paredes Saint Denis
     0xDC7F11FC,
     0xEFA9DBBB,
     ------
     --Bar saint denis
     0xD602C52F,
     -----
-   -- Museu Saint Denis
+    -- Museu Saint Denis
     0x6E6463C4,
     0xCC51ABED,
     0xA72FE0A6,
@@ -395,17 +393,15 @@ local Imaps = {
     0x367A7709,
     0x64164BD7,
     0xA5D4978E,
-    0x87DC3EA,
+    -- 0x87DC3EA,
     0x11637AE7,
     0x54803066,
     0xE32C1775,
-
     0x5DA2C09B,
     0x471E0BA7,
     0xAF4D90FD,
     0x2B241C76,
     0xF289E278,
-
     --fix rhoads
     0x2DC45AC4,
     0xE2BEb5B6,
@@ -413,17 +409,114 @@ local Imaps = {
     0x33D5AF43,
     0xBB4E8E0D,
     0x6557862D,
-
     0x78CBEF02,
     0xFA362050,
-
     0xC2383FE3,
     0xB2EBEBD4,
     0xCBCBEC02,
-    0x8952FFB,
+    -- 0x8952FFB,
     0x322C913F,
     0xC3013498,
-    0x49D8934A
+    0x49D8934A,
+    0xF0538CEB,
+    0x1A9DE17F,
+    0x711EEAEE,
+    0x36AEEEA9,
+    0xE11FDFD8,
+    0x49DC91AE,
+    -- 0x6EC8103,
+    0xA72FA936,
+    0xF0DF852E,
+    0xCAD5401C,
+    0xB6F62319,
+    0xC4BBB30,
+    0x83C3EE1E,
+    0x99277AA3,
+    0xA37AB284,
+    0x1A403D2,
+    0xB3BE116F,
+    0x224485F7,
+    0x942422A9,
+    0x1934E0F0,
+    0x6EF3A3AA,
+    0xBFAB4338,
+    0x6B801757,
+    0x52BDAB97,
+    0x3741345F,
+    -- 0x2B081A9,
+    0x9FCA283F,
+    0x87B8E3B3,
+    0x49DC91AE,
+    0x2C1BB305,
+    -- 0xFF2EB2C,
+    0xDEC1B8B6,
+    0xE393DBB1,
+    0x38C9DE8F,
+    0x56BA95C8,
+    0xB3F01BA2,
+    0xF6326273,
+    0xAD5CDB45,
+    0x24A161DF,
+    0xFA33ACD1,
+    0x5F9053C0,
+    0xE30D8B64,
+    0xA966196D,
+    0xD2B7EC01,
+    0x72D18E3F,
+    -- 0xA8D4BE9,
+    0xCB2BF86A,
+    0xD33D3591,
+    0x3E818D6D,
+    0x86B2D136,
+    0xD116AF35,
+    0x26D6F370,
+    0x720E4669,
+    0x434568D8,
+    0xD3A37B9F,
+    0x62639AB3,
+    0xDF06FE44,
+    0xD2A1389D,
+    0x447F53F6,
+    0x73DF4C1F,
+    0xFE1A0B0A,
+    0x83F6BE2E,
+    0x37604FE,
+    0xF1443441,
+    0x1EC63FE8,
+    0xB68532A5,
+    0x88D7D444,
+    0x8B5EFDDF,
+    0x85F507BE,
+    0x661ED339,
+    0x1E30DE86,
+    0x955CE3F9,
+    0x919BDC77,
+    0x41EE4F4E,
+    0xBD0E3755,
+    0x4E60F23F,
+    0x98DC71E5,
+    0x7CF2CC6C,
+    0x18637476,
+    0xC3392ECE,
+    0xDF9FDAC2,
+    0xD0A4D7E5,
+    0xE0568F9B,
+    0x1E50C50A,
+    0xB8049834,
+    0xC53D385E,
+    0xBB4C64AB,
+    0x69190013,
+    0x42E10CED,
+    0x81DA5716,
+    -- 0xC30233E,
+    0xB02133A3,
+    0x7231D143,
+    0xAD4C4061,
+    0x7150FAC3,
+    0x4B0ED9EE,
+    0xB02ECF9A,
+    0x83E1ED8D,
+    0xFBE9C487
 }
 
 AddEventHandler(
