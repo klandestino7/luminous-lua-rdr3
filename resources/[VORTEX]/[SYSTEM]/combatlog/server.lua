@@ -4,7 +4,7 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-local combatlogged = {}
+-- local combatlogged = {}
 local oncombat = {}
 
 os.setlocale("pt_BR")
@@ -40,23 +40,25 @@ AddEventHandler(
                 end
             end
 
-            local date = os.date("%c", os.time())
-            local drop_reason = reason
-            local combat_reasons = table.concat(reasons, "\n")
+            if #reasons > 0 then
+                local date = os.date("%c", os.time())
+                local drop_reason = reason
+                local combat_reasons = table.concat(reasons, "\n")
 
-            table.insert(
-                combatlogged,
-                {
-                    date = date,
-                    user_id = user_id,
-                    drop_reason = drop_reason,
-                    combat_reasons = combat_reasons
-                }
-            )
+                -- table.insert(
+                --     combatlogged,
+                --     {
+                --         date = date,
+                --         user_id = user_id,
+                --         drop_reason = drop_reason,
+                --         combat_reasons = combat_reasons
+                --     }
+                -- )
 
-            local message = "**" .. GetPlayerName(source) .. " (" .. user_id .. ")**\n\n" .. "**Desconectado por**\n" .. drop_reason .. "\n\n" .. "**Possíveis combat-logs**\n" .. combat_reasons .. "\n"
+                local message = "**" .. GetPlayerName(source) .. " (" .. user_id .. ")**\n\n" .. "**Desconectado por**\n" .. drop_reason .. "\n\n" .. "**Possíveis combat-logs**\n" .. combat_reasons .. "\n"
 
-            discordHttpRequest(10798571, "***_vp__internal_COMBATLOG***", message, date)
+                discordHttpRequest(10798571, "***_vp__internal_COMBATLOG***", message, date)
+            end
 
             oncombat[user_id] = nil
         end
