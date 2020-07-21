@@ -1,3 +1,9 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
+
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
+
 local entity
 
 local entityIndex
@@ -40,8 +46,8 @@ Citizen.CreateThread(
 
                 -- if hasMovedAConsiderableLenght then
                 SetEntityCoords(entity, lookingAtPosition + vec3(0, 0, 0.15), xAxis, yAxis, zAxis, 0)
-                ActivatePhysics(entity)
-                -- end
+
+                EnableEntityPhysics(entity, false)
 
                 if IsControlPressed(0, 0x430593AA) then
                     local pedRot = GetEntityHeading(entity) - 10
@@ -57,10 +63,7 @@ Citizen.CreateThread(
                     local model = GetEntityModel(entity)
                     local string_model = GetHashName(model)
 
-                    FreezeEntityPosition(entity, false)
-                    SetEntityCollision(entity, true, 0)
-                    ActivatePhysics(entity)
-                    SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(entity, false)
+                    EnableEntityPhysics(entity, true)
 
                     local x, y, z = table.unpack(entityPosition)
                     local heading = GetEntityHeading(entity)
@@ -119,17 +122,30 @@ Citizen.CreateThread(
                 end
 
                 if closestIndex then
-                    l_entity = entities[closestIndex]
+                    local closestEntity = entities[closestIndex]
+
+                    if l_entity and l_entity ~= closestEntity then
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
+                    end
+
+                    l_entity = closestEntity
                     Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, true)
 
                     if IsDisabledControlJustPressed(0, GetHashKey("INPUT_AIM")) then
-                        l_entity = nil
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
+                        l_entity = nil
 
                         entity = entities[closestIndex]
                         entityIndex = closestIndex
 
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, true)
+
+                        EnableEntityPhysics(entity, false)
+                    end
+                else
+                    if l_entity then
+                        Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
+                        l_entity = nil
                     end
                 end
             end
@@ -144,7 +160,7 @@ RegisterCommand(
         local modelHash = tonumber(model) == nil and model or tonumber(model)
 
         if not IsModelValid(modelHash) then
-            print("LootPlace: Model invalido!")
+            cAPI.notify("error", "LootPlace: Model invalido!")
             return
         end
 
@@ -168,6 +184,8 @@ RegisterCommand(
     "saveloot",
     function(source, args, raw)
         WriteToOutput()
+
+        cAPI.notify("success", "LootPlace: Novos items salvos!")
     end,
     false
 )
@@ -175,10 +193,7 @@ RegisterCommand(
 function CreateMyEntity(model, position)
     entity = CreateObject(model, position, true, true, true)
 
-    FreezeEntityPosition(entity, true)
-    SetEntityCollision(entity, false, 0)
-    --ActivatePhysics(entity)
-    --SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(entity, false)
+    EnableEntityPhysics(entity, false)
 
     Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, true)
 end
@@ -236,9 +251,9 @@ function GetEntityLowestPoint(entity)
 end
 
 function ReadFromInput()
-    local contents = LoadResourceFile(GetCurrentResourceName(), "save.json")
+    local contents = LoadResourceFile(GetCurrentResourceName(), "save.json") or ""
 
-    cJSON = json.decode(contents)
+    cJSON = json.decode(contents) or {}
 
     SpawnEntitiesAtJSON()
 end
@@ -260,7 +275,8 @@ end
 
 function SpawnEntitiesAtJSON()
     for model, list in pairs(cJSON) do
-        model = tonumber(model)
+        model = GetHashKey(model)
+
         if IsModelValid(model) then
             if not HasModelLoaded(model) then
                 RequestModel(model)
@@ -271,9 +287,9 @@ function SpawnEntitiesAtJSON()
 
             for _, v in pairs(list) do
                 local x, y, z = table.unpack(v.position)
+                local rotation = v.rotation
 
                 local ent = CreateObject(model, x, y, z, true, true, true)
-                local rotation = table.unpack(v.rotation)
                 SetEntityHeading(ent, rotation)
 
                 ActivatePhysics(ent)
@@ -303,11 +319,21 @@ function GetHashName(hash)
     return false
 end
 
+function EnableEntityPhysics(entity, enabled)
+    if enabled then
+        FreezeEntityPosition(entity, false)
+        SetEntityCollision(entity, true, 0)
+        ActivatePhysics(entity)
+        SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(entity, true)
+    else
+        FreezeEntityPosition(entity, true)
+        SetEntityCollision(entity, false, 0)
+    end
+end
+
 AddEventHandler(
     "onResourceStop",
     function()
-        WriteToOutput()
-
         DeleteMyEntity()
 
         for _, ent in pairs(entities) do
