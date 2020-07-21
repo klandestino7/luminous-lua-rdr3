@@ -28,24 +28,25 @@ Citizen.CreateThread(
 
             DisableControlAction(0, GetHashKey("INPUT_ATTACK"), true)
             DisableControlAction(0, GetHashKey("INPUT_AIM"), true)
+            DisableControlAction(0, 0xDB096B85, true)
 
             if entity then
                 -- DrawDimension(entity)
 
-                local lookingAtPosition = GetLookingAtPosition(7.0)
+                local newEntityPosition = GetLookingAtPosition(7.0)
 
                 local entityPosition = GetEntityCoords(entity)
+                local entityModel = GetEntityModel(entity)
 
-                local groundZ = GetGroundZAt(vec3(lookingAtPosition.xy, 999))
+                local groundZ = GetGroundZAt(vec3(newEntityPosition.xy, 999))
                 local lowestPoint = GetEntityLowestPoint(entity)
 
-                local distance = #(l_lookingAtPosition - lookingAtPosition)
+                local distance = #(l_lookingAtPosition - newEntityPosition)
                 local hasMovedAConsiderableLenght = (distance > 0.14)
 
-                l_lookingAtPosition = lookingAtPosition
+                l_lookingAtPosition = newEntityPosition
 
                 -- if hasMovedAConsiderableLenght then
-                SetEntityCoords(entity, lookingAtPosition + vec3(0, 0, 0.15), xAxis, yAxis, zAxis, 0)
 
                 EnableEntityPhysics(entity, false)
 
@@ -59,9 +60,20 @@ Citizen.CreateThread(
                     SetEntityHeading(entity, pedRot % 360)
                 end
 
+                if IsDisabledControlPressed(0, 0xDB096B85) then
+                    local min, max = GetModelDimensions(entityModel)
+
+                    local collisionPosition = GetCollisionBetweenCoords(newEntityPosition, vec3(newEntityPosition.xy, groundZ))
+
+                    collisionPosition = vec3(collisionPosition.xy, collisionPosition.z - ((max.z - min.z) / 2))
+
+                    newEntityPosition = collisionPosition
+                end
+
+                SetEntityCoords(entity, newEntityPosition + vec3(0, 0, 0.15), xAxis, yAxis, zAxis, 0)
+
                 if IsDisabledControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
-                    local model = GetEntityModel(entity)
-                    local string_model = GetHashName(model)
+                    local string_model = GetHashName(entityModel)
 
                     EnableEntityPhysics(entity, true)
 
@@ -87,14 +99,13 @@ Citizen.CreateThread(
 
                     Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, false)
 
-                    CreateMyEntity(string_model, lookingAtPosition)
+                    CreateMyEntity(entityModel, lookingAtPosition)
                 end
 
                 if IsDisabledControlJustPressed(0, GetHashKey("INPUT_AIM")) then
                     if not entityIndex then
                     else
-                        local model = GetEntityModel(entity)
-                        local string_model = GetHashName(model)
+                        local string_model = GetHashName(entityModel)
 
                         if cJSON[string_model] then
                             table.remove(cJSON[string_model], entityIndex)
@@ -209,17 +220,10 @@ RegisterCommand(
             return
         end
 
-        if not HasModelLoaded(modelHash) then
-            RequestModel(modelHash)
-            while not HasModelLoaded(modelHash) do
-                Citizen.Wait(0)
-            end
-        end
-
         local lookingAtPosition = GetLookingAtPosition(10.0)
 
         DeleteMyEntity()
-        print(model)
+
         CreateMyEntity(modelHash, lookingAtPosition)
     end,
     false
@@ -235,8 +239,15 @@ RegisterCommand(
     false
 )
 
-function CreateMyEntity(model, position)
-    entity = CreateObject(model, position, true, true, true)
+function CreateMyEntity(modelHash, position)
+    if not HasModelLoaded(modelHash) then
+        RequestModel(modelHash)
+        while not HasModelLoaded(modelHash) do
+            Citizen.Wait(0)
+        end
+    end
+
+    entity = CreateObject(modelHash, position, true, true, true)
 
     EnableEntityPhysics(entity, false)
 
@@ -283,6 +294,17 @@ function GetLookingAtPosition(maxDistance)
     return lastCoords
 end
 
+function GetCollisionBetweenCoords(a, b)
+    local rayHandle = StartShapeTestRay(a, b, -1, PlayerPedId(), 0)
+    local _, hit, endCoords, _, entityHit = GetShapeTestResult(rayHandle)
+
+    if hit == 1 then
+        b = endCoords
+    end
+
+    return b
+end
+
 function GetGroundZAt(position)
     local _, groundZ, _ = GetGroundZAndNormalFor_3dCoord(position.x, position.y, position.z)
 
@@ -304,17 +326,6 @@ function ReadFromInput()
 end
 
 function WriteToOutput()
-    -- local file = io.open("C:\\Users\\key\\Desktop\\project_VP\\rdr3\\resources\\[VORTEX]\\[tools]\\lootplacer\\output.json", "w")
-
-    -- if file then
-    --     local contents = json.encode(cJSON)
-    --     file:write(contents)
-    --     io.close(file)
-    --     return true
-    -- else
-    --     return false
-    -- end
-
     local copy = deepcopy(cJSON)
 
     for model, values in pairs(copy) do
@@ -347,8 +358,7 @@ function SpawnEntitiesAtJSON()
                 local ent = CreateObject(model, x, y, z, true, true, true)
                 SetEntityHeading(ent, rotation)
 
-                ActivatePhysics(ent)
-                SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(ent, true)
+                EnableEntityPhysics(ent, true)
 
                 d.entity = ent
             end
@@ -376,27 +386,30 @@ end
 
 function EnableEntityPhysics(entity, enabled)
     if enabled then
-        FreezeEntityPosition(entity, false)
-        SetEntityCollision(entity, true, 0)
-        ActivatePhysics(entity)
         SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(entity, true)
+        FreezeEntityPosition(entity, false)
+        SetEntityCollision(entity, true, true)
+        ActivatePhysics(entity)
+        SetEntityHasGravity(entity, true)
     else
         FreezeEntityPosition(entity, true)
-        SetEntityCollision(entity, false, 0)
+        SetEntityCollision(entity, false, false)
     end
 end
 
 AddEventHandler(
     "onResourceStop",
-    function()
-        DeleteMyEntity()
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            DeleteMyEntity()
 
-        for model, values in pairs(cJSON) do
-            for index, d in pairs(values) do
-                local ent = d.entity
-                if DoesEntityExist(ent) then
-                    SetEntityAsMissionEntity(ent, true, true)
-                    DeleteObject(ent)
+            for model, values in pairs(cJSON) do
+                for index, d in pairs(values) do
+                    local ent = d.entity
+                    if DoesEntityExist(ent) then
+                        SetEntityAsMissionEntity(ent, true, true)
+                        DeleteObject(ent)
+                    end
                 end
             end
         end
