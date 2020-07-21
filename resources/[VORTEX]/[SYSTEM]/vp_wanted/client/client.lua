@@ -107,15 +107,15 @@ Citizen.CreateThread(
     end
 )
 
-RegisterNetEvent("VP:WANTED:outlawNotify")
-AddEventHandler(
-    "VP:WANTED:outlawNotify",
-    function(alert)
-        --  if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
-        TriggerEvent("VP:NOTIFY:Simple", "Sheriff: " .. (alert), 5000)
-        --   end
-    end
-)
+-- RegisterNetEvent("VP:WANTED:outlawNotify")
+-- AddEventHandler(
+--     "VP:WANTED:outlawNotify",
+--     function(alert)
+--         --  if cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff') then
+--         TriggerEvent("VP:NOTIFY:Simple", "Sheriff: " .. (alert), 5000)
+--         --   end
+--     end
+-- )
 
 function GetCurrentTownName()
     local pedCoords = GetEntityCoords(PlayerPedId())
