@@ -1,67 +1,221 @@
 local fishing_minigame_struct = {}
 
 local fishing_lure_cooldown = 0
-
 local fishing_data = {
     fish = {
-        weight,
+        weight = 0,
         rodweight
     },
-    prompts = {
-        prompt_reset_cast,
-        prompt_hook,
-        prompt_reel_in,
-        prompt_control,
-        prompt_throw_back,
-        prompt_keep
+    prompt_prepare_fishing = {
+        group,
+        change_bait,
+        cancel
+    },
+    prompt_waiting_hook = {
+        group,
+        hook,
+        cancel
+    },
+    prompt_hook = {
+        group,
+        reel,
+        cancel
+    },
+    prompt_finish = {
+        group,
+        take,
+        cancel
     }
 }
+
+local fishStatus = 0
+local fishForce = 0.6
+local nextAttTime = 0
+local horizontalMove = 0
+
+-- A_C_FISHBULLHEADCAT_01_SM       Peixe-Gato-Cabeçudo
+-- A_C_FISHSALMONSOCKEYE_01_MS     Salmão-Vermelho
+-- A_C_FISHRAINBOWTROUT_01_MS      Truta-Arco-Íris
+-- A_C_FISHLARGEMOUTHBASS_01_MS    Achigã
+-- A_C_FISHLARGEMOUTHBASS_01_LG    Achigã
+-- A_C_FISHSMALLMOUTHBASS_01_MS    Achigã-Boca-Pequena
+-- A_C_FISHSMALLMOUTHBASS_01_LG    Achigã-Boca-Pequena
+-- A_C_FISHBLUEGIL_01_MS   Perca-Sol de Guelras Azuis
+-- A_C_FISHMUSKIE_01_LG    Lúcio-Almiscarado
+-- A_C_FISHCHANNELCATFISH_01_LG    Bagre-Americano
+-- A_C_FISHSALMONSOCKEYE_01_ML     Salmão-Vermelho
+-- A_C_FISHPERCH_01_MS     Perca
+-- A_C_FISHPERCH_01_SM     Perca
+-- A_C_FISHRAINBOWTROUT_01_LG      Truta-Arco-Íris
+-- A_C_FISHROCKBASS_01_SM  Achigã-da-Rocha
+-- A_C_FISHLAKESTURGEON_01_LG      Esturjão-de-Lago
+-- A_C_FISHCHANNELCATFISH_01_XL    Bagre-Americano
+-- A_C_FISHREDFINPICKEREL_01_SM    Lúcio-Colorado
+-- A_C_FISHROCKBASS_01_MS  Achigã-da-Rocha
+-- A_C_FISHREDFINPICKEREL_01_MS    Lúcio-Colorado
+-- A_C_FISHBLUEGIL_01_SM   Perca-Sol de Guelras Azuis
+-- A_C_FISHSALMONSOCKEYE_01_LG     Salmão-Vermelho
+-- A_C_FISHNORTHERNPIKE_01_LG      Lúcio
+-- A_C_FISHLONGNOSEGAR_01_LG       Boca-de-Jacaré
+-- A_C_FISHBULLHEADCAT_01_MS       Peixe-Gato-Cabeçudo
+-- A_C_FISHCHAINPICKEREL_01_MS     Lúcio-Negro
+-- A_C_FISHCHAINPICKEREL_01_SM     Lúcio-Negro
+local fishs = {
+    [0X6F4C2A6C] = "A_C_FISHBLUEGIL_01_MS",
+    [0X81D4FAB9] = "A_C_FISHBLUEGIL_01_SM",
+    [0X29F1CB9D] = "A_C_FISHBULLHEADCAT_01_MS",
+    [0X5905A300] = "A_C_FISHBULLHEADCAT_01_SM",
+    [0XB97D1BFD] = "A_C_FISHCHAINPICKEREL_01_MS",
+    [0X0FBEB3FF] = "A_C_FISHCHAINPICKEREL_01_SM",
+    [0X5BAEE06E] = "A_C_FISHCHANNELCATFISH_01_LG",
+    [0X876CAA75] = "A_C_FISHCHANNELCATFISH_01_XL",
+    [0XEE111F34] = "A_C_FISHLAKESTURGEON_01_LG",
+    [0X1BA2A2E8] = "A_C_FISHLARGEMOUTHBASS_01_LG",
+    [0X0750FD65] = "A_C_FISHLARGEMOUTHBASS_01_MS",
+    [0XD5931B3F] = "A_C_FISHLONGNOSEGAR_01_LG",
+    [0XA3660A8D] = "A_C_FISHMUSKIE_01_LG",
+    [0X298C8600] = "A_C_FISHNORTHERNPIKE_01_LG",
+    [0XE50B98F0] = "A_C_FISHPERCH_01_MS",
+    [0X2A1C1C20] = "A_C_FISHPERCH_01_SM",
+    [0X080814B2] = "A_C_FISHRAINBOWTROUT_01_LG",
+    [0X1D373E24] = "A_C_FISHRAINBOWTROUT_01_MS",
+    [0XF1813D52] = "A_C_FISHREDFINPICKEREL_01_MS",
+    [0X1E9790B6] = "A_C_FISHREDFINPICKEREL_01_SM",
+    [0X89E3C580] = "A_C_FISHROCKBASS_01_MS",
+    [0X00173415] = "A_C_FISHROCKBASS_01_SM",
+    [0X206B229A] = "A_C_FISHSALMONSOCKEYE_01_LG",
+    [0X657C2DBF] = "A_C_FISHSALMONSOCKEYE_01_ML",
+    [0X027C67C1] = "A_C_FISHSALMONSOCKEYE_01_MS",
+    [0X8FACF62D] = "A_C_FISHSMALLMOUTHBASS_01_LG",
+    [0X6EE63594] = "A_C_FISHSMALLMOUTHBASS_01_MS"
+}
+
+-- "p_baitBread01x";
+-- "p_baitCorn01x";
+-- "p_baitCheese01x";
+-- "p_baitWorm01x";
+-- "p_baitCricket01x";
+-- "P_CRAWDAD01X";
+-- "p_finishedragonfly01x";
+-- "p_FinisdFishlure01x";
+-- "p_finishdcrawd01x";
+-- "P_FINISHEDRAGONFLYLEGENDARY01X";
+-- "P_FINISDFISHLURELEGENDARY01X";
+-- "P_FINISHDCRAWDLEGENDARY01X";
+-- "P_LGOC_SPINNER_V4";
+-- P_FISHHOOK02X -- Anzol
+
+local lure = {
+    [`p_baitBread01x`] = "p_baitBread01x",
+    [`p_baitCorn01x`] = "p_baitCorn01x",
+    [`p_baitCheese01x`] = "p_baitCheese01x",
+    [`p_baitWorm01x`] = "p_baitWorm01x",
+    [`p_baitCricket01x`] = "p_baitCricket01x",
+    [`P_CRAWDAD01X`] = "P_CRAWDAD01X",
+    [`p_finishedragonfly01x`] = "p_finishedragonfly01x",
+    [`p_FinisdFishlure01x`] = "p_FinisdFishlure01x",
+    [`p_finishdcrawd01x`] = "p_finishdcrawd01x",
+    [`P_FINISHEDRAGONFLYLEGENDARY01X`] = "P_FINISHEDRAGONFLYLEGENDARY01X",
+    [`P_FINISDFISHLURELEGENDARY01X`] = "P_FINISDFISHLURELEGENDARY01X",
+    [`P_FINISHDCRAWDLEGENDARY01X`] = "P_FINISHDCRAWDLEGENDARY01X",
+    [`P_LGOC_SPINNER_V4`] = "P_LGOC_SPINNER_V4",
+}
+local atualLure = "P_FINISHDCRAWDLEGENDARY01X"
+
+local lureFish = {
+    ["P_FINISHDCRAWDLEGENDARY01X"] = {
+        "A_C_FISHBLUEGIL_01_MS",
+        "A_C_FISHBLUEGIL_01_SM",
+        "A_C_FISHBULLHEADCAT_01_MS",
+        "A_C_FISHBULLHEADCAT_01_SM",
+        "A_C_FISHCHAINPICKEREL_01_MS",
+        "A_C_FISHCHAINPICKEREL_01_SM",
+        "A_C_FISHCHANNELCATFISH_01_LG",
+        "A_C_FISHCHANNELCATFISH_01_XL",
+        "A_C_FISHLAKESTURGEON_01_LG",
+        "A_C_FISHLARGEMOUTHBASS_01_LG",
+        "A_C_FISHLARGEMOUTHBASS_01_MS",
+        "A_C_FISHLONGNOSEGAR_01_LG",
+        "A_C_FISHMUSKIE_01_LG",
+        "A_C_FISHNORTHERNPIKE_01_LG",
+        "A_C_FISHPERCH_01_MS",
+        "A_C_FISHPERCH_01_SM",
+        "A_C_FISHRAINBOWTROUT_01_LG",
+        "A_C_FISHRAINBOWTROUT_01_MS",
+        "A_C_FISHREDFINPICKEREL_01_MS",
+        "A_C_FISHREDFINPICKEREL_01_SM",
+        "A_C_FISHROCKBASS_01_MS",
+        "A_C_FISHROCKBASS_01_SM",
+        "A_C_FISHSALMONSOCKEYE_01_LG",
+        "A_C_FISHSALMONSOCKEYE_01_ML",
+        "A_C_FISHSALMONSOCKEYE_01_MS",
+        "A_C_FISHSMALLMOUTHBASS_01_LG",
+        "A_C_FISHSMALLMOUTHBASS_01_MS"
+    }
+}
+local lastState = 0
 
 Citizen.CreateThread(
     function()
         Citizen.InvokeNative(0x1096603B519C905F, "MMFSH")
 
         local sleep = 100
+        prepareMyPrompt()
 
         while true do
-
-
             GET_TASK_FISHING_DATA()
 
-            if IsControlJustPressed(0, GetHashKey("INPUT_MINIGAME_FISHING_MANUAL_REEL_IN")) then
-                print("reel in")
-            end
+            -- for i = 0, 27 do
+            --     local k = "f_" .. i
+            --     local v = fishing_minigame_struct[k]
 
-            for i = 0, 27 do
-                local k = "f_" .. i
-                local v = fishing_minigame_struct[k]
+            --     if v ~= nil then
+            --         DrawTxt(k, 0.65, 0.05 + (i * 0.025), 0.4, 0.4, true, 247, 88, 20, 255, false)
+            --         DrawTxt("" .. v, 0.75, 0.05 + (i * 0.025), 0.4, 0.4, true, 247, 88, 20, 255, false)
+            --     end
+            -- end
 
-                if v ~= nil then
-                    DrawTxt(k, 0.65, 0.05 + (i * 0.025), 0.4, 0.4, true, 247, 88, 20, 255, false)
-                    DrawTxt("" .. v, 0.75, 0.05 + (i * 0.025), 0.4, 0.4, true, 247, 88, 20, 255, false)
+            if FISHING_GET_MINIGAME_STATE() == 1 then
+                if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
+                    atualLure = "P_FINISDFISHLURE01X"
+                    Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), atualLure, 0, 1)
+                end
+
+                if IsControlJustPressed(0, 0xDB096B85) then
+                    -- CANCELAR PESCA
+                    local playerPed = PlayerPedId()
+                    SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), true)
                 end
             end
 
             if hasMinigameOn then
-
                 sleep = 0
 
                 local playerPed = PlayerPedId()
 
-                if FISHING_GET_MINIGAME_STATE() == 1 then
-                end
-
                 if FISHING_GET_MINIGAME_STATE() == 2 then
-                -- FISHING_GET_MAX_THROWING_DISTANCE(math.random(25.0, 30.0))
-                -- print(0 - (0 & 2048), 0 | 1024)
-                -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 1024)
+                    FISHING_GET_MAX_THROWING_DISTANCE(math.random(25.0, 30.0))
                 end
 
                 if FISHING_GET_MINIGAME_STATE() == 6 then
+                    if IsControlJustPressed(0, 0x8FFC75D6) then
+                        FISHING_SET_F_(6, 128)
+                    end
+
                     local bobberPosition = FISHING_GET_BOBBER_HANDLE()
 
                     local hookHandle = FISHING_GET_HOOK_HANDLE()
                     local hookPosition = GetEntityCoords(hookHandle)
+                    -- if IsControlJustPressed(0, GetHashKey("INPUT_GAME_MENU_OPTION")) or
+                    --     (IsControlPressed(0, GetHashKey("INPUT_GAME_MENU_OPTION")) == 1 and GetGameTimer() % 10 == 0) then
+                    --     FISHING_SET_ROD_WEIGHT(4)
+                    --     print('puxando')
+                    --     TaskGoToEntity(hookHandle, playerPed, 50, 5000, 10.0, 1.0, 0)
+                    -- end
+
+                    -- if IsControlJustReleased(0, GetHashKey("INPUT_GAME_MENU_OPTION")) then
+                    --     FISHING_SET_ROD_WEIGHT(2)
+                    -- end
 
                     local lured = false
 
@@ -73,17 +227,19 @@ Citizen.CreateThread(
 
                     local fishHandle
 
-                    for _, f in pairs(GetNearbyFishs(hookPosition, 10.0)) do
+                    for _, f in pairs(GetNearbyFishs(hookPosition, 50.0)) do
                         local fishPosition = GetEntityCoords(f)
 
                         Citizen.InvokeNative(GetHashKey("DRAW_LINE") & 0xFFFFFFFF, fishPosition, fishPosition + vec3(0, 0, 2.0), 255, 255, 0, 255)
 
                         if fishing_lure_cooldown <= GetGameTimer() then
                             local dist = #(hookPosition - fishPosition)
-                            if dist <= 1.0 then
+                            if dist <= 1.6 then
                                 fishHandle = f
                             else
-                                TaskGoToEntity(f, hookHandle, 500, 0.5, 2.0, 2.0, 0)
+                                if peixeEhAtraidoPelaIsca(GetEntityModel(f)) then
+                                    TaskGoToEntity(f, bobberPosition, 100, 1, 1.0, 2.0, 0)
+                                end
                             end
 
                             if lured == false then
@@ -97,159 +253,183 @@ Citizen.CreateThread(
                     end
 
                     if fishHandle then
-                        -- if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
-                        if FISHING_GET_F_(5) == 1 then
-                            print("next")
+                        local probabilidadePuxar = math.random()
+                        if probabilidadePuxar > 0.9 or probabilidadePuxar < 0.2 then -- soltar linha
+                            if FISHING_GET_F_(5) == 1 then
+                                Citizen.InvokeNative(0xF0FBF193F1F5C0EA, fishHandle)
 
-                            Citizen.InvokeNative(0xF0FBF193F1F5C0EA, fishHandle)
+                                SetPedConfigFlag(fishHandle, 17, true)
 
-                            SetPedConfigFlag(fishHandle, 17, true)
+                                Citizen.InvokeNative(0x1F298C7BD30D1240, playerPed)
 
-                            Citizen.InvokeNative(0x1F298C7BD30D1240, playerPed)
+                                ClearPedTasksImmediately(fishHandle, false, true)
+                                TaskSetBlockingOfNonTemporaryEvents(fishHandle, true)
 
-                            ClearPedTasksImmediately(fishHandle, false, true)
+                                Citizen.InvokeNative(0x1A52076D26E09004, playerPed, fishHandle)
+                                -- SET_FISHINGROD_HOOKED_ENTITY
 
-                            Citizen.InvokeNative(0x1A52076D26E09004, playerPed, fishHandle)
-                            -- SET_FISHINGROD_HOOKED_ENTITY
+                                FISHING_SET_FISH_HANDLE(fishHandle)
+                                fishForce = 0.6
 
-                            FISHING_SET_FISH_HANDLE(fishHandle)
-
-                            FISHING_SET_TRANSITION_FLAG(4)
+                                FISHING_SET_TRANSITION_FLAG(4)
+                            end
                         end
                     end
                 end
 
                 if FISHING_GET_MINIGAME_STATE() == 7 then
+                    fishing_data.fish.weight = FISHING_GET_F_(8)
+
+                    if IsControlJustPressed(0, 0x8FFC75D6) then
+                        FISHING_SET_F_(6, 11)
+                    end
                     local fishHandle = FISHING_GET_FISH_HANDLE()
 
-                    -- if FISHING_GET_F_(5) & 2 then
-                    --     SetPedResetFlag(fishHandle, 167, true)
-                    -- end
+                    if GetControlNormal(0, 0x390948DC) > 0 then -- Direita
+                        horizontalMove = horizontalMove - (0.05 * GetControlNormal(0, 0x390948DC))
+                    end
+                    if GetControlNormal(0, 0x390948DC) < 0 then -- Esquerda
+                        horizontalMove = horizontalMove + (0.05 * -GetControlNormal(0, 0x390948DC))
+                    end
+                    if horizontalMove < 0 then
+                        horizontalMove = 0
+                    end
+                    if horizontalMove > 1 then
+                        horizontalMove = 1
+                    end
+                    FISHING_SET_F_(22, horizontalMove)
 
                     -- Unused?
                     if FISHING_GET_LINE_DISTANCE() < 4.0 then
+                        FISHING_SET_F_(6, 12)
                         FISHING_SET_F_(14, 1.0)
                     else
                         FISHING_SET_F_(14, 1.0)
                     end
 
-                    local fishHeading = GetEntityHeading(fishHandle)
-                    local playerHeading = GetEntityHeading(playerPed)
+                    if GetGameTimer() >= nextAttTime then
+                        local probabilidadePuxar = math.random()
+                        if probabilidadePuxar > 0.8 or probabilidadePuxar < 0.2 then -- soltar linha
+                            fishForce = 0.8
+                            tempoPuxando = math.random(3, 5) * 1000
+                            fishStatus = 1 -- agitado
+                            nextAttTime = GetGameTimer() + tempoPuxando
 
-                    local diff = (fishHeading - playerHeading)
+                            local particleFx =StartNetworkedParticleFxLoopedOnEntityBone("scr_mg_fishing_drips", fishHandle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, GetEntityBoneIndexByName(fishHandle, "SKEL_Tail5"), 1065353216, 0, 0, 0);
+                            SetParticleFxLoopedEvolution(particleFx, "fade", 0.0, false)
+                            StartNetworkedParticleFxNonLoopedAtCoord("scr_mg_fish_struggle", GetEntityCoords(fishHandle), 0.0, 0.0, math.random(0, 360) + 0.0001, 1.2, 0, 0, 0);
 
-                    local unk0 = 0
 
-                    if diff < 0.0 then
-                        diff = diff + 360.0
+                        else -- deixar puxar
+                            fishForce = 0
+                            tempoPuxando = math.random(6, 10) * 1000
+                            fishStatus = 0 -- calmo
+                            nextAttTime = GetGameTimer() + tempoPuxando
+                        end
                     end
 
-                    if diff >= 180.0 then
-                        unk0 = 4
-                    else
-                        unk0 = 3
-                    end
-
-                    local controlNormal = GetControlNormal(0, 0xD6C4ECDC) -- * 127.0
-
-                    -- ->f_470 -- 57.42
-                    -- func_247 fishweight
-
-                    -- print(controlNormal)
-
-                    FISHING_SET_ROD_POSITION_LR(1.0 - controlNormal)
-
-                    local unk1 = GetGameTimer() / 1000.0
-
-                    if unk0 == 4 then
-                        if controlNormal < -25.0 then
-                            -- print("unk1", unk1)
-
-                            TaskGoToEntity(fishHandle, playerPed, unk1, 0.5, 2.0, 2.0, 0)
+                    if fishStatus == 1 then -- agitado
+                        if IsControlPressed(0, GetHashKey("INPUT_GAME_MENU_OPTION")) then
+                            FISHING_SET_ROD_WEIGHT(4)
+                            fishForce = fishForce + 0.005
                         else
+                            fishForce = fishForce - 0.005
                         end
-                    else
-                        if controlNormal > 25.0 then
-                            -- print("unk1-2", unk1)
-                            TaskGoToEntity(fishHandle, playerPed, unk1, 0.5, 2.0, 2.0, 0)
+
+                        if IsControlJustReleased(0, GetHashKey("INPUT_GAME_MENU_OPTION")) then
+                            FISHING_SET_ROD_WEIGHT(2)
+                        end
+
+                        if fishForce >= 1.4 then
+                            FISHING_SET_F_(6, 11)
                         else
+                            if fishForce < 0.8 then
+                                fishForce = 0.8
+                            end
                         end
-                    end
-
-                    if GetGameTimer() % 100 == 0 then
-                        print("oi")
-
-
-                        local chance_flee = 0.8
-                        local chance_go_to = 0.2
-
-                        if FISHING_GET_F_(18) == 4 then
-                            chance_flee = 0.2
-                            chance_go_to = 0.8
-                        end
-
-                        local r = math.random()
-
-                        if r <= chance_go_to then
-                            print("go to")
-
+                        TaskSmartFleeCoord(fishHandle, GetEntityCoords(playerPed), 40.0, 50, 8, 1077936128)
+                    else -- calmo
+                        if IsControlJustPressed(0, GetHashKey("INPUT_GAME_MENU_OPTION")) or (IsControlPressed(0, GetHashKey("INPUT_GAME_MENU_OPTION")) and GetGameTimer() % 25 == 0) then
+                            FISHING_SET_ROD_WEIGHT(4)
+                            -- #######################################################
                             -- SetBlockingOfNonTemporaryEvents(fishHandle, true)
-                            -- ClearPedTasks(fishHandle)
-                            TaskGoToEntity(fishHandle, playerPed, 2000, 0.1, 1.0, 0.1, 1)
-                        else
-                            print("flee")
+                            -- TaskGoToEntity(fishHandle, playerPed, 500, 5, 2.0, 2.0, 0)
+                            -- ApplyForceToEntity(fishHandle, 0, GetEntityCoords(playerPed))
+                            -- SetEntityVelocity(fishHandle, GetEntityCoords(playerPed))
+                            -- TaskGoToEntity(fishHandle, playerPed, 1000, 20, 1.0, 0.0, 1)
+                            TaskGoToEntity(fishHandle, playerPed, 25, 100, 100, 2.0, 0)
+                        end
 
-                            -- SetBlockingOfNonTemporaryEvents(fishHandle, true)
-                            -- ClearPedTasks(fishHandle, 1, 0)
-
-                            TaskSmartFleeCoord(fishHandle, GetEntityCoords(playerPed), 40.0, 2000, 8, 1077936128)
+                        if IsControlJustReleased(0, GetHashKey("INPUT_GAME_MENU_OPTION")) then
+                            FISHING_SET_ROD_WEIGHT(2)
                         end
                     end
 
-                    -- if GetScriptTaskStatus(fishHandle, 1139527981) == 8 and GetScriptTaskStatus(fishHandle, -773337285) == 8 and not IsPedFleeing(fishHandle) then
-                    --     SetBlockingOfNonTemporaryEvents(fishHandle, true)
-                    --     ClearPedTasks(fishHandle, 1, 0)
-
-                    --     TaskSmartFleeCoord(fishHandle, GetEntityCoords(playerPed), 40.0, 20000, 8, 1077936128)
-                    -- end
+                    if FISHING_GET_F_(6) ~= 11 and FISHING_GET_F_(6) ~= 12 then
+                        FISHING_SET_F_(13, fishForce)
+                        FISHING_SET_F_(21, fishForce)
+                    end
 
                     if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
-                        -- ClearPedTasks(fishHandle)
-                        -- TaskGoToEntity(fishHandle, playerPed, -1, 0.1, 1.0, 0.1, 1)
-
-                        FISHING_SET_ROD_WEIGHT(4)
-
-                        FISHING_SET_ROD_POSITION_UD(1.0)
+                        FISHING_SET_ROD_POSITION_UD(0.6)
                     end
 
                     if IsControlJustReleased(0, GetHashKey("INPUT_ATTACK")) then
-                        FISHING_SET_ROD_WEIGHT(fishing_data.fish.rodweight or 2)
-
-                        FISHING_SET_ROD_POSITION_UD(-1.0)
+                        FISHING_SET_ROD_POSITION_UD(0.0)
                     end
                 end
 
                 if FISHING_GET_MINIGAME_STATE() == 12 then
                     -- FICAR COM O PEIXE
                     if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
-                        -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 32)
                         FISHING_SET_TRANSITION_FLAG(32)
                     end
 
                     -- JOGAR O PEIXE DE VOLTA
                     if IsControlJustPressed(0, GetHashKey("INPUT_AIM")) then
-                        -- FISHING_SET_TRANSITION_FLAG(FISHING_GET_TRANSITION_FLAG() | 64)
                         FISHING_SET_TRANSITION_FLAG(64)
+                    end
+
+                    if FISHING_GET_F_(5) == 96 and FISHING_GET_F_(6) == 0 then
+                        TriggerServerEvent("VP:INVENTORY:getItem", fishs[GetEntityModel(FISHING_GET_FISH_HANDLE())], 1)
+                        SetEntityVisible(FISHING_GET_FISH_HANDLE(), false)
+                        SetEntityAsMissionEntity(FISHING_GET_FISH_HANDLE(), true, true)
+                        DeleteEntity(FISHING_GET_FISH_HANDLE())
                     end
                 end
 
                 if IsControlJustPressed(0, GetHashKey("INPUT_TOGGLE_HOLSTER")) then
-                    -- FISHING_SET_TRANSITION_FLAG(32768)
                     FISHING_SET_TRANSITION_FLAG(8)
                 end
             end
 
+            lastState = FISHING_GET_MINIGAME_STATE()
             Citizen.Wait(sleep)
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        prepareMyPrompt()
+        while true do
+            if FISHING_GET_MINIGAME_STATE() == 1 then
+                PromptSetActiveGroupThisFrame(fishing_data.prompt_prepare_fishing.group, CreateVarString(10, "LITERAL_STRING", "Pesca"))
+            end
+
+            if FISHING_GET_MINIGAME_STATE() == 6 then
+                PromptSetActiveGroupThisFrame(fishing_data.prompt_waiting_hook.group, CreateVarString(10, "LITERAL_STRING", "Esperando Fisgar"))
+            end
+
+            if FISHING_GET_MINIGAME_STATE() == 7 then
+                fishing_data.fish.weight = FISHING_GET_F_(8)
+                PromptSetActiveGroupThisFrame(fishing_data.prompt_hook.group, CreateVarString(10, "LITERAL_STRING", "Puxando Peixe"))
+            end
+
+            if FISHING_GET_MINIGAME_STATE() == 12 then
+                PromptSetActiveGroupThisFrame(fishing_data.prompt_finish.group, CreateVarString(10, "LITERAL_STRING", "Peixe " .. fishs[GetEntityModel(FISHING_GET_FISH_HANDLE())] .. " Kg" .. (fishing_data.fish.weight * 54.25)))
+            end
+            Citizen.Wait(0)
         end
     end
 )
@@ -313,6 +493,18 @@ function GET_TASK_FISHING_DATA()
         f_26 = outAsFloat["52"],
         f_27 = outAsFloat["54"] -- Radians/Degrees
     }
+end
+
+function peixeEhAtraidoPelaIsca(modeloPeixe)
+    local peixesAtraidos = lureFish[atualLure]
+    if peixesAtraidos ~= nil then
+        for _, peixe in pairs(peixesAtraidos) do
+            if fishs[modeloPeixe] == peixe then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 function SET_TASK_FISHING_DATA()
@@ -418,80 +610,80 @@ function FISHING_SET_ROD_POSITION_UD(v)
     FISHING_SET_F_(23, v)
 end
 
-RegisterCommand(
-    "bait",
-    function(source, args, raw)
-        Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "P_FINISHDCRAWDLEGENDARY01X", 0, 1)
-    end,
-    false
-)
+-- RegisterCommand(
+--     "bait",
+--     function(source, args, raw)
+--         Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), "P_FINISHDCRAWDLEGENDARY01X", 0, 1)
+--     end,
+--     false
+-- )
 
-RegisterCommand(
-    "fset",
-    function(source, args, raw)
-        if tonumber(args[2]) then
-            args[2] = tonumber(args[2])
-        end
+-- RegisterCommand(
+--     "fset",
+--     function(source, args, raw)
+--         if tonumber(args[2]) then
+--             args[2] = tonumber(args[2])
+--         end
 
-        fishing_minigame_struct["f_" .. args[1]] = args[2]
-        SET_TASK_FISHING_DATA()
-    end,
-    false
-)
+--         fishing_minigame_struct["f_" .. args[1]] = args[2]
+--         SET_TASK_FISHING_DATA()
+--     end,
+--     false
+-- )
 
-RegisterCommand(
-    "hook",
-    function(source, args, rawCommand)
-        Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(), tonumber(args[1]))
-    end
-)
+-- RegisterCommand(
+--     "hook",
+--     function(source, args, rawCommand)
+--         Citizen.InvokeNative(0x1A52076D26E09004, PlayerPedId(), tonumber(args[1]))
+--     end
+-- )
 
-RegisterCommand(
-    "fish",
-    function(source, args, rawCommand)
-        local r = {
-            "A_C_FISHBLUEGIL_01_SM",
-            "A_C_FISHBULLHEADCAT_01_SM",
-            "A_C_FISHCHAINPICKEREL_01_SM",
-            "A_C_FISHCHANNELCATFISH_01_LG",
-            "A_C_FISHLAKESTURGEON_01_LG",
-            "A_C_FISHLARGEMOUTHBASS_01_MS",
-            "A_C_FISHLONGNOSEGAR_01_LG",
-            "A_C_FISHMUSKIE_01_LG",
-            "A_C_FISHNORTHERNPIKE_01_LG",
-            "A_C_FISHPERCH_01_SM",
-            "A_C_FISHREDFINPICKEREL_01_SM",
-            "A_C_FISHROCKBASS_01_SM",
-            "A_C_FISHSMALLMOUTHBASS_01_MS",
-            "A_C_FISHSALMONSOCKEYE_01_MS",
-            "A_C_FISHRAINBOWTROUT_01_MS"
-        }
+-- RegisterCommand(
+--     "fish",
+--     function(source, args, rawCommand)
+--         local r = {
+--             "A_C_FISHBLUEGIL_01_SM",
+--             "A_C_FISHBULLHEADCAT_01_SM",
+--             "A_C_FISHCHAINPICKEREL_01_SM",
+--             "A_C_FISHCHANNELCATFISH_01_LG",
+--             "A_C_FISHLAKESTURGEON_01_LG",
+--             "A_C_FISHLARGEMOUTHBASS_01_MS",
+--             "A_C_FISHLONGNOSEGAR_01_LG",
+--             "A_C_FISHMUSKIE_01_LG",
+--             "A_C_FISHNORTHERNPIKE_01_LG",
+--             "A_C_FISHPERCH_01_SM",
+--             "A_C_FISHREDFINPICKEREL_01_SM",
+--             "A_C_FISHROCKBASS_01_SM",
+--             "A_C_FISHSMALLMOUTHBASS_01_MS",
+--             "A_C_FISHSALMONSOCKEYE_01_MS",
+--             "A_C_FISHRAINBOWTROUT_01_MS"
+--         }
 
-        local pedModel = r[math.random(1, #r)]
+--         local pedModel = r[math.random(1, #r)]
 
-        local pedModelHash = GetHashKey(pedModel)
-        if not IsModelValid(pedModelHash) then
-            print("model is not valid")
-            return
-        end
+--         local pedModelHash = GetHashKey(pedModel)
+--         if not IsModelValid(pedModelHash) then
+--             print("model is not valid")
+--             return
+--         end
 
-        if not HasModelLoaded(pedModelHash) then
-            RequestModel(pedModelHash)
-            while not HasModelLoaded(pedModelHash) do
-                Citizen.Wait(10)
-            end
-        end
+--         if not HasModelLoaded(pedModelHash) then
+--             RequestModel(pedModelHash)
+--             while not HasModelLoaded(pedModelHash) do
+--                 Citizen.Wait(10)
+--             end
+--         end
 
-        local plped = PlayerPedId()
-        local forward = GetEntityForwardVector(plped)
-        local c = GetEntityCoords(plped) + (forward * 10.0)
+--         local plped = PlayerPedId()
+--         local forward = GetEntityForwardVector(plped)
+--         local c = GetEntityCoords(plped) + (forward * 10.0)
 
-        local ped = CreatePed(pedModelHash, c, GetEntityHeading(plped), 1, 0)
-        Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
-        Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
-        print(ped)
-    end
-)
+--         local ped = CreatePed(pedModelHash, c, GetEntityHeading(plped), 1, 0)
+--         Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
+--         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+--         print(ped)
+--     end
+-- )
 
 function GetNearbyFishs(coords, radius)
     local r = {}
@@ -550,45 +742,31 @@ function FishModelToSomeSortOfWeightIndex(fishModel)
     end
 end
 
-function GetMinWeightForWeightIndex(index)
-    local w = 0.0
+function GetMinMaxWeightForWeightIndex(index)
+    local min = 0.0
+    local max = 0.0
 
     if index == 0 or index == 1 or index == 3 or index == 9 or index == 10 or index == 11 then
-        w = 0.5
+        min = 0.5
+        max = 2.0
     elseif index == 3 or index == 4 or index == 6 or index == 7 or index == 8 then
-        w = 14.0
+        min = 14.0
+        max = 20.0
     elseif index == 5 or index == 12 or index == 13 or index == 14 then
-        w = 4.0
+        min = 4.0
+        max = 6.0
     end
 
-    w = w * 0.25
+    min = min * 0.25
+    max = max * 0.25
 
     -- w = w + (w * 0.5)
 
-    return w
-end
-
-function GetMaxWeightForWeightIndex(index)
-    local w = 0.0
-
-    if index == 0 or index == 1 or index == 3 or index == 9 or index == 10 or index == 11 then
-        w = 2.0
-    elseif index == 3 or index == 4 or index == 6 or index == 7 or index == 8 then
-        w = 20.0
-    elseif index == 5 or index == 12 or index == 13 or index == 14 then
-        w = 6.0
-    end
-
-    w = w * 0.25
-
-    -- w = w + (w * 0.5)
-
-    return w
+    return min, max
 end
 
 function GetRandomFishWeightForWeightIndex(index)
-    local min = GetMinWeightForWeightIndex(index)
-    local max = GetMaxWeightForWeightIndex(index)
+    local min, max = GetMinMaxWeightForWeightIndex(index)
 
     local weight = math.random() * (max - min) + min
 
@@ -596,6 +774,112 @@ function GetRandomFishWeightForWeightIndex(index)
 
     return weight
 end
+
+function prepareMyPrompt()
+    -- Preparando para pesca
+    fishing_data.prompt_prepare_fishing.group = GetRandomIntInRange(0, 0xffffff)
+    local prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, GetHashKey("INPUT_ATTACK")) -- MOUSE LEFT CLICK
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Trocar Isca"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_prepare_fishing.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_prepare_fishing.change_bait = prompt
+
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, 0xDB096B85) -- LEFT CONTROL
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Cancelar Pesca"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_prepare_fishing.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_prepare_fishing.cancel = prompt
+
+    -- Esperando fisgar
+    fishing_data.prompt_waiting_hook.group = GetRandomIntInRange(0, 0xffffff)
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, GetHashKey("INPUT_ATTACK")) -- MOUSE LEFT CLICK
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Fisgar"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_waiting_hook.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_waiting_hook.hook = prompt
+
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, 0x8FFC75D6) -- LEFT SHIFT
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Recolher Linha"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_waiting_hook.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_waiting_hook.cancel = prompt
+
+    -- Puxando Peixe
+    fishing_data.prompt_hook.group = GetRandomIntInRange(0, 0xffffff)
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, 0xFBD7B3E6) -- SPACE
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Puxar Linha"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_hook.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_hook.reel = prompt
+
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, 0x8FFC75D6) -- LEFT SHIFT
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Cortar Linha"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_hook.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_hook.cancel = prompt
+
+    -- Peixe Pego
+    fishing_data.prompt_finish.group = GetRandomIntInRange(0, 0xffffff)
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, GetHashKey("INPUT_ATTACK")) -- MOUSE LEFT CLICK
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Pegar o peixe"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_finish.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_finish.take = prompt
+
+    prompt = PromptRegisterBegin()
+    PromptSetControlAction(prompt, GetHashKey("INPUT_AIM")) -- MOUSE RIGHT CLICK
+    PromptSetText(prompt, CreateVarString(10, "LITERAL_STRING", "Devolver o peixe"))
+    PromptSetEnabled(prompt, true)
+    PromptSetVisible(prompt, true)
+    PromptSetHoldMode(prompt, false)
+    PromptSetGroup(prompt, fishing_data.prompt_finish.group)
+    PromptRegisterEnd(prompt)
+    fishing_data.prompt_finish.cancel = prompt
+end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            PromptDelete(fishing_data.prompt_prepare_fishing.change_bait)
+            PromptDelete(fishing_data.prompt_prepare_fishing.cancel)
+            PromptDelete(fishing_data.prompt_waiting_hook.hook)
+            PromptDelete(fishing_data.prompt_waiting_hook.cancel)
+            PromptDelete(fishing_data.prompt_hook.reel)
+            PromptDelete(fishing_data.prompt_hook.cancel)
+            PromptDelete(fishing_data.prompt_finish.take)
+            PromptDelete(fishing_data.prompt_finish.cancel)
+        end
+    end
+)
 
 -- uParam0->f_18 = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE("scr_mg_fishing_drips", Global_1902942->f_5.f_7, 0f, 0f, 0f, 0f, 0f, 0f, ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(Global_1902942->f_5.f_7, "SKEL_Tail5"), 1065353216, 0, 0, 0);
 -- 	GRAPHICS::SET_PARTICLE_FX_LOOPED_EVOLUTION(uParam0->f_18, "fade", uParam0->f_19, false);
@@ -612,6 +896,9 @@ end
 -- Global_1902942->f_5.f_7
 
 -- Global_1902942->f_5 == 7
+
+-- * _0x0C9DBF48C6BA6E4C
+-- * _HAS_ENTITY_CLEAR_LOS_OF_COORD
 
 --[[
     CURVATURE: FUNC_158
@@ -633,7 +920,7 @@ Any _GET_TASK_FISHING_DATA(Ped ped, Any* structData);
     8 = ??? (never seen). Removes prompts it seems.
     9 = Removes the float.
     10 = ??? (never seen).
-    11 = ...
+    11 = perdeu o peixe
     12 = Holding fish in hand(s).
     13 = Changing bait.
   STRUCT:
@@ -659,6 +946,8 @@ Any _GET_TASK_FISHING_DATA(Ped ped, Any* structData);
     f_19 = Unk.
     f_20 = Unk float.
     f_21 = Line break apart float.
+    f_22 = hozintal orientation
+    f_23 = vertical orientation
   FLAGS:
     2: LINE_SNAP_BUG
     4: HOOKED_TURN_RIGHT

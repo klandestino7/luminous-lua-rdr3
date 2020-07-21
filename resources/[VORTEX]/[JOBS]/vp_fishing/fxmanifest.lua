@@ -17,5 +17,6 @@ server_scripts {
 
 exports {
 	'GET_TASK_FISHING_DATA',
-	'SET_TASK_FISHING_DATA',
+    'SET_TASK_FISHING_DATA',
+    'VERTICAL_PROBE'
 }

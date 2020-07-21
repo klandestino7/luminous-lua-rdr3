@@ -1,6 +1,6 @@
 exports('GET_TASK_FISHING_DATA', (ped) => {
 
-    let buffer = new ArrayBuffer(256);
+    let buffer = new ArrayBuffer(8 * 28);
     let view = new DataView(buffer);
 
     let hasMinigameOn = Citizen.invokeNative("0xF3735ACD11ACD500", PlayerPedId(), view);
@@ -18,7 +18,7 @@ exports('GET_TASK_FISHING_DATA', (ped) => {
 
 exports('SET_TASK_FISHING_DATA', (struct) => {
 
-    let buffer = new ArrayBuffer(256);
+    let buffer = new ArrayBuffer(8 * 28);
     let view = new DataView(buffer);
 
     for (i = 0; i <= 21; i++) {
@@ -65,3 +65,14 @@ function Float32ToInt32(num) {
     // console.log(view.getInt32(0));
     return view.getInt32(0);
 }
+
+exports('VERTICAL_PROBE', (x, y, z, unkbool) => {
+
+    let buffer = new ArrayBuffer(127);
+    let view = new DataView(buffer);
+
+    // TEST_VERTICAL_PROBE_AGAINST_ALL_WATER
+    let r = Citizen.invokeNative("0x2B3451FA1E3142E2 ", x, y, z, unkbool, view);
+
+    return r;
+});
