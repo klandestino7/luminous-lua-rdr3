@@ -9,6 +9,7 @@ local prompt_group
 local prompt_craft
 local prompt_cancel
 
+local requestedCraftingToOpen = false
 local craftingNuiIsOpen = false
 local shouldShowPrompt = false
 local isCrafting = false
@@ -94,6 +95,14 @@ Citizen.CreateThread(
     function()
         prompt_group = GetRandomIntInRange(0, 0xffffff)
 
+        prompt_crafting_menu = PromptRegisterBegin()
+        PromptSetControlAction(prompt_crafting_menu, 0x5966D52A)
+        PromptSetText(prompt_crafting_menu, CreateVarString(10, "LITERAL_STRING", "Crafting"))
+        PromptSetEnabled(prompt_crafting_menu, false)
+        PromptSetVisible(prompt_crafting_menu, false)
+        -- PromptSetHoldMode(prompt_crafting_menu, true)
+        PromptRegisterEnd(prompt_crafting_menu)
+
         prompt_craft = PromptRegisterBegin()
         PromptSetControlAction(prompt_craft, 0xDFF812F9)
         PromptSetText(prompt_craft, CreateVarString(10, "LITERAL_STRING", "Produzir"))
@@ -113,6 +122,8 @@ Citizen.CreateThread(
         PromptSetGroup(prompt_cancel, prompt_group)
         PromptRegisterEnd(prompt_cancel)
 
+        local restingScenario = -1241981548
+
         while true do
             Citizen.Wait(0)
 
@@ -120,16 +131,14 @@ Citizen.CreateThread(
 
             if not craftingNuiIsOpen then
                 if not isCrafting then
-                    -- 0x5966D52A
-                    -- 0x2EAB0795
+                    local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
 
-                    if IsControlJustPressed(0, 0x5966D52A) then
-                        if not Citizen.InvokeNative(0x1BE19185B8AFE299, 0x5966D52A) then
-                            local scenarioTypeHash = GetHashKey("WORLD_PLAYER_CAMP_FIRE_KNEEL4")
-                            -- WORLD_PLAYER_DYNAMIC_KNEEL
+                    if typePedIsUsing == restingScenario then
+                        if not requestedCraftingToOpen then
+                            PromptSetEnabled(prompt_crafting_menu, true)
+                            PromptSetVisible(prompt_crafting_menu, true)
 
-                            local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
-                            if typePedIsUsing ~= scenarioTypeHash then
+                            if IsControlJustPressed(0, 0x5966D52A) then
                                 local playerPedPosition = GetEntityCoords(playerPed)
 
                                 local retval, groundZ, normal = GetGroundZAndNormalFor_3dCoord(playerPedPosition.x, playerPedPosition.y, playerPedPosition.z)
@@ -155,20 +164,6 @@ Citizen.CreateThread(
 
                                 local isNearCampfire = campfireEntity ~= 0
 
-                                local scenario_heading = GetEntityHeading(playerPed)
-
-                                local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, scenarioTypeHash, scenarioPosition, scenario_heading, 0, 0, 0)
-
-                                local scenarioTransition = ""
-
-                                -- if IsPedMale(playerPed) then
-                                --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_ARTHUR"
-                                -- else
-                                --     scenarioTransition = "WORLD_PLAYER_DYNAMIC_KNEEL_COOK_KNIFE_MP_FEMALE_A"
-                                -- end
-
-                                TaskUseScenarioPoint(playerPed, scenario, scenarioTransition, -1.0, true, false, 0, false, -1.0, true)
-
                                 local craftingGroups = {}
 
                                 for cGroup, d in pairs(Config) do
@@ -192,8 +187,16 @@ Citizen.CreateThread(
                                 end
 
                                 TriggerServerEvent("VP:CRAFTING:TryToOpenCrafting", craftingGroups)
+                                requestedCraftingToOpen = true
                             end
                         end
+                    else
+                        if requestedCraftingToOpen then
+                            requestedCraftingToOpen = false
+                        end
+
+                        PromptSetEnabled(prompt_crafting_menu, false)
+                        PromptSetVisible(prompt_crafting_menu, false)
                     end
                 else
                     local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
@@ -372,6 +375,9 @@ AddEventHandler(
 
         SetGameplayCamRelativeHeading(0.0, 1.0)
         SetGameplayCamRelativePitch(0.0, 1.0)
+
+        PromptSetEnabled(prompt_crafting_menu, false)
+        PromptSetVisible(prompt_crafting_menu, false)
     end
 )
 
@@ -382,6 +388,7 @@ AddEventHandler(
             -- PromptDelete(prompt)
             TriggerEvent("VP:CRAFT:ShouldClose")
 
+            PromptDelete(prompt_crafting_menu)
             PromptDelete(prompt_craft)
             PromptDelete(prompt_cancel)
         end
