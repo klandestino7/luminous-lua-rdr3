@@ -70,18 +70,19 @@ Citizen.CreateThread(
 
                     local data = {
                         position = {x, y, z},
-                        rotation = heading
+                        rotation = heading,
+                        entity = entity
                     }
 
-                    if not closestIndex then
+                    if not entityIndex then
                         if not cJSON[string_model] then
                             cJSON[string_model] = {}
                         end
 
-                        table.insert(entities, entity)
+                        -- table.insert(entities, entity)
                         table.insert(cJSON[string_model], data)
                     else
-                        closestIndex = nil
+                        entityIndex = nil
                     end
 
                     Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, false)
@@ -90,40 +91,46 @@ Citizen.CreateThread(
                 end
 
                 if IsDisabledControlJustPressed(0, GetHashKey("INPUT_AIM")) then
-                    if not closestIndex then
+                    if not entityIndex then
                     else
                         local model = GetEntityModel(entity)
+                        local string_model = GetHashName(model)
 
-                        table.remove(entities, closestIndex)
-                        closestIndex = nil
+                        if cJSON[string_model] then
+                            table.remove(cJSON[string_model], entityIndex)
+                        end
 
-                        print("set to nil")
+                        cAPI.notify("success", "Entidade removida!")
                     end
 
                     DeleteMyEntity()
                 end
             else
-                -- end
-                -- if IsDisabledControlPressed(0, GetHashKey("INPUT_ATTACK")) then
                 local lookingAtPosition = GetLookingAtPosition(7.0)
 
                 local closestIndex
+                local closestEntity
                 local closestDistance
 
-                for index, ent in pairs(entities) do
-                    local distance = #(GetEntityCoords(ent) - lookingAtPosition)
+                for model, values in pairs(cJSON) do
+                    for index, d in pairs(values) do
+                        local ent = d.entity
 
-                    if distance and distance <= SELECTION_DISTANCE_THRESHOLD then
-                        if not closestDistance or distance < closestDistance then
-                            closestIndex = index
-                            closestDistance = distance
+                        if ent then
+                            local distance = #(GetEntityCoords(ent) - lookingAtPosition)
+
+                            if distance and distance <= SELECTION_DISTANCE_THRESHOLD then
+                                if not closestDistance or distance < closestDistance then
+                                    closestIndex = index
+                                    closestEntity = ent
+                                    closestDistance = distance
+                                end
+                            end
                         end
                     end
                 end
 
                 if closestIndex then
-                    local closestEntity = entities[closestIndex]
-
                     if l_entity and l_entity ~= closestEntity then
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
                     end
@@ -135,7 +142,7 @@ Citizen.CreateThread(
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
                         l_entity = nil
 
-                        entity = entities[closestIndex]
+                        entity = closestEntity
                         entityIndex = closestIndex
 
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, entity, true)
@@ -146,6 +153,44 @@ Citizen.CreateThread(
                     if l_entity then
                         Citizen.InvokeNative(0x7DFB49BCDB73089A, l_entity, false)
                         l_entity = nil
+                    end
+                end
+            end
+        end
+    end
+)
+
+Citizen.CreateThread(
+    function()
+        while true do
+            Citizen.Wait(1000)
+
+            local playerPed = PlayerPedId()
+            local playerPosition = GetEntityCoords(playerPed)
+
+            for model, values in pairs(cJSON) do
+                for index, d in pairs(values) do
+                    local ent = d.entity
+                    local x, y, z = table.unpack(d.position)
+
+                    if #(playerPosition - vec3(x, y, z)) <= 50.0 then
+                        if not DoesEntityExist(ent) then
+                            local t_ent = CreateObject(model, x, y, z, true, true, true)
+                            SetEntityHeading(t_ent, rotation)
+
+                            cJSON[model][index].entity = t_ent
+                            d.entity = t_ent
+                        end
+                    else
+                        if ent then
+                            if DoesEntityExist(ent) then
+                                SetEntityAsMissionEntity(ent, true, true)
+                                DeleteEntity(ent)
+                            end
+
+                            -- cJSON[model][index].entity = nil
+                            d.entity = nil
+                        end
                     end
                 end
             end
@@ -270,11 +315,21 @@ function WriteToOutput()
     --     return false
     -- end
 
-    TriggerServerEvent("LP:Write", "save.json", json.encode(cJSON))
+    local copy = deepcopy(cJSON)
+
+    for model, values in pairs(copy) do
+        for index, d in pairs(values) do
+            if d.entity then
+                d.entity = nil
+            end
+        end
+    end
+
+    TriggerServerEvent("LP:Write", "save.json", json.encode(copy))
 end
 
 function SpawnEntitiesAtJSON()
-    for model, list in pairs(cJSON) do
+    for model, values in pairs(cJSON) do
         model = GetHashKey(model)
 
         if IsModelValid(model) then
@@ -285,9 +340,9 @@ function SpawnEntitiesAtJSON()
                 end
             end
 
-            for _, v in pairs(list) do
-                local x, y, z = table.unpack(v.position)
-                local rotation = v.rotation
+            for index, d in pairs(values) do
+                local x, y, z = table.unpack(d.position)
+                local rotation = d.rotation
 
                 local ent = CreateObject(model, x, y, z, true, true, true)
                 SetEntityHeading(ent, rotation)
@@ -295,7 +350,7 @@ function SpawnEntitiesAtJSON()
                 ActivatePhysics(ent)
                 SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(ent, true)
 
-                table.insert(entities, ent)
+                d.entity = ent
             end
 
             SetModelAsNoLongerNeeded(model)
@@ -336,9 +391,14 @@ AddEventHandler(
     function()
         DeleteMyEntity()
 
-        for _, ent in pairs(entities) do
-            SetEntityAsMissionEntity(ent, true, true)
-            DeleteObject(ent)
+        for model, values in pairs(cJSON) do
+            for index, d in pairs(values) do
+                local ent = d.entity
+                if DoesEntityExist(ent) then
+                    SetEntityAsMissionEntity(ent, true, true)
+                    DeleteObject(ent)
+                end
+            end
         end
     end
 )
