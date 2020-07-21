@@ -9,7 +9,7 @@ local prompt_group
 local prompt_craft
 local prompt_cancel
 
-local requestedCraftingToOpen = false
+local alreadyRequestedCraftingNui = false
 local craftingNuiIsOpen = false
 local shouldShowPrompt = false
 local isCrafting = false
@@ -20,6 +20,8 @@ local selected_name
 local selected_time
 
 local _tempParsedConfig
+
+local DEFAULT_CRAFTING_POSITION_RADIUS = 1.5
 
 RegisterNetEvent("VP:CRAFT:ShouldClose")
 AddEventHandler(
@@ -95,14 +97,6 @@ Citizen.CreateThread(
     function()
         prompt_group = GetRandomIntInRange(0, 0xffffff)
 
-        prompt_crafting_menu = PromptRegisterBegin()
-        PromptSetControlAction(prompt_crafting_menu, 0x5966D52A)
-        PromptSetText(prompt_crafting_menu, CreateVarString(10, "LITERAL_STRING", "Crafting"))
-        PromptSetEnabled(prompt_crafting_menu, false)
-        PromptSetVisible(prompt_crafting_menu, false)
-        -- PromptSetHoldMode(prompt_crafting_menu, true)
-        PromptRegisterEnd(prompt_crafting_menu)
-
         prompt_craft = PromptRegisterBegin()
         PromptSetControlAction(prompt_craft, 0xDFF812F9)
         PromptSetText(prompt_craft, CreateVarString(10, "LITERAL_STRING", "Produzir"))
@@ -122,8 +116,6 @@ Citizen.CreateThread(
         PromptSetGroup(prompt_cancel, prompt_group)
         PromptRegisterEnd(prompt_cancel)
 
-        local restingScenario = -1241981548
-
         while true do
             Citizen.Wait(0)
 
@@ -131,72 +123,10 @@ Citizen.CreateThread(
 
             if not craftingNuiIsOpen then
                 if not isCrafting then
-                    local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
-
-                    if typePedIsUsing == restingScenario then
-                        if not requestedCraftingToOpen then
-                            PromptSetEnabled(prompt_crafting_menu, true)
-                            PromptSetVisible(prompt_crafting_menu, true)
-
-                            if IsControlJustPressed(0, 0x5966D52A) then
-                                local playerPedPosition = GetEntityCoords(playerPed)
-
-                                local retval, groundZ, normal = GetGroundZAndNormalFor_3dCoord(playerPedPosition.x, playerPedPosition.y, playerPedPosition.z)
-
-                                local scenarioPosition = vec3(playerPedPosition.xy, groundZ)
-
-                                local campfireModels = {
-                                    "s_cookfire01x",
-                                    "p_campfirecombined03x",
-                                    "p_campfire04x",
-                                    "p_campfire03x"
-                                }
-
-                                local campfireEntity = 0
-
-                                for _, cmodel in pairs(campfireModels) do
-                                    local e = GetClosestObjectOfType(playerPedPosition, 1.0, GetHashKey(cmodel), 0, 0, 0)
-                                    if e ~= 0 then
-                                        campfireEntity = e
-                                        break
-                                    end
-                                end
-
-                                local isNearCampfire = campfireEntity ~= 0
-
-                                local craftingGroups = {}
-
-                                for cGroup, d in pairs(Config) do
-                                    local hasPermission = true
-
-                                    if d.position and (#(playerPedPosition - d.position) > (d.distance or 1.0)) then
-                                        hasPermission = false
-                                    end
-
-                                    if d.campfire and not isNearCampfire then
-                                        hasPermission = false
-                                    end
-
-                                    if d.group and not cAPI.hasGroupOrInheritance(d.group) then
-                                        hasPermission = false
-                                    end
-
-                                    if hasPermission then
-                                        table.insert(craftingGroups, cGroup)
-                                    end
-                                end
-
-                                TriggerServerEvent("VP:CRAFTING:TryToOpenCrafting", craftingGroups)
-                                requestedCraftingToOpen = true
-                            end
+                    if IsControlJustPressed(0, 0x5966D52A) and not alreadyRequestedCraftingNui then
+                        if not Citizen.InvokeNative(0x1BE19185B8AFE299, 0x5966D52A) then
+                            TriggerEvent("VP:CRAFTING:client_TryToOpenCrafting")
                         end
-                    else
-                        if requestedCraftingToOpen then
-                            requestedCraftingToOpen = false
-                        end
-
-                        PromptSetEnabled(prompt_crafting_menu, false)
-                        PromptSetVisible(prompt_crafting_menu, false)
                     end
                 else
                     local typePedIsUsing = Citizen.InvokeNative(0x2D0571BB55879DA2, playerPed)
@@ -213,7 +143,17 @@ Citizen.CreateThread(
                         if craftingEndGameTimer <= GetGameTimer() then
                             TriggerServerEvent("VP:CRAFTING:FinishedCrafting", selected_cGroup, selected_cIndex)
 
+                            -- local soundId = GetSoundId()
+
+                            -- if soundId ~= -1 then
+                            --     Citizen.InvokeNative(0xCE5D0FFE83939AF1, soundId, "toggle_ingredients_effects", "SSCRFT_Sounds", 1)
+                            -- end
+
+                            PlaySoundFrontend("REWARD_NEW_GUN", "HUD_REWARD_SOUNDSET", true, 0)
+
                             ClearPosCrafting()
+
+                            TriggerEvent("VP:CRAFTING:client_TryToOpenCrafting")
                         elseif PromptHasHoldModeCompleted(prompt_cancel) then
                             ClearPosCrafting()
                         else
@@ -280,7 +220,61 @@ function Animate_meatChunks()
     local r = Citizen.InvokeNative(0x3BBDD6143FF16F98, playerPed, object, "p_meatChunks01x_PH_L_HAND", 0, 0, 1)
 end
 -]]
+function GetNearestCampfirePosition(radius)
+    local models = {
+        "s_cookfire01x",
+        "p_campfirecombined01x",
+        "p_campfirecombined03x",
+        "p_campfire04x",
+        "p_campfire03x"
+    }
+
+    local playerPosition = GetEntityCoords(PlayerPedId())
+
+    local position
+
+    for _, model in pairs(models) do
+        local entity = GetClosestObjectOfType(playerPosition, radius, GetHashKey(model), 0, 0, 0)
+        if DoesEntityExist(entity) then
+            position = GetEntityCoords(entity)
+            break
+        end
+    end
+
+    return position
+end
+
+function GetNearestCraftingConfig(radius)
+    local playerPosition = GetEntityCoords(PlayerPedId())
+
+    local closestDistance
+    -- local closestPosition
+    local closestCIndex
+
+    for cIndex, d in pairs(Config) do
+        local position = d.position
+
+        if position then
+            local distance = #(position - playerPosition)
+
+            if distance < radius then
+                if not closestDistance or distance < closestDistance then
+                    closestDistance = distance
+                    -- closestPosition = position
+                    closestCIndex = cIndex
+                end
+            end
+        end
+    end
+
+    -- return closestPosition
+    return Config[closestCIndex]
+end
+
 function PlayCraftingAnimation(playerPed)
+
+    SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), true)
+
     local animDict = "MECH_INVENTORY@CRAFTING@FALLBACKS@IN_HAND@MALE_A"
 
     if not IsPedMale(playerPed) then
@@ -296,12 +290,12 @@ function PlayCraftingAnimation(playerPed)
         end
 
         -- TaskPlayAnim(playerPed, animDict, "craft_trans_stow", 8.0, -8.0, -1, 67108880, 0.0, false, 4096, false, "Satchel_Only_filter", false)
-        TaskPlayAnimAdvanced(playerPed, animDict, "craft_trans_stow", GetEntityCoords(playerPed), GetEntityRotation(playerPed), 8.0, -8.0, -1, 67108880, 0.0, false, 4096, false, "Satchel_Only_filter", false)
+        TaskPlayAnimAdvanced(playerPed, animDict, "craft_trans_stow", GetEntityCoords(playerPed), GetEntityRotation(playerPed), 8.0, -8.0, -1, 67109393, 0.0, false, 1245184, false, "UpperbodyFixup_filter", false)
     else
         local animCurrentTime = Citizen.InvokeNative(0x627520389E288A73, playerPed, animDict, "craft_trans_stow", Citizen.ResultAsFloat())
 
         if animCurrentTime >= 0.6 then
-            TaskPlayAnimAdvanced(playerPed, animDict, "craft_trans_stow", GetEntityCoords(playerPed), GetEntityRotation(playerPed), 4.0, -2.0, -1, 67108880, 0.39, false, 4096, false, "Satchel_Only_filter", false)
+            TaskPlayAnimAdvanced(playerPed, animDict, "craft_trans_stow", GetEntityCoords(playerPed), GetEntityRotation(playerPed), 4.0, -2.0, -1, 67109393, 0.39, false, 1245184, false, "UpperbodyFixup_filter", false)
         end
     end
 end
@@ -318,10 +312,55 @@ function ClearPosCrafting()
     craftingEndGameTimer = nil
 end
 
+RegisterNetEvent("VP:CRAFTING:client_TryToOpenCrafting")
+AddEventHandler(
+    "VP:CRAFTING:client_TryToOpenCrafting",
+    function()
+        local playerPed = PlayerPedId()
+        local playerPosition = GetEntityCoords(playerPed)
+
+        local hasCampfireNearby = GetNearestCampfirePosition(DEFAULT_CRAFTING_POSITION_RADIUS) ~= nil
+
+        local craftingGroups = {}
+
+        for cGroup, d in pairs(Config) do
+            local hasPermission = true
+
+            if d.position then
+                if (#(playerPosition - d.position) > (d.distance or DEFAULT_CRAFTING_POSITION_RADIUS)) then
+                    hasPermission = false
+                end
+            end
+
+            if d.campfire then
+                if not hasCampfireNearby then
+                    hasPermission = false
+                end
+            end
+
+            if d.group then
+                if not cAPI.hasGroupOrInheritance(d.group) then
+                    hasPermission = false
+                end
+            end
+
+            if hasPermission then
+                table.insert(craftingGroups, cGroup)
+            end
+        end
+
+        alreadyRequestedCraftingNui = true
+
+        TriggerServerEvent("VP:CRAFTING:TryToOpenCrafting", craftingGroups)
+    end
+)
+
 RegisterNetEvent("VP:CRAFTING:OpenCrafting")
 AddEventHandler(
     "VP:CRAFTING:OpenCrafting",
     function(r)
+        alreadyRequestedCraftingNui = false
+
         local f = deepcopy(Config)
 
         for cGroup, l in pairs(r) do
@@ -376,8 +415,28 @@ AddEventHandler(
         SetGameplayCamRelativeHeading(0.0, 1.0)
         SetGameplayCamRelativePitch(0.0, 1.0)
 
-        PromptSetEnabled(prompt_crafting_menu, false)
-        PromptSetVisible(prompt_crafting_menu, false)
+        local default_crafting_scenario = -1241981548
+
+        local playerPed = PlayerPedId()
+
+        local playerPosition = GetEntityCoords(playerPed)
+
+        local _, groundZ, _ = GetGroundZAndNormalFor_3dCoord(playerPosition.x, playerPosition.y, playerPosition.z)
+
+        local nearestCraftingConfig = GetNearestCraftingConfig(DEFAULT_CRAFTING_POSITION_RADIUS) or {}
+        local lookAtPosition = nearestCraftingConfig.position or GetNearestCampfirePosition(DEFAULT_CRAFTING_POSITION_RADIUS) or playerPosition
+
+        local dir = lookAtPosition - playerPosition
+        local desiredHeading = GetHeadingFromVector_2d(dir.x, dir.y)
+
+        ClearPedTasks(playerPed)
+
+        if not nearestCraftingConfig.position then
+            local scenario = Citizen.InvokeNative(0x94B745CE41DB58A1, default_crafting_scenario, playerPosition, desiredHeading, 0, 0, 0)
+            TaskUseScenarioPoint(playerPed, scenario, "", -1.0, true, false, 0, false, -1.0, true)
+        else
+            TaskAchieveHeading(playerPed, desiredHeading, -1)
+        end
     end
 )
 
@@ -388,7 +447,6 @@ AddEventHandler(
             -- PromptDelete(prompt)
             TriggerEvent("VP:CRAFT:ShouldClose")
 
-            PromptDelete(prompt_crafting_menu)
             PromptDelete(prompt_craft)
             PromptDelete(prompt_cancel)
         end

@@ -132,7 +132,21 @@ Config = {
             --     }
             -- }
         }
-    }
+    },
+    -- {
+    --     position = vec3(365.660, 1492.330, 180.677),
+    --     craftings = {
+    --         {
+    --             time = 10,
+    --             input = {
+    --                 {item = "money", amount = 2}
+    --             },
+    --             output = {
+    --                 {item = "revolver_cattleman", amount = 1}
+    --             }
+    --         }
+    --     }
+    -- }
 }
 
 --[[

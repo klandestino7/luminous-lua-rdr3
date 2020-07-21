@@ -4,6 +4,8 @@ window.addEventListener("message", function(event) {
 
         $('.item-column').html("");
 
+        let selectedFirst = false;
+
         $.each(event.data.data, function(cGroup, x) {
 
             cGroup += 1;
@@ -20,12 +22,18 @@ window.addEventListener("message", function(event) {
                     // const amount = output.amount;
 
                     $('.item-column').append(`
-                        <div class="item" data-cgroup="${cGroup}" data-cindex ="${cIndex}">
+                        <div class="item ${!(selectedFirst) ? "selected" : ""}" data-cgroup="${cGroup}" data-cindex="${cIndex}">
                             <span class="title">
                                 ${name}
                             </span>
                         </div>
                     `);
+
+                    if (!(selectedFirst)) {
+                        $.post("http://vp_crafting/getRecipe", JSON.stringify({ cGroup: cGroup, cIndex: cIndex }));
+
+                        selectedFirst = true;
+                    }
                 });
             });
         });
