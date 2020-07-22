@@ -488,3 +488,13 @@ Citizen.CreateThread(
         end
     end
 )
+
+function cAPI.IsPlayerLassoed()
+    local isLassoed = Citizen.InvokeNative(0x9682F850056C9ADE, PlayerPedId())
+
+    if isLassoed == false then
+        return false
+    end
+
+    return true
+end

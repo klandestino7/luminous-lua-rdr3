@@ -76,6 +76,10 @@ end
 function triggerUse(User, itemData)
     local source = User:getSource()
 
+    if cAPI.getHealth(source) <= 0 or cAPI.IsPlayerLassoed(source) then
+        return false
+    end
+
     local itemId = itemData:getId()
     local itemType = itemData:getType()
 
