@@ -440,16 +440,18 @@ Citizen.CreateThread(
 
                     -- ? 8.3m/s = 30.0km/h
 
-                    if (math.abs(v.x) >= 2.5 or math.abs(v.y) >= 2.5 or math.abs(v.z) >= 2.5) or (sickness >= 95) then
-                        if not isVomiting then
-                            isVomiting = true
+                    if GetMount(playerPed) ~= 0 then
+                        if (math.abs(v.x) >= 2.5 or math.abs(v.y) >= 2.5 or math.abs(v.z) >= 2.5) or (sickness >= 95) then
+                            if not isVomiting then
+                                isVomiting = true
 
-                            Citizen.CreateThread(
-                                function()
-                                    Citizen.Wait(vomitingTime)
-                                    isVomiting = false
-                                end
-                            )
+                                Citizen.CreateThread(
+                                    function()
+                                        Citizen.Wait(vomitingTime)
+                                        isVomiting = false
+                                    end
+                                )
+                            end
                         end
                     end
 
