@@ -170,7 +170,8 @@ AddEventHandler(
         local itemAmmoInWeapon = Slot:getAmmoInWeapon()
 
         if Inventory:removeItem(slotId, itemId, itemAmount) then
-            local index = getfirsttablefreeindex(dropPopulation)
+            math.randomseed(os.time())
+            local index = math.random(999999)
 
             local d = {
                 x = x,
@@ -187,7 +188,8 @@ AddEventHandler(
             }
 
             while dropPopulation[index] ~= nil do
-                index = index + 1
+                math.randomseed(os.time())
+                index = math.random(999999)
             end
 
             dropPopulation[index] = d
@@ -391,7 +393,6 @@ RegisterNetEvent("VP:INVENTORY:SecondarySwitchSlot")
 AddEventHandler(
     "VP:INVENTORY:SecondarySwitchSlot",
     function(slotFrom, slotTo, itemAmount)
-
         slotFrom = tonumber(slotFrom)
         slotTo = tonumber(slotTo)
         itemAmount = tonumber(itemAmount)
