@@ -22,7 +22,7 @@ AddEventHandler(
 RegisterServerEvent("VP:WANTED:gunshotInProgress")
 AddEventHandler(
     "VP:WANTED:gunshotInProgress",
-    function(targetCoords, CityName, playerGender)
+    function(targetCoords, CityName, playerGender, suspectInstead)
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
@@ -37,7 +37,12 @@ AddEventHandler(
 
         for i = 1, #PoliceON do
             TriggerClientEvent("VP:WANTED:gunshotInProgress", PoliceON[i].getSource(), targetCoords)
-            TriggerClientEvent("VP:TOAST:New", PoliceON[i].getSource(), "alert", "Sheriff: Disparos por " .. playerGender .. " foram relatados em " .. CityName)
+
+            if suspectInstead then
+                TriggerClientEvent("VP:TOAST:New", PoliceON[i].getSource(), "alert", "Sheriff: Suspeito(a) encontrado em " .. CityName)
+            else
+                TriggerClientEvent("VP:TOAST:New", PoliceON[i].getSource(), "alert", "Sheriff: Disparos por " .. playerGender .. " foram relatados em " .. CityName)
+            end
         end
     end
 )
@@ -60,7 +65,7 @@ AddEventHandler(
         for i = 1, #PoliceON do
             if wan ~= nil then
                 if wan == "{}" then
-                    local wantedvalue = 0   
+                    local wantedvalue = 0
                     TriggerClientEvent("VP:WANTED:RewardNotify", PoliceON[i].getSource(), reward + wantedvalue, pname, city)
                 else
                     local wantedvalue = json.decode(wan)
