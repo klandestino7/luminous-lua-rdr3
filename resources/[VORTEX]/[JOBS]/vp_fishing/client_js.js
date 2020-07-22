@@ -68,11 +68,13 @@ function Float32ToInt32(num) {
 
 exports('VERTICAL_PROBE', (x, y, z, unkbool) => {
 
-    let buffer = new ArrayBuffer(127);
-    let view = new DataView(buffer);
+    const buffer = new ArrayBuffer(8);
+    const view = new DataView(buffer);
 
     // TEST_VERTICAL_PROBE_AGAINST_ALL_WATER
-    let r = Citizen.invokeNative("0x2B3451FA1E3142E2 ", x, y, z, unkbool, view);
+    const r = Citizen.invokeNative("0x2B3451FA1E3142E2", x, y, z, unkbool, view);
 
-    return r;
+    const out = new Float32Array(buffer);
+
+    return [r, out[0]];
 });

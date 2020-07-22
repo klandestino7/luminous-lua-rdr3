@@ -315,11 +315,30 @@ Citizen.CreateThread(
                             fishStatus = 1 -- agitado
                             nextAttTime = GetGameTimer() + tempoPuxando
 
-                            local particleFx =StartNetworkedParticleFxLoopedOnEntityBone("scr_mg_fishing_drips", fishHandle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, GetEntityBoneIndexByName(fishHandle, "SKEL_Tail5"), 1065353216, 0, 0, 0);
+                            local fishHandle = FISHING_GET_FISH_HANDLE()
+
+                            local x,y,z = table.unpack(GetEntityCoords(fishHandle))
+
+                            local r = exports["vp_fishing"]:VERTICAL_PROBE(x, y,  z, 1)
+                            local valid, height = r[1], r[2]
+
+                            local particleFx = StartNetworkedParticleFxLoopedOnEntityBone("scr_mg_fishing_drips", fishHandle, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, GetEntityBoneIndexByName(fishHandle, "SKEL_Tail5"), 1065353216, 0, 0, 0);
                             SetParticleFxLoopedEvolution(particleFx, "fade", 0.0, false)
-                            StartNetworkedParticleFxNonLoopedAtCoord("scr_mg_fish_struggle", GetEntityCoords(fishHandle), 0.0, 0.0, math.random(0, 360) + 0.0001, 1.2, 0, 0, 0);
+                            StartNetworkedParticleFxNonLoopedAtCoord("scr_mg_fish_struggle", x, y, height, 0.0, 0.0, math.random(0, 360) + 0.0001, 1.2, 0, 0, 0);
 
+                            animDict = "mini_games@fishing@shore@hooked_med@struggle"
+                            
+                            if not HasAnimDictLoaded(animDict) then
+                                RequestAnimDict(animDict)
+		                        while not HasAnimDictLoaded(animDict) do
+			                        Citizen.Wait(0)
+                                end
+                            end
 
+                            -- struggle_pullup
+                            -- struggle_a
+
+                            PlayEntityAnim(fishHandle, "struggle_a", animDict, 1000.0, false, true, false, 0.0, 0)
                         else -- deixar puxar
                             fishForce = 0
                             tempoPuxando = math.random(6, 10) * 1000
