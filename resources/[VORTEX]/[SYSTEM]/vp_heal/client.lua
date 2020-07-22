@@ -138,7 +138,6 @@ AddEventHandler('heal:playeritem', function()
 		Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, 100)		
 		SetEntityHealth(playerPed, 250)
 		SetPlayerHealthRechargeMultiplier(playerPed, 2000)
-		print(maxHealth)
     end)
 end)
 
