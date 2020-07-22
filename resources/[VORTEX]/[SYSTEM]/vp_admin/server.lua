@@ -271,7 +271,7 @@ RegisterCommand(
                     local CharacterTarget = UserTarget:getCharacter()
                     if CharacterTarget ~= nil then
                         CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
-                        API.logs("./savedata/giveitem.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..CharacterTarget:getId().." [FUNÇÃO]: AddItem / [NOME]: "..args[2].." / Quantidade "..tonumber(args[3]))
+                        API.logs("./savedata/giveitem.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. CharacterTarget:getId() .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[2] .. " / Quantidade " .. tonumber(args[3]))
                     else
                         User:notify("error", "Usuario não escolheu um personagem ainda!")
                     end
@@ -281,7 +281,7 @@ RegisterCommand(
             else
                 if #args == 2 then
                     Character:getInventory():addItem(args[1], tonumber(args[2]))
-                    API.logs("./savedata/giveitem.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..args[1].." [FUNÇÃO]: AddItem / [NOME]: "..args[1].." / Quantidade "..tonumber(args[2]))
+                    API.logs("./savedata/giveitem.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[1] .. " / Quantidade " .. tonumber(args[2]))
                 end
             end
         else
@@ -383,7 +383,6 @@ RegisterCommand(
     end
 )
 
-
 RegisterCommand(
     "recrutar",
     function(source, args, rawCommand)
@@ -393,7 +392,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("sheriff") then
             if args[1] ~= nil then
                 local UserTarget = API.getUserFromUserId(tonumber(args[1]))
-                UserTarget:getCharacter():addGroup("trooper")    
+                UserTarget:getCharacter():addGroup("trooper")
             else
                 User:notify("error", "Usuario invalido!")
             end
@@ -411,7 +410,7 @@ RegisterCommand(
         if Character:hasGroupOrInheritance("sheriff") then
             if args[1] ~= nil then
                 local UserTarget = API.getUserFromUserId(tonumber(args[1]))
-                UserTarget:getCharacter():removeGroup("trooper")    
+                UserTarget:getCharacter():removeGroup("trooper")
             else
                 User:notify("error", "Usuario invalido!")
             end
@@ -428,12 +427,11 @@ RegisterCommand(
         local Character = User:getCharacter()
         local PoliceON = API.getUsersByGroup("trooper")
         if #PoliceON <= 0 then
-        	User:notify("alert", "Não há Oficiais, em serviço!")
+            User:notify("alert", "Não há Oficiais, em serviço!")
         end
-		User:notify("alert", "No momento há " .. #PoliceON .." Oficiais, em serviço!")
+        User:notify("alert", "No momento há " .. #PoliceON .. " Oficiais, em serviço!")
     end
 )
-
 
 RegisterCommand(
     "callbau",
@@ -442,7 +440,7 @@ RegisterCommand(
         local Character = User:getCharacter()
         if Character:hasGroupOrInheritance("admin") then
             local random = math.random(1, 6)
-    		TriggerEvent("TREASURE:create", random)
+            TriggerEvent("TREASURE:create", random)
         else
             User:notify("error", "Você não tem permissão!")
         end
@@ -487,7 +485,7 @@ RegisterCommand(
                     TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1], tonumber(args[2]))
                 else
                     TriggerClientEvent("VP:ADMIN:SpawnPed", source, args[1])
-                end 
+                end
             else
                 User:notify("error", "Você não tem permissão!")
             end
@@ -522,8 +520,8 @@ RegisterCommand(
                 local tplayer = API.getUserFromUserId(parseInt(args[1])):getSource()
                 if tplayer ~= nil then
                     TriggerClientEvent("VP:RESPAWN:revive", tplayer)
-      
-                    API.logs("./savedata/revive.txt","[AdminID]: "..Character:getId().." / [TargetID]: "..args[1].." [FUNÇÃO]: REVIVE")
+
+                    API.logs("./savedata/revive.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: REVIVE")
                 end
             else
                 TriggerClientEvent("VP:RESPAWN:revive", _source)
@@ -723,6 +721,19 @@ RegisterCommand(
     end
 )
 
+RegisterCommand(
+    "dual",
+    function(source, args, rawCommand)
+        local _source = source
+        local User = API.getUserFromSource(source)
+        local Character = User:getCharacter()
+
+        if Character:hasGroupOrInheritance("admin") then
+            TriggerClientEvent("VP:ADMIN:Dual", _source)
+        end
+    end
+)
+
 -- RegisterCommand(
 --     "weapon",
 --     function(source, args, rawCommand)
@@ -740,3 +751,4 @@ RegisterCommand(
 --         end
 --     end
 -- )
+
