@@ -413,7 +413,7 @@ RegisterNetEvent("VP:ADMIN:Dual")
 AddEventHandler(
 	"VP:ADMIN:Dual",
 	function()
-		Citizen.InvokeNative(0xB282DC6EBD803C75, PlayerPedId(), GetHashKey("WEAPON_REVOLVER_SCHOFIELD_GOLDEN"), 100, true, 0)
+		Citizen.InvokeNative(0xB282DC6EBD803C75, PlayerPedId(), GetHashKey("WEAPON_REVOLVER_CATTLEMAN"), 100, true, 0)
 		Citizen.InvokeNative(0x5E3BDDBCB83F3D84, PlayerPedId(), GetHashKey("WEAPON_REVOLVER_SCHOFIELD_GOLDEN"), 100, true, 0, true, 1.0)
 	end
 )
