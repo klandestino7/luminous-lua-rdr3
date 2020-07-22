@@ -122,6 +122,11 @@ AddEventHandler(
             local currency_item = "money"
 
             if transactionType == 1 then
+                if not transaction_data.gold then
+                    print("GENERIC_SHOP: error 400 ", shopIndex, transactionIndex, transaction_item)
+                    return
+                end
+
                 currency_item = "gold"
                 transaction_price = (transaction_data.gold * 100)
             end
