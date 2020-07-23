@@ -76,13 +76,15 @@ Citizen.CreateThread(function()
 					DrawText("PRESSIONE  ~b~E~w~  PARA ENTREGAR" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 					if IsControlJustPressed(0, 0xE8342FF2) then
 						TriggerServerEvent("VP:CONTRABANDO:checkPayment")
+						Citizen.Wait(1000)
 						if checkPayment then	
-							print('passou')						
+							Citizen.Wait(1)
 							porcentagem = math.random(100)
 							if porcentagem >= 90 then
 								TriggerServerEvent("VP:CONTRABANDO:ocorrencia")
 							end
 							RemoveBlip(blip)
+							print(backentrega)
 							backentrega = selecionado
 							while true do
 								if backentrega == selecionado then

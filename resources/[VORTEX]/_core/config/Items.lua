@@ -620,7 +620,7 @@ ItemList = {
     ["opio"] = {
         type = "edible",
         name = "Ópio",
-        weight = 0.3,
+        weight = 0.2,
         varOnUse = 1.0,
         description = "Droga, produzido através do sumo de Papoila-dormideira. É ilícito.",
         stackSize = 50
@@ -1305,7 +1305,7 @@ ItemList = {
     ["herb_lady_slipper"] = {
         type = "generic",
         name = "Lady Slipper Orchid",
-        weight = 0.4,
+        weight = 0.05,
         description = "pode ser visto crescendo no solo de florestas, prados e áreas de floresta, do seu sumo é feito o Ópio.",
         stackSize = 25
     },
