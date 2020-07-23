@@ -1,21 +1,26 @@
 var cancelledTimer = null;
 
 $('document').ready(function() {
-    MythicProgBar = {};
+    VPProgBar = {};
 
-    MythicProgBar.Progress = function(data) {
+
+
+    VPProgBar.Progress = function(data) {
         clearTimeout(cancelledTimer);
-        $("#progress-bar").text(data.label);
+
+        $("#progress-label").text(data.label);
 
         $(".progress-container").fadeIn('fast', function() {
-            $("#progress-bar").stop().css({"width": 0}).animate({
-              width: '100%'
+            $(".progress-container").css("opacity", 1);
+            $("#progress-barbg").stop().css({"width": "20vh"}).animate({
+              width: 0
             }, {
               duration: parseInt(data.duration),
               complete: function() {
                 $(".progress-container").fadeOut('fast', function() {
-                    $('#progress-bar').removeClass('cancellable');
-                    $("#progress-bar").css("width", 0);
+                    $('#progress-barbg').removeClass('cancellable');
+                    $("#progress-barbg").css("width", 0);
+                    $(".progress-container").css("opacity", 0);
                     $.post('http://vp_progbar/actionFinish', JSON.stringify({
                         })
                     );
@@ -25,14 +30,14 @@ $('document').ready(function() {
         });
     };
 
-    MythicProgBar.ProgressCancel = function() {
-        $("#progress-bar").text("CANCELADO");
-        $("#progress-bar").stop().css( {"width": "100%"});
-        $('#progress-bar').removeClass('cancellable');
+    VPProgBar.ProgressCancel = function() {
+        $("#progress-barbg").text("CANCELADO");
+        $("#progress-barbg").stop().css( {"width": 0});
+        $('#progress-barbg').removeClass('cancellable');
 
         cancelledTimer = setTimeout(function () {
             $(".progress-container").fadeOut('fast', function() {
-                $("#progress-bar").css("width", 0);
+                $("#progress-barbg").css("width", "20vh");
                 $.post('http://vp_progbar/actionCancel', JSON.stringify({
                     })
                 );
@@ -40,17 +45,17 @@ $('document').ready(function() {
         }, 1000);
     };
 
-    MythicProgBar.CloseUI = function() {
+    VPProgBar.CloseUI = function() {
         $('.main-container').fadeOut('fast');
     };
     
     window.addEventListener('message', function(event) {
         switch(event.data.action) {
-            case 'mythic_progress':
-                MythicProgBar.Progress(event.data);
+            case 'vp_progbar':
+                VPProgBar.Progress(event.data);
                 break;
-            case 'mythic_progress_cancel':
-                MythicProgBar.ProgressCancel();
+            case 'vp_progbar_cancel':
+                VPProgBar.ProgressCancel();
                 break;
         }
     });
