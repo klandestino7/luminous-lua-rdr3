@@ -1295,6 +1295,13 @@ ItemList = {
         description = "Reside em regiões montanosas e frias normalmente, é um ótimo ingrediente de um bom chá.",
         stackSize = 10
     },
+    ["flask"] = {
+        type = "generic",
+        name = "Frasco Vazio",
+        weight = 0.1,
+        description = "Utilizado para colocar conteúdo líquido.",
+        stackSize = 30
+    },
     ["herb_lady_slipper"] = {
         type = "generic",
         name = "Lady Slipper Orchid",
