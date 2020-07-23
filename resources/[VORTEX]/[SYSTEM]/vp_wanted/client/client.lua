@@ -17,10 +17,24 @@ AddEventHandler(
     end
 )
 
+
+RegisterNetEvent("VP:WANTED:denuncia")
+AddEventHandler(
+    "VP:WANTED:denuncia",
+    function(targetCoords)
+        local blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 408396114, targetCoords.x, targetCoords.y, targetCoords.z, 60.0)
+        Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Denuncia")
+        Wait(8000)
+        RemoveBlip(blip)
+    end
+)
+
+
 local reward2 = 0
 local pname = "Nome Desconhecido"
 local annon = false
 local CityName = "Cidade Fantasma"
+local TimeAlert = 0
 
 Citizen.CreateThread(
     function()
@@ -31,27 +45,31 @@ Citizen.CreateThread(
             local CityName = GetCurrentTownName()
             local retval, hashArma = GetCurrentPedWeapon(PlayerPedId(), 0, 0, 0)
             local arma = Citizen.InvokeNative(0x705BE297EEBDB95D, hashArma)
-            local retval, weaponHash = GetCurrentPedWeapon(playerPed, 1)
+            local retval, weaponHash = GetCurrentPedWeapon(playerPed, 1)            
+            local TimeAlertDiff = TimeAlert - GetGameTimer()
             if IsPedShooting(playerPed) and weaponHash ~= GetHashKey("WEAPON_BOW") then
-                if arma then
+                if arma then                   
+                    if TimeAlertDiff <= 0 then
                     --       local Policia = cAPI.hasGroupOrInheritance('trooper') or cAPI.hasGroupOrInheritance('sheriff')
-                    if CityName ~= nil and CityName ~= "Cidade Fantasma" then
-                        local ped = PlayerPedId()
-                        local currentWeaponHash = GetCurrentPedWeapon(ped)
-                        local havesilence = false
-                        local playerGender = GetEntityModel(ped)
-                        Citizen.Wait(3000)
-                        -- DecorSetInt(playerPed, 'isOutlaw', 2)
-                        TriggerServerEvent(
-                            "VP:WANTED:gunshotInProgress",
-                            {
-                                x = playerCoords.x,
-                                y = playerCoords.y,
-                                z = playerCoords.z
-                            },
-                            CityName,
-                            playerGender
-                        )
+                        if CityName ~= nil and CityName ~= "Cidade Fantasma" then
+                            local ped = PlayerPedId()
+                            local currentWeaponHash = GetCurrentPedWeapon(ped)
+                            local havesilence = false
+                            local playerGender = GetEntityModel(ped)
+                            Citizen.Wait(3000)
+                            -- DecorSetInt(playerPed, 'isOutlaw', 2)
+                            TriggerServerEvent(
+                                "VP:WANTED:gunshotInProgress",
+                                {
+                                    x = playerCoords.x,
+                                    y = playerCoords.y,
+                                    z = playerCoords.z
+                                },
+                                CityName,
+                                playerGender
+                            )
+                        end
+                        TimeAlert = GetGameTimer() + 10000
                     end
                 end
             end
