@@ -34,12 +34,12 @@ AddEventHandler(
 		if Inventory:getItemAmount('opio') >= quantidade[_source] then
 			Inventory:removeItem(-1, "opio", quantidade[_source])			
 			User:notify("item", "opio", -quantidade[_source])
-			Inventory:addItem("money", math.random(75,95)*quantidade[_source])
-			User:notify("item", "money", math.random(75,95)*quantidade[_source])
+			Inventory:addItem("money", math.random(45,65)*quantidade[_source])
+			User:notify("item", "money", math.random(45,65)*quantidade[_source])
 			quantidade[_source] = nil
 			TriggerClientEvent("VP:CONTRABANDO:checkPayment", _source, true)
 		else
-			User:notify("error", "Você precisa de " .. quantidade[_source].. "x Moonshine.")
+			User:notify("error", "Você precisa de " .. quantidade[_source].. "x Ópio.")
 		end
 	end
 end)

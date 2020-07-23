@@ -49,7 +49,7 @@ Citizen.CreateThread(function()
 					DrawText("PRESSIONE  ~b~ALT~w~  PARA PEGAR AS ROTAS" , 0.925, 0.96, 0.25, 0.25, false, 255, 255, 255, 145, 1, 7)
 					if IsControlJustPressed(0, 0xE8342FF2) then
 						servico = true
-						selecionado = math.random(8)
+						selecionado = math.random(1,8)
 						CriandoBlip(locs,selecionado)
 					end
 				end
@@ -86,7 +86,7 @@ Citizen.CreateThread(function()
 							backentrega = selecionado
 							while true do
 								if backentrega == selecionado then
-									selecionado = math.random(8)
+									selecionado = math.random(1,8)
 								else
 									break
 								end

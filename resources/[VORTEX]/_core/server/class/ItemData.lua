@@ -99,6 +99,12 @@ function triggerUse(User, itemData)
         return true
     end
 
+    if itemId == "opio" then
+        local var = itemData.varOnUse
+        cAPI.OpioUse(source, var)
+        return true
+    end
+
     if itemId:find("medicine") then
         -- medicine_good
         if itemId:find("horse") then
