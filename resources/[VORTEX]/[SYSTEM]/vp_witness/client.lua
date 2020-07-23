@@ -1,124 +1,8 @@
--- local crimesAsString = {
---     "CRIME_ARSON",
---     "CRIME_ASSAULT",
---     "CRIME_ASSAULT_ANIMAL",
---     "CRIME_ASSAULT_CORPSE",
---     "CRIME_ASSAULT_HORSE",
---     "CRIME_ASSAULT_LAW",
---     "CRIME_ASSAULT_LIVESTOCK",
---     "CRIME_BANK_ROBBERY",
---     "CRIME_BURGLARY",
---     "CRIME_CHEATING",
---     "CRIME_DISTURBANCE",
---     "CRIME_EXPLOSION",
---     "CRIME_GRAVE_ROBBERY",
---     "CRIME_HASSLE",
---     "CRIME_HIT_AND_RUN",
---     "CRIME_HIT_AND_RUN_LAW",
---     "CRIME_INTIMIDATION",
---     "CRIME_JACK_HORSE",
---     "CRIME_JACK_VEHICLE",
---     "CRIME_JAIL_BREAK",
---     "CRIME_KIDNAPPING",
---     "CRIME_KIDNAPPING_LAW",
---     "CRIME_LASSO_ASSAULT",
---     "CRIME_LAW_IS_THREATENED",
---     "CRIME_LOITERING",
---     "CRIME_LOOTING",
---     "CRIME_MURDER",
---     "CRIME_MURDER_ANIMAL",
---     "CRIME_MURDER_HORSE",
---     "CRIME_MURDER_LAW",
---     "CRIME_MURDER_LIVESTOCK",
---     "CRIME_NONE",
---     "CRIME_PROPERTY_DESTRUCTION",
---     "CRIME_RESIST_ARREST",
---     "CRIME_ROBBERY",
---     "CRIME_STAGECOACH_ROBBERY",
---     "CRIME_STOLEN_GOODS",
---     "CRIME_THEFT",
---     "CRIME_THEFT_HORSE",
---     "CRIME_THEFT_LIVESTOCK",
---     "CRIME_THEFT_VEHICLE",
---     "CRIME_THREATEN",
---     "CRIME_THREATEN_LAW",
---     "CRIME_TRAIN_ROBBERY",
---     "CRIME_TRAMPLE",
---     "CRIME_TRAMPLE_LAW",
---     "CRIME_TRESPASSING",
---     "CRIME_UNARMED_ASSAULT",
---     "CRIME_VANDALISM",
---     "CRIME_VANDALISM_VEHICLE",
---     "CRIME_VEHICLE_DESTRUCTION",
---     "CRIME_WANTED_LEVEL_UP_DEBUG_HIGH",
---     "CRIME_WANTED_LEVEL_UP_DEBUG_LOW"
--- }
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
--- function CrimeHashToCrime(Hash)
---     for i = 1, #crimesAsString do
---         if GetHashKey(crimesAsString[i]) == Hash then
---             return crimesAsString[i]
---         end
---     end
--- end
-
--- Citizen.CreateThread(
---     function()
---         while true do
---             Citizen.Wait(0)
-
---             local crimeCommited = Citizen.InvokeNative(0x259CE340A8738814, PlayerId())
-
---             local is_ = Citizen.InvokeNative(0xAD401C63158ACBAA, PlayerId())
-
---             if is_ then
---                 exports["vp_witness"]:N_0xCBFB4951F2E3934C()
---             end
-
---             -- exports["vp_witness"]:N_0x532C5FDDB986EE5C()
-
---             for i = 1, #crimesAsString do
---                 Citizen.InvokeNative(0xF611DE44AEB36A1D, GetHashKey(crimesAsString[i]), false)
---             end
-
---             print(Citizen.InvokeNative(0x69E181772886F48B, PlayerId()))
---             print(Citizen.InvokeNative(0xF0FBFB9AB15F7734, PlayerId(), 0, 0))
---             print(Citizen.InvokeNative(0x148E7AC8141C9E64, PlayerId()))
---             print(Citizen.InvokeNative(0x9945A3E2528A02E8, PlayerId()))
---             print(Citizen.InvokeNative(0x9D5C9A5A3321B128, PlayerId()))
---             print(Citizen.InvokeNative(0xAD401C63158ACBAA, PlayerId()))
---             print(Citizen.InvokeNative(0xDD5FD601481F648B, PlayerId()))
---             print("  ", PlayerId())
-
---             DrawTxt(booltostring(is_), 0.65, 0.05 + (0 * 0.025), 0.4, 0.4, true, 255, 255, 255, 255, false)
---             DrawTxt((crimeCommited == false and "0" or crimeCommited), 0.65, 0.05 + (1 * 0.025), 0.4, 0.4, true, 255, 255, 255, 255, false)
---             DrawTxt(CrimeHashToCrime(crimeCommited), 0.65, 0.05 + (2 * 0.025), 0.4, 0.4, true, 255, 255, 255, 255, false)
---         end
---     end
--- )
-
--- function booltostring(bool)
---     return bool == false and "false" or "true"
--- end
-
--- --[[
---     0xDAEFDFDB2AEECE37
---     _GET_CRIME_SEVERENESS, _GET_CRIME_TIMESTAMP
-
--- ]]
--- function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
---     local str = CreateVarString(10, "LITERAL_STRING", str)
---     SetTextScale(w, h)
---     SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
---     SetTextCentre(centre)
---     if enableShadow then
---         SetTextDropshadow(1, 0, 0, 0, 255)
---     end
---     Citizen.InvokeNative(0xADA9255D, 4)
---     DisplayText(str, x, y)
--- end
-
--- local saviorHumanNpc
+cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
 local saviorHumanNpc
 
@@ -129,69 +13,252 @@ Citizen.CreateThread(
 
             local playerPed = PlayerPedId()
 
-            if GetEntityHealth(playerPed) <= 0 then
-                if saviorHumanNpc == nil then
-                    local playerPosition = GetEntityCoords(playerPed)
+            CheckForHelpfullNpcs(playerPed)
+            checkForWitness(playerPed)
+        end
+    end
+)
 
-                    local drugStorePosition, drugsStoreDistance = GetClosestDrugStore(playerPosition)
+function CheckForHelpfullNpcs(playerPed)
+    if GetEntityHealth(playerPed) <= 0 then
+        if saviorHumanNpc == nil then
+            local playerPosition = GetEntityCoords(playerPed)
 
-                    if drugsStoreDistance > 10.0 then
-                        local humanNpcs = GetClosestHumanNpcs(50.0)
+            local drugStorePosition, drugsStoreDistance = GetClosestDrugStore(playerPosition)
 
-                        for _, humanNpc in pairs(humanNpcs) do
-                            if HasEntityClearLosToEntity(humanNpc, playerPed, 0) then
-                                if not IsPedDeadOrDying(humanNpc, 1) then
-                                    if not NativeIsPedLassoed(humanNpc) then
-                                        if not IsPedInCombat(humanNpc, 0) then
-                                            local npcMount = GetMount(humanNpc)
-                                            if npcMount ~= 0 then
-                                                -- saviorHumanNpc = humanNpc
-                                                -- HandleSaviorNpc(humanNpc, npcMount, drugStorePosition)
+            if drugsStoreDistance > 10.0 then
+                local humanNpcs = GetClosestHumanNpcs(50.0)
 
-                                                saviorHumanNpc = humanNpc
+                for _, humanNpc in pairs(humanNpcs) do
+                    if humanNpc ~= playerPed then
+                        if HasEntityClearLosToEntity(humanNpc, playerPed, 0) then
+                            if not IsPedDeadOrDying(humanNpc, 1) then
+                                if not NativeIsPedLassoed(humanNpc) then
+                                    if not IsPedInCombat(humanNpc, 0) then
+                                        local npcMount = GetMount(humanNpc)
+                                        if npcMount ~= 0 then
+                                            -- saviorHumanNpc = humanNpc
+                                            -- HandleSaviorNpc(humanNpc, npcMount, drugStorePosition)
 
-                                                local humanNpcPosition = GetEntityCoords(humanNpc)
+                                            saviorHumanNpc = humanNpc
 
-                                                SetEntityAsMissionEntity(humanNpc, true, true)
-                                                NetworkRequestControlOfEntity(humanNpc)
+                                            local humanNpcPosition = GetEntityCoords(humanNpc)
 
-                                                taskSequence = OpenSequenceTask()
-                                                TaskSetBlockingOfNonTemporaryEvents(0, true)
-                                                TaskGoToEntity(0, playerPed, -1, 1.2, 1.5, 2.0, 0)
-                                                TaskPickupCarriableEntity(0, playerPed)
-                                                TaskPlaceCarriedEntityOnMount(0, playerPed, npcMount, 7)
-                                                Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
+                                            SetEntityAsMissionEntity(humanNpc, true, true)
+                                            NetworkRequestControlOfEntity(humanNpc)
 
-                                                TaskGoToCoordAnyMeansExtraParams(0, drugStorePosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
+                                            taskSequence = OpenSequenceTask()
+                                            TaskSetBlockingOfNonTemporaryEvents(0, true)
+                                            TaskGoToEntity(0, playerPed, -1, 1.2, 1.5, 2.0, 0)
+                                            TaskPickupCarriableEntity(0, playerPed)
+                                            TaskPlaceCarriedEntityOnMount(0, playerPed, npcMount, 7)
+                                            Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
 
-                                                TaskDumpCarriableFromParent(0, npcMount, playerPed)
-                                                Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
+                                            TaskGoToCoordAnyMeansExtraParams(0, drugStorePosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
 
-                                                TaskGoToCoordAnyMeansExtraParams(0, humanNpcPosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
+                                            TaskDumpCarriableFromParent(0, npcMount, playerPed)
+                                            Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
 
-                                                TaskSetBlockingOfNonTemporaryEvents(0, false)
-                                                CloseSequenceTask(taskSequence)
+                                            TaskGoToCoordAnyMeansExtraParams(0, humanNpcPosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
 
-                                                TaskPerformSequence(humanNpc, taskSequence)
+                                            TaskSetBlockingOfNonTemporaryEvents(0, false)
+                                            CloseSequenceTask(taskSequence)
 
-                                                break
-                                            end
+                                            TaskPerformSequence(humanNpc, taskSequence)
+
+                                            break
                                         end
                                     end
                                 end
                             end
                         end
                     end
-                else
-                    if GetSequenceProgress(saviorHumanNpc) == -1 then
-                        saviorHumanNpc = nil
-                        SetEntityAsMissionEntity(humanNpc, false, false)
+                end
+            end
+        else
+            if GetSequenceProgress(saviorHumanNpc) == -1 then
+                saviorHumanNpc = nil
+                SetEntityAsMissionEntity(humanNpc, false, false)
+            end
+        end
+    end
+end
+
+local MAX_WITNESS = 3
+local MAX_WITNESS_DISTANCE = 10.0
+local WITNESS_REPORT_DISTANCE = 45.0
+local REPORT_THRESHOLD = 60 * 1000
+local LAST_REPORT_TIME = 0
+
+local witnessList = {}
+
+function checkForWitness(playerPed)
+    if true or (cAPI.IsWanted() and not isAtMaxWitness()) then
+        local humanNpcs = GetClosestHumanNpcs(MAX_WITNESS_DISTANCE)
+
+        for _, humanNpc in pairs(humanNpcs) do
+            if humanNpc ~= playerPed then
+                if not isAtMaxWitness() then
+                    if HasEntityClearLosToEntityInFront(humanNpc, playerPed, 0) then
+                        if not IsPedDeadOrDying(humanNpc, 1) then
+                            if not NativeIsPedLassoed(humanNpc) then
+                                addWitness(humanNpc, "crime")
+                            end
+                        end
                     end
                 end
             end
         end
     end
-)
+end
+
+function isAtMaxWitness()
+    return #witnessList >= MAX_WITNESS
+end
+
+function isAWitness(entity)
+    for _, d in pairs(witnessList) do
+        local w_entity = d.entity
+
+        if w_entity == entity then
+            return true
+        end
+    end
+
+    return false
+end
+
+function addWitness(entity, crime)
+    if not isAWitness(entity) then
+        local blip = Citizen.InvokeNative(0x23f74c2fda6e7c61, GetHashKey("BLIP_STYLE_EYEWITNESS"), entity) -- BLIPADDFORENTITY
+        SetBlipScale(blip, 1.0)
+
+        table.insert(
+            witnessList,
+            {
+                entity = entity,
+                crime = crime,
+                start_at = GetGameTimer(),
+                blip = blip
+            }
+        )
+
+        local playerPed = PlayerPedId()
+        local playerPosition = GetEntityCoords(playerPed)
+
+        fleeEntity(entity, playerPosition)
+
+        if #witnessList == 1 then
+            Citizen.CreateThread(
+                function()
+                    while #witnessList > 0 do
+                        Citizen.Wait(0)
+
+                        playerPed = PlayerPedId()
+
+                        for _, d in pairs(witnessList) do
+                            local entity = d.entity
+                            local crime = d.crime
+                            local start_at = d.start_at
+
+                            local diff = GetGameTimer() - start_at
+
+                            if diff >= 15 * 1000 and isEntityFarAndHasNoLOS(entity, playerPed, playerPosition) then
+                                -- if diff >= 8 * 1000 and isEntityFarAndHasNoLOS(entity, playerPed, playerPosition) then
+                                --     fleeEntity(entity, playerPosition)
+                                -- end
+
+                                if LAST_REPORT_TIME == 0 or (math.abs(LAST_REPORT_TIME - GetGameTimer())) >= REPORT_THRESHOLD then
+                                    LAST_REPORT_TIME = GetGameTimer()
+
+                                    playerPosition = GetEntityCoords(playerPed)
+
+                                    TriggerServerEvent(
+                                        "VP:WANTED:gunshotInProgress",
+                                        {
+                                            x = playerPosition.x,
+                                            y = playerPosition.y,
+                                            z = playerPosition.z
+                                        },
+                                        GetCurrentTownName(),
+                                        nil,
+                                        true
+                                    )
+
+                                    cAPI.notify("alert", "Você foi denunciado!")
+                                end
+
+                                removeWitness(entity)
+                            end
+
+                            if IsPedDeadOrDying(entity, 0) == 1 then
+                                local killer = GetPedSourceOfDeath(entity)
+
+                                if killer == playerPed then
+                                    if #witnessList > 0 then
+                                        MAX_WITNESS = 6
+                                        MAX_WITNESS_DISTANCE = 20.0
+                                    end
+                                end
+
+                                removeWitness(entity)
+                            end
+                        end
+                    end
+
+                    MAX_WITNESS = 3
+                    MAX_WITNESS_DISTANCE = 10.0
+                end
+            )
+        end
+    end
+end
+
+function removeWitness(entity)
+    for _, d in pairs(witnessList) do
+        local w_entity = d.entity
+        local w_blip = d.blip
+
+        if w_entity == entity then
+            RemoveBlip(w_blip)
+
+            table.remove(witnessList, _)
+            break
+        end
+    end
+end
+
+function isEntityFarAndHasNoLOS(entity, playerPed, playerPosition)
+    local entityPosition = GetEntityCoords(entity)
+
+    local distance = #(entityPosition - playerPosition)
+
+    if distance > WITNESS_REPORT_DISTANCE and not HasEntityClearLosToEntity(playerPed, entity, 17) then
+        return true
+    end
+
+    return false
+end
+
+function fleeEntity(entity, position)
+    -- if GetBestPedWeapon(entity, 0, 0) ~= GetHashKey("WEAPON_UNARMED") then
+    -- TaskSmartFleeCoord(entity, position, 40.0, 10000, 8, 1077936128)
+
+    ClearPedSecondaryTask(entity)
+
+    SetPedCombatAttributes(entity, 17, true)
+    SetPedCombatAttributes(entity, 5, false)
+    SetPedCombatAttributes(entity, 58, false)
+    SetPedFleeAttributes(entity, 512, false)
+    SetPedFleeAttributes(entity, 1024, true)
+    SetPedFleeAttributes(entity, 32768, false)
+    TaskSmartFleeCoord(entity, position, 300.0, -1, 2097152, 1077936128)
+    SetPedKeepTask(entity, true)
+
+    -- TaskSmartFleePed(entity, PlayerPedId(), 500.0, -1, 0, 1.0, 0)
+    -- SetPedKeepTask(entity, true)
+    -- end
+end
 
 local drugstores = {
     vec3(-282.673, 797.344, 118.868),
@@ -257,47 +324,75 @@ function GetClosestHumanNpcs(radius)
     return r
 end
 
--- RegisterCommand(
---     "teste",
---     function()
---         local pedModelHash = GetHashKey("CS_LENNY")
---         if not IsModelValid(pedModelHash) then
---             print("model is not valid")
---             return
---         end
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        for _, d in pairs(witnessList) do
+            local w_entity = d.entity
+            local w_blip = d.blip
 
---         if not HasModelLoaded(pedModelHash) then
---             RequestModel(pedModelHash)
---             while not HasModelLoaded(pedModelHash) do
---                 Citizen.Wait(10)
---             end
---         end
+            RemoveBlip(w_blip)
+        end
+    end
+)
 
---         local ped = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
---         Citizen.InvokeNative(0x283978A15512B2FE, ped, true)
---         Citizen.InvokeNative(0x58A850EAEE20FAA3, ped)
+--[[
+    * MUDAR FUNÇÃO DE CIDADE PARA O _CORE
+    * cAPI.GetCurrentTownLocalized()
+]]
+function GetCurrentTownName()
+    local pedCoords = GetEntityCoords(PlayerPedId())
+    local town_hash = Citizen.InvokeNative(0x43AD8FC02B429D33, pedCoords, 1)
 
---         pedModelHash = GetHashKey("A_C_Horse_AmericanPaint_Overo")
---         if not IsModelValid(pedModelHash) then
---             print("model is not valid")
---             return
---         end
-
---         if not HasModelLoaded(pedModelHash) then
---             RequestModel(pedModelHash)
---             while not HasModelLoaded(pedModelHash) do
---                 Citizen.Wait(10)
---             end
---         end
-
---         local mount = CreatePed(pedModelHash, GetEntityCoords(PlayerPedId()), GetEntityHeading(PlayerPedId()), 1, 0)
---         Citizen.InvokeNative(0x283978A15512B2FE, mount, true)
---         Citizen.InvokeNative(0x58A850EAEE20FAA3, mount)
-
---         Citizen.InvokeNative(0x028F76B6E78246EB, ped, mount, -1, true)
-
---         -- SetPedOnMount(ped, mount, -1, true)
---         -- TaskMountAnimal(ped, mount, 0, 0, 0, 0, 0, 0)
---     end,
---     false
--- )
+    if town_hash == GetHashKey("Annesburg") then
+        return "Annesburg"
+    elseif town_hash == GetHashKey("Armadillo") then
+        return "Armadillo"
+    elseif town_hash == GetHashKey("Blackwater") then
+        return "Blackwater"
+    elseif town_hash == GetHashKey("BeechersHope") then
+        return "BeechersHope"
+    elseif town_hash == GetHashKey("Braithwaite") then
+        return "Braithwaite"
+    elseif town_hash == GetHashKey("Butcher") then
+        return "Butcher"
+    elseif town_hash == GetHashKey("Caliga") then
+        return "Caliga"
+    elseif town_hash == GetHashKey("cornwall") then
+        return "Cornwall"
+    elseif town_hash == GetHashKey("Emerald") then
+        return "Emerald"
+    elseif town_hash == GetHashKey("lagras") then
+        return "lagras"
+    elseif town_hash == GetHashKey("Manzanita") then
+        return "Manzanita"
+    elseif town_hash == GetHashKey("Rhodes") then
+        return "Rhodes"
+    elseif town_hash == GetHashKey("Siska") then
+        return "Siska"
+    elseif town_hash == GetHashKey("StDenis") then
+        return "Saint Denis"
+    elseif town_hash == GetHashKey("Strawberry") then
+        return "Strawberry"
+    elseif town_hash == GetHashKey("Tumbleweed") then
+        return "Tumbleweed"
+    elseif town_hash == GetHashKey("valentine") then
+        return "Valentine"
+    elseif town_hash == GetHashKey("VANHORN") then
+        return "Vanhorn"
+    elseif town_hash == GetHashKey("Wallace") then
+        return "Wallace"
+    elseif town_hash == GetHashKey("wapiti") then
+        return "Wapiti"
+    elseif town_hash == GetHashKey("AguasdulcesFarm") then
+        return "Aguasdulces Farm"
+    elseif town_hash == GetHashKey("AguasdulcesRuins") then
+        return "Aguasdulces Ruins"
+    elseif town_hash == GetHashKey("AguasdulcesVilla") then
+        return "Aguasdulces Villa"
+    elseif town_hash == GetHashKey("Manicato") then
+        return "Manicato"
+    elseif town_hash == false then
+        return "Cidade Fantasma"
+    end
+end

@@ -80,188 +80,192 @@ API = Tunnel.getInterface("API")
 
 -- 		TaskEnterAnimScene(ped, animscene, "player", "PBL_CHEST_01", 1069379748, 1, 128, 20000, -1082130432)
 
--- 		while true do
--- 			Citizen.Wait(0)
--- 			local AnimTime = Citizen.InvokeNative(0x61BE7D6186260002, animscene, Citizen.ResultAsFloat())
--- 			local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
+-- 		Citizen.CreateThread(function()
+-- 			while true do
+-- 				Citizen.Wait(0)
+-- 				-- local AnimTime = Citizen.InvokeNative(0x61BE7D6186260002, animscene, Citizen.ResultAsFloat())
+-- 				-- local hasEnded = Citizen.InvokeNative(0xD8254CB2C586412B, animscene, 0)
 
--- 			-- if AnimTime >= 5 then
--- 			-- 	ClearPedTasks(ped)
--- 			-- 	ClearPedSecondaryTask(ped)
--- 			-- 	SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
--- 			--	Citizen.InvokeNative(0xD6824B7D24DC0CE0 , animscene, 1)
--- 			-- end
--- 			if hasEnded == 1 then
--- 				Citizen.InvokeNative(0x188F8071F244B9B8, chest, 1) -- SET_RANSACK_AS_OPEN
+-- 				-- if AnimTime >= 5 then
+-- 				-- 	ClearPedTasks(ped)
+-- 				-- 	ClearPedSecondaryTask(ped)
+-- 				-- 	SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), true)
+-- 				--	Citizen.InvokeNative(0xD6824B7D24DC0CE0 , animscene, 1)
+-- 				-- end
 
--- 				SetEntityAsNoLongerNeeded(chest)
--- 				SetEntityAsNoLongerNeeded(dressing)
--- 				SetEntityAsNoLongerNeeded(mound)
+-- 				print("abc", Citizen.InvokeNative(0xE5822422197BBBA3, animscene, "player", 1))
 
--- 				DeleteEntity(loot)
+-- 				-- if hasEnded == 1 then
+-- 				-- 	Citizen.InvokeNative(0x188F8071F244B9B8, chest, 1) -- SET_RANSACK_AS_OPEN
 
--- 				cAPI.notify("item", "gold", 20)
+-- 				-- 	SetEntityAsNoLongerNeeded(chest)
+-- 				-- 	SetEntityAsNoLongerNeeded(dressing)
+-- 				-- 	SetEntityAsNoLongerNeeded(mound)
 
--- 				break
+-- 				-- 	DeleteEntity(loot)
+
+-- 				-- 	cAPI.notify("item", "gold", 20)
+
+-- 				-- 	break
+-- 				-- end
 -- 			end
--- 		end
+-- 		end)
 -- 	end
 -- )
 
 RegisterCommand(
 	"teste",
 	function(source, args, rawCommand)
+		-- SetPedConfigFlag(PlayerPedId(), 336, true)
+		-- Citizen.InvokeNative(0xC116E6DF68DCE667, 5, 4)
+		-- TaskKnockedOut(PlayerPedId(), -1.0, 1)
 		-- while true do
 		-- 	Wait(0)
 		-- 	Citizen.InvokeNative(0x069EDDF1FD4DEB0A, GetMount(PlayerPedId()), 0.1)
 		-- 	Citizen.InvokeNative(0x069EDDF1FD4DEB0A, PlayerPedId(), 0.1)
 		-- end
-
 		-- Citizen.InvokeNative(0x5240864E847C691C, PlayerPedId(), true)
 		-- Citizen.InvokeNative(0xD67B6F3BCF81BA47, PlayerPedId(), 16383)
 		-- Citizen.InvokeNative(0x39ED303390DDEAC7, PlayerPedId(), 1, -1, -1, 75)
-
 		-- ON_HORSE_SPEED_RESTRICTION_WALK
 		-- Global_1140484->f_2001
-
 		-- local e = 2901841
-
 		-- SetPedConfigFlag(e, 169, true); -- // GRAPPLE_IMMUNITY_FROM_PLAYERS
 		-- SetPedConfigFlag(e, 170, true); -- // GRAPPLE_IMMUNITY_FROM_AI
-
 		-- SetPedConfigFlag(ped, 547, true); // CANNOT_LOCK_ON_PLAYERS
-
 		-- SetPedConfigFlag(ped, 339, true); // FATAL_MELEE_IMMUNITY
 		-- SetPedConfigFlag(ped, 340, true); // FATAL_MELEE_IMMUNITY
-
 		-- SetPedConfigFlag(ped, 265, true); // DISABLE_DROWNING
-
 		-- SetPedConfigFlag(e, 263, true); -- HEADSHOT_IMMUNITY
-
 		-- SetPedConfigFlag(e, 556, true); -- FULL_LOCKON_IMMUNITY
-
-
 		-- PLAYER::_0x7146CF430965927C(1, true); // HAT_BLOCKS_HEADSHOT
 		-- PLAYER::_0x7146CF430965927C(26, true); // NO_CRITICAL_DAMAGE_AGAINST_PLAYERS
-
-		-- // 0x5240864E847C691C
-		-- void _SET_PED_CAN_BE_INCAPACITATED(Ped ped, BOOL can)
-
-		-- // 0xD67B6F3BCF81BA47
-		-- void _SET_PED_INCAPACITATED_FLAG(Ped ped, int flag)
-
 		-- // 0xFC79DCC94D0A5897
 		-- void _SET_PLAYER_WEAPON_GROUP_DAMAGE_MODIFIER
-
-		-- local animDict = "mech_pickup@loot_body@face_up@loot@base"
+		-- local propHash = GetHashKey("S_CAMPLEDGER01X")
+		-- s_burdock01x
+		-- P_MONEYSTACK01X
+		-- if not HasModelLoaded(propHash) then
+		-- 	RequestModel(propHash)
+		-- 	while not HasModelLoaded(propHash) do
+		-- 		Citizen.Wait(0)
+		-- 	end
+		-- end
+		-- local playerPed = PlayerPedId()
+		-- local nameRender = "ledger_ct"
+		-- if not IsNamedRendertargetRegistered(nameRender) then
+		-- 	RegisterNamedRendertarget(nameRender, false)
+		-- 	LinkNamedRendertarget(propHash)
+		-- 	if not IsNamedRendertargetLinked(nameRender) then
+		-- 	else
+		-- 		if IsNamedRendertargetRegistered(nameRender) then
+		-- 			ReleaseNamedRendertarget(nameRender)
+		-- 		end
+		-- 	end
+		-- end
+		-- func_744
+		-- 2687.582, -1362.665, 55.639
+		-- local z = GetNamedRendertargetRenderId(nameRender)
+		-- SetTextRenderId(z)
+		-- print(z)
+		-- local a = Citizen.InvokeNative(0x6F3068258A499E52, propHash, GetEntityCoords(playerPed), 7)
+		-- print(a)
+		-- while not Citizen.InvokeNative(0x1FF441D7954F8709, a) do
+		-- 	Citizen.Wait(0)
+		-- end
+		-- local b = Citizen.InvokeNative(0x4735E2A4BB83D9DA, a)
+		-- print(b)
+		-- Citizen.InvokeNative(0xF49574E2332A8F06, b, 0.0)
+		-- Citizen.InvokeNative(0x04D1D4E411CE52D0, b, z)
+		-- DrawRect(0.5, 0.5, 1.0, 1.0, 255, 0, 0, 255, false, true)
+		-- local prop = CreateObject(propHash, GetEntityCoords(playerPed), true, true, true)
+		-- PlaceObjectOnGroundProperly(prop)
+		-- local animScene = CreateAnimScene("script@ambient@shop@CATALOG_PLAYER", 0, "PBL_ENTER", false, true)
+		-- LoadAnimScene(animScene)
+		-- SetAnimSceneEntity(animScene, "player", playerPed, 0)
+		-- SetAnimSceneEntity(animScene, "CATALOG", prop, 0)
+		-- SetAnimSceneOrigin(animScene, GetEntityCoords(playerPed) - vec3(0, 0, 0.97), 0.0, 2)
+		-- Citizen.InvokeNative(0xDF7B5144E25CD3FE, animScene, "PBL_ENTER")
+		-- SetAnimScenePlaybackList(animScene, "PBL_ENTER", true)
+		-- Wait(2000)
+		-- TaskEnterAnimScene(playerPed, animScene, "player", "PBL_ENTER", 1069379748, true, 128, 20000, -1082130432)
+		-- Wait(5000)
+		-- local animDict = "mech_pickup@plant@burdock"
+		-- animDict = "script_common@handover@generic@player_handover@money"
+		-- animDict = "mech_loco_f@generic@emotion@unarmed@intimidated@on_ass@offering@normal_items"
 		-- RequestAnimDict(animDict)
-
 		-- while not HasAnimDictLoaded(animDict) do
 		-- 	Citizen.Wait(0)
 		-- end
-
+		-- SetAnimScenePlaybackList(animScene, "PBL_FLIP_L1", true)
+		-- TaskPlayAnim(PlayerPedId(), animDict, "throw_object_left_pocket", 8.0, -8.0, -1, 31, 0.0, false, 0, false, 0, false)
+		-- PlayEntityAnim(prop, "stn_pick_long_pick_root_1", animDict, 1000.0, false, true, false, 0.0, 0)
+		-- TaskPlayAnim(prop, animDict, , 8.0, -8.0, -1, 0, 0.0, false, 0, false, 0, false)
+		-- TaskPlayAnim(playerPed, animDict, "stn_pick_long_pick", 8.0, -8.0, -1, 66048, 0.0, false, 0, false, 0, false)
+		--"mech_pickup@loot_body@face_up@loot@base"
 		-- -- mini_games@fishing@shore@hooked_med@struggle
 		-- -- struggle_pullup
 		-- -- struggle_a
-
 		-- -- script_re@treasure_hunter
 		-- -- breakout
-
-		-- local playerPed = PlayerPedId()
-
 		-- ClearPedTasks(playerPed, 0, 1)
-		-- -- TaskPlayAnim(playerPed, animDict, "pick_lh", 8.0, -8.0, -1, 32, 0.0, false, 0, false, 0, false)
 		-- -- TaskPlayAnim(8597250, animDict, "pick_lh_ped", 8.0, -8.0, -1, 32, 0.0, false, 0, false, 0, false)
-
 		-- local t = 6841916
-
 		-- ResurrectPed(t)
-
 		-- Wait(100)
-
 		-- local c, r = GetEntityCoords(t), GetEntityRotation(t)
-
 		-- TaskPlayAnimAdvanced(playerPed, animDict, "pick_lh", c, r, 8.0, -8.0, -1, 32, 0.0, false, 0, false, 0, false)
 		-- TaskPlayAnimAdvanced(t, animDict, "pick_lh_ped", c, r, 8.0, -8.0, -1, 34, 0.0, false, 0, false, 0, false)
-
 		-- Wait(2000)
 		-- SetEntityHealth(t, 0)
-
 		-- RequestModel(GetHashKey("A_C_DEER_01"))
-
 		-- -- Wait(1000)
-
 		-- local h = Citizen.InvokeNative(0xF97C34C33487D569, GetHashKey("A_C_DEER_01"), 1)
-
 		-- print(h)
-
 		-- Wait(2000)
-
 		-- local v = Citizen.InvokeNative(0x43E4DA469541A9C9, h)
 		-- print(v)
-
 		-- local r = Citizen.InvokeNative(0xC0940AC858C1E126, h)
-
 		-- print(r)
-
 		-- local a = Citizen.InvokeNative(0x0BCD4091C8EABA42, h, GetEntityCoords(PlayerPedId()), 290.0415, 0, 0, 0, 1, true)
-
 		-- print(a)
-
 		-- Citizen.InvokeNative(0x1902C4CFCC5BE57C, a, GetHashKey("META_OUTFIT_COLD_WEATHER"))
-
 		-- print(Citizen.InvokeNative(0x3972F78A78B5D9DF, h))
-
 		-- 		// 0xF97C34C33487D569
 		-- Request
-
 		-- // 0x43E4DA469541A9C9
 		-- IsValid
-
 		-- // 0xC0940AC858C1E126
 		-- IsReady
-
 		-- // 0x3972F78A78B5D9DF
 		-- Release
-
 		-- Citizen.InvokeNative(0x644CCB76A76CFBD6, 0, 0, 0, 0, 0, 0)
 		-- Citizen.InvokeNative(0x83B8D50EB9446BBA, PlayerPedId(), 1)
 		-- print(Citizen.InvokeNative(0xE80E50BEE276A54A, 1412640604, -2047978619))
-
 		-- // 0xE3A46370F70F3607
 		-- INVENTORY_HIDE_INVENTORY_INDEX(int index, Any p1)
 		-- /*
 		-- When index is 1 it hides the weapon wheel completly
 		-- */
-
 		-- -- Citizen.InvokeNative(0xE3A46370F70F3607, 1, 0)
-
 		-- // 0xD5D72F1624F3BA7C
 		-- INVENTORY_SHOW_INVENTORY_INDEX(int index)
-
 		-- // 0xF49F14462F0AE27C
 		-- Ped _GET_MO*(Player player)
-
 		-- // 0xE6D4E435B56D5BD0
 		-- void _SET_PLAYER_MO*(Player player, Ped mount)
 		-- /*
 		-- Enables horse's equipment prompt when near it
 		-- */
-
 		-- Citizen.InvokeNative(0xD5D72F1624F3BA7C, 1)
-
 		-- Citizen.InvokeNative(0xBA8818212633500A, 6528527, 6, 0)
 		-- Citizen.InvokeNative(0xBA8818212633500A, 6528527, 3, 0)
-
 		-- print(Citizen.InvokeNative(0xF49F14462F0AE27C, PlayerId()))
 		-- Citizen.InvokeNative(0xE6D4E435B56D5BD0, PlayerId(), 392223)
 		-- INVENTORY::_0x2BAE4880DCDD560B(iVar0, 0))
 		-- exports["research"]:N_0x04019AE4956D4393()
-
 		-- SetObjectTextureVariation(5765379, 5)
-
 		-- Citizen.InvokeNative(0xB35370D5353995CB,PlayerPedId(), GetHashKey("MP_MOONSHINE_DRINKING_SOBER_TABLE_LH_HOLD"), 1048576000)
-
 		-- local comp = GetHashKey("COMPOSITE_LOOTABLE_VULTURE_EGG_DEF")
 		-- Citizen.InvokeNative(0x73F0D0327BFA0812, comp)
 		-- while not Citizen.InvokeNative(0x5E5D96BE25E9DF68, comp) do
@@ -385,10 +389,17 @@ Citizen.CreateThread(
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
 						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
-						-- exports["vp_admin"]:js_teste_native(0, i, 10)
-						-- exports["research"]:DataViewNativeGetEventData(0, i, 10)
 						-- Wait(1000)
-						print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
+						-- print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
+						-- print(GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED"))
+						-- exports["vp_admin"]:js_teste_native(0, i, 10)
+						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 10)
+						-- local s = ""
+						-- for i = 0, 32 do
+						-- 	s = s .. view["" .. i] .. ", "
+						-- end
+						-- print(s)
+						-- print(view["0"], view["2"], view["4"], view["6"], view["8"], view["10"], view["12"])
 					elseif eventAtIndex == -1246119244 then
 						-- [bit 0] Ped -- Mostly the animal being interacted
 						-- [bit 2] Ped -- Mostly the one who is interacting

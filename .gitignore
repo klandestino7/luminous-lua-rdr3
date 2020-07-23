@@ -1,5 +1,6 @@
 citizen/system_resources/
 cache
-license
-license2
+*.cfg
+*.bat
+*.txt
 savedata

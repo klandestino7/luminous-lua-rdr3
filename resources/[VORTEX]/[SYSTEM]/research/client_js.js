@@ -27,37 +27,6 @@ exports('DataViewNativeGetScenarioPointsCloseToCoords', (x, y, z, radius, size) 
     return out;
 });
 
-exports('DataViewNetowrk', () => {
-    let buffer = new ArrayBuffer(256);
-    let view = new DataView(buffer);
-
-    // GET_TASK_FISHING_STATE
-    // GET_STATE_OF_FISHING
-    let w = Citizen.invokeNative("0xF3735ACD11ACD500", PlayerPedId(), view);
-    let outAsInt = new Int32Array(buffer);
-    let outAsFloat = new Float32Array(buffer);
-
-    // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 36 34 35
-    // 1 - 2 - 3 - 4 - 5 -  6  -  7  -  8  -  9  - 10  - 11  - 12  - 13  - 14  - 15  - 16  -  17
-
-    // f_1   0      float
-    // f_2   2      float
-    // f_3   4      float
-    // f_5   8      flag?
-    // f_6   10     flag?
-    // f_7   12     entity
-    // f_11  20     entity
-    // f_12  22     entity
-    // f_13  24     entity
-    // f_14  26     float
-    // f_15  28     float
-
-    // console.log(outAsInt);
-    // console.log(outAsFloat);
-
-    return [w, outAsInt, outAsFloat];
-});
-
 exports('NativeCreateComposite', (compositeHash, x, y, z, onGround) => {
     let buffer = new ArrayBuffer(4 * 8);
     let view = new DataView(buffer);
@@ -154,10 +123,16 @@ function Float32ToInt32(num) {
     return view.getInt32(0);
 }
 
+
+RegisterCommand('mw', (source, args) => {
+    const r = Citizen.invokeNative("0xBF8276E51761F9DA");
+    console.log(r);
+});
+
 var matchmaking_buffer;
 var matchmaking_struct;
 
-exports('N_0x04019AE4956D4393_J', () => {
+RegisterCommand('97test', (source, args) => {
 
     let buffernh = new ArrayBuffer(256)
     let viewnh = new DataView(buffernh);
@@ -220,13 +195,13 @@ exports('N_0x04019AE4956D4393_J', () => {
         matchmaking_struct.setInt32(4 * 3, -1, true);
         */
         matchmaking_struct.setInt32(4 * 0, 0, true);
-        matchmaking_struct.setInt32(4 * 1, 0, true); // 
+        matchmaking_struct.setInt32(4 * 1, 0, true); // Session type flag
         matchmaking_struct.setInt32(4 * 2, 0, true); // Matchmaking id?
-        matchmaking_struct.setInt32(4 * 3, 5, true); // Your response id? [0: Clear?, 2: Enter?, 5: f_26 has to be set to 2]
-        matchmaking_struct.setInt32(4 * 4, 0, true); // Matchmaking type? [1, 2, 3, 4, 5]
-        matchmaking_struct.setInt32(4 * 5, 0, true); // [ =| 16, =| 8, =| 4]
+        matchmaking_struct.setInt32(4 * 3, 0, true); // Your response id? [0: Clear?, 2: Enter?, 5: f_26 has to be set to 2]
+        matchmaking_struct.setInt32(4 * 4, 4, true); // Matchmaking type? [1, 2, 3, 4, 5]
+        matchmaking_struct.setInt32(4 * 5, 18, true); // [ =| 16, =| 8, =| 4]
         matchmaking_struct.setInt32(4 * 6, 0, true);
-        matchmaking_struct.setInt32(4 * 7, 4, true);
+        matchmaking_struct.setInt32(4 * 7, 4, true); // Status  [7: Accepted]
         matchmaking_struct.setInt32(4 * 8, 2, true);
         matchmaking_struct.setInt32(4 * 9, 2, true);
         matchmaking_struct.setInt32(4 * 10, 1, true); // flag
@@ -241,47 +216,143 @@ exports('N_0x04019AE4956D4393_J', () => {
         matchmaking_struct.setInt32(4 * 19, 0, true);
         matchmaking_struct.setInt32(4 * 20, 101, true); // 100 101 102 103
         matchmaking_struct.setInt32(4 * 21, 1, true);
-        matchmaking_struct.setInt32(4 * 22, GetGameTimer(), true); // -1 / GetGameTimer()
-        matchmaking_struct.setInt32(4 * 23, GetGameTimer(), true); // -1 / GetGameTimer()
-        matchmaking_struct.setInt32(4 * 24, GetGameTimer(), true); // -1 / GetGameTimer()
-        matchmaking_struct.setInt32(4 * 25, 1, true); // BOOl
+        matchmaking_struct.setInt32(4 * 22, -1, true); // -1 / GetGameTimer()
+        matchmaking_struct.setInt32(4 * 23, -1, true); // -1 / GetGameTimer()
+        matchmaking_struct.setInt32(4 * 24, -1, true); // -1 / GetGameTimer()
+        matchmaking_struct.setInt32(4 * 25, 0, true); // BOOl
         matchmaking_struct.setInt32(4 * 26, 0, true); // Recreate-matchmaking type? [2: No retry?]
-        matchmaking_struct.setInt32(4 * 27, -1, true); // [-1, 1]
+        matchmaking_struct.setInt32(4 * 27, 1, true); // [-1, 1]
         matchmaking_struct.setInt32(4 * 28, -1, true); // -1 / GetGameTimer()
-        matchmaking_struct.setInt32(4 * 29, GetGameTimer(), true); // -1 / GetGameTimer()
+        matchmaking_struct.setInt32(4 * 29, -1, true); // -1 / GetGameTimer()
         matchmaking_struct.setInt32(4 * 30, -1, true); // -1 / GetGameTimer()
     }
 
-    NetworkSessionLeave();
+    // NetworkSessionLeave();
 
-    // let r = Citizen.invokeNative("0x2989E131FDE37E97", 0, 0, 101, matchmaking_struct);
-    let r = Citizen.invokeNative("0x04019AE4956D4393", 0, 0, matchmaking_struct);
+    let r = Citizen.invokeNative("0x2989E131FDE37E97", 17, 0, 109, matchmaking_struct);
+    // let r = Citizen.invokeNative("0x04019AE4956D4393", 0, 0, matchmaking_struct);
 
     let out = new Int32Array(matchmaking_buffer);
 
     console.log(r);
     console.log(out);
+    console.log(" ");
 
-    const r_is = Citizen.invokeNative("0x2F54B146D3EDCE4D", matchmaking_struct); // IS_VALID
+    const IsValid = Citizen.invokeNative("0x2F54B146D3EDCE4D", matchmaking_struct); // IS_VALID
+    console.log(IsValid);
 
-    console.log(r_is);
-
-    if (r_is === 1) {
-        const ru = Citizen.invokeNative("0x0DD051B1BF4B8BD6", matchmaking_struct); // GET_STATUS
-        /*
-        5 = Matchmaking Canceled
-        */
-        console.log(ru);
+    if (IsValid === 1) {
+        const status = Citizen.invokeNative("0x0DD051B1BF4B8BD6", matchmaking_struct); // GET_STATUS
+        console.log(status);
     }
 
-    console.log(Citizen.invokeNative("0x8FB7C254CFCBF78E", matchmaking_struct)); // IS_FINISHED?
+    const unk = Citizen.invokeNative("0xCCF878D50F8AB10D", matchmaking_struct);
+    console.log(unk);
 
-    Citizen.invokeNative("0xE72E5C1289BD1F40", matchmaking_struct); // DELETE
+    const isFinished = Citizen.invokeNative("0x8FB7C254CFCBF78E", matchmaking_struct);
+    console.log(isFinished); // IS_FINISHED?
 
-    // console.log('Ye');
-
-    // return [r, out];
+    // Citizen.invokeNative("0xE72E5C1289BD1F40", matchmaking_struct); // DELETE
 });
+
+/*
+	case 0:
+			iVar0 = 0;
+			break;
+		case joaat("NEW_GAME"):
+			iVar0 = 1;
+			break;
+		case joaat("SHIFT_F"):
+			iVar0 = 2;
+			break;
+		case joaat("DEMO"):
+			iVar0 = 4;
+			break;
+		case joaat("INTRO_NOT_DONE"):
+			iVar0 = 8;
+			break;
+		case joaat("PRIVATE"):
+			iVar0 = 16;
+			break;
+		case joaat("FRIENDLY"):
+			iVar0 = 32;
+			break;
+		case joaat("HARDCORE"):
+			iVar0 = 64;
+			break;
+		case joaat("NEAR_POSSE"):
+			iVar0 = 128;
+			break;
+		case joaat("RANDOM_POSSE"):
+			iVar0 = 256;
+			break;
+		case joaat("OPEN_POSSE"):
+			iVar0 = 512;
+			break;
+		case joaat("FOLLOW_INVITE"):
+			iVar0 = 1024;
+			break;
+		case joaat("RANDOM_REGION"):
+			iVar0 = 2048;
+			break;
+		case joaat("LAST_REGION"):
+			iVar0 = 4096;
+			break;
+		case joaat("LAST_LOCATION"):
+			iVar0 = 8192;
+			break;
+		case joaat("CAMP"):
+			iVar0 = 16384;
+			break;
+		case joaat("HANDHELD"):
+			iVar0 = 32768;
+			break;
+		case joaat("LAST_MISSION"):
+			iVar0 = 65536;
+			break;
+		case joaat("RANDOM_POKER"):
+			iVar0 = 131072;
+			break;
+		case joaat("BG_CUSTOM_1"):
+			iVar0 = 262144;
+			break;
+		case joaat("BG_CUSTOM_2"):
+			iVar0 = 524288;
+			break;
+		case joaat("BG_CUSTOM_3"):
+			iVar0 = 1048576;
+			break;
+		case joaat("TRADE_1"):
+			iVar0 = 2097152;
+			break;
+		case joaat("TRADE_2"):
+			iVar0 = 4194304;
+			break;
+		case joaat("TRADE_3"):
+			iVar0 = 8388608;
+			break;
+		case joaat("TRADE_4"):
+			iVar0 = 16777216;
+			break;
+		case joaat("TRADE_5"):
+			iVar0 = 33554432;
+			break;
+		case joaat("TRADE_6"):
+			iVar0 = 67108864;
+			break;
+		case joaat("TRADE_7"):
+			iVar0 = 134217728;
+			break;
+		case joaat("CCHAR"):
+			iVar0 = 268435456;
+			break;
+		case joaat("COUPON"):
+			iVar0 = 536870912;
+			break;
+		case joaat("HUB"):
+			iVar0 = 1073741824; // Float: 2f 
+            break;
+*/
 
 
 var mm_buffer = new ArrayBuffer(4 * 31);
@@ -513,13 +584,31 @@ RegisterCommand('invinfo', (source, args) => {
     // slotId: -1591664384 (ALL?)
     // out2->f_4: something
 
-    let r = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a2, GetHashKey("WEAPON_PISTOL_VOLCANIC"), -1591664384, a5, Citizen.returnResultAnyway());
+    // * 0xCB5D11F9508A928D
+    // * INVENTORY_ADD_ITEM?
+
+    let r = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a2, GetHashKey("CHARACTER"), -1591664384, a5, Citizen.returnResultAnyway());
     let out = new Int32Array(buffer);
 
     console.log(r, out);
 
     let out2 = new Int32Array(buffer2);
     console.log(out2);
+
+    a5.setInt32(8 * 4, 1084182731, true);
+    a5.setInt32(8 * 9, -1591664384, true);
+
+    out2 = new Int32Array(buffer2);
+    console.log(out2);
+
+    console.log("a");
+
+    let b3 = new ArrayBuffer(512);
+    let a3 = new DataView(b3);
+
+    let r2 = Citizen.invokeNative("0xCB5D11F9508A928D", 1, buffer2, a2, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), -1311702610, 1, 752097756)
+
+    console.log(r2);
 
     // let b = Citizen.invokeNative("0xC04F47D488EF9EBA", 1, 1999521480, a5, 0);
     // console.log(b);
@@ -528,69 +617,151 @@ RegisterCommand('invinfo', (source, args) => {
 });
 
 RegisterCommand('additem', (source, args) => {
-    let b1 = new ArrayBuffer(512);
-    let a1 = new DataView(b1);
-    // a1.setInt32(8 * 0, -1, true);
-    // a1.setInt32(8 * 1, -1, true);
-    // a1.setInt32(8 * 2, -1, true);
-    // a1.setInt32(8 * 3, -1, true);
-    // a1.setBigInt64(8 * 4, BigInt(-999503751), true);
-    // a1.setInt32(8 * 5, -1, true);
-    // a1.setInt32(8 * 6, -1, true);
-    // a1.setInt32(8 * 7, -1, true);
-    // a1.setInt32(8 * 8, -1, true);
-    // a1.setInt32(8 * 9, -2147483648, true);
-    // a1.setInt32(4 * 10, 0, true);
-    // a1.setInt32(8 * 11, 2119059394, true);
-    // a1.setInt32(8 * 12, -1703215172, true);
-    // a1.setInt32(8 * 13, -1, true);
 
-    let b2 = new ArrayBuffer(512);
-    let a2 = new DataView(b2);
-    // a2.setBigInt64(8 * 0, BigInt(2147483648), true);
-    // a2.setInt32(8 * 1, 0, true);
-    // a2.setInt32(8 * 2, 0, true);
-    // a2.setInt32(8 * 3, 0, true);
-    // a2.setBigInt64(8 * 4, BigInt(1901291885), true);
-    // a2.setInt32(8 * 5, 0, true);
-    // a2.setBigInt64(8 * 6, BigInt(4150375216), true);
-    // a2.setInt32(8 * 7, 0, true);
-    // a2.setBigInt64(8 * 8, BigInt(1034665895), true);
-    // a2.setInt32(8 * 9, 0, true);
-    // a2.setInt32(8 * 10, 0, true);
-    // a2.setInt32(8 * 11, 0, true);
+    let b1 = new ArrayBuffer(8 * 12);
+    let a2 = new DataView(b1);
+    // a2.setInt32(8 * 0, 2147483648, true);
+    // a2.setInt32(8 * 4, 1238285454, true);
+    // a2.setInt32(8 * 6, 2438572127, true);
 
-    let b3 = new ArrayBuffer(512);
-    let a3 = new DataView(b3);
+    let b2 = new ArrayBuffer(8 * 12);
+    let a3 = new DataView(b2);
+    // a3.setInt32(8 * 0, 2147483648, true);
+    // a3.setInt32(8 * 4, 1901291885, true);
+    // a3.setInt32(8 * 6, 4150375216, true);
+    // a3.setInt32(8 * 8, 4264807152, true);
+    // a3.setInt32(8 * 10, 2147483648, true);
+    // works top
+    // a3.setInt32(8 * 0, 2147483648, true);
+    // a3.setInt32(8 * 4, 1901291885, true);
+    // a3.setInt32(8 * 6, 4150375226, true);
+    // a3.setInt32(8 * 8, 4264807152, true);
 
-    // struct<4> func_2047(int iParam0, var uParam1, int iParam2, bool bParam3, var uParam4, int iParam5, bool bParam6)
-    // struct<4> Var0;
-    // INVENTORY::_0x886DFD3E185C8A89(func_1683(bParam6), &uParam1, iParam0, iParam5, &Var0);
+    console.log(Citizen.invokeNative("0x13D234A2A3F66E63", 2842629)); // -2140203376
+    Citizen.invokeNative("0xD2CB0FB0FDCB473D", PlayerId(), 2842629);
+    Citizen.invokeNative("0xE6D4E435B56D5BD0", PlayerId(), 2842629);
 
-    // func_2052
+    // works * // let r = Citizen.invokeNative("0xCB5D11F9508A928D", 1, a2, a3, -518019409, 1084182731, 1, 752097756);
+    let r = Citizen.invokeNative("0xCB5D11F9508A928D", 1, a2, a3, -1921080134, 1084182731, 1, 752097756);
 
-    let r1 = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a1, GetHashKey("CHARACTER"), -1591664384, a2, Citizen.returnResultAnyway());
+    console.log(r);
 
-    a2.setInt32(8 * 4, 1034665895, true);
-
-    let r2 = Citizen.invokeNative("0x886DFD3E185C8A89", 1, a2,  GetHashKey("WARDROBE"), 1034665895, a3, Citizen.returnResultAnyway());
-
-    console.log(r1);
-    console.log(r2);
-    console.log(new Int32Array(b1))
-    console.log(new Int32Array(b2))
-    console.log(new Int32Array(b3))
-
-    // let r = Citizen.invokeNative("0xB881CA836CC4B6D4", a1, Citizen.returnResultAnyway());
-    // let r2 = Citizen.invokeNative("0x3112ADB9D5F3426B", a1, 1, Citizen.returnResultAnyway());
-    // let out2 = new Int32Array(buffer2);
-    // console.log(r2, out2);
-
-    // let out = new Int32Array(buffer);
-
-    // console.log( out);
+    console.log(new Int32Array(b1));
+    console.log(new Int32Array(b2));
 });
 
+function Fits() {
+    const r = [
+        "8001C32B",
+        "DBF320A3",
+        "A1212100",
+        "2623F0B3",
+        "D7E2D44A",
+        "D6228958",
+        "409F50CB",
+        "DE3A037B",
+        "2B27C4A6",
+        "F21FFEF5",
+        "6A386D80",
+        "DFA9692D",
+        "D785E9B0",
+        "7D32E005",
+        "D3E21B7E",
+        "7E676791",
+        "670506DD",
+        "6C2CC31C",
+        "D94BEB69",
+        "6059AB76",
+        "9026D920",
+        "4E1386EA",
+        "82693DA5",
+        "C906F5F6",
+        "DEA71BFA",
+        "B6C85179",
+        "D07C7F8D",
+        "5BAB754",
+        "DE8AEF55",
+        "3159B66B",
+        "811B5215",
+        "E16E1B88",
+        "26629388",
+        "681022AA",
+        "9FA1824F",
+        "347B0DF4",
+        "6D3AB5A7",
+        "7A48AE7",
+        "2E4E23B5",
+        "B8E2E904",
+        "CEDEF013",
+        "D1A948D7",
+        "BCB96720",
+        "5853106",
+        "143F038",
+        "68E9888C",
+        "18177E87",
+        "C9983A3A",
+        "F2F95330",
+        "D4B60D4C",
+        "9431BBBC",
+        "21D08904",
+        "BE0C5805",
+        "54D8B6CC",
+        "CE548CF5",
+        "A1E84C59",
+        "87D6E095",
+    ]
+
+    // let b1 = new ArrayBuffer(8 * 12);
+    // let a2 = new DataView(b1);
+
+    // let b2 = new ArrayBuffer(8 * 12);
+    // let a3 = new DataView(b2);
+    // a3.setInt32(8 * 0, 2147483648, true);
+    // a3.setInt32(8 * 4, 1901291885, true);
+    // a3.setInt32(8 * 6, 4150375216, true);
+    // a3.setInt32(8 * 8, 4264807152, true);
+    // a3.setInt32(8 * 10, 2147483648, true);
+
+    let item = GetHashKey("CONSUMABLE_APPLE");
+    item = 142640135;
+
+    r.forEach(function(element, index) {
+
+        let a = hexToInt(element);
+
+        const yes = Citizen.invokeNative("0x780C5B9AE2819807", item, a);
+
+        // console.log(yes);
+
+        // if (yes != false) {
+        //     console.log(a);
+        // }
+
+        // if (a == -234132662){
+        //     console.log(a);
+        // }
+
+        // let r = Citizen.invokeNative("0xCB5D11F9508A928D", 2, a2, a3, item, a, 1, 752097756);
+        // console.log(r, a);
+    });
+
+    // const rv = Citizen.invokeNative("0x6452B1D357D81742", GetHashKey("UPGRADE_OFFHAND_HOLSTER"),1384535894);
+    // console.log(rv);
+}
+
+Fits();
+
+function hexToInt(hex) {
+    if (hex.length % 2 != 0) {
+        hex = "0" + hex;
+    }
+    var num = parseInt(hex, 16);
+    var maxVal = Math.pow(2, hex.length / 2 * 8);
+    if (num > maxVal / 2 - 1) {
+        num = num - maxVal
+    }
+    return num;
+}
 
 // levels3.rpf/levels/rdr3/scenario/herbs_*.ymt
 
