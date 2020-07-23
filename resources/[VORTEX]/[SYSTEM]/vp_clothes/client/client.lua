@@ -38,7 +38,6 @@ local chaps_f = {}
 local cloaks_m = {}
 local cloaks_f = {}
 
-
 local spats_m = {}
 local spats_f = {}
 
@@ -289,7 +288,8 @@ RegisterCommand(
         CamActive = false
         cAPI.InFade(500)
         Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), true)
-      --||  SetEveryoneAsInvisible()
+
+        SetEveryoneAsInvisible()
     end
 )
 
@@ -303,9 +303,10 @@ AddEventHandler(
             CamActive = false
             cAPI.InFade(500)
             Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), true)
-        -- SetEveryoneAsInvisible()        
+
+            SetEveryoneAsInvisible()
         else
-            TriggerEvent('VP:NOTIFY:Simple', 'Você ainda está como procurado, não pode trocar de roupa. ', 10000)
+            TriggerEvent("VP:NOTIFY:Simple", "Você ainda está como procurado, não pode trocar de roupa. ", 10000)
         end
     end
 )
@@ -346,10 +347,6 @@ Citizen.CreateThread(
                     sex = "other"
                 end
 
-
-
-
-
                 if not CamActive then
                     createCamera()
                     CamActive = true
@@ -359,7 +356,7 @@ Citizen.CreateThread(
                         action = "show",
                         gender = sex
                     }
-                )           
+                )
             end
         end
     end
@@ -377,43 +374,51 @@ AddEventHandler(
                 action = "hide"
             }
         )
+
+        SetEveryoneAsInvisible(false)
     end
 )
 
--- function SetEveryoneAsInvisible()
---    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
---   while inCustomization do
---   	Citizen.Wait(0)
--- 	    for _, pid in pairs(GetActivePlayers()) do
--- 	    	print('1 '.. pid)
--- 	       SetEntityVisible(GetPlayerPed(pid), false)
--- 	    end
---    end
+function SetEveryoneAsInvisible(invisible)
+    local playerId = PlayerId()
 
---  	for _, pid in pairs(GetActivePlayers()) do
---  		print('2 '.. pid)
---       SetEntityVisible(GetPlayerPed(pid), true)
---    	end
---    	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
--- end
+    if invisible then
+        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
+        while inCustomization do
+            Citizen.Wait(0)
+            for _, pid in pairs(GetActivePlayers()) do
+                if pid ~= playerId then
+                    SetEntityVisible(GetPlayerPed(pid), false)
+                end
+            end
+        end
+    end
+
+    for _, pid in pairs(GetActivePlayers()) do
+        if pid ~= playerId then
+            SetEntityVisible(GetPlayerPed(pid), true)
+        end
+    end
+
+    NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+end
 
 function createCamera()
-    SetEntityCoords(PlayerPedId(), 2555.352,-1160.896,53.002)
+    SetEntityCoords(PlayerPedId(), 2555.352, -1160.896, 53.002)
     local coords = GetEntityCoords(PlayerPedId())
     groundCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 2554.450, -1161.843, 53.782)
-  	SetEntityHeading(PlayerPedId(), 286.07)
+    SetEntityHeading(PlayerPedId(), 286.07)
 
-
-  --	SetEntityVisible(PlayerPedId(), false)
+    --	SetEntityVisible(PlayerPedId(), false)
     SetCamCoord(groundCam, 2554.450, -1161.843, 53.782)
- --  SetCamFov(groundCam, 100)
+    --  SetCamFov(groundCam, 100)
     SetCamRot(groundCam, -10.0, 0.0, 152.09)
     SetCamActive(groundCam, true)
     RenderScriptCams(true, false, 1, true, true)
     --Wait(3000)
     -- last camera, create interpolate
     fixedCam = CreateCam("DEFAULT_SCRIPTED_CAMERA")
-    SetCamCoord(fixedCam, 2557.021,-1160.685,54.202)
+    SetCamCoord(fixedCam, 2557.021, -1160.685, 54.202)
     SetCamRot(fixedCam, -15.0, 0, 115.09)
     Wait(3000)
     cAPI.OutFade(500)
@@ -997,7 +1002,7 @@ RegisterNUICallback(
                 local num = tonumber(data.id)
                 hash = ("0x" .. cloaks_f[num])
                 setcloth(hash)
-                cloaksUsing = ("0x" .. cloaks_f[num])             
+                cloaksUsing = ("0x" .. cloaks_f[num])
             end
         end
     end
@@ -1111,21 +1116,20 @@ RegisterNUICallback(
             OutfitUsing = num
         else
             local num = tonumber(data.id)
-            SetPedOutfitPreset(PlayerPedId(), num)  
-            OutfitUsing = num  
+            SetPedOutfitPreset(PlayerPedId(), num)
+            OutfitUsing = num
         end
     end
 )
-
 
 local Badge = false
 RegisterCommand(
     "badge",
     function(source, args, rawCommand)
-        if cAPI.hasGroup('trooper') then
+        if cAPI.hasGroup("trooper") then
             if not Badge then
                 setcloth2(0x1FC12C9C)
-            --  SetPedAsCop(PlayerPedId(),true)
+                --  SetPedAsCop(PlayerPedId(),true)
                 Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), true)
                 Badge = true
             else
@@ -1136,10 +1140,10 @@ RegisterCommand(
                 Badge = false
             end
         end
-        if cAPI.hasGroup('sheriff') then
+        if cAPI.hasGroup("sheriff") then
             if not Badge then
                 setcloth2(0x1FC12C9C)
-            --  SetPedAsCop(PlayerPedId(),true)
+                --  SetPedAsCop(PlayerPedId(),true)
                 Citizen.InvokeNative(0xBB03C38DD3FB7FFD, PlayerPedId(), true)
                 Badge = true
             else
@@ -1163,7 +1167,6 @@ function setcloth2(hash)
     --Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(), tonumber(hash), true, true, true)
 end
 
-
 function setcloth(hash)
     local model2 = GetHashKey(tonumber(hash))
     if not HasModelLoaded(model2) then
@@ -1178,37 +1181,37 @@ RegisterNUICallback(
     "Confirm",
     function()
         local dados = {
-            ['hat'] = HatUsing,
-            ['shirts'] = ShirtsUsing,
-            ['vests'] = VestsUsing,
-            ['pants'] = PantsUsing,
-            ['boots'] = BootsUsing,
-            ['masks'] = MasksUsing,
-            ['coats'] = CoatsUsing,
-            ['skirts'] = SkirtsUsing,
-            ['legs'] = LegsUsing,
-            ['gloves'] = GlovesUsing,
-            ['neckwear'] = NeckwearUsing,
-            ['gunbelts'] = GunbeltsUsing,
-            ['spurs'] = spursUsing,
-            ['chaps'] = chapsUsing,
-            ['spats'] = spatsUsing,
-            ['eyewear'] = eyewearUsing,
-            ['access'] = accessUsing,
-            ['neckties'] = necktiesUsing,
-            ['bracelets'] = braceletsUsing,
-            ['suspenders'] = suspendersUsing,
-            ['gauntlets'] = gauntletsUsing,
-            ['belts'] = beltsUsing,
-            ['ponchos'] = ponchosUsing,
-            ['offhand'] = offhandUsing,
-            ['beltbuckle'] = beltbuckleUsing,
-            ['cloaks'] = cloaksUsing,
-            ['coats2'] = coats2Using,
-            ['beltbuckle'] = beltbuckleUsing,
-            ['Outfit'] = OutfitUsing
+            ["hat"] = HatUsing,
+            ["shirts"] = ShirtsUsing,
+            ["vests"] = VestsUsing,
+            ["pants"] = PantsUsing,
+            ["boots"] = BootsUsing,
+            ["masks"] = MasksUsing,
+            ["coats"] = CoatsUsing,
+            ["skirts"] = SkirtsUsing,
+            ["legs"] = LegsUsing,
+            ["gloves"] = GlovesUsing,
+            ["neckwear"] = NeckwearUsing,
+            ["gunbelts"] = GunbeltsUsing,
+            ["spurs"] = spursUsing,
+            ["chaps"] = chapsUsing,
+            ["spats"] = spatsUsing,
+            ["eyewear"] = eyewearUsing,
+            ["access"] = accessUsing,
+            ["neckties"] = necktiesUsing,
+            ["bracelets"] = braceletsUsing,
+            ["suspenders"] = suspendersUsing,
+            ["gauntlets"] = gauntletsUsing,
+            ["belts"] = beltsUsing,
+            ["ponchos"] = ponchosUsing,
+            ["offhand"] = offhandUsing,
+            ["beltbuckle"] = beltbuckleUsing,
+            ["cloaks"] = cloaksUsing,
+            ["coats2"] = coats2Using,
+            ["beltbuckle"] = beltbuckleUsing,
+            ["Outfit"] = OutfitUsing
         }
-    
+
         -- local dados = {
         --     HatUsing,
         --     ShirtsUsing,
@@ -1239,7 +1242,7 @@ RegisterNUICallback(
         --     beltbuckleUsing
         -- }
 
-       -- print(json.encode(dados))
+        -- print(json.encode(dados))
 
         TriggerServerEvent("VP:CLOTHES:SavePlayerClothing", dados, true)
         DestroyClothingMenu()
@@ -1249,13 +1252,11 @@ RegisterNUICallback(
         end
         Wait(4000)
         Citizen.InvokeNative(0xF1CA12B18AEF5298, PlayerPedId(), false)
-       	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
-       	 --SetEntityVisible(PlayerPedId(), true)
+        NetworkSetEntityInvisibleToNetwork(PlayerPedId(), false)
+        --SetEntityVisible(PlayerPedId(), true)
         cAPI.OutFade(500)
     end
 )
-
-
 
 function DestroyClothingMenu()
     DestroyAllCams(true)
@@ -1289,7 +1290,7 @@ Citizen.CreateThread(
                     positionBack = shopPosition
                     DrawTxt("Pressione ALT para abrir a loja de roupas.", 0.85, 0.95, 0.35, 0.35, true, 255, 255, 255, 200, true, 10000)
                     if IsControlJustReleased(0, 0xE8342FF2) then -- LEFT ALT
-                        print('presses')
+                        print("presses")
                         TriggerEvent("VP:STORECLOTHES:OpenClothingMenu")
                     end
                 end
@@ -1297,8 +1298,6 @@ Citizen.CreateThread(
         end
     end
 )
-
-
 
 function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
     local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)
@@ -1332,7 +1331,6 @@ end
 function NativeHasPedComponentLoaded(ped)
     return Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, ped)
 end
-
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
     local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
