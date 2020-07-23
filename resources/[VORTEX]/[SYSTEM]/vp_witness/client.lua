@@ -93,7 +93,7 @@ local LAST_REPORT_TIME = 0
 local witnessList = {}
 
 function checkForWitness(playerPed)
-    if true or (cAPI.IsWanted() and not isAtMaxWitness()) then
+    if (cAPI.IsWanted() and not isAtMaxWitness()) then
         local humanNpcs = GetClosestHumanNpcs(MAX_WITNESS_DISTANCE)
 
         for _, humanNpc in pairs(humanNpcs) do
