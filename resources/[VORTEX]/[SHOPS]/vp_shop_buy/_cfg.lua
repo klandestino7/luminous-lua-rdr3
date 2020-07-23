@@ -44,7 +44,8 @@ Config.ShopDatas = {
 			{"melee_lantern_electric", 1, 200, 80},
 			{"melee_torch", 1, 200, 80},
 			{"bow", 1, 7000, 2800},
-			{"ammo_arrow", 1, 100, 40}
+			{"ammo_arrow", 1, 100, 40},
+			{"notepad", 1, 10, 4}
 		}
 	},
 	{
@@ -53,11 +54,11 @@ Config.ShopDatas = {
 			{"medicine_poor", 1, 1000, 100},
 			{"stimulant_poor", 1, 1000, 100},
 			{"pigeonpost", 1, 500, 30},
-			{"acamp_tents_small", 1, 3000, 200},
-			{"acamp_tents_med_closed", 1, 5000, 350},
-			{"acamp_bedroll", 1, 500, 40},
-			{"acamp_firesmall", 1, 500, 40},
-			{"acamp_firesmal_pan", 1, 800, 60}
+			-- {"acamp_tents_small", 1, 3000, 200},
+			-- {"acamp_tents_med_closed", 1, 5000, 350},
+			-- {"acamp_bedroll", 1, 500, 40},
+			-- {"acamp_firesmall", 1, 500, 40},
+			-- {"acamp_firesmal_pan", 1, 800, 60}
 		}
 	}
 }

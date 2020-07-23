@@ -23,6 +23,17 @@ Config = {
                 output = {
                     {item = "meat_oregano_cooked", amount = 1}
                 }
+            },
+            {
+                time = 20,
+                input = {
+                    {item = "herb_lady_slipper", amount = 3},
+                    {item = "flask", amount = 1},
+                    {item = "melee_knife", amount = 1, remove = false}
+                },
+                output = {
+                    {item = "opio", amount = 1}
+                }
             }
         }
     },

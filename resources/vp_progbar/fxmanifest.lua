@@ -13,11 +13,9 @@ client_scripts {
 files {
     'html/index.html',
     'html/css/style.css',
-    'html/css/bootstrap.min.css',
     'html/fonts/crock.ttf',
     'html/fonts/robotoslab.ttf',
-    'html/img/bar.png',
-    'html/img/barv.png',
+    'html/img/*',
     'html/js/script.js',
     'html/js/jquery.min.js',
 }

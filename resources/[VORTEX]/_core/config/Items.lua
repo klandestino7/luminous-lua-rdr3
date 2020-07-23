@@ -23,35 +23,35 @@ ItemList = {
     ["fishingrod"] = {
         type = "weapon",
         name = "Vara de Pescar",
-        weight = 1.0,
+        weight = 1.5,
         description = "Um pequeno cabo engatado por um grosso cipó e um gancho pequeno em sua ponta. Útil para pescas.",
         stackSize = 1
     },
     ["melee_hatchet"] = {
         type = "weapon",
         name = "Machado",
-        weight = 1.0,
+        weight = 3.0,
         description = "Um afiado machado de metal, além de servir como arma, é também perfeito para derrubar árvores!",
         stackSize = 1
     },
     ["melee_cleaver"] = {
         type = "weapon",
         name = "Machado Cutelo",
-        weight = 1.5,
+        weight = 4.5,
         description = "Aqui eis um antigo cutelo, estranhamento afiado, curiosamente ensanguentado.",
         stackSize = 1
     },
     ["melee_ancient_hatchet"] = {
         type = "weapon",
         name = "Machado Raro",
-        weight = 1.0,
+        weight = 3.0,
         description = "Ooooh... tão deslumbrante e brilhante, seria este o machado perfeito?",
         stackSize = 1
     },
     ["melee_hatchet_viking"] = {
         type = "weapon",
         name = "Machado Viking",
-        weight = 1.2,
+        weight = 4.2,
         description = "Coberto por um longo couro em seu cabo, esse machado vem de eras frias, tempos vikings, poucos colecionadores o possuem.",
         stackSize = 1
     },
@@ -79,7 +79,7 @@ ItemList = {
     ["melee_hatchet_hunter"] = {
         type = "weapon",
         name = "Machado de Caçador",
-        weight = 1.5,
+        weight = 3.0,
         description = "Se você tem esse machado, você certamente é um expert caçador.",
         stackSize = 1
     },
@@ -100,14 +100,14 @@ ItemList = {
     ["melee_knife_hunter"] = {
         type = "weapon",
         name = "Faca de Caçador",
-        weight = 1.5,
+        weight = 0.7,
         description = "Faca para caça.",
         stackSize = 1
     },
     ["melee_knife_miner"] = {
         type = "weapon",
         name = "Faca Minerio",
-        weight = 1.5,
+        weight = 0.8,
         description = "Faca forjada especialmente para cortar minérios.",
         stackSize = 1
     },
@@ -255,13 +255,13 @@ ItemList = {
         stackSize = 1,
         worldModel = "w_repeater_pumpaction01"
     },
-    ["shotgun_repeating"] = {
-        type = "weapon",
-        name = "Winchester de Repetição",
-        weight = 6.0,
-        description = "Rifle longo de repetição, ágil e letal.",
-        stackSize = 1
-    },
+    -- ["shotgun_repeating"] = {
+    --     type = "weapon",
+    --     name = "Winchester de Repetição",
+    --     weight = 6.0,
+    --     description = "Rifle longo de repetição, ágil e letal.",
+    --     stackSize = 1
+    -- },
     ["revolver_cattleman"] = {
         type = "weapon",
         name = "Revolver de Vaqueiro",
@@ -616,6 +616,14 @@ ItemList = {
         weight = 0.5,
         description = "Carne obtida após esfolar o animal.",
         stackSize = 3
+    },    
+    ["opio"] = {
+        type = "edible",
+        name = "Ópio",
+        weight = 0.3,
+        varOnUse = 1.0,
+        description = "Droga, produzido através do sumo de Papoila-dormideira. É ilícito.",
+        stackSize = 50
     },
     ["meat_cooked"] = {
         type = "edible",
@@ -634,14 +642,14 @@ ItemList = {
     ["raw_iron"] = {
         type = "generic",
         name = "Metal Bruto",
-        weight = 4.2,
+        weight = 2.2,
         description = "Mineral pica",
         stackSize = 7
     },
     ["raw_gold"] = {
         type = "generic",
         name = "Ouro Bruto",
-        weight = 7.0,
+        weight = 4.0,
         description = "Ouro recém minerado, está em forma bruta, e por isso é tão pesado.",
         stackSize = 7
     },
@@ -662,7 +670,7 @@ ItemList = {
     ["raw_rock"] = {
         type = "generic",
         name = "Pedra Bruta",
-        weight = 1.0,
+        weight = 2.0,
         description = "Agua mole medra dura, tanto bate até que fura.",
         stackSize = 20
     },
@@ -683,16 +691,9 @@ ItemList = {
     ["log"] = {
         type = "generic",
         name = "Tora de Madeira",
-        weight = 1.0,
+        weight = 3.0,
         description = "Toco de madeira, pobrezito, arrancado de suas raízes tão cedo.",
         stackSize = 20
-    },
-    ["roperoll"] = {
-        type = "generic",
-        name = "Rolo de Corda",
-        weight = 2.0,
-        description = "Utilizado para fazer diversos tipos de itens.",
-        stackSize = 5
     },
     ["ropecut"] = {
         type = "generic",
@@ -707,20 +708,6 @@ ItemList = {
         weight = 1.0,
         description = "Um graveto de madeira, pobrezito, arrancado de suas raízes tão cedo.",
         stackSize = 20
-    },
-    ["potassio"] = {
-        type = "generic",
-        name = "Nitrato de Potássio",
-        weight = 1.0,
-        description = "Salitre é um nitrato de potássio usado para várias finalidades, como produzir fertilizantes e explosivos.",
-        stackSize = 17
-    },
-    ["sulfur"] = {
-        type = "generic",
-        name = "Enxofre",
-        weight = 2.0,
-        description = "O sulfato de enxofre é removido das áreas termais de West Elizabeth, serve para a criação de pólvora.",
-        stackSize = 10
     },
     ["feather_1"] = {
         type = "generic",
@@ -760,7 +747,7 @@ ItemList = {
     ["pigeonpost"] = {
         type = "kit",
         name = "Pombo-Correio",
-        weight = 2.0,
+        weight = 0.6,
         description = "Entrega mensagems a longas distâncias",
         stackSize = 1
     },
@@ -785,6 +772,13 @@ ItemList = {
         description = "Uma pequena lasca de uma semente, pode ser plantada.",
         stackSize = 15
     },
+    ["marijuana_seed"] = {
+        type = "planting",
+        name = "Semente de Cannabis",
+        weight = 0.2,
+        description = "Uma pequena lasca de uma semente, pode ser plantada.",
+        stackSize = 15
+    },
     ["corn_seed"] = {
         type = "planting",
         name = "Semente de Milho",
@@ -794,7 +788,7 @@ ItemList = {
     },
     ["wateringcan"] = {
         type = "planting",
-        name = "Balde de Água",
+        name = "Balde",
         weight = 2.0,
         description = "Balde feito de barra de ferro, é bem resistente e está cheio de água.",
         stackSize = 7
@@ -1300,6 +1294,20 @@ ItemList = {
         weight = 0.4,
         description = "Reside em regiões montanosas e frias normalmente, é um ótimo ingrediente de um bom chá.",
         stackSize = 10
+    },
+    ["flask"] = {
+        type = "generic",
+        name = "Frasco Vazio",
+        weight = 0.1,
+        description = "Utilizado para colocar conteúdo líquido.",
+        stackSize = 30
+    },
+    ["herb_lady_slipper"] = {
+        type = "generic",
+        name = "Lady Slipper Orchid",
+        weight = 0.4,
+        description = "pode ser visto crescendo no solo de florestas, prados e áreas de floresta, do seu sumo é feito o Ópio.",
+        stackSize = 25
     },
     -- ["herb_orchid_dragon"] = {
     --     type = "generic",

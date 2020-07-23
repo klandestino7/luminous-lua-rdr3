@@ -412,6 +412,13 @@ function cAPI.VarySickness(variation)
     sickness = math.min(100, sickness + variation)
 end
 
+function cAPI.OpioUse(variation)
+    variationTime = 10
+    for i = 0, 1 do
+        cAPI.VaryPedCore(PlayerPedId(), i, 100, variationTime, 1)
+    end
+end
+
 function cAPI.GetSickness()
     return sickness
 end

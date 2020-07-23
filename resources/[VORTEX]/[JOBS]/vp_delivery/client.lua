@@ -94,7 +94,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
           --  spawn_faggio()
             goliv(livpt,livr)
-            nbDelivery = math.random(3,5)
+            nbDelivery = 5
 
            -- TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
         end
@@ -132,7 +132,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
 
           if (posibilidad > 70) and (posibilidad < 90) then
 
-            pourboire = math.random(10, 150)
+            pourboire = math.random(25, 60)
 
             TriggerEvent('VP:NOTIFY:Simple', 'Você recebeu $'.. pourboire, 10000)
 
@@ -207,7 +207,7 @@ Citizen.CreateThread(function() --Thread lancement + livraison depuis le marker 
               paie = distance * coefflouze
 
               goliv(livpt,livr)
-              nbDelivery = math.random(3, 5)
+              nbDelivery = 5
 
         --      TriggerServerEvent("VP:DELIVERY:itemadd", nbDelivery)
 
@@ -284,7 +284,7 @@ Citizen.CreateThread(function() -- Thread de "fin de service" depuis le point ro
 
             TriggerEvent('VP:NOTIFY:Simple', 'Obrigado pelos seus serviços.', 10000)
 
-            TriggerServerEvent("VP:DELIVERY:paiefinale")
+           -- TriggerServerEvent("VP:DELIVERY:paiefinale")
 
             SetWaypointOff()
 
