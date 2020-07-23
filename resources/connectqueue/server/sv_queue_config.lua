@@ -37,6 +37,7 @@ Config.Priority = {
     ["steam:110000105a713f4"] = 5, -- Richard.Grawe#1438 (166) / Setando em 14.07
     ["steam:1100001321f881e"] = 10, -- DiGreia#8360 / 20.07
     ["steam:11000010326195e"] = 15, -- jayvi#8804 / 22-07
+    ["steam:11000013b3cbafd"] = 15, -- indaiass#0697 / 22-07
 
    -- ///////////////// NITRO BOOSTERS //////////////////
     ["steam:1100001128e0a15"] = 15, -- Revolvi38#0038 / 11.06
