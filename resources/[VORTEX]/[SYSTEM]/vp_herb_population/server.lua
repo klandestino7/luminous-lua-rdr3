@@ -34,14 +34,14 @@ local toItem = {
     "INDIAN_TOBACCO_DEF",
     "LOON_EGG_3_DEF",
     "MILKWEED_DEF",
-    ["OLEANDER_SAGE_DEF"] = "herb_oleander_sage",
+    ["OLEANDER_SAGE_DEF"] = "herb_oleander_sage", -- 
     "ORCHID_ACUNA_STAR_DEF",
     "ORCHID_CIGAR_DEF",
     "ORCHID_CLAM_SHELL_DEF",
     "ORCHID_DRAGONS_DEF",
     "ORCHID_GHOST_DEF",
     "ORCHID_LADY_NIGHT_DEF",
-    "ORCHID_LADY_SLIPPER_DEF",
+    ["ORCHID_LADY_SLIPPER_DEF"] = "herb_lady_slipper",
     "ORCHID_MOCCASIN_DEF",
     "ORCHID_NIGHT_SCENTED_DEF",
     "ORCHID_QUEENS_DEF",
@@ -51,8 +51,8 @@ local toItem = {
     "ORCHID_VANILLA_DEF",
     ["OREGANO_DEF"] = "herb_oregano",
     ["PARASOL_MUSHROOM_DEF"] = "herb_parasol_mushroom",
-    ["PRAIRIE_POPPY_DEF"] = "herb_prairie_poppy",
-    ["RAMS_HEAD_DEF"] = "herb_rams_head",
+    ["PRAIRIE_POPPY_DEF"] = "herb_prairie_poppy", -- 
+    ["RAMS_HEAD_DEF"] = "herb_rams_head", -- opio
     "RED_RASPBERRY_DEF",
     ["RED_SAGE_DEF"] = "herb_red_sage",
     "TEXAS_BONNET_DEF",
