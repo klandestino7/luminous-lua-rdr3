@@ -13,14 +13,12 @@ Config.Shops = {
 		group = "trooper",
 		transactions = {
 			-- {item = "revolver_doubleaction"},
-			{item = "pistol_mauser"},
-			{item = "ammo_pistol", amount = 20},
-			{item = "rifle_springfield"},
+			{item = "revolver_lemat"},
+			{item = "ammo_revolver", amount = 20},
+			{item = "rifle_boltaction"},
 			{item = "ammo_rifle", amount = 20},
 			{item = "repeater_evans"},
 			{item = "ammo_repeater", amount = 20},
-			-- {item = "ammo_revolver", amount = 20},
-			-- {item = "ammo_repeater", amount = 20},
 			{item = "melee_lantern_electric"},
 			{item = "melee_torch"},
 			{item = "lasso"},
@@ -62,9 +60,6 @@ Config.Shops = {
 		name = "Acogueiro",
 		type = "sell",
 		transactions = {
-			-- {"meat", 80, 32, 1},
-			-- {"feather_1", 100, 40, 5},
-			-- {"feather_2", 100, 40, 5}
 			{item = "meat_poor", dollar = 0.78},
 			{item = "meat_good", dollar = 1.37},
 			{item = "meat_perfect", dollar = 3.56},
@@ -76,9 +71,6 @@ Config.Shops = {
 		name = "Posto de Troca",
 		type = "sell",
 		transactions = {
-			-- {"raw_coal", 100, 40, 2},
-			-- {"raw_iron", 200, 80, 2},
-			-- {"raw_copper", 300, 120, 2}
 			{item = "raw_coal", amount = 2, dollar = 1.0},
 			{item = "raw_iron", amount = 2, dollar = 2.0},
 			{item = "raw_copper", amount = 2, dollar = 3.0}
