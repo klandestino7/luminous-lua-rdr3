@@ -14,12 +14,18 @@ AddEventHandler("VP:TRASH:receive", function()
     local sort = math.random(0, 102)
     local qtd = math.random(1, 3)
 
-    if sort >= 0 and sort <= 29 then        
-        Inventory:addItem("money", qtd*100)
-        User:notify("item", "money", qtd*100)
-    elseif sort >=30 and sort <=50 then
+    if sort >= 0 and sort <= 5 then        
+        Inventory:addItem("money", qtd*20)
+        User:notify("item", "money", qtd*20)
+    elseif sort >=6 and sort <=13 then
         Inventory:addItem("raw_iron", qtd)
-        User:notify("item", "raw_iron", qtd)
+        User:notify("item", "raw_iron", qtd)     
+    elseif sort >=14 and sort <=29 then
+        Inventory:addItem("corn", qtd)
+        User:notify("item", "corn", qtd)     
+    elseif sort >=30 and sort <=50 then
+        Inventory:addItem("flask", qtd)
+        User:notify("item", "flask", qtd)
     elseif sort >=51 and sort <=62 then
         Inventory:addItem("coal", qtd)
         User:notify("item", "coal", qtd)

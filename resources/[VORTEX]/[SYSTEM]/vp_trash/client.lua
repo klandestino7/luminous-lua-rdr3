@@ -1,6 +1,7 @@
 local trash = {
     "prop_bin_01a",
-    50927092,
+    50927092, -- lixeira
+    -1177561480, -- carroça velha
 }
 local trash2 = {}
 

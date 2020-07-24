@@ -34,8 +34,8 @@ AddEventHandler(
 		if Inventory:getItemAmount('opio') >= quantidade[_source] then
 			Inventory:removeItem(-1, "opio", quantidade[_source])			
 			User:notify("item", "opio", -quantidade[_source])
-			Inventory:addItem("money", math.random(45,65)*quantidade[_source])
-			User:notify("item", "money", math.random(45,65)*quantidade[_source])
+			Inventory:addItem("money", math.random(25,35)*quantidade[_source])
+			User:notify("item", "money", math.random(25,35)*quantidade[_source])
 			quantidade[_source] = nil
 			TriggerClientEvent("VP:CONTRABANDO:checkPayment", _source, true)
 		else
@@ -57,7 +57,7 @@ AddEventHandler(
 		local PoliceON = API.getUsersByGroup("trooper")
 		for i = 1, #PoliceON do
 		--	vRPclient._playSound(player,"CONFIRM_BEEP","HUD_MINI_GAME_SOUNDSET")
-			TriggerClientEvent("VP:TOAST:New", PoliceON[i].getSource(), "alert", "Recebemos uma denuncia do tráfico de munições, verifique o ocorrido.")
+			TriggerClientEvent("VP:TOAST:New", PoliceON[i].getSource(), "alert", "Recebemos uma denuncia do tráfico de Ópio, verifique o ocorrido.")
             TriggerClientEvent("VP:WANTED:denuncia", PoliceON[i].getSource(), vector3(x,y,z))
         end
 	end
