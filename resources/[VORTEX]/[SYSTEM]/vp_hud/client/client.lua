@@ -40,7 +40,7 @@ Citizen.CreateThread(
 
         -- Citizen.InvokeNative(0x4CC5F2FC1332577F, 0xBB47198C) --disables reticle
         Citizen.InvokeNative(0x8BC7C1F929D07BF3, 0xBB47198C) --enables reticle
-
+        Citizen.InvokeNative(0x8BC7C1F929D07BF3, -2106452847)
         while true do
             Citizen.Wait(0)
 
@@ -59,6 +59,11 @@ Citizen.CreateThread(
                 --    ShowPlayerCores(false) -- player core
                 ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
                 N_0x4cc5f2fc1332577f(474191950)
+            end
+
+            local _, weaponHash = GetCurrentPedWeapon(ped, 1)
+            if weaponHash ~= GetHashKey("WEAPON_UNARMED") then
+                DisableControlAction(0, 0xADEAF48C, true) -- MeleeGrappleAttack
             end
 
             --N_0xbae08f00021bffb2(horse) -- agitates the horse
