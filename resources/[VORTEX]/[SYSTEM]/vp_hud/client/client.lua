@@ -61,7 +61,7 @@ Citizen.CreateThread(
                 N_0x4cc5f2fc1332577f(474191950)
             end
 
-            local _, weaponHash = GetCurrentPedWeapon(ped, 1)
+            local _, weaponHash = GetCurrentPedWeapon(PlayerPedId(), 1)
             if weaponHash ~= GetHashKey("WEAPON_UNARMED") then
                 DisableControlAction(0, 0xADEAF48C, true) -- MeleeGrappleAttack
             end
