@@ -8,7 +8,7 @@ exports('DataViewNativeGetEventData', (eventGroup, index, argStructSize) => {
     Citizen.invokeNative("0x57EC5FA4D4D6AFCA", eventGroup, index, view, argStructSize, Citizen.returnResultAnyway());
     let out = new Int32Array(buffer);
 
-    // console.log(JSON.stringify(out));
+    // console.log(out);
     return out;
 });
 
@@ -637,17 +637,24 @@ RegisterCommand('additem', (source, args) => {
     // a3.setInt32(8 * 6, 4150375226, true);
     // a3.setInt32(8 * 8, 4264807152, true);
 
-    console.log(Citizen.invokeNative("0x13D234A2A3F66E63", 2842629)); // -2140203376
-    Citizen.invokeNative("0xD2CB0FB0FDCB473D", PlayerId(), 2842629);
-    Citizen.invokeNative("0xE6D4E435B56D5BD0", PlayerId(), 2842629);
+    // console.log(Citizen.invokeNative("0x13D234A2A3F66E63", 2842629)); // -2140203376
+    // Citizen.invokeNative("0xD2CB0FB0FDCB473D", PlayerId(), 2842629);
+    // Citizen.invokeNative("0xE6D4E435B56D5BD0", PlayerId(), 2842629);
 
     // works * // let r = Citizen.invokeNative("0xCB5D11F9508A928D", 1, a2, a3, -518019409, 1084182731, 1, 752097756);
-    let r = Citizen.invokeNative("0xCB5D11F9508A928D", 1, a2, a3, -1921080134, 1084182731, 1, 752097756);
+    let r = Citizen.invokeNative("0xCB5D11F9508A928D", 1, a2, a3, GetHashKey("KIT_HANDHELD_CATALOG"), 1084182731, 1, 752097756);
+
+    /*
+        -1921080134 | Comida
+    */
 
     console.log(r);
 
     console.log(new Int32Array(b1));
     console.log(new Int32Array(b2));
+
+    const amount = Citizen.invokeNative("0xE787F05DFC977BDE", 1, GetHashKey("CONSUMABLE_HORSE_REVIVER"), 0);
+    console.log(amount);
 });
 
 function Fits() {
@@ -722,8 +729,8 @@ function Fits() {
     // a3.setInt32(8 * 8, 4264807152, true);
     // a3.setInt32(8 * 10, 2147483648, true);
 
-    let item = GetHashKey("CONSUMABLE_APPLE");
-    item = 142640135;
+    let item = GetHashKey("KIT_HANDHELD_CATALOG")
+    // item = 142640135;
 
     r.forEach(function(element, index) {
 
