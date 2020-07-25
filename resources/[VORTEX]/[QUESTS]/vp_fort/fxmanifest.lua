@@ -5,10 +5,19 @@ rdr3_warning "I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_scripts {
     "@_core/lib/utils.lua",
+    "_cfg.lua",
     "client.lua"
 }
 
 server_scripts {
     "@_core/lib/utils.lua",
     "server.lua"
+}
+
+ui_page "nui/index.html"
+
+files {
+    "nui/*",
+    "nui/assets/*",
+    "nui/assets/fonts/*"
 }
