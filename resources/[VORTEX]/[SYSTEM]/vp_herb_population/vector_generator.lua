@@ -112,10 +112,16 @@ function ReadHerbFile(fileName)
 
     local lastHash
 
+
     for line in file:lines() do
         local Hash = line:match("<ScenarioType>(.-)</ScenarioType>")
 
         if Hash ~= nil then
+
+            -- if Hash == "0x43B5F53E" then
+            --     print("found", Hash, tonumber(Hash), GetHashKey("WB_HERB_ALASKAN_GINSENG"))
+            -- end
+
             local Wb = ConvertHashToWb(Hash)
             if Wb ~= nil then
                 local Composite = ConvertWbToComposite(Wb)
@@ -127,6 +133,8 @@ function ReadHerbFile(fileName)
                 end
 
                 lastHash = Hash
+            else
+                lastHash = nil
             end
         else
             local x, y, z = line:match('<UNK_MEMBER_0x00477CED x="(.-)" y="(.-)" z="(.-)"')
