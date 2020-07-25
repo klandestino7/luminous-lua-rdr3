@@ -27,7 +27,7 @@ Config = {
             {
                 time = 20,
                 input = {
-                    {item = "herb_lady_slipper", amount = 3},
+                    {item = "herb_rams_head", amount = 3},
                     {item = "flask", amount = 1},
                     {item = "melee_knife", amount = 1, remove = false}
                 },
@@ -112,6 +112,7 @@ Config = {
                 input = {
                     {item = "herb_american_ginseng", amount = 2},
                     -- {item = "herb_yarrow", amount = 2},
+                    {item = "flask", amount = 1},
                     -- {item = "herb_english_mace", amount = 2, alias = {"herb_milkweed"}}
                     {item = "herb_common_bullrush", amount = 2},
                     {item = "herb_parasol_mushroom", amount = 2}
@@ -125,6 +126,7 @@ Config = {
                 input = {
                     -- {item = "herb_sage", amount = 2},
                     {item = "herb_desert_sage", amount = 2},
+                    {item = "flask", amount = 1},
                     {item = "herb_burdock_root", amount = 1}
                 },
                 output = {
