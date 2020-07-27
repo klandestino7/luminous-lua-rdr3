@@ -15,3 +15,6 @@ client_scripts {
 	'shared.lua'
 }
 
+exports {
+    "GetRegisteredDoorHashInRadius",
+}

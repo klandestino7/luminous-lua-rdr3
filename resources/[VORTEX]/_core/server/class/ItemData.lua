@@ -76,6 +76,11 @@ end
 function triggerUse(User, itemData)
     local source = User:getSource()
 
+    --[[
+        return false    : Item não será consumido
+        return true     : Item será consumido
+    ]]
+
     if cAPI.getHealth(source) <= 0 or cAPI.IsPlayerLassoed(source) then
         return false
     end
@@ -256,6 +261,11 @@ function triggerUse(User, itemData)
         TriggerClientEvent("VP:WANTED:UsedEagleEye", source)
 
         return true
+    end
+
+    if itemId == "lockpick" then
+        User:closeInventory()
+        TriggerClientEvent("VP:LOCKPICK:StartLockpicking", source)
     end
 
     return false

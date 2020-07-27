@@ -557,6 +557,37 @@ Citizen.CreateThread(
             --     Citizen.InvokeNative(`DRAW_LINE` & 0xFFFFFFFF,GetEntityCoords(PlayerPedId()), offset, 255, 0, 0, 255)
             -- end
 
+            function GetRegisteredDoorHashInRadius(radius, requiredState)
+                local playerPed = PlayerPedId()
+                local playerPosition = GetEntityCoords(playerPed)
+
+                local closestDistance
+
+                local closestDoorHash
+
+                for doorHash, d in pairs(doorStates) do
+                    local doorEntity = GetDoorEntity(doorHash)
+
+                    if DoesEntityExist(doorEntity) then
+                        local doorPosition = GetEntityCoords(doorEntity)
+
+                        local distance = #(playerPosition - doorPosition)
+
+                        if distance <= radius then
+                            if requiredState == -1 or DoorSystemGetDoorState(doorHash) == requiredState then
+                                if not closestDistance or distance < closestDistance then
+                                    closestDistance = distance
+
+                                    closestDoorHash = doorHash
+                                end
+                            end
+                        end
+                    end
+                end
+
+                return closestDoorHash
+            end
+
             AddEventHandler(
                 "onResourceStop",
                 function(resourceName)
