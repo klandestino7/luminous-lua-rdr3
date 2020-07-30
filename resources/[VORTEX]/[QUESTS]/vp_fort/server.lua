@@ -21,12 +21,18 @@ end
 function Orgs.GetControlledOutpost(character_id)
 end
 
+function Orgs.GetMetadata(org_id)
+end
+
+function Orgs.SetMetadata(org_id, json)
+end
+
 local Outpost = {}
 
 function Outpost.GetMetadata(outpost_id)
 end
 
-function OutPost.SetMetadata(outpost_id)
+function OutPost.SetMetadata(outpost_id, json)
 end
 
 function Outpost.GetUnlocks(outpost_id)
