@@ -256,13 +256,31 @@ API_Database.prepare("queue:set", "INSERT INTO queue_priority(id, priority, star
 API_Database.prepare("queue:get", "SELECT priority, start, end from queue_priority WHERE id = @user_id")
 API_Database.prepare("queue:remove", "DELETE FROM queue_priority WHERE id = @user_id")
 
+------------ ORGANIZATIONS --------------------
+API_Database.prepare("UPDATE:organization", "UPDATE organizations SET name = @name WHERE id = @id")
+API_Database.prepare("DELETE:organization", "DELETE FROM organizations WHERE id = @id")
+API_Database.prepare("INSERT:organization", "INSERT INTO organizations(name, type) VALUES (@name, @type); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare("SELECT:organization", "SELECT id, name, type FROM organizations")
+API_Database.prepare("SELECT:myOrganization", "SELECT organizations.id, organizations.name, organizations.type, org_members.rank FROM organizations, org_members WHERE organizations.id = org_members.org_id AND org_members.char_id = @char_id")
 
+------------ ORG MEMBERS --------------------
+API_Database.prepare("UPDATE:org_members", "UPDATE org_members SET rank = @rank WHERE org_id = @org_id AND char_id = @char_id")
+API_Database.prepare("DELETE:org_members", "DELETE FROM org_members WHERE org_id = @org_id AND char_id = @char_id")
+API_Database.prepare("INSERT:org_members", "INSERT INTO org_members(org_id, char_id, rank, joined_at) VALUES (@org_id, @char_id, @rank, @joined_at)")
+API_Database.prepare("SELECT:org_members", "SELECT org_id, char_id, rank, joined_at FROM org_members")
 
+------------ OUTPOSTS --------------------
+API_Database.prepare("UPDATE:outposts", "UPDATE outposts SET metadata = @metadata, org_id = @org_id WHERE id = @id")
+API_Database.prepare("DELETE:outposts", "DELETE FROM outposts WHERE id = @id")
+API_Database.prepare("INSERT:outposts", "INSERT INTO outposts(id, org_id, position, metadata) VALUES (@id, @org_id, @position, @metadata); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare("SELECT:outposts", "SELECT id, org_id, position, metadata FROM outposts")
 
+------------ OUTPOSTS UNLOCKS --------------------
+API_Database.prepare("DELETE:outpost_unlocks", "DELETE FROM outpost_unlocks WHERE outpost_id = @outpost_id AND unlock_id = @unlock_id")
+API_Database.prepare("INSERT:outpost_unlocks", "INSERT INTO outpost_unlocks(outpost_id, unlock_id) VALUES (@outpost_id, @unlock_id)")
+API_Database.prepare("SELECT:outpost_unlocks", "SELECT outpost_id, unlock_id FROM outpost_unlocks")
 
-
-
-
+------------ UNLOCKS --------------------
 API_Database.prepare("outpost_unlocs:getbyid", "SELECT * FROM unlocks WHERE unlock_id = @unlock_id")
 
 do
