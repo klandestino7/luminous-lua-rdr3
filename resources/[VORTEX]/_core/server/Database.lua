@@ -256,6 +256,15 @@ API_Database.prepare("queue:set", "INSERT INTO queue_priority(id, priority, star
 API_Database.prepare("queue:get", "SELECT priority, start, end from queue_priority WHERE id = @user_id")
 API_Database.prepare("queue:remove", "DELETE FROM queue_priority WHERE id = @user_id")
 
+
+
+
+
+
+
+
+API_Database.prepare("outpost_unlocs:getbyid", "SELECT * FROM unlocks WHERE unlock_id = @unlock_id")
+
 do
 	-- ["placeholder"] = "placeholder",
 
