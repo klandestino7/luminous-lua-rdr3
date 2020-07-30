@@ -1,8 +1,28 @@
 Config = {}
 
-Config.LEDGERS = {
+Config.BANDOS = {
     {
-        position = vec3(347.727,1483.722,179.631),
+        -- 1
+        position = vec3(0, 0, 0),
+        balance = 0.0,
+        balance_withdraw_at = 155989874
+    },
+    {
+        -- 2
+        position = vec3(1, 1, 2),
+        balance = 0.0,
+        balance_withdraw_at = 155989874
+    },
+    {
+        -- 3
+        position = vec3(2, 2, 2),
+        balance = 0.0,
+        balance_withdraw_at = 155989874
+    }
+}
+
+Config.LEDGERS_SERVER = {
+    {
         balance = 0.0,
         balance_withdraw_at = 155989874
     }

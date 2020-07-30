@@ -57,13 +57,13 @@ Citizen.CreateThread(
 
                 if IsControlJustPressed(0, 0x05CA7C52) then -- DOWNN_ARROW
                     -- if GetGameTimer() >= next_request_at then
-                        -- TriggerServerEvent("VP:FORT:RequestUnlocks")
-                        TriggerEvent("VP:FORT:RespondToUnlocksRequest", {})
+                    -- TriggerServerEvent("VP:FORT:RequestUnlocks")
+                    TriggerEvent("VP:FORT:RespondToUnlocksRequest", {})
 
-                        next_request_at = GetGameTimer() + request_delay
-                    -- else
-                    --     print("Wait " .. ((next_request_at - GetGameTimer()) / 1000) .. " till next request")
-                    -- end
+                    next_request_at = GetGameTimer() + request_delay
+                -- else
+                --     print("Wait " .. ((next_request_at - GetGameTimer()) / 1000) .. " till next request")
+                -- end
                 end
 
                 if not isBalanceShowing then
@@ -111,20 +111,17 @@ RegisterNetEvent("VP:FORT:RespondToUnlocksRequest")
 AddEventHandler(
     "VP:FORT:RespondToUnlocksRequest",
     function(response)
-
         print("Got response")
 
         local unlocks = deepcopy(Config.UNLOCKS)
 
-        for u_index, rspns in pairs(response) do
-            --[[
-                rspsn_types | one at a time
+        for _, unlock_id in pairs(response) do
+            for index, u_data in pairs(Config.UNLOCKS) do
+                local u_id = u_data.id
 
-                locked : true
-                unowned : true
-            ]]
-            for rspns_type, value in pairs(rspns) do
-                unlocks[u_index][rspns_type] = true
+                if u_id == unlock_id then
+                    unlocks[index].unlocked = true
+                end
             end
         end
 

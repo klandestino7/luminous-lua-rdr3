@@ -4,62 +4,6 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-local Orgs = {}
-
-function Orgs.AddMember(org_id, character_id)
-end
-
-function Orgs.RemoveMember(org_id, character_id)
-end
-
-function Orgs.IsMember(org_id, character_id)
-end
-
-function Orgs.GetCharacterOrg(character_id)
-end
-
-function Orgs.GetControlledOutpost(character_id)
-end
-
-function Orgs.GetMetadata(org_id)
-end
-
-function Orgs.SetMetadata(org_id, json)
-end
-
-local Outpost = {}
-
-function Outpost.GetMetadata(outpost_id)
-end
-
-function OutPost.SetMetadata(outpost_id, json)
-end
-
-function Outpost.GetUnlocks(outpost_id)
-end
-
-function Outpost.AddUnlock(outpost_id, unlock_id)
-end
-
-function Outpost.RemoveUnlock(outpost_id, unlock_id)
-end
-
-function Outpost.SetControlledBy(outpost_id, org_id)
-end
-
-exports("AddMember", Orgs.AddMember)
-exports("RemoveMember", Orgs.RemoveMember)
-exports("IsMember", Orgs.IsMember)
-exports("GetCharacterOrg", Orgs.GetCharacterOrg)
-exports("GetControlledOutpost", Orgs.GetControlledOutpost)
-
-exports("GetMetadata", Outpost.GetMetadata)
-exports("SetMetadata", Outpost.SetMetadata)
-exports("GetUnlocks", Outpost.GetUnlocks)
-exports("AddUnlock", Outpost.AddUnlock)
-exports("RemoveUnlock", Outpost.RemoveUnlock)
-exports("SetControlledBy", Outpost.SetControlledBy)
-
 RegisterNetEvent("VP:ORGS:RequestUnlocks")
 AddEventHandler(
     "VP:ORGS:RequestUnlocks",
