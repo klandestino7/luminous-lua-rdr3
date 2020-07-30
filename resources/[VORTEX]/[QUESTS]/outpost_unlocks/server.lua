@@ -4,10 +4,18 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local Unlock = {}
+
+function Unlock.Get(unlock_id)
+    return type, name, price
+end
+
+exports("Get", Unlock.Get(unlock_id))
+
 RegisterNetEvent("VP:ORGS:RequestUnlocks")
 AddEventHandler(
     "VP:ORGS:RequestUnlocks",
-    function(rqst_outpost_id)
+    function(reqst_org_id, rqst_outpost_id)
         local _source = source
 
         local User = API.getUserFromSource(_source)
