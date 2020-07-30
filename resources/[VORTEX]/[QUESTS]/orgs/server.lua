@@ -15,7 +15,6 @@ local Orgs = {}
     GTAV
         member_id = user_id
 ]]
-
 function Orgs.Create(org_id, org_name, member_id)
 end
 
@@ -31,7 +30,11 @@ end
 function Orgs.RemoveMember(org_id, member_id)
 end
 
-function Orgs.IsMember(org_id, member_id)
+-- Poder ser o nome da org ou o id dela
+function Orgs.IsMember(org, member_id)
+    local my_orgs = Orgs.GetOrgs(member_id)
+
+    return Orgs.OrgListHas(my_orgs, org)
 end
 
 function Orgs.GetMemberRank(org_id, member_id)
@@ -40,10 +43,33 @@ end
 function Orgs.SetMemberRank(org_id, member_id)
 end
 
-function Orgs.GetControlledOutpost(member_id)
+function Orgs.GetControlledOutpost(org_id)
 end
 
-function Orgs.GetOrgs(member_id)
+function Orgs.GetMemberOrgs(member_id)
+end
+
+function Orgs.GetMemberOrgByType(member_id, org_type)
+    local query = dbAPI.query("orgs:getmemberorgbytype", {member_id = member_id, org_type = org_type})
+
+    if query[1] then
+        local _ = query[1]
+
+        local org_id, org_name = _.id, _.name
+    end
+
+    return org_id, org_name
+end
+
+-- @param org   // Pode ser um ID ou um NAME
+function Orgs.OrgListHas(array, org)
+    for org_id, org_name in pairs(array) do
+        if org_id == org or org_name == id then
+            return true
+        end
+    end
+
+    return false
 end
 
 exports("GetMetadata", Orgs.GetMetadata)
@@ -54,6 +80,7 @@ exports("IsMember", Orgs.IsMember)
 exports("GetMemberRank", Orgs.GetMemberRank)
 exports("GetControlledOutpost", Orgs.GetControlledOutpost)
 exports("GetOrgs", Orgs.GetOrgs)
+exports("UtilsArrayHasOrgName", Orgs.UtilsArrayHasOrgName)
 
 do
     Orgs.IsMember(1, 2)

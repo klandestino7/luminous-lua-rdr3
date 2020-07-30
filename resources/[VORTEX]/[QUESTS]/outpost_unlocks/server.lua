@@ -4,9 +4,22 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local game = GetResourceMetadata(GetCurrentResourceName(), "game", 0)
+
+local RDR3 = game == "rdr3"
+local GTAV = not RDR3
+
 local Unlock = {}
 
 function Unlock.Get(unlock_id)
+    local query = dbAPI.query("unlocks:getbyid", {unlock_id = unlock_id})
+
+    if query[1] then
+        local _ = query[1]
+
+        local type, name, price = _.type, _.name, _.price
+    end
+
     return type, name, price
 end
 
@@ -18,15 +31,26 @@ AddEventHandler(
     function(reqst_org_id, rqst_outpost_id)
         local _source = source
 
-        local User = API.getUserFromSource(_source)
-        local Character = User:getCharacter()
+        local user_handle
 
-        local character_id = Character:getId()
+        local member_id
 
-        local org_id = GetOrgIdFromCharacter(character_id)
+        if RDR3 then
+            user_handle = API.getUserFromSource(_source)
+            local Character = User:getCharacter()
 
-        if org_id then
-            local outpost_id = GetPostoIdFromOrgId(org_id)
+            if not Character then
+                user_handle:notify("Nope")
+                return
+            end
+
+            member_id = Character:getId()
+        end
+
+        local my_ilegal_org_id, my_ilegal_org_name = exports("orgs"):GetMemberOrgByType(member_id)
+
+        if my_ilegal_org_id then
+            local outpost_id = exports("orgs"):GetControlledOutpost(my_ilegal_org_id)
 
             if outpost_id then
                 -- local query = API.query("", {id_posto = "ab"})
@@ -48,7 +72,7 @@ AddEventHandler(
                 User:notify("error", "Sua organização não é dona de nenhum posto")
             end
         else
-            User:notify("error", "Você não está em um bando!")
+            User:notify("error", "Você não está em uma org ilegal")
         end
     end
 )
