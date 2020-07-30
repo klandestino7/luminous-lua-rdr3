@@ -4,20 +4,60 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
---[[
-    ? fort
-    ? id      coord       balance     balance_withdraw_at
+local Orgs = {}
 
-    ? fort_members
-    ? id      charid
+function Orgs.AddMember(org_id, character_id)
+end
 
-    ? fort_upgrades
-    ? id      upgrade            
-]]
-RegisterNetEvent("VP:FORT:RequestUnlocks")
+function Orgs.RemoveMember(org_id, character_id)
+end
+
+function Orgs.IsMember(org_id, character_id)
+end
+
+function Orgs.GetCharacterOrg(character_id)
+end
+
+function Orgs.GetControlledOutpost(character_id)
+end
+
+local Outpost = {}
+
+function Outpost.GetMetadata(outpost_id)
+end
+
+function OutPost.SetMetadata(outpost_id)
+end
+
+function Outpost.GetUnlocks(outpost_id)
+end
+
+function Outpost.AddUnlock(outpost_id, unlock_id)
+end
+
+function Outpost.RemoveUnlock(outpost_id, unlock_id)
+end
+
+function Outpost.SetControlledBy(outpost_id, org_id)
+end
+
+exports("AddMember", Orgs.AddMember)
+exports("RemoveMember", Orgs.RemoveMember)
+exports("IsMember", Orgs.IsMember)
+exports("GetCharacterOrg", Orgs.GetCharacterOrg)
+exports("GetControlledOutpost", Orgs.GetControlledOutpost)
+
+exports("GetMetadata", Outpost.GetMetadata)
+exports("SetMetadata", Outpost.SetMetadata)
+exports("GetUnlocks", Outpost.GetUnlocks)
+exports("AddUnlock", Outpost.AddUnlock)
+exports("RemoveUnlock", Outpost.RemoveUnlock)
+exports("SetControlledBy", Outpost.SetControlledBy)
+
+RegisterNetEvent("VP:ORGS:RequestUnlocks")
 AddEventHandler(
-    "VP:FORT:RequestUnlocks",
-    function()
+    "VP:ORGS:RequestUnlocks",
+    function(rqst_outpost_id)
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -25,34 +65,32 @@ AddEventHandler(
 
         local character_id = Character:getId()
 
-        local fort_id = API.GetFortIdFromCharacterId(character_id)
+        local org_id = GetOrgIdFromCharacter(character_id)
 
-        if fort_id then
+        if org_id then
+            local outpost_id = GetPostoIdFromOrgId(org_id)
 
-            
+            if outpost_id then
+                -- local query = API.query("", {id_posto = "ab"})
 
+                if outpost_id == rqst_outpost_id then
+                    local unlocks = {}
+
+                    if #query > 0 then
+                        for i = 1, #query do
+                            table.insert(unlocks, query[i].unlock_id)
+                        end
+                    end
+
+                    TriggerClientEvent("VP:FORT:RespondToUnlocksRequest", _source, unlocks)
+                else
+                    User:notify("error", "Você não tem acesso a esse posto")
+                end
+            else
+                User:notify("error", "Sua organização não é dona de nenhum posto")
+            end
+        else
+            User:notify("error", "Você não está em um bando!")
         end
     end
 )
-
--- Citizen.CreateThread(function()
---     while true do
---         Citizen.Wait(100)
---         TriggerClientEvent("VP:FORT:SetPlayerBalance", -1, math.random(10000), math.random(99))
---     end
--- end)
-
---[[
-* API.SetFortUnlockUnlocked()
-* API.IsFortUnlockUnlocked()
-
-* API.GetFortBalance()
-* API.SetFortBalance()
-
-* API.GetFortIdFromCharacterId()
-
-* API.GetFortMembers()
-* API.AddFortMember()
-* API.RemoveFortMember()
-* API.IsFortMember(character_id)
-]]
