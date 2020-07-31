@@ -65,27 +65,6 @@ function async(func)
 	end
 end
 
-function parseInt(v)
-	local n = tonumber(v)
-	if n == nil then
-		return 0
-	else
-		return math.floor(n)
-	end
-end
-
-function parseDouble(v)
-	local n = tonumber(v)
-	if n == nil then
-		n = 0
-	end
-	return n
-end
-
-function parseFloat(v)
-	return parseDouble(v)
-end
-
 local sanitize_tmp = {}
 function sanitizeString(str, strchars, allow_policy)
 	local r = ""
