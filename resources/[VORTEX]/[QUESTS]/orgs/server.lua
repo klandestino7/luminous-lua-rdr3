@@ -45,6 +45,7 @@ function Orgs.AddMember(org_id, member_id, member_rank)
 end
 
 function Orgs.RemoveMember(org_id, member_id)
+    dbAPI.execute("orgs:removemember", {org_id = org_id, member_id = member_id})
 end
 
 -- Poder ser o nome da org ou o id dela
@@ -55,24 +56,58 @@ function Orgs.IsMember(org, member_id)
 end
 
 function Orgs.GetMemberRank(org_id, member_id)
+    local member_rank
+
+    local rows = dbAPI.execute("orgs:getmemberrank", {org_id = org_id, member_id = member_id})
+    if rows[1] then
+        member_rank = rows[1].rank
+    end
+
+    return member_rank
 end
 
-function Orgs.SetMemberRank(org_id, member_id)
+function Orgs.SetMemberRank(org_id, member_id, new_rank)
+    -- UPDATE orgs SET rank = @rank WHERE org_id = @org_id AND member_id = @member
+    dbAPI.execute("orgs:setmemberrank", {org_id = org_id, member_id = member_id, rank = new_rank})
 end
 
 function Orgs.GetControlledOutpost(org_id)
+    local ret_org_id, ret_org_name
+
+    local query = dbAPI.query("orgs:getcontrolledoutpost", {org_id = org_id})
+
+    if query[1] then
+        local _ = query[1]
+
+        ret_org_id, ret_org_name = _.id, _.name
+    end
+
+    return ret_org_id, ret_org_name
 end
 
 function Orgs.GetMemberOrgs(member_id)
+    local orgs = {}
+
+    local query = dbAPI.query("orgs:getmemberorgs", {member_id = member_id})
+
+    if query[1] then
+        local _ = query[1]
+
+        table.insert(orgs, {org_id = _.id, org_name = _.name})
+    end
+
+    return orgs
 end
 
 function Orgs.GetMemberOrgByType(member_id, org_type)
+    local org_id, org_name
+
     local query = dbAPI.query("orgs:getmemberorgbytype", {member_id = member_id, org_type = org_type})
 
     if query[1] then
         local _ = query[1]
 
-        local org_id, org_name = _.id, _.name
+        org_id, org_name = _.id, _.name
     end
 
     return org_id, org_name
