@@ -4,11 +4,6 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
-local game = GetResourceMetadata(GetCurrentResourceName(), "game", 0)
-
-local RDR3 = game == "rdr3"
-local GTAV = not RDR3
-
 local Unlock = {}
 
 function Unlock.Get(unlock_id)
@@ -31,21 +26,15 @@ AddEventHandler(
     function(reqst_org_id, rqst_outpost_id)
         local _source = source
 
-        local user_handle
+        local user_handle = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
 
-        local member_id
-
-        if RDR3 then
-            user_handle = API.getUserFromSource(_source)
-            local Character = User:getCharacter()
-
-            if not Character then
-                user_handle:notify("Nope")
-                return
-            end
-
-            member_id = Character:getId()
+        if not Character then
+            user_handle:notify("Nope")
+            return
         end
+
+        local member_id = Character:getId()
 
         local my_ilegal_org_id, my_ilegal_org_name = exports("orgs"):GetMemberOrgByType(member_id)
 
