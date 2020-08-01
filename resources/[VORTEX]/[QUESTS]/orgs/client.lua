@@ -4,20 +4,6 @@ local Proxy = module("_core", "lib/Proxy")
 cAPI = Proxy.getInterface("API")
 API = Tunnel.getInterface("API")
 
-function RankToRankName(org_type_or_id, rank)
-    local ranks = config[org_type_or_id]
-
-    if ranks then
-        for rank_id, rank_name in pairs(ranks) do
-            if rank == rank_id then
-                return rank_name
-            end
-        end
-    end
-end
-
-exports("RankToRankName", RankToRankName)
-
 RegisterCommand(
     "org",
     function(source, args, raw)
@@ -63,7 +49,7 @@ AddEventHandler(
                         member_id = member.member_id,
                         member_rank = rank,
                         member_rank_name = rank_name,
-                        member_name = member.member_name,
+                        member_name = member.member_name
                         -- joined_at = member.joined_at
                     }
                 )
@@ -121,3 +107,45 @@ RegisterNUICallback(
     end
 )
 
+RegisterNUICallback(
+    "leave",
+    function(data)
+        
+        local org_id = data.org_id
+        
+        TriggerServerEvent("Orgs:TryToLeaveFromOrg", org_id)
+    end
+)
+
+RegisterNUICallback(
+    "kick",
+    function(data)
+        
+        local org_id = data.org_id
+        local target_member_id = data.target_member_id
+        
+        TriggerServerEvent("Orgs:TryToKickFromOrg", org_id, target_member_id)
+    end
+)
+
+RegisterNUICallback(
+    "promote",
+    function(data)
+        
+        local org_id = data.org_id
+        local target_member_id = data.target_member_id
+        
+        TriggerServerEvent("Orgs:TryPromoteOrgMember", org_id, target_member_id)
+    end
+)
+
+RegisterNUICallback(
+    "demote",
+    function(data)
+        
+        local org_id = data.org_id
+        local target_member_id = data.target_member_id
+        
+        TriggerServerEvent("Orgs:TryToDemoteOrgMember", org_id, target_member_id)
+    end
+)

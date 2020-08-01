@@ -35,7 +35,7 @@ window.addEventListener("message", function(event) {
                     <div class="header">
                         <span>${org_name}</span>
                         <span>${num_members}/5</span>
-                        ${im_allowed_to_delete ? "<button class=\"outside\">x</button>" : "" }
+                        ${GetElement_Delete(org_id, im_allowed_to_delete)}
                     </div>
                     <div class="member-list">
                     </div>
@@ -55,7 +55,7 @@ window.addEventListener("message", function(event) {
                             ${GetElement_Rank(org_type, member_rank, member_rank_name)}
                             <span>${member_name}</span>
                         </div>
-                        ${GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id)}
+                        ${GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank)}
                         ${GetElement_KickOrLeave(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank)}
                     </div>
                     `);
@@ -75,10 +75,17 @@ window.addEventListener("message", function(event) {
     }
 });
 
-$(document).on("click", ".org", function() {
+$(document).on("click", ".org .header", function() {
+
+    const parent = $(this).parent();
+
+    const selectedOrgId = $(".org.selected").attr("id");
 
     $(".org.selected").removeClass("selected");
-    $(this).addClass("selected");
+
+    if (selectedOrgId == undefined || selectedOrgId != $(parent).attr("id")) {
+        $(parent).addClass("selected");
+    }
 });
 
 $(document).on("keydown", function(e) {
@@ -96,11 +103,11 @@ function GetElement_Rank(org_type, member_rank, member_rank_name) {
     return `<span class=\"rank\">${member_rank_name}</span>`
 }
 
-function GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id) {
-    if (im_allowed_to_edit && my_member_id != member_id) {
+function GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank) {
+    if (im_allowed_to_edit && my_member_id != member_id && member_rank != 1 ) {
 
-        const onclick_promote = `onclick="promote(${org_id}, ${member_id})"`;
-        const onclick_demote = `onclick="demote(${org_id}, ${member_id})"`;
+        const onclick_promote = `onclick="out_promote(${org_id}, ${member_id})"`;
+        const onclick_demote = `onclick="out_demote(${org_id}, ${member_id})"`;
 
         return `<div class=\"rank-buttons\"><button ${onclick_promote}>↑</button><button ${onclick_demote}>↓</button></div>`
     }
@@ -121,26 +128,46 @@ function GetElement_KickOrLeave(org_id, im_allowed_to_edit, my_member_id, member
 
     if (kickorleave != undefined) {
 
-        const funcref = kickorleave == true ? `kick(${org_id}, ${member_id})` : `leave(${org_id})`
+        const onclick_func = kickorleave == true ? `out_kick(${org_id}, ${member_id})` : `out_leave(${org_id})`
 
-        return `<button class=\"outside\" onclick=\"${funcref}\">x</button>`
+        return `<button class=\"outside\" onclick=\"${onclick_func}\">x</button>`
     }
 
     return ""
 }
 
-function kick(org_id, member_id) {
-    console.log("Kick");
+function GetElement_Delete(org_id, im_allowed_to_delete){
+
+    if (im_allowed_to_delete){
+       
+        const onclick_func = `onclick="out_delete(${org_id})"`
+        
+        return `<button class=\"outside\"${onclick_func}>x</button>`;
+    }
+
+    return "";
 }
 
-function leave(org_id) {
-    console.log("Leave");
+function out_kick(org_id, target_member_id) {
+    console.log("kick");
+
+    $.post("http://orgs/kick", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
 }
 
-function promote(org_id, member_id) {
+function out_leave(org_id) {
+    console.log("leave");
+
+    $.post("http://orgs/leave", JSON.stringify({ org_id: org_id }));
+}
+
+function out_promote(org_id, member_id) {
     console.log("promote");
 }
 
-function demote(org_id, member_id) {
+function out_demote(org_id, member_id) {
     console.log("demote");
+}
+
+function out_delete(org_id){
+    console.log("delete");
 }

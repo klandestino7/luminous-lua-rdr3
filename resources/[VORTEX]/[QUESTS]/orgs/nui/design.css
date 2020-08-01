@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Futura";
+  font-family: "Abel";
   src: url("assets/fonts/Abel-Regular.ttf");
 }
 
@@ -10,7 +10,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Futura";
+  font-family: "Abel";
   /* background-color: rgb(90, 164, 224); */
   color: white;
 }
@@ -18,13 +18,13 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 280px;
   height: fit-content;
   border-left: 1px solid white;
 }
 
 .container .org.selected > .member-list {
-  opacity: 1.0;
+  opacity: 1;
   transition: all 0.3s ease;
   max-height: 300px;
 }
@@ -32,6 +32,7 @@ body {
 .container .org.selected > .header {
   background-color: white;
   color: black;
+  /* transform: scaleX(1.05); */
 }
 
 .container .org .header {
@@ -48,14 +49,17 @@ body {
   background-color: rgba(0, 0, 0, 0.3);
   font-size: 18px;
   color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .container .org .header span:nth-child(2) {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .container .org .member-list {
-  opacity: 0.0;
+  opacity: 0;
   display: flex;
   flex-direction: column;
   max-height: 0px;
@@ -70,10 +74,10 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: rgba(72, 219, 163, 0.5);
+  background-color: rgba(80, 80, 80, 0.3);
   margin-bottom: 5px;
   box-sizing: border-box;
-  padding: 0px 0px 0px 10px;
+  padding: 0px 0px 0px 5px;
   height: 24px;
 }
 
@@ -94,19 +98,21 @@ body {
 
 .container .org .member-list .member .rank {
   font-size: 14px;
-  margin: 0px 5px 0px 0px;
+  /* margin: 0px 10px 0px 0px; */
+  width: 80px;
 }
 
 .container .org .member-list .member .rank-buttons {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 
 .container button {
-  /* border: 1px solid red; */
-  width: 24px;
-  height: 100%;
+  width: 16px;
+  height: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,6 +122,7 @@ body {
   background-color: transparent;
   color: white;
   font-size: 14px;
+  /* border: 1px solid red; */
 }
 
 .container button.outside {
@@ -134,7 +141,10 @@ body {
 }
 
 .container .org:first-child .header {
-  background-color: rgba(72, 219, 163, 0.5);
+  background-color: #26fdd980;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 50px;
 }
 
 .container .org:first-child.selected .header {

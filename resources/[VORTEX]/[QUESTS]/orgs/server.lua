@@ -94,23 +94,55 @@ function Orgs.GetMemberOrgs(member_id)
     return orgs
 end
 
-function Orgs.GetMembersOrg(org_id)
+-- @param org_id
+-- @return
+-- {
+--     org_type = "ilegal",
+--     members = {
+--         member_id = 1
+--         member_rank = 1,
+--         member_name = "Fulano de Tal",
+--         member_joined_at = "2020-07-30 18:51:55",
+--     }
+-- }
+function Orgs.GetMembersOrgAndType(org_id)
     if cacheOrgs[org_id] ~= nil then
-        return cacheOrgs[org_id].members
+        return cacheOrgs[org_id]
     else
-        local members = {}
+        local ret = {}
+
+        ret.members = {}
+
         local rows = dbAPI.query("orgs:getMembersByOrg", {org_id = org_id})
-        for _, org_member in pairs(rows) do
-            members[org_member.member_id] = {
-                member_id = org_member.member_id,
-                member_rank = org_member.rank,
-                member_name = org_member.name,
-                member_joined_at = org_member.joined_at,
-                org_id = org_member.org_id,
-                org_type = org_member.type
-            }
+
+        for i = 1, #rows do
+            local _ = rows[i]
+
+            local m_d = {}
+            m_d.member_id = _.member_id
+            m_d.member_rank = _.rank
+            m_d.member_name = _.name
+            m_d.member_joined_at = _.joined_at
+
+            if not ret.org_type then
+                ret.org_type = _.type
+            end
+
+            table.insert(ret.members, m_d)
         end
-        return members
+
+        -- for _, org_member in pairs(rows) do
+        --     members[org_member.member_id] = {
+        --         -- member_id = org_member.member_id,
+        --         member_rank = org_member.rank,
+        --         member_name = org_member.name,
+        --         member_joined_at = org_member.joined_at,
+        --         org_id = org_member.org_id,
+        --         org_type = org_member.type
+        --     }
+        -- end
+
+        return ret
     end
 end
 
@@ -129,15 +161,15 @@ function Orgs.GetMemberOrgByType(member_id, org_type)
 end
 
 -- @param org   // Pode ser um ID ou um NAME
-function Orgs.OrgListHas(array, org)
-    for org_id, org_name in pairs(array) do
-        if org_id == org or org_name == id then
-            return true
-        end
-    end
+-- function Orgs.ListHasOrgIdOrName(array, org)
+--     for org_id, org_name in pairs(array) do
+--         if org_id == org or org_name == id then
+--             return true
+--         end
+--     end
 
-    return false
-end
+--     return false
+-- end
 
 exports("GetMetadata", Orgs.GetMetadata)
 exports("SetMetadata", Orgs.SetMetadata)
@@ -147,8 +179,8 @@ exports("IsMember", Orgs.IsMember)
 exports("GetMemberRank", Orgs.GetMemberRank)
 exports("GetControlledOutpost", Orgs.GetControlledOutpost)
 exports("GetMemberOrgs", Orgs.GetMemberOrgs)
-exports("GetMembersOrg", Orgs.GetMembersOrg)
-exports("UtilsArrayHasOrgName", Orgs.UtilsArrayHasOrgName)
+exports("GetMembersOrgAndType", Orgs.GetMembersOrgAndType)
+-- exports("ListHasOrgIdOrName", Orgs.ListHasOrgIdOrName)
 
 function string2date(str)
     p = "(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)"
@@ -158,6 +190,35 @@ end
 
 function date2string(date)
     return os.date("%Y-%m-%d %H:%M:%S", date)
+end
+
+AddEventHandler(
+    "onResourceStart",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            for user_id, User in pairs(API.getUsers()) do
+                local Character = User:getCharacter()
+
+                if Character then
+                    local source = User:getSource()
+                    local member_id = Character:getId()
+
+                    SyncCharacterOrgsForPlayer(source, member_id)
+                end
+            end
+        end
+    end
+)
+
+function SyncCharacterOrgsForPlayer(source, member_id)
+    local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = member_id})
+    local myOrgs = {}
+
+    for _, org in pairs(rows) do
+        myOrgs[org.type] = {org_id = org.id, org_name = org.name, my_rank = org.rank}
+    end
+
+    cAPI.setMyOrg(source, json.encode(myOrgs))
 end
 
 AddEventHandler(
@@ -191,13 +252,13 @@ AddEventHandler(
                 orgsMembers.orgs[org_member.org_id].members[#orgsMembers.orgs[org_member.org_id].members + 1] = {
                     member_id = org_member.member_id,
                     member_rank = org_member.rank,
-                    member_name = org_member.name,
+                    member_name = org_member.name
                     -- joined_at = org_member.joined_at
                 }
 
                 if orgsMembers.my_member_id == 0 and Character:getId() == org_member.member_id then
                     orgsMembers.my_member_id = org_member.member_id
-                    -- orgsMembers.my_member_name = org_member.name
+                -- orgsMembers.my_member_name = org_member.name
                 end
             end
         end
@@ -220,9 +281,9 @@ AddEventHandler(
             local Character = User:getCharacter()
 
             if Character then
-                local member_id = Character:getId()
+                local my_member_id = Character:getId()
 
-                local hasIlegalOrg = Orgs.GetMemberOrgByType(member_id, "ilegal") == nil
+                local hasIlegalOrg = Orgs.GetMemberOrgByType(my_member_id, "ilegal") == nil
 
                 if not hasIlegalOrg then
                     local Inventory = Character:getInventory()
@@ -231,7 +292,7 @@ AddEventHandler(
                         local org_id = Orgs.Create(org_name)
 
                         if org_id then
-                            Orgs.addMember(org_id, member_id, 1)
+                            Orgs.addMember(org_id, my_member_id, 1)
 
                             User:notify("success", "Organizaçao criada!")
                         else
@@ -249,31 +310,124 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("Orgs:TryToLeaveFromOrg")
 AddEventHandler(
-    "onResourceStart",
-    function(resourceName)
-        if resourceName == GetCurrentResourceName() then
-            for user_id, User in pairs(API.getUsers()) do
-                local Character = User:getCharacter()
+    "Orgs:TryToLeaveFromOrg",
+    function(org_id)
+        print("TryToLeaveFromOrg", org_id)
 
-                if Character then
-                    local source = User:getSource()
-                    local member_id = Character:getId()
+        local _source = source
 
-                    SyncCharacterOrgsForPlayer(source, member_id)
+        local User = API.getUserFromSource(_source)
+
+        if User then
+            local Character = User:getCharacter()
+
+            if Character then
+                local my_member_id = Character:getId()
+
+                local org_data = Orgs.GetMembersOrgAndType(org_id)
+
+                local org_type = org_data.org_type
+                local org_members = org_data.members
+
+                for _, mbm_d in pairs(org_members) do
+                    local member_id = mbm_d.member_id
+
+                    if member_id == my_member_id then
+                        local member_rank = mbm_d.member_rank
+
+                        if member_rank ~= 1 or member_rank == 1 and org_type ~= "ilegal" then
+                            Orgs.RemoveMember(org_id, my_member_id)
+                            print("Left")
+                        else
+                            print("Você não pode sair da sua propria organização")
+                        end
+
+                        return
+                    end
                 end
+
+                print("Erro você não é um membro")
             end
         end
     end
 )
 
-function SyncCharacterOrgsForPlayer(source, member_id)
-    local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = member_id})
-    local myOrgs = {}
+RegisterNetEvent("Orgs:TryToKickFromOrg")
+AddEventHandler(
+    "Orgs:TryToKickFromOrg",
+    function(org_id, target_member_id)
+        local _source = source
 
-    for _, org in pairs(rows) do
-        myOrgs[org.type] = {org_id = org.id, org_name = org.name, my_rank = org.rank}
+        local User = API.getUserFromSource(_source)
+
+        if User then
+            local Character = User:getCharacter()
+
+            if Character then
+                local my_member_id = Character:getId()
+
+                local org_data = Orgs.GetMembersOrgAndType(org_id)
+
+                local org_type = org_data.org_type
+                local org_members = org_data.members
+
+                local im_allowed_to_kick = false
+                local target_is_in_the_org = false
+
+                local target_member_rank = -1
+
+                for _, mbm_d in pairs(org_members) do
+                    local member_id = mbm_d.member_id
+                    local member_rank = mbm_d.member_rank
+
+                    if member_id == my_member_id then
+                        if member_rank == 1 then
+                            im_allowed_to_kick = true
+                        end
+                    end
+
+                    if member_id == target_member_id then
+                        target_is_in_the_org = true
+
+                        target_member_rank = member_rank
+                    end
+                end
+
+                if not im_allowed_to_kick then
+                    print("Você não faz parte da organização ou não tem permissão para kickar")
+                    return
+                end
+
+                if not target_is_in_the_org then
+                    print("Membro não está mais na organização")
+                    return
+                end
+
+                if target_member_rank == 1 then
+                    print("Membro com cargo mais elevado, não pode ser kickado")
+                    return
+                end
+
+                Orgs.RemoveMember(org_id, target_member_id)
+
+                print("Target removido da organização")
+            end
+        end
     end
+)
 
-    cAPI.setMyOrg(source, json.encode(myOrgs))
-end
+RegisterNetEvent("Orgs:TryPromoteOrgMember")
+AddEventHandler(
+    "Orgs:TryPromoteOrgMember",
+    function(org_id, member_id)
+    end
+)
+
+RegisterNetEvent("Orgs:TryToDemoteOrgMember")
+AddEventHandler(
+    "Orgs:TryToDemoteOrgMember",
+    function(org_id, member_id)
+    end
+)
