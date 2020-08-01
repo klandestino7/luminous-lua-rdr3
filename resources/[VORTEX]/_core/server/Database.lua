@@ -270,7 +270,7 @@ API_Database.prepare("orgs:getMemberRank", "SELECT rank FROM org_members WHERE o
 API_Database.prepare("orgs:setMemberRank", "UPDATE org_members set rank = @rank WHERE org_id = @org_id AND member_id = @member_id")
 
 ------------ OUTPOSTS --------------------
--- API_Database.prepare("orgs:getControlledOutpost", "SELECT")
+API_Database.prepare("outposts:getall", "SELECT * from outposts")
 
 ------------ UNLOCKS --------------------
 API_Database.prepare("outpost_unlocs:getbyid", "SELECT * FROM unlocks WHERE unlock_id = @unlock_id")

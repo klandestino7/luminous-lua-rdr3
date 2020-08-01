@@ -17,6 +17,8 @@ AddEventHandler(
         local doorHash = exports.vp_doorcontainer:GetRegisteredDoorHashInRadius(1.5, 1)
 
         if doorHash then
+            TriggerServerEvent("OutPost:InvadeOutpostAlert")
+
             local doorEntity = Citizen.InvokeNative(0xF7424890E4A094C0, doorHash)
 
             doorHashBeingLockpicked = doorHash
