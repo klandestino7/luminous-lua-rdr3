@@ -170,7 +170,7 @@ AddEventHandler(
                     member_id = org_member.member_id,
                     member_rank = org_member.rank,
                     member_name = org_member.name,
-                    joined_at = org_member.joined_at
+                    -- joined_at = org_member.joined_at
                 }
 
                 if orgsMembers.my_member_id == 0 and Character:getId() == org_member.member_id then

@@ -64,7 +64,7 @@ AddEventHandler(
                         member_rank = rank,
                         member_rank_name = rank_name,
                         member_name = member.member_name,
-                        joined_at = member.joined_at
+                        -- joined_at = member.joined_at
                     }
                 )
             end
