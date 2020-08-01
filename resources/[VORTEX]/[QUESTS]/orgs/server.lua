@@ -141,12 +141,10 @@ end
 AddEventHandler(
     "API:OnUserCharacterInitialization",
     function(User, character_id)
-        local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = character_id})
-        local myOrgs = {}
-        for _, org in pairs(rows) do
-            myOrgs[org.type] = {id = org.id, name = org.name, rank = org.rank}
-        end
-        cAPI.setMyOrg(User:getSource(), json.encode(myOrgs))
+        local source = User:getSource()
+        local member_id = character_id
+
+        SyncCharacterOrgsForPlayer(source, member_id)
     end
 )
 
@@ -158,29 +156,31 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User.getCharacter()
 
-        local orgsMembers = {id = 0, name = "", orgs = {}}
+        local orgsMembers = {my_member_id = 0, my_member_name = "", orgs = {}}
         local orgsSql = ""
+
         for index = 1, #orgs do
             local rows = dbAPI.query("orgs:getMembersByOrg", {org_id = orgs[index]})
             for _, org_member in pairs(rows) do
-                print(json.encode(org_member))
                 if orgsMembers.orgs[org_member.org_id] == nil then
                     orgsMembers.orgs[org_member.org_id] = {type = org_member.type, members = {}}
                 end
+
                 orgsMembers.orgs[org_member.org_id].members[#orgsMembers.orgs[org_member.org_id].members + 1] = {
                     member_id = org_member.member_id,
-                    rank = org_member.rank,
-                    name = org_member.name,
-                    joined_at = string2date(org_member.joined_at)
+                    member_rank = org_member.rank,
+                    member_name = org_member.name,
+                    joined_at = org_member.joined_at
                 }
-                if Character.id == org_member.member_id then
-                    orgsMembers.id = org_member.member_id
-                    orgsMembers.name = org_member.name
+
+                if orgsMembers.my_member_id == 0 and Character:getId() == org_member.member_id then
+                    orgsMembers.my_member_id = org_member.member_id
+                    -- orgsMembers.my_member_name = org_member.name
                 end
             end
         end
 
-        TriggerClientEvent("Orgs:GetMembersOrgs", _source, orgsMembers)
+        TriggerClientEvent("Orgs:SetMembersOrgsForClient", _source, orgsMembers)
     end
 )
 
@@ -226,3 +226,32 @@ AddEventHandler(
         end
     end
 )
+
+AddEventHandler(
+    "onResourceStart",
+    function(resourceName)
+        if resourceName == GetCurrentResourceName() then
+            for user_id, User in pairs(API.getUsers()) do
+                local Character = User:getCharacter()
+
+                if Character then
+                    local source = User:getSource()
+                    local member_id = Character:getId()
+
+                    SyncCharacterOrgsForPlayer(source, member_id)
+                end
+            end
+        end
+    end
+)
+
+function SyncCharacterOrgsForPlayer(source, member_id)
+    local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = member_id})
+    local myOrgs = {}
+
+    for _, org in pairs(rows) do
+        myOrgs[org.type] = {org_id = org.id, org_name = org.name, my_rank = org.rank}
+    end
+
+    cAPI.setMyOrg(source, json.encode(myOrgs))
+end

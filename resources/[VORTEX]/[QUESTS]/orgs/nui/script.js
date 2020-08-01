@@ -1,9 +1,5 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-    // $("body").hide();
-
-    // $(".main-container").hide();
-
-    // $(".top-right-container").hide();
+document.addEventListener("DOMContentLoaded", function() {
+    $("body").hide();
 });
 
 window.addEventListener("message", function(event) {
@@ -14,84 +10,137 @@ window.addEventListener("message", function(event) {
         case "show":
             $("body").show();
 
-            if (evdata.data == "unlocks" || evdata.data == "all") {
-                $(".main-container").fadeIn();
-            }
+            const orgs_data = evdata.data.orgs;
 
-            if (evdata.data == "info" || evdata.data == "all") {
-                $(".top-right-container").fadeIn();
-            }
-            break
-        case "hide":
+            const my_member_id = evdata.data.my_member_id;
 
-            if (evdata.data == "unlocks" || evdata.data == "all") {
-                $(".main-container").fadeOut();
-            }
+            $(".container .org").not(":first-child()").remove();
 
-            if (evdata.data == "info" || evdata.data == "all") {
-                $(".top-right-container").fadeOut();
-            }
+            orgs_data.forEach(x => {
 
-            if (evdata.data == "all") {
-                $("body").fadeOut();
-            }
+                const org_id = x.org_id;
+                const org_name = x.org_name;
+                const org_type = x.org_type;
 
-            break;
-        case "data":
+                const my_rank = x.my_rank;
 
-            const unlocks = evdata.unlocks;
-            const balance = evdata.balance;
+                const org_members = x.members;
+                const num_members = org_members.length;
 
-            if (unlocks != undefined) {
+                const im_allowed_to_delete = (org_type == "ilegal" && my_rank == 1);
+                const im_allowed_to_edit = my_rank == 1;
 
-                $(".main-container").empty();
+                $(".container").append(`
+                <div class="org" id="${org_id}">
+                    <div class="header">
+                        <span>${org_name}</span>
+                        <span>${num_members}/5</span>
+                        ${im_allowed_to_delete ? "<button class=\"outside\">x</button>" : "" }
+                    </div>
+                    <div class="member-list">
+                    </div>
+                </div>
+                `);
 
-                unlocks.forEach(unlockdata => {
+                org_members.forEach(y => {
 
-                    const id = unlockdata.id;
-                    const name = unlockdata.name;
-                    const isLocked = unlockdata.is_locked;
-                    const isUnowned = unlockdata.is_unowned;
+                    const member_id = y.member_id;
+                    const member_rank = y.member_rank;
+                    const member_rank_name = y.member_rank_name;
+                    const member_name = y.member_name;
 
-                    let elementClassSuffix = "";
-
-                    if (isLocked == true) {
-                        elementClassSuffix = "locked";
-                    } else if (isUnowned == true) {
-                        elementClassSuffix = "unowned";
-                    }
-
-                    console.log(id);
-
-
-
-                    $(".main-container").append(`
-                    <div class="item ${elementClassSuffix}" id="${id}">
-                        <span>${id}</span>
+                    $(`#${org_id} .member-list`).append(`
+                    <div class="member">
+                        <div class="info">
+                            ${GetElement_Rank(org_type, member_rank, member_rank_name)}
+                            <span>${member_name}</span>
+                        </div>
+                        ${GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id)}
+                        ${GetElement_KickOrLeave(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank)}
                     </div>
                     `);
                 });
-            }
 
-            if (balance != undefined) {
+            });
 
-                const balance_primary = balance.primary;
-                const balance_secondary = balance.secondary;
+            break
+        case "hide":
 
-                $("#p_bal_dollar").text(`$${balance_primary}`);
-                $("#p_bal_cents").text("00");
+            $("body").fadeOut();
 
-                $("#s_bal_dollar").text(`$${balance_secondary}`);
-                $("#s_bal_cents").text("00");
-            }
+            break;
+        case "data":
 
             break;
     }
 });
 
-$(document).on("click", ".org", function(){
+$(document).on("click", ".org", function() {
 
     $(".org.selected").removeClass("selected");
     $(this).addClass("selected");
-
 });
+
+$(document).on("keydown", function(e) {
+    if (e.which == 27) { // ESC
+        $("body").fadeOut();
+        $.post("http://orgs/hide", JSON.stringify({}));
+    }
+});
+
+function GetElement_Rank(org_type, member_rank, member_rank_name) {
+    // if (member_rank == 1 && org_type == "ilegal") {
+    //     return "<img src=\"https://cdn.discordapp.com/attachments/710552993635762279/738898761324953781/rating_star.png\"/>"
+    // }
+
+    return `<span class=\"rank\">${member_rank_name}</span>`
+}
+
+function GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id) {
+    if (im_allowed_to_edit && my_member_id != member_id) {
+
+        const onclick_promote = `onclick="promote(${org_id}, ${member_id})"`;
+        const onclick_demote = `onclick="demote(${org_id}, ${member_id})"`;
+
+        return `<div class=\"rank-buttons\"><button ${onclick_promote}>↑</button><button ${onclick_demote}>↓</button></div>`
+    }
+
+    return ""
+}
+
+function GetElement_KickOrLeave(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank) {
+    let kickorleave;
+
+    if (im_allowed_to_edit) {
+        kickorleave = true;
+    }
+
+    if (my_member_id == member_id) {
+        kickorleave = false;
+    }
+
+    if (kickorleave != undefined) {
+
+        const funcref = kickorleave == true ? `kick(${org_id}, ${member_id})` : `leave(${org_id})`
+
+        return `<button class=\"outside\" onclick=\"${funcref}\">x</button>`
+    }
+
+    return ""
+}
+
+function kick(org_id, member_id) {
+    console.log("Kick");
+}
+
+function leave(org_id) {
+    console.log("Leave");
+}
+
+function promote(org_id, member_id) {
+    console.log("promote");
+}
+
+function demote(org_id, member_id) {
+    console.log("demote");
+}
