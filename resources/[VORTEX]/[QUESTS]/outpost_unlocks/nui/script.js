@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-    // $("body").hide();
+    $("body").hide();
 
-    // $(".main-container").hide();
+    $(".main-container").hide();
 
-    // $(".top-right-container").hide();
+    $(".top-right-container").hide();
 });
 
 window.addEventListener("message", function(event) {
@@ -87,11 +87,4 @@ window.addEventListener("message", function(event) {
 
             break;
     }
-});
-
-$(document).on("click", ".org", function(){
-
-    $(".org.selected").removeClass("selected");
-    $(this).addClass("selected");
-
 });
