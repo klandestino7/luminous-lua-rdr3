@@ -81,10 +81,13 @@ function Orgs.GetMemberOrgs(member_id)
 
     local query = dbAPI.query("orgs:getMemberOrgs", {member_id = member_id})
 
-    if query[1] then
-        local _ = query[1]
+    if #query > 0 then
+        for i = 1, #queries - 1 do
+            local org_id = query[i].org_id
+            local org_name = query[i].org_name
 
-        table.insert(orgs, {org_id = _.id, org_name = _.name})
+            orgs[org_id] = org_name
+        end
     end
 
     return orgs
@@ -135,45 +138,51 @@ function date2string(date)
     return os.date("%Y-%m-%d %H:%M:%S", date)
 end
 
-AddEventHandler("API:OnUserCharacterInitialization", function(User, character_id)
-    local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = character_id})
-    local myOrgs = {}
-    for _, org in pairs(rows) do
-        myOrgs[org.type] = { id = org.id, name = org.name, rank = org.rank}
+AddEventHandler(
+    "API:OnUserCharacterInitialization",
+    function(User, character_id)
+        local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = character_id})
+        local myOrgs = {}
+        for _, org in pairs(rows) do
+            myOrgs[org.type] = {id = org.id, name = org.name, rank = org.rank}
+        end
+        cAPI.setMyOrg(User:getSource(), json.encode(myOrgs))
     end
-    cAPI.setMyOrg(User:getSource(), json.encode(myOrgs))
-end)
+)
 
 RegisterNetEvent("Orgs:GetMembersOrgs")
-AddEventHandler("Orgs:GetMembersOrgs", function(orgs)
-    local _source = source
-    local User = API.getUserFromSource(_source)
-    local Character = User.getCharacter()
+AddEventHandler(
+    "Orgs:GetMembersOrgs",
+    function(orgs)
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User.getCharacter()
 
-    local orgsMembers = { id = 0, name = "", orgs = {} }
-    local orgsSql = ""
-    for index=1, #orgs do
-        local rows = dbAPI.query("orgs:getMembersByOrg", {org_id = orgs[index]}) 
-        for _, org_member in pairs(rows) do
-            print(json.encode(org_member))
-            if orgsMembers.orgs[org_member.org_id] == nil then
-                orgsMembers.orgs[org_member.org_id] = { type = org_member.type, members = {}}
-            end
-            orgsMembers.orgs[org_member.org_id].members[#orgsMembers.orgs[org_member.org_id].members+1] = { 
-                member_id = org_member.member_id, 
-                rank = org_member.rank, 
-                name = org_member.name, 
-                joined_at = string2date(org_member.joined_at)
-            }
-            if Character.id == org_member.member_id then
-                orgsMembers.id = org_member.member_id
-                orgsMembers.name = org_member.name
+        local orgsMembers = {id = 0, name = "", orgs = {}}
+        local orgsSql = ""
+        for index = 1, #orgs do
+            local rows = dbAPI.query("orgs:getMembersByOrg", {org_id = orgs[index]})
+            for _, org_member in pairs(rows) do
+                print(json.encode(org_member))
+                if orgsMembers.orgs[org_member.org_id] == nil then
+                    orgsMembers.orgs[org_member.org_id] = {type = org_member.type, members = {}}
+                end
+                orgsMembers.orgs[org_member.org_id].members[#orgsMembers.orgs[org_member.org_id].members + 1] = {
+                    member_id = org_member.member_id,
+                    rank = org_member.rank,
+                    name = org_member.name,
+                    joined_at = string2date(org_member.joined_at)
+                }
+                if Character.id == org_member.member_id then
+                    orgsMembers.id = org_member.member_id
+                    orgsMembers.name = org_member.name
+                end
             end
         end
-    end
 
-    TriggerClientEvent("Orgs:GetMembersOrgs", _source, orgsMembers)
-end)
+        TriggerClientEvent("Orgs:GetMembersOrgs", _source, orgsMembers)
+    end
+)
 
 local _ILEGAL_ORG_CREATION_PRICE = 100
 
