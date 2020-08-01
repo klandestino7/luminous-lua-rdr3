@@ -50,7 +50,7 @@ end
 function Orgs.GetMemberRank(org_id, member_id)
     local member_rank
 
-    local rows = dbAPI.execute("orgs:getmemberrank", {org_id = org_id, member_id = member_id})
+    local rows = dbAPI.execute("orgs:getMemberRank", {org_id = org_id, member_id = member_id})
     if rows[1] then
         member_rank = rows[1].rank
     end
@@ -59,14 +59,13 @@ function Orgs.GetMemberRank(org_id, member_id)
 end
 
 function Orgs.SetMemberRank(org_id, member_id, new_rank)
-    -- UPDATE orgs SET rank = @rank WHERE org_id = @org_id AND member_id = @member
-    dbAPI.execute("orgs:setmemberrank", {org_id = org_id, member_id = member_id, rank = new_rank})
+    dbAPI.execute("orgs:setMemberRank", {org_id = org_id, member_id = member_id, rank = new_rank})
 end
 
 function Orgs.GetControlledOutpost(org_id)
     local ret_org_id, ret_org_name
 
-    local query = dbAPI.query("orgs:getcontrolledoutpost", {org_id = org_id})
+    local query = dbAPI.query("orgs:getControlledOutpost", {org_id = org_id})
 
     if query[1] then
         local _ = query[1]
@@ -94,7 +93,7 @@ end
 function Orgs.GetMemberOrgByType(member_id, org_type)
     local org_id, org_name
 
-    local query = dbAPI.query("orgs:getmemberorgbytype", {member_id = member_id, org_type = org_type})
+    local query = dbAPI.query("orgs:getMemberOrgByType", {member_id = member_id, org_type = org_type})
 
     if query[1] then
         local _ = query[1]
@@ -137,7 +136,7 @@ function date2string(date)
 end
 
 AddEventHandler("API:OnUserCharacterInitialization", function(User, character_id)
-    local rows = dbAPI.query("orgs:myOrgs", {member_id = character_id})
+    local rows = dbAPI.query("orgs:getMemberOrgs", {member_id = character_id})
     local myOrgs = {}
     for _, org in pairs(rows) do
         myOrgs[org.type] = { id = org.id, name = org.name, rank = org.rank}
