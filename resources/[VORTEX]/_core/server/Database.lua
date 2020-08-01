@@ -257,28 +257,52 @@ API_Database.prepare("queue:get", "SELECT priority, start, end from queue_priori
 API_Database.prepare("queue:remove", "DELETE FROM queue_priority WHERE id = @user_id")
 
 ------------ ORGANIZATIONS --------------------
-API_Database.prepare("UPDATE:organization", "UPDATE organizations SET name = @name WHERE id = @id")
-API_Database.prepare("DELETE:organization", "DELETE FROM organizations WHERE id = @id")
-API_Database.prepare("INSERT:organization", "INSERT INTO organizations(name, type) VALUES (@name, @type); SELECT LAST_INSERT_ID() AS id")
-API_Database.prepare("SELECT:organization", "SELECT id, name, type FROM organizations")
-API_Database.prepare("SELECT:myOrganization", "SELECT organizations.id, organizations.name, organizations.type, org_members.rank FROM organizations, org_members WHERE organizations.id = org_members.org_id AND org_members.char_id = @char_id")
+API_Database.prepare("orgs:myOrgs", "SELECT organizations.id, organizations.name, organizations.type, org_members.rank FROM organizations, org_members WHERE organizations.id = org_members.org_id AND org_members.member_id = @member_id")
+API_Database.prepare("orgs:insert", "INSERT INTO organizations(name, type) VALUES (@name, @type); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare("orgs:delete", "DELETE FROM organizations WHERE id = @id")
 
------------- ORG MEMBERS --------------------
-API_Database.prepare("UPDATE:org_members", "UPDATE org_members SET rank = @rank WHERE org_id = @org_id AND char_id = @char_id")
-API_Database.prepare("DELETE:org_members", "DELETE FROM org_members WHERE org_id = @org_id AND char_id = @char_id")
-API_Database.prepare("INSERT:org_members", "INSERT INTO org_members(org_id, char_id, rank, joined_at) VALUES (@org_id, @char_id, @rank, @joined_at)")
-API_Database.prepare("SELECT:org_members", "SELECT org_id, char_id, rank, joined_at FROM org_members")
+------------ ORGANIZATIONS MEMBERS --------------------
+API_Database.prepare("orgs:insertMember", "INSERT INTO org_members(org_id, member_id, rank, joined_at) VALUES (@org_id, @member_id, @rank, @joined_at)")
+API_Database.prepare("orgs:removeMember", "DELETE FROM org_members WHERE org_id = @org_id AND member_id = @member_id")
+API_Database.prepare("orgs:getMembersByOrg", "SELECT m.*, c.characterName name, o.type FROM org_members m, characters c, organizations o WHERE m.org_id = @org_id AND c.charid = m.member_id AND m.org_id = o.id ORDER by m.org_id,m.rank,m.joined_at")
 
------------- OUTPOSTS --------------------
-API_Database.prepare("UPDATE:outposts", "UPDATE outposts SET metadata = @metadata, org_id = @org_id WHERE id = @id")
-API_Database.prepare("DELETE:outposts", "DELETE FROM outposts WHERE id = @id")
-API_Database.prepare("INSERT:outposts", "INSERT INTO outposts(id, org_id, position, metadata) VALUES (@id, @org_id, @position, @metadata); SELECT LAST_INSERT_ID() AS id")
-API_Database.prepare("SELECT:outposts", "SELECT id, org_id, position, metadata FROM outposts")
+-- API_Database.prepare("orgs:getMemberRank", "")
+-- API_Database.prepare("orgs:setMemberRank", "")
+-- API_Database.prepare("orgs:getControlledOutpost", "")
+-- API_Database.prepare("orgs:getMemberOrgs", "")
+-- API_Database.prepare("orgs:getMemberOrgs", "")
+-- API_Database.prepare("orgs:getMemberOrgByType", "")
 
------------- OUTPOSTS UNLOCKS --------------------
-API_Database.prepare("DELETE:outpost_unlocks", "DELETE FROM outpost_unlocks WHERE outpost_id = @outpost_id AND unlock_id = @unlock_id")
-API_Database.prepare("INSERT:outpost_unlocks", "INSERT INTO outpost_unlocks(outpost_id, unlock_id) VALUES (@outpost_id, @unlock_id)")
-API_Database.prepare("SELECT:outpost_unlocks", "SELECT outpost_id, unlock_id FROM outpost_unlocks")
+
+
+
+
+
+
+
+
+
+-- API_Database.prepare("UPDATE:organization", "UPDATE organizations SET name = @name WHERE id = @id")
+-- API_Database.prepare("DELETE:organization", "DELETE FROM organizations WHERE id = @id")
+-- API_Database.prepare("INSERT:organization", "INSERT INTO organizations(name, type) VALUES (@name, @type); SELECT LAST_INSERT_ID() AS id")
+-- API_Database.prepare("SELECT:organization", "SELECT id, name, type FROM organizations WHERE id = @id")
+
+-- ------------ ORG MEMBERS --------------------
+-- API_Database.prepare("UPDATE:org_members", "UPDATE org_members SET rank = @rank WHERE org_id = @org_id AND member_id = @member_id")
+-- API_Database.prepare("DELETE:org_members", "DELETE FROM org_members WHERE org_id = @org_id AND member_id = @member_id")
+-- API_Database.prepare("INSERT:org_members", "INSERT INTO org_members(org_id, member_id, rank, joined_at) VALUES (@org_id, @member_id, @rank, @joined_at)")
+-- API_Database.prepare("SELECT:org_members_by_org", "SELECT m.*, c.characterName name, o.type FROM org_members m, characters c, organizations o WHERE m.org_id = @org_id AND c.charid = m.member_id AND m.org_id = o.id ORDER by m.org_id,m.rank,m.joined_at")
+
+-- ------------ OUTPOSTS --------------------
+-- API_Database.prepare("UPDATE:outposts", "UPDATE outposts SET metadata = @metadata, org_id = @org_id WHERE id = @id")
+-- API_Database.prepare("DELETE:outposts", "DELETE FROM outposts WHERE id = @id")
+-- API_Database.prepare("INSERT:outposts", "INSERT INTO outposts(id, org_id, position, metadata) VALUES (@id, @org_id, @position, @metadata); SELECT LAST_INSERT_ID() AS id")
+-- API_Database.prepare("SELECT:outposts", "SELECT id, org_id, position, metadata FROM outposts")
+
+-- ------------ OUTPOSTS UNLOCKS --------------------
+-- API_Database.prepare("DELETE:outpost_unlocks", "DELETE FROM outpost_unlocks WHERE outpost_id = @outpost_id AND unlock_id = @unlock_id")
+-- API_Database.prepare("INSERT:outpost_unlocks", "INSERT INTO outpost_unlocks(outpost_id, unlock_id) VALUES (@outpost_id, @unlock_id)")
+-- API_Database.prepare("SELECT:outpost_unlocks", "SELECT outpost_id, unlock_id FROM outpost_unlocks")
 
 ------------ UNLOCKS --------------------
 API_Database.prepare("outpost_unlocs:getbyid", "SELECT * FROM unlocks WHERE unlock_id = @unlock_id")

@@ -3,22 +3,14 @@ local Proxy = module("_core", "lib/Proxy")
 
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
+dbAPI = Proxy.getInterface("API_DB")
 
 local Orgs = {}
 
--- function Orgs.IsValid(org_id)
--- end
-
---[[
-    RDR3
-        member_id = member_id
-    GTAV
-        member_id = user_id
-]]
 function Orgs.Create(org_name)
     local org_id
 
-    local rows = dbAPI.query("INSERT:organization", {name = name, type = "ilegal"})
+    local rows = dbAPI.query("orgs:insert", {name = name, type = "ilegal"})
     if #rows > 0 then
         org_id = rows[1].id
     end
@@ -41,11 +33,11 @@ end
     ...
 ]]
 function Orgs.AddMember(org_id, member_id, member_rank)
-    dbAPI.execute("INSERT:org_members", {org_id = org_id, char_id = member_id, rank = member_rank, joined_at = date2string(os.date())})
+    dbAPI.execute("orgs:insertMember", {org_id = org_id, char_id = member_id, rank = member_rank, joined_at = date2string(os.date())})
 end
 
 function Orgs.RemoveMember(org_id, member_id)
-    dbAPI.execute("orgs:removemember", {org_id = org_id, member_id = member_id})
+    dbAPI.execute("orgs:removeMember", {org_id = org_id, member_id = member_id})
 end
 
 -- Poder ser o nome da org ou o id dela
@@ -88,7 +80,7 @@ end
 function Orgs.GetMemberOrgs(member_id)
     local orgs = {}
 
-    local query = dbAPI.query("orgs:getmemberorgs", {member_id = member_id})
+    local query = dbAPI.query("orgs:getMemberOrgs", {member_id = member_id})
 
     if query[1] then
         local _ = query[1]
@@ -143,6 +135,46 @@ end
 function date2string(date)
     return os.date("%Y-%m-%d %H:%M:%S", date)
 end
+
+AddEventHandler("API:OnUserCharacterInitialization", function(User, character_id)
+    local rows = dbAPI.query("orgs:myOrgs", {member_id = character_id})
+    local myOrgs = {}
+    for _, org in pairs(rows) do
+        myOrgs[org.type] = { id = org.id, name = org.name, rank = org.rank}
+    end
+    cAPI.setMyOrg(User:getSource(), json.encode(myOrgs))
+end)
+
+RegisterNetEvent("Orgs:GetMembersOrgs")
+AddEventHandler("Orgs:GetMembersOrgs", function(orgs)
+    local _source = source
+    local User = API.getUserFromSource(_source)
+    local Character = User.getCharacter()
+
+    local orgsMembers = { id = 0, name = "", orgs = {} }
+    local orgsSql = ""
+    for index=1, #orgs do
+        local rows = dbAPI.query("orgs:getMembersByOrg", {org_id = orgs[index]}) 
+        for _, org_member in pairs(rows) do
+            print(json.encode(org_member))
+            if orgsMembers.orgs[org_member.org_id] == nil then
+                orgsMembers.orgs[org_member.org_id] = { type = org_member.type, members = {}}
+            end
+            orgsMembers.orgs[org_member.org_id].members[#orgsMembers.orgs[org_member.org_id].members+1] = { 
+                member_id = org_member.member_id, 
+                rank = org_member.rank, 
+                name = org_member.name, 
+                joined_at = string2date(org_member.joined_at)
+            }
+            if Character.id == org_member.member_id then
+                orgsMembers.id = org_member.member_id
+                orgsMembers.name = org_member.name
+            end
+        end
+    end
+
+    TriggerClientEvent("Orgs:GetMembersOrgs", _source, orgsMembers)
+end)
 
 local _ILEGAL_ORG_CREATION_PRICE = 100
 
