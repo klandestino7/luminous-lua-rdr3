@@ -24,6 +24,15 @@ function Orgs.Delete(org_id)
 end
 
 function Orgs.GetType(org_id)
+    local rows = dbAPI.execute("orgs:getOrgType", {org_id})
+
+    local org_type
+
+    if rows[1] then
+        org_type = rows[1].type
+    end
+
+    return org_type
 end
 
 --[[
@@ -310,6 +319,40 @@ AddEventHandler(
     end
 )
 
+RegisterNetEvent("Orgs:TryToDeleteOrg")
+AddEventHandler(
+    "Orgs:TryToDeleteOrg",
+    function(org_id)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+
+        if User then
+            local Character = User:getCharacter()
+
+            if Character then
+                local my_member_id = Character:getId()
+
+                local my_member_rank = Orgs.GetMemberRank(org_id, my_member_id)
+
+                if my_member_rank == 1 then
+                    local org_type = Orgs.GetType(org_id)
+
+                    if org_type == "ilegal" then
+                        Orgs.Delete(org_id)
+
+                        User:notify("success", "Sua organização foi deletada")
+                    else
+                        User:notify("error", "Essa organização não pode ser deletada")
+                    end
+                else
+                    User:notify("error", "Somente o dono pode deletar a organização")
+                end
+            end
+        end
+    end
+)
+
 RegisterNetEvent("Orgs:TryToLeaveFromOrg")
 AddEventHandler(
     "Orgs:TryToLeaveFromOrg",
@@ -421,13 +464,157 @@ AddEventHandler(
 RegisterNetEvent("Orgs:TryPromoteOrgMember")
 AddEventHandler(
     "Orgs:TryPromoteOrgMember",
-    function(org_id, member_id)
+    function(org_id, target_member_id)
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+
+        if User then
+            local Character = User:getCharacter()
+
+            if Character then
+                local my_member_id = Character:getId()
+
+                local org_data = Orgs.GetMembersOrgAndType(org_id)
+
+                local org_type = org_data.org_type
+                local org_members = org_data.members
+
+                local im_allowed_to_edit = false
+                local target_is_in_the_org = false
+
+                local target_member_rank = -1
+
+                for _, mbm_d in pairs(org_members) do
+                    local member_id = mbm_d.member_id
+                    local member_rank = mbm_d.member_rank
+
+                    if member_id == my_member_id then
+                        if member_rank == 1 then
+                            im_allowed_to_edit = true
+                        end
+                    end
+
+                    if member_id == target_member_id then
+                        target_is_in_the_org = true
+
+                        target_member_rank = member_rank
+                    end
+                end
+
+                if not im_allowed_to_edit then
+                    User:notify("error", "Você não tem permissao")
+                    return
+                end
+
+                if target_member_rank == 1 then
+                    User:notify("error", "Você nao pode modificar o rank deste membro.")
+                    return
+                end
+
+                local new_rank
+
+                local rank_list = config[org_type] or config[org_id]
+
+                if target_member_rank == -1 then
+                    new_rank = #rank_list
+                else
+                    new_rank = target_member_rank - 1
+                end
+
+                if new_rank == 1 then
+                    User:notify("error", "Membro não pode mais ser promovido.")
+                    return
+                end
+
+                Orgs.SetMemberRank(org_id, target_member_id, new_rank)
+
+                -- local old_rank_name = RankToRankName(org_id, target_member_rank) or RankToRankName(org_type, target_member_rank)
+
+                local rank_name = RankToRankName(org_id, new_rank) or RankToRankName(org_type, new_rank)
+
+                User:notify("error", "Membro setado como " .. rank_name) -- .. " old " .. old_rank_name)
+            end
+        end
     end
 )
 
 RegisterNetEvent("Orgs:TryToDemoteOrgMember")
 AddEventHandler(
     "Orgs:TryToDemoteOrgMember",
-    function(org_id, member_id)
+    function(org_id, target_member_id)
+
+        local _source = source
+
+        local User = API.getUserFromSource(_source)
+
+        if User then
+            local Character = User:getCharacter()
+
+            if Character then
+                local my_member_id = Character:getId()
+
+                local org_data = Orgs.GetMembersOrgAndType(org_id)
+
+                local org_type = org_data.org_type
+                local org_members = org_data.members
+
+                local im_allowed_to_edit = false
+                local target_is_in_the_org = false
+
+                local target_member_rank = -1
+
+                for _, mbm_d in pairs(org_members) do
+                    local member_id = mbm_d.member_id
+                    local member_rank = mbm_d.member_rank
+
+                    if member_id == my_member_id then
+                        if member_rank == 1 then
+                            im_allowed_to_edit = true
+                        end
+                    end
+
+                    if member_id == target_member_id then
+                        target_is_in_the_org = true
+
+                        target_member_rank = member_rank
+                    end
+                end
+
+                if not im_allowed_to_edit then
+                    User:notify("error", "Você não tem permissao")
+                    return
+                end
+
+                if target_member_rank == 1 then
+                    User:notify("error", "Você nao pode modificar o rank deste membro.")
+                    return
+                end
+
+                if target_member_rank == -1 then
+                    User:notify("error", "Membro já está no rank mais baixo.")
+                    return
+                end
+                
+                local new_rank = target_member_rank + 1
+
+                local rank_list = config[org_type] or config[org_id]
+
+                if new_rank > #rank_list then
+                    new_rank = -1
+                end
+
+                if new_rank == 1 then
+                    User:notify("error", "Membro não pode mais ser promovido.")
+                    return
+                end
+
+                Orgs.SetMemberRank(org_id, target_member_id, new_rank)
+
+                local rank_name = RankToRankName(org_id, new_rank) or RankToRankName(org_type, new_rank)
+
+                User:notify("error", "Membro setado como " .. rank_name)
+            end
+        end
     end
 )

@@ -149,25 +149,31 @@ function GetElement_Delete(org_id, im_allowed_to_delete){
 }
 
 function out_kick(org_id, target_member_id) {
-    console.log("kick");
+    // console.log("kick");
 
     $.post("http://orgs/kick", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
 }
 
 function out_leave(org_id) {
-    console.log("leave");
+    // console.log("leave");
 
     $.post("http://orgs/leave", JSON.stringify({ org_id: org_id }));
 }
 
-function out_promote(org_id, member_id) {
-    console.log("promote");
+function out_promote(org_id,target_member_id) {
+    // console.log("promote");
+
+    $.post("http://orgs/promote", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
 }
 
-function out_demote(org_id, member_id) {
-    console.log("demote");
+function out_demote(org_id, target_member_id) {
+    // console.log("demote");
+
+    $.post("http://orgs/demote", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
 }
 
 function out_delete(org_id){
     console.log("delete");
+
+    $.post("http://orgs/delete", JSON.stringify({ org_id: org_id }));
 }

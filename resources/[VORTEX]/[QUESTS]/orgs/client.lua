@@ -108,11 +108,28 @@ RegisterNUICallback(
 )
 
 RegisterNUICallback(
+    "create",
+    function(data)
+        -- local org_id = data.org_id
+
+        TriggerServerEvent("Orgs:TryToCreateOrg")
+    end
+)
+
+RegisterNUICallback(
+    "delete",
+    function(data)
+        local org_id = data.org_id
+
+        TriggerServerEvent("Orgs:TryToDeleteOrg", org_id)
+    end
+)
+
+RegisterNUICallback(
     "leave",
     function(data)
-        
         local org_id = data.org_id
-        
+
         TriggerServerEvent("Orgs:TryToLeaveFromOrg", org_id)
     end
 )
@@ -120,10 +137,9 @@ RegisterNUICallback(
 RegisterNUICallback(
     "kick",
     function(data)
-        
         local org_id = data.org_id
         local target_member_id = data.target_member_id
-        
+
         TriggerServerEvent("Orgs:TryToKickFromOrg", org_id, target_member_id)
     end
 )
@@ -131,10 +147,9 @@ RegisterNUICallback(
 RegisterNUICallback(
     "promote",
     function(data)
-        
         local org_id = data.org_id
         local target_member_id = data.target_member_id
-        
+
         TriggerServerEvent("Orgs:TryPromoteOrgMember", org_id, target_member_id)
     end
 )
@@ -142,10 +157,9 @@ RegisterNUICallback(
 RegisterNUICallback(
     "demote",
     function(data)
-        
         local org_id = data.org_id
         local target_member_id = data.target_member_id
-        
+
         TriggerServerEvent("Orgs:TryToDemoteOrgMember", org_id, target_member_id)
     end
 )
