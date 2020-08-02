@@ -11,7 +11,7 @@ local cacheOrgs = {}
 function Orgs.Create(org_name)
     local org_id
 
-    local rows = dbAPI.query("orgs:insert", {name = name, type = "ilegal"})
+    local rows = dbAPI.query("orgs:insert", {name = org_name, type = "ilegal"})
     if #rows > 0 then
         org_id = rows[1].id
     end
@@ -24,9 +24,9 @@ function Orgs.Delete(org_id)
 end
 
 function Orgs.GetType(org_id)
-    local rows = dbAPI.execute("orgs:getOrgType", {org_id})
-
     local org_type
+
+    local rows = dbAPI.query("orgs:getOrgType", {org_id = org_id})
 
     if rows[1] then
         org_type = rows[1].type
@@ -60,7 +60,7 @@ end
 function Orgs.GetMemberRank(org_id, member_id)
     local member_rank
 
-    local rows = dbAPI.execute("orgs:getMemberRank", {org_id = org_id, member_id = member_id})
+    local rows = dbAPI.query("orgs:getMemberRank", {org_id = org_id, member_id = member_id})
     if rows[1] then
         member_rank = rows[1].rank
     end
@@ -278,6 +278,10 @@ AddEventHandler(
 
 local _ILEGAL_ORG_CREATION_PRICE = 100
 
+-- ! Suscetível à MYSQL INJECTION (org_name) ?
+-- ! Suscetível à MYSQL INJECTION (org_name) ?
+-- ! Suscetível à MYSQL INJECTION (org_name) ?
+-- ! Suscetível à MYSQL INJECTION (org_name) ?
 RegisterNetEvent("Orgs:TryToCreateOrg")
 AddEventHandler(
     "Orgs:TryToCreateOrg",
@@ -292,10 +296,29 @@ AddEventHandler(
             if Character then
                 local my_member_id = Character:getId()
 
-                local hasIlegalOrg = Orgs.GetMemberOrgByType(my_member_id, "ilegal") == nil
+                local org_id, org_name = Orgs.GetMemberOrgByType(my_member_id, "ilegal")
+
+                local hasIlegalOrg = org_id ~= nil or org_name ~= nil
 
                 if not hasIlegalOrg then
                     local Inventory = Character:getInventory()
+
+                    if Inventory:getItemAmount("money") < _ILEGAL_ORG_CREATION_PRICE then
+                        User:notify("error", "Você não tem dinheiro suficiente")
+                        return
+                    end
+
+                    local org_name = cAPI.prompt(_source, "Nome da Organização:", "")
+
+                    if org_name == "" then
+                        User:notify("error", "Você não especificou um nome valido.")
+                        return
+                    end
+
+                    if string.len(org_name) > 16 then
+                        User:notify("error", "O nome da organização não pode ter mais de 16 caracteres.")
+                        return
+                    end
 
                     if Inventory:removeItem(-1, "money", _ILEGAL_ORG_CREATION_PRICE) then
                         local org_id = Orgs.Create(org_name)
@@ -305,14 +328,14 @@ AddEventHandler(
 
                             User:notify("success", "Organizaçao criada!")
                         else
-                            User:notify("Ocorreu um erro ao criar sua org :(")
+                            User:notify("error", "Ocorreu um erro ao criar sua org :(")
                             Inventory:addItem("money", _ILEGAL_ORG_CREATION_PRICE)
                         end
                     else
-                        User:notify("Sem dinheiro")
+                        User:notify("error", "Você não tem dinheiro suficiente")
                     end
                 else
-                    User:notify("Você já está em uma org")
+                    User:notify("error", "Você já está em uma org")
                 end
             end
         end
@@ -357,8 +380,6 @@ RegisterNetEvent("Orgs:TryToLeaveFromOrg")
 AddEventHandler(
     "Orgs:TryToLeaveFromOrg",
     function(org_id)
-        print("TryToLeaveFromOrg", org_id)
-
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -382,16 +403,17 @@ AddEventHandler(
 
                         if member_rank ~= 1 or member_rank == 1 and org_type ~= "ilegal" then
                             Orgs.RemoveMember(org_id, my_member_id)
-                            print("Left")
+
+                            User:notify("success", "Você saiu da organização")
                         else
-                            print("Você não pode sair da sua propria organização")
+                            User:notify("error", "Você não pode sair da sua propria organização")
                         end
 
                         return
                     end
                 end
 
-                print("Erro você não é um membro")
+            -- User:notify("error", "Erro você não é um membro")
             end
         end
     end
@@ -439,23 +461,25 @@ AddEventHandler(
                 end
 
                 if not im_allowed_to_kick then
-                    print("Você não faz parte da organização ou não tem permissão para kickar")
+                    User:notify("error", "Você não faz mais parte da organização ou não tem permissão para kickar")
                     return
                 end
 
                 if not target_is_in_the_org then
-                    print("Membro não está mais na organização")
+                    User:notify("error", "Este Membro não está mais na organização")
                     return
                 end
 
                 if target_member_rank == 1 then
-                    print("Membro com cargo mais elevado, não pode ser kickado")
+                    local rank_name = RankToRankName(org_id, target_member_rank) or RankToRankName(org_type, target_member_rank)
+
+                    User:notify("error", "Membro de rank " .. rank_name .. ", não pode ser kickado.")
                     return
                 end
 
                 Orgs.RemoveMember(org_id, target_member_id)
 
-                print("Target removido da organização")
+                User:notify("success", "Membro removido da organização.")
             end
         end
     end
@@ -543,7 +567,6 @@ RegisterNetEvent("Orgs:TryToDemoteOrgMember")
 AddEventHandler(
     "Orgs:TryToDemoteOrgMember",
     function(org_id, target_member_id)
-
         local _source = source
 
         local User = API.getUserFromSource(_source)
@@ -595,7 +618,7 @@ AddEventHandler(
                     User:notify("error", "Membro já está no rank mais baixo.")
                     return
                 end
-                
+
                 local new_rank = target_member_rank + 1
 
                 local rank_list = config[org_type] or config[org_id]

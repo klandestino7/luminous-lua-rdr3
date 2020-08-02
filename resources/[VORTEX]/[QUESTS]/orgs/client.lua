@@ -110,7 +110,11 @@ RegisterNUICallback(
 RegisterNUICallback(
     "create",
     function(data)
-        -- local org_id = data.org_id
+        --[[
+            Fazer uma verificação de já possuir uma organização ilegal
+            antes de enviar o request para o servidor.
+        ]]
+        hide()
 
         TriggerServerEvent("Orgs:TryToCreateOrg")
     end
@@ -119,6 +123,10 @@ RegisterNUICallback(
 RegisterNUICallback(
     "delete",
     function(data)
+        --[[
+            Fazer uma verificação de já possuir uma organização ilegal
+            antes de enviar o request para o servidor.
+        ]]
         local org_id = data.org_id
 
         TriggerServerEvent("Orgs:TryToDeleteOrg", org_id)

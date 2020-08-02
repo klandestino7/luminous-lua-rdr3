@@ -104,7 +104,7 @@ function GetElement_Rank(org_type, member_rank, member_rank_name) {
 }
 
 function GetElement_RankButtons(org_id, im_allowed_to_edit, my_member_id, member_id, member_rank) {
-    if (im_allowed_to_edit && my_member_id != member_id && member_rank != 1 ) {
+    if (im_allowed_to_edit && my_member_id != member_id && member_rank != 1) {
 
         const onclick_promote = `onclick="out_promote(${org_id}, ${member_id})"`;
         const onclick_demote = `onclick="out_demote(${org_id}, ${member_id})"`;
@@ -136,16 +136,26 @@ function GetElement_KickOrLeave(org_id, im_allowed_to_edit, my_member_id, member
     return ""
 }
 
-function GetElement_Delete(org_id, im_allowed_to_delete){
+function GetElement_Delete(org_id, im_allowed_to_delete) {
 
-    if (im_allowed_to_delete){
-       
+    if (im_allowed_to_delete) {
+
         const onclick_func = `onclick="out_delete(${org_id})"`
-        
+
         return `<button class=\"outside\"${onclick_func}>x</button>`;
     }
 
     return "";
+}
+
+function out_create() {
+    $.post("http://orgs/create", JSON.stringify({}));
+}
+
+function out_delete(org_id) {
+    console.log("delete");
+
+    $.post("http://orgs/delete", JSON.stringify({ org_id: org_id }));
 }
 
 function out_kick(org_id, target_member_id) {
@@ -160,7 +170,7 @@ function out_leave(org_id) {
     $.post("http://orgs/leave", JSON.stringify({ org_id: org_id }));
 }
 
-function out_promote(org_id,target_member_id) {
+function out_promote(org_id, target_member_id) {
     // console.log("promote");
 
     $.post("http://orgs/promote", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
@@ -170,10 +180,4 @@ function out_demote(org_id, target_member_id) {
     // console.log("demote");
 
     $.post("http://orgs/demote", JSON.stringify({ org_id: org_id, target_member_id: target_member_id }));
-}
-
-function out_delete(org_id){
-    console.log("delete");
-
-    $.post("http://orgs/delete", JSON.stringify({ org_id: org_id }));
 }

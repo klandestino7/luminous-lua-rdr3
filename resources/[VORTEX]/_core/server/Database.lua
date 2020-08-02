@@ -258,9 +258,10 @@ API_Database.prepare("queue:remove", "DELETE FROM queue_priority WHERE id = @use
 
 ------------ ORGANIZATIONS --------------------
 API_Database.prepare("orgs:insert", "INSERT INTO organizations(name, type) VALUES (@name, @type); SELECT LAST_INSERT_ID() AS id")
-API_Database.prepare("orgs:delete", "DELETE FROM organizations WHERE id = @id")
+API_Database.prepare("orgs:delete", "DELETE FROM organizations WHERE id = @org_id")
 API_Database.prepare("orgs:getMemberOrgs", "SELECT o.id, o.name, o.type, m.rank FROM organizations o, org_members m  WHERE o.id = m.org_id AND m.member_id = @member_id")
 API_Database.prepare("orgs:getMemberOrgByType", "SELECT o.id, o.name, o.type, m.rank FROM organizations o, org_members m  WHERE o.id = m.org_id AND m.member_id = @member_id AND o.type = @org_type")
+API_Database.prepare("orgs:getOrgType", "SELECT type FROM organizations WHERE id = @org_id")
 
 ------------ ORGANIZATIONS MEMBERS --------------------
 API_Database.prepare("orgs:insertMember", "INSERT INTO org_members(org_id, member_id, rank, joined_at) VALUES (@org_id, @member_id, @rank, @joined_at)")
