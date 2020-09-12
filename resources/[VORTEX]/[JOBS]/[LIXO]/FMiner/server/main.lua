@@ -5,8 +5,8 @@ API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
 local Loot = {
-    {item = "raw_iron", amountToGive = math.random(4, 8)},
-    {item = "raw_coal", amountToGive = math.random(1, 5)},
+    {item = "raw_iron", amountToGive = math.random(1, 2)},
+    {item = "raw_coal", amountToGive = math.random(1, 2)},
     {item = "raw_copper", amountToGive = math.random(1, 2)}
     -- {item = "raw_gold", amountToGive = math.random(1, 2)}
 }

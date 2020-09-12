@@ -27,10 +27,10 @@ local r = {}
 Citizen.CreateThread(
     function()
         r = {
-            {"raw_iron", 0.3, 5},
-            {"raw_coal", 0.3, 5},
-            {"raw_copper", 0.3, 5},
-            {"raw_gold", 0.1, 2},
+            {"raw_iron", 0.3, 5},  4.2
+            {"raw_coal", 0.3, 5}, 1.0
+            {"raw_copper", 0.3, 5}, 1.0
+            {"raw_gold", 0.1, 2}, 7.0
         }
 
         weightTotal = 0

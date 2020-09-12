@@ -310,6 +310,22 @@ function WhistleHorse(whistleTypeHash)
     end
 end
 
+
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1)
+        local playerHorse = cAPI.GetPlayerHorse()
+		local retval, weaponHash = GetCurrentPedWeapon(playerHorse, 1)       
+
+        if weaponHash == GetHashKey("WEAPON_HORSE") then
+            Citizen.InvokeNative(0x66460DEDDD417254, 0.001)
+            Citizen.InvokeNative(0xE4CB5A3F18170381, playerHorse, 0.001)
+        end  
+    end
+end)
+
+
 function CreatePrompts(prompt_group)
     if prompt_inventory ~= nil then
         PromptDelete(prompt_inventory)

@@ -3,6 +3,11 @@ local gui = false
 local currentlyInGame = false
 local passed = false
 
+RegisterCommand('lockpick', function()
+  lockpick(100,50,10,5)
+end)
+
+
 function lockpick(pickhealth,pickdamage,pickPadding,distance)
   openGui()
   play(pickhealth,pickdamage,pickPadding,distance)

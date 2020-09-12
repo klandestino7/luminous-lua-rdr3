@@ -13,15 +13,13 @@ AddEventHandler('VP:TITLESWASH:washMoney', function()
 
 	local accountMoney = 0
 	
-	accountMoney = Inventory:getItemAmount("titles") 
+	accountMoney = Inventory:getItemAmount("titles")
 
 	if accountMoney < 99 then
 		User:notify("error", "Você não possuí titulos para vender.")
 	else
 		Inventory:addItem("money", 50)
 		Inventory:removeItem(-1, "titles", 1)
-
 		User:notify("item", "money", 50/100)
 	end
-
 end)

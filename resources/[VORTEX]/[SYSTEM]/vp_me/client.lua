@@ -50,7 +50,7 @@ function DrawText3D(x, y, z, text)
         SetTextFontForCurrentCommand(1)
         SetTextColor(255, 255, 255, 215)
         SetTextCentre(1)
-        shouldDisplayText(str, _x, _y)
+     --   shouldDisplayText(str, _x, _y)
         local factor = (string.len(text)) / 225
         --DrawSprite("feeds", "hud_menu_4a", _x, _y+0.0125,0.015+ factor, 0.03, 0.1, 35, 35, 35, 190, 0)
         DrawSprite("feeds", "toast_bg", _x, _y + 0.0125, 0.015 + factor, 0.03, 0.1, 100, 1, 1, 190, 0)

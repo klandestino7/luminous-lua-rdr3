@@ -35,6 +35,21 @@ RegisterCommand('onnui', function(source, args)
     SetNuiFocus(true,true)
 end)
 
+
+-- Citizen.CreateThread(function()
+--     while true do
+--         Citizen.Wait(1)
+
+--         if IsControlJustPressed(0, 0x7D5B3717) then
+--             local mount = GetMount(PlayerPedId())
+--             if mount ~= 0 then
+--                 TaskHorseAction(mount, 2, 0, 0)
+--             end
+--         end
+--     end
+
+-- end)
+
 -- Citizen.CreateThread(function()
 --     local pigeon = CreatePed('A_C_Pigeon', GetEntityCoords(PlayerPedId()), 92.0, false, true, true, true);
 --     Citizen.InvokeNative(0x283978A15512B2FE, pigeon, true)
