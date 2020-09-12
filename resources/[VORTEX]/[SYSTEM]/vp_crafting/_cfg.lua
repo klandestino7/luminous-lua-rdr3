@@ -155,9 +155,9 @@ Config = {
     --                 {item = "money", amount = 2}
     --             },
     --             output = {
-    --                 {item = "revolver_cattleman", amount = 1}
+    --                 {item = "repeater_henry", amount = 1}
     --             }
-    --         }
+    --         },
     --     }
     -- }
 }

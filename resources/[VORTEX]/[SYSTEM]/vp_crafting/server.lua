@@ -16,6 +16,8 @@ AddEventHandler(
 
         if Character ~= nil then
             local Inventory = Character:getInventory()
+            local inventory_capacity = Inventory:getCapacity()
+            local inventory_weight = Inventory:getWeight()
 
             local cachedItemAmounts = {}
 
@@ -31,6 +33,16 @@ AddEventHandler(
                 if level ~= nil or level <= char_level then
                     for cIndex, d in pairs(d.craftings) do
                         local inputlist = d.input
+                        local outputlist = d.output
+
+                        local output_item = outputlist[1].item
+                        local output_amount = outputlist[1].amount
+
+                        local ItemData = API.getItemDataFromId(output_item)
+
+                        output_item_weight = ItemData:getWeight()
+
+                        local canFitOutput = ((output_item_weight * output_amount) + inventory_weight) <= inventory_capacity
 
                         -- ? lê todo os meus inputs necessários para esse cIndex
                         for cInputIndex, inp_d in pairs(inputlist) do
@@ -64,7 +76,7 @@ AddEventHandler(
                                 r[cGroup][cIndex] = {}
                             end
 
-                            if inventory_item_amount >= amount then
+                            if inventory_item_amount >= amount and canFitOutput then
                                 -- ? Nós temos a quantidade necessário desse input, então será true
                                 r[cGroup][cIndex][cInputIndex] = true
                             else

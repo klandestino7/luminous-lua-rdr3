@@ -308,6 +308,17 @@ AddEventHandler(
     end
 )
 
+local myOrgs = {}
+
+function cAPI.getMyOrg()
+    return myOrgs
+end
+
+function cAPI.setMyOrg(orgs)
+    print(orgs)
+    myOrgs = json.decode(orgs)
+end
+
 RegisterNetEvent("VP:EVENTS:CharacterLeftGroup")
 AddEventHandler(
     "VP:EVENTS:CharacterLeftGroup",

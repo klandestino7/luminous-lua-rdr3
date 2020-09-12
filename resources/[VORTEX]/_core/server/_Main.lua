@@ -190,6 +190,18 @@ function API.NotifyUsersWithGroup(group, message, checkForInheritance)
     end
 end
 
+function API.NotifyUsersOrg(org_id, message)
+    local members = exports.orgs:GetMembersOrg(org_id)
+
+    for user_id, User in pairs(API.users) do
+        local Character = User:getCharacter()
+
+        if Character ~= nil and members[Character.id] ~= nil and members[Character.id].member_id ~= nil and members[Character.id].member_id > 0 then
+            User:notify(message)
+        end
+    end
+end
+
 function API.GroupNameToBit(g)
     return config_file_GROUPS[g] or 0
 end

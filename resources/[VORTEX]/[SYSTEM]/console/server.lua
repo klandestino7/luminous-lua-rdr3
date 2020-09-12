@@ -69,8 +69,22 @@ commands.playersbygroup = function(source, args)
     end
 end
 
-function listusers(source, users)
+commands.setpriority = function(source, args)
+    local user_id = tonumber(args[1])
+    local priority = tonumber(args[2])
 
+    if user_id and priority then
+        commands.print(source, "Prioridade para o usuário " .. user_id .. " agora é " .. priority)
+
+        if priority > 0 then
+            dbAPI.execute("queue:set", {user_id = user_id, priority = priority, start = 0, ["end"] = 0})
+        else
+            dbAPI.execute("queue:remove", {user_id = user_id})
+        end
+    end
+end
+
+function listusers(source, users)
     local colors = {
         1,
         2,
@@ -81,11 +95,6 @@ function listusers(source, users)
         7,
         8,
         9,
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
     }
 
     local ci = 1
@@ -120,7 +129,7 @@ function listusers(source, users)
         local s = "^" .. colors[ci] .. "USER: " .. User:getId()
 
         for k, v in pairs(d) do
-            s = s .. " |" .. k .. ": " .. v  
+            s = s .. " |" .. k .. ": " .. v
         end
 
         commands.print(source, s)

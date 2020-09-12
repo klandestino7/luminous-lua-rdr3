@@ -102,8 +102,19 @@ function InitiateHorse(atCoords)
         return
     end
 
+    -- iVar7 = PED::_0xE8D1CCB9375C101B(iVar2, PLAYER::PLAYER_ID());
+	-- 				if (iVar7 == -1 || iVar7 == 0)
+	-- 				{
+	-- 					iVar7 = iVar6;
+    -- 					PED::_0xA691C10054275290(iVar2, PLAYER::PLAYER_ID(), iVar7);
+    
+    -- 0x641351E9AD103890
+    -- 0xAFFD0CCF31F469B8(iVar0);
+
     local entity = CreatePed(modelHash, spawnPosition, GetEntityHeading(ped), true, true)
     SetModelAsNoLongerNeeded(modelHash)
+
+    -- Citizen.InvokeNative(0xD2CB0FB0FDCB473D, PlayerId(), entity)
 
     Citizen.InvokeNative(0x9587913B9E772D29, entity, 0)
     Citizen.InvokeNative(0x4DB9D03AC4E1FA84, entity, -1, -1, 0)

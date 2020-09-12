@@ -152,17 +152,7 @@ RegisterCommand(
 		-- 	end
 		-- end
 		-- local playerPed = PlayerPedId()
-		-- local nameRender = "ledger_ct"
-		-- if not IsNamedRendertargetRegistered(nameRender) then
-		-- 	RegisterNamedRendertarget(nameRender, false)
-		-- 	LinkNamedRendertarget(propHash)
-		-- 	if not IsNamedRendertargetLinked(nameRender) then
-		-- 	else
-		-- 		if IsNamedRendertargetRegistered(nameRender) then
-		-- 			ReleaseNamedRendertarget(nameRender)
-		-- 		end
-		-- 	end
-		-- end
+		
 		-- func_744
 		-- 2687.582, -1362.665, 55.639
 		-- local z = GetNamedRendertargetRenderId(nameRender)
@@ -177,18 +167,8 @@ RegisterCommand(
 		-- print(b)
 		-- Citizen.InvokeNative(0xF49574E2332A8F06, b, 0.0)
 		-- Citizen.InvokeNative(0x04D1D4E411CE52D0, b, z)
-		-- DrawRect(0.5, 0.5, 1.0, 1.0, 255, 0, 0, 255, false, true)
-		-- local prop = CreateObject(propHash, GetEntityCoords(playerPed), true, true, true)
-		-- PlaceObjectOnGroundProperly(prop)
-		-- local animScene = CreateAnimScene("script@ambient@shop@CATALOG_PLAYER", 0, "PBL_ENTER", false, true)
-		-- LoadAnimScene(animScene)
-		-- SetAnimSceneEntity(animScene, "player", playerPed, 0)
-		-- SetAnimSceneEntity(animScene, "CATALOG", prop, 0)
-		-- SetAnimSceneOrigin(animScene, GetEntityCoords(playerPed) - vec3(0, 0, 0.97), 0.0, 2)
-		-- Citizen.InvokeNative(0xDF7B5144E25CD3FE, animScene, "PBL_ENTER")
-		-- SetAnimScenePlaybackList(animScene, "PBL_ENTER", true)
-		-- Wait(2000)
-		-- TaskEnterAnimScene(playerPed, animScene, "player", "PBL_ENTER", 1069379748, true, 128, 20000, -1082130432)
+		-- 
+
 		-- Wait(5000)
 		-- local animDict = "mech_pickup@plant@burdock"
 		-- animDict = "script_common@handover@generic@player_handover@money"
@@ -389,17 +369,14 @@ Citizen.CreateThread(
 						local view = exports["research"]:DataViewNativeGetEventData(0, i, 2)
 						TriggerEvent("VP:EVENTS:PedWhistle", view["0"], view["2"])
 					elseif eventAtIndex == GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED") then
-						-- Wait(1000)
-						-- print("EVENT_PLAYER_PROMPT_TRIGGERED", PlayerPedId(), i)
-						-- print(GetHashKey("EVENT_PLAYER_PROMPT_TRIGGERED"))
-						-- exports["vp_admin"]:js_teste_native(0, i, 10)
-						-- local view = exports["research"]:DataViewNativeGetEventData(0, i, 10)
-						-- local s = ""
-						-- for i = 0, 32 do
-						-- 	s = s .. view["" .. i] .. ", "
-						-- end
-						-- print(s)
-						-- print(view["0"], view["2"], view["4"], view["6"], view["8"], view["10"], view["12"])
+						local view = exports["research"]:DataViewNativeGetEventData(0, i, 10)
+
+						local promptType = view["0"]
+						local interactedEntity = view["4"]
+
+						if promptType == 33 then -- Horse Flee (Mandar Fugir)
+							TaskAnimalFlee(interactedEntity, PlayerPedId(), -1)
+						end
 					elseif eventAtIndex == -1246119244 then
 						-- [bit 0] Ped -- Mostly the animal being interacted
 						-- [bit 2] Ped -- Mostly the one who is interacting
