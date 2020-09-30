@@ -8,6 +8,6 @@ Projeto Descontinuado
 ### INSTALAÇÃO
 - DOWNLOAD Baixe os Resources
 - Coloque na sua pasta do jogo
-- 
+-
 
 
