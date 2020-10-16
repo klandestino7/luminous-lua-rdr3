@@ -596,6 +596,62 @@ ItemList = {
         description = "Resto de Ossos obtida após esfolar o animal",
         stackSize = 6
     },
+    ["p_baitBread01x"] = {
+        type = "generic",
+        name = "Bread Bait",
+        weight = 0.1,
+        description = "Bread Bait",
+        stackSize = 10
+    },
+    ["p_baitCheese01x"] = {
+        type = "generic",
+        name = "Cheese Bait",
+        weight = 0.1,
+        description = "Cheese Bait",
+        stackSize = 10
+    },    
+    ["p_baitCricket01x"] = {
+        type = "generic",
+        name = "Cricket Bait",
+        weight = 0.1,
+        description = "Cricket Bait",
+        stackSize = 10
+    },    
+    ["p_FinisdFishlure01x"] = {
+        type = "generic",
+        name = "Lake Bait",
+        weight = 0.5,
+        description = "Lake Bait",
+        stackSize = 10
+    },
+    ["p_finishdcrawd01x"] = {
+        type = "generic",
+        name = "Swamp Bait",
+        weight = 0.5,
+        description = "Lake Bait",
+        stackSize = 10
+    },    
+    ["smallfish"] = {
+        type = "generic",
+        name = "Small Fish",
+        weight = 0.3,
+        description = "Small Fish",
+        stackSize = 10
+    },
+    ["mediumfish"] = {
+        type = "generic",
+        name = "Medium Fish",
+        weight = 2.3,
+        description = "Medium Fish",
+        stackSize = 7
+    },
+    ["largefish"] = {
+        type = "generic",
+        name = "Large Fish",
+        weight = 4.5,
+        description = "Medium Fish",
+        stackSize = 5
+    },
     ["meat_poor"] = {
         type = "generic",
         name = "Carne Animal Péssima",

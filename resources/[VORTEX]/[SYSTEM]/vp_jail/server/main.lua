@@ -1,4 +1,3 @@
-
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
@@ -11,8 +10,9 @@ RegisterCommand(
         local User = API.getUserFromSource(source)
 		local Character = User:getCharacter()
 		if Character:hasGroup("police") or Character:hasGroup("admin") and args[1] then
-			if args[1] then
-                TriggerEvent('VP:JAIL:sendToJail', API.getUserFromUserId(parseInt(tonumber(args[1]))):getSource(), tonumber(args[2] * 60))
+			if args[1] then				
+				print(API.getUserFromUserId(tonumber(args[1])):getSource())
+                TriggerEvent('VP:JAIL:sendToJail', API.getUserFromUserId(tonumber(args[1])):getSource(), tonumber(args[2] * 60))
             end
         end
     end
@@ -25,7 +25,7 @@ RegisterCommand(
 		local Character = User:getCharacter()
 		if Character:hasGroup("police") or Character:hasGroup("admin") and args[1] then
 			if args[1] then
-				TriggerEvent('VP:JAIL:unjailQuest', API.getUserFromUserId(parseInt(tonumber(args[1]))):getSource())
+				TriggerEvent('VP:JAIL:unjailQuest', API.getUserFromUserId(tonumber(args[1])):getSource())
             end
         end
     end
@@ -35,7 +35,8 @@ RegisterCommand(
 RegisterServerEvent('VP:JAIL:sendToJail')
 AddEventHandler('VP:JAIL:sendToJail', function(target, jailTime)
 	local User = API.getUserFromSource(target)
-	local Character = User:getCharacter()		
+	
+	local Character = User:getCharacter()
 	local nome = Character:getName()
 
 	TriggerClientEvent('VP:JAIL:jail', User, jailTime)
@@ -109,7 +110,7 @@ function unjail(target)
 	local nome = Character:getName()
 
 	Character:remJail(Character:getId())
-
+	
 --	TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('unjailed', GetPlayerName(target)) }, color = { 147, 196, 109 } })
 
 	cAPI.SetPedModel(User:getSource(), json.decode(Character:getModel()))

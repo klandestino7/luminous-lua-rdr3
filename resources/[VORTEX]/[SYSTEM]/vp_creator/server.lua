@@ -12,8 +12,8 @@ AddEventHandler('VP:CREATOR:saveCreation', function(characterName, Age, SkinMdf)
     if Character ~= nil then
         Character:setSkinData(Character:getId(), json.encode(SkinMdf))
 
-        Character:setData(Character:getId(), "charTable", "hunger", 0)
-        Character:setData(Character:getId(), "charTable", "thirst", 0)
+        Character:setData(Character:getId(), "charTable", "hunger", 100)
+        Character:setData(Character:getId(), "charTable", "thirst", 100)
         Character:setData(Character:getId(), "charTable", "banco", 0)
 
         local encoded = json.encode({-1099.470,-1839.129,60.327})
