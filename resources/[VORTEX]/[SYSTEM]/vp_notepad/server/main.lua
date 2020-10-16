@@ -7,17 +7,9 @@ cAPI = Tunnel.getInterface('API')
 local savedNotes = {
   
 }
-
+-- Não copia comédia!!!!!
 TriggerEvent('VP:NOTEPAD:LoadsNote')
 
-
---#Delete comments to use from inventory
--- ESX.RegisterUsableItem('notepad', function(source)
---   local _source  = source
---   local xPlayer   = ESX.GetPlayerFromId(_source)
---   TriggerClientEvent('VP:NOTEPAD:note', _source)
---   TriggerClientEvent('VP:NOTEPAD:OpenNotepadGui', _source)
--- end)
 RegisterCommand('carta', function(source, args, user)
   local _source = source
   local User = API.getUserFromSource(_source)

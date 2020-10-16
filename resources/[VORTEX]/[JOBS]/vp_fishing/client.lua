@@ -177,14 +177,15 @@ Citizen.CreateThread(
 
             if FISHING_GET_MINIGAME_STATE() == 1 then
                 if IsControlJustPressed(0, GetHashKey("INPUT_ATTACK")) then
-                    atualLure = "P_FINISDFISHLURE01X"
+                    atualLure = "P_FINISHDCRAWDLEGENDARY01X"                    
+                    TaskSwapFishingBait(PlayerPedId(), atualLure, 0)    
                     Citizen.InvokeNative(0x9B0C7FA063E67629, PlayerPedId(), atualLure, 0, 1)
                 end
-
+                
                 if IsControlJustPressed(0, 0xDB096B85) then
                     -- CANCELAR PESCA
                     local playerPed = PlayerPedId()
-                    SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), true)
+                    SetCurrentPedWeapon(playerPed, GetHashKey("WEAPON_UNARMED"), false)
                 end
             end
 
@@ -254,6 +255,7 @@ Citizen.CreateThread(
 
                     if fishHandle then
                         local probabilidadePuxar = math.random()
+                        print(probabilidadePuxar)
                         if probabilidadePuxar > 0.9 or probabilidadePuxar < 0.2 then -- soltar linha
                             if FISHING_GET_F_(5) == 1 then
                                 Citizen.InvokeNative(0xF0FBF193F1F5C0EA, fishHandle)
@@ -335,6 +337,8 @@ Citizen.CreateThread(
                                 end
                             end
 
+                            
+
                             -- struggle_pullup
                             -- struggle_a
 
@@ -376,7 +380,8 @@ Citizen.CreateThread(
                             -- ApplyForceToEntity(fishHandle, 0, GetEntityCoords(playerPed))
                             -- SetEntityVelocity(fishHandle, GetEntityCoords(playerPed))
                             -- TaskGoToEntity(fishHandle, playerPed, 1000, 20, 1.0, 0.0, 1)
-                            TaskGoToEntity(fishHandle, playerPed, 25, 100, 100, 2.0, 0)
+                            -- Citizen.InvokeNative(0x53187E563F938E76,1)
+                            TaskGoToEntity(fishHandle, playerPed, -1, 1.0, 1.5, 0.0, 0)
                         end
 
                         if IsControlJustReleased(0, GetHashKey("INPUT_GAME_MENU_OPTION")) then

@@ -1094,7 +1094,35 @@ Citizen.CreateThread(
                 print('SelectWeaponUnarmed')
                 TriggerEvent('chatMessage', 'CONTROL', {0, 0, 0}, 'SelectWeaponUnarmed')
             end
-            if IsControlJustPressed(0, 0x109E6852) then
+
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_UNARMED"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_MELEE"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_HANDGUN"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SHOTGUN"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SMG"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_AUTO_RIFLE"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SNIPER"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_HEAVY"), false)
+            DisableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SPECIAL"), false)
+
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_UNARMED"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_MELEE"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_HANDGUN"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SHOTGUN"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SMG"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_AUTO_RIFLE"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SNIPER"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_HEAVY"), true)
+           EnableControlAction(0, GetHashKey("INPUT_SELECT_WEAPON_SPECIAL"), true)
+
+
+
+           
+            if IsControlJustPressed(0, GetHashKey("INPUT_SELECT_WEAPON_HANDGUN")) then
+                print('SelectWeaponHandgun')
+                TriggerEvent('chatMessage', 'CONTROL', {0, 0, 0}, 'SelectWeaponHandgun')
+            end
+            if IsControlJustPressed(0, 0x109E6852) then       
                 print('SelectWeaponMelee')
                 TriggerEvent('chatMessage', 'CONTROL', {0, 0, 0}, 'SelectWeaponMelee')
             end

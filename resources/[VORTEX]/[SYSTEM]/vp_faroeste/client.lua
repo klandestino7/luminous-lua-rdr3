@@ -6,7 +6,12 @@ API = Tunnel.getInterface("API")
 
 
 
+RegisterCommand('dualgun', function()
+Citizen.InvokeNative(0x780C5B9AE2819807, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), 971340545)
 
+   -- GiveWeaponToPed_2(PlayerPedId(), GetHashKey("WEAPON_PISTOL_VOLCANIC"), 100, 0, 0,0)
+
+end)
 
 local keys = {
     ["S"] = 0xD27782E3,
@@ -35,6 +40,32 @@ RegisterCommand('onnui', function(source, args)
     SetNuiFocus(true,true)
 end)
 
+
+RegisterCommand("progtest2", function()
+    exports['vp_progbar']:Progress({
+        name = "creating_tents",
+        duration = 60*60,
+        label = "Armando Tenda",
+        useWhileDead = false,
+        canCancel = false,
+        controlDisables = {
+            disableMovement = true,
+            disableCarMovement = false,
+            disableMouse = false,
+            disableCombat = true,
+        },
+        animation = {
+            animDict = nil,
+            anim = nil,
+            flags = 49,
+        },
+        prop = {
+            model = nil,
+        }
+    }, function(status)
+    
+    end)
+end)
 
 -- Citizen.CreateThread(function()
 --     while true do
