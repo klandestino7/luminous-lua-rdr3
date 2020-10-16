@@ -20,13 +20,13 @@ local show_house_prompts_blocked = false
 
 local houses = {
     -- ["house:1"] = {"Mansão Braithwaite", 20.0, 1.0, vec3(1011.094, -1772.385, 47.592), 34.0},
-    ["house:1"] = {"Chalé Renegado", 20.0, 1.0, vec3(1370.606, -874.264, 70.132), 25.0},
-    ["house:2"] = {"Recanto Dormente", 20.0, 1.0, vec3(1135.113, -979.852, 69.398), 25.0},
-    ["house:3"] = {"Renascença Espaçosa", 20, 1.0, vec3(-1680.596, -338.923, 174.025), 20.0},
-    ["house:4"] = {"Refúgio Ensolarado", 20, 1.0, vec3(-1412.024, -2672.382, 42.239), 15.0},
-    ["house:5"] = {"Posto Manzanita", 20, 1.0, vec3(-1978.603, -1667.799, 118.181), 12.5},
-    ["house:6"] = {"A Vista da Baía", 20, 1.0, vec3(-690.097, 1044.061, 135.004), 18.0},
-    ["house:7"] = {"Aconchego Rochoso", 20, 1.0, vec3(900.425, 261.278, 116.005), 20.0}
+    ["house:1"] = {"Chalé Renegado"     , 200.0, 80.0, vec3(1370.606 , -874.264 , 70.132 ), 25.0},
+    ["house:2"] = {"Recanto Dormente"   , 200.0, 80.0, vec3(1135.113 , -979.852 , 69.398 ), 25.0},
+    ["house:3"] = {"Renascença Espaçosa", 200.0, 80.0, vec3(-1680.596, -338.923 , 174.025), 20.0},
+    ["house:4"] = {"Refúgio Ensolarado" , 200.0, 80.0, vec3(-1412.024, -2672.382, 42.239 ), 15.0},
+    ["house:5"] = {"Posto Manzanita"    , 200.0, 80.0, vec3(-1978.603, -1667.799, 118.181), 12.5},
+    ["house:6"] = {"A Vista da Baía"    , 200.0, 80.0, vec3(-690.097 , 1044.061 , 135.004), 18.0},
+    ["house:7"] = {"Aconchego Rochoso"  , 200.0, 80.0, vec3(900.425  , 261.278  , 116.005), 20.0}
 }
 
 local myhouseblips = {}
@@ -117,6 +117,7 @@ Citizen.CreateThread(
         end
     end
 )
+
 Citizen.CreateThread(
     function()
         initiatePrompt()
@@ -309,7 +310,7 @@ function initiateCameraAtCenter(coordsFrom, center, r)
                 EnableControlAction(0, 0xDFF812F9, true)
                 EnableControlAction(0, 0x07CE1E61, true)
                 EnableControlAction(0, 0xF84FA74F, true)
-                EnableControlAction(0, 0x7F8D09B8, true)
+                --EnableControlAction(0, 0x7F8D09B8, true)
 
                 if IsCamRendering(houseCam) and houseCam ~= nil then
                     if initialCam ~= nil then
