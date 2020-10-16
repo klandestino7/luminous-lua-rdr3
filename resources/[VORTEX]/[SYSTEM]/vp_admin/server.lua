@@ -96,7 +96,7 @@ RegisterCommand(
             end
             local coords = {}
             for coord in string.gmatch(fcoords or "0,0,0", "[^,]+") do
-                table.insert(coords, parseInt(coord))
+                table.insert(coords, tonumber(coord))
             end
             cAPI.SetPlayerPosition(source, coords[1] or 0, coords[2] or 0, coords[3] or 0)
         else
