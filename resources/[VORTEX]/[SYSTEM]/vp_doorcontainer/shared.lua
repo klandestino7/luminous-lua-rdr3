@@ -16,8 +16,8 @@ local doorStates = {
     -- HOUSE:2
     [3929468747] = {isOpen = false},
     -- HOUSE:3
-    [2847752952] = {isOpen = false, pair = 1963415953},
-    [1963415953] = {isOpen = false, pair = 2847752952},
+    [2847752952] = {isOpen = false},
+    [1963415953] = {isOpen = false},
     -- HOUSE:4
     [52014802] = {isOpen = false},
     -- HOUSE:5
