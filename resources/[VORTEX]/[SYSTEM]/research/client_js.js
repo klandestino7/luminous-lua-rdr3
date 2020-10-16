@@ -606,7 +606,7 @@ RegisterCommand('invinfo', (source, args) => {
     let b3 = new ArrayBuffer(512);
     let a3 = new DataView(b3);
 
-    let r2 = Citizen.invokeNative("0xCB5D11F9508A928D", 1, buffer2, a2, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), -1311702610, 1, 752097756)
+    let r2 = Citizen.invokeNative("0xCB5D11F9508A928D", 1, buffer2, a2, GetHashKey("UPGRADE_OFFHAND_HOLSTER"), 971340545, 1, 752097756)
 
     console.log(r2);
 

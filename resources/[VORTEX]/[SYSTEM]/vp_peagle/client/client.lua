@@ -144,7 +144,7 @@ function HandlePrompts()
             TriggerServerEvent("VP:PEAGLE:AddPombo")
             Wait(2500)
             DeleteEntity(pigeon)
-            RemoveBlip(blip)     
+            --RemoveBlip(blip)     
         end
     end
 end

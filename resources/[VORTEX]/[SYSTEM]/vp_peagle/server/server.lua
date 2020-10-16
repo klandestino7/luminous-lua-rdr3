@@ -70,7 +70,7 @@ AddEventHandler("VP:PEAGLE:SendMessage", function(source)
 
   local idcart = math.random(111,999)
   
-  local tplayer = API.getUserFromUserId(parseInt(tonumber(IdTarget))):getSource()
+  local tplayer = API.getUserFromUserId(tonumber(IdTarget)):getSource()
 
   local Mensagem = cAPI.prompt(_source, "Mensagem:", "")
 
