@@ -448,6 +448,20 @@ ItemList = {
     --     description = 'Composto explosivo cheio de pólvora em seu interior, quando aceso o pavio, explode em 1,5s após a queima.',
     --     stackSize = 3,
     -- },
+    ["thrown_bolas"] = {
+        type = "weapon",
+        name = "Bolas Arremessaveis",
+        weight = 0.8,
+        description = "Bola arremssavel",
+        stackSize = 2
+    },
+    ["lasso_reinforced"] = {
+        type = "weapon",
+        name = "Laço reforçado",
+        weight = 0.6,
+        description = "Laço Reforçado",
+        stackSize = 2
+    },
     ["thrown_molotov"] = {
         type = "weapon",
         name = "Molotov",
@@ -852,6 +866,13 @@ ItemList = {
     ["ammo_throwing_knives"] = {
         type = "ammo",
         name = "Facas Arremessáveis",
+        weight = 0.1,
+        description = "Um pequeno conjunto de facas arremessáveis, podem ser recuperadas após o lançamento.",
+        stackSize = 7
+    },
+    ["ammo_bolas"] = {
+        type = "ammo",
+        name = "Boolas Arremessáveis",
         weight = 0.1,
         description = "Um pequeno conjunto de facas arremessáveis, podem ser recuperadas após o lançamento.",
         stackSize = 7
