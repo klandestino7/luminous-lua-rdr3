@@ -218,10 +218,35 @@ function triggerUse(User, itemData)
         User:closeInventory()
     end
 
-    if itemId:find("_seed") then
+    if itemId:find("_seed") then        
         TriggerClientEvent("VP:FARM:StartPlacingSeed", source, itemId:sub(0, itemId:find("_") - 1))
         User:closeInventory()
         return false
+    end
+    
+    if itemId == "p_baitBread01x" then
+        TriggerClientEvent("redemrp_fishing:UseBait", source, itemId)
+        User:closeInventory()
+    end
+
+    if itemId == "p_baitCheese01x" then
+        TriggerClientEvent("redemrp_fishing:UseBait", source, itemId)
+        User:closeInventory()
+    end
+
+    if itemId == "p_baitCricket01x" then
+        TriggerClientEvent("redemrp_fishing:UseBait", source, itemId)
+        User:closeInventory()
+    end
+
+    if itemId == "p_FinisdFishlure01x" then
+        TriggerClientEvent("redemrp_fishing:UseBait", source, itemId)
+        User:closeInventory()
+    end
+
+    if itemId == "p_finishdcrawd01x" then
+        TriggerClientEvent("redemrp_fishing:UseBait", source, itemId)
+        User:closeInventory()
     end
 
     if itemId == "pigeonpost" then
