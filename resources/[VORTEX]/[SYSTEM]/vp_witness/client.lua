@@ -20,8 +20,8 @@ Citizen.CreateThread(
 )
 
 function CheckForHelpfullNpcs(playerPed)
-    if GetEntityHealth(playerPed) <= 0 then
-        if saviorHumanNpc == nil then
+    if saviorHumanNpc == nil then
+        if GetEntityHealth(playerPed) <= 0 then
             local playerPosition = GetEntityCoords(playerPed)
 
             local drugStorePosition, drugsStoreDistance = GetClosestDrugStore(playerPosition)
@@ -47,8 +47,8 @@ function CheckForHelpfullNpcs(playerPed)
                                             SetEntityAsMissionEntity(humanNpc, true, true)
                                             NetworkRequestControlOfEntity(humanNpc)
 
-                                            taskSequence = OpenSequenceTask()
-                                            TaskSetBlockingOfNonTemporaryEvents(0, true)
+                                            taskSequence = Citizen.InvokeNative("0xE8854A4326B9E12B", Citizen.PointerValueInt())
+                                            --TaskSetBlockingOfNonTemporaryEvents(0, true)
                                             TaskGoToEntity(0, playerPed, -1, 1.2, 1.5, 2.0, 0)
                                             TaskPickupCarriableEntity(0, playerPed)
                                             TaskPlaceCarriedEntityOnMount(0, playerPed, npcMount, 7)
@@ -57,11 +57,11 @@ function CheckForHelpfullNpcs(playerPed)
                                             TaskGoToCoordAnyMeansExtraParams(0, drugStorePosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
 
                                             TaskDumpCarriableFromParent(0, npcMount, playerPed)
-                                            Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
+                                            --Citizen.InvokeNative(0x92DB0739813C5186, 0, npcMount, -1, -1, 2.0, 1, 0, 0)
 
                                             TaskGoToCoordAnyMeansExtraParams(0, humanNpcPosition, 3.0, 0, false, 524311, -1.0, 0, 1101004800, 800, 1112014848)
 
-                                            TaskSetBlockingOfNonTemporaryEvents(0, false)
+                                            --TaskSetBlockingOfNonTemporaryEvents(0, false)
                                             CloseSequenceTask(taskSequence)
 
                                             TaskPerformSequence(humanNpc, taskSequence)
@@ -75,11 +75,12 @@ function CheckForHelpfullNpcs(playerPed)
                     end
                 end
             end
-        else
-            if GetSequenceProgress(saviorHumanNpc) == -1 then
-                saviorHumanNpc = nil
-                SetEntityAsMissionEntity(humanNpc, false, false)
-            end
+        end
+    else
+        if GetSequenceProgress(saviorHumanNpc) == -1 then
+            saviorHumanNpc = nil
+            SetEntityAsMissionEntity(humanNpc, false, false)
+            ClearSequenceTask(taskSequence)
         end
     end
 end
