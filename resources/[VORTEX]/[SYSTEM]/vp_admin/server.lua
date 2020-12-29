@@ -13,8 +13,9 @@ RegisterCommand(
     function(source)
         local User = API.getUserFromSource(source)
         local Character = User:getCharacter()
-        local model = json.decode(Character:getModel())
+        local model = Character:getModel()
         local clothes = Character:getClothes()
+
         TriggerClientEvent("VP:ADMIN:Model", source, model, clothes)
     end
 )

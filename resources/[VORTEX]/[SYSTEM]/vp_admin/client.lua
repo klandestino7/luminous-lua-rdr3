@@ -7,9 +7,10 @@ API = Tunnel.getInterface("API")
 RegisterNetEvent("VP:ADMIN:Model")
 AddEventHandler(
 	"VP:ADMIN:Model",
-	function(pedInfo, clothes)
+	function(pedModel, clothes)
 
-		if not cAPI.IsWanted() then
+		if not cAPI.IsWanted() then				
+			cAPI.SetPlayerPed(pedModel)			
 			cAPI.setPlayerAppearence(PlayerPedId())
 		else
 			TriggerEvent("VP:NOTIFY:Simple", "Você ainda está como procurado, não pode trocar de roupa. ", 10000)
