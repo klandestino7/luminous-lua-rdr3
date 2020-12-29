@@ -21,7 +21,9 @@ function API.getUserIdByIdentifiers(ids, name)
         return rows[1].user_id
     end
 
-    local rows = API_Database.query("FCRP/CreateUser", {identifier = ids[1], name = name})
+    local added      = os.date()
+
+    local rows = API_Database.query("FCRP/CreateUser", {identifier = ids[1], name = name, createdAt = added})
     if #rows > 0 then
         return rows[1].id
     end
@@ -116,8 +118,9 @@ end
 
 function API.isBanned(user_id)
     local rows = API_Database.query("FCRP/BannedUser", {user_id = user_id})
+    
     if #rows > 0 then
-        return tonumber(rows[1].banned)
+        return rows[1].banned
     else
         return false
     end
@@ -125,18 +128,23 @@ end
 
 function API.isWhitelisted(identifier)
     local rows = API_Database.query("FCRP/Whitelisted", {identifier = identifier})
-    return #rows > 0
+    
+    if #rows > 0 then        
+        return rows[1].whitelist
+    else
+        return false
+    end
 end
 
-function API.setAsWhitelisted(steamId, whitelisted)
+function API.setAsWhitelisted(user_id, whitelisted)
     if whitelisted then
-        if not API.isWhitelisted(steamId) then
-            API_Database.execute("AddIdentifierWhitelist", {identifier = steamId})
+        if not API.isWhitelisted(user_id) then
+            API_Database.execute("AddIdentifierWhitelist", {user_id = user_id})
             return true
         end
     else
-        if API.isWhitelisted(steamId) then
-            API_Database.execute("RemoveIdentifierWhitelist", {identifier = steamId})
+        if API.isWhitelisted(user_id) then
+            API_Database.execute("RemoveIdentifierWhitelist", {user_id = user_id})
             return true
         end
     end

@@ -8,30 +8,9 @@ RegisterNetEvent("VP:ADMIN:Model")
 AddEventHandler(
 	"VP:ADMIN:Model",
 	function(pedInfo, clothes)
-		local pModel = GetHashKey(pedInfo.model)
-		local pBodySize = tonumber(pedInfo.bodySize)
-		local pSkin = json.decode(pedInfo.modSkin)
-		local pFaceFeatures = json.decode(pedInfo.features)
-		local pScale = tonumber(pedInfo.pedSize)
-		local pClothing
-		if not cAPI.IsWanted() then
-			if json.decode(clothes).Outfit ~= nil then
-				if tonumber(json.decode(clothes).Outfit) <= 100 then
-					pClothing = tonumber(json.decode(clothes).Outfit)
-				end
-			else
-				pClothing = json.decode(clothes)
-			end
 
-			cAPI.SetPlayerPed(pModel)
-			Wait(130)
-			cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
-			cAPI.SetSkin(PlayerPedId(), pSkin)
-			Wait(300)
-			cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
-			Wait(30)
-			cAPI.SetPedScale(PlayerPedId(), pScale)
-			cAPI.SetPedClothing(PlayerPedId(), pClothing)
+		if not cAPI.IsWanted() then
+			cAPI.setPlayerAppearence(PlayerPedId())
 		else
 			TriggerEvent("VP:NOTIFY:Simple", "Você ainda está como procurado, não pode trocar de roupa. ", 10000)
 		end

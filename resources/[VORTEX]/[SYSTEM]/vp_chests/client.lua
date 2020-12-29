@@ -35,7 +35,7 @@ function createTempEntity(capacity)
     print(capacity)
     local forwardVector = GetEntityForwardVector(ped)
     local vec = GetEntityCoords(ped) + forwardVector * 3.0
-    tempEntity = CreateObject(getModelFromCapacity(capacity), vec, false, true, false)
+    tempEntity = CreateObject('P_TRUNK02X', vec, false, true, false)
     tempCapacity = capacity
     SetEntityAlpha(tempEntity, 110, false)
     print("createTempEntity")

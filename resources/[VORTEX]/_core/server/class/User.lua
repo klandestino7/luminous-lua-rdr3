@@ -97,6 +97,7 @@ function API.User(source, id, ipAddress)
 
     self.setCharacter = function(this, id)
         local charRow = API_Database.query("FCRP/GetCharacter", {charid = id})
+
         if #charRow > 0 then
             API.chars[id] = self:getId()
             local inv_query = API_Database.query("SELECT:inv_select_slots_and_capacity", {inv_id = "char:" .. id})
@@ -162,17 +163,17 @@ function API.User(source, id, ipAddress)
         local Character = self:getCharacter()
 
         local character_model = Character:getModel()
-        --   local character_skin = Character:getSkin()
 
-        local character_clothing = Character:getClothes()
+        local characters_appearence = Character:getCharacterAppearence()
+
+        --local character_clothing = Character:getClothes()
+
         local character_lastposition = Character:getLastPosition()
 
         local character_stats = Character:getCachedStats()
 
-        if json.decode(character_clothing).Outfit ~= nil then
-            cAPI.Initialize(self:getSource(), json.decode(character_model), tonumber(json.decode(character_clothing).Outfit), character_lastposition, character_stats)
-        else
-            cAPI.Initialize(self:getSource(), json.decode(character_model), character_clothing, character_lastposition, character_stats)
+        if characters_appearence ~= nil then
+            cAPI.Initialize(self:getSource(), character_model, characters_appearence, character_lastposition, character_stats)
         end
 
         -- cAPI.CWanted(Character:getWanted())
