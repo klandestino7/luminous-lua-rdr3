@@ -64,11 +64,15 @@ end
 
     --cAPI.SetPedBodyType(PlayerPedId(), pBodySize)    
 
-    cAPI.SetSkin(playerId, gCharAppearence.enabledComponents)
+    cAPI.SetSkin(playerId, gCharAppearence.enabledComponents)   
 
     cAPI.SetPedFaceFeature(playerId, gCharAppearence.faceFeatures)
     
     cAPI.SetPedScale(playerId, gCharAppearence.pedHeight)
+
+    if gCharAppearence.clothes ~= nil then
+        cAPI.SetSkin(playerId, gCharAppearence.clothes)   
+    end
  
 end
 

@@ -12,11 +12,7 @@ function connectUser(source, user_id)
     --     return
     -- end
 
-    local steamId = GetPlayerIdentifiers(source)[1]
-
-        
-
-
+    local steamId = GetPlayerIdentifiers(source)[1] 
 
     local User = API.User(source, user_id, GetPlayerEndpoint(source))
 

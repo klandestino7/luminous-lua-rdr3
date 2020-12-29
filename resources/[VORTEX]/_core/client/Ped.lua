@@ -13,13 +13,13 @@ function cAPI.SetPlayerPed(model)
     SetPlayerModel(PlayerId(), modelHash, true)
     NativeSetRandomOutfitVariation(PlayerPedId(SetPlayerPed))
 
-    while not NativeHasPedComponentLoaded(ped) do
-        Wait(10)
-    end
+    -- while not NativeHasPedComponentLoaded(ped) do
+    --     Wait(10)
+    -- end
 
     SetModelAsNoLongerNeeded(model)
 
-    -- Citizen.Wait(200)
+    Citizen.Wait(200)
 end
 
 function cAPI.SetPedScale(ped, num)
@@ -34,13 +34,8 @@ function cAPI.SetPedFaceFeature(ped, faceFeatures)
     faceFeatures = json.decode(faceFeatures)
 
     for index, floatValue in pairs(faceFeatures) do
-        -- Doesn't need to be requested !!!!!!
-
-        NativeSetPedFaceFeature(ped, floatValue.hash, floatValue.index)
-
-        while not NativeHasPedComponentLoaded(ped) do
-            Wait(10)
-        end
+        -- Doesn't need to be requested !!!!!!        
+        NativeSetPedFaceFeature(ped, floatValue.hash, tonumber(floatValue.index))
     end
 end
 
@@ -65,7 +60,7 @@ function cAPI.SetSkin(ped, componentArray)
 
     for index, componentHash in pairs(componentArray) do
         componentHash = tonumber(componentHash)
-
+        print(index)
         if componentHash ~= 0 then
             -- Doesn't need to be requested !!!!!!
             NativeSetPedComponentEnabled(ped, componentHash, true, true)
@@ -74,6 +69,8 @@ function cAPI.SetSkin(ped, componentArray)
         while not NativeHasPedComponentLoaded(ped) do
             Wait(10)
         end
+
+        SetModelAsNoLongerNeeded(componentHash)
     end
 end
 
