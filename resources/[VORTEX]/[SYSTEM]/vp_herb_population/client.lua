@@ -194,61 +194,6 @@ AddEventHandler(
     end
 )
 
-
-
-Citizen.CreateThread(
-	function()	
-		while true do
-			Citizen.Wait(0)
-
-			local size = GetNumberOfEvents(0)
-
-		
-			if size > 0 then
-				for i = 0, size - 1 do
-					local eventAtIndex = GetEventAtIndex(0, i)
-
-		
-
-					if eventAtIndex == 1352063587 then
-						local view = exports["research"]:DataViewNativeGetEventData(0, i, 4)
-						local pedInteracting = view["0"]
-						local containerEntity = view["2"]
-						local containerScenario = view["4"]
-						local isClosing = view["6"]
-						TriggerEvent("VP:EVENTS:PedInteractionRansackScenario", pedInteracting, containerEntity, containerScenario, isClosing)
-					elseif eventAtIndex == 1376140891 then
-						-- 1\0: Entity/Ped/Player Ped
-						-- 2\2: Entity/Ped carriable
-						-- 3\3: BOOL, used to determine theft?
-						--[[
-
-						]]
-						-- print("EVENT | PED_FINISHED_GATHERING_PED *totally not real name*")
-						local view = exports["research"]:DataViewNativeGetEventData(0, i, 3)
-						local ped = view["0"]
-						local entity = view["2"]
-						local bool_unk = view["4"]
-
-						-- print(ped, entity, bool_unk, IsEntityAPed(entity))
-						-- print(GetEntityModel(entity))
-
-						TriggerEvent("VP:EVENTS:PedFinishedGatheringEntity", ped, entity, bool_unk)
-					elseif eventAtIndex == 218595333 then
-					-- print("Horse broken")
-					end
-
-					-- if eventAtIndex == 2099179610 then
-					-- 	print("EVENT | Has looteable nearby?")
-					-- 	exports["research"]:DataViewNativeGetEventData(0, i, 2)
-					-- end
-				end
-			end
-		end
-	end
-)
-
-
 function NativeDeleteComposite(composite)
     Citizen.InvokeNative(0x5758B1EE0C3FD4AC, composite, 0)
 end
