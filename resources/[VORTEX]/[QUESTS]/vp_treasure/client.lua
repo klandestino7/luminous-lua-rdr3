@@ -1,18 +1,78 @@
-
-local Tunnel = module('_core', 'lib/Tunnel')
-local Proxy = module('_core', 'lib/Proxy')
-
-API = Proxy.getInterface('API')
-cAPI = Tunnel.getInterface('API')
-
 local blip 
 
 RegisterNetEvent('TREASURE:create')
-AddEventHandler('TREASURE:create', function(x,y,z)
+AddEventHandler('TREASURE:create', function(x,y,z,h)
+
 	TriggerEvent('VP:NOTIFY:Simple', 'Há um tesouro perdido no mapa, procure pela mancha vermelha.', 10000)
+
 	blip = Citizen.InvokeNative(0x45F13B7E0A15C880, 693035517, x, y, z, 150.0)	
 	Citizen.InvokeNative(0x9CB1A1623062F402, blip, 'Tesouro Perdido')		
+
+	createTempEntity( x, y, z, h)
+
 end)
+
+RegisterNetEvent("VP:CHESTS:StartPlayerPlacement")
+AddEventHandler(
+    "VP:CHESTS:StartPlayerPlacement",
+    function()
+        createTempEntity( x, y, z, h)
+    end
+)
+
+local closestChestId
+local renderedChests = {}
+
+function createTempEntity(x, y, z, h)
+    if closestChestId ~= nil then
+        DeleteEntity(closestChestId)
+    end
+    local vec = vector3(x, y, z)
+    closestChestId = CreateObject('P_TRUNK02X', vec, false, true, false)
+	SetEntityHeading(closestChestId, h)
+
+	insert.table(renderedChests, json.encode([closestChestId] = {"x"= x, "y"= y, "z"= z}))
+
+	print(json.encode(renderedChests))
+end
+
+
+
+
+
+Citizen.CreateThread(
+    function()
+        while true do
+			Citizen.Wait(0)
+			
+			if closestChestId ~= nil then
+				for chestId, chest in pairs(renderedChests) do
+					print(chestId, chest)
+				end
+                local ped = PlayerPedId()
+                local pCoords = GetEntityCoords(ped)
+
+                local x = closestChest.x
+                local y = closestChest.y
+                local z = closestChest.z
+                local dist = #(pCoords - vec3(x, y, z))
+
+                if dist > 1.5 then
+                    closestChestId = nil
+				else
+					
+                    if IsControlJustPressed(0, 0xCEFD9220) then -- E
+                    	print("Opened")
+                        TriggerServerEvent("VP:CHESTS:Open", closestChestId)
+                    end
+                end
+            end
+			-- drawTempEntity()
+			
+        end
+    end
+)
+
 
 RegisterNetEvent('TREASURE:createPedDefender')
 AddEventHandler('TREASURE:createPedDefender', function(x,y,z, animal, qtd)

@@ -1,9 +1,3 @@
-local Tunnel = module("_core", "lib/Tunnel")
-local Proxy = module("_core", "lib/Proxy")
-
-API = Proxy.getInterface("API")
-cAPI = Tunnel.getInterface("API")
-
 local toItem = {
     "AGARITA_DEF",
     ["ALASKAN_GINSENG_ROOT_DEF"] = "herb_alaskan_ginseng",
@@ -58,7 +52,7 @@ local toItem = {
     "TEXAS_BONNET_DEF",
     -- "TEXAS_BONNET_INTERACTABLE_DEF",
     "VIOLET_SNOWDROP_DEF",
-    "VULTURE_EGG_DEF",
+    ["VULTURE_EGG_DEF"] = "herb_e",
     ["WILD_CARROT_DEF"] = "herb_wild_carrot",
     ["WILD_FEVERFEW_DEF"] = "herb_wild_feverfew",
     ["WILD_MINT_DEF"] = "herb_wild_mint",
@@ -81,28 +75,23 @@ AddEventHandler(
         if not IsVectorIndexSuppressed(indexComposite, index) then
             local item = toItem[compositeTypeFormatted]
             if item ~= nil then
-                local User = API.getUserFromSource(_source)
-                local Character = User:getCharacter()
+                TriggerEvent("redemrp:getPlayerFromId", _source, function(player)
 
-                if Character == nil then
-                    return
-                end
+                    if player == nil then
+                        return
+                    end          
 
-                local Inventory = Character:getInventory()
-
-                if Inventory:addItem(item, 1) then
-                    SetVectorIndexSuppressed(indexComposite, index, true)
-
-                    if not User:hasInventoryOpen() then
-                        User:notify("item", item, 1)
+                    if player.getMaxWeight() >= (player.getWeight() + player.getInventoryItem(item).weight) then
+                        SetVectorIndexSuppressed(indexComposite, index, true)
+    
+                        player.addInventoryItem(item, 1)
+                    else
+                        TriggerClientEvent('mythic_notify:client:SendAlert',source,{type = 'error',text ='Sem espaço no aforje!',length=10000,style={ ['color'] = '#fff' }})
+  
+                    --  User:notify("error", "Sem espaço no aforje!")
+                        TriggerClientEvent("VP:HERB_POPULATION:ForceVectorIndexReload", _source, indexComposite, index)
                     end
-
-                    Character:varyExp(2)
-                    User:notify("xp", 2)
-                else
-                    User:notify("error", "Sem espaço no aforje!")
-                    TriggerClientEvent("VP:HERB_POPULATION:ForceVectorIndexReload", _source, indexComposite, index)
-                end
+                end)               
             end
         end
     end

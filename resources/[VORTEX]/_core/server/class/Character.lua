@@ -134,8 +134,32 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     end
 
     self.getModel = function()
-        return self:getData(self.id, "SkinMdf", nil)
+        local rows = API_Database.query("FCRP/GetCharModel", {charid = self:getId()})
+        if #rows > 0 then
+            return rows[1].model
+        else
+            return ""
+        end
     end
+
+    self.getCharacterAppearence = function()
+        local charRow = API_Database.query("FCRP/GetCharacterAppearence", {charid = self:getId()})
+        
+        if #charRow > 0 then
+            return charRow
+        else
+            return nil
+        end
+       
+    end
+
+    -- self.getCharOverlay = function()
+    --     return self:getData(self.id, "overlay", nil)
+    -- end
+
+    -- self.getCharFaceFeatures = function()
+    --     return self:getData(self.id, "faceFeatures", nil)
+    -- end
 
     self.getCharTable = function()
         return self:getData(self.id, "charTable", nil)
