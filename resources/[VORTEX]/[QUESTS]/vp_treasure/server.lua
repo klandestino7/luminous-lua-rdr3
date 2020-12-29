@@ -1,4 +1,8 @@
+local Tunnel = module("_core", "lib/Tunnel")
+local Proxy = module("_core", "lib/Proxy")
 
+API = Proxy.getInterface("API")
+cAPI = Tunnel.getInterface("API")
 
 local PlayerCount = 0
 local list = {}
@@ -104,54 +108,57 @@ AddEventHandler(
     local x = TREASURE[id][1]
     local y = TREASURE[id][2]
     local z = TREASURE[id][3]
-  
+    local Chest = API.getChestFromChestId(chest_id)
+
+    local inventory_capacity = 20 -- A mesma que a de cima
     local yram = math.random(2, 50)
     local xram = math.random(2, 20)
 
     local itensram = math.random(1, 6)
 
-    -- local parsed = {}
+    local parsed = {}
 
-    -- for itemId, itemAmount in pairs(inventory_items[itensram]) do
+    for itemId, itemAmount in pairs(inventory_items[itensram]) do
+      local i = math.random(112, 128)
+      local tries = 16
+      while parsed[i] ~= nil and tries > 0 do
+        i = math.random(112, 128)
+        tries = tries - 1
+      end
 
-    --   local i = math.random(112, 128)
-    --   local tries = 16
-    --   while parsed[i] ~= nil and tries > 0 do
-    --     i = math.random(112, 128)
-    --     tries = tries - 1
-    --   end
+      local itemData = API.getItemDataFromId(itemId)
 
-    --   local itemData = API.getItemDataFromId(itemId)
-
-    --   if itemData:getType() == "weapon" then
-    --     parsed[i] = {itemId, itemAmount, 0, 1}
-    --   else
-    --     parsed[i] = {itemId, itemAmount}
-    --   end
-    -- end
+      if itemData:getType() == "weapon" then
+        parsed[i] = {itemId, itemAmount, 0, 1}
+      else
+        parsed[i] = {itemId, itemAmount}
+      end
+    end
 
     chest_id = "e:" .. math.random(9999)
+    local chest_Inventory = API.Inventory("chest:" .. chest_id, 20, parsed)
+    chest_Inventory:setAutoSort(false)
 
-
+    local Chest = API.Chest(chest_id)
+    Chest:setPosition({x + xram, y + yram, z, 10.0})
+    Chest:setInventory(0, chest_Inventory)
+    Chest:cache() -- Se torna disponivel para sync com os clients
 
     bauId[chest_id] = true
  
 
-
     print('Tesouro Perdido Spawn ID'..chest_id)
-
-    TriggerClientEvent("TREASURE:create", -1, x, y, z, 10.0)
-
+    TriggerClientEvent("TREASURE:create", -1, x, y, z)
     for AnimalHash, Quantity in pairs(animals[math.random(1,5)]) do
       TriggerClientEvent("TREASURE:createPedDefender", GetHostId(), x + xram, y + yram, z, AnimalHash, Quantity)      
     end
-    
     TriggerEvent("TREASURE:timeCall")
   end
 )
 
-RegisterCommand('callbau', function(source, args)
+RegisterCommand('testtable', function()
 
+  print(chest_id)
 end)
 
 AddEventHandler(

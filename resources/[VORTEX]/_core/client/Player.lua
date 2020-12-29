@@ -1,32 +1,23 @@
-local gPedModel
-local gCharAppearence
-local gLastPosition
-local gStats
-
-function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
-    charAppearence = charAppearence[1] 
-
-    gPedModel = pedModel
-    gCharAppearence = charAppearence
-    gLastPosition = lastPosition
-    gStats = stats   
-
+function cAPI.Initialize(pedInfo, clothing, lastPosition, stats)
     local decodedLastPosition = json.decode(lastPosition)
     if decodedLastPosition.x ~= nil then
         decodedLastPosition = {decodedLastPosition.x, decodedLastPosition.y, decodedLastPosition.z}
     end
 
-   -- local pBodySize = charAppearence.bodySize
-    local pScale = charAppearence.pedSize
-    -- local pClothing
+    local pModel = pedInfo.model
+    local pBodySize = pedInfo.bodySize
+    local pSkin = json.decode(pedInfo.modSkin)
+    local pFaceFeatures = json.decode(pedInfo.features)
+    local pScale = pedInfo.pedSize
+    local pClothing
 
-    -- if type(clothing) ~= "string" then
-    --     if clothing <= 100 then
-    --         pClothing = clothing
-    --     end
-    -- else
-    --     pClothing = json.decode(clothing)
-    -- end
+    if type(clothing) ~= "string" then
+        if clothing <= 100 then
+            pClothing = clothing
+        end
+    else
+        pClothing = json.decode(clothing)
+    end
 
     local pStats = stats
 
@@ -38,11 +29,12 @@ function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
     )
 
     cAPI.replaceWeapons({})
-    
-    cAPI.SetPlayerPed(pedModel)
-
-    cAPI.setPlayerAppearence(PlayerPedId())
- --   cAPI.SetPedCloAthing(PlayerPedId(), pClothing)
+    cAPI.SetPlayerPed(pModel)
+    cAPI.SetPedBodyType(PlayerPedId(), pBodySize)
+    cAPI.SetSkin(PlayerPedId(), pSkin)
+    cAPI.SetPedFaceFeature(PlayerPedId(), pFaceFeatures)
+    cAPI.SetPedScale(PlayerPedId(), pScale)
+    cAPI.SetPedClothing(PlayerPedId(), pClothing)
 
     pHealth = pStats[1] or 250
     pStamina = pStats[2] or 34.0
@@ -57,21 +49,6 @@ function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")
 end
-
-
-
- function cAPI.setPlayerAppearence(playerId)
-
-    --cAPI.SetPedBodyType(PlayerPedId(), pBodySize)    
-
-    cAPI.SetSkin(playerId, gCharAppearence.enabledComponents)
-
-    cAPI.SetPedFaceFeature(playerId, gCharAppearence.faceFeatures)
-    
-    cAPI.SetPedScale(playerId, gCharAppearence.pedHeight)
- 
-end
-
 
 function cAPI.PlayerAsInitialized(bool)
     initializedPlayer = bool

@@ -14,10 +14,6 @@ function connectUser(source, user_id)
 
     local steamId = GetPlayerIdentifiers(source)[1]
 
-        
-
-
-
     local User = API.User(source, user_id, GetPlayerEndpoint(source))
 
     API.users[user_id] = User
@@ -45,14 +41,13 @@ Queue.OnReady(
 
                 local steamId = ids[1]
 
-                local playerName = GetPlayerName(source)
+                if API.isWhitelisted(steamId) then
+                    local playerName = GetPlayerName(source)
 
-                local user_id = API.getUserIdByIdentifiers(ids, playerName)
+                    local user_id = API.getUserIdByIdentifiers(ids, playerName)
 
-                if user_id then
-                    if API.isWhitelisted(steamId) then
-                        if not API.isBanned(user_id) then
-                            
+                    if user_id then
+                        if API.isBanned(user_id) == 0 then
                             API.onFirstSpawn[user_id] = true
 
                             TriggerEvent("API:playerJoin", user_id, source, playerName)
@@ -61,11 +56,11 @@ Queue.OnReady(
                             allow("ERROR: Você está banido!")
                         end
                     else
-                        allow("ERROR: Você não tem permissão. \n Passe seu ID a adminstração: " .. user_id .. " \n discord.gg/nf4Qbdm")
-                        end
+                        allow("ERROR: Falha ao encontrar ou criar o seu usúario, contate a STAFF!")
+                    end
                 else
-                    allow("ERROR: Falha ao encontrar ou criar o seu usúario, contate a STAFF!")
-                end                
+                    allow("ERROR: Você não tem whitelist. HEX: " .. ids[1] .. " | discord.gg/nf4Qbdm")
+                end
             end
         )
     end

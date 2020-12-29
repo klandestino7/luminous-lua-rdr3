@@ -9,7 +9,7 @@ DBConnect = {
 	host = "127.0.0.1",
 	database = "redm",
 	user = "root",
-	password = ""
+	password = "@#$#@%aihsdj"
 }
 
 local db_drivers = {}
@@ -149,20 +149,19 @@ Citizen.CreateThread(
 )
 
 ----------	USER QUERIES -------------
-API_Database.prepare("FCRP/CreateUser", "INSERT INTO users(identifier, name, createdAt, banned) VALUES(@identifier, @name, @createdAt, 0); SELECT LAST_INSERT_ID() AS id")
+API_Database.prepare("FCRP/CreateUser", "INSERT INTO users(identifier, name, banned) VALUES(@identifier, @name, 0); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare("FCRP/SelectUser", "SELECT * from users WHERE identifier = @identifier")
 API_Database.prepare("FCRP/BannedUser", "SELECT banned from users WHERE user_id = @user_id")
 API_Database.prepare("FCRP/SetBanned", "UPDATE users SET banned = 1, reason = @reason WHERE user_id = @user_id")
 API_Database.prepare("FCRP/UnBan", 'UPDATE users SET banned = 0, reason = "" WHERE user_id = @user_id')
-API_Database.prepare("FCRP/Whitelisted", "SELECT whitelist from users WHERE identifier = @identifier")
-API_Database.prepare("AddIdentifierWhitelist", "UPDATE users SET whitelist = 1 where user_id = @user_id")
-API_Database.prepare("RemoveIdentifierWhitelist", "UPDATE users SET whitelist = 0 where user_id = @user_id")
+API_Database.prepare("FCRP/Whitelisted", "SELECT * from whitelist WHERE identifier = @identifier")
+API_Database.prepare("AddIdentifierWhitelist", "INSERT INTO whitelist(identifier) VALUES(@identifier)")
+API_Database.prepare("RemoveIdentifierWhitelist", "DELETE FROM whitelist WHERE identifier = @identifier")
 
 -------- CHARACTER QUERIES -----------
 API_Database.prepare("FCRP/CreateCharacter", "INSERT INTO characters(user_id, characterName, groups, age) VALUES (@user_id, @charName, 0,@charAge); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare("FCRP/GetCharacters", "SELECT * from characters WHERE user_id = @user_id")
 API_Database.prepare("FCRP/GetCharacter", "SELECT * from characters WHERE charid = @charid")
-API_Database.prepare("FCRP/GetCharacterAppearence", "SELECT * from characters_appearence WHERE charid = @charid")
 API_Database.prepare("FCRP/DeleteCharacter", "DELETE FROM characters WHERE charid = @charid")
 API_Database.prepare("FCRP/GetUserIdByCharId", "SELECT user_id from characters WHERE charid = @charid")
 API_Database.prepare("FCRP/GetCharNameByCharId", "SELECT characterName from characters WHERE charid = @charid")
@@ -176,11 +175,10 @@ API_Database.prepare("FCRP/GetCData", "CALL getData(@target, @charid, @key)")
 API_Database.prepare("FCRP/RemCData", "CALL remData(@target, @key, @charid)")
 
 API_Database.prepare("FCRP/SetSkinData", "UPDATE characters SET SkinMdf = @value WHERE charid = @charid")
-API_Database.prepare("FCRP/GetCharModel", "SELECT model from characters_appearence WHERE charid = @charid")
 
 API_Database.prepare("FCRP/SetCWeaponData", "UPDATE characters SET weapons = @weapons WHERE charid = @charid")
-API_Database.prepare("FCRP/SetPlayerDeath", "UPDATE characters SET is_dead = @is_dead WHERE charid = @charid")
 
+API_Database.prepare("FCRP/SetPlayerDeath", "UPDATE characters SET is_dead = @is_dead WHERE charid = @charid")
 API_Database.prepare("FCRP/GetPlayerDeath", "SELECT is_dead from characters WHERE charid = @charid")
 
 -------- FORT DATATABLE QUERIES --------

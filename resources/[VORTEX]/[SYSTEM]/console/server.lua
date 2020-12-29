@@ -22,30 +22,30 @@ commands.commands = function(source, args)
 end
 
 commands.addwhitelist = function(source, args)
-    local userId = args[1]
+    local steamId = args[1]
 
-    if userId then
-        if API.setAsWhitelisted(userId, true) then
-            commands.print(source, name .. " [" .. userId .. "] Adicionado a whitelist!")
+    if steamId then
+        if API.setAsWhitelisted(steamId, true) then
+            commands.print(source, name .. " [" .. steamId .. "] Adicionado a whitelist!")
         else
-            commands.print(source, name .. " [" .. userId .. "] Já possui whitelist")
+            commands.print(source, name .. " [" .. steamId .. "] Já possui whitelist")
         end
     else
-        commands.print(source, "Syntax: addwhitelist <userId>")
+        commands.print(source, "Syntax: addwhitelist <steamId>")
     end
 end
 
 commands.removewhitelist = function(source, args)
-    local userId = args[1]
+    local steamId = args[1]
 
-    if userId then
-        if API.setAsWhitelisted(userId, false) then
-            commands.print(source, name .. " [" .. userId .. "] Removido da whitelist!")
+    if steamId then
+        if API.setAsWhitelisted(steamId, false) then
+            commands.print(source, name .. " [" .. steamId .. "] Removido da whitelist!")
         else
-            commands.print(source, name .. " [" .. userId .. "] Não possui whitelist")
+            commands.print(source, name .. " [" .. steamId .. "] Não possui whitelist")
         end
     else
-        commands.print(source, "Syntax: removewhitelist <userId>")
+        commands.print(source, "Syntax: removewhitelist <steamId>")
     end
 end
 

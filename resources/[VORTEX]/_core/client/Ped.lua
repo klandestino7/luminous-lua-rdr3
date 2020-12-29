@@ -11,11 +11,11 @@ function cAPI.SetPlayerPed(model)
     end
 
     SetPlayerModel(PlayerId(), modelHash, true)
-    NativeSetRandomOutfitVariation(PlayerPedId(SetPlayerPed))
+    NativeSetRandomOutfitVariation(PlayerPedId())
 
-    while not NativeHasPedComponentLoaded(ped) do
-        Wait(10)
-    end
+    -- while not NativeHasPedComponentLoaded(ped) do
+    --     Wait(10)
+    -- end
 
     SetModelAsNoLongerNeeded(model)
 
@@ -31,12 +31,54 @@ function cAPI.SetPedScale(ped, num)
 end
 
 function cAPI.SetPedFaceFeature(ped, faceFeatures)
-    faceFeatures = json.decode(faceFeatures)
+    local gameFaceFeatures = {
+        0x84D6,
+        0x3303,
+        0x2FF9,
+        0x4AD1,
+        0xC04F,
+        0xB6CE,
+        0x2844,
+        0xED30,
+        0x6A0B,
+        0xABCF,
+        0x358D,
+        0x8D0A,
+        0xEBAE,
+        0x1DF6,
+        0x3C0F,
+        0xC3B2,
+        0xE323,
+        0x8B2B,
+        0x1B6B,
+        0xEE44,
+        0xD266,
+        0xA54E,
+        0xDDFB,
+        0x6E7F,
+        0x3471,
+        0x03F5,
+        0x34B1,
+        0xF156,
+        0x561E,
+        0xF065,
+        0xAA69,
+        0x7AC3,
+        0x410D,
+        0x1A00,
+        0x91C1,
+        0xC375,
+        0xBB4D,
+        0xB0B0,
+        0x5D16
+    }
 
     for index, floatValue in pairs(faceFeatures) do
+        local faceFeatureHash = gameFaceFeatures[index]
+
         -- Doesn't need to be requested !!!!!!
 
-        NativeSetPedFaceFeature(ped, floatValue.hash, floatValue.index)
+        NativeSetPedFaceFeature(ped, faceFeatureHash, floatValue)
 
         while not NativeHasPedComponentLoaded(ped) do
             Wait(10)
@@ -61,19 +103,14 @@ function cAPI.SetPedBodyType(ped, bodyTypeHash)
 end
 
 function cAPI.SetSkin(ped, componentArray)
-    componentArray = json.decode(componentArray)
+    -- componentArray = json.decode(componentArray)
 
-    for index, componentHash in pairs(componentArray) do
+    for _, componentHash in pairs(componentArray) do
         componentHash = tonumber(componentHash)
 
-        if componentHash ~= 0 then
-            -- Doesn't need to be requested !!!!!!
-            NativeSetPedComponentEnabled(ped, componentHash, true, true)
-        end
+        -- Doesn't need to be requested !!!!!!
 
-        while not NativeHasPedComponentLoaded(ped) do
-            Wait(10)
-        end
+        NativeSetPedComponentEnabled(ped, componentHash, true, true)
     end
 end
 
@@ -203,7 +240,7 @@ end
 function NativeSetPedComponentEnabled(ped, componentHash, immediately, isMp)
     local categoryHash = NativeGetPedComponentCategory(not IsPedMale(ped), componentHash)
     -- print(componentHash, categoryHash, NativeGetMetapedType(ped))
-    
+
     Citizen.InvokeNative(0xD3A7B003ED343FD9, ped, componentHash, immediately, isMp, true)
     NativeUpdatePedVariation(ped)
 end

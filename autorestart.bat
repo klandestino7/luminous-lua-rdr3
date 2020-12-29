@@ -1,1 +1,1 @@
-..\FXServer.exe +exec server.cfg +set gamename rdr3 +exec license.cfg 
+..\run.cmd +exec server.cfg +set gamename rdr3 +exec license.cfg 

@@ -64,50 +64,50 @@ AddEventHandler(
             vec3(1061.10, 1591.20, 369.36 - 0.98)
         }
 
-        -- if characterArray ~= nil then
-        --     for index, values in pairs(characterArray) do
-        --         local skinMdf = json.decode(values.SkinMdf)
+        if characterArray ~= nil then
+            for index, values in pairs(characterArray) do
+                local skinMdf = json.decode(values.SkinMdf)
 
-        --         local pModel = GetHashKey(skinMdf.model)
-        --         local pBodySize = tonumber(skinMdf.bodySize)
-        --         local pSkin = json.decode(skinMdf.modSkin)
-        --         local pFaceFeatures = json.decode(skinMdf.features)
-        --         local pScale = tonumber(skinMdf.pedSize)
-        --      --   local pClothing = json.decode(values.clothes)
-        --         local pClothing
+                local pModel = GetHashKey(skinMdf.model)
+                local pBodySize = tonumber(skinMdf.bodySize)
+                local pSkin = json.decode(skinMdf.modSkin)
+                local pFaceFeatures = json.decode(skinMdf.features)
+                local pScale = tonumber(skinMdf.pedSize)
+             --   local pClothing = json.decode(values.clothes)
+                local pClothing
 
-        --         if json.decode(values.clothes).Outfit ~= nil then 
-        --             if tonumber(json.decode(values.clothes).Outfit) <= 100 then
-        --                 pClothing = tonumber(json.decode(values.clothes).Outfit)
-        --             end                   
-        --         else
-        --             pClothing = json.decode(values.clothes)    
-        --         end
+                if json.decode(values.clothes).Outfit ~= nil then 
+                    if tonumber(json.decode(values.clothes).Outfit) <= 100 then
+                        pClothing = tonumber(json.decode(values.clothes).Outfit)
+                    end                   
+                else
+                    pClothing = json.decode(values.clothes)    
+                end
             
-        --         if not HasModelLoaded(pModel) then
-        --             RequestModel(pModel)
-        --             while not HasModelLoaded(pModel) do
-        --                 Citizen.Wait(10)
-        --             end
-        --         end
+                if not HasModelLoaded(pModel) then
+                    RequestModel(pModel)
+                    while not HasModelLoaded(pModel) do
+                        Citizen.Wait(10)
+                    end
+                end
 
-        --         local ped = CreatePed(pModel, fakePedCoords[index], 350.77, 0, 0)
+                local ped = CreatePed(pModel, fakePedCoords[index], 350.77, 0, 0)
 
-        --         Citizen.Wait(100)
+                Citizen.Wait(100)
 
-        --         cAPI.SetPedBodyType(ped, pBodySize)
+                cAPI.SetPedBodyType(ped, pBodySize)
 
-        --         cAPI.SetSkin(ped, pSkin)
+                cAPI.SetSkin(ped, pSkin)
 
-        --         cAPI.SetPedFaceFeature(ped, pFaceFeatures) 
+                cAPI.SetPedFaceFeature(ped, pFaceFeatures) 
                 
-        --         cAPI.SetPedScale(ped, pScale)
+                cAPI.SetPedScale(ped, pScale)
 
-        --         cAPI.SetPedClothing(ped, pClothing)
+                cAPI.SetPedClothing(ped, pClothing)
 
-        --         table.insert(fakePeds, ped)
-        --     end
-        -- end
+                table.insert(fakePeds, ped)
+            end
+        end
     end
 )
 
