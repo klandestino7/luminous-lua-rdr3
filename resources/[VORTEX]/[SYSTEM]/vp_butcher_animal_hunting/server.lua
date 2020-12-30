@@ -68,7 +68,7 @@ AddEventHandler(
         local choosenAnimalModel = sellables[r]["model"]
         -- local choosenAnimalName = sellables[r]['name']
 
-        -- Character:setData(Character:getId(), "charTable", "caca", choosenAnimalModel)
+        -- Character:setData(Character:getId(), "metaData", "caca", choosenAnimalModel)
 
         -- TriggerClientEvent("VP:ANIMAL_HUNTING:taskMission", _source, choosenAnimalModel)
         -- TriggerClientEvent('VP:ANIMAL_HUNTING:AnimalHuntingPromptEnabled', _source, false, )
@@ -86,7 +86,7 @@ AddEventHandler(
     function(entType, entModel, entity, quality)
         local _source = source
 
-        -- Character:getData(Character:getId(), "charTable", "caca")
+        -- Character:getData(Character:getId(), "metaData", "caca")
 
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
@@ -125,7 +125,7 @@ AddEventHandler(
     function(User, characterId)
         local _source = User:getSource()
 
-        -- local quest_huntThisAnimal = Character:getData(Character:getId(), "charTable", "caca")
+        -- local quest_huntThisAnimal = Character:getData(Character:getId(), "metaData", "caca")
         -- for i = 1, #sellables, 1 do
         --     if sellables[i].model == quest_huntThisAnimal then
         --         Citizen.Wait(2500)

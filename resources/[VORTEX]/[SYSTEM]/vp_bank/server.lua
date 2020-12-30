@@ -15,14 +15,14 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Inventory = User:getCharacter():getInventory()
-        local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
+        local call = json.decode(Character:getData(Character:getId(), "metaData", "banco"))
 
         if amount ~= nil then
             if _amount == nil or _amount <= 0 or _amount > tonumber(call) then
                 User:notify("error", "Quantia inválida!")
                 return
             else
-                Character:setData(Character:getId(), "charTable", "banco", tonumber(call - (amount * 100)))
+                Character:setData(Character:getId(), "metaData", "banco", tonumber(call - (amount * 100)))
                 Wait(100)
                 Inventory:addItem("money", amount * 100)
                 User:notify("item", "money", amount)
@@ -45,13 +45,13 @@ AddEventHandler(
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
         local Inventory = User:getCharacter():getInventory()
-        local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
+        local call = json.decode(Character:getData(Character:getId(), "metaData", "banco"))
         if amount ~= nil then
             if _amount == nil or _amount <= 0 or _amount > Inventory:getItemAmount("money") then
                 User:notify("error", "Quantia inválida!")
                 return
             else
-                Character:setData(Character:getId(), "charTable", "banco", tonumber(call + (amount * 100)))
+                Character:setData(Character:getId(), "metaData", "banco", tonumber(call + (amount * 100)))
                 Wait(100)
                 Inventory:removeItem(-1, "money", amount * 100)
                 User:notify("item", "money", -(amount))
@@ -71,7 +71,7 @@ AddEventHandler(
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-        local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
+        local call = json.decode(Character:getData(Character:getId(), "metaData", "banco"))
         TriggerClientEvent("currentbalance1", _source, tonumber(call / 100), Character:getName())
     end
 )
@@ -83,7 +83,7 @@ AddEventHandler(
         local _source = source
         local User = API.getUserFromSource(_source)
         local Character = User:getCharacter()
-        local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
+        local call = json.decode(Character:getData(Character:getId(), "metaData", "banco"))
         TriggerClientEvent("currentbalance1", _source, tonumber(call / 100), Character:getName())
     end
 )
@@ -112,7 +112,7 @@ AddEventHandler(
         local Character = User:getCharacter()
         local name = Character:getName()
         local Inventory = User:getCharacter():getInventory()
-        local call = json.decode(Character:getData(Character:getId(), "charTable", "banco"))
+        local call = json.decode(Character:getData(Character:getId(), "metaData", "banco"))
         local tplayer = API.getUserFromUserId(parseInt(id)):getSource()
         local tname = tplayer:getName()
         if amount ~= nil then
@@ -120,7 +120,7 @@ AddEventHandler(
                 User:notify("error", "Quantia inválida!")
                 return
             else
-                Character:setData(Character:getId(), "charTable", "banco", tonumber(call - (amount * 100)))
+                Character:setData(Character:getId(), "metaData", "banco", tonumber(call - (amount * 100)))
                 Wait(100)
                 Inventory:removeItem(-1, "money", amount * 100)
                 User:notify("item", "money", -(amount))

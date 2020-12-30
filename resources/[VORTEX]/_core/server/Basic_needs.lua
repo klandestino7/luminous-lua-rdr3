@@ -9,7 +9,7 @@ function API.varyHunger(variation)
         return
     end
 
-    local hunger = json.decode(Character:getData(Character:getId(), 'charTable', 'hunger'))
+    local hunger = json.decode(Character:getData(Character:getId(), 'metaData', 'hunger'))
     hunger = tonumber(hunger)
     if hunger then
         local was_starving = hunger >= 100
@@ -26,7 +26,7 @@ function API.varyHunger(variation)
         elseif hunger > 100 then
             hunger = 100
         end
-        Character:setData(Character:getId(), 'charTable', 'hunger', tonumber(math.floor(hunger * 100) / 100))
+        Character:setData(Character:getId(), 'metaData', 'hunger', tonumber(math.floor(hunger * 100) / 100))
         TriggerClientEvent('crz_inventory:updateNeeds', _source, tonumber(math.floor(hunger * 100) / 100), 0)
     end
 end
@@ -45,7 +45,7 @@ function API.varyThirst(variation)
         return
     end
 
-    local thirst = json.decode(Character:getData(Character:getId(), 'charTable', 'thirst'))
+    local thirst = json.decode(Character:getData(Character:getId(), 'metaData', 'thirst'))
     thirst = tonumber(thirst)
     if thirst then
         local was_starving = thirst >= 100
@@ -63,7 +63,7 @@ function API.varyThirst(variation)
             thirst = 100
         end
 
-        Character:setData(Character:getId(), 'charTable', 'thirst', tonumber(math.floor(thirst * 100) / 100))
+        Character:setData(Character:getId(), 'metaData', 'thirst', tonumber(math.floor(thirst * 100) / 100))
         TriggerClientEvent('crz_inventory:updateNeeds', _source, 0, tonumber(math.floor(thirst * 100) / 100))
     end
 end

@@ -96,7 +96,7 @@ function API.Posse(id, charid, name, members)
                         UserMember:setPosse(nil)
                         UserMember:notify('O bando em qual você estava foi deletado!')
                     else
-                        API.Character:remData(memberCharId, 'charTable', 'posse')
+                        API.Character:remData(memberCharId, 'metaData', 'posse')
                     end
                 end
 
@@ -107,7 +107,7 @@ function API.Posse(id, charid, name, members)
                 if UserMember ~= nil and UserMember:getCharacter():getId() == charid then
                     UserMember:setPosse(nil)
                 else
-                    API.Character:remData(charid, 'charTable', 'posse')
+                    API.Character:remData(charid, 'metaData', 'posse')
                 end
 
                 self:notifyMembers('CharId ' .. charid .. ' saiu do bando!')

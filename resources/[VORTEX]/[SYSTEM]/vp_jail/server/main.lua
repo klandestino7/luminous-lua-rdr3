@@ -115,7 +115,7 @@ function unjail(target)
 
 	cAPI.SetPedModel(User:getSource(), json.decode(Character:getModel()))
 	Wait(1000)
-	cAPI.setDados(User:getSource(), Character:getCharTable())
+	cAPI.setDados(User:getSource(), Character:getmetaData())
 	Wait(500)                
 	cAPI.SetPedClothinges(User:getSource(), Character:getClothes())
 

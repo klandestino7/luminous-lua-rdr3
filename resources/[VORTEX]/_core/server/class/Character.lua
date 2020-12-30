@@ -161,8 +161,8 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
     --     return self:getData(self.id, "faceFeatures", nil)
     -- end
 
-    self.getCharTable = function()
-        return self:getData(self.id, "charTable", nil)
+    self.getmetaData = function()
+        return self:getData(self.id, "metaData", nil)
     end
 
     self.getClothes = function()
@@ -171,8 +171,8 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
     --[[
         Targets:
-            charTable, groups, clothes
-        Keys From charTable:
+            metaData, groups, clothes
+        Keys From metaData:
             hunger, thirst, health
         Keys From Groups:
             admin, user, vip1, vip2
@@ -349,24 +349,24 @@ function API.Character(id, charName, level, xp, role, charAge, inventory)
 
     -- self.savePosition = function(this, x, y, z)
     --     local encoded = json.encode({x, y, z})
-    --     self:setData(self:getId(), "charTable", "position", encoded)
+    --     self:setData(self:getId(), "metaData", "position", encoded)
     -- end
 
     self.getLastPosition = function(this)
-        local lastPositionFromDb = self:getData(self.id, "charTable", "position")
+        local lastPositionFromDb = self:getData(self.id, "metaData", "position")
         return lastPositionFromDb ~= nil and json.decode(lastPositionFromDb) or {-329.9, 775.11, 121.74}
     end
 
     self.getCachedStats = function()
-        local c = self:getData(self.id, "charTable", "stats")
+        local c = self:getData(self.id, "metaData", "stats")
         return c ~= nil and json.decode(c) or {}
     end
 
     self.cacheStats = function(this, position, health, stamina, healthCore, staminaCore)
         local encodedStats = json.encode({health, stamina, healthCore, staminaCore})
         local encodedPosition = json.encode(position)
-        self:setData(self:getId(), "charTable", "stats", encodedStats)
-        self:setData(self:getId(), "charTable", "position", encodedPosition)
+        self:setData(self:getId(), "metaData", "stats", encodedStats)
+        self:setData(self:getId(), "metaData", "position", encodedPosition)
     end
 
     return self

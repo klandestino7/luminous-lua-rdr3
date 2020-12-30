@@ -45,7 +45,7 @@ function API.User(source, id, ipAddress)
     --             level (int)
     --             xp (int)
     --             groups (table)
-    --             charTable (table)
+    --             metaData (table)
     --             clothes (table)
     --             weapons (table)
     --          }
@@ -70,9 +70,9 @@ function API.User(source, id, ipAddress)
 
             Character = API.Character(charId, characterName, 1, 0, 0, age, API.Inventory("char:" .. charId, nil, nil))
             --    Character:createHorse("A_C_Donkey_01", "Burrinho")
-            -- Character:setData(charId, "charTable", "hunger", 0)
-            -- Character:setData(charId, "charTable", "thirst", 0)
-            -- Character:setData(charId, "charTable", "banco", 0)
+            -- Character:setData(charId, "metaData", "hunger", 0)
+            -- Character:setData(charId, "metaData", "thirst", 0)
+            -- Character:setData(charId, "metaData", "banco", 0)
 
             API_Database.execute(
                 "FCRP/Inventory",
@@ -127,7 +127,7 @@ function API.User(source, id, ipAddress)
                 TriggerClientEvent("VP:HORSE:SetHorseInfo", self:getSource(), "A_C_Horse_MP_Mangy_Backup", "Pangaré", {0x106961A8, 0x508B80B9})
             end
 
-            local posse = API.getPosse(tonumber(json.decode(charRow[1].charTable).posse))
+            local posse = API.getPosse(tonumber(json.decode(charRow[1].metaData).posse))
             if posse ~= nil then
                 self.posseId = posse:getId()
             end
@@ -278,9 +278,9 @@ function API.User(source, id, ipAddress)
         self.posseId = id
         TriggerClientEvent("VP:POSSE:SetPosse", self:getSource(), id)
         if id ~= nil then
-            self:getCharacter():setData(self:getCharacter():getId(), "charTable", "posse", id)
+            self:getCharacter():setData(self:getCharacter():getId(), "metaData", "posse", id)
         else
-            self:getCharacter():remData(self:getCharacter():getId(), "charTable", "posse")
+            self:getCharacter():remData(self:getCharacter():getId(), "metaData", "posse")
         end
     end
 

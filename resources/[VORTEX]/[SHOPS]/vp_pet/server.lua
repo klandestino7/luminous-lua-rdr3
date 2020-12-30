@@ -28,7 +28,7 @@ AddEventHandler(
         local Character = User:getCharacter()
         local Inventory = User:getCharacter():getInventory()
         local u_level = User:getCharacter():getLevel()
-        local _resul = Character:getData(Character:getId(), "charTable", "dog")
+        local _resul = Character:getData(Character:getId(), "metaData", "dog")
 
         if Inventory:getItemAmount("money") < tonumber(_price * 100) then
             User:notify("error", "Dinheiro insuficiente!")
@@ -45,13 +45,13 @@ AddEventHandler(
 
         if _resul == nil then
             Inventory:removeItem(-1, "money", tonumber(_price * 100))
-            Character:setData(Character:getId(), "charTable", "dog", _model)
+            Character:setData(Character:getId(), "metaData", "dog", _model)
             User:notify("success", "Você comprou um novo animal de estimação.")
         else
-            Character:remData(Character:getId(), "charTable", "dog")
+            Character:remData(Character:getId(), "metaData", "dog")
             Wait(500)
             Inventory:removeItem(-1, "money", tonumber(_price * 100))
-            Character:setData(Character:getId(), "charTable", "dog", _model)
+            Character:setData(Character:getId(), "metaData", "dog", _model)
             User:notify("success", "Você comprou um novo animal de estimação.")
         end
     end
@@ -69,7 +69,7 @@ AddEventHandler(
             return
         end
         
-        local Hasdogs = Character:getData(Character:getId(), "charTable", "dog")
+        local Hasdogs = Character:getData(Character:getId(), "metaData", "dog")
 
         if Hasdogs ~= nil then
             local dog = Hasdogs
