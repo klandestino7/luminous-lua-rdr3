@@ -60,7 +60,6 @@ function cAPI.SetSkin(ped, componentArray)
 
     for index, componentHash in pairs(componentArray) do
         componentHash = tonumber(componentHash)
-        print(index)
         if componentHash ~= 0 then
             -- Doesn't need to be requested !!!!!!
             NativeSetPedComponentEnabled(ped, componentHash, true, true)
