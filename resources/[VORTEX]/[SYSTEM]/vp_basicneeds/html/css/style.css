@@ -1,26 +1,15 @@
-@font-face {
-	font-family: crock;
-	src: url(../assets/crock.ttf);
-}
 
-@font-face {
-	font-family: robotoslab;
-	src: url(../assets/robotoslab.ttf);	
 
-}
 body {
 	overflow: hidden;
 	user-select: none;
-	background-color: blue;
-	margin: 0;
-	
+	margin: 0;	
 	height: 100%;
 	width: 100%;	
 }
 
 
 #boxhud{
-	position:absolute;
 	bottom: 10px;
 	width: auto;
 	height: auto;
@@ -28,10 +17,9 @@ body {
 }
 
 #hudsocial {
-	left:2.0em;
+	margin-left:0.2em;
 	color: white;
-	height:100%;
-	width: 100%;
+	height:30px;
 	display:flex;
 	flex-direction: row;
     flex-wrap: wrap;
@@ -43,10 +31,12 @@ body {
 }
 
 
-/* 
+
 .hudac {
 	margin-left:0.8vw;
 }
+
+/*
 
 .hud1 {
 	margin-left:2.0em;
@@ -91,60 +81,56 @@ body {
 
 #progcircle1 {
 	position: relative;
-	margin-top: -1.75vw;
 	width:2.2vw;
 }
 
 #progcircle2 {
 	position: relative;
-	margin-top: -1.75vw;
 	width:2.2vw;
 }
 
 #progcircle3 {
 	position: relative;
-	margin-top: -1.75vw;
 	width:2.2vw;
 }
 
 #progcircle4 {
 	position: relative;
-	margin-top: -1.75vw;
 	width:2.2vw;
 }
 
 
-#hudsocial #health i {
+#hudsocial #health .img {
+	width:2.2vw;
+	height:2.2vw;
 	background-image: url(../assets/health.png);
 	background-size: contain;
 	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
 }
 
 
-#hudsocial #hunger i {
+#hudsocial #hunger .img {
 	background-image: url(../assets/hunger.png);
 	background-size: contain;
 	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
+	width:2.2vw;
+	height:2.2vw;
 }
 
-#hudsocial #thirst i {
+#hudsocial #thirst .img {
 	background-image: url(../assets/thirst.png);
 	background-size: contain;
 	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
+	width:2.2vw;
+	height:2.2vw;
 }
 
-#hudsocial #talk i {
+#hudsocial #talk .img {
 	background-image: url(../assets/talk.png);
 	background-size: contain;
 	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
+	width:2.2vw;
+	height:2.2vw;
 }
 
 
@@ -220,54 +206,64 @@ body {
 	bottom: 5px;
 	width: auto;
 	height: auto;
+	display:none;
+	flex-direction: row;
+	align-items: center;
 }
 
  .infos {
-	left: 3em;
+	margin-left: 0.8em;
 	display:flex;
-	flex-direction: row;
+	flex-direction: column;
 }
 
+.infos .divisor {
+	display:flex;
+	flex-direction: row;
+	height:20px;
+	width:fit-content;
+}
+
+.divisor div {
+	display:flex;
+	height:100%;
+	align-items: center;
+	margin-right: 7px;
+	
+}
 
 .clock {
-	bottom: 2.0%;
-	left: 9.5%;
-	width: 15.5%;
 	height: 15.5px;
-	padding-top: 5px;
+	margin-right: 3px;
 }
 
 .time {
 	color: white;
-	width: 14.2%;
 	font-size: 14px;
 	font-weight: bold;
 	font-family: crock; 
 }
 
 .compas { 
-	width: 15%;
 	height: 15px;
-	padding-top: 5px;
+	margin-right: 3px;
 }
 
 .compass {
 	color: white;
-	width: 14.2%;
 	font-size: 14px;
 	font-weight: bold;
 	font-family: crock; 	
 }
 
 .world {
-	width: 15%;
+	
+	margin-right: 3px;
 	height: 15px;
-	padding-top: 5px;
 }
 
 .location {
 	color: green;
-	width: 14.2%;
 	font-size: 14px;
 	font-weight: bold;
 	font-family: crock; 
@@ -275,9 +271,9 @@ body {
 
 
 .thermo {
-	width: 15.5%;
-	height: 15.5px;
-	padding-top: 5px;
+	
+	margin-right: 3px;	
+	height: 15px;	
 }
 
 .hudcomp {
@@ -288,11 +284,9 @@ body {
 }
 
 .voiceType{
-	position:absolute;
-	bottom: 5px;
-	left: 3em;
+	margin-left: 0.8em;
 	height: 30px;
-	width: 0.7vh
+	width: 0.7vh;
 }
 
 .voice-block {
@@ -302,18 +296,15 @@ body {
 }
 
 [data-voicetype="1"] {
-	position:absolute;
-	top: 66.6%;
+	margin-top: 100%;
 }
 
 [data-voicetype="2"] {
-	position:absolute;
-	top: 33.3%;
+	margin-top: 66.6%;
 }
 
 [data-voicetype="3"] {
-	position:absolute;
-	top: 0%;
+	margin-top: 33.3%;
 }
 
 .voice-block.active {

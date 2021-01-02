@@ -1,6 +1,5 @@
 let ativo = false;
 let ativo2 = true;
-$('#container').fadeIn(500);
 
 function mounthud() {
     ativo2 = false
@@ -67,17 +66,16 @@ window.addEventListener('message', function (event) {
             $('#progcircle3').removeClass('pulse');
         }
 
-    } else if (event.data.action == "talking") {
-        bar4.animate(1.0);
-    } else if (event.data.action == "notTalking") {
-        bar4.animate(0.0);
     } else if (event.data.action == "isMounted") {
         mounthud();
     } else if (event.data.action == "notMounted") {
         NOmounthud();
     } else if (event.data.action == "showHud") {
         $('#container').fadeIn(500);
-        
+        setTimeout(() => { $('#container').css('display', 'flex'); }, 100);        
+    } else if (event.data.action == "hideHud") {
+        $('#container').fadeOut(500);
+       // setTimeout(() => { $('#container').css('display', 'none'); }, 500);        
     }
 
     switch (event.data.action) {
