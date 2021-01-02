@@ -1,3 +1,6 @@
+local gHunger = 0.0
+local gThirst = 0.0
+
 function API.varyHunger(variation)
     local _source = source
     local User = API.getUserFromSource(_source)
@@ -11,6 +14,7 @@ function API.varyHunger(variation)
 
     local hunger = json.decode(Character:getData(Character:getId(), 'metaData', 'hunger'))
     hunger = tonumber(hunger)
+
     if hunger then
         local was_starving = hunger >= 100
         hunger = hunger + variation
@@ -26,12 +30,15 @@ function API.varyHunger(variation)
         elseif hunger > 100 then
             hunger = 100
         end
-        Character:setData(Character:getId(), 'metaData', 'hunger', tonumber(math.floor(hunger * 100) / 100))
-        TriggerClientEvent('crz_inventory:updateNeeds', _source, tonumber(math.floor(hunger * 100) / 100), 0)
+        gHunger = tonumber(math.floor(hunger * 100) / 100)
+
+        Character:setData(Character:getId(), 'metaData', 'hunger', gHunger)        
+        updateSocialNeeds(_source, _source)
     end
 end
 
 function API.varyThirst(variation)
+    
     local _source = source
     local User = API.getUserFromSource(_source)
 
@@ -47,6 +54,7 @@ function API.varyThirst(variation)
 
     local thirst = json.decode(Character:getData(Character:getId(), 'metaData', 'thirst'))
     thirst = tonumber(thirst)
+
     if thirst then
         local was_starving = thirst >= 100
         thirst = thirst + variation
@@ -63,7 +71,14 @@ function API.varyThirst(variation)
             thirst = 100
         end
 
-        Character:setData(Character:getId(), 'metaData', 'thirst', tonumber(math.floor(thirst * 100) / 100))
-        TriggerClientEvent('crz_inventory:updateNeeds', _source, 0, tonumber(math.floor(thirst * 100) / 100))
+        gThirst = tonumber(math.floor(thirst * 100) / 100)
+
+        Character:setData(Character:getId(), 'metaData', 'thirst', gThirst)
+        updateSocialNeeds(_source, _source)
     end
+end
+
+function updateSocialNeeds(src)
+    local _source = src
+    TriggerClientEvent('BasicNeeds.update', _source, gHunger, gThirst)
 end

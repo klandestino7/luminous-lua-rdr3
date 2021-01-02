@@ -56,6 +56,10 @@ function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
 
     TriggerServerEvent("VP:RESPAWN:CheckDeath")
     TriggerServerEvent("API:pre_OnUserCharacterInitialization")
+    
+    if not cAPI.isStartedNeeds() then
+        cAPI.startNeeds()
+    end
 end
 
 
