@@ -76,7 +76,7 @@ Citizen.CreateThread(
                 DisplayRadar(true)
                 SendNUIMessage(
                     {
-                        action = "notMounted"
+                        action = "isMounted"
                     }
                 )
             end
@@ -134,6 +134,7 @@ local location = {}
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(500)
+        
         local player = PlayerPedId()
         local stamina = GetAttributeCoreValue(player,1)
         local temptemp = GetTemperatureAtCoords(GetEntityCoords(player))

@@ -53,11 +53,14 @@ Citizen.CreateThread(
 
             if IsPedOnMount(PlayerPedId()) then
                 N_0x8bc7c1f929d07bf3(474191950)
-                ShowPlayerCores(false) -- player core
-               ---Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+           --   ShowPlayerCores(false) -- player core
+                Citizen.InvokeNative(0x50C803A4CD5932C5, false)
+               Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
             else
-                ShowPlayerCores(false) -- player core
-                --Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+              -- ShowPlayerCores(false) -- player core
+                Citizen.InvokeNative(0x50C803A4CD5932C5, false)
+
+                Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
                 N_0x4cc5f2fc1332577f(474191950)
             end
 
@@ -81,8 +84,8 @@ Citizen.CreateThread(
             end
 
             Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
-            DisplayRadar(true)
-            DisplayHud(true)
+          --  DisplayRadar(true)
+         --   DisplayHud(true)
             -- Citizen.InvokeNative(0xC65A45D4453C2627, 704572841, "HUD_PAGE_RADAR", 1, 1, 0, 1)
         end
     end

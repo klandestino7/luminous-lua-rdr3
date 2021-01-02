@@ -11,34 +11,47 @@
 body {
 	overflow: hidden;
 	user-select: none;
-}
-
-#container {
-	position: absolute;
+	background-color: blue;
+	margin: 0;
+	
 	height: 100%;
 	width: 100%;	
-	display:none;
 }
+
 
 #boxhud{
 	position:absolute;
-	bottom:1.2vw;
-	left:-1.8vw;
+	bottom: 10px;
+	width: auto;
+	height: auto;
+	left: 3em;
 }
 
-#hudsocial {	
+#hudsocial {
+	left:2.0em;
 	color: white;
 	height:100%;
 	width: 100%;
+	display:flex;
 	flex-direction: row;
     flex-wrap: wrap;
-	position:relative;
 	text-shadow:
 		-0.5px -0.5px 0 #000,
 		0.5px -0.5px 0 #000,
 		-0.5px 0.5px 0 #000,
 		0.5px 0.5px 0 #000;
 }
+
+
+/* 
+.hudac {
+	margin-left:0.8vw;
+}
+
+.hud1 {
+	margin-left:2.0em;
+} */
+
 
 .pulse {
 	-webkit-align-items: center;
@@ -101,6 +114,41 @@ body {
 }
 
 
+#hudsocial #health i {
+	background-image: url(../assets/health.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:2.2vw;
+	padding-top:2.2vw;
+}
+
+
+#hudsocial #hunger i {
+	background-image: url(../assets/hunger.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:2.2vw;
+	padding-top:2.2vw;
+}
+
+#hudsocial #thirst i {
+	background-image: url(../assets/thirst.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:2.2vw;
+	padding-top:2.2vw;
+}
+
+#hudsocial #talk i {
+	background-image: url(../assets/talk.png);
+	background-size: contain;
+	background-repeat:no-repeat;
+	padding-right:2.2vw;
+	padding-top:2.2vw;
+}
+
+
+/* 
 @media only screen and (min-width: 1440px) {
 	#boxhud{
 		position:absolute;
@@ -165,90 +213,21 @@ body {
 	}
 
   }
+ */
 
-
-.hudac {
-	margin-left:1.0vw;
+#container{
+	position:absolute;
+	bottom: 5px;
+	width: auto;
+	height: auto;
 }
 
-.hud1 {
-	margin-left:2.0vw;
+ .infos {
+	left: 3em;
+	display:flex;
+	flex-direction: row;
 }
 
-
-
-#hudsocial #health i {
-	background-image: url(../assets/health.png);
-	background-size: contain;
-	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
-}
-
-
-#hudsocial #hunger i {
-	background-image: url(../assets/hunger.png);
-	background-size: contain;
-	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
-}
-
-#hudsocial #thirst i {
-	background-image: url(../assets/thirst.png);
-	background-size: contain;
-	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
-}
-
-#hudsocial #talk i {
-	background-image: url(../assets/talk.png);
-	background-size: contain;
-	background-repeat:no-repeat;
-	padding-right:2.2vw;
-	padding-top:2.2vw;
-}
-
-.compas { 
-	bottom: 0.5%;
-	left: 9.75%;
-	width: 15%;
-	height: 15px;
-	padding-top: 5px;
-	position: absolute;
-}
-
-.compass {
-	bottom: 0.4%;
-	left: 17.8%;
-	color: white;
-	width: 14.2%;
-	font-size: 14px;
-	font-weight: bold;
-	position: absolute;
-	font-family: crock; 	
-}
-
-.world {
-	bottom: 0.5%;
-	left: 13.75%;
-	width: 15%;
-	height: 15px;
-	padding-top: 5px;
-	position: absolute;
-}
-
-.location {
-	bottom: 0.4%;
-	left: 21.8%;
-	color: green;
-	width: 14.2%;
-	font-size: 14px;
-	font-weight: bold;
-	position: absolute;
-	font-family: crock; 
-}
 
 .clock {
 	bottom: 2.0%;
@@ -256,25 +235,87 @@ body {
 	width: 15.5%;
 	height: 15.5px;
 	padding-top: 5px;
-	position: absolute;
 }
 
 .time {
-	bottom: 1.9%;
-	left: 17.8%;
 	color: white;
 	width: 14.2%;
 	font-size: 14px;
 	font-weight: bold;
-	position: absolute;
 	font-family: crock; 
 }
 
+.compas { 
+	width: 15%;
+	height: 15px;
+	padding-top: 5px;
+}
+
+.compass {
+	color: white;
+	width: 14.2%;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: crock; 	
+}
+
+.world {
+	width: 15%;
+	height: 15px;
+	padding-top: 5px;
+}
+
+.location {
+	color: green;
+	width: 14.2%;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: crock; 
+}
+
+
 .thermo {
-	bottom: 2.0%;
-	left: 12.35%;
 	width: 15.5%;
 	height: 15.5px;
 	padding-top: 5px;
-	position: absolute;
+}
+
+.hudcomp {
+	color: white;
+	font-family: RDRLino-Regular;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.voiceType{
+	position:absolute;
+	bottom: 5px;
+	left: 3em;
+	height: 30px;
+	width: 0.7vh
+}
+
+.voice-block {
+    height: 0.7vh;
+	width: 0.7vh;	
+    background-color: #535050;
+}
+
+[data-voicetype="1"] {
+	position:absolute;
+	top: 66.6%;
+}
+
+[data-voicetype="2"] {
+	position:absolute;
+	top: 33.3%;
+}
+
+[data-voicetype="3"] {
+	position:absolute;
+	top: 0%;
+}
+
+.voice-block.active {
+    background:#ffffff;
 }

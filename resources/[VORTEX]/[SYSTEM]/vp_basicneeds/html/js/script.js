@@ -1,5 +1,6 @@
 let ativo = false;
-let ativo2 = false;
+let ativo2 = true;
+$('#container').fadeIn(500);
 
 function mounthud() {
     ativo2 = false
@@ -7,10 +8,9 @@ function mounthud() {
         $('#hudsocial').fadeOut(500);
         setTimeout(() => {
             $('#hudsocial').fadeIn(500)
-            $('#hudsocial').css('display', 'flex');
-            $('.hud1').css('margin-left', '1.0vw');
-            $('#boxhud').css('left', '0.5vw');
-            $('#boxhud').css('bottom', '1.0vw');
+            $('#hudsocial').css('display', 'flex');    
+            $('.hud1').css('margin-left', '1.0em');     
+            $('#boxhud').css('bottom', '0.8em');
         }, 1000);
         ativo = true
     }
@@ -21,10 +21,11 @@ function NOmounthud() {
     if (ativo2 == false) {
         $('#hudsocial').fadeOut(500);
         setTimeout(() => {
-            $('#hudsocial').fadeIn(500)
+            $('#hudsocial').fadeIn(500);
             $('#hudsocial').css('display', 'block');
-            $('.hud1').css('margin-left', '2.0vw');
-            $('#boxhud').css('left', '-1.0vw');
+            $('.hud1').css('margin-left', '2.0em');     
+            $('#boxhud').css('bottom', '4.0em');
+            $('#boxhud').css('left', '-1.8em');
         }, 1000);
         ativo2 = true
     }
@@ -51,8 +52,6 @@ window.addEventListener('message', function (event) {
 
         let thirstValue = event.data.thirst / 100;        
         
-        console.log(thirstValue)
-
         bar2.animate(max - hungerValue);
         if ((max - hungerValue) <= 0.20) {
             $('#progcircle2').addClass('pulse');
@@ -78,6 +77,7 @@ window.addEventListener('message', function (event) {
         NOmounthud();
     } else if (event.data.action == "showHud") {
         $('#container').fadeIn(500);
+        
     }
 
     switch (event.data.action) {
@@ -105,37 +105,41 @@ window.addEventListener('message', function (event) {
 });
 var bar1 = new ProgressBar.Circle(progcircle1, {
     strokeWidth: 10,
+    trailColor: 'rgba(0,0,0,0.2)',
+    trailWidth: 10,
     easing: 'easeInOut',
     duration: 500,
     color: 'rgba(245, 19, 0,1)',
-    trailWidth: 0,
     svgStyle: null
 });
 
 var bar2 = new ProgressBar.Circle(progcircle2, {
     strokeWidth: 10,
+    trailColor: 'rgba(0,0,0,0.2)',
+    trailWidth: 10,
     easing: 'easeInOut',
     duration: 500,
     color: 'rgba(255,255,255,0.8)',
-    trailWidth: 0,
     svgStyle: null
 });
 
 var bar3 = new ProgressBar.Circle(progcircle3, {
     strokeWidth: 10,
+    trailColor: 'rgba(0,0,0,0.2)',
+    trailWidth: 10,
     easing: 'easeInOut',
     duration: 500,
     color: 'rgba(255,255,255,0.8)',
-    trailWidth: 0,
     svgStyle: null
 });
 
 var bar4 = new ProgressBar.Circle(progcircle4, {
     strokeWidth: 10,
+    trailColor: 'rgba(0,0,0,0.2)',
+    trailWidth: 10,
     easing: 'easeInOut',
     duration: 500,
     color: 'rgba(125,255,125,0.8)',
-    trailWidth: 0,
     svgStyle: null
 });
 
