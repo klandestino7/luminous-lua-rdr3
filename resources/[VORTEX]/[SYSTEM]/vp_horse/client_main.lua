@@ -35,6 +35,8 @@ function SetHorseInfo(horse_model, horse_name, horse_components)
     horseComponents = horse_components
 end
 
+
+
 RegisterNetEvent("VP:HORSE:SetHorseInfo")
 AddEventHandler("VP:HORSE:SetHorseInfo", SetHorseInfo)
 
@@ -55,7 +57,7 @@ function InitiateHorse(atCoords)
         end
 
         if horseModel == nil and horseName == nil then
-            horseModel = "A_C_Horse_Turkoman_Gold"
+            horseModel = "A_C_Horse_MP_Mangy_Backup"
             horseName = "Pangaré"
         end
     end
@@ -145,14 +147,6 @@ function InitiateHorse(atCoords)
 
     cAPI.SetPlayerHorse(entity)
 
-    if horseModel == "A_C_Horse_MP_Mangy_Backup" then
-        NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
-        NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
-        PromptSetEnabled(prompt_inventory, false)
-    else
-        PromptSetEnabled(prompt_inventory, true)
-    end
-
     Citizen.InvokeNative(0x283978A15512B2FE, entity, true)
 
     -- SetVehicleHasBeenOwnedByPlayer(playerHorse, true)
@@ -161,7 +155,7 @@ function InitiateHorse(atCoords)
 
     CreatePrompts(PromptGetGroupIdForTargetEntity(entity))
 
-    if horseComponents ~= nil then
+    if json.encode(horseComponents) ~= '[]' then
         for _, componentHash in pairs(horseComponents) do
             NativeSetPedComponentEnabled(entity, tonumber(componentHash))
         end
@@ -171,6 +165,17 @@ function InitiateHorse(atCoords)
 
     SetPedConfigFlag(entity, 297, true) -- Enable_Horse_Leadin
 
+    if horseModel == "A_C_Horse_MP_Mangy_Backup" then
+        NativeSetPedComponentEnabled(entity, 0x106961A8) --sela
+        --NativeSetPedComponentEnabled(entity, 0x20AA8620) --bag        
+        NativeSetPedComponentEnabled(entity, 0x508B80B9) --blanket
+        PromptSetEnabled(prompt_inventory, false)
+
+        print("SET SADDLE" .. entity)
+    else
+        PromptSetEnabled(prompt_inventory, true)
+    end
+    
     initializing = false
 
     -- Citizen.InvokeNative(0x307A3247C5457BDE, horseEntity, "HorseSpeedValue", 8)
@@ -198,6 +203,22 @@ function InitiateHorse(atCoords)
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseCoat", GetHashKey('COAT_CHOCR'))
     -- Citizen.InvokeNative(0x8538F1205D60ECA6, horseEntity, "HorseGender", GetHashKey('HORSE_GENDER_FEMALE'))
 end
+
+Citizen.CreateThread(function()
+    while true do
+
+        if cAPI.GetPlayerHorse() ~= nil then
+            local getHorseMood = Citizen.InvokeNative(0x42688E94E96FD9B4, cAPI.GetPlayerHorse(), 3, 0, Citizen.ResultAsFloat())
+
+            if getHorseMood >= 0.02 then
+                Citizen.InvokeNative(0x06D26A96CA1BCA75, cAPI.GetPlayerHorse(), 3, PlayerPedId())
+                Citizen.InvokeNative(0xA1EB5D029E0191D3, cAPI.GetPlayerHorse(), 3, 0.99)
+                print("ENTITY MOOD: " .. cAPI.GetPlayerHorse(), getHorseMood)
+            end
+        end
+        Citizen.Wait(1000)                
+    end
+end) 
 
 function SetHorseComponentEnabled(hash)
     local model2 = GetHashKey(tonumber(hash))
@@ -353,7 +374,7 @@ function CreatePrompts(prompt_group)
     if prompt_brush ~= nil then
         PromptDelete(prompt_brush)
     end
-
+    
     prompt_inventory = PromptRegisterBegin()
     PromptSetControlAction(prompt_inventory, 0x5966D52A)
     PromptSetText(prompt_inventory, CreateVarString(10, "LITERAL_STRING", "Abrir Aforje"))
@@ -551,11 +572,16 @@ Citizen.CreateThread(
 
                 local dist = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(playerHorse))
 
-                if dist > 1.5 then
-                    PromptSetEnabled(prompt_inventory, false)
-                else
-                    PromptSetEnabled(prompt_inventory, true)
+                if horseModel ~= "A_C_Horse_MP_Mangy_Backup" then
+                    if dist > 1.5 then
+                        PromptSetEnabled(prompt_inventory, false)
+                    else
+                        PromptSetEnabled(prompt_inventory, true)
+                    end
                 end
+
+
+           --     GetPedComponentAtIndex(playerHorse, )
             end
         end
     end
