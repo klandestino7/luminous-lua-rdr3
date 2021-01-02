@@ -1,8 +1,8 @@
 local Tunnel = module("_core", "lib/Tunnel")
 local Proxy = module("_core", "lib/Proxy")
 
-API = Tunnel.getInterface("API")
 cAPI = Proxy.getInterface("API")
+API = Tunnel.getInterface("API")
 
 local displayBankBlips = true
 local enableBankingGui = true -- Enables the banking GUI (Default: true) // MAY HAVE SOME ISSUES

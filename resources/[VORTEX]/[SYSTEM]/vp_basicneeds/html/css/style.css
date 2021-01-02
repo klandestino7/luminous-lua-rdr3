@@ -209,3 +209,72 @@ body {
 	padding-right:2.2vw;
 	padding-top:2.2vw;
 }
+
+.compas { 
+	bottom: 0.5%;
+	left: 9.75%;
+	width: 15%;
+	height: 15px;
+	padding-top: 5px;
+	position: absolute;
+}
+
+.compass {
+	bottom: 0.4%;
+	left: 17.8%;
+	color: white;
+	width: 14.2%;
+	font-size: 14px;
+	font-weight: bold;
+	position: absolute;
+	font-family: crock; 	
+}
+
+.world {
+	bottom: 0.5%;
+	left: 13.75%;
+	width: 15%;
+	height: 15px;
+	padding-top: 5px;
+	position: absolute;
+}
+
+.location {
+	bottom: 0.4%;
+	left: 21.8%;
+	color: green;
+	width: 14.2%;
+	font-size: 14px;
+	font-weight: bold;
+	position: absolute;
+	font-family: crock; 
+}
+
+.clock {
+	bottom: 2.0%;
+	left: 9.5%;
+	width: 15.5%;
+	height: 15.5px;
+	padding-top: 5px;
+	position: absolute;
+}
+
+.time {
+	bottom: 1.9%;
+	left: 17.8%;
+	color: white;
+	width: 14.2%;
+	font-size: 14px;
+	font-weight: bold;
+	position: absolute;
+	font-family: crock; 
+}
+
+.thermo {
+	bottom: 2.0%;
+	left: 12.35%;
+	width: 15.5%;
+	height: 15.5px;
+	padding-top: 5px;
+	position: absolute;
+}

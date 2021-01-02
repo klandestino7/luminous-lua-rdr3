@@ -6,12 +6,24 @@
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,thin,italic,mediumitalic,bold"
 		title="roboto">
-	<script src="js/request.js" type="text/javascript"></script>
-	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	
+	<script src="js/request.js" type="text/javascript"></script>
 </head>
 
 <body id="body">
+	
+	<div>
+		<img class="thermo" color="white" src="assets/thermo.svg"></img>
+		<div class="hudcomp"></div>
+		<img class="clock" color="white" src="assets/time.svg"></img>
+		<div class="time">12:00</div>
+		<img class="world" color="white" src="assets/world.svg"></img>
+		<div class="location">Null</div>
+		<img class="compas" color="white" src="assets/compass.svg"></img>
+		<div class="compass">Null</div>
+	</div>
+
 	<div id="container">
 		<div id="boxhud">
 			<div id="hudsocial">
@@ -38,116 +50,7 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		let ativo = false;
-		let ativo2 = false;
-		function mounthud() {
-			ativo2 = false
-			if (ativo == false) {
-				$('#hudsocial').fadeOut(500);
-				setTimeout(() => {
-					$('#hudsocial').fadeIn(500)
-					$('#hudsocial').css('display', 'flex');
-					$('.hud1').css('margin-left', '1.0vw');
-					$('#boxhud').css('left', '0.5vw');
-					$('#boxhud').css('bottom', '1.0vw');
-				}, 1000);
-				ativo = true
-			}
-		}
-
-		function NOmounthud() {
-			ativo = false;
-			if (ativo2 == false) {
-				$('#hudsocial').fadeOut(500);
-				setTimeout(() => {
-					$('#hudsocial').fadeIn(500)
-					$('#hudsocial').css('display', 'block');
-					$('.hud1').css('margin-left', '2.0vw');
-					$('#boxhud').css('left', '-1.0vw');
-				}, 1000);
-				ativo2 = true
-			}
-		}
-
-		function addpulse() {
-			$('#progcircle1').addClass('pulse');
-		}
-
-		window.addEventListener('message', function (event) {
-			if (event.data.action == "changeHealth") {
-				bar1.animate(event.data.health / 150);
-				if ((event.data.health / 150) <= 0.20) {
-					$('#progcircle1').addClass('pulse');
-				} else {
-					$('#progcircle1').removeClass('pulse');
-				}
-			} else if (event.data.action == "changeHunger") {
-				let max = 1.0
-				let myValue = event.data.fome / 100;
-				bar2.animate(max - myValue);
-				if ((max - myValue) <= 0.20) {
-					$('#progcircle2').addClass('pulse');
-				} else {
-					$('#progcircle2').removeClass('pulse');
-				}
-			} else if (event.data.action == "changeThirst") {
-				let max = 1.0
-				let myValue = event.data.sede / 100;
-				bar3.animate(max - myValue);
-				if ((max - myValue) <= 0.20) {
-					$('#progcircle3').addClass('pulse');
-				} else {
-					$('#progcircle3').removeClass('pulse');
-				}
-			} else if (event.data.action == "talking") {
-				bar4.animate(1.0);
-			} else if (event.data.action == "notTalking") {
-				bar4.animate(0.0);
-			} else if (event.data.action == "isMounted") {
-				mounthud();
-			} else if (event.data.action == "notMounted") {
-				NOmounthud();
-			} else if (event.data.action == "showHud") {
-				$('#container').fadeIn(500);
-			}
-		});
-		var bar1 = new ProgressBar.Circle(progcircle1, {
-			strokeWidth: 10,
-			easing: 'easeInOut',
-			duration: 500,
-			color: 'rgba(245, 19, 0,1)',
-			trailWidth: 0,
-			svgStyle: null
-		});
-
-		var bar2 = new ProgressBar.Circle(progcircle2, {
-			strokeWidth: 10,
-			easing: 'easeInOut',
-			duration: 500,
-			color: 'rgba(255,255,255,0.8)',
-			trailWidth: 0,
-			svgStyle: null
-		});
-
-		var bar3 = new ProgressBar.Circle(progcircle3, {
-			strokeWidth: 10,
-			easing: 'easeInOut',
-			duration: 500,
-			color: 'rgba(255,255,255,0.8)',
-			trailWidth: 0,
-			svgStyle: null
-		});
-
-		var bar4 = new ProgressBar.Circle(progcircle4, {
-			strokeWidth: 10,
-			easing: 'easeInOut',
-			duration: 500,
-			color: 'rgba(125,255,125,0.8)',
-			trailWidth: 0,
-			svgStyle: null
-		});
-	</script>
+	<script src="js/script.js" type="text/javascript"></script>
 
 </body>
 

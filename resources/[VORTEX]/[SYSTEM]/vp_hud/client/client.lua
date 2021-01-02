@@ -53,11 +53,11 @@ Citizen.CreateThread(
 
             if IsPedOnMount(PlayerPedId()) then
                 N_0x8bc7c1f929d07bf3(474191950)
-                --   ShowPlayerCores(false) -- player core
-                Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+                ShowPlayerCores(false) -- player core
+               ---Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
             else
-                --    ShowPlayerCores(false) -- player core
-                ----   Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
+                ShowPlayerCores(false) -- player core
+                --Citizen.InvokeNative(0xD4EE21B7CC7FD350, false) -- horse core
                 N_0x4cc5f2fc1332577f(474191950)
             end
 
