@@ -272,7 +272,7 @@ RegisterCommand(
                     local CharacterTarget = UserTarget:getCharacter()
                     if CharacterTarget ~= nil then
                         CharacterTarget:getInventory():addItem(args[2], tonumber(args[3]))
-                        API.logs("./savedata/giveitem.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. CharacterTarget:getId() .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[2] .. " / Quantidade " .. tonumber(args[3]))
+                        API.logs("./savedata/giveitem.txt",  os.date() .. " | [AdminID]: " .. Character:getId() .. " / [TargetID]: " .. CharacterTarget:getId() .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[2] .. " / Quantidade " .. tonumber(args[3]))
                     else
                         User:notify("error", "Usuario não escolheu um personagem ainda!")
                     end
@@ -282,7 +282,7 @@ RegisterCommand(
             else
                 if #args == 2 then
                     Character:getInventory():addItem(args[1], tonumber(args[2]))
-                    API.logs("./savedata/giveitem.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[1] .. " / Quantidade " .. tonumber(args[2]))
+                    API.logs("./savedata/giveitem.txt", os.date() .. " | [AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: AddItem / [NOME]: " .. args[1] .. " / Quantidade " .. tonumber(args[2]))
                 end
             end
         else
@@ -374,6 +374,7 @@ RegisterCommand(
                     elseif args[1] == "remove" then
                         UserTarget:getCharacter():removeGroup(args[3])
                     end
+                    API.logs("./savedata/group.txt",  os.date() .. " | [AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[2] .. " [FUNÇÃO]: ".. args[1] , args[3])
                 else
                     User:notify("error", "Usuario invalido!")
                 end
@@ -522,7 +523,7 @@ RegisterCommand(
                 if tplayer ~= nil then
                     TriggerClientEvent("VP:RESPAWN:revive", tplayer)
 
-                    API.logs("./savedata/revive.txt", "[AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: REVIVE")
+                    API.logs("./savedata/revive.txt",  os.date() .. " | [AdminID]: " .. Character:getId() .. " / [TargetID]: " .. args[1] .. " [FUNÇÃO]: REVIVE")
                 end
             else
                 TriggerClientEvent("VP:RESPAWN:revive", _source)
