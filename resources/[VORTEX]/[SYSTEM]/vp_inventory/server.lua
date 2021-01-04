@@ -71,7 +71,7 @@ AddEventHandler(
             dropPopulation[index] = nil
             dropPopulation_serveronly[index] = nil
 
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/GET DROP]: " .. Character:getId() .. " pegou no chão " itemAmout .. "x" .. itemId)
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/GET DROP]: " .. Character:getId() .. " pegou no chão " .. itemAmout .. "x" .. itemId)
 
             TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
@@ -197,7 +197,7 @@ AddEventHandler(
             dropPopulation[index] = d
             dropPopulation_serveronly[index] = d_serveronly
 
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/DROP ITEM]: " .. Character:getId() .. " largou no chão " itemAmout .. "x" .. itemId)
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/DROP ITEM]: " .. Character:getId() .. " largou no chão " .. itemAmout .. "x" .. itemId)
 
 
             TriggerClientEvent("VP:INVENTORY:DROP:Create", -1, index, x, y, z, itemId, itemAmount)
@@ -252,7 +252,7 @@ AddEventHandler(
 
             if UserTarget:getPrimaryInventoryViewing() == nil then
                 UserTarget:notify("item", itemId, itemAmount)
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/ENVIOU]: " .. Character:getId() .. " deu " itemAmout .. "x" .. itemId .. "para o " .. CharacterTarget:getId() )
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/ENVIOU]: " .. Character:getId() .. " deu " .. itemAmout .. "x" .. itemId .. "para o " .. CharacterTarget:getId() )
             end
         else
             User:notify("error", "Bolsa da pesssoa está sem espaço!")
@@ -351,6 +351,43 @@ AddEventHandler(
         end
     end
 )
+
+-- [
+--     {
+--         "name":"id_card",
+--         "amount":1,
+--         "slot":1,
+--         "type":"item",
+--         "info":
+--             {
+--                 "firstname":"João",
+--                 "citizenid":"RMN42922",
+--                 "birthdate":"1996-05-10",
+--                 "gender":"man",
+--                 "lastname":"Pintado",
+--                 "nationality":"BR"
+--             }
+--         },       
+        
+--         {
+--             "name":"phone",
+--             "amount":1,
+--             "slot":3,
+--             "type":"item",
+--             "info":[]
+--         },
+
+--         {
+--             "name":"lockpick",
+--             "amount":1,
+--             "slot":4,
+--             "type":"item",
+--             "info":[]
+--         },
+--     }
+-- ]
+
+
 
 RegisterNetEvent("VP:INVENTORY:PrimarySwitchSlot")
 AddEventHandler(
