@@ -33,11 +33,20 @@ function API.Horse(id, model, name, Inventory)
     end
 
     self.getComponents = function()
-        local horseComponentsRows = API_Database.query('SelectHorseComponents', {id = self:getId()})
-        
+        local horseComponentsRows = API_Database.query('SelectHorseComponents', {id = self:getId()})       
         
 
         return #horseComponentsRows > 0 and json.decode(horseComponentsRows[1].components) or {}
+    end
+
+    self.setMetaData = function(this, metaData)
+        local encodedMetaData = json.encode(metaData)
+        API_Database.query('UpdateHorseComponents', {id = self:getId(), metadata = encodedMetaData})
+    end
+
+    self.getMetaData = function()
+        local horseMetaDataRows = API_Database.query('SelectHorseMetaData', {id = self:getId()})             
+        return #horseMetaDataRows > 0 and json.decode(horseMetaDataRows[1].metaData) or {}
     end
 
     return self

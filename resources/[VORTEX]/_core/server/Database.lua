@@ -347,6 +347,9 @@ do
 			["FCRP/DeleteHorse"] = "DELETE FROM horses WHERE id = @id",
 			["UpdateHorseComponents"] = "UPDATE horses SET components = @components WHERE id = @id",
 			["SelectHorseComponents"] = "SELECT components FROM horses WHERE id = @id"
+			["SelectHorseMetaData"] = "SELECT metaData FROM horses WHERE id = @id"
+			["UpdateHorseMetaData"] = "UPDATE horses SET metaData = @metadata WHERE id = @id",
+
 		},
 		posse = {
 			["FCRP/CreatePosse"] = "INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id",
