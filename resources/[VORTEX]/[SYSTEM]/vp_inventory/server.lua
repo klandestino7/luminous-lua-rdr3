@@ -352,6 +352,8 @@ AddEventHandler(
     end
 )
 
+-- {"78": "[\"ammo_pistol\",25]", "73": "[\"pistol_mauser\",1,0,0]", "43": "[\"revolver_lemat\",1,4,2]"}
+
 -- [
 --     {
 --         "name":"id_card",

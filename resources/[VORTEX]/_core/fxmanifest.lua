@@ -14,6 +14,7 @@ client_scripts {
 	"client/_Main.lua",
 	"client/BasicNeeds.lua",
 	"client/LoadIPL.lua",
+	"client/Shared.lua",
 	--"client/KoilIPL.lua",
 	"client/Ped.lua",
 	"client/Player.lua",
