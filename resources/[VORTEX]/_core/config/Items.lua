@@ -1267,6 +1267,13 @@ ItemList = {
         description = "Com este mapa você consegue visualizar todos os lugares da cidade.",
         stackSize = -1
     },
+    ["id_card"] = {
+        type = "document",
+        name = "Identificação",
+        weight = 0.007,
+        description = "Este é seu documento pessoal.",
+        stackSize = -1
+    },    
     ["notepad"] = {
         type = "document",
         name = "Papel",

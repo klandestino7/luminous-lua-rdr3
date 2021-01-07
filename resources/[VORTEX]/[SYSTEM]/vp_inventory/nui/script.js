@@ -93,9 +93,10 @@ window.addEventListener("message", function(event) {
         }
 
         if (event.data.primarySlots) {
+         
             $.each(event.data.primarySlots, function(slotId, Slot) {
-
-                if (Slot[2] > 0) {
+                
+                if (Slot.amount[0] > 0 || Slot.amount > 0) {
                     primaryItemList[slotId] = Slot;
                 } else {
                     delete primaryItemList[slotId];
@@ -128,7 +129,7 @@ window.addEventListener("message", function(event) {
         if (event.data.secondarySlots) {
             $.each(event.data.secondarySlots, function(slotId, Slot) {
 
-                if (Slot[2] > 0) {
+                if (Slot.amount[0] > 0) {
                     secondaryItemList[slotId] = Slot;
                 } else {
                     delete secondaryItemList[slotId];
@@ -415,7 +416,7 @@ $(document).ready(function() {
 });
 
 
-function elementAsDraggable(element, a, b, c, d, e) {
+function elementAsDraggable(element, a, b, c, d, e, f) {
     element.attr('itemId', a);
     element.attr('title', b);
     element.attr('description', c);
@@ -424,6 +425,11 @@ function elementAsDraggable(element, a, b, c, d, e) {
         element.attr('desc_1', d);
         element.attr('desc_2', e);
     }
+    
+    if (f) {
+        element.attr('info', JSON.stringify(f));
+    }
+    
 
     element.draggable({
         appendTo: 'body',
@@ -489,10 +495,12 @@ function drawHotbar() {
         $(`#primary .hotbar #${slotId}`).children().filter(":not(.number)").remove();
 
         if (Slot != undefined) {
-            var itemId = Slot[1];
+            var itemId = Slot.name;
             // var itemAmount = Slot[2];
-            var ammoInClip = Slot[3];
-            var ammoInWeapon = Slot[4];
+            var ammoInClip = Slot.amount[1];
+            var ammoInWeapon = Slot.amount[2];
+
+            var metaInfo = Slot.info;
 
             // var itemStackSize = Slot.itemStackSize;
             var itemName = Slot.itemName;
@@ -514,7 +522,7 @@ function drawHotbar() {
             }
 
             var element = $(`#primary .hotbar #${slotId}`);
-            elementAsDraggable(element, itemId, itemName, itemDescription);
+            elementAsDraggable(element, itemId, itemName, itemDescription, metaInfo);
         } else {
             $(`#primary .hotbar #${slotId}`).addClass("empty");
             $(`#primary .hotbar #${slotId}`).removeAttr('itemId');
@@ -537,6 +545,7 @@ function drawPrimary() {
     $(`#primary-inventory .description-amount`).text('');
     $(`#primary-inventory .description-title`).text('');
     $(`#primary-inventory .description-description`).text('');
+    $(`#primary-inventory .item-info`).text('');
 
     $(`#primary-inventory .slot-container`).html('');
 
@@ -549,13 +558,16 @@ function drawPrimary() {
 
     for (var slotId = (primaryCategoriesIndex * 16) - 15; slotId < (primaryCategoriesIndex * 16) + 1; slotId++) {
         var Slot = primaryItemList[slotId];
-
+  
         if (Slot !== undefined && Slot !== null) {
-            var itemId = Slot[1];
-            var itemAmount = Slot[2];
+            var itemId = Slot.name;
 
-            var ammoInClip = Slot[3];
-            var ammoInWeapon = Slot[4];
+            var itemAmount = Slot.amount[0];          
+
+            var ammoInClip = Slot.amount[1]; 
+            var ammoInWeapon = Slot.amount[2];
+
+            var metaInfo = Slot.info;   
 
             if (itemId == 'money' || itemId == 'gold') {
                 itemAmount = itemAmount / 100;
@@ -587,11 +599,12 @@ function drawPrimary() {
                     `);
                     }
                 } else {
-                    // <div class="counter">${itemAmount}</div>
+                    // 
 
                     $(`#primary-inventory .slot-container`).append(`
                             <div class="slot" id="${slotId}" onclick="select(this)">
                                 <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
+                                <div class="counter">${itemAmount}</div>
                             </div>
                         `);
                     displayItemAmount = true;
@@ -614,8 +627,8 @@ function drawPrimary() {
                     itemAmount = null;
                     itemStackSize = null;
                 }
-
-                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize);
+                
+                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize, metaInfo);
 
                 // $(`#primary-inventory .slot-container #${slotId}`).dblclick(function() {
                 //     let selfSlot = $(this).attr('id');
@@ -661,8 +674,8 @@ function drawPrimary() {
 
     $.each(primaryItemList, function(slot, Slot) {
         if (Slot != undefined) {
-            var itemName = Slot[1];
-            var itemAmount = Slot[2];
+            var itemName = Slot.name;
+            var itemAmount = Slot.amount;
             if (itemName == 'gold') {
                 currency1 = currency1 + itemAmount;
             } else if (itemName == 'money') {
@@ -722,6 +735,7 @@ function drawSecondary() {
     $(`#secondary-inventory .description-amount`).text('');
     $(`#secondary-inventory .description-title`).text('');
     $(`#secondary-inventory .description-description`).text('');
+    $(`#secondary-inventory .item-info`).text('');
 
     $(`#secondary-inventory .slot-container`).html('');
     var money = 0;
@@ -736,10 +750,12 @@ function drawSecondary() {
     for (var slotId = firstSlot; slotId < lastSlot; slotId++) {
         var Slot = secondaryItemList[slotId];
         if (Slot !== undefined && Slot !== null) {
-            var itemId = Slot[1];
-            var itemAmount = Slot[2];
-            var ammoInClip = Slot[3];
-            var ammoInWeapon = Slot[4];
+            var itemId = Slot.name;
+            var itemAmount = Slot.amount[0];
+            var ammoInClip = Slot.amount[1];
+            var ammoInWeapon = Slot.amount[2];
+
+            var metaInfo = Slot.info;
 
             if (itemId == 'money' || itemId == 'gold') {
                 itemAmount = itemAmount / 100;
@@ -797,7 +813,7 @@ function drawSecondary() {
                     itemStackSize = null;
                 }
 
-                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize);
+                elementAsDraggable(element, itemId, itemName, itemDescription, itemAmount, itemStackSize, metaInfo);
             }
         } else {
             $("#secondary-inventory .slot-container").append(`
@@ -816,8 +832,8 @@ function drawSecondary() {
 
     $.each(secondaryItemList, function(slot, Slot) {
         if (Slot != undefined) {
-            var itemName = Slot[1];
-            var itemAmount = Slot[2];
+            var itemName = Slot.name;
+            var itemAmount = Slot.amount[0];
             if (itemName == 'gold') {
                 currency1 = currency1 + itemAmount;
             } else if (itemName == 'money') {
@@ -881,9 +897,28 @@ function select(element) {
         let elementParentParentId = $(element).parent().parent().attr('id');
         $(`#${elementParentParentId} .description-amount`).text('');
         $(`#${elementParentParentId} .description-title`).text('');
-        $(`#${elementParentParentId} .description-description`).text('');
+        $(`#${elementParentParentId} .description-description`).text('');        
+        $(`#${elementParentParentId} .item-info`).text('');
+        
+        
         $(`#${elementParentParentId} .selected`).removeClass('selected');
         $(element).addClass('selected');
+
+        var tableInfo = $(element).attr('info');
+
+        // if (tableInfo != undefined) {
+        //     for (var [k, v] of Object.entries(JSON.parse(tableInfo))) {
+        //         console.log(k);
+        //         console.log(v);
+        //     }            
+        // }
+
+        var data = {
+            name: $(element).attr('itemId'),
+            label: $(element).attr('title'),
+            info: JSON.parse(tableInfo)
+        }
+
 
         $(`#${elementParentParentId} .description-title`).text($(element).attr('title'));
 
@@ -924,6 +959,8 @@ function select(element) {
 
         $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
         indexSelected = $(element).attr('id');
+        
+        FormatItemInfo(data, $(element).position());
     }
 }
 
@@ -934,6 +971,7 @@ function unSelect(element) {
         $(`${elementParentParentId} .description-amount`).text('');
         $(`${elementParentParentId} .description-title`).text('');
         $(`${elementParentParentId} .description-description`).text('');
+        $(`#${elementParentParentId} .item-info`).text('');
 
         setDescriptionDisplayType(0);
     }
@@ -942,6 +980,28 @@ function unSelect(element) {
 function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
+
+
+
+function FormatItemInfo(itemData, data) {
+    $(".ply-iteminfo-container").css({"top":data.top+30});
+    $(".ply-iteminfo-container").css({"left":data.left+130});
+    
+    if (itemData != null && itemData.info != "") {
+        if (itemData.name == "id_card") {
+            var gender = "Man";
+            if (itemData.info.gender == 1) {
+                gender = "Woman";
+            }
+            $(".item-info").html('<p><strong>ID: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Nome: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Sobrenome: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Nascimento: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Genero: </strong><span>' + gender + '</span></p><p><strong>Cidade Natal: </strong><span>' + itemData.info.nationality + '</span></p>');
+        } else {
+            $(".item-info").html('<p>' + itemData.description + '</p>')
+        }
+    } else {
+        $(".item-info").html('<p>' + itemData.description + '</p>')
+    }
+ }
+
 
 function closeInventory() {
     $('.hotbar').fadeOut(500);

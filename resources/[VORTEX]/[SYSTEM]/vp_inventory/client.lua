@@ -368,15 +368,15 @@ end
 function computeSlots(table, asPrimary)
     local ped = PlayerPedId()
     for slotId, values in pairs(table) do
-        local itemInfo = ItemList[values[1]]
+        local itemInfo = ItemList[values.name]
 
         if itemInfo ~= nil then
-            local itemId = values[1]
-            local itemAmount = values[2]
+            local itemId = values.name
+            local itemAmount = values.amount[1]
 
-            local ammoInClip = values[3]
-            local ammoInWeapon = values[4]
-
+            local ammoInClip = values.amount[2]
+            local ammoInWeapon = values.amount[3]
+           
             values.itemName = itemInfo.name
             values.itemDescription = itemInfo.description or "Descrição"
             values.itemStackSize = itemInfo.stackSize or 1
@@ -385,8 +385,8 @@ function computeSlots(table, asPrimary)
 
             if itemInfo.type == "weapon" and asPrimary then
                 -- ammoInClip = ammoInClip - 1
-                values[3] = ammoInClip
-                values[4] = ammoInWeapon
+                values.amount[2] = ammoInClip
+                values.amount[3] = ammoInWeapon
 
                 if (slotId >= 129 and slotId <= 132) then
                     -- if not shotOrReloaded then

@@ -10,12 +10,14 @@ function API.Inventory(id, capacity, slots)
     if slots ~= nil then
         for slotId, values in pairs(slots) do
             slotId = tonumber(slotId)
-            local itemId = values[1]
-            local itemAmount = tonumber(values[2])
-            local ammoInClip = values[3] ~= nil and tonumber(values[3]) or nil
-            local ammoInWeapon = values[4] ~= nil and tonumber(values[4]) or nil
+            local itemId = values.name
+            local itemAmount = tonumber(values.amount[1])
+            local ammoInClip = values.amount[2] ~= nil and tonumber(values.amount[2]) or nil
+            local ammoInWeapon = values.amount[3] ~= nil and tonumber(values.amount[3]) or nil
+            local metaData = values.info
 
-            self.slots[slotId] = API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
+      --      self.slots[slotId] = API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
+            self.slots[slotId] = API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon, metaData)
         end
     end
 
@@ -136,7 +138,7 @@ function API.Inventory(id, capacity, slots)
             if slotIdTo ~= nil then
                 Slot:removeItemAmount(amount)
 
-                self:setSlot(slotIdTo, Slot:getItemId(), amount)
+                self:setSlot(slotIdTo, Slot:getItemId(), amount, nil, Slot:getItemMetaData())
                 local newSlot = self.slots[slotIdTo]
                 newSlot:setAmmoInClip(Slot:getAmmoInClip())
                 newSlot:setAmmoInWeapon(Slot:getAmmoInWeapon())
@@ -258,7 +260,7 @@ function API.Inventory(id, capacity, slots)
         syncToViewers(self.viewersSources, sync, self:getWeight())
     end
 
-    self.setSlot = function(this, slotId, itemId, itemAmount, sync)
+    self.setSlot = function(this, slotId, itemId, itemAmount, sync, itemMetaData)
         -- Check if a item exists at this slot
 
         itemAmount = math.floor(math.abs(itemAmount))
@@ -267,7 +269,7 @@ function API.Inventory(id, capacity, slots)
             self.slots[slotId]:setItemAmount(0) -- Will delete itself from the slot list
         end
 
-        local Slot = API.Slot(slotId, itemId, itemAmount, nil, nil)
+        local Slot = API.Slot(slotId, itemId, itemAmount, nil, nil, itemMetaData)
         self.slots[slotId] = Slot
 
         if sync then
@@ -277,7 +279,7 @@ function API.Inventory(id, capacity, slots)
         return Slot
     end
 
-    self.addItem = function(this, itemId, itemAmount)
+    self.addItem = function(this, itemId, itemAmount, itemMetaData)
         itemAmount = math.floor(math.abs(itemAmount))
 
         local itemData = API.getItemDataFromId(itemId)
@@ -358,7 +360,7 @@ function API.Inventory(id, capacity, slots)
             for slotId, amount in pairs(candidatesSlots) do
                 local Slot
                 if self.slots[slotId] == nil then
-                    Slot = self:setSlot(slotId, itemId, amount)
+                    Slot = self:setSlot(slotId, itemId, amount, nil, itemMetaData)
                 else
                     Slot = self.slots[slotId]
                     if Slot:getItemId() == itemId then
@@ -416,7 +418,6 @@ function API.Inventory(id, capacity, slots)
                     Slot:removeItemAmount(a)
 
                     sync[slotId] = Slot:getSyncData()
-
                     if Slot:getItemAmount() <= 0 then
                         self.slots[slotId] = nil
                         Citizen.CreateThread(
@@ -427,7 +428,7 @@ function API.Inventory(id, capacity, slots)
                     else
                         Citizen.CreateThread(
                             function()
-                                local slot_data = json.encode(Slot:getSyncData())
+                                local slot_data = json.encode(Slot:getSyncData())                               
                                 API_Database.execute("UPDATE:inv_update_slot", {inv_id = self:getId(), slot_id = slotId, slot_value = slot_data})
                             end
                         )
@@ -506,6 +507,26 @@ function API.Inventory(id, capacity, slots)
         return amount
     end
 
+    self.getItemMetaData = function(this, itemId)
+        local infoData = 0
+
+        for _, slotId in pairs(getSlotsWithEqualItemId(self.slots, itemId)) do
+            local _amount = self.slots[slotId]:getItemMetaData()
+            infoData = _amount
+        end
+
+        for i = 129, 132 do
+            if self.slots[i] then
+                if itemId == self.slots[i]:getItemId() then
+                    infoData = self.slots[i]:getItemMetaData()
+                end
+            end
+        end
+
+        return infoData
+    end
+
+
     self.saveWeaponSlotIntoDb = function(this, _source, slotId, ammoInClip, ammoInWeapon)
         if slotId < 129 or slotId > 132 then
             -- API.log("LUA INJECTION? Tentativa de duplicar item: " .. self:getId())
@@ -535,6 +556,8 @@ function API.Inventory(id, capacity, slots)
         local sync = {
             [slotId] = Slot:getSyncData()
         }
+
+        
 
         if Slot:getItemAmount() <= 0 then
             self.slots[slotId] = nil
@@ -577,11 +600,11 @@ function API.Inventory(id, capacity, slots)
         self.viewersSources[viewerSource] = true
 
         local _slots = {}
-
+        
         for slotId, Slot in pairs(self.slots) do
             _slots[slotId] = Slot:getSyncData()
         end
-
+       
         TriggerClientEvent("VP:INVENTORY:openAsPrimary", viewerSource, _slots, self:getWeight(), self:getCapacity())
     end
 

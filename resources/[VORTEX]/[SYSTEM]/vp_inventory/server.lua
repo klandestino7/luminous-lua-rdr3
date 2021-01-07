@@ -21,6 +21,20 @@ local dropPopulation_serveronly = {}
         deletionTimestamp
     }
 ]]
+
+RegisterCommand("getSlots", function(source, args)
+    local _source = source
+
+    local User = API.getUserFromSource(_source)
+    local Character = User:getCharacter()
+
+    if Character == nil then
+        return
+    end
+
+    local Inventory = Character:getInventory()
+
+end)
 RegisterNetEvent("VP:INVENTORY:PickedUpDroppedItem")
 AddEventHandler(
     "VP:INVENTORY:PickedUpDroppedItem",
@@ -45,8 +59,9 @@ AddEventHandler(
 
         local itemId = d.itemId
         local itemAmount = d.itemAmount
+        local itemMetaData = d.info
 
-        local itemWasAdded, slots = Inventory:addItem(itemId, itemAmount)
+        local itemWasAdded, slots = Inventory:addItem(itemId, itemAmount, itemMetaData)
         if itemWasAdded then
             local itemData = API.getItemDataFromId(itemId)
             if itemData:getType() == "weapon" then
@@ -71,7 +86,7 @@ AddEventHandler(
             dropPopulation[index] = nil
             dropPopulation_serveronly[index] = nil
 
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/GET DROP]: " .. Character:getId() .. " pegou no chão " .. itemAmout .. "x" .. itemId)
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/GET DROP]: " .. Character:getId() .. " pegou no chão " .. itemAmount .. "x" .. itemId)
 
             TriggerClientEvent("VP:INVENTORY:DROP:Delete", -1, index)
 
@@ -167,7 +182,7 @@ AddEventHandler(
 
         local itemId = Slot:getItemId()
         local itemAmount = Slot:getItemAmount()
-
+        local itemMetaData = Slot:getItemMetaData()
         local itemAmmoInClip = Slot:getAmmoInClip()
         local itemAmmoInWeapon = Slot:getAmmoInWeapon()
 
@@ -180,6 +195,7 @@ AddEventHandler(
                 y = y,
                 z = z,
                 itemId = itemId,
+                info = itemMetaData,
                 itemAmount = itemAmount
             }
 
@@ -197,7 +213,7 @@ AddEventHandler(
             dropPopulation[index] = d
             dropPopulation_serveronly[index] = d_serveronly
 
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/DROP ITEM]: " .. Character:getId() .. " largou no chão " .. itemAmout .. "x" .. itemId)
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/DROP ITEM]: " .. User:getCharacter():getId() .. " largou no chão " .. itemAmount .. "x" .. itemId)
 
 
             TriggerClientEvent("VP:INVENTORY:DROP:Create", -1, index, x, y, z, itemId, itemAmount)
@@ -245,14 +261,14 @@ AddEventHandler(
             return
         end
 
-        if InventoryTarget:addItem(itemId, itemAmount) then
+        if InventoryTarget:addItem(itemId, itemAmount, Inventory:getItemMetaData(itemId)) then
             Inventory:removeItem(-1, itemId, itemAmount)
 
             User:notify("item", itemId, -(itemAmount))
 
             if UserTarget:getPrimaryInventoryViewing() == nil then
                 UserTarget:notify("item", itemId, itemAmount)
-            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/ENVIOU]: " .. Character:getId() .. " deu " .. itemAmout .. "x" .. itemId .. "para o " .. CharacterTarget:getId() )
+            API.logs("./savedata/inventory.txt",  os.date() .. " | [PLAYER/ENVIOU]: " .. Character:getId() .. " deu " .. itemAmount .. "x" .. itemId .. "para o " .. CharacterTarget:getId() )
             end
         else
             User:notify("error", "Bolsa da pesssoa está sem espaço!")
@@ -300,7 +316,7 @@ AddEventHandler(
             return
         end
 
-        if primaryInventory:addItem(Slot:getItemId(), itemAmount) then
+        if primaryInventory:addItem(Slot:getItemId(), itemAmount, Slot:getItemMetaData()) then
             secondaryInventory:removeItem(slotId, Slot:getItemId(), itemAmount)
         end
     end
@@ -346,11 +362,14 @@ AddEventHandler(
             return
         end
 
-        if secondaryInventory:addItem(Slot:getItemId(), itemAmount) then
+        if secondaryInventory:addItem(Slot:getItemId(), itemAmount, Slot:getItemMetaData()) then
             primaryInventory:removeItem(slotId, Slot:getItemId(), itemAmount)
         end
     end
 )
+
+
+
 
 -- {"78": "[\"ammo_pistol\",25]", "73": "[\"pistol_mauser\",1,0,0]", "43": "[\"revolver_lemat\",1,4,2]"}
 

@@ -1,13 +1,15 @@
-function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
+function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon, infoData)
     local self = {}
 
-    -- self.slotId = slotId
+   -- self.slotId = slotId
     self.itemId = itemId
     self.itemAmount = itemAmount
     self.itemData = API.getItemDataFromId(itemId)
 
     self.ammoInClip = ammoInClip
     self.ammoInWeapon = ammoInWeapon
+    self.itemMetaData = infoData or "[]"
+
 
     -- self.getSlotId = function()
     --     return self.slotId
@@ -27,6 +29,10 @@ function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
 
     self.getItemData = function()
         return self.itemData
+    end
+
+    self.getItemMetaData = function()
+        return self.itemMetaData
     end
 
     self.setItemAmount = function(this, v)
@@ -74,7 +80,7 @@ function API.Slot(slotId, itemId, itemAmount, ammoInClip, ammoInWeapon)
     end
 
     self.getSyncData = function()
-        return {self.itemId, self.itemAmount, self:getAmmoInClip(), self:getAmmoInWeapon()}
+        return {name = self.itemId, amount = {self.itemAmount,self:getAmmoInClip(), self:getAmmoInWeapon()}, info = self.itemMetaData}
     end
 
     return self

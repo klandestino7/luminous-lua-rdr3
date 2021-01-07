@@ -230,6 +230,9 @@ API_Database.prepare("FCRP/DeleteHorse", "DELETE FROM horses WHERE id = @id")
 API_Database.prepare("UpdateHorseComponents", "UPDATE horses SET components = @components WHERE id = @id")
 API_Database.prepare("SelectHorseComponents", "SELECT components FROM horses WHERE id = @id")
 
+API_Database.prepare("UpdateHorseMetaData", "UPDATE horses SET metaData = @metadata WHERE id = @id")
+API_Database.prepare("SelectHorseMetaData", "SELECT metaData FROM horses WHERE id = @id")
+
 ---------- POSSE QUERIES -------------
 API_Database.prepare("FCRP/CreatePosse", "INSERT INTO posses(charid, members, name) VALUES (@charid, @members, @name); SELECT LAST_INSERT_ID() AS id")
 API_Database.prepare("FCRP/GetPosseById", "SELECT * from posses WHERE id = @id")
@@ -346,8 +349,8 @@ do
 			["FCRP/GetHorse"] = "SELECT * from horses WHERE id = @id",
 			["FCRP/DeleteHorse"] = "DELETE FROM horses WHERE id = @id",
 			["UpdateHorseComponents"] = "UPDATE horses SET components = @components WHERE id = @id",
-			["SelectHorseComponents"] = "SELECT components FROM horses WHERE id = @id"
-			["SelectHorseMetaData"] = "SELECT metaData FROM horses WHERE id = @id"
+			["SelectHorseComponents"] = "SELECT components FROM horses WHERE id = @id",
+			["SelectHorseMetaData"] = "SELECT metaData FROM horses WHERE id = @id",
 			["UpdateHorseMetaData"] = "UPDATE horses SET metaData = @metadata WHERE id = @id",
 
 		},

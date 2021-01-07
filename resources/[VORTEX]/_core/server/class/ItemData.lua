@@ -274,7 +274,7 @@ function triggerUse(User, itemData)
         -- cAPI.VaryPlayerStamina(source, 30)
         cAPI.VaryPlayerCore(source, 1, 70)
         cAPI.TaskScriptedAnim(source, "eat")
-
+        API.varyHunger(source, tonumber(-20))
         cAPI.VarySickness(source, 10)
 
         User:closeInventory()

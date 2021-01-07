@@ -105,9 +105,10 @@ function API.User(source, id, ipAddress)
             local Inventory = nil
             if #inv_query > 0 then
                 local slots, _ = json.decode(inv_query[1].inv_slots)
-
-                for k, v in pairs(slots) do
-                    slots[k] = json.decode(v)
+            
+                for k, v in pairs(slots) do         
+                  -- slots[k] = v
+                   slots[k] = json.decode(v)
                 end
 
                 Inventory = API.Inventory("char:" .. id, tonumber(inv_query[1].inv_capacity), slots)

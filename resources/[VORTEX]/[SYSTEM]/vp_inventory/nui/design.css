@@ -33,9 +33,8 @@ body {
 .container .inventory {
     position: relative;
     width: 361px;
-    height: 592px;
+    height: 680px;
 }
-
 
 /* 
 .container #primary {
@@ -293,7 +292,7 @@ Its simulated from .selected :D
     font-size: 13px;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    margin: 0 5px 0 5px;
+    margin: 0 5px 10px 5px;
 }
 
 .container .inventory .inventory-container .description-container .description-range {
@@ -345,6 +344,31 @@ Its simulated from .selected :D
     /* opacity: 0.0; */
     /* visibility: hidden; */
 }
+
+
+
+.item-info {
+    margin-top: 15px;
+    font-family: 'Hapna';
+    max-height: 80%;
+    text-align: center;
+    font-size: 10px !important;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    margin: 0 5px 0 5px;
+}
+.item-info p {    
+    font-family: 'Hapna' !important;    
+    margin: 0;
+    padding: 0;
+}
+
+.item-info span {    
+    font-family: 'Hapna' !important;    
+    margin: 0;
+    padding: 0;
+}
+
 
 #primary .hotbar .slot {
     position: relative;
