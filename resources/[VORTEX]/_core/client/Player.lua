@@ -3,6 +3,11 @@ local gCharAppearence
 local gLastPosition
 local gStats
 
+function cAPI.setDataAppearence(pedModel, charAppearence)
+    gPedModel = pedModel
+    gCharAppearence = charAppearence
+end
+
 function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
     charAppearence = charAppearence[1] 
 
@@ -49,6 +54,8 @@ function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
     pHealthCore = pStats[3] or 100
     pStaminaCore = pStats[3] or 100
 
+    Wait(3000)
+
     cAPI.VaryPlayerHealth(pHealth)
     cAPI.VaryPlayerStamina(pStamina)
     cAPI.VaryPlayerCore(0, pHealthCore)
@@ -62,9 +69,7 @@ function cAPI.Initialize(pedModel, charAppearence, lastPosition, stats)
     end
 end
 
-
-
- function cAPI.setPlayerAppearence(playerId)
+function cAPI.setPlayerAppearence(playerId)
 
     --cAPI.SetPedBodyType(PlayerPedId(), pBodySize)    
 
