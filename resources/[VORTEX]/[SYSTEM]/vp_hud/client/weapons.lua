@@ -1,7 +1,7 @@
 local MeeleWeapons = {
     ["WEAPON_HORSE"] = 0.02,
     ["WEAPON_FIRE"] = 0.09,
-    ["WEAPON_UNARMED"] = 0.02,
+    ["WEAPON_UNARMED"] = 0.15,
     ["WEAPON_THROWN_MOLOTOV"] = 0.01
 }
 
