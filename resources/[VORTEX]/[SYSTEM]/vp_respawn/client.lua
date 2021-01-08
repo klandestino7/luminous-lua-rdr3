@@ -14,7 +14,20 @@ local deathCause = nil
 local damageBone = {0}
 -- local diedOfFatalCause = false
 local TookDamageToVitalOrgan = false
-local BodyPartDamage = {0}
+local BodyPartDamage = {
+	["cabeça"] = {},
+	["pescoço"] = {},
+	["coluna"] = {},
+	["maoesquerda"] = {},
+	["maodireita"] = {},
+	["braçodireito"] = {},
+	["braçoesquerdo"] = {},
+	["pernadireita"] = {},
+	["pedireito"] = {},
+	["pernaesquerda"] = {},
+	["peesquerdo"] = {},
+	["genitaria"] = {}
+}
 
 local diedOfFatalCauseCauses = {
 	"WEAPON_EXPLOSION",
@@ -103,6 +116,7 @@ local vitalBones = {
 	"pescoço",
 	"coluna"
 }
+
 
 local allbones = {
 	["cabeça"] = {
@@ -214,27 +228,56 @@ local fakeGameplayCam
 local fakeGameplayCamDeg = 0
 -- local fakeGameplayCamUD = 0
 
+local tempTable = {}
 Citizen.CreateThread(
 	function()
 		local lastHealth  -- = GetEntityHealth(PlayerPedId())
-		while true do
+		while true do	
 			Citizen.Wait(100)
 			-- if isBadlyInjuried == false then
 			if lastHealth == nil or lastHealth ~= GetEntityHealth(PlayerPedId()) then
 				local retVal, boneIndex = GetPedLastDamageBone(PlayerPedId())
+				
+				
 				if boneIndex ~= 0 then
 					table.insert(damageBone, boneIndex)
 					for BodyPartName, v in pairs(allbones) do
 						for _, IndexBodyPart in pairs(v) do
 							if IndexBodyPart == boneIndex then
-								for _, BodyInsta in pairs(BodyPartDamage) do
-									if BodyInsta ~= BodyPartName then
-										table.insert(BodyPartDamage, BodyPartName)
-									end
-									for _, bone in pairs(vitalBones) do
-										if bone == BodyPartName then
-											TookDamageToVitalOrgan = true
+								if BodyInsta ~= BodyPartName then
+									local weaponDamage 
+
+									for _ ,hashWeapon in pairs(DeathCauses) do
+										if Citizen.InvokeNative(0xDCF06D0CDFF68424, PlayerPedId(), GetHashKey(hashWeapon), 1) then
+											weaponDamage = hashWeapon
 										end
+									end									
+									if BodyPartDamage[BodyPartName][1] ~= nil then
+										local amountDamage = BodyPartDamage[BodyPartName][1] + 1
+										BodyPartDamage[BodyPartName][1] = tonumber(amountDamage)
+									else
+										table.insert(BodyPartDamage[BodyPartName], 1)
+									end		
+
+									
+									
+									for index, value in pairs(BodyPartDamage) do
+										value = json.encode(value)
+										if value ~= "[]" then
+											if tempTable[index] ~= nil then
+												local amountDamage = tempTable[index] + 1
+												tempTable[index] = tonumber(amountDamage)
+											else
+												tempTable[index] = 1
+											end
+
+											TriggerServerEvent("VP:RESPAWN:SetPlayerDamage", tempTable)
+										end
+									end
+								end
+								for _, bone in pairs(vitalBones) do
+									if bone == BodyPartName then
+										TookDamageToVitalOrgan = true
 									end
 								end
 							end
@@ -279,7 +322,7 @@ Citizen.CreateThread(
 						end
 					end
 				end
-			end
+			end			
 			-- end
 		end
 	end
@@ -433,7 +476,7 @@ function HandleAsInjured(fatal)
 				TriggerServerEvent("VP:RESPAWN:SetPlayerAsDead", 0)
 
 				break
-			end
+			end			
 		end
 	else
 		isBadlyInjuried = true
@@ -870,13 +913,25 @@ function DestroyDeathRelatedInformation()
 	TookDamageToVitalOrgan = false
 	deathCause = nil
 	damageBone = {0}
-	BodyPartDamage = {0}
+	BodyPartDamage = {
+		["cabeça"] = {},
+		["pescoço"] = {},
+		["coluna"] = {},
+		["maoesquerda"] = {},
+		["maodireita"] = {},
+		["braçodireito"] = {},
+		["braçoesquerdo"] = {},
+		["pernadireita"] = {},
+		["pedireito"] = {},
+		["pernaesquerda"] = {},
+		["peesquerdo"] = {},
+		["genitaria"] = {}
+	}
 	ClearTimecycleModifier()
 	DisplayHud(true)
 	DisplayRadar(true)
 
 	-- TriggerServerEvent("VP:RESPAWN:onPlayerDeath")
-
 	newDestroy()
 end
 

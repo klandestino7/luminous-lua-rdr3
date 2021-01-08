@@ -4,6 +4,8 @@ local Proxy = module("_core", "lib/Proxy")
 API = Proxy.getInterface("API")
 cAPI = Tunnel.getInterface("API")
 
+local playersDamages = {}
+
 -- RegisterServerEvent("VP:Respawn:_Dead")
 -- AddEventHandler(
 --     "VP:Respawn:_Dead",
@@ -48,6 +50,25 @@ AddEventHandler(
         if Character ~= nil then
             Character:setDeath(tonumber(bool))
         end
+    end
+)
+
+RegisterServerEvent("VP:RESPAWN:SetPlayerDamage")
+AddEventHandler(
+    "VP:RESPAWN:SetPlayerDamage",
+    function(data)
+
+        local _source = source
+        local User = API.getUserFromSource(_source)
+        local Character = User:getCharacter()
+
+        if Character ~= nil then
+            if playersDamages[source] == nil then
+                table.insert(playersDamages, {[tostring(source)] = data})       
+            else
+                playersDamages[source] = {[tostring(source)] = data}
+            end     
+        end 
     end
 )
 
