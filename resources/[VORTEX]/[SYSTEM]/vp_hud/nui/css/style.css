@@ -15,8 +15,9 @@ body {
 
 #container {
 	position: absolute;
-	top:2%;
+	bottom:30%;
 	width: 100%;
+	right: 1%;
 	display:flex;
 	justify-content: center;
 }
@@ -30,11 +31,26 @@ body {
 
 #boxhud{
 	position:absolute;
-	background-image: url(../assets/bg.png);
+	background-image: url(../assets/bgmedium.png);
 	background-repeat:  no-repeat;
 	background-position: center;
 	background-size:100% 100%;	
-	padding: 0vw 2.5vw;
+	padding: 1vw 0.5vw;
+	right:3%;
+}
+
+.list {
+	padding: 0 15px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 10vh;
+	float: right;
+
+}
+
+.list i {
+	float: left;
 }
 
 #money {	
@@ -42,6 +58,7 @@ body {
 	display:flex;
 	justify-content: center;
 	font-weight: 200;
+	flex-direction: column;
 	font-size: 1.0vw;
 	color: white;
 	height:100%;
@@ -74,7 +91,6 @@ body {
 	background-size: contain;
 	background-repeat:no-repeat;
 	padding-right:1.5vw;
-	margin-right:5px;
 }
 
 #money #cash i {
@@ -90,7 +106,6 @@ body {
 	background-size: contain;
 	background-repeat:no-repeat;
 	padding-right:1.5vw;
-	margin-right:-3px;
 }
 
 #started {
@@ -103,26 +118,13 @@ body {
 }
 
 
-#gold{display:flex;color:#f5c504;margin-right:25px;}
-#cash{display:flex;margin-right:25px; }
-#id{margin-right:25px; color:#d2b84f;}
-#level{margin-right:25px;} 
-#xp{margin-right:25px; color:#4fafd2;}
+#gold{display:flex;color:#f5c504;}
+#cash{display:flex; }
+#id{color:#d2b84f;}
+#level{} 
+#xp{color:#4fafd2;}
 
 #goldsvg2{color:#f5c504;}
-
-
-div:before {
-  content:attr(data-text1);  
-  color:red;
-   font-size: 5px;
-}
-
-div:after {
-  content:attr(data-text2);  
-  color:yellow;
-  font-size: 2px;
-}
 
 .goldsvg {	
 	content:'';

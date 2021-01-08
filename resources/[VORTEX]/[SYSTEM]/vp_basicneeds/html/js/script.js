@@ -39,7 +39,6 @@ function addpulse() {
 window.addEventListener('message', function (event) {
     
     if (event.data.action == "changeHealth") {
-        console.log(event.data.health/ 250.0)
         bar1.animate(event.data.health / 250.0);
         if ((event.data.health / 250.0) <= 0.20) {
             $('#progcircle1').addClass('pulse');

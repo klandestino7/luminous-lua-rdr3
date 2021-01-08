@@ -116,19 +116,18 @@ AddEventHandler(
     end
 end)
 
-
-Citizen.CreateThread(
-    function()
-        while true do
-            Citizen.Wait(0)
-            if Talking then
-                DrawText('VOZ : Falando',  0.01, 0.01, 0.25, 0.25, false, 252, 240, 192, 145, 0, 7)
-            else
-                DrawText('VOZ : Normal',  0.01, 0.01, 0.25, 0.25, false, 255, 255, 255, 145, 0, 7)
-            end
-        end
-    end
-)
+-- Citizen.CreateThread(
+--     function()
+--         while true do
+--             Citizen.Wait(0)
+--             if Talking then
+--                 DrawText('VOZ : Falando',  0.01, 0.01, 0.25, 0.25, false, 252, 240, 192, 145, 0, 7)
+--             else
+--                 DrawText('VOZ : Normal',  0.01, 0.01, 0.25, 0.25, false, 255, 255, 255, 145, 0, 7)
+--             end
+--         end
+--     end
+-- )
 
 RegisterNetEvent("VP:HUD:RevealMap")
 AddEventHandler(

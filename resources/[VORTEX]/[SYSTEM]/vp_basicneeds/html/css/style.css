@@ -8,6 +8,15 @@ body {
 	width: 100%;	
 }
 
+@font-face {
+	font-family: hapna;
+	src: url(../assets/Hapna.ttf);	
+
+}
+
+*{
+	font-family: hapna;
+}
 
 #boxhud{
 	bottom: 10px;
@@ -222,6 +231,8 @@ body {
 	flex-direction: row;
 	height:20px;
 	width:fit-content;
+	
+	align-items: center;
 }
 
 .divisor div {
@@ -241,7 +252,7 @@ body {
 	color: white;
 	font-size: 14px;
 	font-weight: bold;
-	font-family: crock; 
+	font-family: hapna; 
 }
 
 .compas { 
@@ -253,7 +264,7 @@ body {
 	color: white;
 	font-size: 14px;
 	font-weight: bold;
-	font-family: crock; 	
+	font-family: hapna; 	
 }
 
 .world {
@@ -266,7 +277,7 @@ body {
 	color: green;
 	font-size: 14px;
 	font-weight: bold;
-	font-family: crock; 
+	font-family: hapna; 
 }
 
 
@@ -278,7 +289,7 @@ body {
 
 .hudcomp {
 	color: white;
-	font-family: RDRLino-Regular;
+	font-family: hapna;
 	font-size: 13px;
 	font-weight: bold;
 }
