@@ -96,12 +96,13 @@ window.addEventListener("message", function(event) {
          
             $.each(event.data.primarySlots, function(slotId, Slot) {
                 
-                if (Slot.amount[0] > 0 || Slot.amount > 0) {
-                    primaryItemList[slotId] = Slot;
-                } else {
-                    delete primaryItemList[slotId];
+                if (Slot) {
+                    if (Slot.amount[0] > 0 || Slot.amount > 0) {
+                        primaryItemList[slotId] = Slot;
+                    } else {
+                        delete primaryItemList[slotId];
+                    }
                 }
-
             });
 
 
@@ -555,14 +556,31 @@ function drawPrimary() {
 
     $('.hotbar').fadeIn(500);
     var money = 0;
+    var Loop = 1;
+    var slotIdItem;
+
+    var loopOn = false;
 
     for (var slotId = (primaryCategoriesIndex * 16) - 15; slotId < (primaryCategoriesIndex * 16) + 1; slotId++) {
-        var Slot = primaryItemList[slotId];
-  
-        if (Slot !== undefined && Slot !== null) {
+        var Slot = primaryItemList[slotId];    
+        
+        if (primaryCategoriesIndex == 1) {          
+            if (!loopOn) {
+                for (var slotIdItem = 17; slotIdItem < 128; slotIdItem++) {
+                    if (primaryItemList[slotIdItem]) {
+                        Loop = Loop + 1;
+                        primaryItemList[Loop] = primaryItemList[slotIdItem];
+                    }
+                }
+                loopOn = true;
+            }
+        }        
+
+        if (Slot !== undefined && Slot !== null) {               
+
             var itemId = Slot.name;
 
-            var itemAmount = Slot.amount[0];          
+            var itemAmount = Slot.amount[0] || Slot.amount;;          
 
             var ammoInClip = Slot.amount[1]; 
             var ammoInWeapon = Slot.amount[2];
@@ -573,40 +591,41 @@ function drawPrimary() {
                 itemAmount = itemAmount / 100;
                 itemAmount = itemAmount.toFixed(2);
             }
-
+            
             var itemStackSize = Slot.itemStackSize;
             var itemName = Slot.itemName;
             var itemDescription = Slot.itemDescription;
 
             var displayItemAmount = false;
+                      
 
             if (ammoInClip == undefined && ammoInWeapon == undefined) {
+                
                 if (itemStackSize != -1) {
                     if (itemId != "lasso") {
                         // <div class="counter">${itemAmount}/${itemStackSize}</div>
-
                         $(`#primary-inventory .slot-container`).append(`
-                    <div class="slot" id="${slotId}" onclick="select(this)">
-                        <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
-                    </div>
-                `);
+                            <div class="slot" id="${slotId}" onclick="select(this)">
+                                <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
+                            </div>
+                        `);
                         displayItemAmount = true;
                     } else {
                         $(`#primary-inventory .slot-container`).append(`
-                        <div class="slot" id="${slotId}" onclick="select(this)">
-                            <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
-                        </div>
-                    `);
-                    }
-                } else {
-                    // 
-
-                    $(`#primary-inventory .slot-container`).append(`
                             <div class="slot" id="${slotId}" onclick="select(this)">
                                 <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
-                                <div class="counter">${itemAmount}</div>
                             </div>
                         `);
+                    }
+                    
+                } else {
+                    // 
+                    $(`#primary-inventory .slot-container`).append(`
+                        <div class="slot" id="${slotId}" onclick="select(this)">
+                            <img src="images/items/${itemId}.png" onerror="this.src='images/_placeholder.png'">
+                            <div class="counter">${itemAmount}</div>
+                        </div>
+                    `);
                     displayItemAmount = true;
                     itemStackSize = null;
                 }
@@ -621,7 +640,7 @@ function drawPrimary() {
 
             var element = $(`#primary-inventory .slot-container #${slotId}`);
 
-            if (primaryCategoriesIndex != 1) {
+            if (primaryCategoriesIndex != 0) {
 
                 if (displayItemAmount == false) {
                     itemAmount = null;
@@ -676,11 +695,13 @@ function drawPrimary() {
         if (Slot != undefined) {
             var itemName = Slot.name;
             var itemAmount = Slot.amount;
+        
             if (itemName == 'gold') {
                 currency1 = currency1 + itemAmount;
             } else if (itemName == 'money') {
                 currency2 = currency2 + itemAmount;
             }
+            
         }
     });
 
@@ -689,6 +710,8 @@ function drawPrimary() {
 
     $('#primary #currency1').text(currency1.toFixed(2));
     $('#primary #currency2').text(currency2.toFixed(2));
+
+    
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
@@ -751,7 +774,7 @@ function drawSecondary() {
         var Slot = secondaryItemList[slotId];
         if (Slot !== undefined && Slot !== null) {
             var itemId = Slot.name;
-            var itemAmount = Slot.amount[0];
+            var itemAmount = Slot.amount[0] || Slot.amount;;
             var ammoInClip = Slot.amount[1];
             var ammoInWeapon = Slot.amount[2];
 
@@ -833,7 +856,7 @@ function drawSecondary() {
     $.each(secondaryItemList, function(slot, Slot) {
         if (Slot != undefined) {
             var itemName = Slot.name;
-            var itemAmount = Slot.amount[0];
+            var itemAmount = Slot.amount[0] || Slot.amount;;
             if (itemName == 'gold') {
                 currency1 = currency1 + itemAmount;
             } else if (itemName == 'money') {
@@ -913,10 +936,13 @@ function select(element) {
         //     }            
         // }
 
-        var data = {
-            name: $(element).attr('itemId'),
-            label: $(element).attr('title'),
-            info: JSON.parse(tableInfo)
+        if(tableInfo != undefined && tableInfo != '[]') {
+            var data = {
+                name: $(element).attr('itemId'),
+                label: $(element).attr('title'),
+                info: JSON.parse(tableInfo)
+            }
+            FormatItemInfo(data, $(element).position());
         }
 
 
@@ -959,8 +985,6 @@ function select(element) {
 
         $(`#${elementParentParentId} .description-description`).text($(element).attr('description'));
         indexSelected = $(element).attr('id');
-        
-        FormatItemInfo(data, $(element).position());
     }
 }
 
@@ -987,19 +1011,15 @@ function FormatItemInfo(itemData, data) {
     $(".ply-iteminfo-container").css({"top":data.top+30});
     $(".ply-iteminfo-container").css({"left":data.left+130});
     
-    if (itemData != null && itemData.info != "") {
-        if (itemData.name == "id_card") {
-            var gender = "Man";
-            if (itemData.info.gender == 1) {
-                gender = "Woman";
-            }
-            $(".item-info").html('<p><strong>ID: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Nome: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Sobrenome: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Nascimento: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Genero: </strong><span>' + gender + '</span></p><p><strong>Cidade Natal: </strong><span>' + itemData.info.nationality + '</span></p>');
-        } else {
-            $(".item-info").html('<p>' + itemData.description + '</p>')
+    if (itemData != null && itemData.info != "[]" && itemData.info != undefined) {
+    //    $(".item-info").html('<p><strong>ID: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Nome: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Sobrenome: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Nascimento: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Genero: </strong><span>' + gender + '</span></p><p><strong>Cidade Natal: </strong><span>' + itemData.info.nationality + '</span></p>');
+        
+        for (var [name, info] of Object.entries(itemData.info)) {
+            $(".item-info").append(`
+                <p><strong>` +name+`: </strong><span>` + info + `</span></p>
+            `);
         }
-    } else {
-        $(".item-info").html('<p>' + itemData.description + '</p>')
-    }
+    } 
  }
 
 

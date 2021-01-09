@@ -24,7 +24,7 @@ body {
 }
 
 .container {
-    margin: auto auto;
+    margin: auto 10vh;
     width: fit-content;
     display: flex;
     flex-direction: row;
