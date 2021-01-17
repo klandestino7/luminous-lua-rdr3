@@ -67,6 +67,10 @@ window.addEventListener("message", function(event) {
             $("#secondary #background-image").css('opacity', '0.98');
         }
 
+        if (event.data.type == 'showHotbar') {           
+            $('.hotbar').fadeIn(500).delay(5000).fadeOut(500);
+        }
+
         if (event.data.type == 'nextHotbarSlot' || event.data.type == 'previousHotbarSlot') {
 
             if (hotbarSlotSelected != undefined) {
@@ -691,17 +695,22 @@ function drawPrimary() {
     var currency1 = 0;
     var currency2 = 0;
 
+    var haveMoney = false;
+    var haveGold = false;
+
     $.each(primaryItemList, function(slot, Slot) {
         if (Slot != undefined) {
+
             var itemName = Slot.name;
-            var itemAmount = Slot.amount;
-        
-            if (itemName == 'gold') {
-                currency1 = currency1 + itemAmount;
-            } else if (itemName == 'money') {
-                currency2 = currency2 + itemAmount;
-            }
-            
+            var itemAmount = parseInt(Slot.amount);
+
+            if (itemName == 'gold' && !haveGold) {
+                currency1 = parseInt(currency1) + itemAmount;
+                haveGold = true;
+            } else if (itemName == 'money' && !haveMoney) {
+                currency2 = parseInt(currency2) + itemAmount;     
+                haveMoney = true;    
+            } 
         }
     });
 
@@ -709,9 +718,7 @@ function drawPrimary() {
     currency2 = currency2 / 100;
 
     $('#primary #currency1').text(currency1.toFixed(2));
-    $('#primary #currency2').text(currency2.toFixed(2));
-
-    
+    $('#primary #currency2').text(currency2.toFixed(2));    
 
     if (primaryCategoriesIndex != 1) {
         $(`#primary-inventory .slot-container`).children().droppable({
@@ -853,20 +860,29 @@ function drawSecondary() {
     var currency1 = 0;
     var currency2 = 0;
 
+    var haveMoney = false;
+    var haveGold = false;
+    
     $.each(secondaryItemList, function(slot, Slot) {
         if (Slot != undefined) {
+
             var itemName = Slot.name;
-            var itemAmount = Slot.amount[0] || Slot.amount;;
-            if (itemName == 'gold') {
-                currency1 = currency1 + itemAmount;
-            } else if (itemName == 'money') {
-                currency2 = currency2 + itemAmount;
-            }
+            var itemAmount = parseInt(Slot.amount);
+
+            if (itemName == 'gold' && !haveGold) {
+                currency1 = parseInt(currency1) + itemAmount;
+                haveGold = true;
+            } else if (itemName == 'money' && !haveMoney) {
+                currency2 = parseInt(currency2) + itemAmount;     
+                haveMoney = true;    
+            } 
         }
     });
 
     currency1 = currency1 / 100;
     currency2 = currency2 / 100;
+
+    
 
     $('#secondary #currency1').text(currency1.toFixed(2));
     $('#secondary #currency2').text(currency2.toFixed(2));
