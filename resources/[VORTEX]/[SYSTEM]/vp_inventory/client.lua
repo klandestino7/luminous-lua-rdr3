@@ -14,6 +14,15 @@ Citizen.CreateThread(
                 opened = true
             end
 
+            if IsControlJustPressed(0, 0x8AAA0AD4) and not opened  then
+                SendNUIMessage(
+                    {
+                        type = "showHotbar"
+                    }
+                )
+                Wait(500)
+            end
+
             --[[
             if IsControlJustPressed(0, 0x3076E97C) then -- NUMPAD 6
                 SendNUIMessage(
