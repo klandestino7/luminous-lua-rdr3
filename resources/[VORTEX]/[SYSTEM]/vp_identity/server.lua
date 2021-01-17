@@ -11,8 +11,15 @@ AddEventHandler(
         if User == nil then
             return
         end
-     
-        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters())
+
+        local appearence = {}
+
+        for i = 1, #User:getCharacters() do
+            local userId = User:getCharacters()[i].charid
+            table.insert(appearence,User:getCharacterAppearenceFromId(userId))     
+        end
+        
+        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters(), appearence)
     end
 )
 
@@ -23,7 +30,15 @@ AddEventHandler(
         if User == nil then
             return
         end
-        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters())
+        
+        local appearence = {}
+
+        for i = 1, #User:getCharacters() do
+            local userId = User:getCharacters()[i].charid
+            table.insert(appearence,User:getCharacterAppearenceFromId(userId))     
+        end
+        
+        TriggerClientEvent('VP:IDENTITY:DisplayCharSelection', User:getSource(), User:getCharacters(), appearence)
     end
 )
 

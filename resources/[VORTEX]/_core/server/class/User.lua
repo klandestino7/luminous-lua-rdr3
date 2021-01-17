@@ -289,6 +289,16 @@ function API.User(source, id, ipAddress)
         return self.posseId
     end
 
+    self.getCharacterAppearenceFromId = function(this, varId)
+        local charRow = API_Database.query("FCRP/GetCharacterAppearence", {charid = varId})
+        
+        if #charRow > 0 then
+            return charRow
+        else
+            return nil
+        end       
+    end
+
     self.isInAPosse = function()
         return self.posseId ~= nil
     end

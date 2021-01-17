@@ -9,7 +9,7 @@ local fakePeds = {}
 RegisterNetEvent("VP:IDENTITY:DisplayCharSelection")
 AddEventHandler(
     "VP:IDENTITY:DisplayCharSelection",
-    function(characterArray)
+    function(characterArray, charAppearence)
         Destroy()
 
         -- O characterARRAY tá enviando TODA INFORMAÇÃO DO CHARACTER
@@ -64,46 +64,29 @@ AddEventHandler(
             vec3(1061.10, 1591.20, 369.36 - 0.98)
         }
 
-        if characterArray ~= nil then
-            for index, values in pairs(characterArray) do
-                print(json.encode(values))
+        if charAppearence ~= nil then
+            for i = 1, #charAppearence do           
 
-            --     local pModel = GetHashKey(skinMdf.model)
-            --     local pBodySize = tonumber(skinMdf.bodySize)
-            --     local pSkin = json.decode(skinMdf.modSkin)
-            --     local pFaceFeatures = json.decode(skinMdf.features)
-            --     local pScale = tonumber(skinMdf.pedSize)
-            --  --   local pClothing = json.decode(values.clothes)
-            --     local pClothing
+                if not HasModelLoaded(charAppearence[i][1].model) then
+                    RequestModel(charAppearence[i][1].model)
+                    while not HasModelLoaded(charAppearence[i][1].model) do
+                        Citizen.Wait(10)
+                    end
+                end
 
-            --     if json.decode(values.clothes).Outfit ~= nil then 
-            --         if tonumber(json.decode(values.clothes).Outfit) <= 100 then
-            --             pClothing = tonumber(json.decode(values.clothes).Outfit)
-            --         end                   
-            --     else
-            --         pClothing = json.decode(values.clothes)    
-            --     end
-            
-            --     if not HasModelLoaded(pModel) then
-            --         RequestModel(pModel)
-            --         while not HasModelLoaded(pModel) do
-            --             Citizen.Wait(10)
-            --         end
-            --     end
+                local ped = CreatePed(charAppearence[i][1].model, fakePedCoords[i], 350.77, 0, 0)
 
-            --     local ped = CreatePed(pModel, fakePedCoords[index], 350.77, 0, 0)
+                Citizen.Wait(300)
 
-            --     Citizen.Wait(100)
+                cAPI.SetSkin(ped, charAppearence[i][1].enabledComponents)   
 
-            --     cAPI.SetPedBodyType(ped, pBodySize)
-
-            --     cAPI.SetSkin(ped, pSkin)
-
-            --     cAPI.SetPedFaceFeature(ped, pFaceFeatures) 
+                cAPI.SetPedFaceFeature(ped, charAppearence[i][1].faceFeatures)
                 
-            --     cAPI.SetPedScale(ped, pScale)
+                cAPI.SetPedScale(ped, charAppearence[i][1].pedHeight)
 
-            --     cAPI.SetPedClothing(ped, pClothing)
+                if charAppearence[i][1].clothes ~= nil then
+                    cAPI.SetSkin(ped, charAppearence[i][1].clothes)                       
+                end
 
                 table.insert(fakePeds, ped)
             end
